@@ -21,4 +21,6 @@
 
   <Import Project="..\TestData\TestData.projitems" Label="Shared" />
 
+  <ProjectExtensions><VisualStudio><UserProperties BuildVersion_StartDate="2000/1/1" /></VisualStudio></ProjectExtensions>
+
 </Project>
