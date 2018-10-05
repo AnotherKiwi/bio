@@ -46,6 +46,21 @@ namespace Bio
         bool IsComplementSupported { get; }
 
         /// <summary>
+        /// Gets a value indicating whether this is a DNA alphabet.
+        /// </summary>
+        bool IsDna { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this is a protein alphabet.
+        /// </summary>
+        bool IsProtein { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this is a RNA alphabet.
+        /// </summary>
+        bool IsRna { get; }
+
+        /// <summary>
         /// Gets the count of symbols present in this alphabet.
         /// This includes basic symbols, gaps, terminations and ambiguous symbols present in this alphabet.
         /// </summary>
@@ -104,10 +119,10 @@ namespace Bio
         bool TryGetGapSymbols(out HashSet<byte> gapSymbols);
 
         /// <summary>
-        /// Gets the termination symbols if present in the alphabet.
+        /// Gets the termination symbol(s) if present in the alphabet.
         /// </summary>
         /// <param name="terminationSymbols">Termination symbols as hashset if the alphabet has one or more termination symbols.</param>
-        /// <returns>Returns true if the termination symbols are returned in trminationSymbols parameter, else returns false.</returns>
+        /// <returns>Returns true if the termination symbols are returned in the <paramref name="terminationSymbols"/> parameter, else returns false.</returns>
         bool TryGetTerminationSymbols(out HashSet<byte> terminationSymbols);
 
         /// <summary>
@@ -171,7 +186,7 @@ namespace Bio
         /// <param name="offset">Offset from where validation should start.</param>
         /// <param name="length">Number of symbols to validate from the specified offset.</param>
         /// <returns>True if the validation succeeds, else false.</returns>
-        bool ValidateSequence(byte[] symbols, long offset, long length);
+        bool ValidateSequence(byte[] symbols, long offset = 0, long length = -1);
 
         /// <summary>
         /// Checks if the provided item is a gap character or not

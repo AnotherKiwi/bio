@@ -40,27 +40,39 @@ namespace Bio
         }
 
         /// <summary>
+        /// 	Gets a copy of the specified number of items from the raw sequence data,
+        ///     starting at the specified zero-based start index.
+        /// </summary>
+        /// <param name="startIndex">Zero-based index of the first item to copy.</param>
+        /// <param name="length">Total numbers of elements to be copied.</param>
+        /// <returns>
+        ///  	<see cref="T:byte[]"/>: the specified items from the raw sequence data.
+        /// </returns>
+        /// 
+        byte[] GetData(long startIndex = 0, long length = -1);
+
+        /// <summary>
         /// Many sequence representations when saved to file also contain
         /// information about that sequence. Unfortunately there is no standard
         /// around what that data may be from format to format. This property
         /// allows a place to put structured metadata that can be accessed by
-        /// a particular key.
+        /// a particular key. <br/>
         /// 
         /// For example, if species information is stored in a particular Species
         /// class, you could add it to the dictionary by:
         /// 
-        /// mySequence.Metadata["SpeciesInfo"] = mySpeciesInfo;
+        /// <c>mySequence.Metadata["SpeciesInfo"] = mySpeciesInfo</c>;
         /// 
         /// To fetch the data you would use:
         /// 
-        /// Species mySpeciesInfo = mySequence.Metadata["SpeciesInfo"];
+        /// <c>Species mySpeciesInfo = mySequence.Metadata["SpeciesInfo"]</c>;<br/>
         /// 
         /// Particular formats may create their own data model class for information
-        /// unique to their format as well. Such as:
+        /// unique to their format as well. Such as:<br/>
         /// 
-        /// GenBankMetadata genBankData = new GenBankMetadata();
+        /// <c>GenBankMetadata genBankData = new GenBankMetadata();
         /// // ... add population code
-        /// mySequence.MetaData["GenBank"] = genBankData;
+        /// mySequence.MetaData["GenBank"] = genBankData;</c>
         /// </summary>
         Dictionary<string, object> Metadata { get; }
 

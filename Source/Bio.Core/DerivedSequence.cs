@@ -2,8 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-using Bio.Util;
 using System.Text;
+
+using Bio.Util;
+using static Bio.Properties.Resource;
 
 namespace Bio
 {
@@ -135,6 +137,14 @@ namespace Bio
         }
 
         #region Methods
+
+        // GetData() method added by Stephen Haines
+        /// <inheritdoc />
+        public byte[] GetData(long startIndex = 0, long length = -1)
+        {
+            var seq = (Sequence)baseSequence;
+            return seq.GetData(startIndex, length);
+        }
 
         /// <summary>
         /// Return a new sequence representing this sequence with the orientation reversed.

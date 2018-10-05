@@ -8,6 +8,7 @@ using System.Text;
 using Bio.Core.Extensions;
 using Bio.Extensions;
 using Bio.Util;
+using static Bio.Properties.Resource;
 
 namespace Bio
 {
@@ -268,7 +269,7 @@ namespace Bio
         {
             if (!this.Alphabet.IsComplementSupported)
             {
-                throw new InvalidOperationException(Properties.Resource.ComplementNotFound);
+                throw new InvalidOperationException(ComplementNotFound);
             }
 
             byte[] complemented = new byte[this.Count];
@@ -288,7 +289,7 @@ namespace Bio
         {
             if (!this.Alphabet.IsComplementSupported)
             {
-                throw new InvalidOperationException(Properties.Resource.ComplementNotFound);
+                throw new InvalidOperationException(ComplementNotFound);
             }
 
             byte[] reverseComplemented = new byte[this.Count];
@@ -432,7 +433,7 @@ namespace Bio
         {
             if (this.Count > Helper.AlphabetsToShowInToString)
             {
-                return string.Format(CultureInfo.CurrentCulture, Properties.Resource.ToStringFormat,
+                return string.Format(CultureInfo.CurrentCulture, ToStringFormat,
                                      new string(this._sequenceData.Take(Helper.AlphabetsToShowInToString).Select((a => (char)a)).ToArray()),
                                      (this.Count - Helper.AlphabetsToShowInToString));
             }
@@ -449,7 +450,7 @@ namespace Bio
         {
             if (startIndex < 0)
             {
-                throw new ArgumentOutOfRangeException("startIndex", "> 0");
+                throw new ArgumentOutOfRangeException(nameof(startIndex), @"> 0");
             }
 
             if (length == -1)
@@ -459,12 +460,12 @@ namespace Bio
 
             if (length < 0)
             {
-                throw new ArgumentOutOfRangeException("length", "> 0");
+                throw new ArgumentOutOfRangeException(nameof(length), @"> 0");
             }
 
             if (startIndex + length > Count)
             {
-                throw new ArgumentOutOfRangeException("length", "Length + StartIndex cannot exceed size of sequence");
+                throw new ArgumentOutOfRangeException(nameof(length), LengthPlusStartCannotExceedCount);
             }
 
             StringBuilder sb = new StringBuilder();
@@ -477,7 +478,7 @@ namespace Bio
             }
             catch (IndexOutOfRangeException rangeEx)
             {
-                throw new ArgumentOutOfRangeException("length", rangeEx.Message);
+                throw new ArgumentOutOfRangeException(nameof(length), rangeEx.Message);
             }
 
             return sb.ToString();
@@ -494,32 +495,63 @@ namespace Bio
             return this._sequenceData;
         }
 
+        // GetData() method added by Stephen Haines.
+        // TODO: write test.
+        /// <inheritdoc />
+        public byte[] GetData(long startIndex = 0, long length = -1)
+        {
+            // Perform same checks as in existing ConvertToString() method
+            if (startIndex < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(startIndex), @"> 0");
+            }
+
+            if (length == -1)
+            {
+                length = Count;
+            }
+
+            if (length < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(length), @"> 0");
+            }
+
+            if (startIndex + length > Count)
+            {
+                throw new ArgumentOutOfRangeException(nameof(length), LengthPlusStartCannotExceedCount);
+            }
+
+            var rawData = new byte[length - startIndex];
+            CopyTo(rawData, startIndex, length);
+            return rawData;
+        }
+
         /// <summary>
-        /// Copies all items from the sequence to a pre allocated array.
+        ///     Copies items from the sequence to a pre allocated array.
         /// </summary>
         /// <param name="byteArray">Array to fill the items to.</param>
-        /// <param name="start">Index at which the filling starts.</param>
+        /// <param name="start">Index of the first item to copy.</param>
         /// <param name="count">Total numbers of elements to be copied.</param>
         public void CopyTo(byte[] byteArray, long start, long count)
         {
             if (byteArray == null)
             {
-                throw new ArgumentNullException(Properties.Resource.ParameterNameArray);
+                throw new ArgumentNullException(ParameterNameArray);
             }
 
             if ((start + count) > this.Count)
             {
-                throw new ArgumentException(Properties.Resource.DestArrayNotLargeEnough);
+                throw new ArgumentException(DestArrayNotLargeEnough);
             }
 
             if (start < 0)
             {
-                throw new ArgumentException(Properties.Resource.StartCannotBeLessThanZero);
+                throw new ArgumentException(StartCannotBeLessThanZero);
             }
 
             if (count < 0)
             {
-                throw new ArgumentException(Properties.Resource.CountCannotBeLessThanZero);
+                throw new ArgumentException(CountCannotBeLessThanZero);
             }
 
             Helper.Copy(this._sequenceData, start, byteArray, 0, count);

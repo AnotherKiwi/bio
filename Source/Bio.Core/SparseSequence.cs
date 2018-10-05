@@ -5,6 +5,7 @@ using System.Linq;
 using System.Collections;
 
 using Bio.Core.Extensions;
+using static Bio.Properties.Resource;
 
 namespace Bio
 {
@@ -408,6 +409,14 @@ namespace Bio
 
             Sequence seq = (Sequence)this.GetSubSequence(0, this.sparseSeqItems.Count);
             seq.CopyTo(byteArray, start, count);
+        }
+
+        // GetData() method added by Stephen Haines
+        /// <inheritdoc />
+        public byte[] GetData(long startIndex = 0, long length = -1)
+        {
+            var seq = (Sequence)GetSubSequence(0, sparseSeqItems.Count);
+            return seq.GetData(startIndex, length);
         }
 
         /// <summary>

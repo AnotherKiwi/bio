@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 
 using Bio.Util;
+using static Bio.Properties.Resource;
 
 namespace Bio
 {
@@ -15,39 +15,39 @@ namespace Bio
     /// <para>
     /// The character representations come from the NCBIstdaa standard and
     /// are used in many sequence file formats. The NCBIstdaa standard has all
-    /// the same characters as NCBIeaa and IUPACaa, but adds Selenocysteine,
-    /// termination, and gap symbols to the latter.
+    /// the same characters as NCBIeaa and IUPACaa, including Pyrrolysine, but
+    /// adds Selenocysteine, termination, and gap symbols to the latter.
     /// </para>
     /// <para>
-    /// The entries in this dictionary are:
-    /// Symbol - Extended Symbol - Name
-    /// A - Ala - Alanine
-    /// C - Cys - Cysteine
-    /// D - Asp - Aspartic Acid
-    /// E - Glu - Glutamic Acid
-    /// F - Phe - Phenylalanine
-    /// G - Gly - Glycine
-    /// H - His - Histidine
-    /// I - Ile - Isoleucine
-    /// K - Lys - Lysine
-    /// L - Leu - Leucine
-    /// M - Met - Methionine
-    /// N - Asn - Asparagine
-    /// O - Pyl - Pyrrolysine
-    /// P - Pro - Proline
-    /// Q - Gln - Glutamine
-    /// R - Arg - Arginine
-    /// S - Ser - Serine
-    /// T - Thr - Threoine
-    /// U - Sel - Selenocysteine
-    /// V - Val - Valine
-    /// W - Trp - Tryptophan
-    /// Y - Tyr - Tyrosine
-    /// * - Ter - Termination
+    /// The entries in this alphabet are (Symbol - Extended Symbol - Name):<br/>
+    /// A - Ala - Alanine,
+    /// C - Cys - Cysteine,
+    /// D - Asp - Aspartic Acid,
+    /// E - Glu - Glutamic Acid,
+    /// F - Phe - Phenylalanine,
+    /// G - Gly - Glycine,
+    /// H - His - Histidine,
+    /// I - Ile - Isoleucine,
+    /// K - Lys - Lysine,
+    /// L - Leu - Leucine,
+    /// M - Met - Methionine,
+    /// N - Asn - Asparagine,
+    /// O - Pyl - Pyrrolysine,
+    /// P - Pro - Proline,
+    /// Q - Gln - Glutamine,
+    /// R - Arg - Arginine,
+    /// S - Ser - Serine,
+    /// T - Thr - Threonine,
+    /// U - Sel - Selenocysteine,
+    /// V - Val - Valine,
+    /// W - Trp - Tryptophan,
+    /// Y - Tyr - Tyrosine,
+    /// * - Ter - Termination,
     /// - - --- - Gap.
     /// </para>
     /// </summary>
-    public class ProteinAlphabet : IAlphabet
+    /// <seealso cref="IAlphabet"/>
+    public class ProteinAlphabet : IProteinAlphabet
     {
         #region Private members
 
@@ -74,29 +74,31 @@ namespace Bio
         private readonly Dictionary<string, byte> abbreviationMap3to1 = new Dictionary<string, byte>();
 
         /// <summary>
-        /// Symbol to Friendly name mapping.
+        /// Symbol to FriendlyName mapping.
         /// </summary>
         private readonly Dictionary<byte, string> friendlyNameMap = new Dictionary<byte, string>();
 
         /// <summary>
-        /// Holds the amino acids present in this RnaAlphabet.
+        /// Holds the amino acids present in this ProteinAlphabet.
         /// </summary>
         private readonly List<byte> aminoAcids = new List<byte>();
 
         /// <summary>
         /// Mapping from set of symbols to corresponding ambiguous symbol.
         /// </summary>
-        private readonly Dictionary<HashSet<byte>, byte> basicSymbolsToAmbiguousSymbolMap = new Dictionary<HashSet<byte>, byte>(new HashSetComparer<byte>());  
+        private readonly Dictionary<HashSet<byte>, byte> basicSymbolsToAmbiguousSymbolMap 
+            = new Dictionary<HashSet<byte>, byte>(new HashSetComparer<byte>());  
 
         /// <summary>
         /// Mapping from ambiguous symbol to set of basic symbols they represent.
         /// </summary>
-        private readonly Dictionary<byte, HashSet<byte>> ambiguousSyToBasicSymbolsMap = new Dictionary<byte, HashSet<byte>>();
+        private readonly Dictionary<byte, HashSet<byte>> ambiguousSymbolToBasicSymbolsMap 
+            = new Dictionary<byte, HashSet<byte>>();
 
         #endregion Private members
 
         /// <summary>
-        /// Initializes static members of the ProteinAlphabet class
+        /// Initializes static members of the ProteinAlphabet class.
         /// Set up the static instance.
         /// </summary>
         static ProteinAlphabet()
@@ -109,37 +111,37 @@ namespace Bio
         /// </summary>
         protected ProteinAlphabet()
         {
-            this.Name = Properties.Resource.ProteinAlphabetName;
-            this.HasGaps = true;
-            this.HasAmbiguity = false;
-            this.HasTerminations = true;
-            this.IsComplementSupported = false;
+            Name = ProteinAlphabetName;
+            HasGaps = true;
+            HasAmbiguity = false;
+            HasTerminations = true;
+            IsComplementSupported = false;
 
-            this.A = (byte)'A';
-            this.C = (byte)'C';
-            this.D = (byte)'D';
-            this.E = (byte)'E';
-            this.F = (byte)'F';
-            this.G = (byte)'G';
-            this.H = (byte)'H';
-            this.I = (byte)'I';
-            this.K = (byte)'K';
-            this.L = (byte)'L';
-            this.M = (byte)'M';
-            this.N = (byte)'N';
-            this.O = (byte)'O';
-            this.P = (byte)'P';
-            this.Q = (byte)'Q';
-            this.R = (byte)'R';
-            this.S = (byte)'S';
-            this.T = (byte)'T';
-            this.U = (byte)'U';
-            this.V = (byte)'V';
-            this.W = (byte)'W';
-            this.Y = (byte)'Y';
+            A = (byte)'A';
+            C = (byte)'C';
+            D = (byte)'D';
+            E = (byte)'E';
+            F = (byte)'F';
+            G = (byte)'G';
+            H = (byte)'H';
+            I = (byte)'I';
+            K = (byte)'K';
+            L = (byte)'L';
+            M = (byte)'M';
+            N = (byte)'N';
+            O = (byte)'O';
+            P = (byte)'P';
+            Q = (byte)'Q';
+            R = (byte)'R';
+            S = (byte)'S';
+            T = (byte)'T';
+            U = (byte)'U';
+            V = (byte)'V';
+            W = (byte)'W';
+            Y = (byte)'Y';
 
-            this.Gap = (byte)'-';
-            this.Ter = (byte)'*';
+            Gap = (byte)'-';
+            Ter = (byte)'*';
 
             // Add to basic symbols
             basicSymbols.Add(A); basicSymbols.Add((byte)char.ToLower((char)A));
@@ -164,154 +166,106 @@ namespace Bio
             basicSymbols.Add(V); basicSymbols.Add((byte)char.ToLower((char)V));
             basicSymbols.Add(W); basicSymbols.Add((byte)char.ToLower((char)W));
             basicSymbols.Add(Y); basicSymbols.Add((byte)char.ToLower((char)Y));
-            basicSymbols.Add(this.Gap);
+            basicSymbols.Add(Gap);
 
-            this.AddAminoAcid(this.A, "Ala", "Alanine", (byte)'a');
-            this.AddAminoAcid(this.C, "Cys", "Cysteine", (byte)'c');
-            this.AddAminoAcid(this.D, "Asp", "Aspartic", (byte)'d');
-            this.AddAminoAcid(this.E, "Glu", "Glutamic", (byte)'e');
-            this.AddAminoAcid(this.F, "Phe", "Phenylalanine", (byte)'f');
-            this.AddAminoAcid(this.G, "Gly", "Glycine", (byte)'g');
-            this.AddAminoAcid(this.H, "His", "Histidine", (byte)'h');
-            this.AddAminoAcid(this.I, "Ile", "Isoleucine", (byte)'i');
-            this.AddAminoAcid(this.K, "Lys", "Lysine", (byte)'k');
-            this.AddAminoAcid(this.L, "Leu", "Leucine", (byte)'l');
-            this.AddAminoAcid(this.M, "Met", "Methionine", (byte)'m');
-            this.AddAminoAcid(this.N, "Asn", "Asparagine", (byte)'n');
-            this.AddAminoAcid(this.O, "Pyl", "Pyrrolysine", (byte)'o');
-            this.AddAminoAcid(this.P, "Pro", "Proline", (byte)'p');
-            this.AddAminoAcid(this.Q, "Gln", "Glutamine", (byte)'q');
-            this.AddAminoAcid(this.R, "Arg", "Arginine", (byte)'r');
-            this.AddAminoAcid(this.S, "Ser", "Serine", (byte)'s');
-            this.AddAminoAcid(this.T, "Thr", "Threoine", (byte)'t');
-            this.AddAminoAcid(this.U, "Sec", "Selenocysteine", (byte)'u');
-            this.AddAminoAcid(this.V, "Val", "Valine", (byte)'v');
-            this.AddAminoAcid(this.W, "Trp", "Tryptophan", (byte)'w');
-            this.AddAminoAcid(this.Y, "Tyr", "Tyrosine", (byte)'y');    
+            AddAminoAcid(A, "Ala", "Alanine", (byte)'a');
+            AddAminoAcid(C, "Cys", "Cysteine", (byte)'c');
+            AddAminoAcid(D, "Asp", "Aspartic Acid", (byte)'d');
+            AddAminoAcid(E, "Glu", "Glutamic Acid", (byte)'e');
+            AddAminoAcid(F, "Phe", "Phenylalanine", (byte)'f');
+            AddAminoAcid(G, "Gly", "Glycine", (byte)'g');
+            AddAminoAcid(H, "His", "Histidine", (byte)'h');
+            AddAminoAcid(I, "Ile", "Isoleucine", (byte)'i');
+            AddAminoAcid(K, "Lys", "Lysine", (byte)'k');
+            AddAminoAcid(L, "Leu", "Leucine", (byte)'l');
+            AddAminoAcid(M, "Met", "Methionine", (byte)'m');
+            AddAminoAcid(N, "Asn", "Asparagine", (byte)'n');
+            AddAminoAcid(O, "Pyl", "Pyrrolysine", (byte)'o');
+            AddAminoAcid(P, "Pro", "Proline", (byte)'p');
+            AddAminoAcid(Q, "Gln", "Glutamine", (byte)'q');
+            AddAminoAcid(R, "Arg", "Arginine", (byte)'r');
+            AddAminoAcid(S, "Ser", "Serine", (byte)'s');
+            AddAminoAcid(T, "Thr", "Threoine", (byte)'t');
+            AddAminoAcid(U, "Sec", "Selenocysteine", (byte)'u');
+            AddAminoAcid(V, "Val", "Valine", (byte)'v');
+            AddAminoAcid(W, "Trp", "Tryptophan", (byte)'w');
+            AddAminoAcid(Y, "Tyr", "Tyrosine", (byte)'y');    
 
-            this.AddAminoAcid(this.Gap, "---", "Gap");
-            this.AddAminoAcid(this.Ter, "***", "Termination");
+            AddAminoAcid(Gap, "---", "Gap");
+            AddAminoAcid(Ter, "***", "Termination");
         }
 
-        /// <summary>
-        /// Gets the Alanine Amino acid. 
-        /// </summary>
-        public byte A { get; private set; }
+        /// <inheritdoc />
+        public byte A { get; }
 
-        /// <summary>
-        /// Gets the Cysteine Amino acid.
-        /// </summary>
-        public byte C { get; private set; }
+        /// <inheritdoc />
+        public byte C { get; }
 
-        /// <summary>
-        /// Gets the Aspartic Acid.
-        /// </summary>
-        public byte D { get; private set; }
+        /// <inheritdoc />
+        public byte D { get; }
 
-        /// <summary>
-        /// Gets the Glutamic Acid.
-        /// </summary>
-        public byte E { get; private set; }
+        /// <inheritdoc />
+        public byte E { get; }
 
-        /// <summary>
-        /// Gets the Phenylalanine Amino acid. 
-        /// </summary>
-        public byte F { get; private set; }
+        /// <inheritdoc />
+        public byte F { get; }
 
-        /// <summary>
-        /// Gets the Glycine Amino acid.
-        /// </summary>
-        public byte G { get; private set; }
+        /// <inheritdoc />
+        public byte G { get; }
 
-        /// <summary>
-        /// Gets the Histidine Amino acid.
-        /// </summary>
-        public byte H { get; private set; }
+        /// <inheritdoc />
+        public byte H { get; }
 
-        /// <summary>
-        /// Gets the Isoleucine Amino acid.
-        /// </summary>
-        public byte I { get; private set; }
+        /// <inheritdoc />
+        public byte I { get; }
 
-        /// <summary>
-        /// Gets the Lysine Amino acid.
-        /// </summary>
-        public byte K { get; private set; }
+        /// <inheritdoc />
+        public byte K { get; }
 
-        /// <summary>
-        /// Gets the Leucine Amino acid.
-        /// </summary>
-        public byte L { get; private set; }
+        /// <inheritdoc />
+        public byte L { get; }
 
-        /// <summary>
-        /// Gets the Methionine Amino acid.
-        /// </summary>
-        public byte M { get; private set; }
+        /// <inheritdoc />
+        public byte M { get; }
 
-        /// <summary>
-        /// Gets the Asparagine Amino acid.
-        /// </summary>
-        public byte N { get; private set; }
+        /// <inheritdoc />
+        public byte N { get; }
 
-        /// <summary>
-        /// Gets the Pyrrolysine Amino acid.
-        /// </summary>
-        public byte O { get; private set; }
+        /// <inheritdoc />
+        public byte O { get; }
 
-        /// <summary>
-        /// Gets the Proline Amino acid.
-        /// </summary>
-        public byte P { get; private set; }
+        /// <inheritdoc />
+        public byte P { get; }
 
-        /// <summary>
-        /// Gets the Glutamine Amino acid.
-        /// </summary>
-        public byte Q { get; private set; }
+        /// <inheritdoc />
+        public byte Q { get; }
 
-        /// <summary>
-        /// Gets the Arginine Amino acid.
-        /// </summary>
-        public byte R { get; private set; }
+        /// <inheritdoc />
+        public byte R { get; }
 
-        /// <summary>
-        /// Gets the Serine Amino acid.
-        /// </summary>
-        public byte S { get; private set; }
+        /// <inheritdoc />
+        public byte S { get; }
 
-        /// <summary>
-        /// Gets the Threoine Amino acid.
-        /// </summary>
-        public byte T { get; private set; }
+        /// <inheritdoc />
+        public byte T { get; }
 
-        /// <summary>
-        /// Gets the Selenocysteine Amino acid.
-        /// </summary>
-        public byte U { get; private set; }
+        /// <inheritdoc />
+        public byte U { get; }
 
-        /// <summary>
-        /// Gets the Valine Amino acid.
-        /// </summary>
-        public byte V { get; private set; }
+        /// <inheritdoc />
+        public byte V { get; }
 
-        /// <summary>
-        /// Gets the Tryptophan Amino acid.
-        /// </summary>
-        public byte W { get; private set; }
+        /// <inheritdoc />
+        public byte W { get; }
 
-        /// <summary>
-        /// Gets the Tyrosine Amino acid.
-        /// </summary>
-        public byte Y { get; private set; }
+        /// <inheritdoc />
+        public byte Y { get; }
 
-        /// <summary>
-        /// Gets the Gap character.
-        /// </summary>
-        public byte Gap { get; private set; }
+        /// <inheritdoc />
+        public byte Gap { get; }
 
-        /// <summary>
-        /// Gets the Termination character.
-        /// </summary>
-        public byte Ter { get; private set; }
+        /// <inheritdoc />
+        public byte Ter { get; }
 
         /// <summary>
         /// Gets or sets the name of this alphabet - this is always 'Protein'.
@@ -341,34 +295,34 @@ namespace Bio
         /// </summary>
         public bool IsComplementSupported { get; protected set; }
 
+        /// <inheritdoc />
+        /// <remarks>This is not a DNA alphabet.</remarks>
+        public bool IsDna => false;
+
+        /// <inheritdoc />
+        /// <remarks>This is a protein alphabet.</remarks>
+        public bool IsProtein => true;
+
+        /// <inheritdoc />
+        /// <remarks>This is not a RNA alphabet.</remarks>
+        public bool IsRna => false;
+
         /// <summary>
-        /// Instance of this class.
+        /// Instance of the ProteinAlphabet class.
         /// </summary>
         public static readonly ProteinAlphabet Instance;
 
         /// <summary>
-        /// Gets count of nucleotides.
+        /// Gets count of amino acids in the sequence.
         /// </summary>
-        public int Count
-        {
-            get
-            {
-                return this.aminoAcids.Count;
-            }
-        }
+        public int Count => aminoAcids.Count;
 
         /// <summary>
         /// Gets the byte value of item at the given index.
         /// </summary>
         /// <param name="index">Index of the item to retrieve.</param>
         /// <returns>Byte value at the given index.</returns>
-        public byte this[int index]
-        {
-            get
-            {
-                return this.aminoAcids[index];
-            }
-        }
+        public byte this[int index] => aminoAcids[index];
 
         /// <summary>
         /// Gets the friendly name of a given symbol.
@@ -377,8 +331,7 @@ namespace Bio
         /// <returns>Friendly name of the given symbol.</returns>
         public string GetFriendlyName(byte item)
         {
-            string fName;
-            friendlyNameMap.TryGetValue(aminoAcidValueMap[item], out fName);
+            friendlyNameMap.TryGetValue(aminoAcidValueMap[item], out var fName);
             return fName;
         }
 
@@ -389,20 +342,18 @@ namespace Bio
         /// <returns>Three-letter abbreviation of the given symbol.</returns>
         public string GetThreeLetterAbbreviation(byte item)
         {
-            string threeLetterAbbreviation;
-            abbreviationMap1to3.TryGetValue(aminoAcidValueMap[item], out threeLetterAbbreviation);
+            abbreviationMap1to3.TryGetValue(aminoAcidValueMap[item], out var threeLetterAbbreviation);
             return threeLetterAbbreviation;
         }
 
         /// <summary>
         /// Gets the symbol from a three-letter abbreviation.
         /// </summary>
-        /// <param name="item">Three letter abbreviation to find symbol.</param>
+        /// <param name="item">Three-letter abbreviation to find symbol.</param>
         /// <returns>Symbol corresponding to three-letter abbreviation.</returns>
         public byte GetSymbolFromThreeLetterAbbrev(string item)
         {
-            byte symbol;
-            abbreviationMap3to1.TryGetValue(item, out symbol);
+            abbreviationMap3to1.TryGetValue(item, out var symbol);
             return symbol;
         }
 
@@ -437,7 +388,7 @@ namespace Bio
         /// <returns>Returns true if it gets the Default Gap Symbol.</returns>
         public virtual bool TryGetDefaultGapSymbol(out byte defaultGapSymbol)
         {
-            defaultGapSymbol = this.Gap;
+            defaultGapSymbol = Gap;
             return true;
         }
 
@@ -445,10 +396,10 @@ namespace Bio
         /// Gets the default Termination symbol.
         /// </summary>
         /// <param name="defaultTerminationSymbol">The default Termination symbol.</param>
-        /// <returns>Returns true if it gets the  default Termination symbol.</returns>
+        /// <returns>Returns true if it gets the default Termination symbol.</returns>
         public virtual bool TryGetDefaultTerminationSymbol(out byte defaultTerminationSymbol)
         {
-            defaultTerminationSymbol = this.Ter;
+            defaultTerminationSymbol = Ter;
             return true;
         }
 
@@ -459,8 +410,7 @@ namespace Bio
         /// <returns>Returns true if it gets the  Gap symbol.</returns>
         public virtual bool TryGetGapSymbols(out HashSet<byte> gapSymbols)
         {
-            gapSymbols = new HashSet<byte>();
-            gapSymbols.Add(this.Gap);
+            gapSymbols = new HashSet<byte> {Gap};
             return true;
         }
 
@@ -471,38 +421,36 @@ namespace Bio
         /// <returns>Returns true if it gets the Termination symbol.</returns>
         public virtual bool TryGetTerminationSymbols(out HashSet<byte> terminationSymbols)
         {
-            terminationSymbols = new HashSet<byte>();
-            terminationSymbols.Add(this.Ter);
+            terminationSymbols = new HashSet<byte> {Ter};
             return true;
         }
 
         /// <summary>
-        /// Gets the valid symbol.
+        /// Gets the set of valid symbols.
         /// </summary>
         /// <returns>Returns HashSet of valid symbols.</returns>
         public HashSet<byte> GetValidSymbols()
         {
-            return new HashSet<byte>(this.aminoAcidValueMap.Keys);
+            return new HashSet<byte>(aminoAcidValueMap.Keys);
         }
 
         /// <summary>
-        /// Gets the ambigious characters present in alphabet.
+        /// Gets the ambiguous characters present in alphabet.
         /// </summary>
         public HashSet<byte> GetAmbiguousSymbols()
         {
-            return new HashSet<byte>(this.ambiguousSyToBasicSymbolsMap.Keys);
+            return new HashSet<byte>(ambiguousSymbolToBasicSymbolsMap.Keys);
         }
 
         /// <summary>
-        /// Maps A to A  and a to A
-        /// that is key will contain unique values.
+        /// Maps A to A and a to A etc., that is key will contain unique values.<br/>
         /// This will be used in the IsValidSymbol method to address Scenarios like a == A, G == g etc.
         /// </summary>
         public byte[] GetSymbolValueMap()
         {
-            byte[] symbolMap = new byte[256];
+            var symbolMap = new byte[256];
 
-            foreach (KeyValuePair<byte, byte> mapping in this.aminoAcidValueMap)
+            foreach (var mapping in aminoAcidValueMap)
             {
                 symbolMap[mapping.Key] = mapping.Value;
             }
@@ -511,25 +459,26 @@ namespace Bio
         }
 
         /// <summary>
-        /// Gets the Ambiguous symbol.
+        /// Gets the Ambiguous symbol that corresponds to the specified set of symbols.
         /// </summary>
-        /// <param name="symbols">The symbol.</param>
+        /// <param name="symbols">The set of symbols.</param>
         /// <param name="ambiguousSymbol">The Ambiguous symbol.</param>
         /// <returns>Returns true if it gets the Ambiguous symbol.</returns>
         public bool TryGetAmbiguousSymbol(HashSet<byte> symbols, out byte ambiguousSymbol)
         {
-            return this.basicSymbolsToAmbiguousSymbolMap.TryGetValue(symbols, out ambiguousSymbol);
+            return basicSymbolsToAmbiguousSymbolMap.TryGetValue(symbols, out ambiguousSymbol);
         }
 
         /// <summary>
-        /// Gets the Basic symbol.
+        /// Gets the Basic symbol that corresponds to the specified ambiguous symbol.
         /// </summary>
         /// <param name="ambiguousSymbol">The Ambiguous symbol.</param>
         /// <param name="basicSymbols">The Basic symbol.</param>
         /// <returns>Returns true if it gets the Basic symbol.</returns>
+        // ReSharper disable once ParameterHidesMember
         public bool TryGetBasicSymbols(byte ambiguousSymbol, out HashSet<byte> basicSymbols)
         {
-            return this.ambiguousSyToBasicSymbolsMap.TryGetValue(ambiguousSymbol, out basicSymbols);
+            return ambiguousSymbolToBasicSymbolsMap.TryGetValue(ambiguousSymbol, out basicSymbols);
         }
 
         /// <summary>
@@ -540,57 +489,109 @@ namespace Bio
         /// <returns>Returns true if x equals y else false.</returns>
         public virtual bool CompareSymbols(byte x, byte y)
         {
-            byte nucleotideA, nucleotideB;
-
-            if (this.aminoAcidValueMap.TryGetValue(x, out nucleotideA))
+            if (aminoAcidValueMap.TryGetValue(x, out var aminoAcidA))
             {
-                if (this.aminoAcidValueMap.TryGetValue(y, out nucleotideB))
+                if (aminoAcidValueMap.TryGetValue(y, out var aminoAcidB))
                 {
-                    if (this.ambiguousSyToBasicSymbolsMap.ContainsKey(nucleotideA) || this.ambiguousSyToBasicSymbolsMap.ContainsKey(nucleotideB))
+                    if (ambiguousSymbolToBasicSymbolsMap.ContainsKey(aminoAcidA) || 
+                        ambiguousSymbolToBasicSymbolsMap.ContainsKey(aminoAcidB))
                     {
                         return false;
                     }
 
-                    return nucleotideA == nucleotideB;
+                    return aminoAcidA == aminoAcidB;
                 }
                 else
                 {
-                    throw new ArgumentException(Properties.Resource.InvalidParameter, "y");
+                    throw new ArgumentException(InvalidParameter, nameof(y));
                 }
             }
             else
             {
-                throw new ArgumentException(Properties.Resource.InvalidParameter, "x");
+                throw new ArgumentException(InvalidParameter, nameof(x));
             }
         }
 
         /// <summary>
-        /// Find the consensus nucleotide for a set of nucleotides.
+        /// Returns the consensus amino acid for a set of amino acids.
         /// </summary>
         /// <param name="symbols">Set of sequence items.</param>
-        /// <returns>Consensus nucleotide.</returns>
+        /// <returns>Consensus amino acid.</returns>
         public virtual byte GetConsensusSymbol(HashSet<byte> symbols)
         {
             throw new NotSupportedException();
         }
 
         /// <summary>
-        /// Validates if all symbols provided are Protein symbols or not.
+        /// 	Gets the invalid symbols in the specified sequence, in ascending order.
+        /// </summary>
+        /// <param name="sequence">The sequence to check for invalid symbols.</param>
+        /// <returns>
+        ///  	<see cref="T:byte[]"/>: the invalid symbols in the specified sequence.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">sequence</exception>
+        public byte[] GetInvalidSymbols(ISequence sequence)
+        {
+            if (sequence == null)
+            {
+                throw new ArgumentNullException(nameof(sequence));
+            }
+
+            var invalidSymbols = new SortedSet<byte>();
+            for (long i = 0; i < sequence.Count; i++)
+            {
+                if (!aminoAcidValueMap.ContainsKey(sequence[i]))
+                {
+                    invalidSymbols.Add(sequence[i]);
+                }
+            }
+
+            return invalidSymbols.ToArray();
+        }
+
+        // offset and length arguments made optional by Stephen Haines.
+        // TODO: Write a test.
+        /// <summary>
+        /// Validates if all the symbols provided are recognised symbols in this alphabet or not.
         /// </summary>
         /// <param name="symbols">Symbols to be validated.</param>
         /// <param name="offset">Offset from where validation should start.</param>
         /// <param name="length">Number of symbols to validate from the specified offset.</param>
         /// <returns>True if the validation succeeds, else false.</returns>
-        public bool ValidateSequence(byte[] symbols, long offset, long length)
+        /// <remarks>
+        /// If <paramref name="length"/> is <c>-1</c> (the default), the symbols from <paramref name="offset"/>
+        /// are validated to the end of the sequence.
+        /// </remarks>
+        public bool ValidateSequence(byte[] symbols, long offset = 0, long length = -1)
         {
             if (symbols == null)
             {
-                throw new ArgumentNullException("symbols");
+                throw new ArgumentNullException(nameof(symbols));
             }
 
-            for (long i = offset; i < length; i++)
+            if (offset < 0)
             {
-                if (!this.aminoAcidValueMap.ContainsKey(symbols[i]))
+                throw new ArgumentOutOfRangeException(nameof(offset), @"> 0");
+            }
+
+            if (length == -1)
+            {
+                length = symbols.Length;
+            }
+
+            if (length < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(length), @"> 0");
+            }
+
+            if (offset + length > symbols.Length)
+            {
+                throw new ArgumentOutOfRangeException(nameof(length), LengthPlusOffsetCannotExceedSeqLength);
+            }
+
+            for (var i = offset; i < length; i++)
+            {
+                if (!aminoAcidValueMap.ContainsKey(symbols[i]))
                 {
                     return false;
                 }
@@ -606,7 +607,7 @@ namespace Bio
         /// <returns>True if the specified item is a gap</returns>
         public virtual bool CheckIsGap(byte item)
         {
-            return item == this.Gap;
+            return item == Gap;
         }
 
         /// <summary>
@@ -620,30 +621,30 @@ namespace Bio
         }
 
         /// <summary>
-        /// Byte array of nucleotides.
+        /// Byte array of amino acids.
         /// </summary>
-        /// <returns>Returns the Enumerator for nucleotides list.</returns>
+        /// <returns>Returns the Enumerator for amino acids list.</returns>
         public IEnumerator<byte> GetEnumerator()
         {
-            return this.aminoAcids.GetEnumerator();
+            return aminoAcids.GetEnumerator();
         }
 
         /// <summary>
-        /// Converts the Protein Alphabets to string.
+        /// Converts the ProteinAlphabet to a string.
         /// </summary>
-        /// <returns>Protein alphabets.</returns>
+        /// <returns>The ProteinAlphabet as a string.</returns>
         public override string ToString()
         {
-            return new string(this.aminoAcids.Select(x => (char)x).ToArray());
+            return new string(aminoAcids.Select(x => (char)x).ToArray());
         }
 
         /// <summary>
-        /// Creates an IEnumerator of the nucleotides.
+        /// Creates an IEnumerator of the amino acids.
         /// </summary>
         /// <returns>Returns Enumerator over alphabet values.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
 
         /// <summary>
@@ -652,57 +653,59 @@ namespace Bio
         /// <param name="aminoAcidValue">Amino acid to be added.</param>
         /// <param name="threeLetterAbbreviation">Three letter abbreviation for the symbol.</param>
         /// <param name="friendlyName">User friendly name of the symbol.</param>
-        /// <param name="otherPossibleValues">Maps Capital and small Letters.</param>
-        protected void AddAminoAcid(byte aminoAcidValue, string threeLetterAbbreviation, string friendlyName, params byte[] otherPossibleValues)
+        /// <param name="otherPossibleValues">Maps capitals and small Letters.</param>
+        protected void AddAminoAcid(byte aminoAcidValue, string threeLetterAbbreviation, 
+            string friendlyName, params byte[] otherPossibleValues)
         {
             // Verify whether the aminoAcidValue or other possible values already exist or not.
-            if (this.aminoAcidValueMap.ContainsKey(aminoAcidValue) || otherPossibleValues.Any(x => this.aminoAcidValueMap.Keys.Contains(x)))
+            if (aminoAcidValueMap.ContainsKey(aminoAcidValue) || 
+                otherPossibleValues.Any(x => aminoAcidValueMap.Keys.Contains(x)))
             {
-                throw new ArgumentException(Properties.Resource.SymbolExistsInAlphabet, "aminoAcidValue");
+                throw new ArgumentException(SymbolExistsInAlphabet, nameof(aminoAcidValue));
             }
             if (string.IsNullOrEmpty(friendlyName))
             {
-                throw new ArgumentNullException("friendlyName");
+                throw new ArgumentNullException(nameof(friendlyName));
             }
 
-            this.aminoAcidValueMap.Add(aminoAcidValue, aminoAcidValue);
-            foreach (byte value in otherPossibleValues)
+            aminoAcidValueMap.Add(aminoAcidValue, aminoAcidValue);
+            foreach (var value in otherPossibleValues)
             {
-                this.aminoAcidValueMap.Add(value, aminoAcidValue);
+                aminoAcidValueMap.Add(value, aminoAcidValue);
             }
 
-            this.aminoAcids.Add(aminoAcidValue);
-            this.abbreviationMap1to3.Add(aminoAcidValue, threeLetterAbbreviation);
-            this.abbreviationMap3to1.Add(threeLetterAbbreviation, aminoAcidValue);
-            this.friendlyNameMap.Add(aminoAcidValue, friendlyName);
+            aminoAcids.Add(aminoAcidValue);
+            abbreviationMap1to3.Add(aminoAcidValue, threeLetterAbbreviation);
+            abbreviationMap3to1.Add(threeLetterAbbreviation, aminoAcidValue);
+            friendlyNameMap.Add(aminoAcidValue, friendlyName);
         }
 
         /// <summary>
         /// Maps the ambiguous amino acids to the amino acids it represents. 
-        /// For example ambiguous amino acids M represents the basic nucleotides A or C.
+        /// For example ambiguous amino acids M represents the basic amino acids A or C.
         /// </summary>
         /// <param name="ambiguousAminoAcid">Ambiguous amino acids.</param>
         /// <param name="aminoAcidsToMap">Nucleotide represented by ambiguous amino acids.</param>
         protected void MapAmbiguousAminoAcid(byte ambiguousAminoAcid, params byte[] aminoAcidsToMap)
         {
-            byte ambiguousSymbol;
-
-            // Verify whether the nucleotides to map are valid nucleotides.
-            if (!this.aminoAcidValueMap.TryGetValue(ambiguousAminoAcid, out ambiguousSymbol) || !aminoAcidsToMap.All(x => this.aminoAcidValueMap.Keys.Contains(x)))
+            // Verify whether the amino acids to map are valid amino acids.
+            if (!aminoAcidValueMap.TryGetValue(ambiguousAminoAcid, out var ambiguousSymbol) ||
+                !aminoAcidsToMap.All(x => aminoAcidValueMap.Keys.Contains(x)))
             {
-                throw new ArgumentException(Properties.Resource.CouldNotRecognizeSymbol, "ambiguousAminoAcid");
+                throw new ArgumentException(CouldNotRecognizeSymbol, nameof(ambiguousAminoAcid));
             }
 
-            byte[] mappingValues = new byte[aminoAcidsToMap.Length];
-            int i = 0;
-            foreach (byte valueToMap in aminoAcidsToMap)
+            var mappingValues = new byte[aminoAcidsToMap.Length];
+            var i = 0;
+            foreach (var valueToMap in aminoAcidsToMap)
             {
-                mappingValues[i++] = this.aminoAcidValueMap[valueToMap];
+                mappingValues[i++] = aminoAcidValueMap[valueToMap];
             }
 
-            HashSet<byte> basicSymbols = new HashSet<byte>(mappingValues);
-            this.ambiguousSyToBasicSymbolsMap.Add(ambiguousSymbol, basicSymbols);
-            this.basicSymbolsToAmbiguousSymbolMap.Add(basicSymbols, ambiguousSymbol);
+            // ReSharper disable once LocalVariableHidesMember
+            var basicSymbols = new HashSet<byte>(mappingValues);
+            ambiguousSymbolToBasicSymbolsMap.Add(ambiguousSymbol, basicSymbols);
+            basicSymbolsToAmbiguousSymbolMap.Add(basicSymbols, ambiguousSymbol);
         }
     }
 }

@@ -3,6 +3,7 @@
     /// <summary>
     /// Sequence with qualitative data
     /// </summary>
+    /// <seealso cref="ISequence" />
     public interface IQualitativeSequence : ISequence
     {
         /// <summary>

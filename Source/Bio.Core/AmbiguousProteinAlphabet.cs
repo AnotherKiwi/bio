@@ -8,14 +8,22 @@ using Bio.Properties;
 namespace Bio
 {
     /// <summary>
-    /// Ambiguous characters in the Protein.
+    /// Adds symbols for ambiguous amino acid to those in the <see cref="ProteinAlphabet"/>.<br/>
+    /// Specifically:
+    /// B - Asp or Asn,
+    /// J - Leu or Ile,
+    /// X - any amino acid,
+    /// Z - Glu or Gln.
     /// </summary>
-    public class AmbiguousProteinAlphabet : ProteinAlphabet
+    /// <seealso cref="ProteinAlphabet"/>,
+    /// <seealso cref="IAmbiguousProteinAlphabet"/>,
+    /// <seealso cref="IAlphabet"/>
+    public class AmbiguousProteinAlphabet : ProteinAlphabet, IAmbiguousProteinAlphabet
     {
         /// <summary>
-        /// New instance of Ambiguous character.
+        /// Instance of the AmbiguousProteinAlphabet class.
         /// </summary>
-        public static readonly new AmbiguousProteinAlphabet Instance;
+        public new static readonly AmbiguousProteinAlphabet Instance;
 
         /// <summary>
         /// Initializes static members of the AmbiguousProteinAlphabet class.
@@ -33,53 +41,41 @@ namespace Bio
             Name = Resource.AmbiguousProteinAlphabetName;
             HasAmbiguity = true;
 
-            this.X = (byte)'X';
-            this.Z = (byte)'Z';
-            this.B = (byte)'B';
-            this.J = (byte)'J';
+            X = (byte)'X';
+            Z = (byte)'Z';
+            B = (byte)'B';
+            J = (byte)'J';
 
-            AddAminoAcid(this.X, "Xaa", "Undetermined or atypical", (byte)'x');
-            AddAminoAcid(this.Z, "Glx", "Glutamic or Glutamine", (byte)'z');
-            AddAminoAcid(this.B, "Asx", "Aspartic or Asparagine", (byte)'b');
-            AddAminoAcid(this.J, "Xle", "Leucine or Isoleucine", (byte)'j');
+            AddAminoAcid(X, "Xaa", "Undetermined or atypical", (byte)'x');
+            AddAminoAcid(Z, "Glx", "Glutamic Acid or Glutamine", (byte)'z');
+            AddAminoAcid(B, "Asx", "Aspartic Acid or Asparagine", (byte)'b');
+            AddAminoAcid(J, "Xle", "Leucine or Isoleucine", (byte)'j');
 
             // Map ambiguous symbols.
-            MapAmbiguousAminoAcid(this.B, new byte[] { D, N });
-            MapAmbiguousAminoAcid(this.Z, new byte[] { Q, E });
-            MapAmbiguousAminoAcid(this.J, new byte[] { L, I });
-            MapAmbiguousAminoAcid(this.X, new byte[] { A, C, D, E, F, G, H, I, K, L, M, N, O, P, Q, R, S, T, U, V, W, Y });
+            MapAmbiguousAminoAcid(B, new byte[] { D, N });
+            MapAmbiguousAminoAcid(Z, new byte[] { Q, E });
+            MapAmbiguousAminoAcid(J, new byte[] { L, I });
+            MapAmbiguousAminoAcid(X, new byte[] { A, C, D, E, F, G, H, I, K, L, M, N, O, P, Q, R, S, T, U, V, W, Y });
         }
 
-        /// <summary>
-        /// Gets X - Xxx - Undetermined or atypical.
-        /// </summary>
-        public byte X { get; private set; }
-        
-        /// <summary>
-        /// Gets Z - Glx - Glutamic Acid or Glutamine.
-        /// </summary>
-        public byte Z { get; private set; }
+        /// <inheritdoc />
+        public byte B { get; }
 
-        /// <summary>
-        /// Gets the Aspartic Acid or Asparagine.
-        /// </summary>
-        public byte B { get; private set; }
+        /// <inheritdoc />
+        public byte J { get; }
 
-        /// <summary>
-        /// Gets the Leucine or Isoleucine.
-        /// </summary>
-        public byte J { get; private set; }
+        /// <inheritdoc />
+        public byte X { get; }
 
-        /// <summary>
-        /// Find the consensus nucleotide for a set of nucleotides.
-        /// </summary>
-        /// <param name="symbols">Set of sequence items.</param>
-        /// <returns>Consensus nucleotide.</returns>
+        /// <inheritdoc />
+        public byte Z { get; }
+
+        /// <inheritdoc />
         public override byte GetConsensusSymbol(HashSet<byte> symbols)
         {
             if (symbols == null)
             {
-                throw new ArgumentNullException("symbols");
+                throw new ArgumentNullException(nameof(symbols));
             }
 
             if (symbols.Count == 0)
@@ -88,10 +84,10 @@ namespace Bio
             }
 
             // Validate that all are valid protein symbols
-            HashSet<byte> validValues = GetValidSymbols();
-            HashSet<byte> symbolsInUpperCase = new HashSet<byte>();
+            var validValues = GetValidSymbols();
+            var symbolsInUpperCase = new HashSet<byte>();
 
-            foreach (byte symbol in symbols)
+            foreach (var symbol in symbols)
             {
                 if (!validValues.Contains(symbol))
                 {
@@ -99,7 +95,7 @@ namespace Bio
                         CultureInfo.CurrentCulture, Resource.INVALID_SYMBOL, symbol, Name));
                 }
 
-                byte upperCaseSymbol = symbol;
+                var upperCaseSymbol = symbol;
                 if (symbol >= 97 && symbol <= 122)
                 {
                     upperCaseSymbol = (byte)(symbol - 32);
@@ -108,56 +104,43 @@ namespace Bio
                 symbolsInUpperCase.Add(upperCaseSymbol);
             }
 
-            if (symbols.Contains(this.X))
+            if (symbols.Contains(X))
             {
-                return this.X;
+                return X;
             }
 
             // Remove all gap symbols
-            HashSet<byte> gapItems = null;
-            this.TryGetGapSymbols(out gapItems);
+            TryGetGapSymbols(out var gapItems);
 
-            byte defaultGap = 0;
-            this.TryGetDefaultGapSymbol(out defaultGap);
+            TryGetDefaultGapSymbol(out var defaultGap);
 
             symbolsInUpperCase.ExceptWith(gapItems);
 
-            if (symbolsInUpperCase.Count == 0)
+            switch (symbolsInUpperCase.Count)
             {
-                // All are gap characters, return default 'Gap'
-                return defaultGap;
-            }
-            else if (symbolsInUpperCase.Count == 1)
-            {
-                return symbols.First();
-            }
-            else
-            {
-                HashSet<byte> baseSet = new HashSet<byte>();
-                HashSet<byte> ambiguousSymbols;
+                case 0:
+                    // All are gap characters, return default 'Gap'
+                    return defaultGap;
+                case 1:
+                    return symbols.First();
+                default:
+                {
+                    var baseSet = new HashSet<byte>();
 
-                foreach (byte n in symbolsInUpperCase)
-                {
-                    ambiguousSymbols = null;
-                    if (TryGetBasicSymbols(n, out ambiguousSymbols))
+                    foreach (var n in symbolsInUpperCase)
                     {
-                        baseSet.UnionWith(ambiguousSymbols);
+                        if (TryGetBasicSymbols(n, out var ambiguousSymbols))
+                        {
+                            baseSet.UnionWith(ambiguousSymbols);
+                        }
+                        else
+                        {
+                            // If not found in ambiguous map, it has to be base / unambiguous character
+                            baseSet.Add(n);
+                        }
                     }
-                    else
-                    {
-                        // If not found in ambiguous map, it has to be base / unambiguous character
-                        baseSet.Add(n);
-                    }
-                }
 
-                byte returnValue;
-                if (TryGetAmbiguousSymbol(baseSet, out returnValue))
-                {
-                    return returnValue;
-                }
-                else
-                {
-                    return this.X;
+                    return TryGetAmbiguousSymbol(baseSet, out var returnValue) ? returnValue : X;
                 }
             }
         }

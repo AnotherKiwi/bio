@@ -272,6 +272,14 @@ namespace Bio.IO.PacBio
             }
         }
 
+        // GetData() method added by Stephen Haines
+        /// <inheritdoc />
+        public byte[] GetData(long startIndex = 0, long length = -1)
+        {
+            return null;
+        }
+
+
         public byte GetEncodedQualityScore (long index)
         {
             return Sequence.GetEncodedQualityScore (index);

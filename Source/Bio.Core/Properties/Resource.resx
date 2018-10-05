@@ -1376,6 +1376,12 @@ file specification, and converts the data to in-memory PhylogeneticTree object.<
   <data name="StartCannotBeLessThanZero" xml:space="preserve">
     <value>Start cannot be less than zero</value>
   </data>
+  <data name="LengthPlusStartCannotExceedCount" xml:space="preserve">
+    <value>Length + Start cannot exceed the length of the sequence</value>
+  </data>
+  <data name="LengthPlusOffsetCannotExceedSeqLength" xml:space="preserve">
+    <value>Length + Offset cannot exceed the length of the sequence</value>
+  </data>
   <data name="DeltaCollectionFileCorrupted" xml:space="preserve">
     <value>Corrupted collection file.</value>
   </data>
@@ -1563,5 +1569,9 @@ provided. There is also a default encoding for each alphabet that may be encount
   </data>
   <data name="BlastXmlParserName" xml:space="preserve">
     <value>BLAST XML Parser</value>
+  </data>
+  <data name="UnsupportedAlphabetType" xml:space="preserve">
+    <value>An alphabet that is not a supported type (DNA, RNA or protein) encountered </value>
+    <comment>An alphabet in the addins folder is not marked as one of the supported types</comment>
   </data>
 </root>

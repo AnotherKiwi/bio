@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Bio.Algorithms.MUMmer;
-using Bio.Properties;
 using Bio.Registration;
+using static System.String;
+using static Bio.Properties.Resource;
 
 namespace Bio
 {
@@ -54,7 +55,7 @@ namespace Bio
         public static readonly Dictionary<IAlphabet, IAlphabet> AmbiguousAlphabetMap;
 
         /// <summary>
-        /// List of all supported Alphabets.
+        /// List of all supported alphabets.
         /// </summary>
         private static readonly List<IAlphabet> KnownAlphabets = new List<IAlphabet> 
         {
@@ -64,6 +65,33 @@ namespace Bio
             AmbiguousRNA,
             Protein,
             AmbiguousProtein
+        };
+
+        /// <summary>
+        /// List of all supported DNA alphabets.
+        /// </summary>
+        private static readonly List<IAlphabet> KnownDnaAlphabets = new List<IAlphabet>
+        {
+            DNA,
+            AmbiguousDNA,
+        };
+
+        /// <summary>
+        /// List of all supported protein alphabets.
+        /// </summary>
+        private static readonly List<IAlphabet> KnownProteinAlphabets = new List<IAlphabet>
+        {
+            Protein,
+            AmbiguousProtein
+        };
+
+        /// <summary>
+        /// List of all supported RNA alphabets.
+        /// </summary>
+        private static readonly List<IAlphabet> KnownRnaAlphabets = new List<IAlphabet>
+        {
+            RNA,
+            AmbiguousRNA,
         };
 
         /// <summary>
@@ -90,9 +118,18 @@ namespace Bio
             if (null != registeredAlphabets)
             {
                 foreach (IAlphabet alphabet in registeredAlphabets.Where(
-                    alphabet => alphabet != null && KnownAlphabets.All(ra => String.Compare(ra.Name, alphabet.Name, StringComparison.OrdinalIgnoreCase) != 0)))
+                    alphabet => alphabet != null && 
+                                KnownAlphabets.All(ra => Compare(ra.Name, alphabet.Name, StringComparison.OrdinalIgnoreCase) != 0)))
                 {
                     KnownAlphabets.Add(alphabet);
+                    if (alphabet.IsDna)
+                        KnownDnaAlphabets.Add(alphabet);
+                    else if (alphabet.IsProtein)
+                        KnownProteinAlphabets.Add(alphabet);
+                    else if (alphabet.IsRna)
+                        KnownRnaAlphabets.Add(alphabet);
+                    else
+                        throw new NotSupportedException(UnsupportedAlphabetType);
                 }
             }
 
@@ -119,6 +156,30 @@ namespace Bio
         public static IReadOnlyList<IAlphabet> All
         {
             get { return KnownAlphabets; }
+        }
+
+        /// <summary>
+        ///  Gets the list of all DNA Alphabets which are supported by the framework.
+        /// </summary>
+        public static IReadOnlyList<IAlphabet> AllDna
+        {
+            get { return KnownDnaAlphabets; }
+        }
+
+        /// <summary>
+        ///  Gets the list of all DNA Alphabets which are supported by the framework.
+        /// </summary>
+        public static IReadOnlyList<IAlphabet> AllProtein
+        {
+            get { return KnownProteinAlphabets; }
+        }
+
+        /// <summary>
+        ///  Gets the list of all DNA Alphabets which are supported by the framework.
+        /// </summary>
+        public static IReadOnlyList<IAlphabet> AllRna
+        {
+            get { return KnownRnaAlphabets; }
         }
 
         /// <summary>
@@ -184,7 +245,7 @@ namespace Bio
                 // Increment priority index and validate boundary condition
                 if (++currentPriorityIndex == AlphabetPriorityList.Count)
                 {
-                    throw new ArgumentException(Resource.CouldNotRecognizeAlphabet, "identifiedAlphabetType");
+                    throw new ArgumentException(CouldNotRecognizeAlphabet, "identifiedAlphabetType");
                 }
             }
 

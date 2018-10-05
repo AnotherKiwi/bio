@@ -59,8 +59,8 @@ namespace Bio.Tests.Framework
             // Protein
             Assert.AreEqual(ProteinAlphabet.Instance.GetFriendlyName(ProteinAlphabet.Instance.A), "Alanine");
             Assert.AreEqual(ProteinAlphabet.Instance.GetFriendlyName(ProteinAlphabet.Instance.C), "Cysteine");
-            Assert.AreEqual(ProteinAlphabet.Instance.GetFriendlyName(ProteinAlphabet.Instance.D), "Aspartic");
-            Assert.AreEqual(ProteinAlphabet.Instance.GetFriendlyName(ProteinAlphabet.Instance.E), "Glutamic");
+            Assert.AreEqual(ProteinAlphabet.Instance.GetFriendlyName(ProteinAlphabet.Instance.D), "Aspartic Acid");
+            Assert.AreEqual(ProteinAlphabet.Instance.GetFriendlyName(ProteinAlphabet.Instance.E), "Glutamic Acid");
             Assert.AreEqual(ProteinAlphabet.Instance.GetFriendlyName(ProteinAlphabet.Instance.F), "Phenylalanine");
             Assert.AreEqual(ProteinAlphabet.Instance.GetFriendlyName(ProteinAlphabet.Instance.G), "Glycine");
             Assert.AreEqual(ProteinAlphabet.Instance.GetFriendlyName(ProteinAlphabet.Instance.H), "Histidine");
@@ -83,8 +83,8 @@ namespace Bio.Tests.Framework
             Assert.AreEqual(ProteinAlphabet.Instance.GetFriendlyName(ProteinAlphabet.Instance.Ter), "Termination");
 
             Assert.AreEqual(AmbiguousProteinAlphabet.Instance.GetFriendlyName(AmbiguousProteinAlphabet.Instance.X), "Undetermined or atypical");
-            Assert.AreEqual(AmbiguousProteinAlphabet.Instance.GetFriendlyName(AmbiguousProteinAlphabet.Instance.Z), "Glutamic or Glutamine");
-            Assert.AreEqual(AmbiguousProteinAlphabet.Instance.GetFriendlyName(AmbiguousProteinAlphabet.Instance.B), "Aspartic or Asparagine");
+            Assert.AreEqual(AmbiguousProteinAlphabet.Instance.GetFriendlyName(AmbiguousProteinAlphabet.Instance.Z), "Glutamic Acid or Glutamine");
+            Assert.AreEqual(AmbiguousProteinAlphabet.Instance.GetFriendlyName(AmbiguousProteinAlphabet.Instance.B), "Aspartic Acid or Asparagine");
             Assert.AreEqual(AmbiguousProteinAlphabet.Instance.GetFriendlyName(AmbiguousProteinAlphabet.Instance.J), "Leucine or Isoleucine");
         }
     }

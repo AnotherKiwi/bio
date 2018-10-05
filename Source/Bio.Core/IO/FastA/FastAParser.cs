@@ -21,6 +21,28 @@ namespace Bio.IO.FastA
         private IAlphabet baseAlphabet;
 
         /// <summary>
+        /// 	Initializes a new instance of the <see cref="FastAParser"/> class with
+        ///     the alphabet to use for parsing input sequences.
+        /// </summary>
+        /// <param name="alphabet">The alphabet.</param>
+        /// <remarks>
+        ///     If <param name="alphabet"/> is <c>null</c>, the alphabet is auto-detected.
+        /// </remarks>
+        public FastAParser(IAlphabet alphabet)
+        {
+            Alphabet = alphabet;
+        }
+
+        /// <summary>
+        /// 	Initializes a new instance of the <see cref="FastAParser"/> class.
+        /// </summary>
+        /// <remarks>
+        ///     The alphabet to use for parsing input sequences is auto-detected.
+        /// </remarks>
+        public FastAParser()
+        { }
+
+        /// <summary>
         /// Gets the type of parser.
         /// This is intended to give developers name of the parser.
         /// </summary>

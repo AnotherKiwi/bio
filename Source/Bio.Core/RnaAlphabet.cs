@@ -184,6 +184,18 @@ namespace Bio
         /// </summary>
         public bool IsComplementSupported { get; protected set; }
 
+        /// <inheritdoc />
+        /// <remarks>This is not a DNA alphabet.</remarks>
+        public bool IsDna => false;
+
+        /// <inheritdoc />
+        /// <remarks>This is not a protein alphabet.</remarks>
+        public bool IsProtein => false;
+
+        /// <inheritdoc />
+        /// <remarks>This is a RNA alphabet.</remarks>
+        public bool IsRna => true;
+
         /// <summary>
         /// Static instance of this class.
         /// </summary>

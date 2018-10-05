@@ -535,6 +535,19 @@ namespace Bio
         #endregion
 
         #region Methods
+        // GetData() method added by Stephen Haines.
+        // Can probably be made more efficient.
+        /// <inheritdoc />
+        public byte[] GetData(long startIndex = 0, long length = -1)
+        {
+            var seq = new Sequence(Alphabet, sequenceData);
+            return seq.GetData(startIndex, length);
+        }
+
+
+        private new void CopyTo(byte[] byteArray, long start, long count)
+        { }
+
         /// <summary>
         /// Converts Quality score from to specified format.
         /// </summary>

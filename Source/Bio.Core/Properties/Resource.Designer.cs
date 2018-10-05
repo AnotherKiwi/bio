@@ -2409,6 +2409,24 @@ namespace Bio.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Length + Offset cannot exceed the length of the sequence.
+        /// </summary>
+        internal static string LengthPlusOffsetCannotExceedSeqLength {
+            get {
+                return ResourceManager.GetString("LengthPlusOffsetCannotExceedSeqLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Length + Start cannot exceed the length of the sequence.
+        /// </summary>
+        internal static string LengthPlusStartCannotExceedCount {
+            get {
+                return ResourceManager.GetString("LengthPlusStartCannotExceedCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clone Library &apos;{0}&apos; doesn&apos;t exist.
         /// </summary>
         internal static string LibraryExist {
@@ -4113,6 +4131,15 @@ namespace Bio.Properties {
         internal static string UnknownOption {
             get {
                 return ResourceManager.GetString("UnknownOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An alphabet that is not a supported type (DNA, RNA or protein) encountered .
+        /// </summary>
+        internal static string UnsupportedAlphabetType {
+            get {
+                return ResourceManager.GetString("UnsupportedAlphabetType", resourceCulture);
             }
         }
         
