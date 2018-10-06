@@ -80,8 +80,8 @@ namespace Bio.IO.FastA
         /// </summary>
         public FastAFormatter()
         {
-            this.MaxSymbolsAllowedPerLine = DefaultMaxSymbolsAllowedPerLine;
-            this.AutoFlush = true;
+            MaxSymbolsAllowedPerLine = DefaultMaxSymbolsAllowedPerLine;
+            AutoFlush = true;
         }
 
         /// <summary>
@@ -96,17 +96,17 @@ namespace Bio.IO.FastA
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
 
             if (sequences == null)
             {
-                throw new ArgumentNullException("sequences");
+                throw new ArgumentNullException(nameof(sequences));
             }
 
             using (var writer = stream.OpenWrite())
             {
-                foreach (ISequence sequence in sequences)
+                foreach (var sequence in sequences)
                 {
                     Write(writer, sequence);
                 }
@@ -125,11 +125,11 @@ namespace Bio.IO.FastA
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
             if (data == null)
             {
-                throw new ArgumentNullException("data");
+                throw new ArgumentNullException(nameof(data));
             }
 
             using (var writer = stream.OpenWrite())
@@ -150,24 +150,24 @@ namespace Bio.IO.FastA
         {
             if (writer == null)
             {
-                throw new ArgumentNullException("writer");
+                throw new ArgumentNullException(nameof(writer));
             }
 
             if (data == null)
             {
-                throw new ArgumentNullException("data");
+                throw new ArgumentNullException(nameof(data));
             }
 
-            int maxLineSize = this.MaxSymbolsAllowedPerLine;
-            if (this.buffer == null)
+            var maxLineSize = MaxSymbolsAllowedPerLine;
+            if (buffer == null)
             {
-                this.buffer = new byte[maxLineSize];
+                buffer = new byte[maxLineSize];
             }
 
             // Buffer resize is required as MaxSymbolsAllowedPerLine can be modified 
-            if (this.buffer.Length < maxLineSize)
+            if (buffer.Length < maxLineSize)
             {
-                Array.Resize(ref this.buffer, maxLineSize);
+                Array.Resize(ref buffer, maxLineSize);
             }
 
             writer.WriteLine(">" + data.ID);
@@ -177,14 +177,14 @@ namespace Bio.IO.FastA
                 int bufferIndex;
                 for (bufferIndex = 0; bufferIndex < maxLineSize && index + bufferIndex < data.Count; bufferIndex++)
                 {
-                    this.buffer[bufferIndex] = data[index + bufferIndex];
+                    buffer[bufferIndex] = data[index + bufferIndex];
                 }
 
-                string line = Encoding.UTF8.GetString(this.buffer, 0, bufferIndex);
+                var line = Encoding.UTF8.GetString(buffer, 0, bufferIndex);
                 writer.WriteLine(line);
             }
 
-            if (this.AutoFlush)
+            if (AutoFlush)
             {
                 writer.Flush();
             }

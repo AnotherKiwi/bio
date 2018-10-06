@@ -31,8 +31,8 @@ namespace Bio.IO.AppliedBiosystems.DataParsers
         /// <param name="item"></param>
         public void Visit(ByteDataItem item)
         {
-            if (item == null) throw new ArgumentNullException("item");
-            byte[] value = GetItemValue(item);
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            var value = GetItemValue(item);
             item.Value = value;
             Context.DataItems.Add(item);
         }
@@ -43,8 +43,8 @@ namespace Bio.IO.AppliedBiosystems.DataParsers
         /// <param name="item"></param>
         public void Visit(CharDataItem item)
         {
-            if (item == null) throw new ArgumentNullException("item");
-            byte[] value = GetItemValue(item);
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            var value = GetItemValue(item);
             item.Value = (from b in value select (char)b).ToArray();
             Context.DataItems.Add(item);
         }
@@ -55,8 +55,8 @@ namespace Bio.IO.AppliedBiosystems.DataParsers
         /// <param name="item"></param>
         public void Visit(WordDataItem item)
         {
-            if (item == null) throw new ArgumentNullException("item");
-            byte[] values = GetItemValue(item);
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            var values = GetItemValue(item);
             item.Value =
                 ParserHelper.ConvertSegmentsToArray(
                     ParserHelper.SegmentArray(values, 2, true),
@@ -70,8 +70,8 @@ namespace Bio.IO.AppliedBiosystems.DataParsers
         /// <param name="item"></param>
         public void Visit(ShortDataItem item)
         {
-            if (item == null) throw new ArgumentNullException("item");
-            byte[] values = GetItemValue(item);
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            var values = GetItemValue(item);
             item.Value =
                 ParserHelper.ConvertSegmentsToArray(
                     ParserHelper.SegmentArray(values, 2, true),
@@ -85,8 +85,8 @@ namespace Bio.IO.AppliedBiosystems.DataParsers
         /// <param name="item"></param>
         public void Visit(LongDataItem item)
         {
-            if (item == null) throw new ArgumentNullException("item");
-            byte[] values = GetItemValue(item);
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            var values = GetItemValue(item);
             item.Value =
                 ParserHelper.ConvertSegmentsToArray(
                     ParserHelper.SegmentArray(values, 4, true),
@@ -100,8 +100,8 @@ namespace Bio.IO.AppliedBiosystems.DataParsers
         /// <param name="item"></param>
         public void Visit(FloatDataItem item)
         {
-            if (item == null) throw new ArgumentNullException("item");
-            byte[] values = GetItemValue(item);
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            var values = GetItemValue(item);
             item.Value =
                 ParserHelper.ConvertSegmentsToArray(
                     ParserHelper.SegmentArray(values, 4, true),
@@ -115,8 +115,8 @@ namespace Bio.IO.AppliedBiosystems.DataParsers
         /// <param name="item"></param>
         public void Visit(DoubleDataItem item)
         {
-            if (item == null) throw new ArgumentNullException("item");
-            byte[] values = GetItemValue(item);
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            var values = GetItemValue(item);
             item.Value =
                 ParserHelper.ConvertSegmentsToArray(
                     ParserHelper.SegmentArray(values, 8, true),
@@ -130,11 +130,11 @@ namespace Bio.IO.AppliedBiosystems.DataParsers
         /// <param name="item"></param>
         public void Visit(DateDataItem item)
         {
-            if (item == null) throw new ArgumentNullException("item");
-            byte[] values = GetItemValue(item);
-            Int16 year = BitConverter.ToInt16(new[] {values[1], values[0]}, 0);
-            Int16 month = BitConverter.ToInt16(new byte[] {values[2], 0}, 0);
-            Int16 day = BitConverter.ToInt16(new byte[] {values[3], 0}, 0);
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            var values = GetItemValue(item);
+            var year = BitConverter.ToInt16(new[] {values[1], values[0]}, 0);
+            var month = BitConverter.ToInt16(new byte[] {values[2], 0}, 0);
+            var day = BitConverter.ToInt16(new byte[] {values[3], 0}, 0);
 
             item.Value = new DateTime(year, month, day);
             Context.DataItems.Add(item);
@@ -146,12 +146,12 @@ namespace Bio.IO.AppliedBiosystems.DataParsers
         /// <param name="item"></param>
         public void Visit(TimeDataItem item)
         {
-            if (item == null) throw new ArgumentNullException("item");
-            byte[] values = GetItemValue(item);
-            Int16 hour = BitConverter.ToInt16(new byte[] {values[0], 0}, 0);
-            Int16 minute = BitConverter.ToInt16(new byte[] {values[1], 0}, 0);
-            Int16 second = BitConverter.ToInt16(new byte[] {values[2], 0}, 0);
-            Int16 hsecond = BitConverter.ToInt16(new byte[] {values[3], 0}, 0);
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            var values = GetItemValue(item);
+            var hour = BitConverter.ToInt16(new byte[] {values[0], 0}, 0);
+            var minute = BitConverter.ToInt16(new byte[] {values[1], 0}, 0);
+            var second = BitConverter.ToInt16(new byte[] {values[2], 0}, 0);
+            var hsecond = BitConverter.ToInt16(new byte[] {values[3], 0}, 0);
 
             item.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, hour, minute, second,
                                       hsecond * 10);
@@ -164,15 +164,15 @@ namespace Bio.IO.AppliedBiosystems.DataParsers
         /// <param name="item"></param>
         public void Visit(PStringDataItem item)
         {
-            if (item == null) throw new ArgumentNullException("item");
+            if (item == null) throw new ArgumentNullException(nameof(item));
             // 
             // First byte indicates the size of the string.
             //
 
-            byte[] values = GetItemValue(item).Skip(1).ToArray();
+            var values = GetItemValue(item).Skip(1).ToArray();
 
             var chars = new char[values.Length];
-            for (int i = 0; i < chars.Length; i++)
+            for (var i = 0; i < chars.Length; i++)
             {
                 chars[i] = (char)values[i];
             }
@@ -186,7 +186,7 @@ namespace Bio.IO.AppliedBiosystems.DataParsers
         /// <param name="item"></param>
         public void Visit(ThumbDataItem item)
         {
-            if (item == null) throw new ArgumentNullException("item");
+            if (item == null) throw new ArgumentNullException(nameof(item));
             // Ignore for now
         }
 
@@ -196,8 +196,8 @@ namespace Bio.IO.AppliedBiosystems.DataParsers
         /// <param name="item"></param>
         public void Visit(BoolDataItem item)
         {
-            if (item == null) throw new ArgumentNullException("item");
-            byte[] values = GetItemValue(item);
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            var values = GetItemValue(item);
             item.Value = BitConverter.ToBoolean(values, 0);
             Context.DataItems.Add(item);
         }
@@ -208,7 +208,7 @@ namespace Bio.IO.AppliedBiosystems.DataParsers
         /// <param name="item"></param>
         public void Visit(UserDataItem item)
         {
-            if (item == null) throw new ArgumentNullException("item");
+            if (item == null) throw new ArgumentNullException(nameof(item));
             // Ignore for now.
         }
 
@@ -218,16 +218,16 @@ namespace Bio.IO.AppliedBiosystems.DataParsers
         /// <param name="item"></param>
         public void Visit(CStringDataItem item)
         {
-            if (item == null) throw new ArgumentNullException("item");
+            if (item == null) throw new ArgumentNullException(nameof(item));
             // 
             // Last byte is a null character.
             //
 
-            byte[] values = GetItemValue(item);
+            var values = GetItemValue(item);
             values = values.Take(values.Length - 1).ToArray();
 
             var chars = new char[values.Length];
-            for (int i = 0; i < chars.Length; i++)
+            for (var i = 0; i < chars.Length; i++)
             {
                 chars[i] = (char)values[i];
             }
@@ -245,7 +245,7 @@ namespace Bio.IO.AppliedBiosystems.DataParsers
         /// <param name="context"></param>
         public void ParseData(IParserContext context)
         {
-            if (context == null) throw new ArgumentNullException("context");
+            if (context == null) throw new ArgumentNullException(nameof(context));
             if (context.Header.MajorVersion != MajorVersion)
                 throw new InvalidFileVersionException(MajorVersion, context.Header.MajorVersion);
 
@@ -254,7 +254,7 @@ namespace Bio.IO.AppliedBiosystems.DataParsers
             Context.Header.DirectoryEntries.ForEach(
                 entry =>
                     {
-                        IAb1DataItem item = DataItemFactory.TryCreateDataItem(entry);
+                        var item = DataItemFactory.TryCreateDataItem(entry);
                         if (item == null) return;
                         item.Accept(this);
                     });
@@ -270,13 +270,13 @@ namespace Bio.IO.AppliedBiosystems.DataParsers
         /// <returns></returns>
         private byte[] GetItemValue(IAb1DataItem item)
         {
-            if (item == null) throw new ArgumentNullException("item");
+            if (item == null) throw new ArgumentNullException(nameof(item));
             //
             // Based on the Ab1 specifications, if a item size is greater than 4 bytes the offset points to the data
             // otherwise it contains the data.
             //
 
-            byte[] result =
+            var result =
                 item.Entry.DataSize <= Constants.MaxLocalItemByteSize
                     ? GetLocalItemValue(item)
                     : GetRemoteItemValue(item);
@@ -293,7 +293,7 @@ namespace Bio.IO.AppliedBiosystems.DataParsers
         private byte[] GetRemoteItemValue(IAb1DataItem item)
         {
             Context.Reader.BaseStream.Position = item.Entry.DataOffset;
-            byte[] result = Context.Reader.ReadBytes(item.Entry.DataSize);
+            var result = Context.Reader.ReadBytes(item.Entry.DataSize);
             return result;
         }
 
@@ -307,7 +307,7 @@ namespace Bio.IO.AppliedBiosystems.DataParsers
         {
             var result = new byte[item.Entry.DataSize];
 
-            for (int i = 0; i < item.Entry.DataSize; i++)
+            for (var i = 0; i < item.Entry.DataSize; i++)
             {
                 result[i] = (byte)(item.Entry.DataOffset >> (24 - 8 * i));
             }
@@ -317,7 +317,7 @@ namespace Bio.IO.AppliedBiosystems.DataParsers
 
         private static void ValidateExpectedSize(byte[] value, IAb1DataItem item)
         {
-            int expectedSize = item.Size * item.Entry.ElementCount;
+            var expectedSize = item.Size * item.Entry.ElementCount;
             if (expectedSize != value.Length)
                 throw new InvalidItemSizeException(expectedSize, value.Length, item.Name);
         }

@@ -20,7 +20,7 @@ namespace Bio.Pamsam.Tests
         [Test]
         public void TestBinaryGuideTree()
         {
-            int numberOfNodes = 5;
+            var numberOfNodes = 5;
             var nodes = Enumerable.Range(0, numberOfNodes)
                 .Select(n => new BinaryGuideTreeNode(n))
                 .ToList();
@@ -53,7 +53,7 @@ namespace Bio.Pamsam.Tests
 
             Assert.AreEqual(nodes[3], nodes[0].Parent);
 
-            int numberOfEdges = 4;
+            var numberOfEdges = 4;
             var edges = Enumerable.Range(0, numberOfEdges)
                 .Select(n => new BinaryGuideTreeEdge(n)).ToList();
 
@@ -67,11 +67,11 @@ namespace Bio.Pamsam.Tests
             edges[3].ParentNode = nodes[4];
             edges[3].ChildNode = nodes[3];
 
-            int dimension = 4;
+            var dimension = 4;
             IDistanceMatrix distanceMatrix = new SymmetricDistanceMatrix(dimension);
-            for (int i = 0; i < distanceMatrix.Dimension - 1; ++i)
+            for (var i = 0; i < distanceMatrix.Dimension - 1; ++i)
             {
-                for (int j = i + 1; j < distanceMatrix.Dimension; ++j)
+                for (var j = i + 1; j < distanceMatrix.Dimension; ++j)
                 {
                     distanceMatrix[i, j] = i + j;
                     distanceMatrix[j, i] = i + j;
@@ -80,7 +80,7 @@ namespace Bio.Pamsam.Tests
 
             PAMSAMMultipleSequenceAligner.ParallelOption = new ParallelOptions { MaxDegreeOfParallelism = 2 };
             IHierarchicalClustering hierarchicalClustering = new HierarchicalClusteringParallel(distanceMatrix);
-            BinaryGuideTree binaryGuideTree = new BinaryGuideTree(hierarchicalClustering);
+            var binaryGuideTree = new BinaryGuideTree(hierarchicalClustering);
 
             Assert.AreEqual(7, binaryGuideTree.NumberOfNodes);
             Assert.AreEqual(6, binaryGuideTree.NumberOfEdges);
@@ -88,7 +88,7 @@ namespace Bio.Pamsam.Tests
 
             Assert.IsTrue(binaryGuideTree.Nodes[binaryGuideTree.Nodes.Count - 1].IsRoot);
 
-            for (int i = 0; i < binaryGuideTree.Nodes.Count; ++i)
+            for (var i = 0; i < binaryGuideTree.Nodes.Count; ++i)
             {
                 Console.WriteLine(binaryGuideTree.Nodes[i].ID);
             }
@@ -111,32 +111,32 @@ namespace Bio.Pamsam.Tests
 
 
             // Test FindSmallestTreeDifference
-            BinaryGuideTree binaryGuideTreeB = new BinaryGuideTree(hierarchicalClustering);
-            BinaryGuideTreeNode node = BinaryGuideTree.FindSmallestTreeDifference(binaryGuideTree.Nodes[binaryGuideTree.Nodes.Count - 1], binaryGuideTreeB.Nodes[binaryGuideTreeB.Nodes.Count - 1]);
+            var binaryGuideTreeB = new BinaryGuideTree(hierarchicalClustering);
+            var node = BinaryGuideTree.FindSmallestTreeDifference(binaryGuideTree.Nodes[binaryGuideTree.Nodes.Count - 1], binaryGuideTreeB.Nodes[binaryGuideTreeB.Nodes.Count - 1]);
             Assert.IsNull(node);
             node = BinaryGuideTree.FindSmallestTreeDifference(binaryGuideTree.Nodes[binaryGuideTree.Nodes.Count - 1], binaryGuideTreeB.Nodes[0]);
             Assert.IsNotNull(node);
 
             // Test CompareTwoTrees
 
-            for (int i = 0; i < binaryGuideTree.Nodes.Count; ++i)
+            for (var i = 0; i < binaryGuideTree.Nodes.Count; ++i)
             {
                 Console.Write(binaryGuideTree.Nodes[i].ID);
             }
-            for (int i = 0; i < binaryGuideTreeB.Nodes.Count; ++i)
+            for (var i = 0; i < binaryGuideTreeB.Nodes.Count; ++i)
             {
                 Console.Write(binaryGuideTreeB.Nodes[i].ID);
             }
 
             BinaryGuideTree.CompareTwoTrees(binaryGuideTree, binaryGuideTreeB);
 
-            for (int i = 0; i < binaryGuideTree.Nodes.Count; ++i)
+            for (var i = 0; i < binaryGuideTree.Nodes.Count; ++i)
             {
                 Console.Write(binaryGuideTree.Nodes[i].ID);
                 Console.Write(binaryGuideTree.Nodes[i].NeedReAlignment);
                 binaryGuideTree.Nodes[i].NeedReAlignment = false;
             }
-            for (int i = 0; i < binaryGuideTreeB.Nodes.Count; ++i)
+            for (var i = 0; i < binaryGuideTreeB.Nodes.Count; ++i)
             {
                 Console.Write(binaryGuideTreeB.Nodes[i].ID);
                 Console.Write(binaryGuideTreeB.Nodes[i].NeedReAlignment);
@@ -146,7 +146,7 @@ namespace Bio.Pamsam.Tests
             Assert.IsFalse(binaryGuideTree.Nodes[5].NeedReAlignment);
             Assert.IsFalse(binaryGuideTree.Nodes[6].NeedReAlignment);
 
-            for (int i = binaryGuideTree.NumberOfLeaves; i < binaryGuideTree.NumberOfNodes; ++i)
+            for (var i = binaryGuideTree.NumberOfLeaves; i < binaryGuideTree.NumberOfNodes; ++i)
             {
                 Assert.IsFalse(binaryGuideTree.Nodes[i].NeedReAlignment);
             }
@@ -159,12 +159,12 @@ namespace Bio.Pamsam.Tests
             binaryGuideTreeB.Nodes[5].ID = 8;
             BinaryGuideTree.CompareTwoTrees(binaryGuideTree, binaryGuideTreeB);
 
-            for (int i = 0; i < binaryGuideTree.Nodes.Count; ++i)
+            for (var i = 0; i < binaryGuideTree.Nodes.Count; ++i)
             {
                 Console.WriteLine(binaryGuideTree.Nodes[i].ID);
                 Console.WriteLine(binaryGuideTree.Nodes[i].NeedReAlignment);
             }
-            for (int i = 0; i < binaryGuideTreeB.Nodes.Count; ++i)
+            for (var i = 0; i < binaryGuideTreeB.Nodes.Count; ++i)
             {
                 Console.WriteLine(binaryGuideTreeB.Nodes[i].ID);
                 Console.WriteLine(binaryGuideTreeB.Nodes[i].NeedReAlignment);
@@ -180,14 +180,14 @@ namespace Bio.Pamsam.Tests
             //Assert.IsFalse(binaryGuideTree.Nodes[4].NeedReAlignment);
 
             // Test SeparateSequencesByCuttingTree
-            List<int>[] newSequences = binaryGuideTree.SeparateSequencesByCuttingTree(3);
+            var newSequences = binaryGuideTree.SeparateSequencesByCuttingTree(3);
             Assert.AreEqual(1, newSequences[0].Count);
             Assert.AreEqual(3, newSequences[1].Count);
             Console.WriteLine("newSequences[0].Count: {0}", newSequences[0].Count);
             Console.WriteLine("newSequences[1].Count: {0}", newSequences[1].Count);
 
 
-            List<int>[] newSequencesB = binaryGuideTree.SeparateSequencesByCuttingTree(2);
+            var newSequencesB = binaryGuideTree.SeparateSequencesByCuttingTree(2);
             Assert.AreEqual(2, newSequencesB[0].Count);
             Assert.AreEqual(2, newSequencesB[1].Count);
             Console.WriteLine("newSequences[0].Count: {0}", newSequencesB[0].Count);
@@ -202,7 +202,7 @@ namespace Bio.Pamsam.Tests
             ISequence seq6 = new Sequence(Alphabets.DNA, "GGGACAAAATCAG");
             ISequence seq7 = new Sequence(Alphabets.DNA, "GGGAATCTTATCAG");
 
-            List<ISequence> sequences = new List<ISequence>
+            var sequences = new List<ISequence>
             {
                 seq1,
                 seq2,
@@ -214,7 +214,7 @@ namespace Bio.Pamsam.Tests
             };
 
             // Generate DistanceMatrix
-            KmerDistanceMatrixGenerator kmerDistanceMatrixGenerator =
+            var kmerDistanceMatrixGenerator =
                 new KmerDistanceMatrixGenerator(sequences, 2, Alphabets.AmbiguousDNA, DistanceFunctionTypes.EuclideanDistance);
 
             // Hierarchical clustering
@@ -224,7 +224,7 @@ namespace Bio.Pamsam.Tests
             binaryGuideTree = new BinaryGuideTree(hierarcicalClustering);
 
             // CUT Tree
-            BinaryGuideTree[] subtrees = binaryGuideTree.CutTree(3);
+            var subtrees = binaryGuideTree.CutTree(3);
 
             Assert.IsNotNull(subtrees);
         }

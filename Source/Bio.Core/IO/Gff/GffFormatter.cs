@@ -51,7 +51,7 @@ namespace Bio.IO.Gff
         /// </summary>
         public GffFormatter()
         {
-            this.ShouldWriteSequenceData = true;
+            ShouldWriteSequenceData = true;
         }
 
         /// <summary>
@@ -97,17 +97,17 @@ namespace Bio.IO.Gff
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
 
             if (data == null)
             {
-                throw new ArgumentNullException("data");
+                throw new ArgumentNullException(nameof(data));
             }
 
-            using (StreamWriter writer = stream.OpenWrite())
+            using (var writer = stream.OpenWrite())
             {
-                this.Format(data, writer);
+                Format(data, writer);
             }
         }
 
@@ -124,24 +124,24 @@ namespace Bio.IO.Gff
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
 
             if (sequences == null)
             {
-                throw new ArgumentNullException("sequences");
+                throw new ArgumentNullException(nameof(sequences));
             }
 
             // Try to cast for performance, otherwise create a new list; we enumerate
             // this many times so we need to make sure it's all available in memory.
-            IList<ISequence> data = sequences as IList<ISequence> ?? sequences.ToList();
+            var data = sequences as IList<ISequence> ?? sequences.ToList();
 
-            using (StreamWriter writer = stream.OpenWrite())
+            using (var writer = stream.OpenWrite())
             {
-                this.WriteHeaders(data, writer);
-                foreach (ISequence sequence in data)
+                WriteHeaders(data, writer);
+                foreach (var sequence in data)
                 {
-                    this.WriteFeatures(sequence, writer);
+                    WriteFeatures(sequence, writer);
                 }
 
                 writer.Flush();
@@ -166,8 +166,8 @@ namespace Bio.IO.Gff
         /// <param name="writer">The TextWriter used to write the formatted sequence text.</param>
         private void Format(ISequence sequence, TextWriter writer)
         {
-            this.WriteHeaders(new List<ISequence> { sequence }, writer);
-            this.WriteFeatures(sequence, writer);
+            WriteHeaders(new List<ISequence> { sequence }, writer);
+            WriteFeatures(sequence, writer);
 
             writer.Flush();
         }
@@ -183,13 +183,13 @@ namespace Bio.IO.Gff
             string source = null;
             string version = null;
             string type = null;
-            bool firstSeq = true;
+            var firstSeq = true;
             ISequence commonSeq = null;
             var typeExceptionList = new List<string>();
             var seqDataExceptionList = new List<string>();
             var seqRegExceptionList = new List<string>();
 
-            foreach (ISequence sequence in sequenceList)
+            foreach (var sequence in sequenceList)
             {
                 MetadataListItem<string> sourceVersion;
                 if (firstSeq)
@@ -210,7 +210,7 @@ namespace Bio.IO.Gff
                     }
 
                     // map to generic string; e.g. mRNA, tRNA -> RNA
-                    type = this.GetGenericTypeString(sequence.Alphabet);
+                    type = GetGenericTypeString(sequence.Alphabet);
 
                     firstSeq = false;
                 }
@@ -219,7 +219,7 @@ namespace Bio.IO.Gff
                     // source and version go together; can't output one without the other
                     if (source != null)
                     {
-                        bool sourceAndVersionMatchOthers = false;
+                        var sourceAndVersionMatchOthers = false;
 
                         object tmpobj;
                         // source and version go together; can't output one without the other
@@ -242,7 +242,7 @@ namespace Bio.IO.Gff
                     }
 
                     // set type to null if this seq type doesn't match previous types
-                    if (type != null && type != this.GetGenericTypeString(sequence.Alphabet))
+                    if (type != null && type != GetGenericTypeString(sequence.Alphabet))
                     {
                         type = null;
                     }
@@ -255,17 +255,17 @@ namespace Bio.IO.Gff
                 commonSeq = new Sequence(Alphabets.DNA, sequenceData);
             }
 
-            this.WriteCommonMetadata(commonSeq, sequenceList, writer, source, version, type, 1);
+            WriteCommonMetadata(commonSeq, sequenceList, writer, source, version, type, 1);
 
-            int totalTypeCount = commonSeq.Metadata.Keys.Count(K => K.ToUpperInvariant().Contains(MultiTypeKey));
-            int currentTypeCount = 0;
-            int totalSeqData = commonSeq.Metadata.Keys.Count(K => K.ToUpperInvariant().Contains(MultiSeqDataKey));
-            int totalSeqRegs = commonSeq.Metadata.Keys.Count(K => K.ToUpperInvariant().Contains(MultiSeqRegKey));
+            var totalTypeCount = commonSeq.Metadata.Keys.Count(K => K.ToUpperInvariant().Contains(MultiTypeKey));
+            var currentTypeCount = 0;
+            var totalSeqData = commonSeq.Metadata.Keys.Count(K => K.ToUpperInvariant().Contains(MultiSeqDataKey));
+            var totalSeqRegs = commonSeq.Metadata.Keys.Count(K => K.ToUpperInvariant().Contains(MultiSeqRegKey));
 
-            foreach (string key in commonSeq.Metadata.Keys)
+            foreach (var key in commonSeq.Metadata.Keys)
             {
-                string keyToCompare = key.ToUpperInvariant();
-                string value = string.Empty;
+                var keyToCompare = key.ToUpperInvariant();
+                var value = string.Empty;
 
                 if (keyToCompare.Contains(CommentSectionKey))
                 {
@@ -300,8 +300,8 @@ namespace Bio.IO.Gff
 
                     case GffVersionKey:
                         // formatting using gff version 2
-                        this.WriteHeaderLine(writer, GffVersionLowercaseKey, "2");
-                        this.WriteCommonMetadata(commonSeq, sequenceList, writer, source, version, type, 2);
+                        WriteHeaderLine(writer, GffVersionLowercaseKey, "2");
+                        WriteCommonMetadata(commonSeq, sequenceList, writer, source, version, type, 2);
                         break;
 
                     case SourceVersionKey:
@@ -309,16 +309,16 @@ namespace Bio.IO.Gff
                         // only output source if they all match
                         if (source != null)
                         {
-                            this.WriteHeaderLine(writer, SourceVersionLowercaseKey, source, version);
+                            WriteHeaderLine(writer, SourceVersionLowercaseKey, source, version);
                         }
 
-                        this.WriteCommonMetadata(commonSeq, sequenceList, writer, source, version, type, 3);
+                        WriteCommonMetadata(commonSeq, sequenceList, writer, source, version, type, 3);
                         break;
 
                     case DateKey:
                         // today's date
-                        this.WriteHeaderLine(writer, DateLowercaseKey, DateTime.Today.ToString("yyyy-MM-dd"));
-                        this.WriteCommonMetadata(commonSeq, sequenceList, writer, source, version, type, 4);
+                        WriteHeaderLine(writer, DateLowercaseKey, DateTime.Today.ToString("yyyy-MM-dd"));
+                        WriteCommonMetadata(commonSeq, sequenceList, writer, source, version, type, 4);
                         break;
                     case TypeKey:
                         // type header
@@ -327,21 +327,21 @@ namespace Bio.IO.Gff
                             // output that the types all match; don't need to output if DNA, as DNA is default
                             if (type != "DNA")
                             {
-                                this.WriteHeaderLine(writer, TypeLowercaseKey, type);
+                                WriteHeaderLine(writer, TypeLowercaseKey, type);
                             }
                         }
                         else if (totalTypeCount == 0)
                         {
-                            foreach (ISequence sequence in sequenceList)
+                            foreach (var sequence in sequenceList)
                             {
-                                type = this.GetGenericTypeString(sequence.Alphabet);
+                                type = GetGenericTypeString(sequence.Alphabet);
 
                                 // only output seq-specific type header if this seq won't have its type
                                 // output as part of a sequence data header; don't need to output if DNA,
                                 // as DNA is default
-                                if (type != "DNA" && (!this.ShouldWriteSequenceData || sequence.Count == 0))
+                                if (type != "DNA" && (!ShouldWriteSequenceData || sequence.Count == 0))
                                 {
-                                    this.WriteHeaderLine(writer, TypeLowercaseKey, type, sequence.ID);
+                                    WriteHeaderLine(writer, TypeLowercaseKey, type, sequence.ID);
                                 }
                             }
                         }
@@ -356,7 +356,7 @@ namespace Bio.IO.Gff
                                 seq = sequenceList.FirstOrDefault(S => S.ID.Equals(value));
                                 if (seq != null)
                                 {
-                                    this.WriteHeaderLine(writer, TypeLowercaseKey, seq.Alphabet.Name.ToUpper(), seq.ID);
+                                    WriteHeaderLine(writer, TypeLowercaseKey, seq.Alphabet.Name.ToUpper(), seq.ID);
                                     typeExceptionList.Add(seq.ID);
                                 }
 
@@ -364,21 +364,21 @@ namespace Bio.IO.Gff
 
                                 if (currentTypeCount == totalTypeCount)
                                 {
-                                    foreach (ISequence sequence in sequenceList)
+                                    foreach (var sequence in sequenceList)
                                     {
                                         if (typeExceptionList.Contains(sequence.ID))
                                         {
                                             continue;
                                         }
 
-                                        type = this.GetGenericTypeString(sequence.Alphabet);
+                                        type = GetGenericTypeString(sequence.Alphabet);
 
                                         // only output seq-specific type header if this seq won't have its type
                                         // output as part of a sequence data header; don't need to output if DNA,
                                         // as DNA is default
-                                        if (type != "DNA" && (!this.ShouldWriteSequenceData || sequence.Count == 0))
+                                        if (type != "DNA" && (!ShouldWriteSequenceData || sequence.Count == 0))
                                         {
-                                            this.WriteHeaderLine(writer, TypeLowercaseKey, type, sequence.ID);
+                                            WriteHeaderLine(writer, TypeLowercaseKey, type, sequence.ID);
                                         }
                                     }
                                 }
@@ -388,7 +388,7 @@ namespace Bio.IO.Gff
                                 // output that the types all match; don't need to output if DNA, as DNA is default
                                 if (type != "DNA")
                                 {
-                                    this.WriteHeaderLine(writer, TypeLowercaseKey, type);
+                                    WriteHeaderLine(writer, TypeLowercaseKey, type);
                                 }
 
                                 totalTypeCount = 0;
@@ -398,12 +398,12 @@ namespace Bio.IO.Gff
 
                     case MultiSeqDataKey:
                         // sequence data
-                        if (this.ShouldWriteSequenceData)
+                        if (ShouldWriteSequenceData)
                         {
                             seq = sequenceList.FirstOrDefault(S => S.ID.Equals(value));
                             if (seq != null)
                             {
-                                this.WriteSeqData(seq, type, writer);
+                                WriteSeqData(seq, type, writer);
                                 seqDataExceptionList.Add(seq.ID);
                             }
 
@@ -411,14 +411,14 @@ namespace Bio.IO.Gff
 
                             if (totalSeqData == 0)
                             {
-                                foreach (ISequence sequence in sequenceList)
+                                foreach (var sequence in sequenceList)
                                 {
                                     if (seqDataExceptionList.Contains(sequence.ID))
                                     {
                                         continue;
                                     }
 
-                                    this.WriteSeqData(sequence, type, writer);
+                                    WriteSeqData(sequence, type, writer);
                                 }
                             }
                         }
@@ -431,7 +431,7 @@ namespace Bio.IO.Gff
                         {
                             if (seq.Metadata.ContainsKey(StartKey) && seq.Metadata.ContainsKey(EndKey))
                             {
-                                this.WriteHeaderLine(
+                                WriteHeaderLine(
                                     writer,
                                     SeqRegKey,
                                     seq.ID,
@@ -446,7 +446,7 @@ namespace Bio.IO.Gff
                         if (totalSeqRegs == 0)
                         {
                             // sequence-region header
-                            foreach (ISequence sequence in sequenceList)
+                            foreach (var sequence in sequenceList)
                             {
                                 if (seqRegExceptionList.Contains(sequence.ID))
                                 {
@@ -455,7 +455,7 @@ namespace Bio.IO.Gff
 
                                 if (sequence.Metadata.ContainsKey(StartKey) && sequence.Metadata.ContainsKey(EndKey))
                                 {
-                                    this.WriteHeaderLine(
+                                    WriteHeaderLine(
                                         writer,
                                         SeqRegKey,
                                         sequence.ID,
@@ -480,25 +480,25 @@ namespace Bio.IO.Gff
             if (sequence.Count > 0)
             {
                 byte[] TempSeqData = null;
-                type = this.GetGenericTypeString(sequence.Alphabet);
+                type = GetGenericTypeString(sequence.Alphabet);
 
-                this.WriteHeaderLine(writer, type, sequence.ID);
+                WriteHeaderLine(writer, type, sequence.ID);
 
                 for (long lineStart = 0; lineStart < sequence.Count; lineStart += MaxSequenceSymbolsPerLine)
                 {
-                    long length = Math.Min(MaxSequenceSymbolsPerLine, sequence.Count - lineStart);
-                    ISequence subSequence = sequence.GetSubSequence(lineStart, length);
+                    var length = Math.Min(MaxSequenceSymbolsPerLine, sequence.Count - lineStart);
+                    var subSequence = sequence.GetSubSequence(lineStart, length);
                     TempSeqData = new byte[length];
-                    for (int i = 0; i < length; i++)
+                    for (var i = 0; i < length; i++)
                     {
                         TempSeqData[i] = subSequence[i];
                     }
-                    string key = Encoding.UTF8.GetString(TempSeqData, 0, TempSeqData.Length);
+                    var key = Encoding.UTF8.GetString(TempSeqData, 0, TempSeqData.Length);
 
-                    this.WriteHeaderLine(writer, key);
+                    WriteHeaderLine(writer, key);
                 }
 
-                this.WriteHeaderLine(writer, "end-" + type);
+                WriteHeaderLine(writer, "end-" + type);
             }
         }
 
@@ -521,16 +521,16 @@ namespace Bio.IO.Gff
             string type,
             int startFrom)
         {
-            int totalTypeCount = commonSeq.Metadata.Keys.Count(K => K.ToUpperInvariant().Contains(MultiTypeKey));
+            var totalTypeCount = commonSeq.Metadata.Keys.Count(K => K.ToUpperInvariant().Contains(MultiTypeKey));
 
             if (startFrom == 1)
             {
                 if (commonSeq.Metadata.Keys.Count(K => K.ToUpperInvariant().Contains(GffVersionKey)) == 0)
                 {
                     // formatting using gff version 2
-                    this.WriteHeaderLine(writer, GffVersionLowercaseKey, "2");
+                    WriteHeaderLine(writer, GffVersionLowercaseKey, "2");
 
-                    this.WriteCommonMetadata(commonSeq, sequenceList, writer, source, version, type, 2);
+                    WriteCommonMetadata(commonSeq, sequenceList, writer, source, version, type, 2);
                 }
             }
 
@@ -540,10 +540,10 @@ namespace Bio.IO.Gff
                     && commonSeq.Metadata.Keys.Count(K => K.ToUpperInvariant().Contains(SourceVersionKey)) == 0)
                 {
                     // only output source if they all match
-                    this.WriteHeaderLine(writer, SourceVersionLowercaseKey, source, version);
+                    WriteHeaderLine(writer, SourceVersionLowercaseKey, source, version);
                 }
 
-                this.WriteCommonMetadata(commonSeq, sequenceList, writer, source, version, type, 3);
+                WriteCommonMetadata(commonSeq, sequenceList, writer, source, version, type, 3);
             }
 
             if (startFrom == 3)
@@ -551,12 +551,12 @@ namespace Bio.IO.Gff
                 if (commonSeq.Metadata.Keys.Count(K => K.ToUpperInvariant().Contains(DateKey)) == 0)
                 {
                     // today's date
-                    this.WriteHeaderLine(
+                    WriteHeaderLine(
                         writer,
                         DateLowercaseKey,
                         DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
 
-                    this.WriteCommonMetadata(commonSeq, sequenceList, writer, source, version, type, 4);
+                    WriteCommonMetadata(commonSeq, sequenceList, writer, source, version, type, 4);
                 }
             }
 
@@ -567,16 +567,16 @@ namespace Bio.IO.Gff
                 {
                     if (type == null)
                     {
-                        foreach (ISequence sequence in sequenceList)
+                        foreach (var sequence in sequenceList)
                         {
-                            type = this.GetGenericTypeString(sequence.Alphabet);
+                            type = GetGenericTypeString(sequence.Alphabet);
 
                             // only output seq-specific type header if this seq won't have its type
                             // output as part of a sequence data header; don't need to output if DNA,
                             // as DNA is default
-                            if (type != "DNA" && (!this.ShouldWriteSequenceData || sequence.Count == 0))
+                            if (type != "DNA" && (!ShouldWriteSequenceData || sequence.Count == 0))
                             {
-                                this.WriteHeaderLine(writer, TypeLowercaseKey, type, sequence.ID);
+                                WriteHeaderLine(writer, TypeLowercaseKey, type, sequence.ID);
                             }
                         }
                     }
@@ -585,7 +585,7 @@ namespace Bio.IO.Gff
                         // output that the types all match; don't need to output if DNA, as DNA is default
                         if (type != "DNA")
                         {
-                            this.WriteHeaderLine(writer, TypeLowercaseKey, type);
+                            WriteHeaderLine(writer, TypeLowercaseKey, type);
                         }
                     }
                 }
@@ -616,7 +616,7 @@ namespace Bio.IO.Gff
 
         private void WriteHeaderLine(TextWriter writer, string key, params string[] dataFields)
         {
-            string headerLine = dataFields.Aggregate(HeaderMark + key, (current, field) => current + (" " + field));
+            var headerLine = dataFields.Aggregate(HeaderMark + key, (current, field) => current + (" " + field));
             writer.WriteLine(headerLine);
         }
 
@@ -640,19 +640,19 @@ namespace Bio.IO.Gff
                         var featureLine = new StringBuilder();
                         featureLine.Append(sequence.ID);
                         featureLine.Append("\t");
-                        featureLine.Append(this.GetSubItemString(feature, SourceKey));
+                        featureLine.Append(GetSubItemString(feature, SourceKey));
                         featureLine.Append("\t");
                         featureLine.Append(feature.Key);
                         featureLine.Append("\t");
-                        featureLine.Append(this.GetSubItemString(feature, StartKey));
+                        featureLine.Append(GetSubItemString(feature, StartKey));
                         featureLine.Append("\t");
-                        featureLine.Append(this.GetSubItemString(feature, EndKey));
+                        featureLine.Append(GetSubItemString(feature, EndKey));
                         featureLine.Append("\t");
-                        featureLine.Append(this.GetSubItemString(feature, ScoreKey));
+                        featureLine.Append(GetSubItemString(feature, ScoreKey));
                         featureLine.Append("\t");
-                        featureLine.Append(this.GetSubItemString(feature, StrandKey));
+                        featureLine.Append(GetSubItemString(feature, StrandKey));
                         featureLine.Append("\t");
-                        featureLine.Append(this.GetSubItemString(feature, FrameKey));
+                        featureLine.Append(GetSubItemString(feature, FrameKey));
 
                         // optional attributes field is stored as free text
                         if (feature.FreeText != string.Empty)

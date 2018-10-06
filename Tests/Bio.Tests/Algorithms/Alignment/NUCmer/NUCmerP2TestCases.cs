@@ -58,7 +58,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority2")]
         public void NUCmerAlignInvalidMumLength()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.InvalidMumLengthSequence);
+            ValidateNUCmerAlignGeneralTestCases(Constants.InvalidMumLengthSequence);
         }
 
         /// <summary>
@@ -73,13 +73,13 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         public void NUCmerAlignGreaterMumLength()
         {
             // Gets the reference & search sequences from the configuration file
-            string[] referenceSequences = this.utilityObj.xmlUtil.GetTextValues(Constants.GreaterMumLengthSequence, Constants.ReferenceSequencesNode);
-            string[] searchSequences = this.utilityObj.xmlUtil.GetTextValues(Constants.GreaterMumLengthSequence, Constants.SearchSequencesNode);
-            IAlphabet seqAlphabet = Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(Constants.GreaterMumLengthSequence, Constants.AlphabetNameNode));
+            var referenceSequences = utilityObj.xmlUtil.GetTextValues(Constants.GreaterMumLengthSequence, Constants.ReferenceSequencesNode);
+            var searchSequences = utilityObj.xmlUtil.GetTextValues(Constants.GreaterMumLengthSequence, Constants.SearchSequencesNode);
+            var seqAlphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(Constants.GreaterMumLengthSequence, Constants.AlphabetNameNode));
 
             var refSeqList = referenceSequences.Select(t => new Sequence(seqAlphabet, Encoding.ASCII.GetBytes(t))).Cast<ISequence>().ToList();
             var searchSeqList = searchSequences.Select(t => new Sequence(seqAlphabet, Encoding.ASCII.GetBytes(t))).Cast<ISequence>().ToList();
-            string mumLength = this.utilityObj.xmlUtil.GetTextValue(Constants.GreaterMumLengthSequence, Constants.MUMLengthNode);
+            var mumLength = utilityObj.xmlUtil.GetTextValue(Constants.GreaterMumLengthSequence, Constants.MUMLengthNode);
 
             var nucmerObj = new NucmerPairwiseAligner
             {
@@ -87,10 +87,10 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
                 SeparationFactor = 0.12f,
                 BreakLength = 2,
                 LengthOfMUM = long.Parse(mumLength, null),
-                MinimumScore = int.Parse(this.utilityObj.xmlUtil.GetTextValue(Constants.GreaterMumLengthSequence, Constants.MinimumScoreNode), null)
+                MinimumScore = int.Parse(utilityObj.xmlUtil.GetTextValue(Constants.GreaterMumLengthSequence, Constants.MinimumScoreNode), null)
             };
 
-            IList<ISequenceAlignment> seqAlign = nucmerObj.Align(refSeqList, searchSeqList);
+            var seqAlign = nucmerObj.Align(refSeqList, searchSeqList);
             Assert.AreEqual(0, seqAlign.Count);
         }
 
@@ -108,7 +108,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority2")]
         public void NUCmerAlignSimple1000BPDnaSequence()
         {
-            this.ValidateNUCmerAlignSimpleGeneralTestCases(Constants.SingleDna1000BPSequence);
+            ValidateNUCmerAlignSimpleGeneralTestCases(Constants.SingleDna1000BPSequence);
         }
 
         #endregion NUCmer Simple Align Test Cases
@@ -125,7 +125,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
 
             try
             {
-                IList<ISequenceAlignment> result = nucmerObj.Align(sequenceList);
+                var result = nucmerObj.Align(sequenceList);
                 ApplicationLog.WriteLine("NUCmer P2 : Exception not thrown");
                 Assert.Fail("ArgumentNullException not thrown.");
             }
@@ -142,15 +142,15 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         private void ValidateNUCmerAlignGeneralTestCases(string nodeName)
         {
             // Gets the reference & search sequences from the configuration file
-            string[] referenceSequences = this.utilityObj.xmlUtil.GetTextValues(nodeName, Constants.ReferenceSequencesNode);
-            string[] searchSequences = this.utilityObj.xmlUtil.GetTextValues(nodeName, Constants.SearchSequencesNode);
-            IAlphabet seqAlphabet = Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.AlphabetNameNode));
+            var referenceSequences = utilityObj.xmlUtil.GetTextValues(nodeName, Constants.ReferenceSequencesNode);
+            var searchSequences = utilityObj.xmlUtil.GetTextValues(nodeName, Constants.SearchSequencesNode);
+            var seqAlphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.AlphabetNameNode));
 
             var refSeqList = referenceSequences.Select(t => new Sequence(seqAlphabet, Encoding.ASCII.GetBytes(t))).Cast<ISequence>().ToList();
             var searchSeqList = searchSequences.Select(t => new Sequence(seqAlphabet, Encoding.ASCII.GetBytes(t))).Cast<ISequence>().ToList();
 
             var nucmerObj = new NucmerPairwiseAligner();
-            string mumLength = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMLengthNode);
+            var mumLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMLengthNode);
 
             // Update other values for NUCmer object
             nucmerObj.MaximumSeparation = 0;
@@ -158,7 +158,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
             nucmerObj.SeparationFactor = 0.12f;
             nucmerObj.BreakLength = 2;
             nucmerObj.LengthOfMUM = long.Parse(mumLength, null);
-            nucmerObj.MinimumScore = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName,
+            nucmerObj.MinimumScore = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                Constants.MinimumScoreNode), null);
 
             try
@@ -178,40 +178,40 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         private void ValidateNUCmerAlignSimpleGeneralTestCases(string nodeName)
         {
             // Gets the reference & search sequences from the configuration file
-            string[] referenceSequences = this.utilityObj.xmlUtil.GetTextValues(nodeName, Constants.ReferenceSequencesNode);
-            string[] searchSequences = this.utilityObj.xmlUtil.GetTextValues(nodeName, Constants.SearchSequencesNode);
+            var referenceSequences = utilityObj.xmlUtil.GetTextValues(nodeName, Constants.ReferenceSequencesNode);
+            var searchSequences = utilityObj.xmlUtil.GetTextValues(nodeName, Constants.SearchSequencesNode);
 
-            IAlphabet seqAlphabet = Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.AlphabetNameNode));
+            var seqAlphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.AlphabetNameNode));
             var refSeqList = referenceSequences.Select(t => new Sequence(seqAlphabet, Encoding.ASCII.GetBytes(t))).Cast<ISequence>().ToList();
             var searchSeqList = searchSequences.Select(t => new Sequence(seqAlphabet, Encoding.ASCII.GetBytes(t))).Cast<ISequence>().ToList();
 
             // Gets the mum length from the xml
-            string mumLength = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMAlignLengthNode);
+            var mumLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMAlignLengthNode);
 
             var nucmerObj = new NucmerPairwiseAligner
             {
-                MaximumSeparation = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMAlignLengthNode), null),
-                MinimumScore = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMAlignLengthNode), null),
-                SeparationFactor = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMAlignLengthNode), null),
-                BreakLength = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMAlignLengthNode), null),
+                MaximumSeparation = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMAlignLengthNode), null),
+                MinimumScore = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMAlignLengthNode), null),
+                SeparationFactor = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMAlignLengthNode), null),
+                BreakLength = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMAlignLengthNode), null),
                 LengthOfMUM = long.Parse(mumLength, null)
             };
 
             IList<ISequence> seqList = refSeqList.ToList();
 
-            foreach (ISequence seq in searchSeqList)
+            foreach (var seq in searchSeqList)
             {
                 seqList.Add(seq);
             }
 
-            IList<ISequenceAlignment> alignSimple = nucmerObj.AlignSimple(seqList);
-            string expectedSequences = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExpectedSequencesNode);
-            string[] expSeqArray = expectedSequences.Split(',');
+            var alignSimple = nucmerObj.AlignSimple(seqList);
+            var expectedSequences = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExpectedSequencesNode);
+            var expSeqArray = expectedSequences.Split(',');
 
-            int j = 0;
+            var j = 0;
 
             // Gets all the aligned sequences in comma separated format
-            foreach (PairwiseAlignedSequence alignedSeq in alignSimple.Cast<IPairwiseSequenceAlignment>().SelectMany(seqAlignment => seqAlignment))
+            foreach (var alignedSeq in alignSimple.Cast<IPairwiseSequenceAlignment>().SelectMany(seqAlignment => seqAlignment))
             {
                 Assert.AreEqual(expSeqArray[j], alignedSeq.FirstSequence.ConvertToString());
                 ++j;

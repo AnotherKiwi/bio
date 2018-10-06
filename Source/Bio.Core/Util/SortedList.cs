@@ -55,7 +55,7 @@ namespace Bio.Util
         public SortedList(IComparer<TKey> comparer, int capacity = 0)
         {
             if (capacity < 0)
-                throw new ArgumentOutOfRangeException("capacity");
+                throw new ArgumentOutOfRangeException(nameof(capacity));
 
             if (comparer == null) 
                 comparer = Comparer<TKey>.Default;
@@ -72,7 +72,7 @@ namespace Bio.Util
         public SortedList(IDictionary<TKey, TValue> dictionary, IComparer<TKey> comparer = null)
         {
             if (dictionary == null)
-                throw new ArgumentNullException("dictionary");
+                throw new ArgumentNullException(nameof(dictionary));
 
             if (comparer == null)
                 comparer = Comparer<TKey>.Default;
@@ -99,7 +99,7 @@ namespace Bio.Util
         {
             if (array.Length + arrayIndex < data.Count)
                 throw new ArgumentException("Not enough space in array.");
-            int pos = arrayIndex;
+            var pos = arrayIndex;
             foreach (var item in data)
             {
                 array[pos++] = item;
@@ -113,7 +113,7 @@ namespace Bio.Util
 
         public int Count
         {
-            get { return this.data.Count; }
+            get { return data.Count; }
         }
 
         public bool IsReadOnly
@@ -178,7 +178,7 @@ namespace Bio.Util
         {
             get
             {
-                return this.Keys;
+                return Keys;
             }
         }
 
@@ -186,12 +186,12 @@ namespace Bio.Util
         {
             var keys = data.Keys.ToArray();
             Array.Sort(keys, comparer);
-            return keys.Select(k => new KeyValuePair<TKey, TValue>(k, this.data[k])).GetEnumerator();
+            return keys.Select(k => new KeyValuePair<TKey, TValue>(k, data[k])).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 

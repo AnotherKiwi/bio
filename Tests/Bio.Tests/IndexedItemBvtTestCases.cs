@@ -21,9 +21,9 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateIndexedItemCompareTo()
         {
-            IndexedItem<byte> indexedObj = new IndexedItem<byte>(0, Encoding.ASCII.GetBytes("A")[0]);
-            IndexedItem<byte> indexedObj2 = new IndexedItem<byte>(0, Encoding.ASCII.GetBytes("A")[0]);
-            IndexedItem<byte> indexedObj3 = new IndexedItem<byte>(0, Encoding.ASCII.GetBytes("A")[0]);
+            var indexedObj = new IndexedItem<byte>(0, Encoding.ASCII.GetBytes("A")[0]);
+            var indexedObj2 = new IndexedItem<byte>(0, Encoding.ASCII.GetBytes("A")[0]);
+            var indexedObj3 = new IndexedItem<byte>(0, Encoding.ASCII.GetBytes("A")[0]);
             Assert.AreEqual(0, indexedObj.CompareTo(indexedObj2));
             Assert.AreEqual(0, indexedObj.CompareTo((object)indexedObj3));
             Assert.AreEqual(1, indexedObj.CompareTo(null));
@@ -39,9 +39,9 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateIndexedItemEquals()
         {
-            IndexedItem<byte> indexedObj = new IndexedItem<byte>(0, Encoding.ASCII.GetBytes("A")[0]);
-            IndexedItem<byte> indexedObj2 = new IndexedItem<byte>(0, Encoding.ASCII.GetBytes("A")[0]);
-            IndexedItem<byte> indexedObj3 = new IndexedItem<byte>(0, Encoding.ASCII.GetBytes("A")[0]);
+            var indexedObj = new IndexedItem<byte>(0, Encoding.ASCII.GetBytes("A")[0]);
+            var indexedObj2 = new IndexedItem<byte>(0, Encoding.ASCII.GetBytes("A")[0]);
+            var indexedObj3 = new IndexedItem<byte>(0, Encoding.ASCII.GetBytes("A")[0]);
             Assert.IsTrue(indexedObj.Equals(indexedObj2));
             Assert.IsTrue(indexedObj.Equals((object)indexedObj3));
 
@@ -56,9 +56,9 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateIndexedItemOperators()
         {
-            IndexedItem<byte> indexedObj = new IndexedItem<byte>(0, Encoding.ASCII.GetBytes("A")[0]);
-            IndexedItem<byte> indexedObj1 = new IndexedItem<byte>(0, Encoding.ASCII.GetBytes("A")[0]);
-            IndexedItem<byte> indexedObj2 = new IndexedItem<byte>(0, Encoding.ASCII.GetBytes("G")[0]);
+            var indexedObj = new IndexedItem<byte>(0, Encoding.ASCII.GetBytes("A")[0]);
+            var indexedObj1 = new IndexedItem<byte>(0, Encoding.ASCII.GetBytes("A")[0]);
+            var indexedObj2 = new IndexedItem<byte>(0, Encoding.ASCII.GetBytes("G")[0]);
 
             Assert.IsTrue(indexedObj == indexedObj1);
             Assert.IsFalse(indexedObj == indexedObj2);

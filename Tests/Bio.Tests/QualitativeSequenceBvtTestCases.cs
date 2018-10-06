@@ -44,7 +44,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateSangerFormatTypeDnaQualitativeSequenceWithScore()
         {
-            this.GeneralQualitativeSequence(Constants.SimpleDnaSangerNode,
+            GeneralQualitativeSequence(Constants.SimpleDnaSangerNode,
                 QualitativeSequenceParameters.Score);
         }
 
@@ -57,29 +57,29 @@ namespace Bio.Tests
         public void ValidateSangerFormatTypeDnaReverseComplement()
         {
             // Gets the actual sequence and the alphabet from the Xml
-            IAlphabet alphabet = Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(
+            var alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleDnaSangerNode, Constants.AlphabetNameNode));
-            FastQFormatType expectedFormatType = Utility.GetFastQFormatType(
-                this.utilityObj.xmlUtil.GetTextValue(Constants.SimpleDnaSangerNode, Constants.FastQFormatType));
-            string inputSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedFormatType = Utility.GetFastQFormatType(
+                utilityObj.xmlUtil.GetTextValue(Constants.SimpleDnaSangerNode, Constants.FastQFormatType));
+            var inputSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleDnaSangerNode, Constants.inputSequenceNode);
-            string compSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var compSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleDnaSangerNode, Constants.ComplementQualSeqNode);
-            string expectedRevCompSeq = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedRevCompSeq = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleDnaSangerNode, Constants.RevComplement);
-            string expectedRevSeq = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedRevSeq = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleDnaSangerNode, Constants.ReverseQualSeq);            
-            string inputQuality = this.utilityObj.xmlUtil.GetTextValue(
+            var inputQuality = utilityObj.xmlUtil.GetTextValue(
             Constants.SimpleDnaSangerNode, Constants.InputByteArrayNode);
-            byte[] byteArray = Encoding.UTF8.GetBytes(inputQuality);
+            var byteArray = Encoding.UTF8.GetBytes(inputQuality);
             
-            QualitativeSequence createdQualitativeSequence =
+            var createdQualitativeSequence =
                 new QualitativeSequence(alphabet, expectedFormatType,
                     inputSequence, inputQuality);
 
-            ISequence revSeq = createdQualitativeSequence.GetReversedSequence();
-            ISequence revCompSeq = createdQualitativeSequence.GetReverseComplementedSequence();
-            ISequence compSeq = createdQualitativeSequence.GetComplementedSequence();
+            var revSeq = createdQualitativeSequence.GetReversedSequence();
+            var revCompSeq = createdQualitativeSequence.GetReverseComplementedSequence();
+            var compSeq = createdQualitativeSequence.GetComplementedSequence();
 
             Assert.AreEqual(expectedRevSeq, new string(revSeq.Select(a => (char)a).ToArray()));
             Assert.AreEqual(expectedRevCompSeq, new string(revCompSeq.Select(a => (char)a).ToArray()));
@@ -99,7 +99,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateSolexaFormatTypeDnaQualitativeSequenceWithScore()
         {
-            this.GeneralQualitativeSequence(Constants.SimpleDnaSolexaNode,
+            GeneralQualitativeSequence(Constants.SimpleDnaSolexaNode,
                 QualitativeSequenceParameters.Score);
         }
 
@@ -114,7 +114,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateIlluminaFormatTypeDnaQualitativeSequenceWithScore()
         {
-            this.GeneralQualitativeSequence(Constants.SimpleDnaIlluminaNode,
+            GeneralQualitativeSequence(Constants.SimpleDnaIlluminaNode,
                 QualitativeSequenceParameters.Score);
         }
 
@@ -128,7 +128,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateSolexaFormatTypeDnaQualitativeSequenceWithByteArray()
         {
-            this.GeneralQualitativeSequence(Constants.SimpleDnaSolexaNode,
+            GeneralQualitativeSequence(Constants.SimpleDnaSolexaNode,
                 QualitativeSequenceParameters.ByteArray);
         }
 
@@ -142,7 +142,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateIlluminaFormatTypeDnaQualitativeSequenceWithByteArray()
         {
-            this.GeneralQualitativeSequence(Constants.SimpleDNAIlluminaByteArrayNode,
+            GeneralQualitativeSequence(Constants.SimpleDNAIlluminaByteArrayNode,
                 QualitativeSequenceParameters.ByteArray);
         }
 
@@ -156,7 +156,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateSangerFormatTypeDnaQualitativeSequenceWithByteArray()
         {
-            this.GeneralQualitativeSequence(Constants.SimpleDnaSangerNode,
+            GeneralQualitativeSequence(Constants.SimpleDnaSangerNode,
                 QualitativeSequenceParameters.ByteArray);
         }
 
@@ -170,18 +170,18 @@ namespace Bio.Tests
         public void ValidateQualititaiveSequenceConstructor()
         {
             // Gets the actual sequence and the alphabet from the Xml
-            IAlphabet alphabet = Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(
+            var alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(
             Constants.SimpleDnaSolexaNode, Constants.AlphabetNameNode));
-            FastQFormatType expectedFormatType = Utility.GetFastQFormatType(
-            this.utilityObj.xmlUtil.GetTextValue(Constants.SimpleDnaSolexaNode,
+            var expectedFormatType = Utility.GetFastQFormatType(
+            utilityObj.xmlUtil.GetTextValue(Constants.SimpleDnaSolexaNode,
             Constants.FastQFormatType));
             QualitativeSequence createdQualitativeSequence = null;
-            string inputSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var inputSequence = utilityObj.xmlUtil.GetTextValue(
             Constants.SimpleDnaSolexaNode, Constants.inputSequenceNode);
 
-            byte[] qualScores = new byte[inputSequence.Count()];
+            var qualScores = new byte[inputSequence.Count()];
 
-            for (int i = 0; i < inputSequence.Count(); i++)
+            for (var i = 0; i < inputSequence.Count(); i++)
             {
                 qualScores[i] = (byte)'{';
             }
@@ -190,7 +190,7 @@ namespace Bio.Tests
             createdQualitativeSequence = new QualitativeSequence(
                     alphabet, expectedFormatType, Encoding.UTF8.GetBytes(inputSequence), qualScores);
 
-            string qualSequence = new string(createdQualitativeSequence.Select(a => (char)a).ToArray());
+            var qualSequence = new string(createdQualitativeSequence.Select(a => (char)a).ToArray());
 
             // Validate Qualitative Sequence after addition of Seq Item.
             Assert.IsTrue(!string.IsNullOrEmpty(qualSequence));
@@ -209,43 +209,43 @@ namespace Bio.Tests
         public void ConvertSangerToSolexaAndIllumina()
         {
             // Gets the actual sequence and the Qual score from the Xml
-            string sangerSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var sangerSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.SangerToSolexaAndIlluminaNode, Constants.SangerSequence);
-            string expectedSolexaSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSolexaSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.SangerToSolexaAndIlluminaNode, Constants.SolexaSequence);
-            string expectedIlluminaSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedIlluminaSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.SangerToSolexaAndIlluminaNode, Constants.IlluminaSequence);
-            string sangerQualScore = this.utilityObj.xmlUtil.GetTextValue(
+            var sangerQualScore = utilityObj.xmlUtil.GetTextValue(
                 Constants.SangerToSolexaAndIlluminaNode, Constants.SangerQualScore);
-            string expectedSolexaQualScore = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSolexaQualScore = utilityObj.xmlUtil.GetTextValue(
                 Constants.SangerToSolexaAndIlluminaNode, Constants.SolexaQualScore);
-            string expectedIlluminaQualScore = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedIlluminaQualScore = utilityObj.xmlUtil.GetTextValue(
                 Constants.SangerToSolexaAndIlluminaNode, Constants.IlluminaQualScore);
 
             string solexaQualScore = null;
             string illuminaQualScore = null;
-            byte[] scoreValue = Encoding.UTF8.GetBytes(sangerQualScore);
+            var scoreValue = Encoding.UTF8.GetBytes(sangerQualScore);
 
             // Create a Sanger qualitative sequence.
-            QualitativeSequence sangerQualSequence = new QualitativeSequence(Alphabets.DNA,
+            var sangerQualSequence = new QualitativeSequence(Alphabets.DNA,
                 FastQFormatType.Sanger, sangerSequence, sangerQualScore);           
 
             // Convert Sanger to Solexa.
-            QualitativeSequence solexaQualSequence = sangerQualSequence.ConvertTo(
+            var solexaQualSequence = sangerQualSequence.ConvertTo(
                 FastQFormatType.Solexa_Illumina_v1_0);
 
-            byte[] sangerToSolexa = QualitativeSequence.ConvertEncodedQualityScore(FastQFormatType.Sanger, FastQFormatType.Solexa_Illumina_v1_0, scoreValue);
+            var sangerToSolexa = QualitativeSequence.ConvertEncodedQualityScore(FastQFormatType.Sanger, FastQFormatType.Solexa_Illumina_v1_0, scoreValue);
             var scores = solexaQualSequence.GetEncodedQualityScores();
             solexaQualScore = Encoding.UTF8.GetString(scores, 0, scores.Length);
 
             // Validate converted solexa score.            
 
-            string qualSequence = new string(Encoding.UTF8.GetChars(sangerToSolexa));
+            var qualSequence = new string(Encoding.UTF8.GetChars(sangerToSolexa));
 
             Assert.AreEqual(expectedSolexaQualScore, qualSequence);
             Assert.AreEqual(solexaQualScore, expectedSolexaQualScore);
 
-            string solexaQualString=new string(solexaQualSequence.Select(a => (char)a).ToArray());
+            var solexaQualString=new string(solexaQualSequence.Select(a => (char)a).ToArray());
             Assert.AreEqual(solexaQualString,expectedSolexaSequence);
 
             ApplicationLog.WriteLine(string.Format(null,
@@ -253,19 +253,19 @@ namespace Bio.Tests
                 solexaQualScore));
 
             // Convert Sanger to Illumina.
-            QualitativeSequence illuminaQualSequence = sangerQualSequence.ConvertTo(
+            var illuminaQualSequence = sangerQualSequence.ConvertTo(
                 FastQFormatType.Illumina_v1_3);
             scores = illuminaQualSequence.GetEncodedQualityScores();
             illuminaQualScore = Encoding.UTF8.GetString(scores, 0, scores.Length);
 
-            byte[] sangerToIllumina = QualitativeSequence.ConvertEncodedQualityScore(FastQFormatType.Sanger, FastQFormatType.Illumina_v1_3, scoreValue);
-            string illuminaQualSeq = new string(illuminaQualSequence.Select(a => (char)a).ToArray());
+            var sangerToIllumina = QualitativeSequence.ConvertEncodedQualityScore(FastQFormatType.Sanger, FastQFormatType.Illumina_v1_3, scoreValue);
+            var illuminaQualSeq = new string(illuminaQualSequence.Select(a => (char)a).ToArray());
 
             //// Validate converted illumina score.
             Assert.AreEqual(illuminaQualScore, expectedIlluminaQualScore);
             Assert.AreEqual(illuminaQualSeq, expectedIlluminaSequence);
 
-            string sangerToIlluminaString = new string(Encoding.UTF8.GetChars(sangerToIllumina));            
+            var sangerToIlluminaString = new string(Encoding.UTF8.GetChars(sangerToIllumina));            
             Assert.AreEqual(expectedIlluminaQualScore, sangerToIlluminaString);
 
             ApplicationLog.WriteLine(string.Format((IFormatProvider)null,
@@ -282,38 +282,38 @@ namespace Bio.Tests
         public void ConvertSolexaToSangerAndIllumina()
         {
             // Gets the actual sequence and the Qual score from the Xml
-            string solexaSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var solexaSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.SolexaToSangerAndIlluminaNode, Constants.SolexaSequence);
-            string expectedSangerSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSangerSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.SolexaToSangerAndIlluminaNode, Constants.SangerSequence);
-            string expectedIlluminaSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedIlluminaSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.SolexaToSangerAndIlluminaNode, Constants.IlluminaSequence);
-            string solexaQualScore = this.utilityObj.xmlUtil.GetTextValue(
+            var solexaQualScore = utilityObj.xmlUtil.GetTextValue(
                 Constants.SolexaToSangerAndIlluminaNode, Constants.SolexaQualScore);
-            string expectedSangerQualScore = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSangerQualScore = utilityObj.xmlUtil.GetTextValue(
                 Constants.SolexaToSangerAndIlluminaNode, Constants.SangerQualScore);
-            string expectedIlluminaQualScore = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedIlluminaQualScore = utilityObj.xmlUtil.GetTextValue(
                 Constants.SolexaToSangerAndIlluminaNode, Constants.IlluminaQualScore);
-            byte[] byteValue = Encoding.UTF8.GetBytes(solexaQualScore);
+            var byteValue = Encoding.UTF8.GetBytes(solexaQualScore);
 
             string sangerQualScore = null;
             string illuminaQualScore = null;
 
-            byte[] qualScores = new byte[solexaSequence.Count()];
+            var qualScores = new byte[solexaSequence.Count()];
 
-            for (int i = 0; i < solexaSequence.Count(); i++)
+            for (var i = 0; i < solexaSequence.Count(); i++)
             {
                 qualScores[i] = (byte)'{';
             }
 
-            Byte[] solexaSequenceinBytes = Encoding.UTF8.GetBytes(solexaSequence);
+            var solexaSequenceinBytes = Encoding.UTF8.GetBytes(solexaSequence);
 
             // Create a Solexa qualitative sequence.
-            QualitativeSequence solexaQualSequence = new QualitativeSequence(Alphabets.DNA,
+            var solexaQualSequence = new QualitativeSequence(Alphabets.DNA,
                 FastQFormatType.Solexa_Illumina_v1_0, solexaSequenceinBytes, byteValue);
 
             // Convert Solexa to Sanger.
-            QualitativeSequence sangerQualSequence = solexaQualSequence.ConvertTo(
+            var sangerQualSequence = solexaQualSequence.ConvertTo(
                 FastQFormatType.Sanger);
             var scores = sangerQualSequence.GetEncodedQualityScores();
             sangerQualScore = Encoding.UTF8.GetString(scores, 0, scores.Length);
@@ -326,13 +326,13 @@ namespace Bio.Tests
                 sangerQualScore));
 
             // Convert Solexa to Illumina.
-            QualitativeSequence illuminaQualSequence =
+            var illuminaQualSequence =
                solexaQualSequence.ConvertTo(FastQFormatType.Illumina_v1_3);
             scores = illuminaQualSequence.GetEncodedQualityScores();
             illuminaQualScore = Encoding.UTF8.GetString(scores, 0, scores.Length);
             Assert.AreEqual(expectedIlluminaQualScore, illuminaQualScore);
             
-            string illuminaQualseq=new string(illuminaQualSequence.Select(a => (char)a).ToArray());
+            var illuminaQualseq=new string(illuminaQualSequence.Select(a => (char)a).ToArray());
 
             // Validate converted illumina score.
             Assert.AreEqual(illuminaQualScore, expectedIlluminaQualScore);
@@ -352,20 +352,20 @@ namespace Bio.Tests
         public void ConvertIlluminaToSangerAndSolexa()
         {
             // Gets the actual sequence and the Qual score from the Xml
-            string illuminaSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var illuminaSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.IlluminaToSangerAndSolexaNode, Constants.IlluminaSequence);          
-            string illuminaQualScore = this.utilityObj.xmlUtil.GetTextValue(
+            var illuminaQualScore = utilityObj.xmlUtil.GetTextValue(
                 Constants.IlluminaToSangerAndSolexaNode, Constants.IlluminaQualScore);
-            string expectedSangerQualScore = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSangerQualScore = utilityObj.xmlUtil.GetTextValue(
                 Constants.IlluminaToSangerAndSolexaNode, Constants.SangerQualScore);
-            string expectedSolexaQualScore = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSolexaQualScore = utilityObj.xmlUtil.GetTextValue(
                 Constants.IlluminaToSangerAndSolexaNode, Constants.SolexaQualScore);
 
-            byte[] illuminaSequenceinBytes = Encoding.UTF8.GetBytes(illuminaSequence);
-            byte[] illuminaQualScoreinBytes = Encoding.UTF8.GetBytes(illuminaQualScore);
-            byte[] sangerQualScore = QualitativeSequence.ConvertEncodedQualityScore(FastQFormatType.Illumina_v1_3,FastQFormatType.Sanger, illuminaQualScoreinBytes);
+            var illuminaSequenceinBytes = Encoding.UTF8.GetBytes(illuminaSequence);
+            var illuminaQualScoreinBytes = Encoding.UTF8.GetBytes(illuminaQualScore);
+            var sangerQualScore = QualitativeSequence.ConvertEncodedQualityScore(FastQFormatType.Illumina_v1_3,FastQFormatType.Sanger, illuminaQualScoreinBytes);
 
-            string qualSequenceSanger = new string(Encoding.UTF8.GetChars(sangerQualScore));
+            var qualSequenceSanger = new string(Encoding.UTF8.GetChars(sangerQualScore));
 
             // Validate converted sanger score.
             Assert.AreEqual(expectedSangerQualScore, qualSequenceSanger);
@@ -373,9 +373,9 @@ namespace Bio.Tests
             ApplicationLog.WriteLine(string.Format((IFormatProvider)null,
                 "Qualitative Sequence BVT:Qualitative Sanger score type {0} is as expected.",
                 sangerQualScore));
-            byte[] solexaQualScore = QualitativeSequence.ConvertEncodedQualityScore(FastQFormatType.Illumina_v1_3, FastQFormatType.Solexa_Illumina_v1_0, illuminaQualScoreinBytes);
+            var solexaQualScore = QualitativeSequence.ConvertEncodedQualityScore(FastQFormatType.Illumina_v1_3, FastQFormatType.Solexa_Illumina_v1_0, illuminaQualScoreinBytes);
 
-            string qualSequenceSolexa = new string(Encoding.UTF8.GetChars(solexaQualScore));
+            var qualSequenceSolexa = new string(Encoding.UTF8.GetChars(solexaQualScore));
 
             // Validate converted illumina score.
             Assert.AreEqual(expectedSolexaQualScore, qualSequenceSolexa);
@@ -398,22 +398,22 @@ namespace Bio.Tests
             string nodeName, QualitativeSequenceParameters parameters)
         {
             //// Gets the actual sequence and the alphabet from the Xml
-            IAlphabet alphabet = Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(
+            var alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.AlphabetNameNode));
-            FastQFormatType expectedFormatType = Utility.GetFastQFormatType(
-                this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FastQFormatType));
-            string expectedScore = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedFormatType = Utility.GetFastQFormatType(
+                utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FastQFormatType));
+            var expectedScore = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExpectedScore);
             QualitativeSequence createdQualitativeSequence = null;
-            string inputSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var inputSequence = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.inputSequenceNode);
-            string expectedSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSequence = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExpectedSequenceNode);
-            string expectedSequenceCount = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSequenceCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.QSequenceCount);           
-            string inputQuality = this.utilityObj.xmlUtil.GetTextValue(
+            var inputQuality = utilityObj.xmlUtil.GetTextValue(
             nodeName, Constants.InputByteArrayNode);            
-            Byte[] inputScoreArray = Encoding.UTF8.GetBytes(inputQuality);
+            var inputScoreArray = Encoding.UTF8.GetBytes(inputQuality);
 
             // Create and validate Qualitative Sequence.
             switch (parameters)
@@ -422,22 +422,22 @@ namespace Bio.Tests
                 case QualitativeSequenceParameters.Score:
                     createdQualitativeSequence = new QualitativeSequence(alphabet, expectedFormatType,
                     inputSequence, inputQuality);
-                    int count = 0;
+                    var count = 0;
                     // Validate score
-                    foreach (byte qualScore in createdQualitativeSequence.GetEncodedQualityScores())
+                    foreach (var qualScore in createdQualitativeSequence.GetEncodedQualityScores())
                     {
                         Assert.AreEqual(qualScore, inputScoreArray[count]);
                         count++;
                     }
                     break;
                 case QualitativeSequenceParameters.ByteArray:
-                    byte[] scoreValue = Encoding.UTF8.GetBytes(inputSequence);          
-                    int index = 0;
+                    var scoreValue = Encoding.UTF8.GetBytes(inputSequence);          
+                    var index = 0;
                     createdQualitativeSequence = new QualitativeSequence(alphabet, expectedFormatType,
                     scoreValue, inputScoreArray);
 
                     // Validate score
-                    foreach (byte qualScore in createdQualitativeSequence.GetEncodedQualityScores())
+                    foreach (var qualScore in createdQualitativeSequence.GetEncodedQualityScores())
                     {
                         Assert.AreEqual(qualScore, inputScoreArray[index]);
                         index++;
@@ -447,7 +447,7 @@ namespace Bio.Tests
                     break;
             }
 
-            string qualitativeSequence = new string(createdQualitativeSequence.Select(a => (char)a).ToArray());
+            var qualitativeSequence = new string(createdQualitativeSequence.Select(a => (char)a).ToArray());
 
             // Validate createdSequence qualitative sequence.
             Assert.IsNotNull(createdQualitativeSequence);

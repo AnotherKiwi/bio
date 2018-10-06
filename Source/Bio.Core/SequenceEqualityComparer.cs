@@ -19,12 +19,12 @@ namespace Bio
         {
             if (firstSequence == null)
             {
-                throw new ArgumentNullException("firstSequence");
+                throw new ArgumentNullException(nameof(firstSequence));
             }
 
             if (secondSequence == null)
             {
-                throw new ArgumentNullException("secondSequence");
+                throw new ArgumentNullException(nameof(secondSequence));
             }
 
             if (firstSequence.Count == secondSequence.Count)

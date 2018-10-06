@@ -58,23 +58,23 @@ namespace Bio.Variant
             }
 
             ValidateNoOverlappingGaps (refseq, query);
-            byte gap = DnaAlphabet.Instance.Gap;
+            var gap = DnaAlphabet.Instance.Gap;
             // Keep left aligning until we can't anymore, this is a 
             // do while loop because some downstream left alignments open up
             // further ones upstream, even though this is rare.
-            int change_count = 0;
-            int loopsThrough = 0;
+            var change_count = 0;
+            var loopsThrough = 0;
             do
             {
                 loopsThrough++;
                 change_count = 0;
-                for (int i = 1; i < refseq.Length; i++)
+                for (var i = 1; i < refseq.Length; i++)
                 {
                     if (refseq[i] == gap)
                     {
-                        int len = GetGapLength(i, refseq);
-                        int left_side = i - 1;
-                        int right_side = i  - 1 + len;
+                        var len = GetGapLength(i, refseq);
+                        var left_side = i - 1;
+                        var right_side = i  - 1 + len;
                         while (left_side >= 0 && refseq[left_side] != gap && (refseq[left_side] == query[right_side].BP))
                         {
                             // Move the gap left.
@@ -92,9 +92,9 @@ namespace Bio.Variant
                     }
                     else if (query[i].BP == gap)
                     {
-                        int len = GetGapLength(i, query);
-                        int left_side = i - 1;
-                        int right_side = i - 1 + len;
+                        var len = GetGapLength(i, query);
+                        var left_side = i - 1;
+                        var right_side = i - 1 + len;
                         while (left_side >= 0 && query[left_side].BP != gap && (query[left_side].BP == refseq[right_side]))
                         {
                             // Move the gap left.
@@ -126,7 +126,7 @@ namespace Bio.Variant
         public static int GetGapLength(int pos, BPandQV[] array)
         {
             var gap = DnaAlphabet.Instance.Gap;
-            int len = 1;
+            var len = 1;
             while (++pos < array.Length)
             {
                 if (array[pos].BP == gap)
@@ -153,7 +153,7 @@ namespace Bio.Variant
         public static int GetGapLength(int pos, byte[] array)
         {
             var gap = DnaAlphabet.Instance.Gap;
-            int len = 1;
+            var len = 1;
             while (++pos < array.Length)
             {
                 if (array[pos] == gap)
@@ -178,7 +178,7 @@ namespace Bio.Variant
         internal static void ValidateNoOverlappingGaps(byte[] seq1, BPandQV[] seq2)
         {
             var gap = DnaAlphabet.Instance.Gap;
-            for(int i=0;i<seq1.Length;i++)
+            for(var i=0;i<seq1.Length;i++)
             {
                 if (seq1[i] == gap && seq2[i].BP == gap)
                     throw new Exception("You have an alignment with overlapping gaps.  Input problem!");
@@ -199,12 +199,12 @@ namespace Bio.Variant
         /// <param name="flipHpQvValues">If set to <c>true</c> flip hp qv values.</param>
         internal static BPandQV[] GetReverseComplementedSequence(BPandQV[] toFlip, bool flipHpQvValues = false)
         {
-            BPandQV[] newData = new BPandQV[toFlip.Length];
+            var newData = new BPandQV[toFlip.Length];
 
             for (long index = 0; index < toFlip.Length; index++)
             {
                 byte complementedSymbol;
-                byte symbol = toFlip[toFlip.Length - index - 1].BP;
+                var symbol = toFlip[toFlip.Length - index - 1].BP;
 
                 if (!DnaAlphabet.Instance.TryGetComplementSymbol(symbol, out complementedSymbol))
                 {
@@ -233,11 +233,11 @@ namespace Bio.Variant
             // Basic idea is to assume it is A, C, G, T alphabet and flip HP values
             // Also assumes all low QV is due to HP deletion/insertion error.
             if (toFlip.Length > 1) {
-                byte lastbp = toFlip [0].BP;
-                int firstPos = 0;
-                int curLength = 1;
-                for (int i = 1; i < toFlip.Length; i++) {
-                    byte newbp = toFlip [i].BP;
+                var lastbp = toFlip [0].BP;
+                var firstPos = 0;
+                var curLength = 1;
+                for (var i = 1; i < toFlip.Length; i++) {
+                    var newbp = toFlip [i].BP;
                     if (newbp != lastbp) {
                         if (curLength > 1) {
                             var right = toFlip [i - 1];

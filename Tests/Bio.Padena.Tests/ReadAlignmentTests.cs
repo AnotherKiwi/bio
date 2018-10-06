@@ -20,17 +20,17 @@ namespace Bio.Padena.Tests
         {
             IList<ISequence> contigs = new List<ISequence>();
             IList<ISequence> reads = new List<ISequence>();
-            Sequence seq = new Sequence(Alphabets.DNA, "TCTGATAAGG".Select(a => (byte)a).ToArray());
+            var seq = new Sequence(Alphabets.DNA, "TCTGATAAGG".Select(a => (byte)a).ToArray());
             seq.ID = "1";
             contigs.Add(seq);
-            Sequence read = new Sequence(Alphabets.DNA, "CTGATAAGG".Select(a => (byte)a).ToArray());
+            var read = new Sequence(Alphabets.DNA, "CTGATAAGG".Select(a => (byte)a).ToArray());
             read.ID = "2";
             reads.Add(read);
             const int kmerLength = 6;
-            IList<Contig> alignment = ReadAlignment.ReadContigAlignment(contigs, reads, kmerLength);
+            var alignment = ReadAlignment.ReadContigAlignment(contigs, reads, kmerLength);
             Assert.AreEqual(alignment.Count, contigs.Count);
-            Contig contig = alignment.First();
-            Contig.AssembledSequence sequence = contig.Sequences.First();
+            var contig = alignment.First();
+            var sequence = contig.Sequences.First();
             Assert.AreEqual(sequence.Length, 9);
             Assert.AreEqual(sequence.Position, 1);
             Assert.AreEqual(sequence.ReadPosition, 0);
@@ -47,17 +47,17 @@ namespace Bio.Padena.Tests
         {
             IList<ISequence> contigs = new List<ISequence>();
             IList<ISequence> reads = new List<ISequence>();
-            Sequence seq = new Sequence(Alphabets.DNA, "TCTGATAAGG".Select(a => (byte)a).ToArray());
+            var seq = new Sequence(Alphabets.DNA, "TCTGATAAGG".Select(a => (byte)a).ToArray());
             seq.ID = "1";
             contigs.Add(seq);
-            Sequence read = new Sequence(Alphabets.DNA, "CCTTATCAG".Select(a => (byte)a).ToArray());
+            var read = new Sequence(Alphabets.DNA, "CCTTATCAG".Select(a => (byte)a).ToArray());
             read.ID = "2";
             reads.Add(read);
             const int kmerLength = 6;
-            IList<Contig> alignment = ReadAlignment.ReadContigAlignment(contigs, reads, kmerLength);
+            var alignment = ReadAlignment.ReadContigAlignment(contigs, reads, kmerLength);
             Assert.AreEqual(alignment.Count, contigs.Count);
-            Contig contig = alignment.First();
-            Contig.AssembledSequence sequence = contig.Sequences.First();
+            var contig = alignment.First();
+            var sequence = contig.Sequences.First();
             Assert.AreEqual(sequence.Length, 9);
             Assert.AreEqual(sequence.Position, 1);
             Assert.AreEqual(sequence.ReadPosition, 0);
@@ -75,7 +75,7 @@ namespace Bio.Padena.Tests
             const int kmerLength = 6;
 
             IList<ISequence> readSeqs = new List<ISequence>();
-            Sequence read = new Sequence(Alphabets.DNA, "GATGCCTC".Select(a => (byte)a).ToArray());
+            var read = new Sequence(Alphabets.DNA, "GATGCCTC".Select(a => (byte)a).ToArray());
             read.ID = "0";
             readSeqs.Add(read);
             read = new Sequence(Alphabets.DNA, "CCTCCTAT".Select(a => (byte)a).ToArray());
@@ -94,10 +94,10 @@ namespace Bio.Padena.Tests
             IList<ISequence> contigs = new List<ISequence> { new Sequence(Alphabets.DNA, 
                 "GATGCCTCCTATC".Select(a => (byte)a).ToArray()) };
 
-            IList<Contig> maps = ReadAlignment.ReadContigAlignment(contigs, readSeqs, kmerLength);
-            Contig contig = maps.First();
+            var maps = ReadAlignment.ReadContigAlignment(contigs, readSeqs, kmerLength);
+            var contig = maps.First();
             Assert.AreEqual(contig.Consensus, contigs.First());
-            IList<Contig.AssembledSequence> readMap = Sort(contig.Sequences);
+            var readMap = Sort(contig.Sequences);
             Assert.AreEqual(readMap[0].Length, 8);
             Assert.AreEqual(readMap[0].Position, 4);
             Assert.AreEqual(readMap[0].ReadPosition, 0);
@@ -137,7 +137,7 @@ namespace Bio.Padena.Tests
         {
             const int kmerLength = 6;
             IList<ISequence> readSeqs = new List<ISequence>();
-            Sequence read = new Sequence(Alphabets.DNA, "GATCTGATAA".Select(a => (byte)a).ToArray());
+            var read = new Sequence(Alphabets.DNA, "GATCTGATAA".Select(a => (byte)a).ToArray());
             read.ID = "0";
             readSeqs.Add(read);
             read = new Sequence(Alphabets.DNA, "ATCTGATAAG".Select(a => (byte)a).ToArray());
@@ -163,7 +163,7 @@ namespace Bio.Padena.Tests
             IList<Contig> maps = 
                 ReadAlignment.ReadContigAlignment(contigs, readSeqs, kmerLength).OrderBy(t => t.Consensus.ToString()).ToList();
             Assert.AreEqual(maps.Count, contigs.Count);
-            IList<Contig.AssembledSequence> readMap = Sort(maps.First().Sequences);
+            var readMap = Sort(maps.First().Sequences);
 
             Assert.AreEqual(readMap[0].Length, 10);
             Assert.AreEqual(readMap[0].Position, 1);

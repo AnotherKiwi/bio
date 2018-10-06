@@ -27,7 +27,7 @@ namespace Bio.IO.GenBank
         private SequenceFeatures(SequenceFeatures other)
         {
             All = new List<FeatureItem>();
-            foreach (FeatureItem feature in other.All)
+            foreach (var feature in other.All)
             {
                 All.Add(feature.Clone());
             }

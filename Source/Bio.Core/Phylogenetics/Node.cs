@@ -16,7 +16,7 @@ namespace Bio.Phylogenetics
         /// </summary>
         public Node()
         {
-            this.children = new Dictionary<Node, Edge>();
+            children = new Dictionary<Node, Edge>();
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace Bio.Phylogenetics
         {
             get
             {
-                return this.children;
+                return children;
             }
         }
 
@@ -43,7 +43,7 @@ namespace Bio.Phylogenetics
         {
             get
             {
-                return this.children.Keys.ToList();
+                return children.Keys.ToList();
             }
         }
 
@@ -54,7 +54,7 @@ namespace Bio.Phylogenetics
         {
             get
             {
-                return this.children.Values.ToList();
+                return children.Values.ToList();
             }
         }
 
@@ -65,7 +65,7 @@ namespace Bio.Phylogenetics
         {
             get
             {
-                return this.Children.Keys.Count == 0;
+                return Children.Keys.Count == 0;
             }
         }
 
@@ -85,7 +85,7 @@ namespace Bio.Phylogenetics
         /// <returns>Node as object</returns>
         public Node Clone()
         {
-            return (Node)this.MemberwiseClone();
+            return (Node)MemberwiseClone();
         }
     }
 }

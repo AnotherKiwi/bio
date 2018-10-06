@@ -21,10 +21,10 @@ namespace Bio.Platform.Helpers
             var assemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
 
             // Add additional ones from the path.
-            string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             if (!string.IsNullOrEmpty(path))
             {
-                foreach (string dll in Directory.GetFiles(path, "*.dll"))
+                foreach (var dll in Directory.GetFiles(path, "*.dll"))
                 {
                     Assembly asm = null;
                     try
@@ -90,8 +90,8 @@ namespace Bio.Platform.Helpers
         /// <returns>Stream</returns>
         public Stream CreateTempStream()
         {
-            string tempFilename = Path.GetTempFileName();
-            FileStream stream = new FileStream(tempFilename, FileMode.Create, FileAccess.ReadWrite);
+            var tempFilename = Path.GetTempFileName();
+            var stream = new FileStream(tempFilename, FileMode.Create, FileAccess.ReadWrite);
             return new TemporaryStream(stream, s =>
             {
                 s.Dispose();

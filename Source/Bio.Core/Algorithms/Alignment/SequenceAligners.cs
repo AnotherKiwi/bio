@@ -26,7 +26,7 @@ namespace Bio.Algorithms.Alignment
             var knownAligners = new List<ISequenceAligner> { SmithWaterman, NeedlemanWunsch, MUMmer, NUCmer };
 
             // Get the registered aligners
-            IEnumerable<ISequenceAligner> registeredAligners = GetAligners();
+            var registeredAligners = GetAligners();
             if (null != registeredAligners)
             {
                 knownAligners.AddRange(registeredAligners
@@ -79,7 +79,7 @@ namespace Bio.Algorithms.Alignment
             {
                 try
                 {
-                    ISequenceAligner aligner = Activator.CreateInstance(impl) as ISequenceAligner;
+                    var aligner = Activator.CreateInstance(impl) as ISequenceAligner;
                     if (aligner != null)
                         registeredAligners.Add(aligner);
                 }

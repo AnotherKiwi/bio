@@ -19,7 +19,7 @@ namespace Bio.Pamsam.Tests
         [Test]
         public void TestKimuraDistanceMatrixGenerator()
         {
-            List<ISequence> sequences = new List<ISequence>
+            var sequences = new List<ISequence>
             {
                 new Sequence(Alphabets.DNA, "GGGAA----ATC-G"),
                 new Sequence(Alphabets.DNA, "GGGAATC-AATCAG"),
@@ -48,13 +48,13 @@ namespace Bio.Pamsam.Tests
             Console.WriteLine("Kimura Distance of sequence 2, and 3 is: {0}", distanceScore);
 
 
-            KimuraDistanceMatrixGenerator kimuraDistanceMatrixGenerator = new KimuraDistanceMatrixGenerator();
+            var kimuraDistanceMatrixGenerator = new KimuraDistanceMatrixGenerator();
             PAMSAMMultipleSequenceAligner.ParallelOption = new ParallelOptions { MaxDegreeOfParallelism = 2 };
             kimuraDistanceMatrixGenerator.GenerateDistanceMatrix(sequences);
 
-            for (int i = 0; i < sequences.Count - 1; ++i)
+            for (var i = 0; i < sequences.Count - 1; ++i)
             {
-                for (int j = i + 1; j < sequences.Count; ++j)
+                for (var j = i + 1; j < sequences.Count; ++j)
                 {
                     distanceScore = KimuraDistanceScoreCalculator.CalculateDistanceScore(sequences[i], sequences[j]);
                     Console.WriteLine("Kimura Distance of sequence {0}, and {1} is: {2}", i, j, distanceScore);

@@ -67,7 +67,7 @@ namespace Bio.Util.ArgumentParser
         /// <param name="generateHelpPage">True/False whether to generate help or throw HelpException</param>
         public static void ConstructAndRun<T>(string[] commandArgs, bool generateHelpPage) where T : IRunnable
         {
-            CommandArguments command = new CommandArguments(commandArgs);
+            var command = new CommandArguments(commandArgs);
             command.GenerateHelpPage = generateHelpPage;
             command.ConstructAndRun<T>();
         }
@@ -81,7 +81,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns>The fully instantiated object</returns>
         public static T Construct<T>(string[] commandArgs)
         {
-            CommandArguments command = new CommandArguments(commandArgs);
+            var command = new CommandArguments(commandArgs);
             return command.Construct<T>();
         }
 
@@ -94,7 +94,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns>The fully instantiated object</returns>
         public static T Construct<T>(string commandString)
         {
-            CommandArguments command = new CommandArguments(commandString);
+            var command = new CommandArguments(commandString);
             return command.Construct<T>();
         }
 
@@ -117,7 +117,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns>The result</returns>
         public static CommandArguments FromParsable(object obj, bool suppressDefaults = true)
         {
-            CommandArguments cmd = new CommandArguments();
+            var cmd = new CommandArguments();
             cmd.PopulateFromParsableObject(obj, suppressDefaults);
             return cmd;
         }
@@ -141,18 +141,18 @@ namespace Bio.Util.ArgumentParser
         /// <param name="requiredParamsOrNull">Required Params Or Null.</param>
         /// <param name="constructingType">Constructing Type.</param>
         /// <returns>Created Usage String.</returns>
-        protected override string CreateUsageString(IEnumerable<System.Reflection.MemberInfo> requireds, System.Reflection.MemberInfo requiredParamsOrNull, Type constructingType)
+        protected override string CreateUsageString(IEnumerable<MemberInfo> requireds, MemberInfo requiredParamsOrNull, Type constructingType)
         {
-            string exeName = Path.GetFileName(Assembly.
+            var exeName = Path.GetFileName(Assembly.
 #if !SILVERLIGHT
                 GetEntryAssembly().Location);
 #else
                 GetExecutingAssembly().Location);
 #endif
-            string baseString = string.Format("{0} [OPTIONS] {1}", exeName, requireds.Select(member => member.Name).StringJoin(" "));
+            var baseString = string.Format("{0} [OPTIONS] {1}", exeName, requireds.Select(member => member.Name).StringJoin(" "));
             if (null != requiredParamsOrNull)
             {
-                string opName = requiredParamsOrNull.Name.EndsWith("s", StringComparison.CurrentCultureIgnoreCase) ?
+                var opName = requiredParamsOrNull.Name.EndsWith("s", StringComparison.CurrentCultureIgnoreCase) ?
                     requiredParamsOrNull.Name.Substring(0, requiredParamsOrNull.Name.Length - 1) :
                     requiredParamsOrNull.Name;
 
@@ -192,7 +192,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns>True if extracted Optional Flag Internal.</returns>
         protected override bool ExtractOptionalFlagInternal(string flag, bool removeFlag)
         {
-            int argIndex = FindFlag(flag);
+            var argIndex = FindFlag(flag);
 
             if (argIndex == -1)
             {

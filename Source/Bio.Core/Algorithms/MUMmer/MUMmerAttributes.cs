@@ -18,7 +18,7 @@ namespace Bio.Algorithms.MUMmer
         /// </summary>
         public MUMmerAttributes()
         {
-            AlignmentInfo alignmentAttribute = new AlignmentInfo(
+            var alignmentAttribute = new AlignmentInfo(
                     Properties.Resource.LENGTH_OF_MUM_NAME,
                     Properties.Resource.LENGTH_OF_MUM_DESCRIPTION,
                     true,

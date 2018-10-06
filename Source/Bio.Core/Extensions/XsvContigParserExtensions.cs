@@ -20,11 +20,11 @@ namespace Bio.IO.Xsv
         {
             if (parser == null)
             {
-                throw new ArgumentNullException("parser");
+                throw new ArgumentNullException(nameof(parser));
             }
             if (string.IsNullOrWhiteSpace(filename))
             {
-                throw new ArgumentNullException("filename");
+                throw new ArgumentNullException(nameof(filename));
             }
 
             using (var fs = File.OpenRead(filename))

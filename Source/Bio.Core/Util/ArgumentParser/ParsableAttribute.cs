@@ -121,7 +121,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns>Type of Parse.</returns>
         public static Type GetParseTypeOrNull(this MemberInfo member)
         {
-            ParseAttribute parseAttribute = (ParseAttribute)Attribute.GetCustomAttribute(member, typeof(ParseAttribute));
+            var parseAttribute = (ParseAttribute)Attribute.GetCustomAttribute(member, typeof(ParseAttribute));
             return parseAttribute == null ? null : parseAttribute.ParseTypeOrNull;
         }
 
@@ -132,7 +132,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns>Default Parameter or null.</returns>
         public static string GetDefaultParametersOrNull(this MemberInfo member)
         {
-            ParseAttribute parseAttribute = (ParseAttribute)Attribute.GetCustomAttribute(member, typeof(ParseAttribute));
+            var parseAttribute = (ParseAttribute)Attribute.GetCustomAttribute(member, typeof(ParseAttribute));
             return parseAttribute == null ? null : parseAttribute.DefaultParameters;
         }
 
@@ -152,7 +152,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns>Parse Attribute.</returns>
         public static ParseAttribute GetParseAttribute(this MemberInfo member, Type[] actualTypeInheritanceHierarchy)
         {
-            ParseAttribute pa = _parseAttributeCache.GetOrAdd(member, (m) => GetParseAttributeInternal(m, actualTypeInheritanceHierarchy));
+            var pa = _parseAttributeCache.GetOrAdd(member, (m) => GetParseAttributeInternal(m, actualTypeInheritanceHierarchy));
             //ParseAttribute pa;
             //if (!_parseAttributeCache.Value.TryGetValue(member, out pa))
             //{
@@ -173,7 +173,7 @@ namespace Bio.Util.ArgumentParser
             // march up the stack, starting at the actual type's base. If we find the member before we find a ParseExplicit, we're ok to parse this.
             // If we find a parseExplicity first, then we know we can't parse this member.  If a member is declared in the first class that we see ParseExplicit, 
             // keep it, because we define ParseExplicit as "keep for this and all derived types"
-            for (int i = actualTypeInheritanceHierarchy.Length - 1; i >= 0; i--)
+            for (var i = actualTypeInheritanceHierarchy.Length - 1; i >= 0; i--)
             {
                 if (member.DeclaringType.Equals(actualTypeInheritanceHierarchy[i]))
                     break;
@@ -181,17 +181,17 @@ namespace Bio.Util.ArgumentParser
                     return DefaultIgnoreAttribute;
             }
 
-            ParseAttribute parseAttribute = (ParseAttribute)Attribute.GetCustomAttribute(member, typeof(ParseAttribute));
+            var parseAttribute = (ParseAttribute)Attribute.GetCustomAttribute(member, typeof(ParseAttribute));
             if (IsIndexer(member))
             {
                 Helper.CheckCondition<ParseException>(parseAttribute == null || parseAttribute.Action == ParseAction.Ignore, "Can't parse an Indexer.");
                 return DefaultIgnoreAttribute;
             }
 
-            PropertyInfo property = member as PropertyInfo;
+            var property = member as PropertyInfo;
             if (parseAttribute == null)
             {
-                FieldInfo field = member as FieldInfo;
+                var field = member as FieldInfo;
                 if (field != null)
                 {
                     return field.IsPublic ? DefaultOptionalAttribute : DefaultIgnoreAttribute;
@@ -265,7 +265,7 @@ namespace Bio.Util.ArgumentParser
 
             if (IsCollection(type))
             {
-                string targetString = string.Format("IEnumerable<{0}>", typeof(T).ToTypeString());
+                var targetString = string.Format("IEnumerable<{0}>", typeof(T).ToTypeString());
                 return type.GetInterfaces().Any(interface1 => interface1.ToTypeString().Equals(targetString));
             }
             else
@@ -282,7 +282,7 @@ namespace Bio.Util.ArgumentParser
             if (type == null)
                 return false;
 
-            bool result =
+            var result =
 #if !SILVERLIGHT
                 type.FindInterfaces(Module.FilterTypeNameIgnoreCase, "ICollection*").Length > 0;
 #else
@@ -298,7 +298,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns>True if parse as collection.</returns>
         public static bool ParseAsCollection(this Type parseType)
         {
-            bool result = !Attribute.IsDefined(parseType, typeof(ParseAsNonCollectionAttribute)) &&
+            var result = !Attribute.IsDefined(parseType, typeof(ParseAsNonCollectionAttribute)) &&
                 parseType.IsCollection()
                 && !parseType.HasParseMethod();
             return result;
@@ -332,7 +332,7 @@ namespace Bio.Util.ArgumentParser
             if (obj == null)
                 return null;
 
-            Type t = obj.GetType();
+            var t = obj.GetType();
             if (t.HasParseMethod() || !t.IsConstructable())
                 return obj.ToString();
             else if (obj is IEnumerable)
@@ -343,7 +343,7 @@ namespace Bio.Util.ArgumentParser
                 return ConstructorArguments.ToString(obj);    // can only get here if t is constructable.
             else
             {
-                object valueAsParseType = ArgumentCollection.ImplicitlyCastValueToType(obj, parseTypeOrNull);
+                var valueAsParseType = ArgumentCollection.ImplicitlyCastValueToType(obj, parseTypeOrNull);
                 return ConstructorArguments.ToString(valueAsParseType, suppressDefaults);
             }
         }

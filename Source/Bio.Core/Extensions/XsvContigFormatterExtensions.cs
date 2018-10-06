@@ -19,15 +19,15 @@ namespace Bio.IO.Xsv
         {
             if (formatter == null)
             {
-                throw new ArgumentNullException("formatter");
+                throw new ArgumentNullException(nameof(formatter));
             }
             if (contig == null)
             {
-                throw new ArgumentNullException("contig");
+                throw new ArgumentNullException(nameof(contig));
             }
             if (string.IsNullOrWhiteSpace(filename))
             {
-                throw new ArgumentNullException("filename");
+                throw new ArgumentNullException(nameof(filename));
             }
 
             using (var fs = File.Create(filename))
@@ -45,11 +45,11 @@ namespace Bio.IO.Xsv
         {
             if (formatter == null)
             {
-                throw new ArgumentNullException("formatter");
+                throw new ArgumentNullException(nameof(formatter));
             }
             if (contig == null)
             {
-                throw new ArgumentNullException("contig");
+                throw new ArgumentNullException(nameof(contig));
             }
             var fs = ParserFormatterExtensions<ISequenceFormatter>.GetOpenStream(formatter, true);
             if (fs != null)

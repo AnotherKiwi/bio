@@ -49,7 +49,7 @@ namespace Bio.Algorithms.Kmer
         /// <returns>Decompressed value of the kmer.</returns>
         public byte[] GetOriginalSymbols(int kmerLength)
         {
-            return ConvertLongToSequence(this.KmerData, kmerLength);
+            return ConvertLongToSequence(KmerData, kmerLength);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace Bio.Algorithms.Kmer
         /// <returns>Returns the reverse complement of the decompressed kmer.</returns>
         public byte[] GetReverseComplementOfOriginalSymbols(int kmerLength)
         {
-            return ConvertLongToSequence(GetReverseComplement(this.KmerData, kmerLength), kmerLength);
+            return ConvertLongToSequence(GetReverseComplement(KmerData, kmerLength), kmerLength);
         }
 
         /// <summary>
@@ -72,11 +72,11 @@ namespace Bio.Algorithms.Kmer
         {
             if (sequence == null)
             {
-                throw new ArgumentNullException("sequence");
+                throw new ArgumentNullException(nameof(sequence));
             }
 
             ulong compressedKmer = 0;
-            for (long index = from; index < from + kmerLength; index++)
+            for (var index = from; index < from + kmerLength; index++)
             {
                 ulong value;
                 switch (sequence[index])
@@ -103,7 +103,7 @@ namespace Bio.Algorithms.Kmer
                 compressedKmer = (compressedKmer << 2) + value;
             }
 
-            return this.SetKmerData(compressedKmer, kmerLength);
+            return SetKmerData(compressedKmer, kmerLength);
         }
         /// <summary>
         /// Iterates through a sequence producing all possible kmers in it.
@@ -114,16 +114,16 @@ namespace Bio.Algorithms.Kmer
         public static KmerData32[] GetKmers(ISequence sequence, int kmerLength)
         {
             if (sequence == null)
-                throw new ArgumentNullException("sequence");
+                throw new ArgumentNullException(nameof(sequence));
 
-            long count = sequence.Count;
+            var count = sequence.Count;
             if (kmerLength > count || kmerLength > MAX_KMER_LENGTH)
-                throw new ArgumentException("Invalid k-mer length - cannot exceed " + MAX_KMER_LENGTH, "kmerLength");
+                throw new ArgumentException("Invalid k-mer length - cannot exceed " + MAX_KMER_LENGTH, nameof(kmerLength));
 
-            KmerData32[] kmers = new KmerData32[count - kmerLength + 1];
+            var kmers = new KmerData32[count - kmerLength + 1];
             
             //First to make a mask to hide higher bits as we move things over
-            ulong mask = ulong.MaxValue;//should be all bits in ulong
+            var mask = ulong.MaxValue;//should be all bits in ulong
             mask <<= (kmerLength * 2);//move mask over filling in regions to keep with zeros
             mask = ~mask;//then flip the bits to get the mask
             
@@ -158,7 +158,7 @@ namespace Bio.Algorithms.Kmer
                     //hide top bits
                     compressedKmer = compressedKmer & mask;
                     //get reverse compliment
-                    KmerData32 nk = new KmerData32();
+                    var nk = new KmerData32();
                     nk.SetKmerData(compressedKmer, kmerLength);
                     kmers[i - kmerLength + 1] = nk;
                 }
@@ -172,15 +172,15 @@ namespace Bio.Algorithms.Kmer
         /// <param name="kmerLength">Length of the kmer.</param>
         public bool SetKmerData(ulong encodedKmer, int kmerLength)
         {
-            this.KmerData = encodedKmer;
+            KmerData = encodedKmer;
             // Get the Reverse Complement value. This is a duplication of the code in a method of this class
             // perhaps put here to ensure the method is inlined?
-            ulong revComplementKey = GetReverseComplement(encodedKmer, kmerLength);
+            var revComplementKey = GetReverseComplement(encodedKmer, kmerLength);
             //equal values should be impossible with odd length k-mer
-            bool forwardOrientation = this.KmerData >= revComplementKey;
+            var forwardOrientation = KmerData >= revComplementKey;
             if (!forwardOrientation)
             {
-                this.KmerData = revComplementKey;
+                KmerData = revComplementKey;
             }
             return forwardOrientation;
         }
@@ -195,12 +195,12 @@ namespace Bio.Algorithms.Kmer
         public void SetKmerData(byte[] sequence, int kmerLength)
         {
             if (sequence == null)
-                throw new ArgumentNullException("sequence");
+                throw new ArgumentNullException(nameof(sequence));
 
             if (sequence.Length > kmerLength)
                 throw new ArgumentException("sub-sequence length cannot be more than the kmer length");
 
-            this.KmerData = ConvertSequenceToLong(sequence);
+            KmerData = ConvertSequenceToLong(sequence);
         }
 
         /// <summary>
@@ -209,7 +209,7 @@ namespace Bio.Algorithms.Kmer
         /// <returns>True if the kmer value is palindrome else false.</returns>
         public bool IsPalindrome(int kmerLength)
         {
-            return (this.KmerData.Equals(GetReverseComplement(this.KmerData, kmerLength)));
+            return (KmerData.Equals(GetReverseComplement(KmerData, kmerLength)));
         }
 
         /// <summary>
@@ -223,7 +223,7 @@ namespace Bio.Algorithms.Kmer
         /// </returns>
         public int CompareTo(KmerData32 other)
         {
-            return this.KmerData.CompareTo(other.KmerData);
+            return KmerData.CompareTo(other.KmerData);
         }
 
         /// <summary>
@@ -237,8 +237,8 @@ namespace Bio.Algorithms.Kmer
         /// </returns>
         public int CompareTo(object value)
         {
-            KmerData32 kmer = (KmerData32)value;
-            return this.KmerData.CompareTo(kmer.KmerData);
+            var kmer = (KmerData32)value;
+            return KmerData.CompareTo(kmer.KmerData);
         }
 
         /// <summary>
@@ -247,7 +247,7 @@ namespace Bio.Algorithms.Kmer
         /// <returns>Returns the first symbol from the decompressed kmer value.</returns>
         public byte GetFirstSymbol(int kmerLength, bool orientation)
         {
-            return orientation ? ConvertLongToSequence(this.KmerData, kmerLength)[0] : ConvertLongToSequence(GetReverseComplement(this.KmerData, kmerLength), kmerLength)[0];
+            return orientation ? ConvertLongToSequence(KmerData, kmerLength)[0] : ConvertLongToSequence(GetReverseComplement(KmerData, kmerLength), kmerLength)[0];
         }
 
         /// <summary>
@@ -256,7 +256,7 @@ namespace Bio.Algorithms.Kmer
         /// <returns>Returns the last symbol from the decompressed kmer value.</returns>
         public byte GetLastSymbol(int kmerLength, bool orientation)
         {
-            byte[] seq = ConvertLongToSequence(orientation ? this.KmerData : GetReverseComplement(this.KmerData, kmerLength), kmerLength);
+            var seq = ConvertLongToSequence(orientation ? KmerData : GetReverseComplement(KmerData, kmerLength), kmerLength);
             return seq[seq.Length - 1];
         }
 
@@ -267,7 +267,7 @@ namespace Bio.Algorithms.Kmer
         /// <returns>Decompressed value of the kmer.</returns>
         public byte[] GetKmerData(int kmerLength)
         {
-            return ConvertLongToSequence(this.KmerData, kmerLength);
+            return ConvertLongToSequence(KmerData, kmerLength);
         }
 
         /// <summary>
@@ -277,7 +277,7 @@ namespace Bio.Algorithms.Kmer
         /// <returns>Returns the reverse complement of the kmer.</returns>
         public byte[] GetReverseComplementOfKmerData(int kmerLength)
         {
-            return ConvertLongToSequence(GetReverseComplement(this.KmerData, kmerLength), kmerLength);
+            return ConvertLongToSequence(GetReverseComplement(KmerData, kmerLength), kmerLength);
         }
 
         /// <summary>
@@ -291,9 +291,9 @@ namespace Bio.Algorithms.Kmer
             ulong reverse = 0;
             checked
             {
-                for (int index = 0; index < kmerLength * 2; index += 2)
+                for (var index = 0; index < kmerLength * 2; index += 2)
                 {
-                    ulong bits = kmer & 3;
+                    var bits = kmer & 3;
                     kmer = kmer >> 2;
                     // Reversing the bits and adding to new long will generate reverse complement.
                     reverse = (reverse << 2) + ((~bits) & 3);
@@ -313,7 +313,7 @@ namespace Bio.Algorithms.Kmer
             ulong compressedKmer = 0;
 
             // Push each sequence alphabet in its binary represenatation into an long.
-            foreach (byte seq in sequence)
+            foreach (var seq in sequence)
             {
                 ulong value;
                 switch (seq)
@@ -355,7 +355,7 @@ namespace Bio.Algorithms.Kmer
             var seq = new byte[kmerLength];
 
             // Converting bits to sequence and adding to readonly false sequence. 
-            for (int index = 0; index < kmerLength; index++)
+            for (var index = 0; index < kmerLength; index++)
             {
                 switch (compressedKmer & 3)
                 {

@@ -38,7 +38,7 @@ namespace Bio.IO.BAM
         /// <param name="toAdd"></param>
         private void throwErrorIfUnacceptableItem(string toAdd)
         {
-            bool ok = ValidateItem(toAdd);
+            var ok = ValidateItem(toAdd);
             if (!ok)
             {
                 throw new ArgumentException("Tried to add: " + toAdd + " to a list of items where this was an acceptable value");

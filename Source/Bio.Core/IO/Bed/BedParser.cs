@@ -33,13 +33,13 @@ namespace Bio.IO.Bed
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
 
             var result = new List<ISequenceRange>();
             char[] splitters = { '\t' };
 
-            using (StreamReader reader = stream.OpenRead())
+            using (var reader = stream.OpenRead())
             {
                 string line;
                 while ((line = reader.ReadLine()) != null)
@@ -50,7 +50,7 @@ namespace Bio.IO.Bed
                         continue;
                     }
 
-                    string[] split = line.Split(splitters, StringSplitOptions.RemoveEmptyEntries);
+                    var split = line.Split(splitters, StringSplitOptions.RemoveEmptyEntries);
                     if (split.Length < 3)
                     {
                         continue;
@@ -117,10 +117,10 @@ namespace Bio.IO.Bed
         /// <returns>The sequence range groups.</returns>
         public SequenceRangeGrouping ParseRangeGrouping(Stream stream)
         {
-            var result = new SequenceRangeGrouping(this.ParseRange(stream));
+            var result = new SequenceRangeGrouping(ParseRange(stream));
             if (null == result.GroupIDs || !result.GroupIDs.Any())
             {
-                string message = string.Format(CultureInfo.CurrentCulture, Resource.INVALID_INPUT_FILE, this.Name);
+                var message = string.Format(CultureInfo.CurrentCulture, Resource.INVALID_INPUT_FILE, Name);
                 throw new InvalidDataException(message);
             }
             return result;

@@ -56,13 +56,13 @@ namespace Bio.Util
         /// <returns>The item's serial number</returns>
         public long GetNewOrOld(T item)
         {
-            long serialNumber = sortedItems[item];
+            var serialNumber = sortedItems[item];
 
             if (serialNumber == -1)
             {
-                serialNumber = this.unSortedItems.Count;
-                this.unSortedItems.Add(item);
-                this.sortedItems.Add(item, serialNumber);
+                serialNumber = unSortedItems.Count;
+                unSortedItems.Add(item);
+                sortedItems.Add(item, serialNumber);
             }
 
             return serialNumber;
@@ -75,15 +75,15 @@ namespace Bio.Util
         /// <returns>The items serial number</returns>
         public long GetNew(T item)
         {
-            long newSerialNumber = this.unSortedItems.Count;
-            bool isAdded = this.sortedItems.Add(item, newSerialNumber);
+            var newSerialNumber = unSortedItems.Count;
+            var isAdded = sortedItems.Add(item, newSerialNumber);
             if (!isAdded)
             {
                 throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, Properties.Resource.ExpectedItemToNotExist, item.ToString()));
             }
             else
             {
-                this.unSortedItems.Add(item);
+                unSortedItems.Add(item);
             }
 
             return newSerialNumber;
@@ -97,7 +97,7 @@ namespace Bio.Util
         public long GetOld(T item)
         {
             long serialNumber = -1;
-            bool result = TryGetOld(item, out serialNumber);
+            var result = TryGetOld(item, out serialNumber);
 
             if (!result)
             {
@@ -114,7 +114,7 @@ namespace Bio.Util
         {
             get
             {
-                return this.unSortedItems.Count - 1;
+                return unSortedItems.Count - 1;
             }
         }
 
@@ -126,7 +126,7 @@ namespace Bio.Util
         /// <returns>true if the item has previously been assigned a serial number; otherwise, false.</returns>
         public bool TryGetOld(T item, out long serialNumber)
         {
-            bool result = true;
+            var result = true;
             serialNumber = sortedItems[item];
             if (serialNumber == -1)
             {
@@ -144,7 +144,7 @@ namespace Bio.Util
         public bool Contains(T item)
         {
             long serialNumber=-1;
-            bool result = TryGetOld(item, out serialNumber);
+            var result = TryGetOld(item, out serialNumber);
             return result;
         }
 

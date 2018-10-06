@@ -113,7 +113,7 @@ namespace Bio.Variant
         /// <returns>A <see cref="System.String"/> that represents the current <see cref="Bio.Variant.IndelVariant"/>.</returns>
         public override string ToString ()
         {
-            var insert = this.InsertionOrDeletion == IndelType.Deletion ? "Deletion" : "Insertion";
+            var insert = InsertionOrDeletion == IndelType.Deletion ? "Deletion" : "Insertion";
             return string.Format ("[IndelVariant: InHomopolymer={0}, HomopolymerLengthInReference={1}, HomopolymerBase={2}, Type={3}]", InHomopolymer, HomopolymerLengthInReference, HomopolymerBase, insert);
         }
     }

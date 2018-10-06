@@ -23,7 +23,7 @@ namespace Bio.Algorithms.Kmer
         {
             get
             {
-                return this.kmerDictionary.Count;
+                return kmerDictionary.Count;
             }
         }
 
@@ -34,8 +34,8 @@ namespace Bio.Algorithms.Kmer
         /// <returns>The value associated with the specified key.</returns>
         public IList<long> this[ISequence key]
         {
-            get { return this.kmerDictionary[key]; }
-            set { this.kmerDictionary[key] = value; }
+            get { return kmerDictionary[key]; }
+            set { kmerDictionary[key] = value; }
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Bio.Algorithms.Kmer
         /// <returns>Enumerator over kmers.</returns>
         public Dictionary<ISequence, IList<long>>.Enumerator GetEnumerator()
         {
-            return this.kmerDictionary.GetEnumerator();
+            return kmerDictionary.GetEnumerator();
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Bio.Algorithms.Kmer
         /// <returns>Boolean indicating if key exists.</returns>
         public bool ContainsKey(ISequence key)
         {
-            return this.kmerDictionary.ContainsKey(key);
+            return kmerDictionary.ContainsKey(key);
         }
     }
 }

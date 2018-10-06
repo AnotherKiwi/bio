@@ -19,9 +19,9 @@ namespace Bio
         /// <param name="sequence2Start"> Start index of the second sequence.</param>
         public WordMatch(int length, int sequence1Start, int sequence2Start)
         {
-            this.Length = length;
-            this.Sequence1Start = sequence1Start;
-            this.Sequence2Start = sequence2Start;
+            Length = length;
+            Sequence1Start = sequence1Start;
+            Sequence2Start = sequence2Start;
         }
 
         /// <summary>
@@ -55,28 +55,28 @@ namespace Bio
         {
             completeList.Sort();
 
-            foreach (WordMatch wordMatch in completeList)
+            foreach (var wordMatch in completeList)
             {
                 if (!wordMatch.Deleted)
                 {
                     // First pos of match
-                    int deadx1 = wordMatch.Sequence1Start;
+                    var deadx1 = wordMatch.Sequence1Start;
 
                     // First pos of match
-                    int deady1 = wordMatch.Sequence2Start;
+                    var deady1 = wordMatch.Sequence2Start;
 
                     // Last pos of match
-                    int deadx2 = wordMatch.Sequence1Start + wordMatch.Length - 1;
+                    var deadx2 = wordMatch.Sequence1Start + wordMatch.Length - 1;
 
                     // Last pos of match
-                    int deady2 = wordMatch.Sequence2Start + wordMatch.Length - 1;
+                    var deady2 = wordMatch.Sequence2Start + wordMatch.Length - 1;
 
-                    foreach (WordMatch innerWordMatch in completeList)
+                    foreach (var innerWordMatch in completeList)
                     {
                         if (wordMatch != innerWordMatch && !innerWordMatch.Deleted)
                         {
                             // Want to remove this match if it is in the dead zone
-                            bool result = WordDeadZone(innerWordMatch, deadx1, deady1, deadx2, deady2, wordLength);
+                            var result = WordDeadZone(innerWordMatch, deadx1, deady1, deadx2, deady2, wordLength);
 
                             if (result)
                             {
@@ -105,18 +105,18 @@ namespace Bio
         {
             if (seq2 == null)
             {
-                throw new ArgumentNullException("seq2");
+                throw new ArgumentNullException(nameof(seq2));
             }
 
-            int i = 0;
-            int ilast = (int)seq2.Count - wordLength;
+            var i = 0;
+            var ilast = (int)seq2.Count - wordLength;
             var wordCurList = new List<WordMatch>();
             var hitList = new List<WordMatch>();
-            bool matched = false;
+            var matched = false;
 
             while (i < (ilast + 1))
             {
-                IList<long> positions =
+                var positions =
                     FindCorrespondingMatch(
                         new string(seq2.Skip(i).Take(wordLength).Select(a => (char)a).ToArray()),
                         kmerList);
@@ -128,18 +128,18 @@ namespace Bio
 
                     if (wordCurList.Count > 0)
                     {
-                        WordMatch curmatch = wordCurList[0];
+                        var curmatch = wordCurList[0];
                         kcur = curmatch.Sequence1Start + curmatch.Length - wordLength + 1;
                         kcur2 = curmatch.Sequence2Start + curmatch.Length - wordLength + 1;
                     }
 
                     foreach (int position in positions)
                     {
-                        int knew = position;
+                        var knew = position;
 
                         matched = false;
 
-                        foreach (WordMatch curmatch in wordCurList)
+                        foreach (var curmatch in wordCurList)
                         {
                             if (!curmatch.Deleted)
                             {
@@ -177,7 +177,7 @@ namespace Bio
 
             wordCurList.Sort();
 
-            foreach (WordMatch curmatch in wordCurList)
+            foreach (var curmatch in wordCurList)
             {
                 curmatch.Deleted = false;
             }
@@ -293,7 +293,7 @@ namespace Bio
         {
             IList<long> positions = null;
 
-            foreach (KmersOfSequence.KmerPositions kmer in kmerList.Kmers)
+            foreach (var kmer in kmerList.Kmers)
             {
                 var kmerString = new string(kmerList.KmerToSequence(kmer).Select(a => (char)a).ToArray());
 
@@ -323,7 +323,7 @@ namespace Bio
         /// <returns>Is equals</returns>
         public override bool Equals(object obj)
         {
-            if (obj == null || this.GetType() != obj.GetType())
+            if (obj == null || GetType() != obj.GetType())
             {
                 return false;
             }
@@ -408,7 +408,7 @@ namespace Bio
             {
                 return -1;
             }
-            return this.CompareTo(other);
+            return CompareTo(other);
         }
 
         #endregion
@@ -431,19 +431,19 @@ namespace Bio
         {
             if (other != null)
             {
-                if (other.Length == this.Length)
+                if (other.Length == Length)
                 {
-                    if (other.Sequence1Start == this.Sequence1Start)
+                    if (other.Sequence1Start == Sequence1Start)
                     {
-                        if (other.Sequence2Start == this.Sequence2Start)
+                        if (other.Sequence2Start == Sequence2Start)
                         {
                             return 0;
                         }
-                        return this.Sequence2Start - other.Sequence2Start;
+                        return Sequence2Start - other.Sequence2Start;
                     }
-                    return this.Sequence1Start - other.Sequence1Start;
+                    return Sequence1Start - other.Sequence1Start;
                 }
-                return other.Length - this.Length;
+                return other.Length - Length;
             }
 
             return -1;
@@ -463,8 +463,8 @@ namespace Bio
         /// </returns>
         public bool Equals(WordMatch other)
         {
-            return this.Length == other.Length && this.Sequence1Start == other.Sequence1Start
-                   && this.Sequence2Start == other.Sequence2Start;
+            return Length == other.Length && Sequence1Start == other.Sequence1Start
+                   && Sequence2Start == other.Sequence2Start;
         }
 
         #endregion

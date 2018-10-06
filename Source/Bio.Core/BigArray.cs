@@ -45,7 +45,7 @@ namespace Bio
         {
             get
             {
-                return this._blockSize;
+                return _blockSize;
             }
         }
         #endregion
@@ -61,7 +61,7 @@ namespace Bio
         ///     if found; otherwise, –1.</returns>
         public long IndexOf(T item)
         {
-            return this.IndexOf(item, 0, this.Length);
+            return IndexOf(item, 0, Length);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Bio
         ///     if found; otherwise, –1.</returns>
         public long IndexOf(T item, long startIndex)
         {
-            return this.IndexOf(item, startIndex, this.Length - startIndex);
+            return IndexOf(item, startIndex, Length - startIndex);
         }
 
         /// <summary>
@@ -98,32 +98,32 @@ namespace Bio
         {
             long index = -1;
 
-            if ((startIndex < 0) || (startIndex > this.Length))
+            if ((startIndex < 0) || (startIndex > Length))
             {
-                throw new ArgumentOutOfRangeException("startIndex");
+                throw new ArgumentOutOfRangeException(nameof(startIndex));
             }
-            if ((count < 0) || (count > (this.Length - startIndex)))
+            if ((count < 0) || (count > (Length - startIndex)))
             {
-                throw new ArgumentOutOfRangeException("count");
+                throw new ArgumentOutOfRangeException(nameof(count));
             }
 
-            long blockIndex = startIndex / this._blockSize;
-            int start = (int)(startIndex % this._blockSize);
+            var blockIndex = startIndex / _blockSize;
+            var start = (int)(startIndex % _blockSize);
             count += startIndex;
-            for (long i = startIndex; i < count && blockIndex < this._data.Length; blockIndex++)
+            for (var i = startIndex; i < count && blockIndex < _data.Length; blockIndex++)
             {
-                int len = this._data[blockIndex].Length;
+                var len = _data[blockIndex].Length;
 
                 if (i + len > count)
                 {
                     len = (int)(count - i);
                 }
 
-                index = Array.IndexOf<T>(this._data[blockIndex], item, start, len);
+                index = Array.IndexOf<T>(_data[blockIndex], item, start, len);
                 start = 0;
                 if (index != -1)
                 {
-                    index += (blockIndex * this._blockSize);
+                    index += (blockIndex * _blockSize);
                     break;
                 }
 
@@ -139,7 +139,7 @@ namespace Bio
         /// </summary>
         public void Clear()
         {
-            this.Clear(0, this.Length);
+            Clear(0, Length);
         }
 
         /// <summary>
@@ -150,28 +150,28 @@ namespace Bio
         /// <param name="count">The number of elements to clear.</param>
         public void Clear(long startIndex, long count)
         {
-            if ((startIndex < 0) || (startIndex > this.Length))
+            if ((startIndex < 0) || (startIndex > Length))
             {
-                throw new ArgumentOutOfRangeException("startIndex");
+                throw new ArgumentOutOfRangeException(nameof(startIndex));
             }
 
-            if ((count < 0) || (count > (this.Length - startIndex)))
+            if ((count < 0) || (count > (Length - startIndex)))
             {
-                throw new ArgumentOutOfRangeException("count");
+                throw new ArgumentOutOfRangeException(nameof(count));
             }
 
-            long blockIndex = startIndex / this._blockSize;
-            int start = (int)(startIndex % this._blockSize);
+            var blockIndex = startIndex / _blockSize;
+            var start = (int)(startIndex % _blockSize);
             count += startIndex;
-            for (long i = startIndex; i <count && blockIndex < this._data.Length; blockIndex++)
+            for (var i = startIndex; i <count && blockIndex < _data.Length; blockIndex++)
             {
-                int len = this._data[blockIndex].Length;
+                var len = _data[blockIndex].Length;
                 if (i + len > count)
                 {
                     len = (int)(count - i);
                 }
 
-                Array.Clear(this._data[blockIndex], start, len);
+                Array.Clear(_data[blockIndex], start, len);
                 start = 0;
                 i += len;
             }
@@ -186,14 +186,14 @@ namespace Bio
             if (newSize == Length)
                 return;
 
-            int blockCount = (int)(newSize / _blockSize);
+            var blockCount = (int)(newSize / _blockSize);
             if (newSize > (blockCount * _blockSize))
                 blockCount++;
 
-            int previousBlockCount = _data.Length;
+            var previousBlockCount = _data.Length;
 
-            int lastBlockSize = (int)(newSize - ((blockCount - 1) * _blockSize));
-            int previousLastBlockSize = (int)(Length - ((blockCount - 1) * _blockSize));
+            var lastBlockSize = (int)(newSize - ((blockCount - 1) * _blockSize));
+            var previousLastBlockSize = (int)(Length - ((blockCount - 1) * _blockSize));
 
             if (previousBlockCount != blockCount)
             {
@@ -205,7 +205,7 @@ namespace Bio
                     }
 
                     Array.Resize<T[]>(ref _data, blockCount);
-                    for (int i = previousBlockCount; i < blockCount - 1; i++)
+                    for (var i = previousBlockCount; i < blockCount - 1; i++)
                     {
                         _data[previousBlockCount] = new T[_blockSize];
                     }
@@ -236,7 +236,7 @@ namespace Bio
         /// <param name="count">The number of elements to copy.</param>
         public void CopyTo(long index, T[] destinationArray, long count)
         {
-            this.CopyTo(index, destinationArray, 0, count);
+            CopyTo(index, destinationArray, 0, count);
         }
 
         /// <summary>
@@ -253,23 +253,23 @@ namespace Bio
         {
             if (destinationArray == null)
             {
-                throw new ArgumentNullException("destinationArray");
+                throw new ArgumentNullException(nameof(destinationArray));
             }
-            if ((index < 0) || (index > this.Length))
+            if ((index < 0) || (index > Length))
             {
-                throw new ArgumentOutOfRangeException("index");
+                throw new ArgumentOutOfRangeException(nameof(index));
             }
             if ((destinationIndex < 0) || (destinationIndex > destinationArray.Length))
             {
-                throw new ArgumentOutOfRangeException("destinationIndex");
+                throw new ArgumentOutOfRangeException(nameof(destinationIndex));
             }
-            if ((count < 0) || (count > (this.Length - index)) || (count > (destinationArray.Length - destinationIndex)))
+            if ((count < 0) || (count > (Length - index)) || (count > (destinationArray.Length - destinationIndex)))
             {
-                throw new ArgumentOutOfRangeException("count");
+                throw new ArgumentOutOfRangeException(nameof(count));
             }
 
-            int destIndex = destinationIndex;
-            for (long i = index; i < index + count; i++)
+            var destIndex = destinationIndex;
+            for (var i = index; i < index + count; i++)
                 destinationArray[destIndex++] = this[i];
         }
 
@@ -304,7 +304,7 @@ namespace Bio
         /// </summary>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
 
         /// <summary>
@@ -321,18 +321,18 @@ namespace Bio
             //NOTE: _blockSize is optimized for 64bit process.
             if (typeof(T).GetTypeInfo().IsValueType)
             {
-                int itemSize = Marshal.SizeOf(typeof(T));
+                var itemSize = Marshal.SizeOf(typeof(T));
                 _blockSize = (int.MaxValue - 56) / itemSize;
             }
             else
             {
                 // 8 bytes are required to store reference.
-                int itemSize = PlatformManager.Services.Is64BitProcessType ? 8 : 4;
+                var itemSize = PlatformManager.Services.Is64BitProcessType ? 8 : 4;
                 _blockSize = ((int.MaxValue - 56) / itemSize) - 1;
             }
 
             // Get the number of array elements we need
-            int blockCount = (int)(length / _blockSize);
+            var blockCount = (int)(length / _blockSize);
             if (length > (blockCount * _blockSize))
                 blockCount++;
 
@@ -340,7 +340,7 @@ namespace Bio
             _data = new T[blockCount][];
 
             // Allocate full blocks.
-            for (int i = 0; i < blockCount - 1; i++)
+            for (var i = 0; i < blockCount - 1; i++)
                 _data[i] = new T[_blockSize];
 
             // Allocate the final array element with exactly the space required.

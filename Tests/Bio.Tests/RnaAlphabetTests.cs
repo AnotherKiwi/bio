@@ -16,7 +16,7 @@ namespace Bio.Tests
         public void TestRnaAlphabetTryGetComplementSymbol()
         {
             byte basicSymbols;
-            RnaAlphabet rnaAlphabet = RnaAlphabet.Instance;
+            var rnaAlphabet = RnaAlphabet.Instance;
 
             Assert.AreEqual(true, rnaAlphabet.TryGetComplementSymbol((byte)'A', out basicSymbols));
             Assert.AreEqual('U', (char)basicSymbols);
@@ -37,7 +37,7 @@ namespace Bio.Tests
         [Test]
         public void TestRnaAlphabetCompareSymbols()
         {
-            RnaAlphabet rnaAlphabet = RnaAlphabet.Instance;
+            var rnaAlphabet = RnaAlphabet.Instance;
 
             Assert.AreEqual(true, rnaAlphabet.CompareSymbols((byte)'A', (byte)'A'));
 

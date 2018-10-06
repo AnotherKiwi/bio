@@ -117,13 +117,13 @@ namespace Bio.TestAutomation.IO.ClustalW
         [Category("Priority0")]
         public void ClustalWParserValidatePublicProperties()
         {
-            string description = utilityObj.xmlUtil.GetTextValue(
+            var description = utilityObj.xmlUtil.GetTextValue(
                 Constants.ClustalWDescriptionsNode, Constants.DescriptionNode);
 
-            string name = utilityObj.xmlUtil.GetTextValue(
+            var name = utilityObj.xmlUtil.GetTextValue(
                 Constants.ClustalWDescriptionsNode, Constants.NameNode);
 
-            string supportedFileTypes = utilityObj.xmlUtil.GetTextValue(
+            var supportedFileTypes = utilityObj.xmlUtil.GetTextValue(
                 Constants.ClustalWDescriptionsNode, Constants.SupportedFileTypesNode);
 
             // Get the rangelist after parsing.
@@ -158,7 +158,7 @@ namespace Bio.TestAutomation.IO.ClustalW
         private void ParserGeneralTestCases(string nodeName, AdditionalParameters addParam)
         {
             // Gets the Filename
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
 
             Assert.IsFalse(string.IsNullOrEmpty(filePath));
             ApplicationLog.WriteLine(string.Format("ClustalW Parser BVT: Reading the File from location '{0}'", filePath));
@@ -195,7 +195,7 @@ namespace Bio.TestAutomation.IO.ClustalW
             }
 
             // Gets all the expected values from xml.
-            XElement expectedAlignmentNodes = utilityObj.xmlUtil.GetNode(nodeName, Constants.ExpectedAlignmentNode);
+            var expectedAlignmentNodes = utilityObj.xmlUtil.GetNode(nodeName, Constants.ExpectedAlignmentNode);
             IList<XNode> nodes = expectedAlignmentNodes.Nodes().ToList();
 
             //Get all the values from the elements in the node.
@@ -237,12 +237,12 @@ namespace Bio.TestAutomation.IO.ClustalW
                 return false;
             }
 
-            int alignmentIndex = 0;
+            var alignmentIndex = 0;
 
             // Validate each output alignment
-            foreach (ISequenceAlignment alignment in actualOutput)
+            foreach (var alignment in actualOutput)
             {
-                Dictionary<string, string> expectedAlignment =
+                var expectedAlignment =
                     expectedOutput[alignmentIndex];
 
                 if (alignment.AlignedSequences[0].Sequences.Cast<Sequence>().Any(actualSequence => 0 != string.Compare(new string(actualSequence.Select(a => (char) a).ToArray()),

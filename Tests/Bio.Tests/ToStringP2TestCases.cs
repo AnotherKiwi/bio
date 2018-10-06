@@ -23,7 +23,7 @@ namespace Bio.Tests
             {
                 //check with blank sequence
                 var seq = new Sequence(Alphabets.DNA, "");
-                string seqStr = seq.ConvertToString(0, 3);
+                var seqStr = seq.ConvertToString(0, 3);
                 Assert.Fail();
             }
             catch (ArgumentOutOfRangeException aorex)
@@ -35,7 +35,7 @@ namespace Bio.Tests
             {
                 //check with length greater than actual length
                 var seq = new Sequence(Alphabets.DNA, "ATGCCCC");
-                string seqStr = seq.ConvertToString(0, 30);
+                var seqStr = seq.ConvertToString(0, 30);
                 Assert.Fail();
             }
             catch (ArgumentOutOfRangeException aorex)
@@ -47,7 +47,7 @@ namespace Bio.Tests
             {
                 //check with length < 0
                 var seq = new Sequence(Alphabets.DNA, "ATGCCCC");
-                string seqStr = seq.ConvertToString(0, -30);
+                var seqStr = seq.ConvertToString(0, -30);
                 Assert.Fail();
             }
             catch (ArgumentOutOfRangeException aorex)
@@ -59,7 +59,7 @@ namespace Bio.Tests
             {
                 //check with start index < 0
                 var seq = new Sequence(Alphabets.DNA, "ATGCCCC");
-                string seqStr = seq.ConvertToString(-10, 3);
+                var seqStr = seq.ConvertToString(-10, 3);
                 Assert.Fail();
             }
             catch (ArgumentOutOfRangeException aorex)
@@ -71,7 +71,7 @@ namespace Bio.Tests
             {
                 //check with start index greater than actual length
                 var seq = new Sequence(Alphabets.DNA, "ATGCCCC");
-                string seqStr = seq.ConvertToString(30, 3);
+                var seqStr = seq.ConvertToString(30, 3);
                 Assert.Fail();
             }
             catch (ArgumentOutOfRangeException aorex)
@@ -83,7 +83,7 @@ namespace Bio.Tests
             {
                 //check with null sequence
                 Sequence seq = null;
-                string seqStr = seq.ConvertToString(0, 3);
+                var seqStr = seq.ConvertToString(0, 3);
                 Assert.Fail();
             }
             catch (NullReferenceException nre)
@@ -104,7 +104,7 @@ namespace Bio.Tests
                 //check with blank sequene
                 var baseSeq = new Sequence(Alphabets.DNA, "");
                 var seq = new DerivedSequence(baseSeq, false, false);
-                string seqStr = seq.ConvertToString(0, 3);
+                var seqStr = seq.ConvertToString(0, 3);
                 Assert.Fail();
             }
             catch (ArgumentOutOfRangeException aorex)
@@ -117,7 +117,7 @@ namespace Bio.Tests
                 //check with length greater than actual length
                 var baseSeq = new Sequence(Alphabets.DNA, "ATGCCCC");
                 var seq = new DerivedSequence(baseSeq, false, false);
-                string seqStr = seq.ConvertToString(0, 30);
+                var seqStr = seq.ConvertToString(0, 30);
                 Assert.Fail();
             }
             catch (ArgumentOutOfRangeException aorex)
@@ -130,7 +130,7 @@ namespace Bio.Tests
                 //check with length < 0
                 var baseSeq = new Sequence(Alphabets.DNA, "ATGCCCC");
                 var seq = new DerivedSequence(baseSeq, false, false);
-                string seqStr = seq.ConvertToString(0, -30);
+                var seqStr = seq.ConvertToString(0, -30);
                 Assert.Fail();
             }
             catch (ArgumentOutOfRangeException aorex)
@@ -143,7 +143,7 @@ namespace Bio.Tests
                 //check with start index < 0
                 var baseSeq = new Sequence(Alphabets.DNA, "ATGCCCC");
                 var seq = new DerivedSequence(baseSeq, false, false);
-                string seqStr = seq.ConvertToString(-10, 3);
+                var seqStr = seq.ConvertToString(-10, 3);
                 Assert.Fail();
             }
             catch (ArgumentOutOfRangeException aorex)
@@ -156,7 +156,7 @@ namespace Bio.Tests
                 //check with start index greater than actual length
                 var baseSeq = new Sequence(Alphabets.DNA, "ATGCCCC");
                 var seq = new DerivedSequence(baseSeq, false, false);
-                string seqStr = seq.ConvertToString(30, 3);
+                var seqStr = seq.ConvertToString(30, 3);
                 Assert.Fail();
             }
             catch (ArgumentOutOfRangeException aorex)
@@ -169,7 +169,7 @@ namespace Bio.Tests
                 //check with null sequence
                 Sequence baseSeq = null;
                 var seq = new DerivedSequence(baseSeq, false, false);
-                string seqStr = seq.ConvertToString(0, 3);
+                var seqStr = seq.ConvertToString(0, 3);
                 Assert.Fail();
             }
             catch (NullReferenceException nre)

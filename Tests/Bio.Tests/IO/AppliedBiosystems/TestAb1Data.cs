@@ -20,7 +20,7 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
             var data = new List<short>();
             var rand = new Random();
 
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 data.Add((short)rand.Next(1, 1000));
             }
@@ -31,7 +31,7 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
         private static void AssertAreEqual(IList<short> expected, IList<short> actual)
         {
             Assert.AreEqual(expected.Count, actual.Count);
-            for (int i = 0; i < expected.Count; i++)
+            for (var i = 0; i < expected.Count; i++)
             {
                 Assert.AreEqual(expected[i], actual[i]);
             }
@@ -50,10 +50,10 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
             // 10 points
             var confidence = new short[] {22, 31, 50, 1, 61, 22, 10, 19, 23, 10};
             var peakLocations = new short[] {2, 5, 9, 12, 15, 22, 26, 32, 35, 38};
-            short[] aData = GetTestData(dataCount).ToArray();
-            short[] cData = GetTestData(dataCount).ToArray();
-            short[] tData = GetTestData(dataCount).ToArray();
-            short[] gData = GetTestData(dataCount).ToArray();
+            var aData = GetTestData(dataCount).ToArray();
+            var cData = GetTestData(dataCount).ToArray();
+            var tData = GetTestData(dataCount).ToArray();
+            var gData = GetTestData(dataCount).ToArray();
 
             var data = new Ab1Metadata {ConfidenceData = confidence.ToArray(), PeakLocations = peakLocations.ToArray()};
             data.SetColorData(Alphabets.DNA.A, new Ab1ColorData(peakLocations, aData));
@@ -77,8 +77,8 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
                 .ToList().ForEach(colorData =>
                                       {
                                           Assert.AreEqual(segmentLength, colorData.DataByResidue.Count);
-                                          int offset = 0;
-                                          for (int i = 0; i < colorData.DataByResidue.Count; i++)
+                                          var offset = 0;
+                                          for (var i = 0; i < colorData.DataByResidue.Count; i++)
                                           {
                                               Assert.AreEqual(newPeakLocations[i],
                                                               colorData.DataByResidue[i].PeakIndex + offset);

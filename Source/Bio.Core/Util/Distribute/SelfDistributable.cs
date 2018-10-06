@@ -17,11 +17,11 @@ namespace Bio.Util.Distribute
         {
             get
             {
-                return this.distribute;
+                return distribute;
             }
             set
             {
-                this.distribute = value;
+                distribute = value;
             }
         }
 
@@ -32,7 +32,7 @@ namespace Bio.Util.Distribute
         {
             get
             {
-                return this.GetType().ToTypeString();
+                return GetType().ToTypeString();
             }
         }
 
@@ -61,11 +61,11 @@ namespace Bio.Util.Distribute
         /// </summary>
         public void Run()
         {
-            IDistribute distributeNow = this.Distribute;
-            this.Distribute = null;
+            var distributeNow = Distribute;
+            Distribute = null;
             distributeNow.Distribute(this);
                 // clear distribute in case we're submitting to cluster. That's a lot of command line junk to send to the cluster for no reason!
-            this.Distribute = distributeNow;
+            Distribute = distributeNow;
         }
     }
 }

@@ -3,8 +3,8 @@
     using System;
     using System.Collections.Generic;
     using Bio;
-    using Bio.Algorithms.Alignment;
-    using SM = Bio.SimilarityMatrices.SimilarityMatrix;
+    using Alignment;
+    using SM = SimilarityMatrices.SimilarityMatrix;
 
     /// <summary>
     /// This class implements IAlignmentAttributes interface and defines all the 
@@ -92,7 +92,7 @@
                 null);
             attributes.Add(KmerLength, alignmentAttribute);
 
-            StringListValidator listValidator = new StringListValidator(
+            var listValidator = new StringListValidator(
                 Enum.GetNames(typeof(DistanceFunctionTypes))
                 );
             alignmentAttribute = new AlignmentInfo(

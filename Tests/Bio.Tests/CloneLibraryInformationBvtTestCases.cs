@@ -24,9 +24,9 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateLibraryName()
         {            
-            CloneLibraryInformation cloneLibrary = new CloneLibraryInformation();
+            var cloneLibrary = new CloneLibraryInformation();
             
-            string libraryName = this.utilityObj.xmlUtil.GetTextValue(
+            var libraryName = utilityObj.xmlUtil.GetTextValue(
                                  Constants.CloneLibraryInformationNode, Constants.LibraryNameNode);
 
             cloneLibrary.LibraryName = libraryName;
@@ -45,10 +45,10 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateEqualityOfTwoClones()
         {
-            CloneLibraryInformation cloneLibrary1 = new CloneLibraryInformation();
-            CloneLibraryInformation cloneLibrary2 = new CloneLibraryInformation();
+            var cloneLibrary1 = new CloneLibraryInformation();
+            var cloneLibrary2 = new CloneLibraryInformation();
 
-            string libraryName = this.utilityObj.xmlUtil.GetTextValue(
+            var libraryName = utilityObj.xmlUtil.GetTextValue(
                                  Constants.CloneLibraryInformationNode, Constants.LibraryNameNode);
             cloneLibrary1.LibraryName = libraryName;
             cloneLibrary2 = cloneLibrary1;
@@ -68,10 +68,10 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateInEqualityOfTwoClones()
         {
-            CloneLibraryInformation cloneLibrary1 = new CloneLibraryInformation();
-            CloneLibraryInformation cloneLibrary2 = new CloneLibraryInformation();
+            var cloneLibrary1 = new CloneLibraryInformation();
+            var cloneLibrary2 = new CloneLibraryInformation();
 
-            string libraryName = this.utilityObj.xmlUtil.GetTextValue(
+            var libraryName = utilityObj.xmlUtil.GetTextValue(
                                  Constants.CloneLibraryInformationNode, Constants.LibraryNameNode);
             cloneLibrary1.LibraryName = libraryName;
             cloneLibrary2.LibraryName = libraryName + "newValue";

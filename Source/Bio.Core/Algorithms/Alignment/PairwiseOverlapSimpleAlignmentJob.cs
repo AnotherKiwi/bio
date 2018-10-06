@@ -52,7 +52,7 @@ namespace Bio.Algorithms.Alignment
             ComputeBlock(
                 (int i, int j, int Iij, int Dij, int Cij) =>
                 {
-                    int weight = Cij;
+                    var weight = Cij;
 
                     if (weight < Iij)
                     {
@@ -74,8 +74,8 @@ namespace Bio.Algorithms.Alignment
                                 optScoreCells.Clear();
                             }
 
-                            long globalRow = Helper.BigMul(blockRow, gridStride) + i;
-                            long globalCol = Helper.BigMul(blockCol, gridStride) + j;
+                            var globalRow = Helper.BigMul(blockRow, gridStride) + i;
+                            var globalCol = Helper.BigMul(blockCol, gridStride) + j;
 
                             optScoreCells.Add(new Tuple<long, long>(globalRow, globalCol));
                         }
@@ -107,8 +107,8 @@ namespace Bio.Algorithms.Alignment
             ComputeBlock(
             (int i, int j, int Iij, int Dij, int Cij) =>
             {
-                int weight = Cij;
-                sbyte direction = SourceDirection.Diagonal;
+                var weight = Cij;
+                var direction = SourceDirection.Diagonal;
 
                 if (weight < Iij)
                 {
@@ -132,8 +132,8 @@ namespace Bio.Algorithms.Alignment
                             optScoreCells.Clear();
                         }
 
-                        long globalRow = Helper.BigMul(blockRow, gridStride) + i;
-                        long globalCol = Helper.BigMul(blockCol, gridStride) + j;
+                        var globalRow = Helper.BigMul(blockRow, gridStride) + i;
+                        var globalCol = Helper.BigMul(blockCol, gridStride) + j;
 
                         optScoreCells.Add(new Tuple<long, long>(globalRow, globalCol));
                     }
@@ -166,8 +166,8 @@ namespace Bio.Algorithms.Alignment
             ComputeBlock(
             (int i, int j, int Iij, int Dij, int Cij) =>
             {
-                int weight = Cij;
-                sbyte direction = SourceDirection.Diagonal;
+                var weight = Cij;
+                var direction = SourceDirection.Diagonal;
 
                 if (weight < Iij)
                 {
@@ -205,14 +205,14 @@ namespace Bio.Algorithms.Alignment
             // First row of pointers
             if (blockRow == 0)
             {
-                for (int cellIndex = 0; cellIndex <= lastCol; cellIndex++)
+                for (var cellIndex = 0; cellIndex <= lastCol; cellIndex++)
                 {
                     trace[0][cellIndex] = SourceDirection.Stop;
                 }
             }
             else
             {
-                for (int cellIndex = 0; cellIndex <= lastCol; cellIndex++)
+                for (var cellIndex = 0; cellIndex <= lastCol; cellIndex++)
                 {
                     trace[0][cellIndex] = SourceDirection.Block;
                 }
@@ -221,14 +221,14 @@ namespace Bio.Algorithms.Alignment
             // First column of pointers
             if (blockCol == 0)
             {
-                for (int cellIndex = 0; cellIndex <= lastRow; cellIndex++)
+                for (var cellIndex = 0; cellIndex <= lastRow; cellIndex++)
                 {
                     trace[cellIndex][0] = SourceDirection.Stop;
                 }
             }
             else
             {
-                for (int cellIndex = 0; cellIndex <= lastRow; cellIndex++)
+                for (var cellIndex = 0; cellIndex <= lastRow; cellIndex++)
                 {
                     trace[cellIndex][0] = SourceDirection.Block;
                 }

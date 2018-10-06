@@ -68,7 +68,7 @@ namespace Bio.IO.Phylip
         public IEnumerable<ISequenceAlignment> Parse(Stream stream)
         {
             if (stream == null)
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
 
             using (var reader = stream.OpenRead()) 
             {
@@ -98,7 +98,7 @@ namespace Bio.IO.Phylip
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
 
             using (var reader = stream.OpenRead())
@@ -133,10 +133,10 @@ namespace Bio.IO.Phylip
             {
                 throw new InvalidDataException(
                     string.Format(CultureInfo.CurrentCulture, 
-                        Properties.Resource.INVALID_INPUT_FILE, this.Name));
+                        Properties.Resource.INVALID_INPUT_FILE, Name));
             }
 
-            bool isFirstBlock = true;
+            var isFirstBlock = true;
             int sequenceCount;
             int sequenceLength;
             IList<Tuple<Sequence, List<byte>>> data = new List<Tuple<Sequence, List<byte>>>();
@@ -158,7 +158,7 @@ namespace Bio.IO.Phylip
                     continue;
                 }
 
-                for (int index = 0; index < sequenceCount; index++)
+                for (var index = 0; index < sequenceCount; index++)
                 {
                     if (isFirstBlock)
                     {
@@ -168,13 +168,13 @@ namespace Bio.IO.Phylip
                         {
                             throw new Exception(string.Format(
                                 CultureInfo.CurrentCulture, 
-                                Properties.Resource.INVALID_INPUT_FILE, this.Name));
+                                Properties.Resource.INVALID_INPUT_FILE, Name));
                         }
-                        string id = line.Substring(0, 10).Trim();
-                        string sequenceString = line.Substring(10).Replace(" ","");
-                        byte[] sequenceBytes = Encoding.UTF8.GetBytes(sequenceString);
+                        var id = line.Substring(0, 10).Trim();
+                        var sequenceString = line.Substring(10).Replace(" ","");
+                        var sequenceBytes = Encoding.UTF8.GetBytes(sequenceString);
 
-                        IAlphabet alphabet = Alphabet;
+                        var alphabet = Alphabet;
                         if (null == alphabet)
                         {
                             alphabet = Alphabets.AutoDetectAlphabet(sequenceBytes, 0, sequenceBytes.Length, alphabet);
@@ -209,8 +209,8 @@ namespace Bio.IO.Phylip
                     }
                     else
                     {
-                        Tuple<Sequence, List<byte>> sequence = data[index];
-                        byte[] sequenceBytes = Encoding.UTF8.GetBytes(line.Replace(" ",""));
+                        var sequence = data[index];
+                        var sequenceBytes = Encoding.UTF8.GetBytes(line.Replace(" ",""));
                         sequence.Item2.AddRange(sequenceBytes);
                     }
 
@@ -227,7 +227,7 @@ namespace Bio.IO.Phylip
                 throw new InvalidDataException(Properties.Resource.SequenceCountMismatch);
             }
 
-            SequenceAlignment sequenceAlignment = new SequenceAlignment();
+            var sequenceAlignment = new SequenceAlignment();
             sequenceAlignment.AlignedSequences.Add(new AlignedSequence());
 
             foreach (var dataSequence in data)

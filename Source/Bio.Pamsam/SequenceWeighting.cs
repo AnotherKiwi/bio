@@ -50,7 +50,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
 
             // Initialize: all weights are 0.
             // Then sum up the weights from the leaf to the root
-            for (int i = 0; i < _weights.Length; ++i)
+            for (var i = 0; i < _weights.Length; ++i)
             {
                 _weights[i] = 0;
                 _node = tree.Nodes[i];
@@ -64,11 +64,11 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
 
             // Normalize so that the average is 1.            
             float s = 0;
-            for (int i = 0; i < _weights.Length; ++i)
+            for (var i = 0; i < _weights.Length; ++i)
             {
                 s += _weights[i];
             }
-            for (int i = 0; i < _weights.Length; ++i)
+            for (var i = 0; i < _weights.Length; ++i)
             {
                 _weights[i] = _weights[i] * _weights.Length / s;
                 _weights[i] = 1 / Weights[i];

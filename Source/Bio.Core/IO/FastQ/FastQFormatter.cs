@@ -19,8 +19,8 @@ namespace Bio.IO.FastQ
         /// </summary>
         public FastQFormatter()
         {
-            this.FormatType = FastQFormatType.Illumina_v1_8;
-            this.AutoFlush = true;
+            FormatType = FastQFormatType.Illumina_v1_8;
+            AutoFlush = true;
         }
 
         /// <summary>
@@ -80,10 +80,10 @@ namespace Bio.IO.FastQ
             var qualitativeSequence = data as QualitativeSequence;
             if (qualitativeSequence == null)
             {
-                throw new ArgumentNullException("data", Properties.Resource.FastQ_NotAQualitativeSequence);
+                throw new ArgumentNullException(nameof(data), Properties.Resource.FastQ_NotAQualitativeSequence);
             }
 
-            this.Format(stream, qualitativeSequence);
+            Format(stream, qualitativeSequence);
         }
 
         /// <summary>
@@ -95,19 +95,19 @@ namespace Bio.IO.FastQ
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
 
             if (sequences == null)
             {
-                throw new ArgumentNullException("sequences");
+                throw new ArgumentNullException(nameof(sequences));
             }
 
             using (var writer = stream.OpenWrite())
             {
                 foreach (var sequence in sequences.OfType<QualitativeSequence>())
                 {
-                    this.Format(writer, sequence);
+                    Format(writer, sequence);
                 }
             }
         }
@@ -121,17 +121,17 @@ namespace Bio.IO.FastQ
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
 
             if (qualitativeSequence == null)
             {
-                throw new ArgumentNullException("qualitativeSequence");
+                throw new ArgumentNullException(nameof(qualitativeSequence));
             }
 
             using(var writer = stream.OpenWrite())
             {
-                this.Format(writer, qualitativeSequence);
+                Format(writer, qualitativeSequence);
             }
         }
 
@@ -142,24 +142,24 @@ namespace Bio.IO.FastQ
         /// <param name="qualitativeSequence"></param>
         private void Format(StreamWriter writer, IQualitativeSequence qualitativeSequence)
         {
-            string header = qualitativeSequence.ID;
+            var header = qualitativeSequence.ID;
             const string LengthStr = " length=";
 
             if (qualitativeSequence.ID.Contains(LengthStr))
             {
-                int startIndex = qualitativeSequence.ID.LastIndexOf(LengthStr, StringComparison.OrdinalIgnoreCase);
+                var startIndex = qualitativeSequence.ID.LastIndexOf(LengthStr, StringComparison.OrdinalIgnoreCase);
                 header = header.Substring(0, startIndex + 8) + qualitativeSequence.Count;
             }
 
             // Write to stream.
             writer.WriteLine("@" + header);
-            byte[] sequenceBytes = qualitativeSequence.ToArray();
+            var sequenceBytes = qualitativeSequence.ToArray();
             writer.WriteLine(Encoding.UTF8.GetString(sequenceBytes, 0, sequenceBytes.Length));
             writer.WriteLine("+" + header);
-            byte[] qualityValues = QualitativeSequence.ConvertEncodedQualityScore(qualitativeSequence.FormatType, this.FormatType, qualitativeSequence.GetEncodedQualityScores());
+            var qualityValues = QualitativeSequence.ConvertEncodedQualityScore(qualitativeSequence.FormatType, FormatType, qualitativeSequence.GetEncodedQualityScores());
             writer.WriteLine(Encoding.UTF8.GetString(qualityValues, 0, qualityValues.Length));
 
-            if (this.AutoFlush)
+            if (AutoFlush)
             {
                 writer.Flush();
             }

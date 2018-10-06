@@ -125,7 +125,7 @@ namespace Bio.Matrix
         public static bool TryParseRFileWithDefaultMissing(string rFileName, TValue missingValue, ParallelOptions parallelOptions, out Matrix<TRowKey, TColKey, TValue> matrix)
         {
             string errorMsg;
-            bool result = TryParseRFileWithDefaultMissing(rFileName, missingValue, parallelOptions, out matrix, out errorMsg);
+            var result = TryParseRFileWithDefaultMissing(rFileName, missingValue, parallelOptions, out matrix, out errorMsg);
             if (!string.IsNullOrEmpty(errorMsg))
                 Console.Error.WriteLine(errorMsg);
             return result;
@@ -208,7 +208,7 @@ namespace Bio.Matrix
         {
             if (namedStreamCreator == null)
             {
-                throw new ArgumentNullException("namedStreamCreator");
+                throw new ArgumentNullException(nameof(namedStreamCreator));
             }
 
             errorMsg = "";
@@ -216,12 +216,12 @@ namespace Bio.Matrix
             result = matrix;
             matrix._missingValue = missingValue;
 
-            int rowCount = namedStreamCreator.ReadEachUncommentedLine().Count();
+            var rowCount = namedStreamCreator.ReadEachUncommentedLine().Count();
 
 
             using (var textReader = namedStreamCreator.OpenUncommentedText())
             {
-                string firstLine = textReader.ReadLine();
+                var firstLine = textReader.ReadLine();
                 //Helper.CheckCondition(null != firstLine, "Expect file to have first line. ");
                 if (null == firstLine)
                 {
@@ -230,8 +230,8 @@ namespace Bio.Matrix
                 }
                 Debug.Assert(rowCount >= 0); // real assert
 
-                List<string> unparsedRowNames = new List<string>(rowCount);
-                List<string> unparsedColNames = firstLine.Split(separatorArray).ToList();
+                var unparsedRowNames = new List<string>(rowCount);
+                var unparsedColNames = firstLine.Split(separatorArray).ToList();
                 try
                 {
                     matrix.ValueArray = new TValue[rowCount, unparsedColNames.Count];
@@ -242,13 +242,13 @@ namespace Bio.Matrix
                     return false;
                 }
                 string line;
-                int rowIndex = -1;
+                var rowIndex = -1;
 
                 //while (null != (line = textReader.ReadLine()))
                 while (!string.IsNullOrEmpty(line = textReader.ReadLine()))
                 {
                     ++rowIndex;
-                    string[] fields = line.Split(separatorArray);
+                    var fields = line.Split(separatorArray);
                     //Helper.CheckCondition(fields.Length >= 1, string.Format("Expect each line to have at least one field (file={0}, rowIndex={1})", rFileName, rowIndex));
                     if (fields.Length < 2)
                     {
@@ -256,7 +256,7 @@ namespace Bio.Matrix
                         return false;
                     }
 
-                    string rowKey = fields[0];
+                    var rowKey = fields[0];
                     unparsedRowNames.Add(rowKey);
 
                     // if the first data row has same length as header row, then header row much contain a name for the column of row names. Remove it and proceed.
@@ -273,7 +273,7 @@ namespace Bio.Matrix
                     }
 
                     //for (int colIndex = 0; colIndex < matrix.ValueArray.GetLength(0); ++colIndex)
-                    for (int colIndex = 0; colIndex < unparsedColNames.Count; ++colIndex)
+                    for (var colIndex = 0; colIndex < unparsedColNames.Count; ++colIndex)
                     {
                         TValue r;
                         if (!Parser.TryParse<TValue>(fields[colIndex + 1], out r))
@@ -382,7 +382,7 @@ namespace Bio.Matrix
         public override bool Remove(int rowIndex, int colIndex)
 #pragma warning restore 1591
         {
-            TValue oldvalue = ValueArray[rowIndex, colIndex];
+            var oldvalue = ValueArray[rowIndex, colIndex];
             ValueArray[rowIndex, colIndex] = MissingValue;
             return !IsMissing(oldvalue);
         }

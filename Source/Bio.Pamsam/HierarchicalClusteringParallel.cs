@@ -104,7 +104,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         private void Initialize(IDistanceMatrix distanceMatrix)
         {
             _numberOfClusters = distanceMatrix.Dimension;
-            for (int i = 0; i < _numberOfClusters; ++i)
+            for (var i = 0; i < _numberOfClusters; ++i)
             {
                 // Both node ID and sequence ID equal to the sequence index
                 _nodes.Add(new BinaryGuideTreeNode(i));
@@ -123,7 +123,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
 
             Parallel.ForEach(_clusters, PAMSAMMultipleSequenceAligner.ParallelOption, i =>
             {
-                int currentIndex = _nodes[i].SequenceID;
+                var currentIndex = _nodes[i].SequenceID;
                 _currentDistance = distanceMatrix.NearestDistances[currentIndex];
                 if (_currentDistance < _smallestDistance)
                 {
@@ -140,7 +140,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="distanceMatrix">distance matrix</param>
         private void CreateCluster(IDistanceMatrix distanceMatrix)
         {
-            BinaryGuideTreeNode node = new BinaryGuideTreeNode(++_currentClusterID);
+            var node = new BinaryGuideTreeNode(++_currentClusterID);
 
             // link the two nodes nextA and nextB with the new node
             node.LeftChildren = Nodes[_nextA];
@@ -149,15 +149,15 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             Nodes[_nextB].Parent = node;
 
             // use the leftmost leave's sequenceID
-            int next = Math.Min(_nextA, _nextB);
+            var next = Math.Min(_nextA, _nextB);
             node.SequenceID = Nodes[next].SequenceID;
             _indexToCluster[node.SequenceID] = _currentClusterID;
 
             Nodes.Add(node);
 
             // Add edges
-            BinaryGuideTreeEdge edgeA = new BinaryGuideTreeEdge(Nodes[_nextA].ID);
-            BinaryGuideTreeEdge edgeB = new BinaryGuideTreeEdge(Nodes[_nextB].ID);
+            var edgeA = new BinaryGuideTreeEdge(Nodes[_nextA].ID);
+            var edgeB = new BinaryGuideTreeEdge(Nodes[_nextB].ID);
 
             edgeA.ParentNode = node;
             edgeB.ParentNode = node;
@@ -188,7 +188,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         {
             _smallestDistance = float.MaxValue;
 
-            int nextIndex = Nodes[_currentClusterID].SequenceID;
+            var nextIndex = Nodes[_currentClusterID].SequenceID;
 
             distanceMatrix.NearestDistances[nextIndex] = float.MaxValue;
 
@@ -196,7 +196,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             {
                 if (i != _currentClusterID)
                 {
-                    int currentIndex = Nodes[i].SequenceID;
+                    var currentIndex = Nodes[i].SequenceID;
 
                     // Update distance of the newly merged cluster with another cluster
                     _currentDistance = _updateDistanceMethod(distanceMatrix, Nodes[_nextA].SequenceID, Nodes[_nextB].SequenceID, currentIndex);
@@ -235,10 +235,10 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="column">zero-based integer</param>
         private void UpdateNearestColumn(IDistanceMatrix distanceMatrix, int column)
         {
-            float min = float.MaxValue;
-            foreach (int i in _clusters)
+            var min = float.MaxValue;
+            foreach (var i in _clusters)
             {
-                int currentIndex = Nodes[i].SequenceID;
+                var currentIndex = Nodes[i].SequenceID;
                 if (currentIndex != column)
                 {
                     if (distanceMatrix[currentIndex, column] < min)

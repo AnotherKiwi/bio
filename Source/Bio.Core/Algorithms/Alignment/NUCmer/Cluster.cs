@@ -38,7 +38,7 @@ namespace Bio.Algorithms.Alignment
         /// <param name="matches">List of matches</param>
         public Cluster(IList<MatchExtension> matches)
         {
-            this.internalMatches = matches;
+            internalMatches = matches;
             IsFused = false;
             QueryDirection = ForwardDirection;
         }
@@ -59,7 +59,7 @@ namespace Bio.Algorithms.Alignment
         /// </summary>
         public IList<MatchExtension> Matches
         {
-            get { return this.internalMatches; }
+            get { return internalMatches; }
         }
 
         /// <summary>
@@ -68,12 +68,12 @@ namespace Bio.Algorithms.Alignment
         /// </summary>
         public string QueryDirection
         {
-            get { return this.queryDirection; }
+            get { return queryDirection; }
             set
             {
                 if (value != ForwardDirection && value != ReverseDirection)
-                    throw new ArgumentOutOfRangeException("value", Resource.InvalidQueryDirection);
-                this.queryDirection = value;
+                    throw new ArgumentOutOfRangeException(nameof(value), Resource.InvalidQueryDirection);
+                queryDirection = value;
             }
         }
 
@@ -96,11 +96,11 @@ namespace Bio.Algorithms.Alignment
         /// <returns>RefStart, QueryStart, Length, Score, WrapScore, IsGood for each cluster.</returns>
         public override string ToString()
         {
-            StringBuilder stringBuilder = new StringBuilder();
-            foreach (MatchExtension matchExtension in Matches)
+            var stringBuilder = new StringBuilder();
+            foreach (var matchExtension in Matches)
             {
                 stringBuilder.AppendLine(
-                    string.Format(CultureInfo.CurrentCulture, Properties.Resource.ClusterToStringFormat,
+                    string.Format(CultureInfo.CurrentCulture, Resource.ClusterToStringFormat,
                                   matchExtension.ReferenceSequenceOffset, matchExtension.QuerySequenceOffset,
                                   matchExtension.Length,
                                   matchExtension.Score, matchExtension.WrapScore, matchExtension.IsGood));

@@ -64,7 +64,7 @@ namespace Bio.Tests.Matrix
             TestByKeysAndIndexes(() => CreateModelMatrix().ConvertValueView(ValueConverter.DoubleToChar, '?').ToDenseAnsi(parallelOptions).ConvertValueView(ValueConverter.CharToDouble, double.NaN), doOutOfRangeTest);
 
             //densepairansi
-            ValueConverter<double, UOPair<char>> doubleToUOPairConvert = new ValueConverter<double, UOPair<char>>(
+            var doubleToUOPairConvert = new ValueConverter<double, UOPair<char>>(
                     r => new UOPair<char>(((int)r).ToString((IFormatProvider)null)[0], ((int)r).ToString((IFormatProvider)null)[0]),
                     pair => double.Parse(pair.First.ToString((IFormatProvider)null), (IFormatProvider)null));
             TestByKeysAndIndexes(() => CreateModelMatrix().ConvertValueView(doubleToUOPairConvert, DensePairAnsi.StaticMissingValue).ToDensePairAnsi(parallelOptions).ConvertValueView(doubleToUOPairConvert.Inverted, double.NaN), doOutOfRangeTest);
@@ -72,42 +72,42 @@ namespace Bio.Tests.Matrix
 
 
             //RowKeysPaddedDouble
-            string paddedDoubleFile = Path.GetTempFileName();
+            var paddedDoubleFile = Path.GetTempFileName();
             CreateModelMatrix().WritePaddedDouble(paddedDoubleFile, parallelOptions);
-            using (RowKeysPaddedDouble rowKeysPaddedDouble = RowKeysPaddedDouble.GetInstanceFromPaddedDouble(paddedDoubleFile, parallelOptions, FileAccess.ReadWrite, FileShare.ReadWrite))
+            using (var rowKeysPaddedDouble = RowKeysPaddedDouble.GetInstanceFromPaddedDouble(paddedDoubleFile, parallelOptions, FileAccess.ReadWrite, FileShare.ReadWrite))
             {
                 TestByKeys(rowKeysPaddedDouble, doOutOfRangeTest);
             }
             CreateModelMatrix().WritePaddedDouble(paddedDoubleFile, parallelOptions);
-            using (RowKeysPaddedDouble rowKeysPaddedDouble = RowKeysPaddedDouble.GetInstanceFromPaddedDouble(paddedDoubleFile, parallelOptions, FileAccess.ReadWrite, FileShare.ReadWrite))
+            using (var rowKeysPaddedDouble = RowKeysPaddedDouble.GetInstanceFromPaddedDouble(paddedDoubleFile, parallelOptions, FileAccess.ReadWrite, FileShare.ReadWrite))
             {
                 TestByIndexes(rowKeysPaddedDouble, doOutOfRangeTest);
             }
             File.Delete(paddedDoubleFile);
 
             //RowKeysRowKeysAnsi
-            string rowKeysAnsiFile = Path.GetTempFileName();
+            var rowKeysAnsiFile = Path.GetTempFileName();
             CreateModelMatrix().WriteDenseAnsi(rowKeysAnsiFile, parallelOptions);
-            using (RowKeysAnsi rowKeysRowKeysAnsi = RowKeysAnsi.GetInstanceFromDenseAnsi(rowKeysAnsiFile, parallelOptions, FileAccess.ReadWrite, FileShare.ReadWrite))
+            using (var rowKeysRowKeysAnsi = RowKeysAnsi.GetInstanceFromDenseAnsi(rowKeysAnsiFile, parallelOptions, FileAccess.ReadWrite, FileShare.ReadWrite))
             {
                 TestByKeys(rowKeysRowKeysAnsi.ConvertValueView(ValueConverter.CharToDouble, double.NaN), doOutOfRangeTest);
             }
             CreateModelMatrix().WriteDenseAnsi(rowKeysAnsiFile, parallelOptions);
-            using (RowKeysAnsi rowKeysRowKeysAnsi = RowKeysAnsi.GetInstanceFromDenseAnsi(rowKeysAnsiFile, parallelOptions, FileAccess.ReadWrite, FileShare.ReadWrite))
+            using (var rowKeysRowKeysAnsi = RowKeysAnsi.GetInstanceFromDenseAnsi(rowKeysAnsiFile, parallelOptions, FileAccess.ReadWrite, FileShare.ReadWrite))
             {
                 TestByIndexes(rowKeysRowKeysAnsi.ConvertValueView(ValueConverter.CharToDouble, double.NaN), doOutOfRangeTest);
             }
             File.Delete(rowKeysAnsiFile);
 
             //RowKeysRowKeysPairAnsi
-            string rowKeysPairAnsiFile = Path.GetTempFileName();
+            var rowKeysPairAnsiFile = Path.GetTempFileName();
             CreateModelMatrix().ConvertValueView(doubleToUOPairConvert, DensePairAnsi.StaticMissingValue).WriteDensePairAnsi(rowKeysPairAnsiFile, parallelOptions);
-            using (RowKeysPairAnsi rowKeysAnsiPair = RowKeysPairAnsi.GetInstanceFromPairAnsi(rowKeysPairAnsiFile, parallelOptions, FileAccess.ReadWrite, FileShare.ReadWrite))
+            using (var rowKeysAnsiPair = RowKeysPairAnsi.GetInstanceFromPairAnsi(rowKeysPairAnsiFile, parallelOptions, FileAccess.ReadWrite, FileShare.ReadWrite))
             {
                 TestByKeys(rowKeysAnsiPair.ConvertValueView(doubleToUOPairConvert.Inverted, double.NaN), doOutOfRangeTest);
             }
             CreateModelMatrix().ConvertValueView(doubleToUOPairConvert, DensePairAnsi.StaticMissingValue).WriteDensePairAnsi(rowKeysPairAnsiFile, parallelOptions);
-            using (RowKeysPairAnsi rowKeysRowKeysAnsi = RowKeysPairAnsi.GetInstanceFromPairAnsi(rowKeysPairAnsiFile, parallelOptions, FileAccess.ReadWrite, FileShare.ReadWrite))
+            using (var rowKeysRowKeysAnsi = RowKeysPairAnsi.GetInstanceFromPairAnsi(rowKeysPairAnsiFile, parallelOptions, FileAccess.ReadWrite, FileShare.ReadWrite))
             {
                 TestByIndexes(rowKeysRowKeysAnsi.ConvertValueView(doubleToUOPairConvert.Inverted, double.NaN), doOutOfRangeTest);
             }
@@ -133,7 +133,7 @@ namespace Bio.Tests.Matrix
         {
             if (null == matrixCreator)
             {
-                throw new ArgumentNullException("matrixCreator");
+                throw new ArgumentNullException(nameof(matrixCreator));
             }
             TestByKeys(matrixCreator(), doOutOfRangeTest);
             TestByIndexes(matrixCreator(), doOutOfRangeTest);
@@ -153,7 +153,7 @@ namespace Bio.Tests.Matrix
             double valueAX;
             if (null == matrix)
             {
-                throw new ArgumentNullException("matrix");
+                throw new ArgumentNullException(nameof(matrix));
             }
 
             Helper.CheckCondition(matrix.TryGetValue("A", "X", out valueAX) && valueAX == 1);
@@ -202,7 +202,7 @@ namespace Bio.Tests.Matrix
             //this get missing - expect error
             try
             {
-                double valueCX = matrix["C", "X"];
+                var valueCX = matrix["C", "X"];
                 Helper.CheckCondition(false);
             }
             catch (Exception)
@@ -234,7 +234,7 @@ namespace Bio.Tests.Matrix
             double valueAX;
             if (null == matrix)
             {
-                throw new ArgumentNullException("matrix");
+                throw new ArgumentNullException(nameof(matrix));
             }
             Helper.CheckCondition(matrix.TryGetValue(0, 0, out valueAX) && valueAX == 1);
             //TryGetValue - false
@@ -280,7 +280,7 @@ namespace Bio.Tests.Matrix
             //this get missing - expect error
             try
             {
-                double valueCX = matrix[2, 0];
+                var valueCX = matrix[2, 0];
                 Helper.CheckCondition(false);
             }
             catch (Exception)

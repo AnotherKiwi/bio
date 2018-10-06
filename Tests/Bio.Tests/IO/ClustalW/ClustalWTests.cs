@@ -23,35 +23,37 @@ namespace Bio.Tests.IO.ClustalW
         [Category("Priority0")]
         public void ClustalWParse()
         {
-            string filepath = @"TestUtils\ClustalW\AlignmentData.aln".TestDir();
+            var filepath = @"TestUtils\ClustalW\AlignmentData.aln".TestDir();
             Assert.IsTrue(File.Exists(filepath));
 
             IList<Dictionary<string, string>> expectedOutput = new List<Dictionary<string, string>>();
 
-            Dictionary<string, string> expectedAlignment = new Dictionary<string, string>();
-            expectedAlignment["CYS1_DICDI"] = "-----MKVILLFVLAVFTVFVSS---------------RGIPPEEQ------------SQ"
+            var expectedAlignment = new Dictionary<string, string>
+            {
+                ["CYS1_DICDI"] = "-----MKVILLFVLAVFTVFVSS---------------RGIPPEEQ------------SQ"
                     + "FLEFQDKFNKKY-SHEEYLERFEIFKSNLGKIEELNLIAINHKADTKFGVNKFADLSSDE"
                     + "FKNYYLNNKEAIFTDDLPVADYLDDEFINSIPTAFDWRTRG-AVTPVKNQGQCGSCWSFS"
                     + "TTGNVEGQHFISQNKLVSLSEQNLVDCDHECMEYEGEEACDEGCNGGLQPNAYNYIIKNG"
                     + "GIQTESSYPYTAETGTQCNFNSANIGAKISNFTMIP-KNETVMAGYIVSTGPLAIAADAV"
                     + "E-WQFYIGGVF-DIPCN--PNSLDHGILIVGYSAKNTIFRKNMPYWIVKNSWGADWGEQG"
-                    + "YIYLRRGKNTCGVSNFVSTSII--";
+                    + "YIYLRRGKNTCGVSNFVSTSII--",
 
-            expectedAlignment["ALEU_HORVU"] = "MAHARVLLLALAVLATAAVAVASSSSFADSNPIRPVTDRAASTLESAVLGALGRTRHALR"
+                ["ALEU_HORVU"] = "MAHARVLLLALAVLATAAVAVASSSSFADSNPIRPVTDRAASTLESAVLGALGRTRHALR"
                     + "FARFAVRYGKSYESAAEVRRRFRIFSESLEEVRSTN----RKGLPYRLGINRFSDMSWEE"
                     + "FQATRL-GAAQTCSATLAGNHLMRDA--AALPETKDWREDG-IVSPVKNQAHCGSCWTFS"
                     + "TTGALEAAYTQATGKNISLSEQQLVDCAGGFNNF--------GCNGGLPSQAFEYIKYNG"
                     + "GIDTEESYPYKGVNGV-CHYKAENAAVQVLDSVNITLNAEDELKNAVGLVRPVSVAFQVI"
                     + "DGFRQYKSGVYTSDHCGTTPDDVNHAVLAVGYGVENGV-----PYWLIKNSWGADWGDNG"
-                    + "YFKMEMGKNMCAIATCASYPVVAA";
+                    + "YFKMEMGKNMCAIATCASYPVVAA",
 
-            expectedAlignment["CATH_HUMAN"] = "------MWATLPLLCAGAWLLGV--------PVCGAAELSVNSLEK------------FH"
+                ["CATH_HUMAN"] = "------MWATLPLLCAGAWLLGV--------PVCGAAELSVNSLEK------------FH"
                     + "FKSWMSKHRKTY-STEEYHHRLQTFASNWRKINAHN----NGNHTFKMALNQFSDMSFAE"
                     + "IKHKYLWSEPQNCSAT--KSNYLRGT--GPYPPSVDWRKKGNFVSPVKNQGACGSCWTFS"
                     + "TTGALESAIAIATGKMLSLAEQQLVDCAQDFNNY--------GCQGGLPSQAFEYILYNK"
                     + "GIMGEDTYPYQGKDGY-CKFQPGKAIGFVKDVANITIYDEEAMVEAVALYNPVSFAFEVT"
                     + "QDFMMYRTGIYSSTSCHKTPDKVNHAVLAVGYGEKNGI-----PYWIVKNSWGPQWGMNG"
-                    + "YFLIERGKNMCGLAACASYPIPLV";
+                    + "YFLIERGKNMCGLAACASYPIPLV"
+            };
 
             expectedOutput.Add(expectedAlignment);
 
@@ -73,35 +75,37 @@ namespace Bio.Tests.IO.ClustalW
         [Category("Priority0")]
         public void ClustalWParseOne()
         {
-            string filepath = @"TestUtils\ClustalW\AlignmentData.aln".TestDir();
+            var filepath = @"TestUtils\ClustalW\AlignmentData.aln".TestDir();
             Assert.IsTrue(File.Exists(filepath));
 
             IList<Dictionary<string, string>> expectedOutput = new List<Dictionary<string, string>>();
 
-            Dictionary<string, string> expectedAlignment = new Dictionary<string, string>();
-            expectedAlignment["CYS1_DICDI"] = "-----MKVILLFVLAVFTVFVSS---------------RGIPPEEQ------------SQ"
+            var expectedAlignment = new Dictionary<string, string>
+            {
+                ["CYS1_DICDI"] = "-----MKVILLFVLAVFTVFVSS---------------RGIPPEEQ------------SQ"
                     + "FLEFQDKFNKKY-SHEEYLERFEIFKSNLGKIEELNLIAINHKADTKFGVNKFADLSSDE"
                     + "FKNYYLNNKEAIFTDDLPVADYLDDEFINSIPTAFDWRTRG-AVTPVKNQGQCGSCWSFS"
                     + "TTGNVEGQHFISQNKLVSLSEQNLVDCDHECMEYEGEEACDEGCNGGLQPNAYNYIIKNG"
                     + "GIQTESSYPYTAETGTQCNFNSANIGAKISNFTMIP-KNETVMAGYIVSTGPLAIAADAV"
                     + "E-WQFYIGGVF-DIPCN--PNSLDHGILIVGYSAKNTIFRKNMPYWIVKNSWGADWGEQG"
-                    + "YIYLRRGKNTCGVSNFVSTSII--";
+                    + "YIYLRRGKNTCGVSNFVSTSII--",
 
-            expectedAlignment["ALEU_HORVU"] = "MAHARVLLLALAVLATAAVAVASSSSFADSNPIRPVTDRAASTLESAVLGALGRTRHALR"
+                ["ALEU_HORVU"] = "MAHARVLLLALAVLATAAVAVASSSSFADSNPIRPVTDRAASTLESAVLGALGRTRHALR"
                     + "FARFAVRYGKSYESAAEVRRRFRIFSESLEEVRSTN----RKGLPYRLGINRFSDMSWEE"
                     + "FQATRL-GAAQTCSATLAGNHLMRDA--AALPETKDWREDG-IVSPVKNQAHCGSCWTFS"
                     + "TTGALEAAYTQATGKNISLSEQQLVDCAGGFNNF--------GCNGGLPSQAFEYIKYNG"
                     + "GIDTEESYPYKGVNGV-CHYKAENAAVQVLDSVNITLNAEDELKNAVGLVRPVSVAFQVI"
                     + "DGFRQYKSGVYTSDHCGTTPDDVNHAVLAVGYGVENGV-----PYWLIKNSWGADWGDNG"
-                    + "YFKMEMGKNMCAIATCASYPVVAA";
+                    + "YFKMEMGKNMCAIATCASYPVVAA",
 
-            expectedAlignment["CATH_HUMAN"] = "------MWATLPLLCAGAWLLGV--------PVCGAAELSVNSLEK------------FH"
+                ["CATH_HUMAN"] = "------MWATLPLLCAGAWLLGV--------PVCGAAELSVNSLEK------------FH"
                     + "FKSWMSKHRKTY-STEEYHHRLQTFASNWRKINAHN----NGNHTFKMALNQFSDMSFAE"
                     + "IKHKYLWSEPQNCSAT--KSNYLRGT--GPYPPSVDWRKKGNFVSPVKNQGACGSCWTFS"
                     + "TTGALESAIAIATGKMLSLAEQQLVDCAQDFNNY--------GCQGGLPSQAFEYILYNK"
                     + "GIMGEDTYPYQGKDGY-CKFQPGKAIGFVKDVANITIYDEEAMVEAVALYNPVSFAFEVT"
                     + "QDFMMYRTGIYSSTSCHKTPDKVNHAVLAVGYGEKNGI-----PYWIVKNSWGPQWGMNG"
-                    + "YFLIERGKNMCGLAACASYPIPLV";
+                    + "YFLIERGKNMCGLAACASYPIPLV"
+            };
 
             expectedOutput.Add(expectedAlignment);
 
@@ -132,10 +136,10 @@ namespace Bio.Tests.IO.ClustalW
                 return false;
             }
 
-            int alignmentIndex = 0;
-            foreach (ISequenceAlignment alignment in actualOutput)
+            var alignmentIndex = 0;
+            foreach (var alignment in actualOutput)
             {
-                Dictionary<string, string> expcetedAlignment = expectedOutput[alignmentIndex];
+                var expcetedAlignment = expectedOutput[alignmentIndex];
 
                 foreach (Sequence actualSequence in alignment.AlignedSequences[0].Sequences)
                 {

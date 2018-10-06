@@ -49,8 +49,8 @@ namespace Bio.Tests
         [Category("Priority2")]
         public void ValidateSparseSeqNegativeIndexException()
         {
-            string expectedErrorMessage = this.GetErrorMessage(Constants.NegativeIndexErrorMessage);
-            string actualError = string.Empty;
+            var expectedErrorMessage = GetErrorMessage(Constants.NegativeIndexErrorMessage);
+            var actualError = string.Empty;
             SparseSequence sparseSeq = null;
 
             // Try Creating sparse sequence by passing null value.
@@ -63,7 +63,7 @@ namespace Bio.Tests
                 actualError = e.Message;
             }
 
-            string updatedActualError = Regex.Replace(actualError, "[\r\n\t]", "");
+            var updatedActualError = Regex.Replace(actualError, "[\r\n\t]", "");
             Assert.AreEqual(expectedErrorMessage.ToUpperInvariant(), updatedActualError.ToUpperInvariant());
             Assert.IsNull(sparseSeq);
 
@@ -83,8 +83,8 @@ namespace Bio.Tests
         [Ignore("Different error message on linux/windows")]
         public void ValidateSparseSequenceAlphabetNullException()
         {
-            string expectedErrorMessage = this.GetErrorMessage(Constants.SparseNullExceptionMessage);
-            string actualError = string.Empty;
+            var expectedErrorMessage = GetErrorMessage(Constants.SparseNullExceptionMessage);
+            var actualError = string.Empty;
             SparseSequence sparseSeq = null;
 
             // Try Creating sparse sequence by passing null value as alphabet.
@@ -97,7 +97,7 @@ namespace Bio.Tests
                 actualError = e.Message;
             }
 
-            string updatedActualError = Regex.Replace(actualError, "[\r\n\t]", "");
+            var updatedActualError = Regex.Replace(actualError, "[\r\n\t]", "");
 
             Assert.AreEqual(expectedErrorMessage.ToUpperInvariant(), updatedActualError.ToUpperInvariant());
             Assert.IsNull(sparseSeq);
@@ -138,9 +138,9 @@ namespace Bio.Tests
         [Category("Priority2")]
         public void ValidateSparseIListSeqNegativeIndexException()
         {
-            string expectedErrorMessage = this.GetErrorMessage(Constants.NegativeIndexErrorMessage);
+            var expectedErrorMessage = GetErrorMessage(Constants.NegativeIndexErrorMessage);
 
-            string actualError = string.Empty;
+            var actualError = string.Empty;
             SparseSequence sparseSeq = null;
             IEnumerable<byte> byteArray = new List<byte> {Alphabets.DNA.A, Alphabets.DNA.C};
 
@@ -154,7 +154,7 @@ namespace Bio.Tests
                 actualError = e.Message;
             }
 
-            string updatedActualError = Regex.Replace(actualError, "[\r\n\t]", "");
+            var updatedActualError = Regex.Replace(actualError, "[\r\n\t]", "");
             Assert.AreEqual(expectedErrorMessage.ToUpperInvariant(), updatedActualError.ToUpperInvariant());
             Assert.IsNull(sparseSeq);
 
@@ -265,9 +265,9 @@ namespace Bio.Tests
             var sparseSeq = new SparseSequence(Alphabets.DNA) {Count = 2000};
 
             // Store all sequence items in sparse sequence object
-            int insertIndex = 0;
-            int[] randomNumbers = Utility.RandomNumberGenerator(2000, Alphabets.DNA.Count);
-            foreach (byte item in Alphabets.DNA)
+            var insertIndex = 0;
+            var randomNumbers = Utility.RandomNumberGenerator(2000, Alphabets.DNA.Count);
+            foreach (var item in Alphabets.DNA)
             {
                 sparseSeq[randomNumbers[insertIndex]] = item;
                 insertIndex++;
@@ -275,7 +275,7 @@ namespace Bio.Tests
 
             // Validate whether invalid sequence item contains in Sparse 
             // sequence or not.
-            foreach (byte bt in sparseSeq)
+            foreach (var bt in sparseSeq)
             {
                 Assert.AreNotEqual(bt, Alphabets.RNA.U);
             }
@@ -296,9 +296,9 @@ namespace Bio.Tests
             var sparseSeq = new SparseSequence(Alphabets.DNA) {Count = 2000};
 
             // Store all sequence items in sparse sequence object
-            int insertIndex = 0;
-            int[] randomNumbers = Utility.RandomNumberGenerator(2000, Alphabets.DNA.Count);
-            foreach (byte item in Alphabets.DNA)
+            var insertIndex = 0;
+            var randomNumbers = Utility.RandomNumberGenerator(2000, Alphabets.DNA.Count);
+            foreach (var item in Alphabets.DNA)
             {
                 sparseSeq[randomNumbers[insertIndex]] = item;
                 insertIndex++;
@@ -306,7 +306,7 @@ namespace Bio.Tests
 
             // Validate whether invalid sequence item contains in Sparse 
             // sequence or not.
-            foreach (byte bt in sparseSeq)
+            foreach (var bt in sparseSeq)
             {
                 Assert.AreNotEqual(bt, Alphabets.Protein.D);
             }
@@ -327,9 +327,9 @@ namespace Bio.Tests
             var sparseSeq = new SparseSequence(Alphabets.RNA) {Count = 2000};
 
             // Store all sequence items in sparse sequence object
-            int insertIndex = 0;
-            int[] randomNumbers = Utility.RandomNumberGenerator(2000, Alphabets.RNA.Count);
-            foreach (byte item in Alphabets.RNA)
+            var insertIndex = 0;
+            var randomNumbers = Utility.RandomNumberGenerator(2000, Alphabets.RNA.Count);
+            foreach (var item in Alphabets.RNA)
             {
                 sparseSeq[randomNumbers[insertIndex]] = item;
                 insertIndex++;
@@ -337,7 +337,7 @@ namespace Bio.Tests
 
             // Validate whether invalid sequence item contains in Sparse 
             // sequence or not.
-            foreach (byte bt in sparseSeq)
+            foreach (var bt in sparseSeq)
             {
                 Assert.AreNotEqual(bt, Alphabets.Protein.D);
             }
@@ -356,8 +356,8 @@ namespace Bio.Tests
         [Category("Priority2")]
         public void ValidateExceptionByPassingSeqItemToInvalidSequenceItemPostion()
         {
-            string expectedErrorMessage = this.GetErrorMessage(Constants.InvalidSequenceCountError);
-            string actualError = string.Empty;
+            var expectedErrorMessage = GetErrorMessage(Constants.InvalidSequenceCountError);
+            var actualError = string.Empty;
             var sparseSeq = new SparseSequence(Alphabets.DNA) {Count = 1000};
 
             // Try to store seq items at 1050 position greater than sparse
@@ -371,7 +371,7 @@ namespace Bio.Tests
                 actualError = e.Message;
             }
 
-            string updatedActualError = Regex.Replace(actualError, "[\r\n\t]", "");
+            var updatedActualError = Regex.Replace(actualError, "[\r\n\t]", "");
             Assert.AreEqual(expectedErrorMessage.ToUpperInvariant(), updatedActualError.ToUpperInvariant());
 
             // Log to GUI.
@@ -394,15 +394,15 @@ namespace Bio.Tests
             var sparseSeq = new SparseSequence(Alphabets.DNA) {Count = 2000};
 
             // Store all sequence items in sparse sequence object
-            int insertIndex = 0;
-            int[] randomNumbers = Utility.RandomNumberGenerator(2000, Alphabets.DNA.Count);
-            foreach (byte item in Alphabets.DNA)
+            var insertIndex = 0;
+            var randomNumbers = Utility.RandomNumberGenerator(2000, Alphabets.DNA.Count);
+            foreach (var item in Alphabets.DNA)
             {
                 sparseSeq[randomNumbers[insertIndex]] = item;
                 insertIndex++;
             }
 
-            foreach (byte bt in sparseSeq)
+            foreach (var bt in sparseSeq)
             {
                 Assert.AreNotEqual(bt, Alphabets.RNA.U);
             }
@@ -497,7 +497,7 @@ namespace Bio.Tests
         {
             SparseSequence sparseSeq = null;
             var seq = new Sequence(Alphabets.RNA, "U");
-            byte seqItem = seq[0];
+            var seqItem = seq[0];
 
             // Try Creating sparse sequence by passing invalid alphabet.
             try
@@ -576,11 +576,11 @@ namespace Bio.Tests
         [Category("Priority2")]
         public void ValidateSparseSequenceInvalidIndexer()
         {
-            SparseSequence sparseSeq = CreateSparseSequence(Alphabets.DNA, 0);
+            var sparseSeq = CreateSparseSequence(Alphabets.DNA, 0);
 
             try
             {
-                byte seqItem = sparseSeq[-1];
+                var seqItem = sparseSeq[-1];
                 Assert.Fail();
             }
             catch (ArgumentOutOfRangeException ex)
@@ -598,7 +598,7 @@ namespace Bio.Tests
         [Category("Priority2")]
         public void ValidateSparseSequenceSetInvalidIndexer()
         {
-            SparseSequence sparseSeq = CreateSparseSequence(Alphabets.DNA, 0);
+            var sparseSeq = CreateSparseSequence(Alphabets.DNA, 0);
             const byte seqItem = 67;
             try
             {
@@ -620,7 +620,7 @@ namespace Bio.Tests
         [Category("Priority2")]
         public void ValidateSparseSequenceInvalidCount()
         {
-            SparseSequence sparseSeq = CreateSparseSequence(Alphabets.DNA, 0);
+            var sparseSeq = CreateSparseSequence(Alphabets.DNA, 0);
 
             try
             {
@@ -714,7 +714,7 @@ namespace Bio.Tests
         /// <param name="nodeName">Name of the error message node </param>
         private string GetErrorMessage(string nodeName)
         {
-            string expectedErrorMessage = this._utilityObj.xmlUtil.GetTextValue(
+            var expectedErrorMessage = _utilityObj.xmlUtil.GetTextValue(
                 Constants.DnaVirtualSeqNode, nodeName);
 
             return expectedErrorMessage;

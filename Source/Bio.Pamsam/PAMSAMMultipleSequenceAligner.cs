@@ -210,9 +210,9 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             AlignmentScore = float.MinValue;
             
             // Set parallel extension option
-            this.degreeOfParallelism = (PlatformManager.Services.Is64BitProcessType) ? Environment.ProcessorCount : 1;
+            degreeOfParallelism = (PlatformManager.Services.Is64BitProcessType) ? Environment.ProcessorCount : 1;
             ParallelOption = new ParallelOptions { MaxDegreeOfParallelism = degreeOfParallelism };
-            this.numberOfPartitions = degreeOfParallelism * 2;
+            numberOfPartitions = degreeOfParallelism * 2;
 
             // Initialize parameters to general defaults - must override by setting property values prior 
             // to calling Align.
@@ -260,7 +260,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
 
             if (null == sequences)
             {
-                throw new ArgumentNullException("sequences");
+                throw new ArgumentNullException(nameof(sequences));
             }
 
             if (sequences.Count == 0)
@@ -296,7 +296,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             GapOpenCost = gapOpenPenalty;
             GapExtensionCost = gapExtendPenalty;
 
-            MsaUtils.SetProfileItemSets(this.alphabet);
+            MsaUtils.SetProfileItemSets(alphabet);
 
             ReportLog("Start Aligning");
 
@@ -339,11 +339,11 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         public IList<Alignment.ISequenceAlignment> Align(IEnumerable<ISequence> inputSequences)
         {
             // Reset all our data in case this same instance is used multiple times.
-            this.AlignedSequences = this.AlignedSequencesA = this.AlignedSequencesB = this.AlignedSequencesC = null;
-            this.AlignmentScore = this.AlignmentScoreA = this.AlignmentScoreB = this.AlignmentScoreC = float.MinValue;
+            AlignedSequences = AlignedSequencesA = AlignedSequencesB = AlignedSequencesC = null;
+            AlignmentScore = AlignmentScoreA = AlignmentScoreB = AlignmentScoreC = float.MinValue;
 
             // Get our list of sequences.
-            List<ISequence> sequences = inputSequences.ToList();
+            var sequences = inputSequences.ToList();
             if (sequences.Count == 0)
             {
                 throw new ArgumentException("Empty input sequences");
@@ -359,7 +359,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
 
             // Assign the alphabet
             SetAlphabet(sequences, SimilarityMatrix, true);
-            MsaUtils.SetProfileItemSets(this.alphabet);
+            MsaUtils.SetProfileItemSets(alphabet);
 
             ReportLog("Start Aligning");
 
@@ -392,10 +392,10 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             }
 
             // Validate data type
-            this.alphabet = Alphabets.GetAmbiguousAlphabet(sequences[0].Alphabet);
+            alphabet = Alphabets.GetAmbiguousAlphabet(sequences[0].Alphabet);
             Parallel.For(1, sequences.Count, ParallelOption, i =>
             {
-                if (!Alphabets.CheckIsFromSameBase(sequences[i].Alphabet, this.alphabet))
+                if (!Alphabets.CheckIsFromSameBase(sequences[i].Alphabet, alphabet))
                 {
                     throw new ArgumentException("Inconsistent sequence alphabet");
                 }
@@ -403,15 +403,15 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
 
             SimilarityMatrix bestSimilarityMatrix = null;
 
-            if (this.alphabet is DnaAlphabet)
+            if (alphabet is DnaAlphabet)
             {
                 bestSimilarityMatrix = new SimilarityMatrix(SimilarityMatrix.StandardSimilarityMatrix.AmbiguousDna);
             }
-            else if (this.alphabet is RnaAlphabet)
+            else if (alphabet is RnaAlphabet)
             {
                 bestSimilarityMatrix = new SimilarityMatrix(SimilarityMatrix.StandardSimilarityMatrix.AmbiguousRna);
             }
-            else if (this.alphabet is ProteinAlphabet)
+            else if (alphabet is ProteinAlphabet)
             {
                 bestSimilarityMatrix = new SimilarityMatrix(SimilarityMatrix.StandardSimilarityMatrix.Blosum50);
             }
@@ -429,7 +429,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                 var similarityMatrixRNA = new List<String> { "AmbiguousRNA" };
                 var similarityMatrixProtein = new List<String> { "BLOSUM45", "BLOSUM50", "BLOSUM62", "BLOSUM80", "BLOSUM90", "PAM250", "PAM30", "PAM70" };
 
-                if (this.alphabet is DnaAlphabet)
+                if (alphabet is DnaAlphabet)
                 {
                     if (!similarityMatrixDNA.Contains(similarityMatrix.Name))
                     {
@@ -439,7 +439,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                             throw new ArgumentException("Inappropriate Similarity Matrix for DNA.");
                     }
                 }
-                else if (this.alphabet is ProteinAlphabet)
+                else if (alphabet is ProteinAlphabet)
                 {
                     if (!similarityMatrixProtein.Contains(similarityMatrix.Name))
                     {
@@ -449,7 +449,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                             throw new ArgumentException("Inappropriate Similarity Matrix for Protein.");
                     }
                 }
-                else if (this.alphabet is RnaAlphabet)
+                else if (alphabet is RnaAlphabet)
                 {
                     if (!similarityMatrixRNA.Contains(similarityMatrix.Name))
                     {
@@ -473,42 +473,42 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <returns>Alignment results</returns>
         private void DoAlignment(IList<ISequence> sequences)
         {
-            Debug.Assert(this.alphabet != null);
+            Debug.Assert(alphabet != null);
             Debug.Assert(sequences.Count > 0);
 
             // Initializations
             if (ConsensusResolver == null)
-                ConsensusResolver = new SimpleConsensusResolver(this.alphabet);
+                ConsensusResolver = new SimpleConsensusResolver(alphabet);
             else
-                ConsensusResolver.SequenceAlphabet = this.alphabet;
+                ConsensusResolver.SequenceAlphabet = alphabet;
 
             // Get ProfileAligner ready
             IProfileAligner profileAligner = null;
             switch (ProfileAlignerName)
             {
                 case (ProfileAlignerNames.NeedlemanWunschProfileAligner):
-                    if (this.degreeOfParallelism == 1)
+                    if (degreeOfParallelism == 1)
                     {
                         profileAligner = new NeedlemanWunschProfileAlignerSerial(
-                            SimilarityMatrix, ProfileProfileFunctionName, GapOpenCost, GapExtensionCost, this.numberOfPartitions);
+                            SimilarityMatrix, ProfileProfileFunctionName, GapOpenCost, GapExtensionCost, numberOfPartitions);
                     }
                     else
                     {
                         profileAligner = new NeedlemanWunschProfileAlignerParallel(
-                            SimilarityMatrix, ProfileProfileFunctionName, GapOpenCost, GapExtensionCost, this.numberOfPartitions);
+                            SimilarityMatrix, ProfileProfileFunctionName, GapOpenCost, GapExtensionCost, numberOfPartitions);
                     }
                     break;
                 case (ProfileAlignerNames.SmithWatermanProfileAligner):
-                    if (this.degreeOfParallelism == 1)
+                    if (degreeOfParallelism == 1)
                     {
                         profileAligner = new SmithWatermanProfileAlignerSerial(
-                        SimilarityMatrix, ProfileProfileFunctionName, GapOpenCost, GapExtensionCost, this.numberOfPartitions);
+                        SimilarityMatrix, ProfileProfileFunctionName, GapOpenCost, GapExtensionCost, numberOfPartitions);
 
                     }
                     else
                     {
                         profileAligner = new SmithWatermanProfileAlignerParallel(
-                    SimilarityMatrix, ProfileProfileFunctionName, GapOpenCost, GapExtensionCost, this.numberOfPartitions);
+                    SimilarityMatrix, ProfileProfileFunctionName, GapOpenCost, GapExtensionCost, numberOfPartitions);
 
                     }
                     break;
@@ -516,14 +516,14 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                     throw new ArgumentException("Invalid profile aligner name");
             }
 
-            this.AlignedSequences = new List<ISequence>(sequences.Count);
+            AlignedSequences = new List<ISequence>(sequences.Count);
             float currentScore = 0;
 
             // STAGE 1
 
             ReportLog("Stage 1");
             // Generate DistanceMatrix
-            var kmerDistanceMatrixGenerator = new KmerDistanceMatrixGenerator(sequences, KmerLength, this.alphabet, DistanceFunctionName);
+            var kmerDistanceMatrixGenerator = new KmerDistanceMatrixGenerator(sequences, KmerLength, alphabet, DistanceFunctionName);
 
             // Hierarchical clustering
             IHierarchicalClustering hierarcicalClustering =
@@ -538,29 +538,29 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             progressiveAlignerA.Align(sequences, binaryGuideTree);
 
             currentScore = MsaUtils.MultipleAlignmentScoreFunction(progressiveAlignerA.AlignedSequences, SimilarityMatrix, GapOpenCost, GapExtensionCost);
-            if (currentScore > this.AlignmentScoreA)
+            if (currentScore > AlignmentScoreA)
             {
-                this.AlignmentScoreA = currentScore;
-                this.AlignedSequencesA = progressiveAlignerA.AlignedSequences;
+                AlignmentScoreA = currentScore;
+                AlignedSequencesA = progressiveAlignerA.AlignedSequences;
             }
-            if (this.AlignmentScoreA > this.AlignmentScore)
+            if (AlignmentScoreA > AlignmentScore)
             {
-                this.AlignmentScore = this.AlignmentScoreA;
-                this.AlignedSequences = this.AlignedSequencesA;
+                AlignmentScore = AlignmentScoreA;
+                AlignedSequences = AlignedSequencesA;
             }
 
-            if (PAMSAMMultipleSequenceAligner.FasterVersion)
+            if (FasterVersion)
             {
-                this.AlignedSequencesB = this.AlignedSequencesA;
-                this.AlignedSequencesC = this.AlignedSequencesA;
-                this.AlignmentScoreB = this.AlignmentScoreA;
-                this.AlignmentScoreC = this.AlignmentScoreA;
+                AlignedSequencesB = AlignedSequencesA;
+                AlignedSequencesC = AlignedSequencesA;
+                AlignmentScoreB = AlignmentScoreA;
+                AlignmentScoreC = AlignmentScoreA;
             }
             else
             {
                 BinaryGuideTree binaryGuideTreeB = null;
                 IHierarchicalClustering hierarcicalClusteringB = null;
-                KimuraDistanceMatrixGenerator kimuraDistanceMatrixGenerator = new KimuraDistanceMatrixGenerator();
+                var kimuraDistanceMatrixGenerator = new KimuraDistanceMatrixGenerator();
 
                 if (UseStageB)
                 {
@@ -570,7 +570,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
 
                     while (true)
                     {
-                        kimuraDistanceMatrixGenerator.GenerateDistanceMatrix(this.AlignedSequences);
+                        kimuraDistanceMatrixGenerator.GenerateDistanceMatrix(AlignedSequences);
 
                         // Hierarchical clustering
                         hierarcicalClusteringB = new HierarchicalClusteringParallel
@@ -588,17 +588,17 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
 
                         currentScore = MsaUtils.MultipleAlignmentScoreFunction(progressiveAlignerB.AlignedSequences, SimilarityMatrix, GapOpenCost, GapExtensionCost);
 
-                        if (currentScore > this.AlignmentScoreB)
+                        if (currentScore > AlignmentScoreB)
                         {
-                            this.AlignmentScoreB = currentScore;
-                            this.AlignedSequencesB = progressiveAlignerB.AlignedSequences;
+                            AlignmentScoreB = currentScore;
+                            AlignedSequencesB = progressiveAlignerB.AlignedSequences;
                         }
                         break;
                     }
-                    if (this.AlignmentScoreB > this.AlignmentScore)
+                    if (AlignmentScoreB > AlignmentScore)
                     {
-                        this.AlignmentScore = this.AlignmentScoreB;
-                        this.AlignedSequences = this.AlignedSequencesB;
+                        AlignmentScore = AlignmentScoreB;
+                        AlignedSequences = AlignedSequencesB;
                     }
                 }
                 else
@@ -610,17 +610,17 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                 // STAGE 3
                 ReportLog("Stage 3");
                 // refinement
-                int maxRefineMentTime = 1;
+                var maxRefineMentTime = 1;
                 if (sequences.Count == 2)
                 {
                     maxRefineMentTime = 0;
                 }
 
-                int refinementTime = 0;
-                this.AlignedSequencesC = new List<ISequence>(this.AlignedSequences.Count);
-                foreach (ISequence t in this.AlignedSequences)
+                var refinementTime = 0;
+                AlignedSequencesC = new List<ISequence>(AlignedSequences.Count);
+                foreach (var t in AlignedSequences)
                 {
-                    this.AlignedSequencesC.Add(new Sequence(Alphabets.GetAmbiguousAlphabet(this.alphabet), t.ToArray())
+                    AlignedSequencesC.Add(new Sequence(Alphabets.GetAmbiguousAlphabet(alphabet), t.ToArray())
                         {
                             ID = t.ID,
                             // Do not shallow copy dictionary
@@ -632,15 +632,15 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                 {
                     ++refinementTime;
                     ReportLog("Refinement iter " + refinementTime);
-                    bool needRefinement = false;
-                    for (int edgeIndex = 0; edgeIndex < binaryGuideTreeB.NumberOfEdges; ++edgeIndex)
+                    var needRefinement = false;
+                    for (var edgeIndex = 0; edgeIndex < binaryGuideTreeB.NumberOfEdges; ++edgeIndex)
                     {
-                        List<int>[] leafNodeIndices = binaryGuideTreeB.SeparateSequencesByCuttingTree(edgeIndex);
+                        var leafNodeIndices = binaryGuideTreeB.SeparateSequencesByCuttingTree(edgeIndex);
 
-                        List<int>[] allIndelPositions = new List<int>[2];
+                        var allIndelPositions = new List<int>[2];
 
-                        IProfileAlignment[] separatedProfileAlignments = ProfileAlignment.ProfileExtraction(this.AlignedSequencesC, leafNodeIndices[0], leafNodeIndices[1], out allIndelPositions);
-                        List<int>[] eStrings = new List<int>[2];
+                        var separatedProfileAlignments = ProfileAlignment.ProfileExtraction(AlignedSequencesC, leafNodeIndices[0], leafNodeIndices[1], out allIndelPositions);
+                        var eStrings = new List<int>[2];
 
                         if (separatedProfileAlignments[0].NumberOfSequences < separatedProfileAlignments[1].NumberOfSequences)
                         {
@@ -655,15 +655,15 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                             eStrings[1] = profileAligner.GenerateEString(profileAligner.AlignedA);
                         }
 
-                        for (int set = 0; set < 2; ++set)
+                        for (var set = 0; set < 2; ++set)
                         {
                             Parallel.ForEach(leafNodeIndices[set], ParallelOption, i =>
                             {
                                 //Sequence seq = new Sequence(_alphabet, "");
-                                List<byte> seqBytes = new List<byte>();
+                                var seqBytes = new List<byte>();
 
-                                int indexAllIndel = 0;
-                                for (int j = 0; j < this.AlignedSequencesC[i].Count; ++j)
+                                var indexAllIndel = 0;
+                                for (var j = 0; j < AlignedSequencesC[i].Count; ++j)
                                 {
                                     if (indexAllIndel < allIndelPositions[set].Count && j == allIndelPositions[set][indexAllIndel])
                                     {
@@ -671,26 +671,26 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                                     }
                                     else
                                     {
-                                        seqBytes.Add(this.AlignedSequencesC[i][j]);
+                                        seqBytes.Add(AlignedSequencesC[i][j]);
                                     }
                                 }
 
-                                this.AlignedSequencesC[i] = profileAligner.GenerateSequenceFromEString(eStrings[set], new Sequence(Alphabets.GetAmbiguousAlphabet(this.alphabet), seqBytes.ToArray()));
-                                this.AlignedSequencesC[i].ID = this.AlignedSequencesC[i].ID;
+                                AlignedSequencesC[i] = profileAligner.GenerateSequenceFromEString(eStrings[set], new Sequence(Alphabets.GetAmbiguousAlphabet(alphabet), seqBytes.ToArray()));
+                                AlignedSequencesC[i].ID = AlignedSequencesC[i].ID;
                                 // Do not shallow copy dictionary
                                 //(_alignedSequencesC[i] as Sequence).Metadata = _alignedSequencesC[i].Metadata;
                             });
                         }
 
-                        currentScore = MsaUtils.MultipleAlignmentScoreFunction(this.AlignedSequencesC, SimilarityMatrix, GapOpenCost, GapExtensionCost);
+                        currentScore = MsaUtils.MultipleAlignmentScoreFunction(AlignedSequencesC, SimilarityMatrix, GapOpenCost, GapExtensionCost);
 
-                        if (currentScore > this.AlignmentScoreC)
+                        if (currentScore > AlignmentScoreC)
                         {
-                            this.AlignmentScoreC = currentScore;
+                            AlignmentScoreC = currentScore;
                             needRefinement = true;
 
                             // recreate the tree
-                            kimuraDistanceMatrixGenerator.GenerateDistanceMatrix(this.AlignedSequencesC);
+                            kimuraDistanceMatrixGenerator.GenerateDistanceMatrix(AlignedSequencesC);
                             hierarcicalClusteringB = new HierarchicalClusteringParallel
                                     (kimuraDistanceMatrixGenerator.DistanceMatrix, HierarchicalClusteringMethodName);
 
@@ -705,10 +705,10 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                     }
 
                 }
-                if (this.AlignmentScoreC > this.AlignmentScore)
+                if (AlignmentScoreC > AlignmentScore)
                 {
-                    this.AlignmentScore = this.AlignmentScoreC;
-                    this.AlignedSequences = this.AlignedSequencesC;
+                    AlignmentScore = AlignmentScoreC;
+                    AlignedSequences = AlignedSequencesC;
                 }
                 ReportLog("Stop Stage 3");
             }

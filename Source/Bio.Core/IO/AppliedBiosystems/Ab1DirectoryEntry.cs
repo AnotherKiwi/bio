@@ -25,7 +25,7 @@ namespace Bio.IO.AppliedBiosystems
         /// <param name="buffer"></param>
         public Ab1DirectoryEntry(byte[] buffer)
         {
-            if (buffer == null) throw new ArgumentNullException("buffer");
+            if (buffer == null) throw new ArgumentNullException(nameof(buffer));
             Initialize(buffer);
         }
 
@@ -109,7 +109,7 @@ namespace Bio.IO.AppliedBiosystems
 
         private void Initialize(byte[] directoryBuffer)
         {
-            if (directoryBuffer == null) throw new ArgumentNullException("directoryBuffer");
+            if (directoryBuffer == null) throw new ArgumentNullException(nameof(directoryBuffer));
             Buffer = directoryBuffer;
             using (var stream = new MemoryStream(directoryBuffer.Length))
             {

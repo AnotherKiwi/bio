@@ -225,7 +225,7 @@ namespace Bio
         /// otherwise, false.</returns>
         public override bool Equals(object obj)
         {
-            IndexedItem<T> other = obj as IndexedItem<T>;
+            var other = obj as IndexedItem<T>;
 
             if (other == null)
             {
@@ -271,7 +271,7 @@ namespace Bio
         /// </returns>
         public int CompareTo(object obj)
         {
-            IndexedItem<T> other = obj as IndexedItem<T>;
+            var other = obj as IndexedItem<T>;
 
             if (ReferenceEquals(other, null) && !ReferenceEquals(obj, null))
             {

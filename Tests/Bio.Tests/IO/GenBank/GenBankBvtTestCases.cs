@@ -73,8 +73,8 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
             // parse            
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parserObj.Parse(FilePath);
-                ISequence seq = seqList.ElementAt(0);
+                var seqList = parserObj.Parse(FilePath);
+                var seq = seqList.ElementAt(0);
                 Assert.AreEqual(Utility.GetAlphabet(AlphabetName), seq.Alphabet);
                 Assert.AreEqual(SeqId, seq.ID);
                 ApplicationLog.WriteLine(
@@ -211,7 +211,7 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
             ISequenceParser parserObj = new GenBankParser();
             {
                 parserObj.Alphabet = Alphabets.Protein;
-                IEnumerable<ISequence> seq = parserObj.Parse(FilePath);
+                var seq = parserObj.Parse(FilePath);
 
                 Assert.AreEqual(Utility.GetAlphabet(AlphabetName),
                                 seq.ElementAt(0).Alphabet);
@@ -268,10 +268,10 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
             // parse and update the properties instead of parsing entire file.            
             ISequenceParser parser1 = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList1 = parser1.Parse(FilePath);
-                string tempFileName = Path.GetTempFileName();
+                var seqList1 = parser1.Parse(FilePath);
+                var tempFileName = Path.GetTempFileName();
 
-                string expectedUpdatedSequence =
+                var expectedUpdatedSequence =
                     ExpectedSequence.Replace("\r", "").Replace("\n", "").Replace(" ", "");
                 var orgSeq =
                     new Sequence(Utility.GetAlphabet(AlphabetName), expectedUpdatedSequence);
@@ -287,8 +287,8 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
                     // parse            
                     var parserObj = new GenBankParser();
 
-                    IEnumerable<ISequence> seqList = parserObj.Parse(tempFileName);
-                    ISequence seq = seqList.ElementAt(0);
+                    var seqList = parserObj.Parse(tempFileName);
+                    var seq = seqList.ElementAt(0);
                     Assert.AreEqual(Utility.GetAlphabet(AlphabetName), seq.Alphabet);
                     Assert.AreEqual(SeqId, seq.ID);
                     ApplicationLog.WriteLine(
@@ -334,9 +334,9 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
             InitializeXmlVariables();
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList1 = parserObj.Parse(FilePath);
-                string tempFileName = Path.GetTempFileName();
-                string expectedUpdatedSequence =
+                var seqList1 = parserObj.Parse(FilePath);
+                var tempFileName = Path.GetTempFileName();
+                var expectedUpdatedSequence =
                     ExpectedSequence.Replace("\r", "").Replace("\n", "").Replace(" ", "");
                 var orgSeq = new Sequence(Utility.GetAlphabet(AlphabetName), expectedUpdatedSequence)
                 {
@@ -349,8 +349,8 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
 
                     // parse
                     ISequenceParser parserObjFromFile = new GenBankParser();
-                    IEnumerable<ISequence> seqList = parserObjFromFile.Parse(tempFileName);
-                    ISequence seq = seqList.ElementAt(0);
+                    var seqList = parserObjFromFile.Parse(tempFileName);
+                    var seq = seqList.ElementAt(0);
                     Assert.AreEqual(Utility.GetAlphabet(AlphabetName), seq.Alphabet);
                     Assert.AreEqual(SeqId, seq.ID);
                     ApplicationLog.WriteLine("GenBank Formatter BVT: Successfully validated the Alphabet, Molecular type, Sequence ID and Display ID");
@@ -399,9 +399,9 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
             // parse
             ISequenceParser parserObj = new GenBankParser();
 
-            IEnumerable<ISequence> seqList = parserObj.Parse(FilePath);
-            string tempFileName = Path.GetTempFileName();
-            ISequence seq = seqList.ElementAt(0);
+            var seqList = parserObj.Parse(FilePath);
+            var tempFileName = Path.GetTempFileName();
+            var seq = seqList.ElementAt(0);
 
             ISequenceFormatter formatter = new GenBankFormatter();
             {
@@ -459,9 +459,9 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
             // parse
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parserObj.Parse(FilePath);
-                ISequence seq = seqList.ElementAt(0);
-                string tempFileName = Path.GetTempFileName();
+                var seqList = parserObj.Parse(FilePath);
+                var seq = seqList.ElementAt(0);
+                var tempFileName = Path.GetTempFileName();
                 ISequenceFormatter formatter = new GenBankFormatter();
                 {
                     formatter.Format(seq, tempFileName);
@@ -523,11 +523,11 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
             // Parse and update the properties instead of parsing entire file.            
             ISequenceParser parser1 = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList1 = parser1.Parse(FilePath);
-                string tempFileName = Path.GetTempFileName();
+                var seqList1 = parser1.Parse(FilePath);
+                var tempFileName = Path.GetTempFileName();
                 GenBankMetadata metadata = null;
                 ISequence seq = null;
-                string expectedUpdatedSequence =
+                var expectedUpdatedSequence =
                     ExpectedSequence.Replace("\r", "").Replace("\n", "").Replace(" ", "");
                 var orgSeq =
                     new Sequence(Utility.GetAlphabet(AlphabetName), expectedUpdatedSequence);
@@ -545,7 +545,7 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
 
                 var parserObj = new GenBankParser();
                 {
-                    IEnumerable<ISequence> seqList = parserObj.Parse(tempFileName);
+                    var seqList = parserObj.Parse(tempFileName);
                     seq = seqList.ElementAt(0);
                     Assert.AreEqual(Utility.GetAlphabet(AlphabetName), seq.Alphabet);
                     Assert.AreEqual(SeqId, seq.ID);

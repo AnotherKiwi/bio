@@ -21,7 +21,7 @@ namespace Bio.IO
         public static INamedStreamCreator ToNamedStreamCreatorFromFileName(this string fileName, string name = null)
         {
             if (string.IsNullOrEmpty(fileName))
-                throw new ArgumentNullException("fileName");
+                throw new ArgumentNullException(nameof(fileName));
 
             if (string.IsNullOrEmpty(name))
             {
@@ -39,7 +39,7 @@ namespace Bio.IO
         public static INamedStreamCreator ToNamedStreamCreator(this FileInfo fileInfo, string name = null)
         {
             if (fileInfo == null)
-                throw new ArgumentNullException("fileInfo");
+                throw new ArgumentNullException(nameof(fileInfo));
 
             if (null == name)
             {
@@ -59,10 +59,10 @@ namespace Bio.IO
         public static INamedStreamCreator ToNamedStreamCreator(this Assembly assembly, string resourceName, string name = null)
         {
             if (assembly == null)
-                throw new ArgumentNullException("assembly");
+                throw new ArgumentNullException(nameof(assembly));
 
             if (string.IsNullOrEmpty(resourceName))
-                throw new ArgumentNullException("resourceName");
+                throw new ArgumentNullException(nameof(resourceName));
 
             if (string.IsNullOrEmpty(name))
             {
@@ -82,13 +82,13 @@ namespace Bio.IO
         public static INamedStreamCreator ToNamedStreamCreatorFromString(this string text, string name = null)
         {
             if (string.IsNullOrEmpty(text))
-                throw new ArgumentNullException("text");
+                throw new ArgumentNullException(nameof(text));
 
             if (string.IsNullOrEmpty(name))
             {
                 name = text;
             }
-            byte[] byteBuffer = System.Text.Encoding.UTF8.GetBytes(text);
+            var byteBuffer = System.Text.Encoding.UTF8.GetBytes(text);
             return new NamedStreamCreator(name, () => new MemoryStream(byteBuffer));
         }
 
@@ -101,7 +101,7 @@ namespace Bio.IO
         public static IEnumerable<string> ReadEachUncommentedLine(this INamedStreamCreator namedStreamCreator)
         {
             if (namedStreamCreator == null)
-                throw new ArgumentNullException("namedStreamCreator");
+                throw new ArgumentNullException(nameof(namedStreamCreator));
 
             using (TextReader textReader = namedStreamCreator.OpenUncommentedText())
             {
@@ -121,7 +121,7 @@ namespace Bio.IO
         public static IEnumerable<string> ReadEachLine(this INamedStreamCreator namedStreamCreator)
         {
             if (namedStreamCreator == null)
-                throw new ArgumentNullException("namedStreamCreator");
+                throw new ArgumentNullException(nameof(namedStreamCreator));
 
             using (TextReader textReader = namedStreamCreator.OpenText())
             {
@@ -151,9 +151,9 @@ namespace Bio.IO
         public static StreamReader OpenText(this INamedStreamCreator namedStreamCreator)
         {
             if (namedStreamCreator == null)
-                throw new ArgumentNullException("namedStreamCreator");
+                throw new ArgumentNullException(nameof(namedStreamCreator));
 
-            Stream stream = namedStreamCreator.Creator();
+            var stream = namedStreamCreator.Creator();
             return new StreamReader(stream);
         }
 
@@ -165,9 +165,9 @@ namespace Bio.IO
         public static CommentedStreamReader OpenUncommentedText(this INamedStreamCreator namedStreamCreator)
         {
             if (namedStreamCreator == null)
-                throw new ArgumentNullException("namedStreamCreator");
+                throw new ArgumentNullException(nameof(namedStreamCreator));
 
-            Stream stream = namedStreamCreator.Creator();
+            var stream = namedStreamCreator.Creator();
             return new CommentedStreamReader(stream);
         }
 
@@ -180,7 +180,7 @@ namespace Bio.IO
         public static string ReadToEnd(this INamedStreamCreator namedStreamCreator)
         {
             if (namedStreamCreator == null)
-                throw new ArgumentNullException("namedStreamCreator");
+                throw new ArgumentNullException(nameof(namedStreamCreator));
 
             using (TextReader textReader = namedStreamCreator.OpenText())
             {
@@ -197,10 +197,10 @@ namespace Bio.IO
         public static void WriteToStream(this INamedStreamCreator namedStreamCreator, Stream stream)
         {
             if (namedStreamCreator == null)
-                throw new ArgumentNullException("namedStreamCreator");
+                throw new ArgumentNullException(nameof(namedStreamCreator));
 
             if (stream == null)
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
 
             using (TextWriter textWriter = new StreamWriter(stream))
             {

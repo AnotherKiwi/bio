@@ -119,7 +119,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void PairwiseOverlapSimpleAlignTwoLowerCaseSequencesFromTextFile()
         {
-            this.ValidatePairwiseOverlapAlignment(
+            ValidatePairwiseOverlapAlignment(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerCase,
@@ -138,7 +138,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void PairwiseOverlapSimpleAlignTwoUpperCaseSequencesFromTextFile()
         {
-            this.ValidatePairwiseOverlapAlignment(
+            ValidatePairwiseOverlapAlignment(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.UpperCase,
@@ -157,7 +157,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void PairwiseOverlapSimpleAlignTwoLowerUpperCaseSequencesFromTextFile()
         {
-            this.ValidatePairwiseOverlapAlignment(
+            ValidatePairwiseOverlapAlignment(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerUpperCase,
@@ -176,7 +176,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void PairwiseOverlapSimpleAlignTwoLowerCaseSequencesFromCode()
         {
-            this.ValidatePairwiseOverlapAlignment(
+            ValidatePairwiseOverlapAlignment(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 false,
                 SequenceCaseType.LowerCase,
@@ -195,7 +195,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void PairwiseOverlapSimpleAlignTwoUpperCaseSequencesFromCode()
         {
-            this.ValidatePairwiseOverlapAlignment(
+            ValidatePairwiseOverlapAlignment(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 false,
                 SequenceCaseType.UpperCase,
@@ -214,7 +214,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void PairwiseOverlapSimpleAlignTwoLowerUpperCaseSequencesFromCode()
         {
-            this.ValidatePairwiseOverlapAlignment(
+            ValidatePairwiseOverlapAlignment(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 false,
                 SequenceCaseType.LowerUpperCase,
@@ -233,7 +233,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void PairwiseOverlapSimpleAlignListLowerCaseSequencesFromTextFile()
         {
-            this.ValidatePairwiseOverlapAlignment(
+            ValidatePairwiseOverlapAlignment(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerCase,
@@ -252,7 +252,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void PairwiseOverlapSimpleAlignListUpperCaseSequencesFromTextFile()
         {
-            this.ValidatePairwiseOverlapAlignment(
+            ValidatePairwiseOverlapAlignment(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.UpperCase,
@@ -271,7 +271,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void PairwiseOverlapSimpleAlignListLowerUpperCaseSequencesFromTextFile()
         {
-            this.ValidatePairwiseOverlapAlignment(Constants.PairwiseOverlapAlignAlgorithmNodeName, true,
+            ValidatePairwiseOverlapAlignment(Constants.PairwiseOverlapAlignAlgorithmNodeName, true,
                                              SequenceCaseType.LowerUpperCase,
                                              AlignParameters.AlignList);
         }
@@ -288,7 +288,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void PairwiseOverlapSimpleAlignAllParamsLowerCaseSequencesFromTextFile()
         {
-            this.ValidatePairwiseOverlapAlignment(Constants.PairwiseOverlapAlignAlgorithmNodeName, true,
+            ValidatePairwiseOverlapAlignment(Constants.PairwiseOverlapAlignAlgorithmNodeName, true,
                                              SequenceCaseType.LowerCase,
                                              AlignParameters.AllParam);
         }
@@ -305,7 +305,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void PairwiseOverlapSimpleAlignAllParamsUpperCaseSequencesFromTextFile()
         {
-            this.ValidatePairwiseOverlapAlignment(Constants.PairwiseOverlapAlignAlgorithmNodeName, true,
+            ValidatePairwiseOverlapAlignment(Constants.PairwiseOverlapAlignAlgorithmNodeName, true,
                                              SequenceCaseType.UpperCase,
                                              AlignParameters.AllParam);
         }
@@ -322,7 +322,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void PairwiseOverlapSimpleAlignAllParamsLowerUpperCaseSequencesFromTextFile()
         {
-            this.ValidatePairwiseOverlapAlignment(Constants.PairwiseOverlapAlignAlgorithmNodeName, true,
+            ValidatePairwiseOverlapAlignment(Constants.PairwiseOverlapAlignAlgorithmNodeName, true,
                                              SequenceCaseType.LowerUpperCase, AlignParameters.AllParam);
         }
 
@@ -336,7 +336,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignTwoSequencesWithNonMatchingSimilarityMatrix()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
+            InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName, true,
                 SimilarityMatrixInvalidTypes.NonMatchingSimilarityMatrix, AlignParameters.AlignTwo,
                 AlignmentType.SimpleAlign);
@@ -352,7 +352,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignListSequencesWithNonMatchingSimilarityMatrix()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
+            InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName, true,
                 SimilarityMatrixInvalidTypes.NonMatchingSimilarityMatrix, AlignParameters.AlignList,
                 AlignmentType.SimpleAlign);
@@ -368,7 +368,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignAllParamsSequencesWithNonMatchingSimilarityMatrix()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
+            InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName, true,
                 SimilarityMatrixInvalidTypes.NonMatchingSimilarityMatrix, AlignParameters.AllParam,
                 AlignmentType.SimpleAlign);
@@ -384,7 +384,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignTwoSequencesWithEmptySimilarityMatrix()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
+            InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName, true,
                 SimilarityMatrixInvalidTypes.EmptySimilaityMatrix, AlignParameters.AlignTwo,
                 AlignmentType.SimpleAlign);
@@ -400,7 +400,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignListSequencesWithEmptySimilarityMatrix()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
+            InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName, true,
                 SimilarityMatrixInvalidTypes.EmptySimilaityMatrix,
                 AlignParameters.AlignList,
@@ -417,7 +417,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignAllParamsSequencesWithEmptySimilarityMatrix()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
+            InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.EmptySimilaityMatrix,
@@ -435,7 +435,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignTwoSequencesWithOnlyAlphabetSimilarityMatrix()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
+            InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName, true,
                 SimilarityMatrixInvalidTypes.OnlyAlphabetSimilarityMatrix,
                 AlignParameters.AlignTwo,
@@ -452,7 +452,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignListSequencesWithOnlyAlphabetSimilarityMatrix()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
+            InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.OnlyAlphabetSimilarityMatrix,
@@ -470,7 +470,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignAllParamsSequencesWithOnlyAlphabetSimilarityMatrix()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
+            InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.OnlyAlphabetSimilarityMatrix,
@@ -488,7 +488,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignTwoSequencesWithModifiedSimilarityMatrix()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
+            InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.ModifiedSimilarityMatrix,
@@ -506,7 +506,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignListSequencesWithModifiedSimilarityMatrix()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
+            InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.ModifiedSimilarityMatrix,
@@ -524,7 +524,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignAllParamsSequencesWithModifiedSimilarityMatrix()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
+            InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.ModifiedSimilarityMatrix,
@@ -542,7 +542,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignTwoSequencesWithFewAlphabetSimilarityMatrix()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
+            InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.FewAlphabetsSimilarityMatrix,
@@ -560,7 +560,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignListSequencesWithFewAlphabetSimilarityMatrix()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
+            InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.FewAlphabetsSimilarityMatrix,
@@ -578,7 +578,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignAllParamsSequencesWithFewAlphabetSimilarityMatrix()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
+            InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.FewAlphabetsSimilarityMatrix,
@@ -596,7 +596,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignTwoSequencesFromCodeWithEmptySimilarityMatrix()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
+            InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 false,
                 SimilarityMatrixInvalidTypes.EmptySimilaityMatrix,
@@ -614,7 +614,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignListSequencesFromCodeWithEmptySimilarityMatrix()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
+            InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 false,
                 SimilarityMatrixInvalidTypes.EmptySimilaityMatrix,
@@ -632,7 +632,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignAllParamsSequencesFromCodeWithEmptySimilarityMatrix()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
+            InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 false,
                 SimilarityMatrixInvalidTypes.EmptySimilaityMatrix,
@@ -650,7 +650,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignTwoSequencesFromCodeWithOnlyAlphabetSimilarityMatrix()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
+            InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 false,
                 SimilarityMatrixInvalidTypes.OnlyAlphabetSimilarityMatrix,
@@ -668,7 +668,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignListSequencesFromCodeWithOnlyAlphabetSimilarityMatrix()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
+            InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 false,
                 SimilarityMatrixInvalidTypes.OnlyAlphabetSimilarityMatrix,
@@ -686,7 +686,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignAllParamsSequencesFromCodeWithOnlyAlphabetSimilarityMatrix()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
+            InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 false,
                 SimilarityMatrixInvalidTypes.OnlyAlphabetSimilarityMatrix,
@@ -704,7 +704,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignTwoSequencesFromCodeWithNullSimilarityMatrix()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
+            InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 false,
                 SimilarityMatrixInvalidTypes.NullSimilarityMatrix,
@@ -722,7 +722,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignListSequencesFromCodeWithNullSimilarityMatrix()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
+            InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 false,
                 SimilarityMatrixInvalidTypes.NullSimilarityMatrix,
@@ -740,7 +740,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignAllParamsSequencesFromCodeWithNullSimilarityMatrix()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
+            InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 false,
                 SimilarityMatrixInvalidTypes.NullSimilarityMatrix,
@@ -758,7 +758,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignTwoSequencesWithInvalidDiagonalSimilarityMatrix()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
+            InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
                 Constants.PairwiseOverlapDiagonalSimMatAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.NonMatchingSimilarityMatrix,
@@ -776,7 +776,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignListSequencesWithInvalidDiagonalSimilarityMatrix()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
+            InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
                 Constants.PairwiseOverlapDiagonalSimMatAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.NonMatchingSimilarityMatrix,
@@ -794,7 +794,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignAllParamsSequencesWithInvalidDiagonalSimilarityMatrix()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
+            InValidatePairwiseOverlapAlignmentWithInvalidSimilarityMatrix(
                 Constants.PairwiseOverlapDiagonalSimMatAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.NonMatchingSimilarityMatrix,
@@ -812,7 +812,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignTwoWithInvalidSequencesFromTextFile()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSequence(
+            InValidatePairwiseOverlapAlignmentWithInvalidSequence(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithSpecialChars,
@@ -831,7 +831,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignListWithInvalidSequencesFromTextFile()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSequence(
+            InValidatePairwiseOverlapAlignmentWithInvalidSequence(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithSpecialChars,
@@ -850,7 +850,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignAllParamsWithInvalidSequencesFromTextFile()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSequence(
+            InValidatePairwiseOverlapAlignmentWithInvalidSequence(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithSpecialChars,
@@ -869,7 +869,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignTwoWithEmptySequencesFromTextFile()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSequence(
+            InValidatePairwiseOverlapAlignmentWithInvalidSequence(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.EmptySequence,
@@ -888,7 +888,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignListWithEmptySequencesFromTextFile()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSequence(
+            InValidatePairwiseOverlapAlignmentWithInvalidSequence(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.EmptySequence,
@@ -907,7 +907,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignAllParamsWithEmptySequencesFromTextFile()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSequence(
+            InValidatePairwiseOverlapAlignmentWithInvalidSequence(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.EmptySequence,
@@ -926,7 +926,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignTwoWithGapSequencesFromTextFile()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSequence(
+            InValidatePairwiseOverlapAlignmentWithInvalidSequence(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithGap,
@@ -945,7 +945,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignListWithGapSequencesFromTextFile()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSequence(
+            InValidatePairwiseOverlapAlignmentWithInvalidSequence(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithGap,
@@ -964,7 +964,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignAllParamsWithGapSequencesFromTextFile()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSequence(
+            InValidatePairwiseOverlapAlignmentWithInvalidSequence(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithGap,
@@ -983,7 +983,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignTwoWithUnicodeSequencesFromTextFile()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSequence(
+            InValidatePairwiseOverlapAlignmentWithInvalidSequence(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithUnicodeChars,
@@ -1002,7 +1002,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignListWithUnicodeSequencesFromTextFile()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSequence(
+            InValidatePairwiseOverlapAlignmentWithInvalidSequence(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithUnicodeChars,
@@ -1021,7 +1021,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignAllParamsWithUnicodeSequencesFromTextFile()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSequence(
+            InValidatePairwiseOverlapAlignmentWithInvalidSequence(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithUnicodeChars,
@@ -1040,7 +1040,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignTwoSequencesWithSpacesFromTextFile()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSequence(
+            InValidatePairwiseOverlapAlignmentWithInvalidSequence(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithSpaces,
@@ -1059,7 +1059,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignListSequencesWithSpacesFromTextFile()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSequence(
+            InValidatePairwiseOverlapAlignmentWithInvalidSequence(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithSpaces,
@@ -1078,7 +1078,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignParamsSequencesWithSpacesFromTextFile()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSequence(
+            InValidatePairwiseOverlapAlignmentWithInvalidSequence(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithSpaces,
@@ -1098,7 +1098,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Ignore("The underlying exception messages differ between mono and .NET")]
         public void InValidatePOSimpleAlignTwoWithInvalidSequencesFromCode()
         {
-            this.InValidatePairwiseOverlapAlignmentWithInvalidSequence(
+            InValidatePairwiseOverlapAlignmentWithInvalidSequence(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 false,
                 InvalidSequenceType.SequenceWithSpecialChars,
@@ -1119,7 +1119,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void ValidatePairwiseOverlapAlignTwoDnaSequences()
         {
-            this.ValidatePairwiseOverlapAlignment(
+            ValidatePairwiseOverlapAlignment(
                 Constants.PairwiseOverlapDnaAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerCase,
@@ -1139,7 +1139,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void ValidatePairwiseOverlapAlignTwoRnaSequences()
         {
-            this.ValidatePairwiseOverlapAlignment(
+            ValidatePairwiseOverlapAlignment(
                 Constants.PairwiseOverlapRnaAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerCase,
@@ -1159,7 +1159,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void ValidatePairwiseOverlapAlignTwoProteinSequences()
         {
-            this.ValidatePairwiseOverlapAlignment(
+            ValidatePairwiseOverlapAlignment(
                 Constants.PairwiseOverlapProAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerCase,
@@ -1179,7 +1179,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void ValidatePairwiseOverlapAlignTwoSequencesGapCostMax()
         {
-            this.ValidatePairwiseOverlapAlignment(
+            ValidatePairwiseOverlapAlignment(
                 Constants.PairwiseOverlapGapCostMaxAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerCase,
@@ -1199,7 +1199,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void ValidatePairwiseOverlapAlignTwoSequencesGapCostMin()
         {
-            this.ValidatePairwiseOverlapAlignment(
+            ValidatePairwiseOverlapAlignment(
                 Constants.PairwiseOverlapGapCostMinAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerCase,
@@ -1219,7 +1219,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void ValidatePairwiseOverlapAlignTwoSequencesWithBlosomSimilarityMatrix()
         {
-            this.ValidatePairwiseOverlapAlignment(
+            ValidatePairwiseOverlapAlignment(
                 Constants.PairwiseOverlapBlosumAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerCase,
@@ -1239,7 +1239,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void ValidatePairwiseOverlapAlignTwoSequencesWithPamSimilarityMatrix()
         {
-            this.ValidatePairwiseOverlapAlignment(
+            ValidatePairwiseOverlapAlignment(
                 Constants.PairwiseOverlapPamAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerCase,
@@ -1259,7 +1259,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void ValidatePairwiseOverlapAlignTwoSequencesWithTextReaderSimilarityMatrix()
         {
-            this.ValidatePairwiseOverlapAlignment(
+            ValidatePairwiseOverlapAlignment(
                 Constants.PairwiseOverlapAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerCase,
@@ -1280,7 +1280,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void ValidatePairwiseOverlapAlignTwoSequencesWithDiagonalSimilarityMatrix()
         {
-            this.ValidatePairwiseOverlapAlignment(
+            ValidatePairwiseOverlapAlignment(
                 Constants.PairwiseOverlapDiagonalSimMatAlignAlgorithmNodeName,
                 true, SequenceCaseType.LowerCase,
                 AlignParameters.AlignTwo,
@@ -1300,7 +1300,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void ValidatePairwiseOverlapAlignTwoSequencesWithEqualGapOpenAndExtensionCost()
         {
-            this.ValidatePairwiseOverlapAlignment(
+            ValidatePairwiseOverlapAlignment(
                 Constants.PairwiseOverlapEqualAlignAlgorithmNodeName,
                 true, SequenceCaseType.LowerCase,
                 AlignParameters.AlignTwo,
@@ -1322,7 +1322,7 @@ namespace Bio.Tests.Algorithms.Alignment
                                                       bool isTextFile, SequenceCaseType caseType,
                                                       AlignParameters additionalParameter)
         {
-            this.ValidatePairwiseOverlapAlignment(nodeName, isTextFile,
+            ValidatePairwiseOverlapAlignment(nodeName, isTextFile,
                                              caseType, additionalParameter, AlignmentType.SimpleAlign);
         }
 
@@ -1338,7 +1338,7 @@ namespace Bio.Tests.Algorithms.Alignment
                                                       SequenceCaseType caseType, AlignParameters additionalParameter,
                                                       AlignmentType alignType)
         {
-            this.ValidatePairwiseOverlapAlignment(nodeName, isTextFile,
+            ValidatePairwiseOverlapAlignment(nodeName, isTextFile,
                                              caseType, additionalParameter, alignType,
                                              SimilarityMatrixParameters.Default);
         }
@@ -1360,20 +1360,20 @@ namespace Bio.Tests.Algorithms.Alignment
             Sequence aInput = null;
             Sequence bInput = null;
 
-            IAlphabet alphabet = Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(nodeName,
+            var alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                      Constants.AlphabetNameNode));
 
             if (isTextFile)
             {
                 // Read the xml file for getting both the files for aligning.
-                string filePath1 = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                var filePath1 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                    Constants.FilePathNode1).TestDir();
-                string filePath2 = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                var filePath2 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                    Constants.FilePathNode2).TestDir();
 
                 var parser1 = new FastAParser();
-                ISequence originalSequence1 = parser1.Parse(filePath1).ElementAt(0);
-                ISequence originalSequence2 = parser1.Parse(filePath2).ElementAt(0);
+                var originalSequence1 = parser1.Parse(filePath1).ElementAt(0);
+                var originalSequence2 = parser1.Parse(filePath2).ElementAt(0);
 
                 // Create input sequence for sequence string in different cases.
                 GetSequenceWithCaseType(new string(originalSequence1.Select(a => (char) a).ToArray()),
@@ -1382,8 +1382,8 @@ namespace Bio.Tests.Algorithms.Alignment
             }
             else
             {
-                string originalSequence1 = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode1);
-                string originalSequence2 = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode2);
+                var originalSequence1 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode1);
+                var originalSequence2 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode2);
 
                 // Create input sequence for sequence string in different cases.
                 GetSequenceWithCaseType(
@@ -1406,7 +1406,7 @@ namespace Bio.Tests.Algorithms.Alignment
                                                    bInputString));
 
             // Create similarity matrix object for a given file.
-            string blosumFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.BlosumFilePathNode).TestDir();
+            var blosumFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.BlosumFilePathNode).TestDir();
 
             SimilarityMatrix sm = null;
 
@@ -1417,9 +1417,9 @@ namespace Bio.Tests.Algorithms.Alignment
                         sm = new SimilarityMatrix(reader);
                     break;
                 case SimilarityMatrixParameters.DiagonalMatrix:
-                    string matchValue = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    var matchValue = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                         Constants.MatchScoreNode);
-                    string misMatchValue = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    var misMatchValue = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.MisMatchScoreNode);
                     sm = new DiagonalSimilarityMatrix(int.Parse(matchValue, null),
                                                       int.Parse(misMatchValue, null));
@@ -1429,10 +1429,10 @@ namespace Bio.Tests.Algorithms.Alignment
                     break;
             }
 
-            int gapOpenCost = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName,
+            var gapOpenCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                         Constants.GapOpenCostNode), null);
 
-            int gapExtensionCost = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName,
+            var gapExtensionCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                              Constants.GapExtensionCostNode), null);
 
             // Create PairwiseOverlapAligner instance and set its values.
@@ -1449,9 +1449,11 @@ namespace Bio.Tests.Algorithms.Alignment
             switch (additionalParameter)
             {
                 case AlignParameters.AlignList:
-                    var sequences = new List<ISequence>();
-                    sequences.Add(aInput);
-                    sequences.Add(bInput);
+                    var sequences = new List<ISequence>
+                    {
+                        aInput,
+                        bInput
+                    };
                     switch (alignType)
                     {
                         case AlignmentType.Align:
@@ -1494,26 +1496,26 @@ namespace Bio.Tests.Algorithms.Alignment
             sm = null;
 
             // Get the expected sequence and scorde from xml config.
-            string expectedSequence1 = string.Empty;
-            string expectedSequence2 = string.Empty;
-            string expectedScore = string.Empty;
+            var expectedSequence1 = string.Empty;
+            var expectedSequence2 = string.Empty;
+            var expectedScore = string.Empty;
 
             switch (alignType)
             {
                 case AlignmentType.Align:
-                    expectedScore = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedScore = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                     Constants.ExpectedGapExtensionScoreNode);
-                    expectedSequence1 = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedSequence1 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                         Constants.ExpectedGapExtensionSequence1Node);
-                    expectedSequence2 = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedSequence2 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                         Constants.ExpectedGapExtensionSequence2Node);
                     break;
                 default:
-                    expectedScore = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedScore = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                     Constants.ExpectedScoreNode);
-                    expectedSequence1 = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedSequence1 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                         Constants.ExpectedSequenceNode1);
-                    expectedSequence2 = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedSequence2 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                         Constants.ExpectedSequenceNode2);
                     break;
             }
@@ -1526,7 +1528,7 @@ namespace Bio.Tests.Algorithms.Alignment
 
             IPairwiseSequenceAlignment align = new PairwiseSequenceAlignment();
             PairwiseAlignedSequence alignedSeq;
-            for (int i = 0; i < expectedSequences1.Length; i++)
+            for (var i = 0; i < expectedSequences1.Length; i++)
             {
                 alignedSeq = new PairwiseAlignedSequence
                 {
@@ -1563,7 +1565,7 @@ namespace Bio.Tests.Algorithms.Alignment
                                                                            AlignmentType alignType,
                                                                            InvalidSequenceType sequenceType)
         {
-            IAlphabet alphabet = Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(nodeName,
+            var alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                      Constants.AlphabetNameNode));
             Exception actualException = null;
             Sequence aInput = null;
@@ -1571,7 +1573,7 @@ namespace Bio.Tests.Algorithms.Alignment
             if (isTextFile)
             {
                 // Read the xml file for getting both the files for aligning.
-                string filepath = this.GetInputFileNameWithInvalidType(nodeName, invalidSequenceType);
+                var filepath = GetInputFileNameWithInvalidType(nodeName, invalidSequenceType);
 
                 // Create input sequence for sequence string in different cases.
                 try
@@ -1588,7 +1590,7 @@ namespace Bio.Tests.Algorithms.Alignment
             }
             else
             {
-                string originalSequence = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                var originalSequence = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                           Constants.InvalidSequence1);
 
                 // Create input sequence for sequence string in different cases.
@@ -1604,18 +1606,18 @@ namespace Bio.Tests.Algorithms.Alignment
 
             if (null == actualException)
             {
-                Sequence bInput = aInput;
+                var bInput = aInput;
 
                 // Create similarity matrix object for a given file.
-                string blosumFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                var blosumFilePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                         Constants.BlosumFilePathNode).TestDir();
 
                 var sm = new SimilarityMatrix(new StreamReader(blosumFilePath));
 
-                int gapOpenCost = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                var gapOpenCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                             Constants.GapOpenCostNode), null);
 
-                int gapExtensionCost = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                var gapExtensionCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                  Constants.GapExtensionCostNode), null);
 
                 // Create PairwiseOverlapAligner instance and set its values.
@@ -1714,7 +1716,7 @@ namespace Bio.Tests.Algorithms.Alignment
             }
 
             // Validate Error messages for Invalid Sequence types.
-            string expectedErrorMessage = this.GetExpectedErrorMeesageWithInvalidSequenceType(nodeName,
+            var expectedErrorMessage = GetExpectedErrorMeesageWithInvalidSequenceType(nodeName,
                                                                                          sequenceType);
 
             Assert.AreEqual(expectedErrorMessage.Replace("\\r", "").Replace("\\n", "").Replace("\t", ""),
@@ -1741,21 +1743,21 @@ namespace Bio.Tests.Algorithms.Alignment
             Sequence aInput = null;
             Sequence bInput = null;
 
-            IAlphabet alphabet = Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(nodeName,
+            var alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                      Constants.AlphabetNameNode));
 
             if (isTextFile)
             {
                 // Read the xml file for getting both the files for aligning.
-                string firstInputFilepath = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                var firstInputFilepath = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                             Constants.FilePathNode1).TestDir();
-                string secondInputFilepath = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                var secondInputFilepath = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                              Constants.FilePathNode2).TestDir();
 
                 // Parse the files and get the sequence.              
                 var parser1 = new FastAParser();
-                ISequence inputSequence1 = parser1.Parse(firstInputFilepath).ElementAt(0);
-                ISequence inputSequence2 = parser1.Parse(secondInputFilepath).ElementAt(0);
+                var inputSequence1 = parser1.Parse(firstInputFilepath).ElementAt(0);
+                var inputSequence2 = parser1.Parse(secondInputFilepath).ElementAt(0);
 
                 // Create input sequence for sequence string in different cases.
                 GetSequenceWithCaseType(new string(inputSequence1.Select(a => (char) a).ToArray()),
@@ -1764,8 +1766,8 @@ namespace Bio.Tests.Algorithms.Alignment
             }
             else
             {
-                string firstInputSequence = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode1);
-                string secondInputSequence = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode2);
+                var firstInputSequence = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode1);
+                var secondInputSequence = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode2);
 
                 // Create input sequence for sequence string in different cases.
                 GetSequenceWithCaseType(firstInputSequence, secondInputSequence,
@@ -1779,7 +1781,7 @@ namespace Bio.Tests.Algorithms.Alignment
             ApplicationLog.WriteLine(string.Format(null, "PairwiseOverlapAligner P2 : Second sequence used is '{0}'.", bInputString));
 
             // Create similarity matrix object for a invalid file.
-            string blosumFilePath = this.GetSimilarityMatrixFileWithInvalidType(nodeName, invalidType);
+            var blosumFilePath = GetSimilarityMatrixFileWithInvalidType(nodeName, invalidType);
             Exception actualExpection = null;
 
             // For invalid similarity matrix data format; exception will be thrown while instantiating
@@ -1799,10 +1801,10 @@ namespace Bio.Tests.Algorithms.Alignment
             // For non matching similarity matrix exception will be thrown while alignment
             if (actualExpection == null)
             {
-                int gapOpenCost = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                var gapOpenCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                             Constants.GapOpenCostNode), null);
 
-                int gapExtensionCost = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                var gapExtensionCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                  Constants.GapExtensionCostNode), null);
 
                 // Create PairwiseOverlapAligner instance and set its values.
@@ -1818,9 +1820,11 @@ namespace Bio.Tests.Algorithms.Alignment
                 switch (additionalParameter)
                 {
                     case AlignParameters.AlignList:
-                        var sequences = new List<ISequence>();
-                        sequences.Add(aInput);
-                        sequences.Add(bInput);
+                        var sequences = new List<ISequence>
+                        {
+                            aInput,
+                            bInput
+                        };
                         switch (alignType)
                         {
                             case AlignmentType.Align:
@@ -1902,7 +1906,7 @@ namespace Bio.Tests.Algorithms.Alignment
             }
 
             // Validate that expected exception is thrown using error message.
-            string expectedErrorMessage = this.GetExpectedErrorMeesageWithInvalidSimilarityMatrixType(nodeName, invalidType);
+            var expectedErrorMessage = GetExpectedErrorMeesageWithInvalidSimilarityMatrixType(nodeName, invalidType);
             Assert.AreEqual(expectedErrorMessage, actualExpection.Message);
             ApplicationLog.WriteLine("PairwiseOverlapAligner P2 : Expected Error message is thrown ", expectedErrorMessage);
         }
@@ -1916,36 +1920,36 @@ namespace Bio.Tests.Algorithms.Alignment
         private string GetExpectedErrorMeesageWithInvalidSimilarityMatrixType(string nodeName,
                                                                               SimilarityMatrixInvalidTypes invalidType)
         {
-            string expectedErrorMessage = string.Empty;
+            var expectedErrorMessage = string.Empty;
             switch (invalidType)
             {
                 case SimilarityMatrixInvalidTypes.FewAlphabetsSimilarityMatrix:
                 case SimilarityMatrixInvalidTypes.NonMatchingSimilarityMatrix:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.ExpectedErrorMessage);
                     break;
                 case SimilarityMatrixInvalidTypes.EmptySimilaityMatrix:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.EmptyMatrixErrorMessage);
                     break;
                 case SimilarityMatrixInvalidTypes.OnlyAlphabetSimilarityMatrix:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.SimilarityMatrixFewerLinesException);
                     break;
                 case SimilarityMatrixInvalidTypes.ModifiedSimilarityMatrix:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.ModifiedMatrixErrorMessage);
                     break;
                 case SimilarityMatrixInvalidTypes.NullSimilarityMatrix:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.NullErrorMessage);
                     break;
                 case SimilarityMatrixInvalidTypes.EmptySequence:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetFileTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetFileTextValue(nodeName,
                                                                                Constants.EmptySequenceErrorMessage);
                     break;
                 case SimilarityMatrixInvalidTypes.ExpectedErrorMessage:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetFileTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetFileTextValue(nodeName,
                                                                                Constants.ExpectedErrorMessage);
                     break;
                 default:
@@ -1964,31 +1968,31 @@ namespace Bio.Tests.Algorithms.Alignment
         private string GetExpectedErrorMeesageWithInvalidSequenceType(string nodeName,
                                                                       InvalidSequenceType sequenceType)
         {
-            string expectedErrorMessage = string.Empty;
+            var expectedErrorMessage = string.Empty;
             switch (sequenceType)
             {
                 case InvalidSequenceType.SequenceWithInvalidChars:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.EmptySequenceErrorMessage);
                     break;
                 case InvalidSequenceType.InvalidSequence:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.InvalidSequenceErrorMessage);
                     break;
                 case InvalidSequenceType.SequenceWithUnicodeChars:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.UnicodeSequenceErrorMessage);
                     break;
                 case InvalidSequenceType.SequenceWithSpaces:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.SequenceWithSpaceErrorMessage);
                     break;
                 case InvalidSequenceType.AlphabetMap:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.InvalidAlphabetErrorMessage);
                     break;
                 default:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.ExpectedErrorMessage);
                     break;
             }
@@ -2005,8 +2009,8 @@ namespace Bio.Tests.Algorithms.Alignment
         private string GetSimilarityMatrixFileWithInvalidType(string nodeName,
                                                               SimilarityMatrixInvalidTypes invalidType)
         {
-            string invalidFileNode = string.Empty;
-            string invalidFilePath = string.Empty;
+            var invalidFileNode = string.Empty;
+            var invalidFilePath = string.Empty;
             switch (invalidType)
             {
                 case SimilarityMatrixInvalidTypes.NonMatchingSimilarityMatrix:
@@ -2029,7 +2033,7 @@ namespace Bio.Tests.Algorithms.Alignment
             }
             if (1 == string.Compare(invalidFileNode, string.Empty, StringComparison.CurrentCulture))
             {
-                invalidFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, invalidFileNode);
+                invalidFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, invalidFileNode);
             }
 
             return invalidFilePath.TestDir();
@@ -2044,24 +2048,24 @@ namespace Bio.Tests.Algorithms.Alignment
         private string GetInputFileNameWithInvalidType(string nodeName,
                                                        InvalidSequenceType invalidSequenceType)
         {
-            string invalidFilePath = string.Empty;
+            var invalidFilePath = string.Empty;
             switch (invalidSequenceType)
             {
                 case InvalidSequenceType.SequenceWithSpecialChars:
-                    invalidFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    invalidFilePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                       Constants.InvalidFilePathNode1);
                     break;
                 case InvalidSequenceType.EmptySequence:
-                    invalidFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.EmptyFilePath1);
+                    invalidFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.EmptyFilePath1);
                     break;
                 case InvalidSequenceType.SequenceWithSpaces:
-                    invalidFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SpacesFilePath1);
+                    invalidFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SpacesFilePath1);
                     break;
                 case InvalidSequenceType.SequenceWithGap:
-                    invalidFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapFilePath1);
+                    invalidFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapFilePath1);
                     break;
                 case InvalidSequenceType.SequenceWithUnicodeChars:
-                    invalidFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.UnicodeFilePath1);
+                    invalidFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.UnicodeFilePath1);
                     break;
                 default:
                     break;

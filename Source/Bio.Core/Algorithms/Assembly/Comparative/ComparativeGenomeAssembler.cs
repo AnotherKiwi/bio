@@ -29,11 +29,11 @@ namespace Bio.Algorithms.Assembly.Comparative
             Depth = 10;
 
             // Set default values.
-            this.BreakLength = 200;
-            this.FixedSeparation = 5;
-            this.SeparationFactor = 0.12F;
-            this.MinimumScore = 65;
-            this.MaximumSeparation = 90;
+            BreakLength = 200;
+            FixedSeparation = 5;
+            SeparationFactor = 0.12F;
+            MinimumScore = 65;
+            MaximumSeparation = 90;
         }
 
         /// <summary>
@@ -48,13 +48,13 @@ namespace Bio.Algorithms.Assembly.Comparative
         {
             get
             {
-                return this.kmerLength;
+                return kmerLength;
             }
 
             set
             {
-                this.kmerLength = value;
-                this.AllowKmerLengthEstimation = false;
+                kmerLength = value;
+                AllowKmerLengthEstimation = false;
             }
         }
 
@@ -165,63 +165,63 @@ namespace Bio.Algorithms.Assembly.Comparative
 
                 // Comparative Assembly Steps
                 // 1) Read Alignment (Calling NUCmer for aligning reads to reference sequence)
-                this.StatusEventStart(Properties.Resource.ReadAlignmentStarted);
-                IEnumerable<DeltaAlignment> alignmentBetweenReferenceAndReads = this.ReadAlignment(refSequences, 
-                            reads.Where(a => a.Count >= this.LengthOfMum));
+                StatusEventStart(Properties.Resource.ReadAlignmentStarted);
+                var alignmentBetweenReferenceAndReads = ReadAlignment(refSequences, 
+                            reads.Where(a => a.Count >= LengthOfMum));
 
                 readAlignmentOutputStream = PlatformManager.Services.CreateTempStream();
                 WriteDelta(alignmentBetweenReferenceAndReads, readAlignmentOutputStream);
-                this.StatusEventEnd(Properties.Resource.ReadAlignmentEnded);
+                StatusEventEnd(Properties.Resource.ReadAlignmentEnded);
 
                 // 2) Repeat Resolution
-                this.StatusEventStart(Properties.Resource.RepeatResolutionStarted);
+                StatusEventStart(Properties.Resource.RepeatResolutionStarted);
                 DeltaAlignmentSorter sorter;
 
                 unsortedRepeatResolutionOutputStream = PlatformManager.Services.CreateTempStream();
                 using (var deltaAlignmentFromReadAlignment = new DeltaAlignmentCollection(readAlignmentOutputStream, queryParser))
                 {
-                    IEnumerable<DeltaAlignment> repeatResolvedDeltas = RepeatResolution(deltaAlignmentFromReadAlignment);
+                    var repeatResolvedDeltas = RepeatResolution(deltaAlignmentFromReadAlignment);
                     sorter = new DeltaAlignmentSorter(refSequences[0].Count);
                     WriteUnsortedDelta(repeatResolvedDeltas, sorter, unsortedRepeatResolutionOutputStream);
                 }
 
-                this.StatusEventEnd(Properties.Resource.RepeatResolutionEnded);
-                this.StatusEventStart(Properties.Resource.SortingResolvedDeltasStarted);
+                StatusEventEnd(Properties.Resource.RepeatResolutionEnded);
+                StatusEventStart(Properties.Resource.SortingResolvedDeltasStarted);
 
                 repeatResolutionOutputStream = PlatformManager.Services.CreateTempStream();
                 WriteSortedDelta(sorter, unsortedRepeatResolutionOutputStream, queryParser, repeatResolutionOutputStream);
-                this.StatusEventEnd(Properties.Resource.SortingResolvedDeltasEnded);
+                StatusEventEnd(Properties.Resource.SortingResolvedDeltasEnded);
 
                 // 3) Layout Refinement
-                this.StatusEventStart(Properties.Resource.LayoutRefinementStarted);
+                StatusEventStart(Properties.Resource.LayoutRefinementStarted);
 
                 layoutRefinmentOutputStream = PlatformManager.Services.CreateTempStream();
                 using (var unsortedDeltaCollectionForLayoutRefinment = new DeltaAlignmentCollection(repeatResolutionOutputStream, queryParser))
                 {
                     unsortedLayoutRefinmentOutputStream = PlatformManager.Services.CreateTempStream();
-                    IEnumerable<DeltaAlignment> layoutRefinedDeltas = LayoutRefinment(unsortedDeltaCollectionForLayoutRefinment);
+                    var layoutRefinedDeltas = LayoutRefinment(unsortedDeltaCollectionForLayoutRefinment);
                     sorter = new DeltaAlignmentSorter(refSequences[0].Count);
                     WriteUnsortedDelta(layoutRefinedDeltas, sorter, unsortedLayoutRefinmentOutputStream);
                     WriteSortedDelta(sorter, unsortedLayoutRefinmentOutputStream, queryParser, layoutRefinmentOutputStream);
                 }
 
-                this.StatusEventEnd(Properties.Resource.LayoutRefinementEnded);
+                StatusEventEnd(Properties.Resource.LayoutRefinementEnded);
 
                 // 4) Consensus Generation
-                this.StatusEventStart(Properties.Resource.ConsensusGenerationStarted);
+                StatusEventStart(Properties.Resource.ConsensusGenerationStarted);
                 IList<ISequence> contigs;
                 using (var delta = new DeltaAlignmentCollection(layoutRefinmentOutputStream, queryParser))
                 {
-                    contigs = this.ConsensusGenerator(delta).ToList();
+                    contigs = ConsensusGenerator(delta).ToList();
                 }
-                this.StatusEventEnd(Properties.Resource.ConsensusGenerationEnded);
+                StatusEventEnd(Properties.Resource.ConsensusGenerationEnded);
 
-                if (this.ScaffoldingEnabled)
+                if (ScaffoldingEnabled)
                 {
                     // 5) Scaffold Generation
-                    this.StatusEventStart(Properties.Resource.ScaffoldGenerationStarted);
-                    IEnumerable<ISequence> scaffolds = this.ScaffoldsGenerator(contigs, reads);
-                    this.StatusEventEnd(Properties.Resource.ScaffoldGenerationEnded);
+                    StatusEventStart(Properties.Resource.ScaffoldGenerationStarted);
+                    var scaffolds = ScaffoldsGenerator(contigs, reads);
+                    StatusEventEnd(Properties.Resource.ScaffoldGenerationEnded);
                     return scaffolds;
                 }
                 else
@@ -247,14 +247,14 @@ namespace Bio.Algorithms.Assembly.Comparative
         /// <param name="outputStream">Temp stream to write to.</param>
         public static void WriteDelta(IEnumerable<DeltaAlignment> deltaAlignments, Stream outputStream)
         {
-            using (StreamWriter writer = new StreamWriter(outputStream))
+            using (var writer = new StreamWriter(outputStream))
             {
                 long deltaPositionInFile = 0;
 
-                foreach (DeltaAlignment deltaAlignment in deltaAlignments)
+                foreach (var deltaAlignment in deltaAlignments)
                 {
                     deltaAlignment.Id = deltaPositionInFile;
-                    string deltaString = Helper.GetString(deltaAlignment);
+                    var deltaString = Helper.GetString(deltaAlignment);
                     deltaPositionInFile += deltaString.Length;
                     writer.Write(deltaString);
                 }
@@ -271,13 +271,13 @@ namespace Bio.Algorithms.Assembly.Comparative
         /// <param name="outputStream">Output file name.</param>
         public static void WriteUnsortedDelta(IEnumerable<DeltaAlignment> delta, DeltaAlignmentSorter sorter, Stream outputStream)
         {
-            using (StreamWriter writer = new StreamWriter(outputStream))
+            using (var writer = new StreamWriter(outputStream))
             {
                 long deltaPositionInFile = 0;
-                foreach (DeltaAlignment deltaAlignment in delta)
+                foreach (var deltaAlignment in delta)
                 {
                     deltaAlignment.Id = deltaPositionInFile;
-                    string deltaString = Helper.GetString(deltaAlignment);
+                    var deltaString = Helper.GetString(deltaAlignment);
                     deltaPositionInFile += deltaString.Length;
                     writer.Write(deltaString);
                     sorter.Add(deltaAlignment.Id, deltaAlignment.FirstSequenceStart);
@@ -298,19 +298,19 @@ namespace Bio.Algorithms.Assembly.Comparative
         {
             if (sorter == null)
             {
-                throw new ArgumentNullException("sorter");
+                throw new ArgumentNullException(nameof(sorter));
             }
 
-            using (DeltaAlignmentParser unsortedDeltaParser = new DeltaAlignmentParser(unsortedDeltaStream, queryParser))
+            using (var unsortedDeltaParser = new DeltaAlignmentParser(unsortedDeltaStream, queryParser))
             {
-                using (StreamWriter writer = new StreamWriter(outputStream))
+                using (var writer = new StreamWriter(outputStream))
                 {
                     long deltaPositionInFile = 0;
-                    foreach (long id in sorter.GetSortedIds())
+                    foreach (var id in sorter.GetSortedIds())
                     {
-                        DeltaAlignment deltaAlignment = unsortedDeltaParser.GetDeltaAlignmentAt(id);
+                        var deltaAlignment = unsortedDeltaParser.GetDeltaAlignmentAt(id);
                         deltaAlignment.Id = deltaPositionInFile;
-                        string deltaString = Helper.GetString(deltaAlignment);
+                        var deltaString = Helper.GetString(deltaAlignment);
                         deltaPositionInFile += deltaString.Length;
                         writer.Write(deltaString);
                     }
@@ -348,9 +348,9 @@ namespace Bio.Algorithms.Assembly.Comparative
         /// <returns>List of scaffold sequences.</returns>
         private IEnumerable<ISequence> ScaffoldsGenerator(IEnumerable<ISequence> contigs, IEnumerable<ISequence> reads)
         {
-            using (GraphScaffoldBuilder scaffoldBuilder = new GraphScaffoldBuilder())
+            using (var scaffoldBuilder = new GraphScaffoldBuilder())
             {
-                return scaffoldBuilder.BuildScaffold(reads, contigs.ToList(), this.KmerLength, this.Depth, this.ScaffoldRedundancy);
+                return scaffoldBuilder.BuildScaffold(reads, contigs.ToList(), KmerLength, Depth, ScaffoldRedundancy);
             }
         }
 
@@ -375,12 +375,12 @@ namespace Bio.Algorithms.Assembly.Comparative
             return from sequence in referenceSequence 
                    select new NUCmer(sequence)
                    {
-                        FixedSeparation = this.FixedSeparation,
-                        MinimumScore = this.MinimumScore,
-                        SeparationFactor = this.SeparationFactor,
-                        MaximumSeparation = this.MaximumSeparation,
-                        BreakLength = this.BreakLength,
-                        LengthOfMUM = this.LengthOfMum
+                        FixedSeparation = FixedSeparation,
+                        MinimumScore = MinimumScore,
+                        SeparationFactor = SeparationFactor,
+                        MaximumSeparation = MaximumSeparation,
+                        BreakLength = BreakLength,
+                        LengthOfMUM = LengthOfMum
                    } 
                    into nucmer 
                    from qrySequence in reads from delta in nucmer.GetDeltaAlignments(qrySequence, false) 
@@ -392,7 +392,7 @@ namespace Bio.Algorithms.Assembly.Comparative
         /// </summary>
         private void RaiseStatusEvent(string message)
         {
-            this.StatusChanged(message);
+            StatusChanged(message);
         }
     
         /// <summary>
@@ -401,7 +401,7 @@ namespace Bio.Algorithms.Assembly.Comparative
         private void StatusEventStart(string message)
         {
             var statusMessage = string.Format(CultureInfo.CurrentCulture, message, DateTime.Now);
-            this.RaiseStatusEvent(statusMessage);
+            RaiseStatusEvent(statusMessage);
         }
 
         /// <summary>
@@ -410,7 +410,7 @@ namespace Bio.Algorithms.Assembly.Comparative
         private void StatusEventEnd(string message)
         {
             var statusMessage = string.Format(CultureInfo.CurrentCulture, message, DateTime.Now);
-            this.RaiseStatusEvent(statusMessage);
+            RaiseStatusEvent(statusMessage);
         }
     }
 }

@@ -41,7 +41,7 @@ namespace Bio
         /// </summary>
         private CloneLibrary()
         {
-            this.ReadLibrary();
+            ReadLibrary();
         }
 
         #endregion
@@ -82,7 +82,7 @@ namespace Bio
         {
             get
             {
-                return this.libraries.Values.ToList();
+                return libraries.Values.ToList();
             }
         }
 
@@ -99,7 +99,7 @@ namespace Bio
         {
             CloneLibraryInformation cloneLibrary;
 
-            if (!this.libraries.TryGetValue(libraryName, out cloneLibrary))
+            if (!libraries.TryGetValue(libraryName, out cloneLibrary))
             {
                 throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Properties.Resource.LibraryExist, libraryName));
             }
@@ -116,7 +116,7 @@ namespace Bio
             if (null != library && !String.IsNullOrEmpty(library.LibraryName) &&
                library.MeanLengthOfInsert >= 0 && library.StandardDeviationOfInsert >= 0)
             {
-                this.libraries[library.LibraryName] = library;
+                libraries[library.LibraryName] = library;
             }
             else
             {
@@ -137,14 +137,14 @@ namespace Bio
                 throw new ArgumentException(Properties.Resource.LibraryInvalidParameters);
             }
 
-            CloneLibraryInformation library = new CloneLibraryInformation()
+            var library = new CloneLibraryInformation()
             {
                 LibraryName = libraryName,
                 MeanLengthOfInsert = mean,
                 StandardDeviationOfInsert = standardDeviation
             };
             
-            this.libraries[libraryName] = library;
+            libraries[libraryName] = library;
         }
 
         #endregion
@@ -156,7 +156,7 @@ namespace Bio
         /// </summary>
         private void ReadLibrary()
         {
-            Stream libData = typeof(CloneLibrary).GetTypeInfo().Assembly.GetManifestResourceStream("Bio.CloneLibrary.Resources.Library.txt");
+            var libData = typeof(CloneLibrary).GetTypeInfo().Assembly.GetManifestResourceStream("Bio.CloneLibrary.Resources.Library.txt");
             if (libData == null)
                 throw new Exception("Failed to load Clone Library data from resources.");
 
@@ -165,7 +165,7 @@ namespace Bio
                 var library = reader.ReadLine();
                 while (!string.IsNullOrEmpty(library))
                 {
-                    this.Parse(library);
+                    Parse(library);
                     library = reader.ReadLine();
                 }
             }
@@ -177,15 +177,15 @@ namespace Bio
         /// <param name="library">Name of Library.</param>
         private void Parse(string library)
         {
-            string[] libraryInformation = library.Split(new char[] { ' ' }, 3);
-            CloneLibraryInformation information = new CloneLibraryInformation()
+            var libraryInformation = library.Split(new char[] { ' ' }, 3);
+            var information = new CloneLibraryInformation()
             {
                 LibraryName = libraryInformation[0],
                 MeanLengthOfInsert = float.Parse(libraryInformation[1], CultureInfo.InvariantCulture),
                 StandardDeviationOfInsert = float.Parse(libraryInformation[2], CultureInfo.InvariantCulture)
             };
 
-            this.libraries.Add(information.LibraryName, information);
+            libraries.Add(information.LibraryName, information);
         }
 
         #endregion

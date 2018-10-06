@@ -30,12 +30,12 @@ namespace Bio.IO.GenBank
          var locus = new GenBankLocusInfo();
          var tokenParsers = GetLocusTokenParsers(locus);
 
-         foreach (string token in line.Split(' '))
+         foreach (var token in line.Split(' '))
          {
             if (string.IsNullOrEmpty(token)) continue;
 
-            string token1 = token;
-            Func<string, bool> usedParser = tokenParsers.FirstOrDefault(parser => parser(token1));
+            var token1 = token;
+            var usedParser = tokenParsers.FirstOrDefault(parser => parser(token1));
 
             if (usedParser == null)
             {
@@ -48,7 +48,7 @@ namespace Bio.IO.GenBank
 
          if (String.IsNullOrEmpty(locus.SequenceType))
          {
-            string message = String.Format(Properties.Resource.GenBankUnknownLocusFormat, line);
+            var message = String.Format(Properties.Resource.GenBankUnknownLocusFormat, line);
             Trace.Report(message);
             throw new Exception(message);
          }
@@ -109,7 +109,7 @@ namespace Bio.IO.GenBank
                      // as ds-DNA so the parsing occurs on one token.
                      // 
 
-                     string s = token.ToLowerInvariant();
+                     var s = token.ToLowerInvariant();
 
                      locus.Strand = FirstOrDefault(
                         LocusConstants.SequenceStrandTypes,
@@ -153,7 +153,7 @@ namespace Bio.IO.GenBank
                   token =>
                   {
                      int length;
-                     bool result = int.TryParse(token, out length);
+                     var result = int.TryParse(token, out length);
                      if (result)
                         locus.SequenceLength = length;
                      return result;
@@ -178,7 +178,7 @@ namespace Bio.IO.GenBank
                   token =>
                   {
                      DateTime dateTime;
-                     bool result = DateTime.TryParse(token, out dateTime);
+                     var result = DateTime.TryParse(token, out dateTime);
                      if (result)
                         locus.Date = dateTime;
                      return result;

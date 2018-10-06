@@ -12,7 +12,7 @@ namespace Bio.Web.Blast
         /// </summary>
         public Hit()
         {
-            this.Hsps = new List<Hsp>();
+            Hsps = new List<Hsp>();
         }
 
         /// <summary>

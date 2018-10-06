@@ -74,7 +74,7 @@ namespace Bio.IO.SFF
         /// <returns>Sequence</returns>
         public ISequence ParseOne(Stream stream)
         {
-            using (BinaryReader reader = new BinaryReader(stream, Encoding.ASCII))
+            using (var reader = new BinaryReader(stream, Encoding.ASCII))
             {
                 if (parsedHeader == null)
                 {
@@ -102,7 +102,7 @@ namespace Bio.IO.SFF
         /// <returns>Set of sequences</returns>
         public IEnumerable<ISequence> Parse(Stream stream)
         {
-            using (BinaryReader reader = new BinaryReader(stream, Encoding.ASCII))
+            using (var reader = new BinaryReader(stream, Encoding.ASCII))
             {
                 parsedHeader = ParseHeader(reader);
                 for (lastIndex = 0; lastIndex < parsedHeader.NumberOfReads; lastIndex++)
@@ -124,17 +124,17 @@ namespace Bio.IO.SFF
         private ISequence ParseOne(SffHeader header, BinaryReader reader)
         {
             // Parse out the read header.
-            ushort headerLength = C2BE(reader.ReadUInt16());
-            ushort nameLength = C2BE(reader.ReadUInt16());
-            uint numberOfBases = C2BE(reader.ReadUInt32());
+            var headerLength = C2BE(reader.ReadUInt16());
+            var nameLength = C2BE(reader.ReadUInt16());
+            var numberOfBases = C2BE(reader.ReadUInt32());
 
             // TODO: use clipping data
-            ushort clipQualityLeft = C2BE(reader.ReadUInt16());
-            ushort clipQualityRight = C2BE(reader.ReadUInt16());
-            ushort clipAdapterLeft = C2BE(reader.ReadUInt16());
-            ushort clipAdapterRight = C2BE(reader.ReadUInt16());
+            var clipQualityLeft = C2BE(reader.ReadUInt16());
+            var clipQualityRight = C2BE(reader.ReadUInt16());
+            var clipAdapterLeft = C2BE(reader.ReadUInt16());
+            var clipAdapterRight = C2BE(reader.ReadUInt16());
 
-            string name = new string(reader.ReadChars(nameLength));
+            var name = new string(reader.ReadChars(nameLength));
 
             long paddingSize = headerLength - (16 + nameLength);
             if (paddingSize < 0 || paddingSize > 8)
@@ -146,26 +146,26 @@ namespace Bio.IO.SFF
             }
 
             // Parse out the read data section
-            ushort[] flowgramValues = new ushort[header.NumberOfFlowsPerRead];
-            for (int flowCount = 0; flowCount < header.NumberOfFlowsPerRead; flowCount++)
+            var flowgramValues = new ushort[header.NumberOfFlowsPerRead];
+            for (var flowCount = 0; flowCount < header.NumberOfFlowsPerRead; flowCount++)
                 flowgramValues[flowCount] = C2BE(reader.ReadUInt16());
 
-            byte[] flowIndexPerBase = new byte[numberOfBases];
+            var flowIndexPerBase = new byte[numberOfBases];
             if (reader.Read(flowIndexPerBase, 0, (int)numberOfBases) != numberOfBases)
                 throw new Exception("Unable to read flow indexes.");
 
-            byte[] bases = new byte[numberOfBases];
+            var bases = new byte[numberOfBases];
             if (reader.Read(bases, 0, (int)numberOfBases) != numberOfBases)
                 throw new Exception("Unable to read base information.");
 
-            byte[] qscores = new byte[numberOfBases];
+            var qscores = new byte[numberOfBases];
             if (reader.Read(qscores, 0, (int)numberOfBases) != numberOfBases)
                 throw new Exception("Unable to read quality scores.");
-            for (int i = 0; i < qscores.Length; i++)
+            for (var i = 0; i < qscores.Length; i++)
                 qscores[i] += 33; // adjust for Sanger
                 
             // Adjust for 8-byte padding at end of read segment
-            long currentSize = header.NumberOfFlowsPerRead*2 + 3*numberOfBases;
+            var currentSize = header.NumberOfFlowsPerRead*2 + 3*numberOfBases;
             if ((currentSize & 7) > 0)
             {
                 paddingSize = (((currentSize >> 3) + 1) << 3) - currentSize;
@@ -233,11 +233,11 @@ namespace Bio.IO.SFF
 
             // Grab the flow characters
             header.FlowChars = new char[header.NumberOfFlowsPerRead];
-            int readBytes = reader.Read(header.FlowChars, 0, header.NumberOfFlowsPerRead);
+            var readBytes = reader.Read(header.FlowChars, 0, header.NumberOfFlowsPerRead);
             if (readBytes != header.NumberOfFlowsPerRead)
                 throw new Exception("Could not parse header (flow_chars).");
 
-            char[] keySequence = new char[header.KeyLength];
+            var keySequence = new char[header.KeyLength];
             readBytes = reader.Read(keySequence, 0, header.KeyLength);
             if (readBytes != header.KeyLength)
                 throw new Exception("Could not parse header (key_sequence).");
@@ -245,7 +245,7 @@ namespace Bio.IO.SFF
             header.KeySequence = new string(keySequence);
 
             // Calculate the padding
-            int paddingSize = header.Length - (fixedHeaderSize + header.NumberOfFlowsPerRead + header.KeyLength);
+            var paddingSize = header.Length - (fixedHeaderSize + header.NumberOfFlowsPerRead + header.KeyLength);
             if (paddingSize < 0 || paddingSize > 8)
                 throw new Exception("Invalid header size found.");
             if (paddingSize > 0)

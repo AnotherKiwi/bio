@@ -15,8 +15,8 @@ namespace Bio.Algorithms.Kmer
         /// <param name="positions">List of k-mer positions.</param>
         public KmerIndexer(long sequenceIndex, IList<long> positions)
         {
-            this.SequenceIndex = sequenceIndex;
-            this.Positions = positions;
+            SequenceIndex = sequenceIndex;
+            Positions = positions;
         }
 
         /// <summary>

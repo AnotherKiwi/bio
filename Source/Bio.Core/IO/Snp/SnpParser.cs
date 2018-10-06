@@ -59,8 +59,8 @@ namespace Bio.IO.Snp
         /// <param name="alphabet">The Alphabet.</param>
         protected SnpParser(IAlphabet alphabet)
         {
-            this.Alphabet = alphabet;
-            this.ParseAlleleOne = true;
+            Alphabet = alphabet;
+            ParseAlleleOne = true;
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace Bio.IO.Snp
         /// </summary>
         protected SnpParser()
         {
-            this.ParseAlleleOne = true;
+            ParseAlleleOne = true;
         }
 
         /// <summary>
@@ -93,9 +93,9 @@ namespace Bio.IO.Snp
         /// retaining the same position in the sequence as the chromosome position.</returns>
         public IEnumerable<ISequence> Parse(Stream stream)
         {
-            if (this.Alphabet == null)
+            if (Alphabet == null)
             {
-                this.Alphabet = AmbiguousDnaAlphabet.Instance;
+                Alphabet = AmbiguousDnaAlphabet.Instance;
             }
 
             using(var reader = new StreamReader(stream))
@@ -115,9 +115,9 @@ namespace Bio.IO.Snp
         /// <returns>Sequence</returns>
         public ISequence ParseOne(Stream stream)
         {
-            if (this.Alphabet == null)
+            if (Alphabet == null)
             {
-                this.Alphabet = AmbiguousDnaAlphabet.Instance;
+                Alphabet = AmbiguousDnaAlphabet.Instance;
             }
 
             using (var reader = new StreamReader(stream))
@@ -144,7 +144,7 @@ namespace Bio.IO.Snp
             // Check input arguments
             if (snpReader == null) 
             {
-                throw new ArgumentNullException("snpReader",Properties.Resource.snpTextReaderNull);
+                throw new ArgumentNullException(nameof(snpReader),Properties.Resource.snpTextReaderNull);
             }
 
             if (snpReader.Current == null)
@@ -154,11 +154,11 @@ namespace Bio.IO.Snp
                 };
 
             int sequenceChromosome = snpReader.Current.Chromosome;
-            SparseSequence sequence = new SparseSequence(Alphabet) { ID = "Chr" + sequenceChromosome };
+            var sequence = new SparseSequence(Alphabet) { ID = "Chr" + sequenceChromosome };
 
             do
             {
-                SnpItem snp = snpReader.Current;
+                var snp = snpReader.Current;
                 // increase the size of the sparse sequence
                 if (sequence.Count <= snp.Position)
                     sequence.Count = snp.Position + 1;

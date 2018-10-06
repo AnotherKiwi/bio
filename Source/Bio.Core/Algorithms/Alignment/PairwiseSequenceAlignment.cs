@@ -227,7 +227,7 @@ namespace Bio.Algorithms.Alignment
                 throw new ArgumentNullException(Properties.Resource.ParameterNameArray);
             }
 
-            foreach (PairwiseAlignedSequence seq in alignedSequences)
+            foreach (var seq in alignedSequences)
             {
                 array[arrayIndex++] = seq;
             }
@@ -253,8 +253,8 @@ namespace Bio.Algorithms.Alignment
         /// <returns>Aligned Sequence Data.</returns>
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder();
-            foreach (IAlignedSequence seq in AlignedSequences)
+            var builder = new StringBuilder();
+            foreach (var seq in AlignedSequences)
             {
                 builder.AppendLine(seq.ToString());
             }

@@ -24,10 +24,10 @@ namespace Bio.Tests.Framework
             //foreach (var value in result)
             //    Console.Write(value + ",");
 
-            HashSet<string> actual = new HashSet<string>();
+            var actual = new HashSet<string>();
             Assert.AreEqual(expected.Count, result.Count(), "Different sequence counts.");
 
-            foreach (ISequence sequence in result)
+            foreach (var sequence in result)
             {
                 actual.Add(sequence.ConvertToString());
                 if (checkReversedComplement)
@@ -83,12 +83,12 @@ namespace Bio.Tests.Framework
         {
             Assert.AreEqual(expectedAlignment.Count, result.Count, "Different number of alignments generated.");
 
-            for (int count = 0; count < result.Count; count++)
+            for (var count = 0; count < result.Count; count++)
             {
                 Assert.AreEqual(expectedAlignment[count].PairwiseAlignedSequences.Count, result[count].PairwiseAlignedSequences.Count, 
                                 "Different count of sequences on alignment " + (count+1) + "generated");
 
-                for (int count1 = 0; count1 < result[count].PairwiseAlignedSequences.Count; count1++)
+                for (var count1 = 0; count1 < result[count].PairwiseAlignedSequences.Count; count1++)
                 {
                     // Compare the sequences
                     var s1 = result[count].PairwiseAlignedSequences[count1].FirstSequence;
@@ -106,8 +106,8 @@ namespace Bio.Tests.Framework
                     if (s2 != null)
                         Assert.AreEqual(s2.ConvertToString().ChangeCase(ignoreCase), s1.ConvertToString().ChangeCase(ignoreCase), "Consensus did not match.");
 
-                    long offset1 = result[count].PairwiseAlignedSequences[count1].FirstOffset;
-                    long offset2 = expectedAlignment[count].PairwiseAlignedSequences[count1].FirstOffset;
+                    var offset1 = result[count].PairwiseAlignedSequences[count1].FirstOffset;
+                    var offset2 = expectedAlignment[count].PairwiseAlignedSequences[count1].FirstOffset;
                     if (offset2 != Int32.MinValue)
                         Assert.AreEqual(offset2, offset1, "FirstOffset does not match.");
 
@@ -116,8 +116,8 @@ namespace Bio.Tests.Framework
                     if (offset2 != Int32.MinValue)
                         Assert.AreEqual(offset2, offset1, "SecondOffset does not match.");
 
-                    long score1 = result[count].PairwiseAlignedSequences[count1].Score;
-                    long score2 = expectedAlignment[count].PairwiseAlignedSequences[count1].Score;
+                    var score1 = result[count].PairwiseAlignedSequences[count1].Score;
+                    var score2 = expectedAlignment[count].PairwiseAlignedSequences[count1].Score;
                     if (score2 != Int32.MinValue)
                         Assert.AreEqual(score2, score1, "Score does not match.");
                 }
@@ -134,11 +134,11 @@ namespace Bio.Tests.Framework
         public static void LogResult(IPairwiseSequenceAligner psa, IEnumerable<IPairwiseSequenceAlignment> result)
         {
             ApplicationLog.WriteLine("{0}, Matrix {1}; GapOpenCost {2}, GapExtensionCost {3}", psa.Name, psa.SimilarityMatrix.Name, psa.GapOpenCost, psa.GapExtensionCost);
-            foreach (IPairwiseSequenceAlignment sequenceResult in result)
+            foreach (var sequenceResult in result)
             {
                 ApplicationLog.WriteLine("Input 0     {0}", sequenceResult.FirstSequence);
                 ApplicationLog.WriteLine("Input 1     {0}", sequenceResult.SecondSequence);
-                int count = 1;
+                var count = 1;
                 foreach (var oneResult in sequenceResult.PairwiseAlignedSequences)
                 {
                     ApplicationLog.WriteLine(" #" + count++);

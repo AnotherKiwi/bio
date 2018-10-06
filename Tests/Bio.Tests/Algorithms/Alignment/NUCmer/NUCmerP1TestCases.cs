@@ -66,7 +66,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void SuffixTreeFindMatchesOneLineSequenceValidMUMLength()
         {
-            this.ValidateFindMatchSuffixGeneralTestCases(Constants.OneLineSequenceNodeName,
+            ValidateFindMatchSuffixGeneralTestCases(Constants.OneLineSequenceNodeName,
                                                     false, AdditionalParameters.FindUniqueMatches);
         }
 
@@ -81,7 +81,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void SuffixTreeFindMatchesDnaSequences()
         {
-            this.ValidateFindMatchSuffixGeneralTestCases(Constants.DnaNucmerSequenceNodeName,
+            ValidateFindMatchSuffixGeneralTestCases(Constants.DnaNucmerSequenceNodeName,
                                                     false, AdditionalParameters.FindUniqueMatches);
         }
 
@@ -96,7 +96,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void SuffixTreeFindMatchesRnaSequences()
         {
-            this.ValidateFindMatchSuffixGeneralTestCases(Constants.RnaNucmerSequenceNodeName,
+            ValidateFindMatchSuffixGeneralTestCases(Constants.RnaNucmerSequenceNodeName,
                                                     false, AdditionalParameters.FindUniqueMatches);
         }
 
@@ -111,7 +111,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void SuffixTreeFindMatchesMediumSizeSequences()
         {
-            this.ValidateFindMatchSuffixGeneralTestCases(Constants.MediumSizeSequenceNodeName,
+            ValidateFindMatchSuffixGeneralTestCases(Constants.MediumSizeSequenceNodeName,
                                                     true, AdditionalParameters.FindUniqueMatches);
         }
 
@@ -127,7 +127,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void SuffixTreeFindMatchesContinousRepeatingSequences()
         {
-            this.ValidateFindMatchSuffixGeneralTestCases(Constants.OneLineRepeatingCharactersNodeName,
+            ValidateFindMatchSuffixGeneralTestCases(Constants.OneLineRepeatingCharactersNodeName,
                                                     false, AdditionalParameters.FindUniqueMatches);
         }
 
@@ -142,7 +142,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void SuffixTreeFindMatchesSameSequences()
         {
-            this.ValidateFindMatchSuffixGeneralTestCases(Constants.SameSequenceNodeName,
+            ValidateFindMatchSuffixGeneralTestCases(Constants.SameSequenceNodeName,
                                                     false, AdditionalParameters.FindUniqueMatches);
         }
 
@@ -157,7 +157,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void SuffixTreeFindMatchesWithCrossOverlapSequences()
         {
-            this.ValidateFindMatchSuffixGeneralTestCases(
+            ValidateFindMatchSuffixGeneralTestCases(
                 Constants.TwoUniqueMatchWithCrossOverlapSequenceNodeName,
                 false, AdditionalParameters.FindUniqueMatches);
         }
@@ -173,7 +173,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void SuffixTreeFindMatchesWithNoMatchSequences()
         {
-            this.ValidateFindMatchSuffixGeneralTestCases(Constants.OneLineNoMatchSequenceNodeName,
+            ValidateFindMatchSuffixGeneralTestCases(Constants.OneLineNoMatchSequenceNodeName,
                                                     false, AdditionalParameters.FindUniqueMatches);
         }
 
@@ -188,7 +188,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void SuffixTreeFindMatchesWithOverlapSequences()
         {
-            this.ValidateFindMatchSuffixGeneralTestCases(
+            ValidateFindMatchSuffixGeneralTestCases(
                 Constants.TwoUniqueMatchWithoutCrossOverlapSequenceNodeName,
                 false, AdditionalParameters.FindUniqueMatches);
         }
@@ -205,7 +205,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void SuffixTreeFindMatchesAmbiguityDnaReferenceSequences()
         {
-            this.ValidateFindMatchSuffixGeneralTestCases(Constants.DnaAmbiguityReferenceSequenceNodeName,
+            ValidateFindMatchSuffixGeneralTestCases(Constants.DnaAmbiguityReferenceSequenceNodeName,
                                                     false, AdditionalParameters.FindUniqueMatches);
         }
 
@@ -221,7 +221,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void SuffixTreeFindMatchesAmbiguityDnaSearchSequences()
         {
-            this.ValidateFindMatchSuffixGeneralTestCases(Constants.DnaAmbiguitySearchSequenceNodeName,
+            ValidateFindMatchSuffixGeneralTestCases(Constants.DnaAmbiguitySearchSequenceNodeName,
                                                     false, AdditionalParameters.FindUniqueMatches);
         }
 
@@ -237,7 +237,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void SuffixTreeFindMatchesAmbiguityRnaReferenceSequences()
         {
-            this.ValidateFindMatchSuffixGeneralTestCases(Constants.RnaAmbiguityReferenceSequenceNodeName,
+            ValidateFindMatchSuffixGeneralTestCases(Constants.RnaAmbiguityReferenceSequenceNodeName,
                                                     false, AdditionalParameters.FindUniqueMatches);
         }
 
@@ -253,7 +253,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void SuffixTreeFindMatchesAmbiguityRnaSearchSequences()
         {
-            this.ValidateFindMatchSuffixGeneralTestCases(Constants.RnaAmbiguitySearchSequenceNodeName,
+            ValidateFindMatchSuffixGeneralTestCases(Constants.RnaAmbiguitySearchSequenceNodeName,
                                                     false, AdditionalParameters.FindUniqueMatches);
         }
 
@@ -267,7 +267,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void ClusterBuilderTwoUniqueMatchesWithoutCrossOverlap()
         {
-            this.ValidateFindMatchSuffixGeneralTestCases(
+            ValidateFindMatchSuffixGeneralTestCases(
                 Constants.TwoUniqueMatchWithoutCrossOverlapSequenceNodeName,
                 false, AdditionalParameters.PerformClusterBuilder);
         }
@@ -282,7 +282,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void ClusterBuilderTwoUniqueMatchesWithCrossOverlap()
         {
-            this.ValidateFindMatchSuffixGeneralTestCases(
+            ValidateFindMatchSuffixGeneralTestCases(
                 Constants.TwoUniqueMatchWithCrossOverlapSequenceNodeName,
                 false, AdditionalParameters.PerformClusterBuilder);
         }
@@ -297,7 +297,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void ClusterBuilderWithOverlapNoCrossOverlap()
         {
-            this.ValidateFindMatchSuffixGeneralTestCases(Constants.OneUniqueMatchSequenceNodeName,
+            ValidateFindMatchSuffixGeneralTestCases(Constants.OneUniqueMatchSequenceNodeName,
                                                     false, AdditionalParameters.PerformClusterBuilder);
         }
 
@@ -311,7 +311,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void ClusterBuilderWithMinimumScoreZero()
         {
-            this.ValidateFindMatchSuffixGeneralTestCases(Constants.OneUniqueMatchSequenceNodeName,
+            ValidateFindMatchSuffixGeneralTestCases(Constants.OneUniqueMatchSequenceNodeName,
                                                     false, AdditionalParameters.PerformClusterBuilder,
                                                     PropertyParameters.MinimumScore);
         }
@@ -326,7 +326,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void ClusterBuilderWithMaximumSeparationZero()
         {
-            this.ValidateFindMatchSuffixGeneralTestCases(Constants.OneUniqueMatchSequenceNodeName,
+            ValidateFindMatchSuffixGeneralTestCases(Constants.OneUniqueMatchSequenceNodeName,
                                                     false, AdditionalParameters.PerformClusterBuilder,
                                                     PropertyParameters.MaximumSeparation);
         }
@@ -341,7 +341,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void ClusterBuilderWithSeperationFactoreZero()
         {
-            this.ValidateFindMatchSuffixGeneralTestCases(Constants.OneUniqueMatchSequenceNodeName,
+            ValidateFindMatchSuffixGeneralTestCases(Constants.OneUniqueMatchSequenceNodeName,
                                                     false, AdditionalParameters.PerformClusterBuilder,
                                                     PropertyParameters.SeparationFactor);
         }
@@ -356,7 +356,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void ClusterBuilderWithFixedSeparationZero()
         {
-            this.ValidateFindMatchSuffixGeneralTestCases(Constants.OneUniqueMatchSequenceNodeName,
+            ValidateFindMatchSuffixGeneralTestCases(Constants.OneUniqueMatchSequenceNodeName,
                                                     false, AdditionalParameters.PerformClusterBuilder,
                                                     PropertyParameters.FixedSeparation);
         }
@@ -373,7 +373,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void ClusterBuilderWithMinimumScoreGreater()
         {
-            this.ValidateFindMatchSuffixGeneralTestCases(Constants.MinimumScoreGreaterSequenceNodeName,
+            ValidateFindMatchSuffixGeneralTestCases(Constants.MinimumScoreGreaterSequenceNodeName,
                                                     false, AdditionalParameters.PerformClusterBuilder,
                                                     PropertyParameters.MinimumScore);
         }
@@ -390,7 +390,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void ClusterBuilderWithFixedSeparationAndSeparationFactor()
         {
-            this.ValidateFindMatchSuffixGeneralTestCases(Constants.MinimumScoreGreaterSequenceNodeName,
+            ValidateFindMatchSuffixGeneralTestCases(Constants.MinimumScoreGreaterSequenceNodeName,
                                                     false, AdditionalParameters.PerformClusterBuilder,
                                                     PropertyParameters.FixedSeparationAndSeparationFactor);
         }
@@ -407,7 +407,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void ClusterBuilderWithMaximumFixedAndSeparationFactor()
         {
-            this.ValidateFindMatchSuffixGeneralTestCases(Constants.MinimumScoreGreaterSequenceNodeName,
+            ValidateFindMatchSuffixGeneralTestCases(Constants.MinimumScoreGreaterSequenceNodeName,
                                                     false, AdditionalParameters.PerformClusterBuilder,
                                                     PropertyParameters.MaximumFixedAndSeparationFactor);
         }
@@ -426,7 +426,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignDnaSequence()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.DnaNucmerSequenceNodeName, false, false, false);
+            ValidateNUCmerAlignGeneralTestCases(Constants.DnaNucmerSequenceNodeName, false, false, false);
         }
 
         /// <summary>
@@ -439,7 +439,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignRnaSequence()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.RnaNucmerSequenceNodeName, false, false, false);
+            ValidateNUCmerAlignGeneralTestCases(Constants.RnaNucmerSequenceNodeName, false, false, false);
         }
 
         /// <summary>
@@ -452,7 +452,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignOneLineListOfSequence()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.OneLineOneReferenceQuerySequenceNodeName,
+            ValidateNUCmerAlignGeneralTestCases(Constants.OneLineOneReferenceQuerySequenceNodeName,
                                                 false, true, false);
         }
 
@@ -466,7 +466,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignSmallSizeListOfSequence()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.OneLineOneReferenceQuerySequenceNodeName,
+            ValidateNUCmerAlignGeneralTestCases(Constants.OneLineOneReferenceQuerySequenceNodeName,
                                                 false, true, false);
         }
 
@@ -480,7 +480,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignOneLineDnaListOfSequence()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.SingleDnaNucmerSequenceNodeName, false, true, false);
+            ValidateNUCmerAlignGeneralTestCases(Constants.SingleDnaNucmerSequenceNodeName, false, true, false);
         }
 
         /// <summary>
@@ -493,7 +493,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignOneLineRnaListOfSequence()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.SingleRnaNucmerSequenceNodeName, false, true, false);
+            ValidateNUCmerAlignGeneralTestCases(Constants.SingleRnaNucmerSequenceNodeName, false, true, false);
         }
 
         /// <summary>
@@ -506,7 +506,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignMediumSizeSequence()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.MediumSizeSequenceNodeName, true, false, false);
+            ValidateNUCmerAlignGeneralTestCases(Constants.MediumSizeSequenceNodeName, true, false, false);
         }
 
         /// <summary>
@@ -519,7 +519,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignRepeatingCharactersSequence()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.OneLineRepeatingCharactersNodeName, false, false, false);
+            ValidateNUCmerAlignGeneralTestCases(Constants.OneLineRepeatingCharactersNodeName, false, false, false);
         }
 
         /// <summary>
@@ -532,7 +532,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignAlternateRepeatingCharactersSequence()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.OneLineAlternateRepeatingCharactersNodeName,
+            ValidateNUCmerAlignGeneralTestCases(Constants.OneLineAlternateRepeatingCharactersNodeName,
                                                 false, false, false);
         }
 
@@ -546,7 +546,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignFastASequence()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.SimpleDnaFastaNodeName, true, false, false);
+            ValidateNUCmerAlignGeneralTestCases(Constants.SimpleDnaFastaNodeName, true, false, false);
         }
 
         /// <summary>
@@ -559,7 +559,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignOnlyRepeatingCharactersSequence()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.OneLineOnlyRepeatingCharactersNodeName,
+            ValidateNUCmerAlignGeneralTestCases(Constants.OneLineOnlyRepeatingCharactersNodeName,
                                                 false, false, false);
         }
 
@@ -573,7 +573,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignOneRefMultiSearchSequence()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.SmallSizeSequenceNodeName, true, false, false);
+            ValidateNUCmerAlignGeneralTestCases(Constants.SmallSizeSequenceNodeName, true, false, false);
         }
 
         /// <summary>
@@ -586,7 +586,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignOneLineSequenceValidMumLength()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.OneLineSequenceNodeName, false, false, false);
+            ValidateNUCmerAlignGeneralTestCases(Constants.OneLineSequenceNodeName, false, false, false);
         }
 
         /// <summary>
@@ -599,7 +599,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignSameSequence()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.SameSequenceNodeName, false, false, false);
+            ValidateNUCmerAlignGeneralTestCases(Constants.SameSequenceNodeName, false, false, false);
         }
 
         /// <summary>
@@ -612,7 +612,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignOverlapMatchSequence()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.OneOverlapMatchSequenceNodeName, false, false, false);
+            ValidateNUCmerAlignGeneralTestCases(Constants.OneOverlapMatchSequenceNodeName, false, false, false);
         }
 
         /// <summary>
@@ -625,7 +625,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignNoMatchSequence()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.OneLineNoMatchSequenceNodeName, false, false, false);
+            ValidateNUCmerAlignGeneralTestCases(Constants.OneLineNoMatchSequenceNodeName, false, false, false);
         }
 
         /// <summary>
@@ -638,7 +638,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignCrossOverlapMatchSequence()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.TwoUniqueMatchWithCrossOverlapSequenceNodeName,
+            ValidateNUCmerAlignGeneralTestCases(Constants.TwoUniqueMatchWithCrossOverlapSequenceNodeName,
                                                 false, false, false);
         }
 
@@ -652,7 +652,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignDnaReferenceAmbiguitySequence()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.DnaAmbiguityReferenceSequenceNodeName,
+            ValidateNUCmerAlignGeneralTestCases(Constants.DnaAmbiguityReferenceSequenceNodeName,
                                                 false, false, true);
         }
 
@@ -666,7 +666,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignRnaReferenceAmbiguitySequence()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.RnaAmbiguityReferenceSequenceNodeName,
+            ValidateNUCmerAlignGeneralTestCases(Constants.RnaAmbiguityReferenceSequenceNodeName,
                                                 false, false, true);
         }
 
@@ -680,7 +680,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignDnaSearchAmbiguitySequence()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.DnaAmbiguitySearchSequenceNodeName, false, false, true);
+            ValidateNUCmerAlignGeneralTestCases(Constants.DnaAmbiguitySearchSequenceNodeName, false, false, true);
         }
 
         /// <summary>
@@ -693,7 +693,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignRnaSearchAmbiguitySequence()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.RnaAmbiguitySearchSequenceNodeName, false, false, true);
+            ValidateNUCmerAlignGeneralTestCases(Constants.RnaAmbiguitySearchSequenceNodeName, false, false, true);
         }
 
         /// <summary>
@@ -706,7 +706,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignOneRefOneQuerySequence()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.SingleDnaNucmerSequenceNodeName, false, false, false);
+            ValidateNUCmerAlignGeneralTestCases(Constants.SingleDnaNucmerSequenceNodeName, false, false, false);
         }
 
         /// <summary>
@@ -719,7 +719,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignMultiRefOneSearchSequence()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.MultiRefSingleQueryMatchSequenceNodeName,
+            ValidateNUCmerAlignGeneralTestCases(Constants.MultiRefSingleQueryMatchSequenceNodeName,
                                                 false, false, false);
         }
 
@@ -733,7 +733,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignMultiRefMultiSearchSequence()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.OneLineSequenceNodeName, false, false, false);
+            ValidateNUCmerAlignGeneralTestCases(Constants.OneLineSequenceNodeName, false, false, false);
         }
 
         /// <summary>
@@ -746,7 +746,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignWithMinimumScoreZero()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.OneUniqueMatchSequenceNodeName,
+            ValidateNUCmerAlignGeneralTestCases(Constants.OneUniqueMatchSequenceNodeName,
                                                 false, false, AdditionalParameters.Default,
                                                 PropertyParameters.MinimumScore, false);
         }
@@ -761,7 +761,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignWithMaximumSeparationZero()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.OneUniqueMatchSequenceNodeName,
+            ValidateNUCmerAlignGeneralTestCases(Constants.OneUniqueMatchSequenceNodeName,
                                                 false, false, AdditionalParameters.Default,
                                                 PropertyParameters.MaximumSeparation, false);
         }
@@ -776,7 +776,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignWithSeperationFactoreZero()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.OneUniqueMatchSequenceNodeName,
+            ValidateNUCmerAlignGeneralTestCases(Constants.OneUniqueMatchSequenceNodeName,
                                                 false, false, AdditionalParameters.Default,
                                                 PropertyParameters.SeparationFactor, false);
         }
@@ -791,7 +791,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignWithFixedSeparationZero()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.OneUniqueMatchSequenceNodeName,
+            ValidateNUCmerAlignGeneralTestCases(Constants.OneUniqueMatchSequenceNodeName,
                                                 false, false, AdditionalParameters.Default,
                                                 PropertyParameters.FixedSeparation, false);
         }
@@ -808,7 +808,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignWithMinimumScoreGreater()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.MinimumScoreGreaterSequenceNodeName,
+            ValidateNUCmerAlignGeneralTestCases(Constants.MinimumScoreGreaterSequenceNodeName,
                                                 false, false, AdditionalParameters.Default,
                                                 PropertyParameters.MinimumScore, false);
         }
@@ -825,7 +825,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignWithFixedSeparationAndSeparationFactor()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.MinimumScoreGreaterSequenceNodeName,
+            ValidateNUCmerAlignGeneralTestCases(Constants.MinimumScoreGreaterSequenceNodeName,
                                                 false, false, AdditionalParameters.Default,
                                                 PropertyParameters.FixedSeparationAndSeparationFactor, false);
         }
@@ -842,7 +842,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignWithMaximumFixedAndSeparationFactor()
         {
-            this.ValidateNUCmerAlignGeneralTestCases(Constants.MinimumScoreGreaterSequenceNodeName,
+            ValidateNUCmerAlignGeneralTestCases(Constants.MinimumScoreGreaterSequenceNodeName,
                                                 false, false, AdditionalParameters.Default,
                                                 PropertyParameters.MaximumFixedAndSeparationFactor, false);
         }
@@ -854,11 +854,13 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignWithIsAlignAndGaps()
         {
-            IList<ISequence> seqList = new List<ISequence>();
-            seqList.Add(new Sequence(Alphabets.DNA, Encoding.ASCII.GetBytes("CAAAAGGGATTGC---TGTTGGAGTGAATGCCATTACCTACCGGCTAGGAGGAGTAGTACAAAGGAGC")));
-            seqList.Add(new Sequence(Alphabets.DNA, Encoding.ASCII.GetBytes("CAAAAGGGATTGC---")));
-            seqList.Add(new Sequence(Alphabets.DNA, Encoding.ASCII.GetBytes("TAGTAGTTCTGCTATATACATTTG")));
-            seqList.Add(new Sequence(Alphabets.DNA, Encoding.ASCII.GetBytes("GTTATCATGCGAACAATTCAACAGACACTGTAGA")));
+            IList<ISequence> seqList = new List<ISequence>
+            {
+                new Sequence(Alphabets.DNA, Encoding.ASCII.GetBytes("CAAAAGGGATTGC---TGTTGGAGTGAATGCCATTACCTACCGGCTAGGAGGAGTAGTACAAAGGAGC")),
+                new Sequence(Alphabets.DNA, Encoding.ASCII.GetBytes("CAAAAGGGATTGC---")),
+                new Sequence(Alphabets.DNA, Encoding.ASCII.GetBytes("TAGTAGTTCTGCTATATACATTTG")),
+                new Sequence(Alphabets.DNA, Encoding.ASCII.GetBytes("GTTATCATGCGAACAATTCAACAGACACTGTAGA"))
+            };
             var num = new NucmerPairwiseAligner
                           {
                               BreakLength = 8,
@@ -868,8 +870,8 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
                               SeparationFactor = 0,
                               LengthOfMUM = 8
                           };
-            IList<ISequence> sequenceList = seqList;
-            IList<ISequenceAlignment> alignmentObj = num.Align(sequenceList);
+            var sequenceList = seqList;
+            var alignmentObj = num.Align(sequenceList);
 
             var alignedSeqs = (AlignedSequence) alignmentObj[0].AlignedSequences[0];
             Assert.AreEqual("CAAAAGGGATTGC---", new string(alignedSeqs.Sequences[0].Select(a => (char) a).ToArray()));
@@ -892,7 +894,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignSimpleDnaListOfSequence()
         {
-            this.ValidateNUCmerAlignSimpleGeneralTestCases(Constants.SingleDnaNucmerSequenceNodeName, false, true);
+            ValidateNUCmerAlignSimpleGeneralTestCases(Constants.SingleDnaNucmerSequenceNodeName, false, true);
         }
 
         /// <summary>
@@ -905,7 +907,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignSimpleRnaListOfSequence()
         {
-            this.ValidateNUCmerAlignSimpleGeneralTestCases(Constants.SingleRnaNucmerSequenceNodeName, false, true);
+            ValidateNUCmerAlignSimpleGeneralTestCases(Constants.SingleRnaNucmerSequenceNodeName, false, true);
         }
 
         /// <summary>
@@ -918,7 +920,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignSimpleSingleRefSingleQueryDnaSequence()
         {
-            this.ValidateNUCmerAlignSimpleGeneralTestCases(Constants.SingleDnaNucmerSequenceNodeName, false, true);
+            ValidateNUCmerAlignSimpleGeneralTestCases(Constants.SingleDnaNucmerSequenceNodeName, false, true);
         }
 
         /// <summary>
@@ -931,7 +933,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignSimpleSingleRefSingleQueryRnaSequence()
         {
-            this.ValidateNUCmerAlignSimpleGeneralTestCases(Constants.SingleRnaNucmerSequenceNodeName, false, true);
+            ValidateNUCmerAlignSimpleGeneralTestCases(Constants.SingleRnaNucmerSequenceNodeName, false, true);
         }
 
         /// <summary>
@@ -944,7 +946,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignSimpleSingleRefMultiQueryDnaSequence()
         {
-            this.ValidateNUCmerAlignSimpleGeneralTestCases(Constants.SingleDnaNucmerSequenceNodeName, false, true);
+            ValidateNUCmerAlignSimpleGeneralTestCases(Constants.SingleDnaNucmerSequenceNodeName, false, true);
         }
 
         /// <summary>
@@ -957,7 +959,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignSimpleSingleRefMultiQueryRnaSequence()
         {
-            this.ValidateNUCmerAlignSimpleGeneralTestCases(Constants.SingleRnaNucmerSequenceNodeName, false, true);
+            ValidateNUCmerAlignSimpleGeneralTestCases(Constants.SingleRnaNucmerSequenceNodeName, false, true);
         }
 
         /// <summary>
@@ -970,7 +972,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignSimpleMultiRefMultiQueryDnaSequence()
         {
-            this.ValidateNUCmerAlignSimpleGeneralTestCases(Constants.MultiRefMultiQueryDnaMatchSequence, false, true);
+            ValidateNUCmerAlignSimpleGeneralTestCases(Constants.MultiRefMultiQueryDnaMatchSequence, false, true);
         }
 
         /// <summary>
@@ -983,7 +985,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority1")]
         public void NUCmerAlignSimpleMultiRefMultiQueryRnaSequence()
         {
-            this.ValidateNUCmerAlignSimpleGeneralTestCases(Constants.MultiRefMultiQueryRnaMatchSequence, false, true);
+            ValidateNUCmerAlignSimpleGeneralTestCases(Constants.MultiRefMultiQueryRnaMatchSequence, false, true);
         }
 
         #endregion NUCmer Align Simple Test Cases
@@ -999,7 +1001,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         private void ValidateFindMatchSuffixGeneralTestCases(string nodeName, bool isFilePath,
                                                              AdditionalParameters additionalParam)
         {
-            this.ValidateFindMatchSuffixGeneralTestCases(nodeName, isFilePath, additionalParam,
+            ValidateFindMatchSuffixGeneralTestCases(nodeName, isFilePath, additionalParam,
                                                     PropertyParameters.Default);
         }
 
@@ -1021,16 +1023,16 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
             if (isFilePath)
             {
                 // Gets the reference sequence from the FastA file
-                string filePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+                var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
 
                 Assert.IsNotNull(filePath);
                 ApplicationLog.WriteLine(string.Format(null, "NUCmer P1 : Successfully validated the File Path '{0}'.", filePath));
 
                 var parser = new FastAParser();
-                IEnumerable<ISequence> referenceSeqList = parser.Parse(filePath);
+                var referenceSeqList = parser.Parse(filePath);
 
                 var byteList = new List<Byte>();
-                foreach (ISequence seq in referenceSeqList)
+                foreach (var seq in referenceSeqList)
                 {
                     byteList.AddRange(seq);
                     byteList.Add((byte) '+');
@@ -1040,26 +1042,26 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
                                             byteList.ToArray());
 
                 // Gets the query sequence from the FastA file
-                string queryFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SearchSequenceFilePathNode).TestDir();
+                var queryFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SearchSequenceFilePathNode).TestDir();
 
                 Assert.IsNotNull(queryFilePath);
                 ApplicationLog.WriteLine(string.Format(null, "NUCmer P1 : Successfully validated the File Path '{0}'.", queryFilePath));
 
                 var queryParserObj = new FastAParser();
-                IEnumerable<ISequence> querySeqList = queryParserObj.Parse(queryFilePath);
+                var querySeqList = queryParserObj.Parse(queryFilePath);
                 searchSeqList.AddRange(querySeqList);
             }
             else
             {
                 // Gets the reference & search sequences from the configuration file
-                string[] referenceSequences = this.utilityObj.xmlUtil.GetTextValues(nodeName, Constants.ReferenceSequencesNode);
-                string[] searchSequences = this.utilityObj.xmlUtil.GetTextValues(nodeName, Constants.SearchSequencesNode);
-                IAlphabet seqAlphabet = Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.AlphabetNameNode));
+                var referenceSequences = utilityObj.xmlUtil.GetTextValues(nodeName, Constants.ReferenceSequencesNode);
+                var searchSequences = utilityObj.xmlUtil.GetTextValues(nodeName, Constants.SearchSequencesNode);
+                var seqAlphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.AlphabetNameNode));
 
                 var refSeqList = referenceSequences.Select(t => new Sequence(seqAlphabet, Encoding.ASCII.GetBytes(t))).Cast<ISequence>().ToList();
 
                 var byteList = new List<Byte>();
-                foreach (ISequence seq in refSeqList)
+                foreach (var seq in refSeqList)
                 {
                     byteList.AddRange(seq);
                     byteList.Add((byte) '+');
@@ -1069,7 +1071,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
                 searchSeqList.AddRange(searchSequences.Select(t => new Sequence(seqAlphabet, Encoding.ASCII.GetBytes(t))));
             }
 
-            string mumLength = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMLengthNode);
+            var mumLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMLengthNode);
 
             // Builds the suffix for the reference sequence passed.           
             var suffixTreeBuilder = new MultiWaySuffixTree(referenceSeq as Sequence)
@@ -1090,14 +1092,14 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
                 case AdditionalParameters.FindUniqueMatches:
                     // Validates the Unique Matches.
                     ApplicationLog.WriteLine("NUCmer P1 : Validating the Unique Matches");
-                    Assert.IsTrue(this.ValidateUniqueMatches(mums, nodeName, isFilePath));
+                    Assert.IsTrue(ValidateUniqueMatches(mums, nodeName, isFilePath));
                     ApplicationLog.WriteLine("NUCmer P1 : Successfully validated the all the unique matches for the sequences.");
                     break;
                 case AdditionalParameters.PerformClusterBuilder:
                     // Validates the Unique Matches.
                     ApplicationLog.WriteLine(
                         "NUCmer P1 : Validating the Unique Matches using Cluster Builder");
-                    Assert.IsTrue(this.ValidateClusterBuilderMatches(mums, nodeName, propParam));
+                    Assert.IsTrue(ValidateClusterBuilderMatches(mums, nodeName, propParam));
                     ApplicationLog.WriteLine("NUCmer P1 : Successfully validated the all the cluster builder matches for the sequences.");
                     break;
                 default:
@@ -1117,7 +1119,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         /// <param name="isAmbiguous"></param>
         private void ValidateNUCmerAlignGeneralTestCases(string nodeName, bool isFilePath, bool isAlignList, bool isAmbiguous)
         {
-            this.ValidateNUCmerAlignGeneralTestCases(nodeName, isFilePath, isAlignList, 
+            ValidateNUCmerAlignGeneralTestCases(nodeName, isFilePath, isAlignList, 
                 AdditionalParameters.Default, PropertyParameters.Default, isAmbiguous);
         }
 
@@ -1144,29 +1146,29 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
             if (isFilePath)
             {
                 // Gets the reference sequence from the FastA file
-                string filePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+                var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
 
                 Assert.IsNotNull(filePath);
                 ApplicationLog.WriteLine(string.Format(null, "NUCmer P1 : Successfully validated the File Path '{0}'.", filePath));
 
                 var fastaparserobj = new FastAParser();
-                IEnumerable<ISequence> referenceSeqList = fastaparserobj.Parse(filePath);
+                var referenceSeqList = fastaparserobj.Parse(filePath);
 
-                foreach (ISequence seq in referenceSeqList)
+                foreach (var seq in referenceSeqList)
                 {
                     refSeqList.Add(seq);
                 }
 
                 // Gets the query sequence from the FastA file
-                string queryFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SearchSequenceFilePathNode).TestDir();
+                var queryFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SearchSequenceFilePathNode).TestDir();
 
                 Assert.IsNotNull(queryFilePath);
                 ApplicationLog.WriteLine(string.Format(null, "NUCmer P1 : Successfully validated the File Path '{0}'.", queryFilePath));
 
                 var queryParserobj = new FastAParser();
-                IEnumerable<ISequence> serSeqList = queryParserobj.Parse(queryFilePath);
+                var serSeqList = queryParserobj.Parse(queryFilePath);
 
-                foreach (ISequence seq in serSeqList)
+                foreach (var seq in serSeqList)
                 {
                     searchSeqList.Add(seq);
                 }
@@ -1174,10 +1176,10 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
             else
             {
                 // Gets the reference & search sequences from the configuration file
-                string[] referenceSequences = this.utilityObj.xmlUtil.GetTextValues(nodeName, Constants.ReferenceSequencesNode);
-                string[] searchSequences = this.utilityObj.xmlUtil.GetTextValues(nodeName, Constants.SearchSequencesNode);
+                var referenceSequences = utilityObj.xmlUtil.GetTextValues(nodeName, Constants.ReferenceSequencesNode);
+                var searchSequences = utilityObj.xmlUtil.GetTextValues(nodeName, Constants.SearchSequencesNode);
 
-                IAlphabet seqAlphabet = Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.AlphabetNameNode));
+                var seqAlphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.AlphabetNameNode));
                 IAlphabet ambAlphabet = null;
                 if (isAmbiguous)
                 {
@@ -1204,7 +1206,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
                     ambAlphabet = seqAlphabet;
                 }
 
-                for (int i = 0; i < referenceSequences.Length; i++)
+                for (var i = 0; i < referenceSequences.Length; i++)
                 {
                     ISequence referSeq = new Sequence(ambAlphabet,
                                                       Encoding.ASCII.GetBytes(referenceSequences[i]));
@@ -1212,7 +1214,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
                     refSeqList.Add(referSeq);
                 }
 
-                for (int i = 0; i < searchSequences.Length; i++)
+                for (var i = 0; i < searchSequences.Length; i++)
                 {
                     ISequence searchSeq = new Sequence(ambAlphabet,
                                                        Encoding.ASCII.GetBytes(searchSequences[i]));
@@ -1221,7 +1223,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
                 }
             }
             // Gets the mum length from the xml
-            string mumLength = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMAlignLengthNode);
+            var mumLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMAlignLengthNode);
 
             var nucmerObj = new NucmerPairwiseAligner();
             // Check for additional parameters and update the object accordingly
@@ -1244,33 +1246,33 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
             {
                 case PropertyParameters.MinimumScore:
                     nucmerObj.MinimumScore = int.Parse(
-                        this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MinimumScoreNode), null);
+                        utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MinimumScoreNode), null);
                     break;
                 case PropertyParameters.MaximumSeparation:
                     nucmerObj.MaximumSeparation = int.Parse(
-                        this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MaximumSeparationNode), null);
+                        utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MaximumSeparationNode), null);
                     break;
                 case PropertyParameters.FixedSeparation:
                     nucmerObj.FixedSeparation = int.Parse(
-                        this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FixedSeparationNode), null);
+                        utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FixedSeparationNode), null);
                     break;
                 case PropertyParameters.SeparationFactor:
                     nucmerObj.SeparationFactor = int.Parse(
-                        this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SeparationFactorNode), null);
+                        utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SeparationFactorNode), null);
                     break;
                 case PropertyParameters.FixedSeparationAndSeparationFactor:
                     nucmerObj.SeparationFactor = int.Parse(
-                        this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SeparationFactorNode), null);
+                        utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SeparationFactorNode), null);
                     nucmerObj.FixedSeparation = int.Parse(
-                        this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FixedSeparationNode), null);
+                        utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FixedSeparationNode), null);
                     break;
                 case PropertyParameters.MaximumFixedAndSeparationFactor:
                     nucmerObj.MaximumSeparation = int.Parse(
-                        this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MaximumSeparationNode), null);
+                        utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MaximumSeparationNode), null);
                     nucmerObj.SeparationFactor = int.Parse(
-                        this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SeparationFactorNode), null);
+                        utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SeparationFactorNode), null);
                     nucmerObj.FixedSeparation = int.Parse(
-                        this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FixedSeparationNode), null);
+                        utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FixedSeparationNode), null);
                     break;
                 default:
                     break;
@@ -1288,15 +1290,15 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
                 align = nucmerObj.Align(refSeqList, searchSeqList);
             }
 
-            string expectedSequences = isFilePath
-                    ? this.utilityObj.xmlUtil.GetFileTextValue(nodeName, Constants.ExpectedSequencesNode)
-                    : this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExpectedSequencesNode);
-            string[] expSeqArray = expectedSequences.Split(',');
+            var expectedSequences = isFilePath
+                    ? utilityObj.xmlUtil.GetFileTextValue(nodeName, Constants.ExpectedSequencesNode)
+                    : utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExpectedSequencesNode);
+            var expSeqArray = expectedSequences.Split(',');
 
             // Gets all the aligned sequences in comma separated format
             foreach (IPairwiseSequenceAlignment seqAlignment in align)
             {
-                foreach (PairwiseAlignedSequence alignedSeq in seqAlignment)
+                foreach (var alignedSeq in seqAlignment)
                 {
                     var actualStr = alignedSeq.FirstSequence.ConvertToString();
                     Assert.IsTrue(expSeqArray.Contains(actualStr));
@@ -1326,28 +1328,28 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
             if (isFilePath)
             {
                 // Gets the reference sequence from the FastA file
-                string filePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode);
+                var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode);
 
                 Assert.IsNotNull(filePath);
                 ApplicationLog.WriteLine(string.Format(null, "NUCmer P1 : Successfully validated the File Path '{0}'.", filePath));
 
                 var fastaparserobj = new FastAParser();
-                IEnumerable<ISequence> referenceSeqList = fastaparserobj.Parse(filePath);
+                var referenceSeqList = fastaparserobj.Parse(filePath);
 
-                foreach (ISequence seq in referenceSeqList)
+                foreach (var seq in referenceSeqList)
                 {
                     refSeqList.Add(seq);
                 }
 
                 // Gets the query sequence from the FastA file
-                string queryFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SearchSequenceFilePathNode);
+                var queryFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SearchSequenceFilePathNode);
 
                 Assert.IsNotNull(queryFilePath);
                 ApplicationLog.WriteLine(string.Format(null,"NUCmer P1 : Successfully validated the File Path '{0}'.", queryFilePath));
 
                 var fastaParserobj = new FastAParser();
-                IEnumerable<ISequence> querySeqList = fastaParserobj.Parse(queryFilePath);
-                foreach (ISequence seq in querySeqList)
+                var querySeqList = fastaParserobj.Parse(queryFilePath);
+                foreach (var seq in querySeqList)
                 {
                     searchSeqList.Add(seq);
                 }
@@ -1355,31 +1357,31 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
             else
             {
                 // Gets the reference & search sequences from the configuration file
-                string[] referenceSequences = this.utilityObj.xmlUtil.GetTextValues(nodeName, Constants.ReferenceSequencesNode);
-                string[] searchSequences = this.utilityObj.xmlUtil.GetTextValues(nodeName, Constants.SearchSequencesNode);
+                var referenceSequences = utilityObj.xmlUtil.GetTextValues(nodeName, Constants.ReferenceSequencesNode);
+                var searchSequences = utilityObj.xmlUtil.GetTextValues(nodeName, Constants.SearchSequencesNode);
 
-                IAlphabet seqAlphabet = Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.AlphabetNameNode));
+                var seqAlphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.AlphabetNameNode));
 
-                foreach (Sequence referSeq in referenceSequences.Select(t => new Sequence(seqAlphabet, Encoding.ASCII.GetBytes(t))))
+                foreach (var referSeq in referenceSequences.Select(t => new Sequence(seqAlphabet, Encoding.ASCII.GetBytes(t))))
                 {
                     refSeqList.Add(referSeq);
                 }
 
-                foreach (Sequence searchSeq in searchSequences.Select(t => new Sequence(seqAlphabet, Encoding.ASCII.GetBytes(t))))
+                foreach (var searchSeq in searchSequences.Select(t => new Sequence(seqAlphabet, Encoding.ASCII.GetBytes(t))))
                 {
                     searchSeqList.Add(searchSeq);
                 }
             }
 
             // Gets the mum length from the xml
-            string mumLength = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMAlignLengthNode);
+            var mumLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMAlignLengthNode);
 
             var nucmerObj = new NucmerPairwiseAligner
             {
-                MaximumSeparation = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMAlignLengthNode), null),
-                MinimumScore = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMAlignLengthNode), null), 
-                SeparationFactor = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMAlignLengthNode), null),
-                BreakLength = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMAlignLengthNode), null),
+                MaximumSeparation = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMAlignLengthNode), null),
+                MinimumScore = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMAlignLengthNode), null), 
+                SeparationFactor = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMAlignLengthNode), null),
+                BreakLength = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMAlignLengthNode), null),
                 LengthOfMUM = long.Parse(mumLength, null)
             };
 
@@ -1390,16 +1392,16 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
                 alignSimple = nucmerObj.AlignSimple(listOfSeq);
             }
 
-            string expectedSequences = isFilePath
-                ? this.utilityObj.xmlUtil.GetFileTextValue(nodeName, Constants.ExpectedSequencesNode)
-                : this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExpectedSequencesNode);
+            var expectedSequences = isFilePath
+                ? utilityObj.xmlUtil.GetFileTextValue(nodeName, Constants.ExpectedSequencesNode)
+                : utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExpectedSequencesNode);
 
-            string[] expSeqArray = expectedSequences.Split(',');
+            var expSeqArray = expectedSequences.Split(',');
 
-            int j = 0;
+            var j = 0;
 
             // Gets all the aligned sequences in comma separated format
-            foreach (PairwiseAlignedSequence alignedSeq in alignSimple.Cast<IPairwiseSequenceAlignment>().SelectMany(seqAlignment => seqAlignment))
+            foreach (var alignedSeq in alignSimple.Cast<IPairwiseSequenceAlignment>().SelectMany(seqAlignment => seqAlignment))
             {
                 Assert.AreEqual(expSeqArray[j], alignedSeq.FirstSequence.ConvertToString());
                 ++j;
@@ -1425,31 +1427,31 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
 
             if (isFilePath)
             {
-                firstSeqOrder = this.utilityObj.xmlUtil.GetFileTextValue(nodeName, Constants.FirstSequenceMumOrderNode).Split(',');
-                length = this.utilityObj.xmlUtil.GetFileTextValue(nodeName, Constants.LengthNode).Split(',');
-                secondSeqOrder = this.utilityObj.xmlUtil.GetFileTextValue(nodeName, Constants.SecondSequenceMumOrderNode).Split(',');
+                firstSeqOrder = utilityObj.xmlUtil.GetFileTextValue(nodeName, Constants.FirstSequenceMumOrderNode).Split(',');
+                length = utilityObj.xmlUtil.GetFileTextValue(nodeName, Constants.LengthNode).Split(',');
+                secondSeqOrder = utilityObj.xmlUtil.GetFileTextValue(nodeName, Constants.SecondSequenceMumOrderNode).Split(',');
             }
             else
             {
-                firstSeqOrder = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FirstSequenceMumOrderNode).Split(',');
-                length = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.LengthNode).Split(',');
-                secondSeqOrder = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SecondSequenceMumOrderNode).Split(',');
+                firstSeqOrder = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FirstSequenceMumOrderNode).Split(',');
+                length = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.LengthNode).Split(',');
+                secondSeqOrder = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SecondSequenceMumOrderNode).Split(',');
             }
 
-            int i = 0;
+            var i = 0;
 
             IList<MatchExtension> meNewObj = matches.Select(m => new MatchExtension(m)).ToList();
 
             // Order the mum list with query sequence order and
             // Assign query sequence to the MUM's
-            for (int index = 0; index < meNewObj.Count(); index++)
+            for (var index = 0; index < meNewObj.Count(); index++)
             {
                 meNewObj.ElementAt(index).ReferenceSequenceMumOrder = index + 1;
                 meNewObj.ElementAt(index).QuerySequenceMumOrder = index + 1;
             }
 
             // Loops through all the matches and validates the same.
-            foreach (MatchExtension match in meNewObj)
+            foreach (var match in meNewObj)
             {
                 if ((0 != string.Compare(firstSeqOrder[i], match.ReferenceSequenceMumOrder.ToString((IFormatProvider) null), true, CultureInfo.CurrentCulture))
                  || (0 != string.Compare(length[i], match.Length.ToString((IFormatProvider) null), true, CultureInfo.CurrentCulture))
@@ -1473,9 +1475,9 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         private bool ValidateClusterBuilderMatches(IEnumerable<Match> matches, string nodeName, PropertyParameters propParam)
         {
             // Validates the Cluster builder MUMs
-            string firstSeqOrderExpected = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ClustFirstSequenceMumOrderNode);
-            string lengthExpected = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ClustLengthNode);
-            string secondSeqOrderExpected = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ClustSecondSequenceMumOrderNode);
+            var firstSeqOrderExpected = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ClustFirstSequenceMumOrderNode);
+            var lengthExpected = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ClustLengthNode);
+            var secondSeqOrderExpected = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ClustSecondSequenceMumOrderNode);
 
             var firstSeqOrderActual = new StringBuilder();
             var lengthActual = new StringBuilder();
@@ -1485,25 +1487,25 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
             switch (propParam)
             {
                 case PropertyParameters.MinimumScore:
-                    cbObj.MinimumScore = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MinimumScoreNode), null);
+                    cbObj.MinimumScore = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MinimumScoreNode), null);
                     break;
                 case PropertyParameters.MaximumSeparation:
-                    cbObj.MaximumSeparation = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MaximumSeparationNode), null);
+                    cbObj.MaximumSeparation = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MaximumSeparationNode), null);
                     break;
                 case PropertyParameters.FixedSeparation:
-                    cbObj.FixedSeparation = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FixedSeparationNode), null);
+                    cbObj.FixedSeparation = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FixedSeparationNode), null);
                     break;
                 case PropertyParameters.SeparationFactor:
-                    cbObj.SeparationFactor = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SeparationFactorNode), null);
+                    cbObj.SeparationFactor = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SeparationFactorNode), null);
                     break;
                 case PropertyParameters.FixedSeparationAndSeparationFactor:
-                    cbObj.SeparationFactor = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SeparationFactorNode), null);
-                    cbObj.FixedSeparation = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FixedSeparationNode), null);
+                    cbObj.SeparationFactor = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SeparationFactorNode), null);
+                    cbObj.FixedSeparation = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FixedSeparationNode), null);
                     break;
                 case PropertyParameters.MaximumFixedAndSeparationFactor:
-                    cbObj.MaximumSeparation = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MaximumSeparationNode), null);
-                    cbObj.SeparationFactor = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SeparationFactorNode), null);
-                    cbObj.FixedSeparation = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FixedSeparationNode), null);
+                    cbObj.MaximumSeparation = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MaximumSeparationNode), null);
+                    cbObj.SeparationFactor = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SeparationFactorNode), null);
+                    cbObj.FixedSeparation = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FixedSeparationNode), null);
                     break;
                 default:
                     break;
@@ -1513,7 +1515,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
 
             IEnumerable<Cluster> clusts = cbObj.BuildClusters(meObj);
 
-            foreach (MatchExtension maxMatchExtension in clusts.SelectMany(clust => clust.Matches))
+            foreach (var maxMatchExtension in clusts.SelectMany(clust => clust.Matches))
             {
                 firstSeqOrderActual.Append(maxMatchExtension.ReferenceSequenceOffset);
                 secondSeqOrderActual.Append(maxMatchExtension.QuerySequenceOffset);

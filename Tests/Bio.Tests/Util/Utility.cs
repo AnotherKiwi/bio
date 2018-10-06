@@ -75,13 +75,13 @@ namespace Bio.TestAutomation.Util
         /// <returns>Array of Random numbers</returns>
         public static int[] RandomNumberGenerator(int maxRange, int count)
         {
-            int[] randomNumbers = new int[count];
+            var randomNumbers = new int[count];
 
-            int index = 0;
+            var index = 0;
             while (index < randomNumbers.Length)
             {
-                Random rndNumberGenerator = new Random();
-                int rndNumber = rndNumberGenerator.Next(maxRange);
+                var rndNumberGenerator = new Random();
+                var rndNumber = rndNumberGenerator.Next(maxRange);
 
                 // Add the unique number to the list
                 if (!randomNumbers.Contains(rndNumber))
@@ -102,12 +102,12 @@ namespace Bio.TestAutomation.Util
         public static string GetFileContent(string filePath)
         {
             filePath = filePath.TestDir();
-            string fileContent = string.Empty;
+            var fileContent = string.Empty;
 
             // Check if the File path exists, if not throw exception.
             if (File.Exists(filePath))
             {
-                using (StreamReader textFile = new StreamReader(filePath))
+                using (var textFile = new StreamReader(filePath))
                 {
                     fileContent = textFile.ReadToEnd();
                 }
@@ -127,7 +127,7 @@ namespace Bio.TestAutomation.Util
         /// <returns>FastQFormat</returns>
         public static FastQFormatType GetFastQFormatType(string formatType)
         {
-            FastQFormatType format = FastQFormatType.Illumina_v1_3;
+            var format = FastQFormatType.Illumina_v1_3;
 
             switch (formatType)
             {
@@ -154,8 +154,8 @@ namespace Bio.TestAutomation.Util
         /// <param name="length">No of quality scores required.</param>
         public static byte[] GetEncodedQualityScores(byte encodedQualityScore, int length)
         {
-            byte[] encodedQualityScores = new byte[length];
-            for (int i = 0; i < length; i++)
+            var encodedQualityScores = new byte[length];
+            for (var i = 0; i < length; i++)
             {
                 encodedQualityScores[i] = encodedQualityScore;
             }
@@ -170,8 +170,8 @@ namespace Bio.TestAutomation.Util
         /// <param name="length">No of quality scores required.</param>
         public static string GetDefaultEncodedQualityScores(FastQFormatType formatType, int length)
         {
-            char[] encodedQualityScores = new char[length];
-            for (int i = 0; i < length; i++)
+            var encodedQualityScores = new char[length];
+            for (var i = 0; i < length; i++)
             {
                 encodedQualityScores[i] = (char)QualitativeSequence.GetDefaultQualScore(formatType);
             }
@@ -207,8 +207,8 @@ namespace Bio.TestAutomation.Util
 		public static bool CompareFiles(string observed, string expected)
 		{
 
-			byte[] bytesO = File.ReadAllBytes(observed);
-			byte[] bytesE = File.ReadAllBytes(expected);
+			var bytesO = File.ReadAllBytes(observed);
+			var bytesE = File.ReadAllBytes(expected);
 			if (bytesO.Length == bytesE.Length)
 			{
 				return bytesO.SequenceEqual(bytesE);
@@ -228,8 +228,8 @@ namespace Bio.TestAutomation.Util
 					big = bytesO;
 					small = bytesE;
 				}
-				int b = 0;
-				int s = 0;
+				var b = 0;
+				var s = 0;
 				while (b < big.Length)
 				{
 					if (s == small.Length)

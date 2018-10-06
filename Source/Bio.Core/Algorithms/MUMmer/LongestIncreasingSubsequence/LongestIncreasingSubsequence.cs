@@ -28,7 +28,7 @@ namespace Bio.Algorithms.MUMmer.LIS
                 return null;
             }
 
-            MatchExtension[] matches = ConvertToMUMExtension(sortedMums);
+            var matches = ConvertToMUMExtension(sortedMums);
 
             for (var counteri = 0; counteri < matches.Length; counteri++)
             {
@@ -42,7 +42,7 @@ namespace Bio.Algorithms.MUMmer.LIS
 
                 for (var counterj = 0; counterj < counteri; counterj++)
                 {
-                    MatchExtension matches_j = matches[counterj];
+                    var matches_j = matches[counterj];
 
                     // Find the overlap in query sequence of MUM
                     var overlap2 = matches_j.QuerySequenceOffset + matches_j.Length;
@@ -94,7 +94,7 @@ namespace Bio.Algorithms.MUMmer.LIS
             // Find the best longest increasing subsequence
             // Sequence with highest score is the longest increasing subsequence
             long best = 0;
-            long bestScore = matches[best].Score;
+            var bestScore = matches[best].Score;
             for (long counteri = 1; counteri < matches.Length; counteri++)
             {
                 if (matches[counteri].Score > bestScore)
@@ -105,13 +105,13 @@ namespace Bio.Algorithms.MUMmer.LIS
             }
 
             // Mark the MUMs in longest increasing subsequence as "Good"
-            for (long counteri = best; counteri >= 0; counteri = matches[counteri].From)
+            for (var counteri = best; counteri >= 0; counteri = matches[counteri].From)
             {
                 matches[counteri].IsGood = true;
             }
 
             IList<Match> outputMums = new List<Match>();
-            foreach (MatchExtension t in matches)
+            foreach (var t in matches)
             {
                 if (t.IsGood)
                 {
@@ -125,7 +125,7 @@ namespace Bio.Algorithms.MUMmer.LIS
 
                     if (0 < t.Length)
                     {
-                        Match match = new Match();
+                        var match = new Match();
                         match.Length = t.Length;
                         match.QuerySequenceOffset = t.QuerySequenceOffset;
                         match.ReferenceSequenceOffset = t.ReferenceSequenceOffset;

@@ -43,11 +43,11 @@ namespace Bio.Util
         /// <returns>A counter</returns>
         public CounterWithMessages(string formatStringWithOneOrTwoPlaceholders, int messageInterval, int? totalCountOrNull, bool quiet)
         {
-            this.formatString = formatStringWithOneOrTwoPlaceholders;
+            formatString = formatStringWithOneOrTwoPlaceholders;
             this.messageInterval = messageInterval;
-            this.countOrNull = totalCountOrNull;
-            this.Index = -1;
-            this.Quiet = quiet;
+            countOrNull = totalCountOrNull;
+            Index = -1;
+            Quiet = quiet;
         }
 
         /// <summary>
@@ -57,19 +57,19 @@ namespace Bio.Util
         {
             lock (this)
             {
-                ++this.Index;
-                if (this.Index % this.messageInterval == 0 && !this.Quiet)
+                ++Index;
+                if (Index % messageInterval == 0 && !Quiet)
                 {
-                    if (null == this.countOrNull)
+                    if (null == countOrNull)
                     {
-                        Console.WriteLine(this.formatString, this.Index);
+                        Console.WriteLine(formatString, Index);
                     }
                     else
                     {
-                        Console.WriteLine(this.formatString, this.Index, this.countOrNull.Value);
+                        Console.WriteLine(formatString, Index, countOrNull.Value);
                     }
                 }
-                return this.Index;
+                return Index;
             }
         }
     }

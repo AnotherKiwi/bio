@@ -228,7 +228,7 @@ namespace Bio.Algorithms.Alignment
         {
             if (sequences == null)
             {
-                throw new ArgumentNullException("sequences");
+                throw new ArgumentNullException(nameof(sequences));
             }
 
             // Add the Concatenating symbol to every sequence in reference list
@@ -236,7 +236,7 @@ namespace Bio.Algorithms.Alignment
             // of input sequence add  concatenation character "X" to it to 
             // simplify implementation.
             List<byte> referenceSequence = null;
-            foreach (ISequence sequence in sequences)
+            foreach (var sequence in sequences)
             {
                 if (null == referenceSequence)
                 {
@@ -266,24 +266,24 @@ namespace Bio.Algorithms.Alignment
         {
             if (referenceSequence == null)
             {
-                throw new ArgumentNullException("referenceSequence");
+                throw new ArgumentNullException(nameof(referenceSequence));
             }
 
             if (querySequence == null)
             {
-                throw new ArgumentNullException("querySequence");
+                throw new ArgumentNullException(nameof(querySequence));
             }
 
             // For each pair of symbols (characters) in reference and query sequence
             // get the consensus symbol and append it.
-            byte[] consensus = new byte[referenceSequence.Count];
-            for (int index = 0; index < referenceSequence.Count; index++)
+            var consensus = new byte[referenceSequence.Count];
+            for (var index = 0; index < referenceSequence.Count; index++)
             {
                 consensus[index] = ConsensusResolver.GetConsensus(
                     new byte[] { referenceSequence[index], querySequence[index] });
             }
 
-            IAlphabet alphabet = Alphabets.AutoDetectAlphabet(consensus, 0, consensus.GetLongLength(), referenceSequence.Alphabet);
+            var alphabet = Alphabets.AutoDetectAlphabet(consensus, 0, consensus.GetLongLength(), referenceSequence.Alphabet);
             return new Sequence(alphabet, consensus, false);
         }
 
@@ -299,17 +299,17 @@ namespace Bio.Algorithms.Alignment
         {
             if (referenceSequence == null)
             {
-                throw new ArgumentNullException("referenceSequence");
+                throw new ArgumentNullException(nameof(referenceSequence));
             }
 
             if (querySequence == null)
             {
-                throw new ArgumentNullException("querySequence");
+                throw new ArgumentNullException(nameof(querySequence));
             }
 
             int index;
 
-            int score = 0;
+            var score = 0;
 
             // For each pair of symbols (characters) in reference and query sequence
             // 1. If the character are different and not alignment character "-", 
@@ -320,8 +320,8 @@ namespace Bio.Algorithms.Alignment
             // 3. Add the gap open cost
             for (index = 0; index < referenceSequence.Count; index++)
             {
-                byte referenceCharacter = referenceSequence[index];
-                byte queryCharacter = querySequence[index];
+                var referenceCharacter = referenceSequence[index];
+                var queryCharacter = querySequence[index];
 
                 if (DnaAlphabet.Instance.Gap != referenceCharacter
                     && DnaAlphabet.Instance.Gap != queryCharacter)
@@ -367,7 +367,7 @@ namespace Bio.Algorithms.Alignment
         {
             // Find the number of alignment characters "-" in the given sequence 
             // from position index
-            int gapCounter = index;
+            var gapCounter = index;
 
             while (gapCounter < sequence.Count
                     && DnaAlphabet.Instance.Gap == sequence[gapCounter])
@@ -390,7 +390,7 @@ namespace Bio.Algorithms.Alignment
         {
             ConsensusResolver = new SimpleConsensusResolver(referenceSequenceList.ElementAt(0).Alphabet);
 
-            IEnumerable<ISequence> querySequenceList = 
+            var querySequenceList = 
                 ForwardOnly ? originalQuerySequences
                     : (ReverseOnly
                         ? ReverseComplementSequenceList(originalQuerySequences)
@@ -400,25 +400,25 @@ namespace Bio.Algorithms.Alignment
 
             var deltas = new List<DeltaAlignment>();
 
-            foreach (ISequence refSequence in referenceSequenceList)
+            foreach (var refSequence in referenceSequenceList)
             {
-                this.nucmerAlgo = new NUCmer(refSequence);
+                nucmerAlgo = new NUCmer(refSequence);
 
-                if (GapOpenCost != DefaultGapOpenCost) this.nucmerAlgo.GapOpenCost = GapOpenCost;
-                if (GapExtensionCost != DefaultGapExtensionCost) this.nucmerAlgo.GapExtensionCost = GapExtensionCost;
-                if (LengthOfMUM != DefaultLengthOfMUM) this.nucmerAlgo.LengthOfMUM = LengthOfMUM;
+                if (GapOpenCost != DefaultGapOpenCost) nucmerAlgo.GapOpenCost = GapOpenCost;
+                if (GapExtensionCost != DefaultGapExtensionCost) nucmerAlgo.GapExtensionCost = GapExtensionCost;
+                if (LengthOfMUM != DefaultLengthOfMUM) nucmerAlgo.LengthOfMUM = LengthOfMUM;
 
                 // Set the ClusterBuilder properties to defaults
-                if (FixedSeparation != ClusterBuilder.DefaultFixedSeparation) this.nucmerAlgo.FixedSeparation = FixedSeparation;
-                if (MaximumSeparation != ClusterBuilder.DefaultMaximumSeparation) this.nucmerAlgo.MaximumSeparation = MaximumSeparation;
-                if (MinimumScore != ClusterBuilder.DefaultMinimumScore) this.nucmerAlgo.MinimumScore = MinimumScore;
-                if (SeparationFactor != ClusterBuilder.DefaultSeparationFactor) this.nucmerAlgo.SeparationFactor = SeparationFactor;
-                if (BreakLength != ModifiedSmithWaterman.DefaultBreakLength) this.nucmerAlgo.BreakLength = BreakLength;
+                if (FixedSeparation != ClusterBuilder.DefaultFixedSeparation) nucmerAlgo.FixedSeparation = FixedSeparation;
+                if (MaximumSeparation != ClusterBuilder.DefaultMaximumSeparation) nucmerAlgo.MaximumSeparation = MaximumSeparation;
+                if (MinimumScore != ClusterBuilder.DefaultMinimumScore) nucmerAlgo.MinimumScore = MinimumScore;
+                if (SeparationFactor != ClusterBuilder.DefaultSeparationFactor) nucmerAlgo.SeparationFactor = SeparationFactor;
+                if (BreakLength != ModifiedSmithWaterman.DefaultBreakLength) nucmerAlgo.BreakLength = BreakLength;
 
-                this.nucmerAlgo.ConsensusResolver = ConsensusResolver;
-                if (SimilarityMatrix != null) this.nucmerAlgo.SimilarityMatrix = SimilarityMatrix;
+                nucmerAlgo.ConsensusResolver = ConsensusResolver;
+                if (SimilarityMatrix != null) nucmerAlgo.SimilarityMatrix = SimilarityMatrix;
 
-                foreach (ISequence querySequence in querySequenceList)
+                foreach (var querySequence in querySequenceList)
                 {
                     //  Check for parameters that would prevent an alignment from being returned.
                     if (Math.Min(querySequence.Count, refSequence.Count) < MinimumScore)
@@ -430,31 +430,31 @@ namespace Bio.Algorithms.Alignment
                                    ". This will prevent any alignments from being returned.";
                         throw new ArgumentException(msg);
                     }
-                    IEnumerable<DeltaAlignment> deltaAlignment = this.nucmerAlgo.GetDeltaAlignments(querySequence, !MaxMatch, querySequence.IsMarkedAsReverseComplement());
+                    var deltaAlignment = nucmerAlgo.GetDeltaAlignments(querySequence, !MaxMatch, querySequence.IsMarkedAsReverseComplement());
                     deltas.AddRange(deltaAlignment);
                 }
             }
 
             if (deltas.Count > 0)
             {
-                ISequence concatReference = referenceSequenceList.ElementAt(0);
+                var concatReference = referenceSequenceList.ElementAt(0);
                 //// concat all the sequences into one sequence
                 if (referenceSequenceList.Count() > 1)
                 {
                     concatReference = ConcatSequence(referenceSequenceList);
                 }
 
-                foreach (ISequence querySequence in querySequenceList)
+                foreach (var querySequence in querySequenceList)
                 {
-                    List<DeltaAlignment> qDelta = deltas.Where(d => d.QuerySequence.Equals(querySequence)).ToList();
+                    var qDelta = deltas.Where(d => d.QuerySequence.Equals(querySequence)).ToList();
                     IPairwiseSequenceAlignment sequenceAlignment = new PairwiseSequenceAlignment(concatReference, querySequence);
 
                     // Convert delta alignments to sequence alignments
-                    IList<PairwiseAlignedSequence> alignments = ConvertDeltaToAlignment(qDelta);
+                    var alignments = ConvertDeltaToAlignment(qDelta);
 
                     if (alignments.Count > 0)
                     {
-                        foreach (PairwiseAlignedSequence align in alignments)
+                        foreach (var align in alignments)
                         {
                             // Calculate the score of alignment
                             align.Score = CalculateScore(
@@ -485,7 +485,7 @@ namespace Bio.Algorithms.Alignment
         /// <returns>Returns the list of sequence.</returns>
         private static IEnumerable<ISequence> ReverseComplementSequenceList(IEnumerable<ISequence> sequenceList)
         {
-            foreach (ISequence rcSequence in sequenceList.Select(seq => seq.GetReverseComplementedSequence()))
+            foreach (var rcSequence in sequenceList.Select(seq => seq.GetReverseComplementedSequence()))
             {
                 if (rcSequence != null)
                 {
@@ -503,11 +503,11 @@ namespace Bio.Algorithms.Alignment
         /// <returns>Returns the List of sequence.</returns>
         private static IEnumerable<ISequence> AddReverseComplementsToSequenceList(IEnumerable<ISequence> sequenceList)
         {
-            foreach (ISequence seq in sequenceList)
+            foreach (var seq in sequenceList)
             {
                 yield return seq;
 
-                ISequence rcSequence = seq.GetReverseComplementedSequence();
+                var rcSequence = seq.GetReverseComplementedSequence();
                 if (rcSequence != null)
                 {
                     rcSequence.MarkAsReverseComplement();
@@ -526,18 +526,18 @@ namespace Bio.Algorithms.Alignment
         {
             if (alignments == null)
             {
-                throw new ArgumentNullException("alignments");
+                throw new ArgumentNullException(nameof(alignments));
             }
 
             IList<PairwiseAlignedSequence> alignedSequences = new List<PairwiseAlignedSequence>();
-            foreach (DeltaAlignment deltaAlignment in alignments)
+            foreach (var deltaAlignment in alignments)
             {
-                PairwiseAlignedSequence alignedSequence = deltaAlignment.ConvertDeltaToSequences();
+                var alignedSequence = deltaAlignment.ConvertDeltaToSequences();
 
                 // Find the offsets
-                long referenceStart = deltaAlignment.FirstSequenceStart;
-                long queryStart = deltaAlignment.SecondSequenceStart;
-                long difference = referenceStart - queryStart;
+                var referenceStart = deltaAlignment.FirstSequenceStart;
+                var queryStart = deltaAlignment.SecondSequenceStart;
+                var difference = referenceStart - queryStart;
                 if (0 < difference)
                 {
                     alignedSequence.FirstOffset = 0;
@@ -563,7 +563,7 @@ namespace Bio.Algorithms.Alignment
         private static ISequence GetReferenceSequence(IEnumerable<ISequence> sequences, long referenceIndex)
         {
             long index = 0;
-            foreach (ISequence sequence in sequences)
+            foreach (var sequence in sequences)
             {
                 if (index == referenceIndex)
                 {
@@ -584,7 +584,7 @@ namespace Bio.Algorithms.Alignment
         private static IEnumerable<ISequence> GetQuerySequences(IEnumerable<ISequence> sequences, long referenceIndex)
         {
             long index = 0;
-            foreach (ISequence sequence in sequences)
+            foreach (var sequence in sequences)
             {
                 if (index != referenceIndex)
                 {

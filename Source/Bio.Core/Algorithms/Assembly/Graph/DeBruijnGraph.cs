@@ -110,7 +110,7 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             if (graph == null)
             {
-                throw new ArgumentNullException("graph");
+                throw new ArgumentNullException(nameof(graph));
             }
         }
 
@@ -135,31 +135,31 @@ namespace Bio.Algorithms.Assembly.Graph
             const int stopAddThreshold = 2000000 / blockSize;
 
             if (sequences == null)
-                throw new ArgumentNullException("sequences");
+                throw new ArgumentNullException(nameof(sequences));
 
             if (KmerLength > KmerData32.MAX_KMER_LENGTH)
                 throw new ArgumentException(Properties.Resource.KmerLengthGreaterThan31);
 
             // A dictionary kmers to debruijin nodes
-            KmerDictionary kmerManager = new KmerDictionary();
+            var kmerManager = new KmerDictionary();
 
             // Create the producer thread.
             var kmerDataCollection = new BlockingCollection<List<KmerData32>>();
-            Task producer = Task.Factory.StartNew(() =>
+            var producer = Task.Factory.StartNew(() =>
             {
                 try
                 {
-                    List<KmerData32> kmerList = new List<KmerData32>(blockSize);
+                    var kmerList = new List<KmerData32>(blockSize);
 
                     IAlphabet alphabet = Alphabets.DNA;
                     HashSet<byte> gapSymbols;
                     alphabet.TryGetGapSymbols(out gapSymbols);
 
                     // Generate the kmers from the sequences
-                    foreach (ISequence sequence in sequences)
+                    foreach (var sequence in sequences)
                     {
                         // if the sequence alphabet is not of type DNA then ignore it.
-                        bool skipSequence = false;
+                        var skipSequence = false;
                         if (sequence.Alphabet != Alphabets.DNA)
                         {
                             skipSequence = true;
@@ -167,7 +167,7 @@ namespace Bio.Algorithms.Assembly.Graph
                         else
                         {
                             // if the sequence contains any gap symbols then ignore the sequence.
-                            foreach (byte symbol in gapSymbols)
+                            foreach (var symbol in gapSymbols)
                             {
                                 for (long index = 0; index < sequence.Count; ++index)
                                 {
@@ -223,10 +223,10 @@ namespace Bio.Algorithms.Assembly.Graph
             // Consume k-mers by addding them to binary tree structure as nodes
             Parallel.ForEach(kmerDataCollection.GetConsumingEnumerable(),newKmerList=>
             {
-                foreach (KmerData32 newKmer in newKmerList)
+                foreach (var newKmer in newKmerList)
                 {
                     // Create Vertex
-                    DeBruijnNode node = kmerManager.SetNewOrGetOld(newKmer);
+                    var node = kmerManager.SetNewOrGetOld(newKmer);
 
                     // Need to lock node if doing this in parallel
                     if (node.KmerCount <= 255)
@@ -254,7 +254,7 @@ namespace Bio.Algorithms.Assembly.Graph
             
             // Since we no longer need to search for values set left and right nodes of child array to null
             // so that they are available for GC if no longer needed
-            foreach (DeBruijnNode node in _nodes)
+            foreach (var node in _nodes)
             {
                 node.Left = node.Right = null;
             }
@@ -304,7 +304,7 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             if (node == null)
             {
-                throw new ArgumentNullException("node");
+                throw new ArgumentNullException(nameof(node));
             }
 
             return new Sequence(Alphabets.DNA, node.GetOriginalSymbols(KmerLength));
@@ -318,10 +318,10 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             if (nodesToRemove == null)
             {
-                throw new ArgumentNullException("nodesToRemove");
+                throw new ArgumentNullException(nameof(nodesToRemove));
             }
-            long oldCount = _nodeCount;
-            foreach (DeBruijnNode node in nodesToRemove)
+            var oldCount = _nodeCount;
+            foreach (var node in nodesToRemove)
             {
                 if (!node.IsDeleted)
                 {
@@ -368,9 +368,9 @@ namespace Bio.Algorithms.Assembly.Graph
         public byte GetNextSymbolFrom(DeBruijnNode node, bool isForwardDirection, bool isSameOrientation)
         {
             if (node == null)
-                throw new ArgumentNullException("node");
+                throw new ArgumentNullException(nameof(node));
 
-            byte[] nextSequence = isSameOrientation 
+            var nextSequence = isSameOrientation 
                 ? node.GetOriginalSymbols(KmerLength) 
                 : node.GetReverseComplementOfOriginalSymbols(KmerLength);
             
@@ -386,26 +386,26 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             // Prepare a mask to remove the bits representing the first nucleotide (or left most bits in the encoded kmer)
             // First calculate how many bits do you have to move down a character until you are at the start of the kmer encoded sequence
-            int distancetoShift=2*(KmerLength-1);
-            ulong rightMask = ~( ((ulong)3) << distancetoShift);
+            var distancetoShift=2*(KmerLength-1);
+            var rightMask = ~( ((ulong)3) << distancetoShift);
             Parallel.ForEach(_nodes, node =>
                 {
                     DeBruijnNode searchResult = null;
-                    KmerData32 searchNodeValue = new KmerData32();
+                    var searchNodeValue = new KmerData32();
                     
                     // Right Extensions - Remove first position from the value
                     // Remove the left most value by using an exclusive 
-                    ulong nextKmer = node.NodeValue.KmerData & rightMask;
+                    var nextKmer = node.NodeValue.KmerData & rightMask;
                     
                     // Move it over two to get make a position for the next pair of bits to represent a new nucleotide
                     nextKmer= nextKmer << 2;
                     for (ulong i = 0; i < 4; i++)
                     {
-                        ulong tmpNextKmer = nextKmer | i;// Equivalent to "ACGTA"+"N" where N is the 0-3 encoding for A,C,G,T
+                        var tmpNextKmer = nextKmer | i;// Equivalent to "ACGTA"+"N" where N is the 0-3 encoding for A,C,G,T
                         
                         // Now to set the kmer value to this, the orientationForward value is equal to false if the 
                         // reverse compliment of the kmer is used instead of the kmer value itself.
-                        bool matchIsRC = searchNodeValue.SetKmerData(tmpNextKmer, KmerLength);
+                        var matchIsRC = searchNodeValue.SetKmerData(tmpNextKmer, KmerLength);
                         searchResult = kmerManager.TryGetOld(searchNodeValue);
                         if (searchResult != null)
                         {
@@ -422,8 +422,8 @@ namespace Bio.Algorithms.Assembly.Graph
                     {
                         // Add the character on to the left side of the kmer
                         // Equivalent to "N" + "ACGAT" where the basepair is added on as the 2 bits
-                        ulong tmpNextKmer = (i<<distancetoShift) | nextKmer; 
-                        bool matchIsRC=searchNodeValue.SetKmerData(tmpNextKmer, KmerLength);
+                        var tmpNextKmer = (i<<distancetoShift) | nextKmer; 
+                        var matchIsRC=searchNodeValue.SetKmerData(tmpNextKmer, KmerLength);
                         searchResult = kmerManager.TryGetOld(searchNodeValue);
                         if (searchResult != null)
                         {
@@ -470,17 +470,17 @@ namespace Bio.Algorithms.Assembly.Graph
             }
             
             var deletedFrontIndexes = new BlockingCollection<int>();
-            int spotsToFind = lnodes.Count - (int) _nodeCount;
-            int emptySpotsFound = 0;
+            var spotsToFind = lnodes.Count - (int) _nodeCount;
+            var emptySpotsFound = 0;
             
             // Task to find empty spots in top of list
-            Task findEmptyFrontIndexes = Task.Factory.StartNew(() =>
+            var findEmptyFrontIndexes = Task.Factory.StartNew(() =>
             {
                 try
                 {
-                    for (int curForward = 0; curForward < _nodeCount && emptySpotsFound != spotsToFind; curForward++)
+                    for (var curForward = 0; curForward < _nodeCount && emptySpotsFound != spotsToFind; curForward++)
                     {
-                        DeBruijnNode cnode = lnodes[curForward];
+                        var cnode = lnodes[curForward];
                         if (cnode.IsDeleted)
                         {
                             deletedFrontIndexes.Add(curForward);
@@ -496,17 +496,17 @@ namespace Bio.Algorithms.Assembly.Graph
 
             // Task to find undeleted nodes in back of list
             var undeletedBackNodes = new BlockingCollection<DeBruijnNode>();
-            int filledSpotsFound = 0;
+            var filledSpotsFound = 0;
 
-            Task findFullBackIndexes = Task.Factory.StartNew(() =>
+            var findFullBackIndexes = Task.Factory.StartNew(() =>
             {
                 try
                 {
-                    for (int curBackward = (lnodes.Count - 1);
+                    for (var curBackward = (lnodes.Count - 1);
                          curBackward >= _nodeCount && filledSpotsFound != spotsToFind;
                          curBackward--)
                     {
-                        DeBruijnNode cnode = lnodes[curBackward];
+                        var cnode = lnodes[curBackward];
                         if (!cnode.IsDeleted)
                         {
                             undeletedBackNodes.Add(cnode);
@@ -530,16 +530,16 @@ namespace Bio.Algorithms.Assembly.Graph
             });
 
             // Task to move things that have been found in the back to the front
-            Task moveNodes = Task.Factory.StartNew(() =>
+            var moveNodes = Task.Factory.StartNew(() =>
             {
                 // The logic here requires that the items missing in the front match those in the back
                 while (!deletedFrontIndexes.IsCompleted && !undeletedBackNodes.IsCompleted)
                 {
-                    DeBruijnNode tm = undeletedBackNodes.Take();
+                    var tm = undeletedBackNodes.Take();
                     if (tm == null)
                         throw new NullReferenceException("Cannot move null node!");
 
-                    int index = deletedFrontIndexes.Take();
+                    var index = deletedFrontIndexes.Take();
                     lnodes[index] = tm;
                 }
             });
@@ -563,15 +563,15 @@ namespace Bio.Algorithms.Assembly.Graph
                 throw new NullReferenceException("Tried to use node collection as list when it was null or another type");
             }
 
-            BlockingCollection<long> deletedFrontIndexes = new BlockingCollection<long>();
-            BlockingCollection<DeBruijnNode> undeletedBackNodes = new BlockingCollection<DeBruijnNode>();
+            var deletedFrontIndexes = new BlockingCollection<long>();
+            var undeletedBackNodes = new BlockingCollection<DeBruijnNode>();
             //task to find empty spots in top of list
             long emptySpotsFound = 0;
-            Task findEmptyFrontIndexes = Task.Factory.StartNew(() =>
+            var findEmptyFrontIndexes = Task.Factory.StartNew(() =>
             {
                 for (long curForward = 0; curForward < _nodeCount; curForward++)
                 {
-                    DeBruijnNode cnode = lnodes[curForward];
+                    var cnode = lnodes[curForward];
                     if (cnode.IsDeleted)
                     {
                         deletedFrontIndexes.Add(curForward);
@@ -582,11 +582,11 @@ namespace Bio.Algorithms.Assembly.Graph
             });
             //task to find undeleted nodes in back of list
             long filledSpotsFound = 0;
-            Task findFullBackIndexes = Task.Factory.StartNew(() =>
+            var findFullBackIndexes = Task.Factory.StartNew(() =>
             {
-                for (long curBackward = (lnodes.Count - 1); curBackward >= _nodeCount; curBackward--)
+                for (var curBackward = (lnodes.Count - 1); curBackward >= _nodeCount; curBackward--)
                 {
-                    DeBruijnNode cnode = lnodes[curBackward];
+                    var cnode = lnodes[curBackward];
                     if (!cnode.IsDeleted)
                     {
                         undeletedBackNodes.Add(cnode);
@@ -602,7 +602,7 @@ namespace Bio.Algorithms.Assembly.Graph
                 }
             });
             //task to move things that have been found in the back to the front
-            Task moveNodes = Task.Factory.StartNew(() =>
+            var moveNodes = Task.Factory.StartNew(() =>
             {
                 //the logic here requires that the items missing in the front match those in the back
                 while (!deletedFrontIndexes.IsCompleted)

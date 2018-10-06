@@ -50,7 +50,7 @@ namespace Bio.IO
         static SequenceRangeParsers()
         {
             // get the registered parsers
-            IEnumerable<ISequenceRangeParser> registeredParsers = GetSequenceRangeParsers();
+            var registeredParsers = GetSequenceRangeParsers();
             if (null != registeredParsers)
             {
                 foreach (var parser in registeredParsers.Where(parser => 
@@ -74,7 +74,7 @@ namespace Bio.IO
             {
                 try
                 {
-                    ISequenceRangeParser parser = Activator.CreateInstance(impl) as ISequenceRangeParser;
+                    var parser = Activator.CreateInstance(impl) as ISequenceRangeParser;
                     if (parser != null)
                         registeredParsers.Add(parser);
                 }

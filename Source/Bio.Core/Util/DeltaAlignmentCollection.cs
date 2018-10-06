@@ -47,12 +47,12 @@ namespace Bio.Util
         /// <param name="readsStream">Query/Reads stream.</param>
         public DeltaAlignmentCollection(Stream deltaAlignmentStream, Stream readsStream)
         {
-            this.DeltaAlignmentStream = deltaAlignmentStream;
-            this.QueryStream = readsStream;
-            this.fastASequencePositionParser = new FastASequencePositionParser(this.QueryStream, true);
-            this.DeltaAlignmentParser = new DeltaAlignmentParser(this.DeltaAlignmentStream, this.fastASequencePositionParser);
-            this.collectionFileReader = PlatformManager.Services.CreateTempStream();
-            this.LoadAllFromFile();
+            DeltaAlignmentStream = deltaAlignmentStream;
+            QueryStream = readsStream;
+            fastASequencePositionParser = new FastASequencePositionParser(QueryStream, true);
+            DeltaAlignmentParser = new DeltaAlignmentParser(DeltaAlignmentStream, fastASequencePositionParser);
+            collectionFileReader = PlatformManager.Services.CreateTempStream();
+            LoadAllFromFile();
         }
 
         /// <summary>
@@ -63,15 +63,15 @@ namespace Bio.Util
         public DeltaAlignmentCollection(Stream deltaAlignmentStream, FastASequencePositionParser fastASequencePositionParser)
         {
             if (fastASequencePositionParser == null)
-                throw new ArgumentNullException("fastASequencePositionParser");
+                throw new ArgumentNullException(nameof(fastASequencePositionParser));
             
-            this.disposeFastASequencePositionParser = false;
-            this.DeltaAlignmentStream = deltaAlignmentStream;
-            this.QueryStream = fastASequencePositionParser.Stream;
+            disposeFastASequencePositionParser = false;
+            DeltaAlignmentStream = deltaAlignmentStream;
+            QueryStream = fastASequencePositionParser.Stream;
             this.fastASequencePositionParser = fastASequencePositionParser;
-            this.DeltaAlignmentParser = new DeltaAlignmentParser(this.DeltaAlignmentStream, this.fastASequencePositionParser);
-            this.collectionFileReader = PlatformManager.Services.CreateTempStream();
-            this.LoadAllFromFile();
+            DeltaAlignmentParser = new DeltaAlignmentParser(DeltaAlignmentStream, this.fastASequencePositionParser);
+            collectionFileReader = PlatformManager.Services.CreateTempStream();
+            LoadAllFromFile();
         }
 
         /// <summary>
@@ -103,19 +103,19 @@ namespace Bio.Util
         {
             get
             {
-                if (index >= this.Count)
+                if (index >= Count)
                 {
-                    throw new ArgumentOutOfRangeException("index");
+                    throw new ArgumentOutOfRangeException(nameof(index));
                 }
 
-                long positionToSeek = index * BytesPerRecord;
-                this.collectionFileReader.Position = positionToSeek;
+                var positionToSeek = index * BytesPerRecord;
+                collectionFileReader.Position = positionToSeek;
 
-                if (this.collectionFileReader.Read(this.readBuffer, 0, BytesPerRecord) != BytesPerRecord)
+                if (collectionFileReader.Read(readBuffer, 0, BytesPerRecord) != BytesPerRecord)
                     throw new ArgumentException(Properties.Resource.DeltaCollectionFileCorrupted);
 
-                long position = BitConverter.ToInt64(this.readBuffer, 0);
-                return this.DeltaAlignmentParser.GetDeltaAlignmentAt(position);
+                var position = BitConverter.ToInt64(readBuffer, 0);
+                return DeltaAlignmentParser.GetDeltaAlignmentAt(position);
             }
         }
 
@@ -125,8 +125,8 @@ namespace Bio.Util
         public IEnumerable<List<DeltaAlignment>> GetDeltaAlignmentsByReads()
         {
             List<DeltaAlignment> list = null;
-            string previousQueryId = string.Empty;
-            foreach (DeltaAlignment delta in this.DeltaAlignmentParser.Parse())
+            var previousQueryId = string.Empty;
+            foreach (var delta in DeltaAlignmentParser.Parse())
             {
                 if (previousQueryId != delta.QuerySequence.ID)
                 {
@@ -151,11 +151,11 @@ namespace Bio.Util
             string fullSequenceId;
             var list = new List<DeltaAlignment>();
 
-            long deltaId = this.GetDeltaAlignmentIdFor(sequenceId, out fullSequenceId);
+            var deltaId = GetDeltaAlignmentIdFor(sequenceId, out fullSequenceId);
             if (deltaId == -1)
                 return list;
 
-            foreach (DeltaAlignment delta in this.DeltaAlignmentParser.ParseFrom(deltaId))
+            foreach (var delta in DeltaAlignmentParser.ParseFrom(deltaId))
             {
                 if (fullSequenceId != delta.QuerySequence.ID)
                     return list;
@@ -170,7 +170,7 @@ namespace Bio.Util
         /// </summary>
         public void Dispose()
         {
-            this.Dispose(true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -182,28 +182,28 @@ namespace Bio.Util
         {
             if (disposing)
             {
-                if (this.DeltaAlignmentParser != null)
+                if (DeltaAlignmentParser != null)
                 {
-                    this.DeltaAlignmentParser.Dispose();
-                    this.DeltaAlignmentParser = null;
+                    DeltaAlignmentParser.Dispose();
+                    DeltaAlignmentParser = null;
                 }
 
-                if (this.fastASequencePositionParser != null)
+                if (fastASequencePositionParser != null)
                 {
-                    if (this.disposeFastASequencePositionParser)
+                    if (disposeFastASequencePositionParser)
                     {
-                        this.fastASequencePositionParser.Dispose();
+                        fastASequencePositionParser.Dispose();
                     }
-                    this.fastASequencePositionParser = null;
+                    fastASequencePositionParser = null;
                 }
 
-                if (this.collectionFileReader != null)
+                if (collectionFileReader != null)
                 {
-                    this.collectionFileReader.Dispose();
-                    this.collectionFileReader = null;
+                    collectionFileReader.Dispose();
+                    collectionFileReader = null;
                 }
 
-                this.readBuffer = null;
+                readBuffer = null;
             }
         }
 
@@ -212,18 +212,18 @@ namespace Bio.Util
         /// </summary>
         private void LoadAllFromFile()
         {
-            this.collectionFileReader.Seek(0, SeekOrigin.Begin);
-            this.Count = 0;
+            collectionFileReader.Seek(0, SeekOrigin.Begin);
+            Count = 0;
 
-            foreach (long position in this.DeltaAlignmentParser.GetPositions())
+            foreach (var position in DeltaAlignmentParser.GetPositions())
             {
-                byte[] bytes = BitConverter.GetBytes(position);
-                this.collectionFileReader.Write(bytes, 0, BytesPerRecord);
-                this.Count++;
+                var bytes = BitConverter.GetBytes(position);
+                collectionFileReader.Write(bytes, 0, BytesPerRecord);
+                Count++;
             }
 
-            this.collectionFileReader.Flush();
-            this.collectionFileReader.Seek(0, SeekOrigin.Begin);
+            collectionFileReader.Flush();
+            collectionFileReader.Seek(0, SeekOrigin.Begin);
         }
 
         /// <summary>
@@ -234,10 +234,10 @@ namespace Bio.Util
         /// <returns>Delta alignment id.</returns>
         private long GetDeltaAlignmentIdFor(string sequenceId, out string fullSequenceId)
         {
-            foreach (var data in this.DeltaAlignmentParser.GetQuerySeqIds())
+            foreach (var data in DeltaAlignmentParser.GetQuerySeqIds())
             {
-                string id = data.Item2;
-                int index = id.LastIndexOf(Helper.PairedReadDelimiter);
+                var id = data.Item2;
+                var index = id.LastIndexOf(Helper.PairedReadDelimiter);
                 if (index > 0)
                     id = id.Substring(0, index);
 

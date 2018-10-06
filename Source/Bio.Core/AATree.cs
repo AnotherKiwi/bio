@@ -11,7 +11,7 @@ namespace Bio
     public class AATree<T>
     {
         #region AATreeNode Class
-        [DebuggerDisplay("Value: {Value}")]
+        [DebuggerDisplay("Value: {" + nameof(Value) + "}")]
         internal class AATreeNode
         {
             /// <summary>
@@ -19,17 +19,17 @@ namespace Bio
             /// </summary>
             public AATreeNode()
             {
-                this.Left = this;
-                this.Right = this;
-                this.Level = 0;
+                Left = this;
+                Right = this;
+                Level = 0;
             }
 
             public AATreeNode(T value, AATreeNode nullNode)
             {
-                this.Value = value;
-                this.Left = nullNode;
-                this.Right = nullNode;
-                this.Level = 1;
+                Value = value;
+                Left = nullNode;
+                Right = nullNode;
+                Level = 1;
             }
 
             public T Value { get; set; }
@@ -68,9 +68,9 @@ namespace Bio
         /// <param name="comparer">Comparer to compare values.</param>
         public AATree(IComparer<T> comparer)
         {
-            this.Comparer = comparer;
-            this.root = AATree<T>.NullNode;
-            this.DefaultValue = default(T);
+            Comparer = comparer;
+            root = NullNode;
+            DefaultValue = default(T);
         }
         #endregion
 
@@ -96,20 +96,20 @@ namespace Bio
         /// <returns>Returns true if value is added successfully, else returns false.</returns>
         public bool Add(T value)
         {
-            bool result = false;
-            if (this.root == AATree<T>.NullNode)
+            var result = false;
+            if (root == NullNode)
             {
-                this.root = new AATreeNode(value, AATree<T>.NullNode);
+                root = new AATreeNode(value, NullNode);
                 result = true;
             }
 
             if (!result)
             {
-                AATreeNode node = this.root;
-                Stack<AATreeNode> parentNodes = new Stack<AATreeNode>();
+                var node = root;
+                var parentNodes = new Stack<AATreeNode>();
                 while (true)
                 {
-                    int keyCompResult = Comparer.Compare(value, node.Value);
+                    var keyCompResult = Comparer.Compare(value, node.Value);
                     if (keyCompResult == 0)
                     {
                         // key already exists.
@@ -119,9 +119,9 @@ namespace Bio
                     else if (keyCompResult < 0)
                     {
                         // go to left.
-                        if (node.Left == AATree<T>.NullNode)
+                        if (node.Left == NullNode)
                         {
-                            node.Left = new AATreeNode(value, AATree<T>.NullNode);
+                            node.Left = new AATreeNode(value, NullNode);
 
                             result = true;
                             break;
@@ -135,9 +135,9 @@ namespace Bio
                     else
                     {
                         // go to right.
-                        if (node.Right == AATree<T>.NullNode)
+                        if (node.Right == NullNode)
                         {
-                            node.Right = new AATreeNode(value, AATree<T>.NullNode);
+                            node.Right = new AATreeNode(value, NullNode);
                             result = true;
                             break;
                         }
@@ -179,12 +179,12 @@ namespace Bio
             //        (use LeftmostRight or RightmostLeft node)
             //Step4. balance the tree.
 
-            bool result = false;
-            Stack<AATreeNode> parentNodes = new Stack<AATreeNode>();
-            AATreeNode node = this.root;
-            while (node != AATree<T>.NullNode)
+            var result = false;
+            var parentNodes = new Stack<AATreeNode>();
+            var node = root;
+            while (node != NullNode)
             {
-                int keyCompResult = this.Comparer.Compare(value, node.Value);
+                var keyCompResult = Comparer.Compare(value, node.Value);
                 if (keyCompResult == 0)
                 {
                     result = true;
@@ -209,13 +209,13 @@ namespace Bio
                 return result;
             }
 
-            AATreeNode nodeToDelete = node;
-            if (nodeToDelete.Left != AATree<T>.NullNode && nodeToDelete.Right != AATree<T>.NullNode)
+            var nodeToDelete = node;
+            if (nodeToDelete.Left != NullNode && nodeToDelete.Right != NullNode)
             {
                 parentNodes.Push(node);
                 // using right most of left sub tree.
                 node = nodeToDelete.Left;
-                while (node.Right != AATree<T>.NullNode)
+                while (node.Right != NullNode)
                 {
                     parentNodes.Push(node);
                     node = node.Right;
@@ -228,9 +228,9 @@ namespace Bio
             }
 
             AATreeNode parentNode = null;
-            if (nodeToDelete.Left == AATree<T>.NullNode || nodeToDelete.Right == AATree<T>.NullNode)
+            if (nodeToDelete.Left == NullNode || nodeToDelete.Right == NullNode)
             {
-                AATreeNode childNode = nodeToDelete.Left == AATree<T>.NullNode ? nodeToDelete.Right : nodeToDelete.Left;
+                var childNode = nodeToDelete.Left == NullNode ? nodeToDelete.Right : nodeToDelete.Left;
 
                 if (parentNodes.Count > 0)
                 {
@@ -250,7 +250,7 @@ namespace Bio
                 }
                 else
                 {
-                    this.root = childNode;
+                    root = childNode;
                 }
             }
 
@@ -258,7 +258,7 @@ namespace Bio
 
             if (result)
             {
-                this.Count--;
+                Count--;
             }
 
             return result;
@@ -272,7 +272,7 @@ namespace Bio
         public bool Contains(T value)
         {
             T actualValue;
-            bool result = TrySearch(value, out actualValue);
+            var result = TrySearch(value, out actualValue);
             return result;
         }
 
@@ -285,9 +285,9 @@ namespace Bio
         /// <returns>Returns true if the value is found, else returns false.</returns>
         public bool TrySearch(T value, out T actualValue)
         {
-            actualValue = this.DefaultValue;
+            actualValue = DefaultValue;
             AATreeNode node;
-            bool result = this.TrySearch(value, out node);
+            var result = TrySearch(value, out node);
             if (result)
             {
                 actualValue = node.Value;
@@ -301,7 +301,7 @@ namespace Bio
         /// </summary>
         public IEnumerable<T> InOrderTraversal()
         {
-            return AATree<T>.InOrderTraversal(this.root);
+            return InOrderTraversal(root);
         }
 
         /// <summary>
@@ -309,7 +309,7 @@ namespace Bio
         /// </summary>
         public IEnumerable<T> PreOrderTraversal()
         {
-            return AATree<T>.PreOrderTraversal(this.root);
+            return PreOrderTraversal(root);
         }
 
         /// <summary>
@@ -317,7 +317,7 @@ namespace Bio
         /// </summary>
         public IEnumerable<T> PostOrderTraversal()
         {
-            return AATree<T>.PostOrderTraversal(this.root);
+            return PostOrderTraversal(root);
         }
 
         /// <summary>
@@ -329,13 +329,13 @@ namespace Bio
         /// <returns>Returns true if the value is found, else returns false.</returns>
         internal bool TrySearch(T value, out AATreeNode node)
         {
-            bool result = false;
-            node = AATree<T>.NullNode;
+            var result = false;
+            node = NullNode;
 
-            var currentNode = this.root;
-            while (currentNode != AATree<T>.NullNode)
+            var currentNode = root;
+            while (currentNode != NullNode)
             {
-                int compResult = this.Comparer.Compare(value, currentNode.Value);
+                var compResult = Comparer.Compare(value, currentNode.Value);
                 if (compResult == 0)
                 {
                     node = currentNode;
@@ -361,16 +361,16 @@ namespace Bio
         // InOrder Traversal implementation.
         private static IEnumerable<T> InOrderTraversal(AATreeNode node)
         {
-            if (node == AATree<T>.NullNode)
+            if (node == NullNode)
             {
                 yield break;
             }
 
-            Stack<AATreeNode> nodes = new Stack<AATreeNode>();
-            AATreeNode currentNode = node;
-            while (nodes.Count > 0 || currentNode != AATree<T>.NullNode)
+            var nodes = new Stack<AATreeNode>();
+            var currentNode = node;
+            while (nodes.Count > 0 || currentNode != NullNode)
             {
-                if (currentNode != AATree<T>.NullNode)
+                if (currentNode != NullNode)
                 {
                     nodes.Push(currentNode);
                     currentNode = currentNode.Left;
@@ -387,23 +387,23 @@ namespace Bio
         // PreOrder Traversal implementation.
         private static IEnumerable<T> PreOrderTraversal(AATreeNode node)
         {
-            if (node == AATree<T>.NullNode)
+            if (node == NullNode)
             {
                 yield break;
             }
 
-            Stack<AATreeNode> stack = new Stack<AATreeNode>();
+            var stack = new Stack<AATreeNode>();
             stack.Push(node);
-            AATreeNode currentNode = AATree<T>.NullNode;
+            var currentNode = NullNode;
             while (stack.Count > 0)
             {
                 currentNode = stack.Pop();
-                if (currentNode.Right != AATree<T>.NullNode)
+                if (currentNode.Right != NullNode)
                 {
                     stack.Push(currentNode.Right);
                 }
 
-                if (currentNode.Left != AATree<T>.NullNode)
+                if (currentNode.Left != NullNode)
                 {
                     stack.Push(currentNode.Left);
                 }
@@ -415,18 +415,18 @@ namespace Bio
         // PostOrder Traversal implementation.
         private static IEnumerable<T> PostOrderTraversal(AATreeNode node)
         {
-            if (node == AATree<T>.NullNode)
+            if (node == NullNode)
             {
                 yield break;
             }
 
-            Stack<AATreeNode> nodes = new Stack<AATreeNode>();
-            AATreeNode currentNode = node;
+            var nodes = new Stack<AATreeNode>();
+            var currentNode = node;
             while (true)
             {
-                if (currentNode != AATree<T>.NullNode)
+                if (currentNode != NullNode)
                 {
-                    if (currentNode.Right != AATree<T>.NullNode)
+                    if (currentNode.Right != NullNode)
                     {
                         nodes.Push(currentNode.Right);
                     }
@@ -442,7 +442,7 @@ namespace Bio
                     }
 
                     currentNode = nodes.Pop();
-                    if (currentNode.Right != AATree<T>.NullNode && nodes.Count > 0 && nodes.Peek() == currentNode.Right)
+                    if (currentNode.Right != NullNode && nodes.Count > 0 && nodes.Peek() == currentNode.Right)
                     {
                         nodes.Pop();  // remove right;
                         nodes.Push(currentNode); // push current
@@ -451,7 +451,7 @@ namespace Bio
                     else
                     {
                         yield return currentNode.Value;
-                        currentNode = AATree<T>.NullNode;
+                        currentNode = NullNode;
                     }
                 }
             }
@@ -478,15 +478,15 @@ namespace Bio
                 // 2. if a node, its right child and right node's right child have same level then rotate left.
                 if (parentNode != null)
                 {
-                    bool isLeftNode = parentNode.Left == node;
+                    var isLeftNode = parentNode.Left == node;
                     RotateRight(parentNode, isLeftNode ? parentNode.Left : parentNode.Right);
                     RotateLeft(parentNode, isLeftNode ? parentNode.Left : parentNode.Right);
                 }
                 else
                 {
                     // check root node.
-                    RotateRight(null, this.root);
-                    RotateLeft(null, this.root);
+                    RotateRight(null, root);
+                    RotateLeft(null, root);
                 }
             }
         }
@@ -518,7 +518,7 @@ namespace Bio
 
                     if (parentNode != null)
                     {
-                        bool isLeftNode = parentNode.Left == node;
+                        var isLeftNode = parentNode.Left == node;
 
                         if (RotateRight(parentNode, node))
                         {
@@ -539,11 +539,11 @@ namespace Bio
                     }
                     else
                     {
-                        RotateRight(null, this.root);
-                        RotateRight(this.root, this.root.Right);
-                        RotateRight(this.root.Right, this.root.Right.Right);
-                        RotateLeft(null, this.root);
-                        RotateLeft(this.root, this.root.Right);
+                        RotateRight(null, root);
+                        RotateRight(root, root.Right);
+                        RotateRight(root.Right, root.Right.Right);
+                        RotateLeft(null, root);
+                        RotateLeft(root, root.Right);
                     }
                 }
             }
@@ -557,8 +557,8 @@ namespace Bio
         /// <returns></returns>
         private bool RotateLeft(AATreeNode parentNode, AATreeNode node)
         {
-            bool result = false;
-            if (node == AATree<T>.NullNode)
+            var result = false;
+            if (node == NullNode)
             {
                 return result;
             }
@@ -584,8 +584,8 @@ namespace Bio
                 }
                 else
                 {
-                    this.root = nodeToMoveUp;
-                    this.root.Level++;
+                    root = nodeToMoveUp;
+                    root.Level++;
                 }
 
                 result = true;
@@ -602,8 +602,8 @@ namespace Bio
         /// <returns></returns>
         private bool RotateRight(AATreeNode parentNode, AATreeNode node)
         {
-            bool result = false;
-            if (node == AATree<T>.NullNode)
+            var result = false;
+            if (node == NullNode)
             {
                 return result;
             }
@@ -628,7 +628,7 @@ namespace Bio
                 }
                 else
                 {
-                    this.root = nodeToMoveUp;
+                    root = nodeToMoveUp;
                 }
 
                 result = true;
@@ -654,12 +654,12 @@ namespace Bio
 
             public KeyValuePairComparer(IComparer<TKey> keyComparer)
             {
-                this.KeyComparer = keyComparer;
+                KeyComparer = keyComparer;
             }
 
             public int Compare(KeyValuePair<TKey, TValue> x, KeyValuePair<TKey, TValue> y)
             {
-                return this.KeyComparer.Compare(x.Key, y.Key);
+                return KeyComparer.Compare(x.Key, y.Key);
             }
         }
         #endregion
@@ -681,10 +681,10 @@ namespace Bio
         /// <param name="keyComparer">Comparer to compare Keys.</param>
         public AATree(IComparer<TKey> keyComparer)
         {
-            this.Comparer = keyComparer;
-            this.DefaultValue = default(TValue);
-            this.internalTree = new AATree<KeyValuePair<TKey, TValue>>(new KeyValuePairComparer(this.Comparer));
-            this.internalTree.DefaultValue = new KeyValuePair<TKey, TValue>(default(TKey), this.DefaultValue);
+            Comparer = keyComparer;
+            DefaultValue = default(TValue);
+            internalTree = new AATree<KeyValuePair<TKey, TValue>>(new KeyValuePairComparer(Comparer));
+            internalTree.DefaultValue = new KeyValuePair<TKey, TValue>(default(TKey), DefaultValue);
         }
         #endregion
 
@@ -702,7 +702,7 @@ namespace Bio
         {
             get
             {
-                return this.internalTree.Count;
+                return internalTree.Count;
             }
         }
 
@@ -718,7 +718,7 @@ namespace Bio
         /// <returns>Returns true if add is successful, else returns false.</returns>
         public bool Add(TKey key, TValue value)
         {
-            return this.internalTree.Add(new KeyValuePair<TKey, TValue>(key, value));
+            return internalTree.Add(new KeyValuePair<TKey, TValue>(key, value));
         }
 
         /// <summary>
@@ -728,7 +728,7 @@ namespace Bio
         /// <returns>Returns true if the key is found and removed successfully, else returns false.</returns>
         public bool Remove(TKey key)
         {
-            return this.internalTree.Remove(new KeyValuePair<TKey, TValue>(key, this.DefaultValue));
+            return internalTree.Remove(new KeyValuePair<TKey, TValue>(key, DefaultValue));
         }
 
         /// <summary>
@@ -744,9 +744,9 @@ namespace Bio
         {
             get
             {
-                TValue value = this.DefaultValue;
+                var value = DefaultValue;
                 KeyValuePair<TKey, TValue> keyValuePair;
-                if (this.internalTree.TrySearch(new KeyValuePair<TKey, TValue>(key, this.DefaultValue), out keyValuePair))
+                if (internalTree.TrySearch(new KeyValuePair<TKey, TValue>(key, DefaultValue), out keyValuePair))
                 {
                     value = keyValuePair.Value;
                 }
@@ -757,14 +757,14 @@ namespace Bio
             {
                 AATree<KeyValuePair<TKey, TValue>>.AATreeNode node;
                 KeyValuePair<TKey, TValue> keyValuePair;
-                if (this.internalTree.TrySearch(new KeyValuePair<TKey, TValue>(key, this.DefaultValue), out node))
+                if (internalTree.TrySearch(new KeyValuePair<TKey, TValue>(key, DefaultValue), out node))
                 {
                     keyValuePair = node.Value;
                     node.Value = new KeyValuePair<TKey, TValue>(keyValuePair.Key, value);
                 }
                 else
                 {
-                    this.internalTree.Add(new KeyValuePair<TKey, TValue>(key, value));
+                    internalTree.Add(new KeyValuePair<TKey, TValue>(key, value));
                 }
             }
         }
@@ -776,7 +776,7 @@ namespace Bio
         /// <returns>Returns true if the specified key is present in the tree, else returns false.</returns>
         public bool Contains(TKey key)
         {
-            return this.internalTree.Contains(new KeyValuePair<TKey, TValue>(key, this.DefaultValue));
+            return internalTree.Contains(new KeyValuePair<TKey, TValue>(key, DefaultValue));
         }
 
         /// <summary>
@@ -788,9 +788,9 @@ namespace Bio
         /// <returns>Returns true if the key is found, else returns false.</returns>
         public bool TryGetValue(TKey key, out TValue value)
         {
-            value = this.DefaultValue;
+            value = DefaultValue;
             KeyValuePair<TKey, TValue> keyValuePair;
-            bool result = this.internalTree.TrySearch(new KeyValuePair<TKey, TValue>(key, this.DefaultValue), out keyValuePair);
+            var result = internalTree.TrySearch(new KeyValuePair<TKey, TValue>(key, DefaultValue), out keyValuePair);
 
             if (result)
             {
@@ -805,7 +805,7 @@ namespace Bio
         /// </summary>
         public IEnumerable<KeyValuePair<TKey, TValue>> InOrderTraversal()
         {
-            return this.internalTree.InOrderTraversal();
+            return internalTree.InOrderTraversal();
         }
 
         /// <summary>
@@ -813,7 +813,7 @@ namespace Bio
         /// </summary>
         public IEnumerable<KeyValuePair<TKey, TValue>> PreOrderTraversal()
         {
-            return this.internalTree.PreOrderTraversal();
+            return internalTree.PreOrderTraversal();
         }
 
         /// <summary>
@@ -821,7 +821,7 @@ namespace Bio
         /// </summary>
         public IEnumerable<KeyValuePair<TKey, TValue>> PostOrderTraversal()
         {
-            return this.internalTree.PostOrderTraversal();
+            return internalTree.PostOrderTraversal();
         }
         #endregion
     }

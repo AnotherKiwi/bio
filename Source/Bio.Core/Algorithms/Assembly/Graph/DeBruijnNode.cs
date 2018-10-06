@@ -10,7 +10,7 @@ namespace Bio.Algorithms.Assembly.Graph
     /// A node is associated with a k-mer. 
     /// Also holds adjacency information with other nodes.
     /// </summary>
-    [DebuggerDisplay("Seq = {ORIGINAL_SYMBOLS}")]
+    [DebuggerDisplay("Seq = {" + nameof(ORIGINAL_SYMBOLS) + "}")]
     public class DeBruijnNode
     {
         //temp addition
@@ -20,7 +20,7 @@ namespace Bio.Algorithms.Assembly.Graph
         public string ORIGINAL_SYMBOLS
         {
             get {
-                return new Bio.Sequence(DnaAlphabet.Instance, GetOriginalSymbols(6)).ConvertToString(0,6);
+                return new Sequence(DnaAlphabet.Instance, GetOriginalSymbols(6)).ConvertToString(0,6);
             }
         }
 
@@ -78,8 +78,8 @@ namespace Bio.Algorithms.Assembly.Graph
         /// </summary>
         public DeBruijnNode(KmerData32 value, byte count)
         {
-            this.NodeValue = value;
-            this.KmerCount = count;
+            NodeValue = value;
+            KmerCount = count;
         }
 
         /// <summary>
@@ -109,18 +109,18 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             get
             {
-                return ((this._nodeOperations & NodeOperationMaskIsMarkedForDelete) == NodeOperationMaskIsMarkedForDelete);
+                return ((_nodeOperations & NodeOperationMaskIsMarkedForDelete) == NodeOperationMaskIsMarkedForDelete);
             }
 
             private set
             {
                 if (value)
                 {
-                    this._nodeOperations = (byte)(this._nodeOperations | NodeOperationMaskIsMarkedForDelete);
+                    _nodeOperations = (byte)(_nodeOperations | NodeOperationMaskIsMarkedForDelete);
                 }
                 else
                 {
-                    this._nodeOperations = (byte)(this._nodeOperations & (~NodeOperationMaskIsMarkedForDelete));
+                    _nodeOperations = (byte)(_nodeOperations & (~NodeOperationMaskIsMarkedForDelete));
                 }
             }
         }
@@ -136,14 +136,14 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             get
             {
-                return (this._nodeInfo & NodeInfoMaskDeleted) == NodeInfoMaskDeleted;
+                return (_nodeInfo & NodeInfoMaskDeleted) == NodeInfoMaskDeleted;
             }
 
             set
             {
                 if (value)
                 {
-                    this._nodeInfo = (byte)(this._nodeInfo | NodeInfoMaskDeleted);
+                    _nodeInfo = (byte)(_nodeInfo | NodeInfoMaskDeleted);
                 }
                 else
                 {
@@ -160,18 +160,18 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             get
             {
-                return (this._nodeInfo & NodeInfoVisitedFlag) == NodeInfoVisitedFlag;
+                return (_nodeInfo & NodeInfoVisitedFlag) == NodeInfoVisitedFlag;
             }
 
             set
             {
                 if (value)
                 {
-                    this._nodeInfo = (byte)(this._nodeInfo | NodeInfoVisitedFlag);
+                    _nodeInfo = (byte)(_nodeInfo | NodeInfoVisitedFlag);
                 }
                 else
                 {
-                    this._nodeInfo = (byte)(this._nodeInfo & ~NodeInfoVisitedFlag);
+                    _nodeInfo = (byte)(_nodeInfo & ~NodeInfoVisitedFlag);
                 }
             }
         }
@@ -184,7 +184,7 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             get
             {
-                return this.LeftExtensionNodesCount + this.RightExtensionNodesCount;
+                return LeftExtensionNodesCount + RightExtensionNodesCount;
             }
         }
 
@@ -195,25 +195,25 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             get
             {
-                int count = (this._nodeOperations & NodeOperationMaskRightExtension);
-                if (this.ValidExtensionsRequried)
+                var count = (_nodeOperations & NodeOperationMaskRightExtension);
+                if (ValidExtensionsRequried)
                 {
-                    if (this.InvalidRightExtension0) 
+                    if (InvalidRightExtension0) 
                     { 
                         count--; 
                     }
 
-                    if (this.InvalidRightExtension1) 
+                    if (InvalidRightExtension1) 
                     { 
                         count--; 
                     }
 
-                    if (this.InvalidRightExtension2) 
+                    if (InvalidRightExtension2) 
                     { 
                         count--; 
                     }
 
-                    if (this.InvalidRightExtension3) 
+                    if (InvalidRightExtension3) 
                     { 
                         count--; 
                     }
@@ -229,8 +229,8 @@ namespace Bio.Algorithms.Assembly.Graph
                     throw new ArgumentException("Value cant be more than 4");
                 }
 
-                this._nodeOperations = (byte)(this._nodeOperations & ~(NodeOperationMaskRightExtension));
-                this._nodeOperations = (byte)(this._nodeOperations | (NodeOperationMaskRightExtension & value));
+                _nodeOperations = (byte)(_nodeOperations & ~(NodeOperationMaskRightExtension));
+                _nodeOperations = (byte)(_nodeOperations | (NodeOperationMaskRightExtension & value));
             }
         }
 
@@ -241,25 +241,25 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             get
             {
-                int count = ((this._nodeOperations & NodeOperationMaskLeftExtension) >> 3);
-                if (this.ValidExtensionsRequried)
+                var count = ((_nodeOperations & NodeOperationMaskLeftExtension) >> 3);
+                if (ValidExtensionsRequried)
                 {
-                    if (this.InvalidLeftExtension0) 
+                    if (InvalidLeftExtension0) 
                     { 
                         count--; 
                     }
                     
-                    if (this.InvalidLeftExtension1) 
+                    if (InvalidLeftExtension1) 
                     { 
                         count--; 
                     }
                     
-                    if (this.InvalidLeftExtension2) 
+                    if (InvalidLeftExtension2) 
                     { 
                         count--; 
                     }
                     
-                    if (this.InvalidLeftExtension3) 
+                    if (InvalidLeftExtension3) 
                     { 
                         count--; 
                     }
@@ -274,8 +274,8 @@ namespace Bio.Algorithms.Assembly.Graph
                     throw new ArgumentException("Value cant be more than 4");
                 }
 
-                this._nodeOperations = (byte)(this._nodeOperations & (~NodeOperationMaskLeftExtension));
-                this._nodeOperations = (byte)(this._nodeOperations | (NodeOperationMaskLeftExtension & (value << 3)));
+                _nodeOperations = (byte)(_nodeOperations & (~NodeOperationMaskLeftExtension));
+                _nodeOperations = (byte)(_nodeOperations | (NodeOperationMaskLeftExtension & (value << 3)));
             }
         }
 
@@ -288,17 +288,17 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             get
             {
-                return ((this._nodeOperations & NodeOperationMaskIsValidExtension) == NodeOperationMaskIsValidExtension);
+                return ((_nodeOperations & NodeOperationMaskIsValidExtension) == NodeOperationMaskIsValidExtension);
             }
             set
             {
                 if (value)
                 {
-                    this._nodeOperations = (byte)(this._nodeOperations | NodeOperationMaskIsValidExtension);
+                    _nodeOperations = (byte)(_nodeOperations | NodeOperationMaskIsValidExtension);
                 }
                 else
                 {
-                    this._nodeOperations = (byte)(this._nodeOperations & (~NodeOperationMaskIsValidExtension));
+                    _nodeOperations = (byte)(_nodeOperations & (~NodeOperationMaskIsValidExtension));
                 }
             }
         }
@@ -309,18 +309,18 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             get 
             { 
-                return ((this._nodeOrientation & NodeMaskRightExtension0) == NodeMaskRightExtension0); 
+                return ((_nodeOrientation & NodeMaskRightExtension0) == NodeMaskRightExtension0); 
             }
 
             set
             {
                 if (value)
                 {
-                    this._nodeOrientation = (byte)(this._nodeOrientation | NodeMaskRightExtension0);
+                    _nodeOrientation = (byte)(_nodeOrientation | NodeMaskRightExtension0);
                 }
                 else
                 {
-                    this._nodeOrientation = (byte)(this._nodeOrientation & (~NodeMaskRightExtension0));
+                    _nodeOrientation = (byte)(_nodeOrientation & (~NodeMaskRightExtension0));
                 }
             }
         }
@@ -329,18 +329,18 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             get 
             { 
-                return ((this._nodeOrientation & NodeMaskRightExtension1) == NodeMaskRightExtension1); 
+                return ((_nodeOrientation & NodeMaskRightExtension1) == NodeMaskRightExtension1); 
             }
 
             set
             {
                 if (value)
                 {
-                    this._nodeOrientation = (byte)(this._nodeOrientation | NodeMaskRightExtension1);
+                    _nodeOrientation = (byte)(_nodeOrientation | NodeMaskRightExtension1);
                 }
                 else
                 {
-                    this._nodeOrientation = (byte)(this._nodeOrientation & (~NodeMaskRightExtension1));
+                    _nodeOrientation = (byte)(_nodeOrientation & (~NodeMaskRightExtension1));
                 }
             }
         }
@@ -349,18 +349,18 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             get 
             { 
-                return ((this._nodeOrientation & NodeMaskRightExtension2) == NodeMaskRightExtension2); 
+                return ((_nodeOrientation & NodeMaskRightExtension2) == NodeMaskRightExtension2); 
             }
 
             set
             {
                 if (value)
                 {
-                    this._nodeOrientation = (byte)(this._nodeOrientation | NodeMaskRightExtension2);
+                    _nodeOrientation = (byte)(_nodeOrientation | NodeMaskRightExtension2);
                 }
                 else
                 {
-                    this._nodeOrientation = (byte)(this._nodeOrientation & (~NodeMaskRightExtension2));
+                    _nodeOrientation = (byte)(_nodeOrientation & (~NodeMaskRightExtension2));
                 }
             }
         }
@@ -369,18 +369,18 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             get 
             { 
-                return ((this._nodeOrientation & NodeMaskRightExtension3) == NodeMaskRightExtension3); 
+                return ((_nodeOrientation & NodeMaskRightExtension3) == NodeMaskRightExtension3); 
             }
 
             set
             {
                 if (value)
                 {
-                    this._nodeOrientation = (byte)(this._nodeOrientation | NodeMaskRightExtension3);
+                    _nodeOrientation = (byte)(_nodeOrientation | NodeMaskRightExtension3);
                 }
                 else
                 {
-                    this._nodeOrientation = (byte)(this._nodeOrientation & (~NodeMaskRightExtension3));
+                    _nodeOrientation = (byte)(_nodeOrientation & (~NodeMaskRightExtension3));
                 }
             }
         }
@@ -389,18 +389,18 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             get 
             { 
-                return ((this._nodeOrientation & NodeMaskLeftExtension0) == NodeMaskLeftExtension0); 
+                return ((_nodeOrientation & NodeMaskLeftExtension0) == NodeMaskLeftExtension0); 
             }
 
             set
             {
                 if (value)
                 {
-                    this._nodeOrientation = (byte)(this._nodeOrientation | NodeMaskLeftExtension0);
+                    _nodeOrientation = (byte)(_nodeOrientation | NodeMaskLeftExtension0);
                 }
                 else
                 {
-                    this._nodeOrientation = (byte)(this._nodeOrientation & (~NodeMaskLeftExtension0));
+                    _nodeOrientation = (byte)(_nodeOrientation & (~NodeMaskLeftExtension0));
                 }
             }
         }
@@ -409,18 +409,18 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             get 
             { 
-                return ((this._nodeOrientation & NodeMaskLeftExtension1) == NodeMaskLeftExtension1); 
+                return ((_nodeOrientation & NodeMaskLeftExtension1) == NodeMaskLeftExtension1); 
             }
 
             set
             {
                 if (value)
                 {
-                    this._nodeOrientation = (byte)(this._nodeOrientation | NodeMaskLeftExtension1);
+                    _nodeOrientation = (byte)(_nodeOrientation | NodeMaskLeftExtension1);
                 }
                 else
                 {
-                    this._nodeOrientation = (byte)(this._nodeOrientation & (~NodeMaskLeftExtension1));
+                    _nodeOrientation = (byte)(_nodeOrientation & (~NodeMaskLeftExtension1));
                 }
             }
         }
@@ -429,18 +429,18 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             get 
             { 
-                return ((this._nodeOrientation & NodeMaskLeftExtension2) == NodeMaskLeftExtension2); 
+                return ((_nodeOrientation & NodeMaskLeftExtension2) == NodeMaskLeftExtension2); 
             }
 
             set
             {
                 if (value)
                 {
-                    this._nodeOrientation = (byte)(this._nodeOrientation | NodeMaskLeftExtension2);
+                    _nodeOrientation = (byte)(_nodeOrientation | NodeMaskLeftExtension2);
                 }
                 else
                 {
-                    this._nodeOrientation = (byte)(this._nodeOrientation & (~NodeMaskLeftExtension2));
+                    _nodeOrientation = (byte)(_nodeOrientation & (~NodeMaskLeftExtension2));
                 }
             }
         }
@@ -449,18 +449,18 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             get
             { 
-                return ((this._nodeOrientation & NodeMaskLeftExtension3) == NodeMaskLeftExtension3); 
+                return ((_nodeOrientation & NodeMaskLeftExtension3) == NodeMaskLeftExtension3); 
             }
 
             set
             {
                 if (value)
                 {
-                    this._nodeOrientation = (byte)(this._nodeOrientation | NodeMaskLeftExtension3);
+                    _nodeOrientation = (byte)(_nodeOrientation | NodeMaskLeftExtension3);
                 }
                 else
                 {
-                    this._nodeOrientation = (byte)(this._nodeOrientation & (~NodeMaskLeftExtension3));
+                    _nodeOrientation = (byte)(_nodeOrientation & (~NodeMaskLeftExtension3));
                 }
             }
         }
@@ -472,18 +472,18 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             get
             {
-                return ((this._validNodeExtensions & NodeMaskRightExtension0) == NodeMaskRightExtension0);
+                return ((_validNodeExtensions & NodeMaskRightExtension0) == NodeMaskRightExtension0);
             }
 
             set
             {
                 if (value)
                 {
-                    this._validNodeExtensions = (byte)(this._validNodeExtensions | NodeMaskRightExtension0);
+                    _validNodeExtensions = (byte)(_validNodeExtensions | NodeMaskRightExtension0);
                 }
                 else
                 {
-                    this._validNodeExtensions = (byte)(this._validNodeExtensions & (~NodeMaskRightExtension0));
+                    _validNodeExtensions = (byte)(_validNodeExtensions & (~NodeMaskRightExtension0));
                 }
             }
         }
@@ -492,18 +492,18 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             get
             {
-                return ((this._validNodeExtensions & NodeMaskRightExtension1) == NodeMaskRightExtension1);
+                return ((_validNodeExtensions & NodeMaskRightExtension1) == NodeMaskRightExtension1);
             }
 
             set
             {
                 if (value)
                 {
-                    this._validNodeExtensions = (byte)(this._validNodeExtensions | NodeMaskRightExtension1);
+                    _validNodeExtensions = (byte)(_validNodeExtensions | NodeMaskRightExtension1);
                 }
                 else
                 {
-                    this._validNodeExtensions = (byte)(this._validNodeExtensions & (~NodeMaskRightExtension1));
+                    _validNodeExtensions = (byte)(_validNodeExtensions & (~NodeMaskRightExtension1));
                 }
             }
         }
@@ -512,18 +512,18 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             get
             {
-                return ((this._validNodeExtensions & NodeMaskRightExtension2) == NodeMaskRightExtension2);
+                return ((_validNodeExtensions & NodeMaskRightExtension2) == NodeMaskRightExtension2);
             }
 
             set
             {
                 if (value)
                 {
-                    this._validNodeExtensions = (byte)(this._validNodeExtensions | NodeMaskRightExtension2);
+                    _validNodeExtensions = (byte)(_validNodeExtensions | NodeMaskRightExtension2);
                 }
                 else
                 {
-                    this._validNodeExtensions = (byte)(this._validNodeExtensions & (~NodeMaskRightExtension2));
+                    _validNodeExtensions = (byte)(_validNodeExtensions & (~NodeMaskRightExtension2));
                 }
             }
         }
@@ -532,18 +532,18 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             get
             {
-                return ((this._validNodeExtensions & NodeMaskRightExtension3) == NodeMaskRightExtension3);
+                return ((_validNodeExtensions & NodeMaskRightExtension3) == NodeMaskRightExtension3);
             }
 
             set
             {
                 if (value)
                 {
-                    this._validNodeExtensions = (byte)(this._validNodeExtensions | NodeMaskRightExtension3);
+                    _validNodeExtensions = (byte)(_validNodeExtensions | NodeMaskRightExtension3);
                 }
                 else
                 {
-                    this._validNodeExtensions = (byte)(this._validNodeExtensions & (~NodeMaskRightExtension3));
+                    _validNodeExtensions = (byte)(_validNodeExtensions & (~NodeMaskRightExtension3));
                 }
             }
         }
@@ -552,18 +552,18 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             get
             {
-                return ((this._validNodeExtensions & NodeMaskLeftExtension0) == NodeMaskLeftExtension0);
+                return ((_validNodeExtensions & NodeMaskLeftExtension0) == NodeMaskLeftExtension0);
             }
 
             set
             {
                 if (value)
                 {
-                    this._validNodeExtensions = (byte)(this._validNodeExtensions | NodeMaskLeftExtension0);
+                    _validNodeExtensions = (byte)(_validNodeExtensions | NodeMaskLeftExtension0);
                 }
                 else
                 {
-                    this._validNodeExtensions = (byte)(this._validNodeExtensions & (~NodeMaskLeftExtension0));
+                    _validNodeExtensions = (byte)(_validNodeExtensions & (~NodeMaskLeftExtension0));
                 }
             }
         }
@@ -572,18 +572,18 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             get
             {
-                return ((this._validNodeExtensions & NodeMaskLeftExtension1) == NodeMaskLeftExtension1);
+                return ((_validNodeExtensions & NodeMaskLeftExtension1) == NodeMaskLeftExtension1);
             }
 
             set
             {
                 if (value)
                 {
-                    this._validNodeExtensions = (byte)(this._validNodeExtensions | NodeMaskLeftExtension1);
+                    _validNodeExtensions = (byte)(_validNodeExtensions | NodeMaskLeftExtension1);
                 }
                 else
                 {
-                    this._validNodeExtensions = (byte)(this._validNodeExtensions & (~NodeMaskLeftExtension1));
+                    _validNodeExtensions = (byte)(_validNodeExtensions & (~NodeMaskLeftExtension1));
                 }
             }
         }
@@ -592,18 +592,18 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             get
             {
-                return ((this._validNodeExtensions & NodeMaskLeftExtension2) == NodeMaskLeftExtension2);
+                return ((_validNodeExtensions & NodeMaskLeftExtension2) == NodeMaskLeftExtension2);
             }
 
             set
             {
                 if (value)
                 {
-                    this._validNodeExtensions = (byte)(this._validNodeExtensions | NodeMaskLeftExtension2);
+                    _validNodeExtensions = (byte)(_validNodeExtensions | NodeMaskLeftExtension2);
                 }
                 else
                 {
-                    this._validNodeExtensions = (byte)(this._validNodeExtensions & (~NodeMaskLeftExtension2));
+                    _validNodeExtensions = (byte)(_validNodeExtensions & (~NodeMaskLeftExtension2));
                 }
             }
         }
@@ -612,18 +612,18 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             get
             {
-                return ((this._validNodeExtensions & NodeMaskLeftExtension3) == NodeMaskLeftExtension3);
+                return ((_validNodeExtensions & NodeMaskLeftExtension3) == NodeMaskLeftExtension3);
             }
 
             set
             {
                 if (value)
                 {
-                    this._validNodeExtensions = (byte)(this._validNodeExtensions | NodeMaskLeftExtension3);
+                    _validNodeExtensions = (byte)(_validNodeExtensions | NodeMaskLeftExtension3);
                 }
                 else
                 {
-                    this._validNodeExtensions = (byte)(this._validNodeExtensions & (~NodeMaskLeftExtension3));
+                    _validNodeExtensions = (byte)(_validNodeExtensions & (~NodeMaskLeftExtension3));
                 }
             }
         }
@@ -683,27 +683,27 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             if (node == null)
             {
-                throw new ArgumentNullException("node");
+                throw new ArgumentNullException(nameof(node));
             }
 
-            if (this.LeftExtension0 == node)
+            if (LeftExtension0 == node)
             {
-                this.InvalidLeftExtension0 = true;
+                InvalidLeftExtension0 = true;
                 return true;
             }
-            else if (this.LeftExtension1 == node)
+            else if (LeftExtension1 == node)
             {
-                this.InvalidLeftExtension1 = true;
+                InvalidLeftExtension1 = true;
                 return true;
             }
-            else if (this.LeftExtension2 == node)
+            else if (LeftExtension2 == node)
             {
-                this.InvalidLeftExtension2 = true;
+                InvalidLeftExtension2 = true;
                 return true;
             }
-            else if (this.LeftExtension3 == node)
+            else if (LeftExtension3 == node)
             {
-                this.InvalidLeftExtension3 = true;
+                InvalidLeftExtension3 = true;
                 return true;
             }
 
@@ -718,27 +718,27 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             if (node == null)
             {
-                throw new ArgumentNullException("node");
+                throw new ArgumentNullException(nameof(node));
             }
 
-            if (this.RightExtension0 == node)
+            if (RightExtension0 == node)
             {
-                this.InvalidRightExtension0 = true;
+                InvalidRightExtension0 = true;
                 return true;
             }
-            else if (this.RightExtension1 == node)
+            else if (RightExtension1 == node)
             {
-                this.InvalidRightExtension1 = true;
+                InvalidRightExtension1 = true;
                 return true;
             }
-            else if (this.RightExtension2 == node)
+            else if (RightExtension2 == node)
             {
-                this.InvalidRightExtension2 = true;
+                InvalidRightExtension2 = true;
                 return true;
             }
-            else if (this.RightExtension3 == node)
+            else if (RightExtension3 == node)
             {
-                this.InvalidRightExtension3 = true;
+                InvalidRightExtension3 = true;
                 return true;
             }
 
@@ -751,80 +751,80 @@ namespace Bio.Algorithms.Assembly.Graph
         public void RemoveMarkedExtensions()
         {
             // If node is marked for deletion, ignore it. No need for any update.
-            if (this.IsMarkedForDelete)
+            if (IsMarkedForDelete)
             {
                 return;
             }
 
-            if (this.RightExtension0 != null && this.RightExtension0.IsMarkedForDelete)
+            if (RightExtension0 != null && RightExtension0.IsMarkedForDelete)
             {
-                this.RightExtension0 = null;
+                RightExtension0 = null;
                 lock (this)
                 {
-                    this.RightExtensionNodesCount--;
+                    RightExtensionNodesCount--;
                 }
             }
 
-            if (this.RightExtension1 != null && this.RightExtension1.IsMarkedForDelete)
+            if (RightExtension1 != null && RightExtension1.IsMarkedForDelete)
             {
-                this.RightExtension1 = null;
+                RightExtension1 = null;
                 lock (this)
                 {
-                    this.RightExtensionNodesCount--;
+                    RightExtensionNodesCount--;
                 }
             }
 
-            if (this.RightExtension2 != null && this.RightExtension2.IsMarkedForDelete)
+            if (RightExtension2 != null && RightExtension2.IsMarkedForDelete)
             {
-                this.RightExtension2 = null;
+                RightExtension2 = null;
                 lock (this)
                 {
-                    this.RightExtensionNodesCount--;
+                    RightExtensionNodesCount--;
                 }
             }
 
-            if (this.RightExtension3 != null && this.RightExtension3.IsMarkedForDelete)
+            if (RightExtension3 != null && RightExtension3.IsMarkedForDelete)
             {
-                this.RightExtension3 = null;
+                RightExtension3 = null;
                 lock (this)
                 {
-                    this.RightExtensionNodesCount--;
+                    RightExtensionNodesCount--;
                 }
             }
 
-            if (this.LeftExtension0 != null && this.LeftExtension0.IsMarkedForDelete)
+            if (LeftExtension0 != null && LeftExtension0.IsMarkedForDelete)
             {
-                this.LeftExtension0 = null;
+                LeftExtension0 = null;
                 lock (this)
                 {
-                    this.LeftExtensionNodesCount--;
+                    LeftExtensionNodesCount--;
                 }
             }
 
-            if (this.LeftExtension1 != null && this.LeftExtension1.IsMarkedForDelete)
+            if (LeftExtension1 != null && LeftExtension1.IsMarkedForDelete)
             {
-                this.LeftExtension1 = null;
+                LeftExtension1 = null;
                 lock (this)
                 {
-                    this.LeftExtensionNodesCount--;
+                    LeftExtensionNodesCount--;
                 }
             }
 
-            if (this.LeftExtension2 != null && this.LeftExtension2.IsMarkedForDelete)
+            if (LeftExtension2 != null && LeftExtension2.IsMarkedForDelete)
             {
-                this.LeftExtension2 = null;
+                LeftExtension2 = null;
                 lock (this)
                 {
-                    this.LeftExtensionNodesCount--;
+                    LeftExtensionNodesCount--;
                 }
             }
 
-            if (this.LeftExtension3 != null && this.LeftExtension3.IsMarkedForDelete)
+            if (LeftExtension3 != null && LeftExtension3.IsMarkedForDelete)
             {
-                this.LeftExtension3 = null;
+                LeftExtension3 = null;
                 lock (this)
                 {
-                    this.LeftExtensionNodesCount--;
+                    LeftExtensionNodesCount--;
                 }
             }
         }
@@ -849,62 +849,62 @@ namespace Bio.Algorithms.Assembly.Graph
                 if (isForwardDirection)
                 {                   
                   
-                        if (this.RightExtension0 == null)
+                        if (RightExtension0 == null)
                         {
-                            this.RightExtension0 = extensionNode;
-                            this.OrientationRightExtension0 = sameOrientation;
+                            RightExtension0 = extensionNode;
+                            OrientationRightExtension0 = sameOrientation;
                         }
-                        else if (this.RightExtension1 == null)
+                        else if (RightExtension1 == null)
                         {
-                            this.RightExtension1 = extensionNode;
-                            this.OrientationRightExtension1 = sameOrientation;
+                            RightExtension1 = extensionNode;
+                            OrientationRightExtension1 = sameOrientation;
                         }
-                        else if (this.RightExtension2 == null)
+                        else if (RightExtension2 == null)
                         {
-                            this.RightExtension2 = extensionNode;
-                            this.OrientationRightExtension2 = sameOrientation;
+                            RightExtension2 = extensionNode;
+                            OrientationRightExtension2 = sameOrientation;
                         }
-                        else if (this.RightExtension3 == null)
+                        else if (RightExtension3 == null)
                         {
-                            this.RightExtension3 = extensionNode;
-                            this.OrientationRightExtension3 = sameOrientation;
+                            RightExtension3 = extensionNode;
+                            OrientationRightExtension3 = sameOrientation;
                         }
                         else
                         {
                             throw new ArgumentException("Can't set more than four extensions.");
                         }
                   
-                    this.RightExtensionNodesCount += 1;
+                    RightExtensionNodesCount += 1;
                 }
                 else
                 {
                    
-                        if (this.LeftExtension0 == null)
+                        if (LeftExtension0 == null)
                         {
-                            this.LeftExtension0 = extensionNode;
-                            this.OrientationLeftExtension0 = sameOrientation;
+                            LeftExtension0 = extensionNode;
+                            OrientationLeftExtension0 = sameOrientation;
                         }
-                        else if (this.LeftExtension1 == null)
+                        else if (LeftExtension1 == null)
                         {
-                            this.LeftExtension1 = extensionNode;
-                            this.OrientationLeftExtension1 = sameOrientation;
+                            LeftExtension1 = extensionNode;
+                            OrientationLeftExtension1 = sameOrientation;
                         }
-                        else if (this.LeftExtension2 == null)
+                        else if (LeftExtension2 == null)
                         {
-                            this.LeftExtension2 = extensionNode;
-                            this.OrientationLeftExtension2 = sameOrientation;
+                            LeftExtension2 = extensionNode;
+                            OrientationLeftExtension2 = sameOrientation;
                         }
-                        else if (this.LeftExtension3 == null)
+                        else if (LeftExtension3 == null)
                         {
-                            this.LeftExtension3 = extensionNode;
-                            this.OrientationLeftExtension3 = sameOrientation;
+                            LeftExtension3 = extensionNode;
+                            OrientationLeftExtension3 = sameOrientation;
                         }
                         else
                         {
                             throw new ArgumentException("Can't set more than four extensions.");
                         }
                     
-                    this.LeftExtensionNodesCount += 1;
+                    LeftExtensionNodesCount += 1;
                 }
             }
         }
@@ -915,44 +915,44 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <returns>Left extension and right extension nodes.</returns>
         public IEnumerable<DeBruijnNode> GetExtensionNodes()
         {
-            if (this.LeftExtension0 != null)
+            if (LeftExtension0 != null)
             {
-                yield return this.LeftExtension0;
+                yield return LeftExtension0;
             }
 
-            if (this.LeftExtension1 != null)
+            if (LeftExtension1 != null)
             {
-                yield return this.LeftExtension1;
+                yield return LeftExtension1;
             }
 
-            if (this.LeftExtension2 != null)
+            if (LeftExtension2 != null)
             {
-                yield return this.LeftExtension2;
+                yield return LeftExtension2;
             }
 
-            if (this.LeftExtension3 != null)
+            if (LeftExtension3 != null)
             {
-                yield return this.LeftExtension3;
+                yield return LeftExtension3;
             }
 
-            if (this.RightExtension0 != null)
+            if (RightExtension0 != null)
             {
-                yield return this.RightExtension0;
+                yield return RightExtension0;
             }
 
-            if (this.RightExtension1 != null)
+            if (RightExtension1 != null)
             {
-                yield return this.RightExtension1;
+                yield return RightExtension1;
             }
 
-            if (this.RightExtension2 != null)
+            if (RightExtension2 != null)
             {
-                yield return this.RightExtension2;
+                yield return RightExtension2;
             }
 
-            if (this.RightExtension3 != null)
+            if (RightExtension3 != null)
             {
-                yield return this.RightExtension3;
+                yield return RightExtension3;
             }
         }
 
@@ -964,73 +964,73 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             lock (this)
             {
-                Dictionary<DeBruijnNode, bool> extensions = new Dictionary<DeBruijnNode, bool>();
+                var extensions = new Dictionary<DeBruijnNode, bool>();
 
-                if (this.ValidExtensionsRequried)
+                if (ValidExtensionsRequried)
                 {
-                    if (this.RightExtension0 != null && !this.InvalidRightExtension0)
+                    if (RightExtension0 != null && !InvalidRightExtension0)
                     {
-                        if (!extensions.ContainsKey(this.RightExtension0))
+                        if (!extensions.ContainsKey(RightExtension0))
                         {
-                            extensions.Add(this.RightExtension0, this.OrientationRightExtension0);
+                            extensions.Add(RightExtension0, OrientationRightExtension0);
                         }
                     }
 
-                    if (this.RightExtension1 != null && !this.InvalidRightExtension1)
+                    if (RightExtension1 != null && !InvalidRightExtension1)
                     {
-                        if (!extensions.ContainsKey(this.RightExtension1))
+                        if (!extensions.ContainsKey(RightExtension1))
                         {
-                            extensions.Add(this.RightExtension1, this.OrientationRightExtension1);
+                            extensions.Add(RightExtension1, OrientationRightExtension1);
                         }
                     }
 
-                    if (this.RightExtension2 != null && !this.InvalidRightExtension2)
+                    if (RightExtension2 != null && !InvalidRightExtension2)
                     {
-                        if (!extensions.ContainsKey(this.RightExtension2))
+                        if (!extensions.ContainsKey(RightExtension2))
                         {
-                            extensions.Add(this.RightExtension2, this.OrientationRightExtension2);
+                            extensions.Add(RightExtension2, OrientationRightExtension2);
                         }
                     }
 
-                    if (this.RightExtension3 != null && !this.InvalidRightExtension3)
+                    if (RightExtension3 != null && !InvalidRightExtension3)
                     {
-                        if (!extensions.ContainsKey(this.RightExtension3))
+                        if (!extensions.ContainsKey(RightExtension3))
                         {
-                            extensions.Add(this.RightExtension3, this.OrientationRightExtension3);
+                            extensions.Add(RightExtension3, OrientationRightExtension3);
                         }
                     }
                 }
                 else
                 {
-                    if (this.RightExtension0 != null)
+                    if (RightExtension0 != null)
                     {
-                        if (!extensions.ContainsKey(this.RightExtension0))
+                        if (!extensions.ContainsKey(RightExtension0))
                         {
-                            extensions.Add(this.RightExtension0, this.OrientationRightExtension0);
+                            extensions.Add(RightExtension0, OrientationRightExtension0);
                         }
                     }
 
-                    if (this.RightExtension1 != null)
+                    if (RightExtension1 != null)
                     {
-                        if (!extensions.ContainsKey(this.RightExtension1))
+                        if (!extensions.ContainsKey(RightExtension1))
                         {
-                            extensions.Add(this.RightExtension1, this.OrientationRightExtension1);
+                            extensions.Add(RightExtension1, OrientationRightExtension1);
                         }
                     }
 
-                    if (this.RightExtension2 != null)
+                    if (RightExtension2 != null)
                     {
-                        if (!extensions.ContainsKey(this.RightExtension2))
+                        if (!extensions.ContainsKey(RightExtension2))
                         {
-                            extensions.Add(this.RightExtension2, this.OrientationRightExtension2);
+                            extensions.Add(RightExtension2, OrientationRightExtension2);
                         }
                     }
 
-                    if (this.RightExtension3 != null)
+                    if (RightExtension3 != null)
                     {
-                        if (!extensions.ContainsKey(this.RightExtension3))
+                        if (!extensions.ContainsKey(RightExtension3))
                         {
-                            extensions.Add(this.RightExtension3, this.OrientationRightExtension3);
+                            extensions.Add(RightExtension3, OrientationRightExtension3);
                         }
                     }
                 }
@@ -1047,73 +1047,73 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             lock (this)
             {
-                Dictionary<DeBruijnNode, bool> extentions = new Dictionary<DeBruijnNode, bool>();
+                var extentions = new Dictionary<DeBruijnNode, bool>();
 
-                if (this.ValidExtensionsRequried)
+                if (ValidExtensionsRequried)
                 {
-                    if (this.LeftExtension0 != null && !this.InvalidLeftExtension0)
+                    if (LeftExtension0 != null && !InvalidLeftExtension0)
                     {
-                        if (!extentions.ContainsKey(this.LeftExtension0))
+                        if (!extentions.ContainsKey(LeftExtension0))
                         {
-                            extentions.Add(this.LeftExtension0, this.OrientationLeftExtension0);
+                            extentions.Add(LeftExtension0, OrientationLeftExtension0);
                         }
                     }
 
-                    if (this.LeftExtension1 != null && !this.InvalidLeftExtension1)
+                    if (LeftExtension1 != null && !InvalidLeftExtension1)
                     {
-                        if (!extentions.ContainsKey(this.LeftExtension1))
+                        if (!extentions.ContainsKey(LeftExtension1))
                         {
-                            extentions.Add(this.LeftExtension1, this.OrientationLeftExtension1);
+                            extentions.Add(LeftExtension1, OrientationLeftExtension1);
                         }
                     }
 
-                    if (this.LeftExtension2 != null && !this.InvalidLeftExtension2)
+                    if (LeftExtension2 != null && !InvalidLeftExtension2)
                     {
-                        if (!extentions.ContainsKey(this.LeftExtension2))
+                        if (!extentions.ContainsKey(LeftExtension2))
                         {
-                            extentions.Add(this.LeftExtension2, this.OrientationLeftExtension2);
+                            extentions.Add(LeftExtension2, OrientationLeftExtension2);
                         }
                     }
 
-                    if (this.LeftExtension3 != null && !this.InvalidLeftExtension3)
+                    if (LeftExtension3 != null && !InvalidLeftExtension3)
                     {
-                        if (!extentions.ContainsKey(this.LeftExtension3))
+                        if (!extentions.ContainsKey(LeftExtension3))
                         {
-                            extentions.Add(this.LeftExtension3, this.OrientationLeftExtension3);
+                            extentions.Add(LeftExtension3, OrientationLeftExtension3);
                         }
                     }
                 }
                 else
                 {
-                    if (this.LeftExtension0 != null)
+                    if (LeftExtension0 != null)
                     {
-                        if (!extentions.ContainsKey(this.LeftExtension0))
+                        if (!extentions.ContainsKey(LeftExtension0))
                         {
-                            extentions.Add(this.LeftExtension0, this.OrientationLeftExtension0);
+                            extentions.Add(LeftExtension0, OrientationLeftExtension0);
                         }
                     }
 
-                    if (this.LeftExtension1 != null)
+                    if (LeftExtension1 != null)
                     {
-                        if (!extentions.ContainsKey(this.LeftExtension1))
+                        if (!extentions.ContainsKey(LeftExtension1))
                         {
-                            extentions.Add(this.LeftExtension1, this.OrientationLeftExtension1);
+                            extentions.Add(LeftExtension1, OrientationLeftExtension1);
                         }
                     }
 
-                    if (this.LeftExtension2 != null)
+                    if (LeftExtension2 != null)
                     {
-                        if (!extentions.ContainsKey(this.LeftExtension2))
+                        if (!extentions.ContainsKey(LeftExtension2))
                         {
-                            extentions.Add(this.LeftExtension2, this.OrientationLeftExtension2);
+                            extentions.Add(LeftExtension2, OrientationLeftExtension2);
                         }
                     }
 
-                    if (this.LeftExtension3 != null)
+                    if (LeftExtension3 != null)
                     {
-                        if (!extentions.ContainsKey(this.LeftExtension3))
+                        if (!extentions.ContainsKey(LeftExtension3))
                         {
-                            extentions.Add(this.LeftExtension3, this.OrientationLeftExtension3);
+                            extentions.Add(LeftExtension3, OrientationLeftExtension3);
                         }
                     }
                 }
@@ -1132,67 +1132,67 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             if (node == null)
             {
-                throw new ArgumentNullException("node");
+                throw new ArgumentNullException(nameof(node));
             }
 
             lock (this)
             {
-                if (this.RightExtension0 == node)
+                if (RightExtension0 == node)
                 {
-                    this.RightExtension0 = null;
-                    this.RightExtensionNodesCount--;
+                    RightExtension0 = null;
+                    RightExtensionNodesCount--;
                     return;
                 }
 
-                if (this.RightExtension1 == node)
+                if (RightExtension1 == node)
                 {
-                    this.RightExtension1 = null;
-                    this.RightExtensionNodesCount--;
+                    RightExtension1 = null;
+                    RightExtensionNodesCount--;
                     return;
                 }
 
-                if (this.RightExtension2 == node)
+                if (RightExtension2 == node)
                 {
-                    this.RightExtension2 = null;
-                    this.RightExtensionNodesCount--;
+                    RightExtension2 = null;
+                    RightExtensionNodesCount--;
                     return;
                 }
 
-                if (this.RightExtension3 == node)
+                if (RightExtension3 == node)
                 {
-                    this.RightExtension3 = null;
-                    this.RightExtensionNodesCount--;
+                    RightExtension3 = null;
+                    RightExtensionNodesCount--;
                     return;
                 }
             }
 
             lock (this)
             {
-                if (this.LeftExtension0 == node)
+                if (LeftExtension0 == node)
                 {
-                    this.LeftExtension0 = null;
-                    this.LeftExtensionNodesCount--;
+                    LeftExtension0 = null;
+                    LeftExtensionNodesCount--;
                     return;
                 }
 
-                if (this.LeftExtension1 == node)
+                if (LeftExtension1 == node)
                 {
-                    this.LeftExtension1 = null;
-                    this.LeftExtensionNodesCount--;
+                    LeftExtension1 = null;
+                    LeftExtensionNodesCount--;
                     return;
                 }
 
-                if (this.LeftExtension2 == node)
+                if (LeftExtension2 == node)
                 {
-                    this.LeftExtension2 = null;
-                    this.LeftExtensionNodesCount--;
+                    LeftExtension2 = null;
+                    LeftExtensionNodesCount--;
                     return;
                 }
 
-                if (this.LeftExtension3 == node)
+                if (LeftExtension3 == node)
                 {
-                    this.LeftExtension3 = null;
-                    this.LeftExtensionNodesCount--;
+                    LeftExtension3 = null;
+                    LeftExtensionNodesCount--;
                     return;
                 }
             }
@@ -1205,48 +1205,48 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <returns>Right extension nodes.</returns>
         public IEnumerable<DeBruijnNode> GetLeftExtensionNodes()
         {
-            if (this.ValidExtensionsRequried)
+            if (ValidExtensionsRequried)
             {
-                if (this.LeftExtension0 != null && !this.InvalidLeftExtension0)
+                if (LeftExtension0 != null && !InvalidLeftExtension0)
                 {
-                    yield return this.LeftExtension0;
+                    yield return LeftExtension0;
                 }
 
-                if (this.LeftExtension1 != null && !this.InvalidLeftExtension1)
+                if (LeftExtension1 != null && !InvalidLeftExtension1)
                 {
-                    yield return this.LeftExtension1;
+                    yield return LeftExtension1;
                 }
 
-                if (this.LeftExtension2 != null && !this.InvalidLeftExtension2)
+                if (LeftExtension2 != null && !InvalidLeftExtension2)
                 {
-                    yield return this.LeftExtension2;
+                    yield return LeftExtension2;
                 }
 
-                if (this.LeftExtension3 != null && !this.InvalidLeftExtension3)
+                if (LeftExtension3 != null && !InvalidLeftExtension3)
                 {
-                    yield return this.LeftExtension3;
+                    yield return LeftExtension3;
                 }
             }
             else
             {
-                if (this.LeftExtension0 != null)
+                if (LeftExtension0 != null)
                 {
-                    yield return this.LeftExtension0;
+                    yield return LeftExtension0;
                 }
 
-                if (this.LeftExtension1 != null)
+                if (LeftExtension1 != null)
                 {
-                    yield return this.LeftExtension1;
+                    yield return LeftExtension1;
                 }
 
-                if (this.LeftExtension2 != null)
+                if (LeftExtension2 != null)
                 {
-                    yield return this.LeftExtension2;
+                    yield return LeftExtension2;
                 }
 
-                if (this.LeftExtension3 != null)
+                if (LeftExtension3 != null)
                 {
-                    yield return this.LeftExtension3;
+                    yield return LeftExtension3;
                 }
             }
         }
@@ -1257,48 +1257,48 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <returns>Right extension nodes.</returns>
         public IEnumerable<DeBruijnNode> GetRightExtensionNodes()
         {
-            if (this.ValidExtensionsRequried)
+            if (ValidExtensionsRequried)
             {
-                if (this.RightExtension0 != null && !this.InvalidRightExtension0)
+                if (RightExtension0 != null && !InvalidRightExtension0)
                 {
-                    yield return this.RightExtension0;
+                    yield return RightExtension0;
                 }
 
-                if (this.RightExtension1 != null && !this.InvalidRightExtension1)
+                if (RightExtension1 != null && !InvalidRightExtension1)
                 {
-                    yield return this.RightExtension1;
+                    yield return RightExtension1;
                 }
 
-                if (this.RightExtension2 != null && !this.InvalidRightExtension2)
+                if (RightExtension2 != null && !InvalidRightExtension2)
                 {
-                    yield return this.RightExtension2;
+                    yield return RightExtension2;
                 }
 
-                if (this.RightExtension3 != null && !this.InvalidRightExtension3)
+                if (RightExtension3 != null && !InvalidRightExtension3)
                 {
-                    yield return this.RightExtension3;
+                    yield return RightExtension3;
                 }
             }
             else
             {
-                if (this.RightExtension0 != null)
+                if (RightExtension0 != null)
                 {
-                    yield return this.RightExtension0;
+                    yield return RightExtension0;
                 }
 
-                if (this.RightExtension1 != null)
+                if (RightExtension1 != null)
                 {
-                    yield return this.RightExtension1;
+                    yield return RightExtension1;
                 }
 
-                if (this.RightExtension2 != null)
+                if (RightExtension2 != null)
                 {
-                    yield return this.RightExtension2;
+                    yield return RightExtension2;
                 }
 
-                if (this.RightExtension3 != null)
+                if (RightExtension3 != null)
                 {
-                    yield return this.RightExtension3;
+                    yield return RightExtension3;
                 }
             }
         }
@@ -1308,7 +1308,7 @@ namespace Bio.Algorithms.Assembly.Graph
         /// </summary>
         public void ComputeValidExtensions()
         {
-            this.ValidExtensionsRequried = true;
+            ValidExtensionsRequried = true;
         }
 
         /// <summary>
@@ -1317,12 +1317,12 @@ namespace Bio.Algorithms.Assembly.Graph
         public void UndoAmbiguousExtensions()
         {
             // done with the valid extensions set vaidExtensionsRequired to false.
-            this.ValidExtensionsRequried = false;
+            ValidExtensionsRequried = false;
 
-            this.RemoveMarkedExtensions();
+            RemoveMarkedExtensions();
 
             // mark all extensions as valid.
-            this._validNodeExtensions = 0;
+            _validNodeExtensions = 0;
         }
 
         /// <summary>
@@ -1330,75 +1330,75 @@ namespace Bio.Algorithms.Assembly.Graph
         /// </summary>
         public void PurgeInvalidExtensions()
         {
-            if (this.RightExtension0 != null && this.InvalidRightExtension0)
+            if (RightExtension0 != null && InvalidRightExtension0)
             {
-                this.RightExtension0 = null;
+                RightExtension0 = null;
                 lock (this)
                 {
-                    this.RightExtensionNodesCount--;
+                    RightExtensionNodesCount--;
                 }
             }
 
-            if (this.RightExtension1 != null && this.InvalidRightExtension1)
+            if (RightExtension1 != null && InvalidRightExtension1)
             {
-                this.RightExtension1 = null;
+                RightExtension1 = null;
                 lock (this)
                 {
-                    this.RightExtensionNodesCount--;
+                    RightExtensionNodesCount--;
                 }
             }
 
-            if (this.RightExtension2 != null && this.InvalidRightExtension2)
+            if (RightExtension2 != null && InvalidRightExtension2)
             {
-                this.RightExtension2 = null;
+                RightExtension2 = null;
                 lock (this)
                 {
-                    this.RightExtensionNodesCount--;
+                    RightExtensionNodesCount--;
                 }
             }
 
-            if (this.RightExtension3 != null && this.InvalidRightExtension3)
+            if (RightExtension3 != null && InvalidRightExtension3)
             {
-                this.RightExtension3 = null;
+                RightExtension3 = null;
                 lock (this)
                 {
-                    this.RightExtensionNodesCount--;
+                    RightExtensionNodesCount--;
                 }
             }
 
-            if (this.LeftExtension0 != null && this.InvalidLeftExtension0)
+            if (LeftExtension0 != null && InvalidLeftExtension0)
             {
-                this.LeftExtension0 = null;
+                LeftExtension0 = null;
                 lock (this)
                 {
-                    this.LeftExtensionNodesCount--;
+                    LeftExtensionNodesCount--;
                 }
             }
 
-            if (this.LeftExtension1 != null && this.InvalidLeftExtension1)
+            if (LeftExtension1 != null && InvalidLeftExtension1)
             {
-                this.LeftExtension1 = null;
+                LeftExtension1 = null;
                 lock (this)
                 {
-                    this.LeftExtensionNodesCount--;
+                    LeftExtensionNodesCount--;
                 }
             }
 
-            if (this.LeftExtension2 != null && this.InvalidLeftExtension2)
+            if (LeftExtension2 != null && InvalidLeftExtension2)
             {
-                this.LeftExtension2 = null;
+                LeftExtension2 = null;
                 lock (this)
                 {
-                    this.LeftExtensionNodesCount--;
+                    LeftExtensionNodesCount--;
                 }
             }
 
-            if (this.LeftExtension3 != null && this.InvalidLeftExtension3)
+            if (LeftExtension3 != null && InvalidLeftExtension3)
             {
-                this.LeftExtension3 = null;
+                LeftExtension3 = null;
                 lock (this)
                 {
-                    this.LeftExtensionNodesCount--;
+                    LeftExtensionNodesCount--;
                 }
             }
         }
@@ -1408,7 +1408,7 @@ namespace Bio.Algorithms.Assembly.Graph
         /// </summary>
         public void MarkNodeForDelete()
         {
-            this.IsMarkedForDelete = true;
+            IsMarkedForDelete = true;
         }
 
         /// <summary>
@@ -1421,12 +1421,12 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             if (node == null)
             {
-                throw new ArgumentNullException("node");
+                throw new ArgumentNullException(nameof(node));
             }
 
-            if (!this.MarkRightExtensionAsInvalid(node))
+            if (!MarkRightExtensionAsInvalid(node))
             {
-                this.MarkLeftExtensionAsInvalid(node);
+                MarkLeftExtensionAsInvalid(node);
             }
         }
 
@@ -1437,7 +1437,7 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <returns>Return the decompressed kmer data.</returns>
         public byte[] GetOriginalSymbols(int kmerLength)
         {
-            return this.NodeValue.GetOriginalSymbols(kmerLength);
+            return NodeValue.GetOriginalSymbols(kmerLength);
         }
 
         /// <summary>
@@ -1447,7 +1447,7 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <returns>Returns the reverse complement of the current node value.</returns>
         public byte[] GetReverseComplementOfOriginalSymbols(int kmerLength)
         {
-            return this.NodeValue.GetReverseComplementOfOriginalSymbols(kmerLength);
+            return NodeValue.GetReverseComplementOfOriginalSymbols(kmerLength);
         }
 
         /// <summary>
@@ -1456,7 +1456,7 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <returns>True if the node value is palindrome otherwise false.</returns>
         public bool IsPalindrome(int kmerLength)
         {
-            return this.NodeValue.IsPalindrome(kmerLength);
+            return NodeValue.IsPalindrome(kmerLength);
         }
     }
 }

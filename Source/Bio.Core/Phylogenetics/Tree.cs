@@ -31,7 +31,7 @@ namespace Bio.Phylogenetics
         /// <returns>Tree as object</returns>
         public Tree Clone()
         {
-            return (Tree)this.MemberwiseClone();
+            return (Tree)MemberwiseClone();
         }
     }
 }

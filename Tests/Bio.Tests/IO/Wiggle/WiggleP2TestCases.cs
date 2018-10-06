@@ -41,7 +41,7 @@ namespace Bio.Tests.IO.Wiggle
         [Category("Priority2")]
         public void InValidateWiggleParser()
         {
-            this.ValidateArgumentNullException(ExceptionType.NullParser);            
+            ValidateArgumentNullException(ExceptionType.NullParser);            
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace Bio.Tests.IO.Wiggle
         [Category("Priority2")]
         public void InValidateWiggleFormatter()
         {
-            this.ValidateArgumentNullException(ExceptionType.NullFormatter);            
+            ValidateArgumentNullException(ExceptionType.NullFormatter);            
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace Bio.Tests.IO.Wiggle
         [Category("Priority2")]
         public void InValidateWiggleAnnotation()
         {
-            this.ValidateArgumentNullException(ExceptionType.NullAnnotationWithData);
+            ValidateArgumentNullException(ExceptionType.NullAnnotationWithData);
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace Bio.Tests.IO.Wiggle
         [Category("Priority2")]
         public void InValidateWiggleAnnotationWithoutChromosomeName()
         {
-            this.ValidateArgumentNullException(ExceptionType.NullAnnotationWithChromosomeName);
+            ValidateArgumentNullException(ExceptionType.NullAnnotationWithChromosomeName);
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace Bio.Tests.IO.Wiggle
         [Category("Priority2")]
         public void InValidateWiggleParserWithInvalidTrack()
         {
-            this.ValidateFormatException(Constants.InvalidTrackNode);
+            ValidateFormatException(Constants.InvalidTrackNode);
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace Bio.Tests.IO.Wiggle
         [Category("Priority2")]
         public void InValidateWiggleParserWithInvalidAutoScale()
         {
-            this.ValidateFormatException(Constants.InvalidAutoScaleNode);
+            ValidateFormatException(Constants.InvalidAutoScaleNode);
         }
 
         # endregion Test cases
@@ -105,7 +105,7 @@ namespace Bio.Tests.IO.Wiggle
         public void ValidateArgumentNullException(ExceptionType exceptionType)
         {
             // Gets the filepath.
-            String filePath = this.utilityObj.xmlUtil.GetTextValue(Constants.
+            var filePath = utilityObj.xmlUtil.GetTextValue(Constants.
                               SimpleWiggleWithFixedStepNodeName, Constants.FilePathNode).TestDir();
             Assert.IsTrue(File.Exists(filePath));
             WiggleAnnotation annotation =null;
@@ -115,11 +115,11 @@ namespace Bio.Tests.IO.Wiggle
                 switch (exceptionType)
                 {
                     case ExceptionType.NullFormatter:
-                        WiggleFormatter formatter = new WiggleFormatter();
+                        var formatter = new WiggleFormatter();
                         formatter.Format(null, annotation);                        
                         break;
                     case ExceptionType.NullParser:
-                        WiggleParser parser = new WiggleParser();
+                        var parser = new WiggleParser();
                         string valueForParse = null;
                         parser.ParseOne(valueForParse);
                         break;
@@ -127,7 +127,7 @@ namespace Bio.Tests.IO.Wiggle
                         annotation = new WiggleAnnotation(null, Constants.StringByteArray);
                         break;
                     case ExceptionType.NullAnnotationWithChromosomeName:
-                        float[] data = new float[2] { 1.0F, 2.0F };
+                        var data = new float[2] { 1.0F, 2.0F };
                         annotation = new WiggleAnnotation(data, null,0,0);
                         break;
                 }
@@ -146,11 +146,11 @@ namespace Bio.Tests.IO.Wiggle
         public void ValidateFormatException(string nodeName)
         {
             // Gets the filepath.
-            String filePath = this.utilityObj.xmlUtil.GetTextValue(Constants.
+            var filePath = utilityObj.xmlUtil.GetTextValue(Constants.
                               InValidFileNamesNode, nodeName).TestDir();
             Assert.IsTrue(File.Exists(filePath));
 
-            WiggleParser parser=new WiggleParser();
+            var parser=new WiggleParser();
 
             try
             {

@@ -104,7 +104,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         {
             get
             {
-                float min = float.MaxValue;
+                var min = float.MaxValue;
 
                 Parallel.For(0, _dimension, col =>
                 //for (int col = 0; col < _dimension; ++col)
@@ -127,7 +127,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             get
             {
                 int bestRow = 0, bestCol = 0;
-                float min = float.MaxValue;
+                var min = float.MaxValue;
 
                 Parallel.For(0, _dimension, col =>
                 //for (int col = 0; col < _dimension; ++col)

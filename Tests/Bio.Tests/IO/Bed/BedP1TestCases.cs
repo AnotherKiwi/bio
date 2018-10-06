@@ -311,7 +311,7 @@ namespace Bio.Silverlight.TestAutomation.IO.Bed
                                             AdditionalParameters addParam)
         {
             // Gets the Filename
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FilePathNode).TestDir();
 
             Assert.IsFalse(string.IsNullOrEmpty(filePath));
@@ -354,9 +354,9 @@ namespace Bio.Silverlight.TestAutomation.IO.Bed
             {
                 case AdditionalParameters.RangeGroupTextReader:
                 case AdditionalParameters.RangeGroupFileName:
-                    IEnumerable<string> grpIDsObj = rangeGroup.GroupIDs;
-                    string rangeID = string.Empty;
-                    foreach (string grpID in grpIDsObj)
+                    var grpIDsObj = rangeGroup.GroupIDs;
+                    var rangeID = string.Empty;
+                    foreach (var grpID in grpIDsObj)
                     {
                         rangeID = grpID;
                     }
@@ -366,16 +366,16 @@ namespace Bio.Silverlight.TestAutomation.IO.Bed
                     break;
             }
 
-            string[] expectedIDs = utilityObj.xmlUtil.GetTextValue(
+            var expectedIDs = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.IDNode).Split(',');
-            string[] expectedStarts = utilityObj.xmlUtil.GetTextValue(
+            var expectedStarts = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.StartNode).Split(',');
-            string[] expectedEnds = utilityObj.xmlUtil.GetTextValue(
+            var expectedEnds = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.EndNode).Split(',');
 
-            int i = 0;
+            var i = 0;
             // Reads all the ranges with comma seperated for validation
-            foreach (ISequenceRange range in rangeList)
+            foreach (var range in rangeList)
             {
                 Assert.AreEqual(expectedStarts[i], range.Start.ToString((IFormatProvider) null));
                 Assert.AreEqual(expectedEnds[i], range.End.ToString((IFormatProvider) null));
@@ -399,7 +399,7 @@ namespace Bio.Silverlight.TestAutomation.IO.Bed
             var rangeGroup = new SequenceRangeGrouping();
 
             // Gets the file name.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FilePathNode).TestDir();
 
             // Condition to check if Parse() happens before Format()
@@ -418,23 +418,23 @@ namespace Bio.Silverlight.TestAutomation.IO.Bed
                     break;
                 default:
                     // Gets all the expected values from xml.
-                    string expectedID = utilityObj.xmlUtil.GetTextValue(
+                    var expectedID = utilityObj.xmlUtil.GetTextValue(
                         nodeName, Constants.IDNode);
-                    string expectedStart = utilityObj.xmlUtil.GetTextValue(
+                    var expectedStart = utilityObj.xmlUtil.GetTextValue(
                         nodeName, Constants.StartNode);
-                    string expectedEnd = utilityObj.xmlUtil.GetTextValue(
+                    var expectedEnd = utilityObj.xmlUtil.GetTextValue(
                         nodeName, Constants.EndNode);
 
-                    string[] expectedIDs = expectedID.Split(',');
-                    string[] expectedStarts = expectedStart.Split(',');
-                    string[] expectedEnds = expectedEnd.Split(',');
+                    var expectedIDs = expectedID.Split(',');
+                    var expectedStarts = expectedStart.Split(',');
+                    var expectedEnds = expectedEnd.Split(',');
 
                     // Gets the Range Group or Range based on the additional parameter
                     switch (addParam)
                     {
                         case AdditionalParameters.RangeGroupTextWriter:
                         case AdditionalParameters.RangeGroupFileName:
-                            for (int i = 0; i < expectedIDs.Length; i++)
+                            for (var i = 0; i < expectedIDs.Length; i++)
                             {
                                 var rangeObj1 =
                                     new SequenceRange(expectedIDs[i],
@@ -444,7 +444,7 @@ namespace Bio.Silverlight.TestAutomation.IO.Bed
                             }
                             break;
                         default:
-                            for (int i = 0; i < expectedIDs.Length; i++)
+                            for (var i = 0; i < expectedIDs.Length; i++)
                             {
                                 var rangeObj2 =
                                     new SequenceRange(expectedIDs[i],
@@ -490,11 +490,11 @@ namespace Bio.Silverlight.TestAutomation.IO.Bed
 
             // Reparse to validate the results
             var parserObj = new BedParser();
-            IList<ISequenceRange> newRangeList =
+            var newRangeList =
                 parserObj.ParseRange(Constants.BedTempFileName);
 
             // Validation of all the properties.
-            for (int i = 0; i < rangeList.Count; i++)
+            for (var i = 0; i < rangeList.Count; i++)
             {
                 Assert.AreEqual(rangeList[0].ID, newRangeList[0].ID);
                 Assert.AreEqual(rangeList[0].Start, newRangeList[0].Start);

@@ -18,11 +18,11 @@ namespace Bio.Web.Selectome
         {
             if (initialTree == null)
             {
-                throw new ArgumentNullException("initialTree");
+                throw new ArgumentNullException(nameof(initialTree));
             }
-            this.Root = new SelectomeTreeNode(initialTree.Root);
-            this.Name = initialTree.Name;
-            this.IsRoot = true;
+            Root = new SelectomeTreeNode(initialTree.Root);
+            Name = initialTree.Name;
+            IsRoot = true;
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace Bio.Web.Selectome
         {
             get
             {
-                return this.GetFeatureFromLeaves(x => x.TaxaShortName);
+                return GetFeatureFromLeaves(x => x.TaxaShortName);
             }
         }
 
@@ -59,7 +59,7 @@ namespace Bio.Web.Selectome
             get
             {
                 return
-                    this.GetFeatureFromLeaves(x => new Tuple<string, string, string>(x.Name, x.TaxID, x.TaxaShortName));
+                    GetFeatureFromLeaves(x => new Tuple<string, string, string>(x.Name, x.TaxID, x.TaxaShortName));
             }
         }
 
@@ -70,7 +70,7 @@ namespace Bio.Web.Selectome
         {
             get
             {
-                return this.AllNodes().Where(x => x.Selected.HasValue && x.Selected.Value).ToList();
+                return AllNodes().Where(x => x.Selected.HasValue && x.Selected.Value).ToList();
             }
         }
 
@@ -83,7 +83,7 @@ namespace Bio.Web.Selectome
         public List<T> GetFeatureFromLeaves<T>(Func<SelectomeTreeNode, T> function)
         {
             var result = new List<T>();
-            this.AddFeaturesFromChildLeaves(function, this.Root, result);
+            AddFeaturesFromChildLeaves(function, Root, result);
             return result;
         }
 
@@ -100,7 +100,7 @@ namespace Bio.Web.Selectome
             {
                 foreach (var child in node.Children)
                 {
-                    this.AddFeaturesFromChildLeaves(function, child.Key, accumulator);
+                    AddFeaturesFromChildLeaves(function, child.Key, accumulator);
                 }
             }
         }
@@ -111,7 +111,7 @@ namespace Bio.Web.Selectome
         /// <returns></returns>
         public List<SelectomeTreeNode> AllLeaves()
         {
-            return this.GetFeatureFromLeaves(x => x);
+            return GetFeatureFromLeaves(x => x);
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace Bio.Web.Selectome
         /// <returns></returns>
         public List<SelectomeTreeNode> AllNodes()
         {
-            return this.GetFeatureFromNodes(x => x);
+            return GetFeatureFromNodes(x => x);
         }
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace Bio.Web.Selectome
         public List<T> GetFeatureFromNodes<T>(Func<SelectomeTreeNode, T> function)
         {
             var result = new List<T>();
-            this.AddFeaturesFromChildren(function, this.Root, result);
+            AddFeaturesFromChildren(function, Root, result);
             return result;
         }
 
@@ -144,7 +144,7 @@ namespace Bio.Web.Selectome
             accumulator.Add(function(node));
             foreach (var child in node.Children)
             {
-                this.AddFeaturesFromChildren(function, child.Key, accumulator);
+                AddFeaturesFromChildren(function, child.Key, accumulator);
             }
         }
     }

@@ -33,15 +33,15 @@ namespace Bio.Tests
         public void ValidateSequenceToString()
         {
             ISequence seqSmall = new Sequence(Alphabets.DNA, "ATCG");
-            string seqLargeString = this.utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
+            var seqLargeString = utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
                                                                     Constants.seqLargeStringNode);
             ISequence seqLarge = new Sequence(Alphabets.DNA, seqLargeString);
-            string ActualSmallString = seqSmall.ToString();
-            string ActualLargeString = seqLarge.ToString();
-            string ExpectedSmallString = "ATCG";
-            string seqLargeExpected = this.utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
+            var ActualSmallString = seqSmall.ToString();
+            var ActualLargeString = seqLarge.ToString();
+            var ExpectedSmallString = "ATCG";
+            var seqLargeExpected = utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
                                                                       Constants.seqLargeExpected2Node);
-            string expectedLargeString = string.Format(CultureInfo.CurrentCulture,
+            var expectedLargeString = string.Format(CultureInfo.CurrentCulture,
                                                        seqLargeExpected,
                                                        (seqLarge.Count - Helper.AlphabetsToShowInToString));
             Assert.AreEqual(ExpectedSmallString, ActualSmallString);
@@ -49,15 +49,15 @@ namespace Bio.Tests
 
             //check with blank sequence
             var seqBlank = new Sequence(Alphabets.DNA, "");
-            string blankString = seqBlank.ToString();
+            var blankString = seqBlank.ToString();
             Assert.AreEqual(string.Empty, blankString);
 
             // Gets the expected sequence from the Xml
-            string filePath = this.utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
+            var filePath = utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
                                                               Constants.FilePathNode).TestDir();
             //read sequence from file
             var parser = new FastAParser { Alphabet = Alphabets.Protein };
-            List<ISequence> seqsList = parser.Parse(filePath).ToList();
+            var seqsList = parser.Parse(filePath).ToList();
 
             var seqString = new string(seqsList[0].Select(a => (char) a).ToArray());
             if (seqString.Length > Helper.AlphabetsToShowInToString)
@@ -81,18 +81,18 @@ namespace Bio.Tests
         public void ValidateDerivedSequenceToString()
         {
             ISequence seqSmall = new Sequence(Alphabets.DNA, "ATCG");
-            string seqLargeStr = this.utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
+            var seqLargeStr = utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
                                                                  Constants.seqLargeStringNode);
             ISequence seqLarge = new Sequence(Alphabets.DNA, seqLargeStr);
             ISequence DeriveSeqSmall = new DerivedSequence(seqSmall, false, true);
             ISequence DeriveSeqLarge = new DerivedSequence(seqLarge, false, true);
 
-            string ActualSmallString = DeriveSeqSmall.ToString();
-            string ActualLargeString = DeriveSeqLarge.ToString();
-            string ExpectedSmallString = "TAGC";
-            string seqLargeExpected = this.utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
+            var ActualSmallString = DeriveSeqSmall.ToString();
+            var ActualLargeString = DeriveSeqLarge.ToString();
+            var ExpectedSmallString = "TAGC";
+            var seqLargeExpected = utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
                                                                       Constants.seqLargeExpectedNode);
-            string expectedLargeString = string.Format(CultureInfo.CurrentCulture,
+            var expectedLargeString = string.Format(CultureInfo.CurrentCulture,
                                                        seqLargeExpected,
                                                        (seqLarge.Count - Helper.AlphabetsToShowInToString));
 
@@ -101,17 +101,17 @@ namespace Bio.Tests
 
             //read sequences from file
             // Get input and expected values from xml
-            string expectedSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinDerivedSequenceNode, Constants.ExpectedSequence);
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinDerivedSequenceNode, Constants.AlphabetNameNode);
-            IAlphabet alphabet = Utility.GetAlphabet(alphabetName);
+            var alphabet = Utility.GetAlphabet(alphabetName);
 
             // Create derived Sequence
             ISequence seq = new Sequence(alphabet, expectedSequence);
             var derSequence = new DerivedSequence(seq, false, false);
 
-            string actualDerivedSeqStr = derSequence.ToString();
+            var actualDerivedSeqStr = derSequence.ToString();
             if (actualDerivedSeqStr.Length > Helper.AlphabetsToShowInToString)
             {
                 //check if the whole sequence string contains the string retrieved from ToString
@@ -144,8 +144,8 @@ namespace Bio.Tests
             qualityScores[3] = (byte) 'B';
             var seq = new QualitativeSequence(Alphabets.DNA,
                                               FastQFormatType.Illumina_v1_3, seqData, qualityScores);
-            string actualString = seq.ToString().Replace("\r","").Replace("\n","");
-            string expectedString = "ATCGAAAB"; // This is dangerously platform specific
+            var actualString = seq.ToString().Replace("\r","").Replace("\n","");
+            var expectedString = "ATCGAAAB"; // This is dangerously platform specific
             Assert.AreEqual(expectedString, actualString);
         }
 
@@ -156,19 +156,19 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateAllAlphabetsToString()
         {
-            DnaAlphabet dna = DnaAlphabet.Instance;
-            RnaAlphabet rna = RnaAlphabet.Instance;
-            ProteinAlphabet protein = ProteinAlphabet.Instance;
-            AmbiguousDnaAlphabet dnaAmbiguous = AmbiguousDnaAlphabet.Instance;
-            AmbiguousRnaAlphabet rnaAmbiguous = AmbiguousRnaAlphabet.Instance;
-            AmbiguousProteinAlphabet proteinAmbiguous = AmbiguousProteinAlphabet.Instance;
+            var dna = DnaAlphabet.Instance;
+            var rna = RnaAlphabet.Instance;
+            var protein = ProteinAlphabet.Instance;
+            var dnaAmbiguous = AmbiguousDnaAlphabet.Instance;
+            var rnaAmbiguous = AmbiguousRnaAlphabet.Instance;
+            var proteinAmbiguous = AmbiguousProteinAlphabet.Instance;
 
-            string dnaStringActual = dna.ToString();
-            string rnaStringActual = rna.ToString();
-            string proteinStringActual = protein.ToString();
-            string dnaAmbiguousStringActual = dnaAmbiguous.ToString();
-            string rnaAmbiguousStringActual = rnaAmbiguous.ToString();
-            string proteinAmbiguousStringActual = proteinAmbiguous.ToString();
+            var dnaStringActual = dna.ToString();
+            var rnaStringActual = rna.ToString();
+            var proteinStringActual = protein.ToString();
+            var dnaAmbiguousStringActual = dnaAmbiguous.ToString();
+            var rnaAmbiguousStringActual = rnaAmbiguous.ToString();
+            var proteinAmbiguousStringActual = proteinAmbiguous.ToString();
 
             Assert.AreEqual("ACGT-", dnaStringActual);
             Assert.AreEqual("ACGU-", rnaStringActual);
@@ -186,7 +186,7 @@ namespace Bio.Tests
         public void ValidateSequenceRangeToString()
         {
             var range = new SequenceRange("chr20", 0, 3);
-            string actualString = range.ToString();
+            var actualString = range.ToString();
             Assert.AreEqual("ID=chr20 Start=0 End=3", actualString);
         }
 
@@ -199,13 +199,15 @@ namespace Bio.Tests
         {
             ISequenceRange range1 = new SequenceRange("chr20", 0, 3);
             ISequenceRange range2 = new SequenceRange("chr21", 0, 4);
-            IList<ISequenceRange> ranges = new List<ISequenceRange>();
-            ranges.Add(range1);
-            ranges.Add(range2);
+            IList<ISequenceRange> ranges = new List<ISequenceRange>
+            {
+                range1,
+                range2
+            };
 
             var rangegrouping = new SequenceRangeGrouping(ranges);
-            string actualString = rangegrouping.ToString();
-            string expectedStr = this.utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
+            var actualString = rangegrouping.ToString();
+            var expectedStr = utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
                                                                  Constants.SequenceRangeGroupingExpectedNode);
             Assert.AreEqual(expectedStr.Replace("\\r\\n", ""), actualString.Replace(System.Environment.NewLine, ""));
         }
@@ -219,14 +221,14 @@ namespace Bio.Tests
         {
             ISequence seq = new Sequence(Alphabets.DNA, "ATCGATCG");
             var seqStats = new SequenceStatistics(seq);
-            string actualString = seqStats.ToString();
-            string expectedString = "A - 2\r\nC - 2\r\nG - 2\r\nT - 2\r\n".Replace("\r\n", System.Environment.NewLine);
+            var actualString = seqStats.ToString();
+            var expectedString = "A - 2\r\nC - 2\r\nG - 2\r\nT - 2\r\n".Replace("\r\n", System.Environment.NewLine);
             Assert.AreEqual(actualString, expectedString);
 
             // Gets the expected sequence from the Xml
             List<ISequence> seqsList;
             IEnumerable<ISequence> sequences = null;
-            string filePath = this.utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
+            var filePath = utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
                                                               Constants.FilePathNode).TestDir();
             using (var reader = File.OpenRead(filePath))
             {
@@ -240,10 +242,10 @@ namespace Bio.Tests
                 }
             }
 
-            foreach (ISequence Sequence in seqsList)
+            foreach (var Sequence in seqsList)
             {
                 seqStats = new SequenceStatistics(Sequence);
-                string seqStatStr = seqStats.ToString();
+                var seqStatStr = seqStats.ToString();
                 Assert.IsTrue(seqStatStr.Contains(" - "));
             }
         }
@@ -256,7 +258,7 @@ namespace Bio.Tests
         public void ValidateAlignedSequenceToString()
         {
             IList<ISequence> seqList = new List<ISequence>();
-            string actualAlignedSeqString = this.utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
+            var actualAlignedSeqString = utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
                                                                             Constants.AlignedSeqActualNode);
             seqList.Add(new Sequence(Alphabets.DNA,
                                      actualAlignedSeqString));
@@ -270,12 +272,12 @@ namespace Bio.Tests
             num.MaximumSeparation = 0;
             num.SeparationFactor = 0;
             num.LengthOfMUM = 8;
-            IList<ISequence> sequenceList = seqList;
-            IList<ISequenceAlignment> alignmentObj = num.Align(sequenceList);
+            var sequenceList = seqList;
+            var alignmentObj = num.Align(sequenceList);
             var alignedSeqs = (AlignedSequence) alignmentObj[0].AlignedSequences[0];
 
-            string actualString = alignedSeqs.ToString();
-            string expectedString = this.utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
+            var actualString = alignedSeqs.ToString();
+            var expectedString = utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
                                                                     Constants.AlignedSeqExpectedNode);
             Assert.AreEqual(actualString, expectedString.Replace("\\r\\n", System.Environment.NewLine));
         }
@@ -295,13 +297,15 @@ namespace Bio.Tests
             var matchExtn2 = new MatchExtension(match);
             matchExtn2.ID = 2;
             matchExtn2.Length = 30;
-            IList<MatchExtension> extnList = new List<MatchExtension>();
-            extnList.Add(matchExtn1);
-            extnList.Add(matchExtn2);
+            IList<MatchExtension> extnList = new List<MatchExtension>
+            {
+                matchExtn1,
+                matchExtn2
+            };
 
             var clust = new Cluster(extnList);
-            string actualString = clust.ToString();
-            string expectedString = this.utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
+            var actualString = clust.ToString();
+            var expectedString = utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
                                                                     Constants.ClusterExpectedNode);
             Assert.AreEqual(actualString, expectedString.Replace("\\r\\n", System.Environment.NewLine));
         }
@@ -317,13 +321,13 @@ namespace Bio.Tests
             ISequence qrySeq = new Sequence(Alphabets.DNA, "GGGGG");
             var delta = new DeltaAlignment(refSeq, qrySeq) {FirstSequenceEnd = 21, SecondSequenceEnd = 20};
             
-            string actualString = delta.ToString();
-            string expectedString = this.utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName, Constants.DeltaAlignmentExpectedNode);
+            var actualString = delta.ToString();
+            var expectedString = utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName, Constants.DeltaAlignmentExpectedNode);
             Assert.AreEqual(expectedString, actualString);
 
             // Gets the expected sequence from the Xml
             List<ISequence> seqsList;
-            string filePath = this.utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName, Constants.FilePathNode).TestDir();
+            var filePath = utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName, Constants.FilePathNode).TestDir();
             using (var reader = File.OpenRead(filePath))
             {
                 var parser = new FastAParser();
@@ -335,7 +339,7 @@ namespace Bio.Tests
 
             delta = new DeltaAlignment(seqsList[0], qrySeq) {FirstSequenceEnd = 21, SecondSequenceStart = 20, QueryDirection = Cluster.ReverseDirection};
             actualString = delta.ToString();
-            expectedString = this.utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName, Constants.DeltaAlignmentExpected2Node);
+            expectedString = utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName, Constants.DeltaAlignmentExpected2Node);
             Assert.AreEqual(expectedString, actualString);
         }
 
@@ -354,8 +358,8 @@ namespace Bio.Tests
             alignedSeq.FirstOffset = 0;
             alignedSeq.SecondOffset = 3;
 
-            string actualString = alignedSeq.ToString();
-            string expectedString = "AWGHE\r\nAWGHE\r\nAW-HE\r\n".Replace("\r\n", System.Environment.NewLine);
+            var actualString = alignedSeq.ToString();
+            var expectedString = "AWGHE\r\nAWGHE\r\nAW-HE\r\n".Replace("\r\n", System.Environment.NewLine);
             Assert.AreEqual(actualString, expectedString);
         }
 
@@ -376,8 +380,8 @@ namespace Bio.Tests
             alignedSeq.SecondOffset = 3;
             align.PairwiseAlignedSequences.Add(alignedSeq);
 
-            string actualString = align.ToString();
-            string expectedString = "AWGHE\r\nAWGHE\r\nAW-HE\r\n\r\n".Replace("\r\n", System.Environment.NewLine);
+            var actualString = align.ToString();
+            var expectedString = "AWGHE\r\nAWGHE\r\nAW-HE\r\n\r\n".Replace("\r\n", System.Environment.NewLine);
             Assert.AreEqual(actualString, expectedString);
         }
 
@@ -396,11 +400,11 @@ namespace Bio.Tests
             matchExtn.ID = 1;
             matchExtn.Length = 20;
 
-            string actualMatchExtnString = matchExtn.ToString();
-            string actualMatchstring = match.ToString();
-            string ExpectedMatchExtnString = this.utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
+            var actualMatchExtnString = matchExtn.ToString();
+            var actualMatchstring = match.ToString();
+            var ExpectedMatchExtnString = utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
                                                                              Constants.ExpectedMatchExtnStringNode);
-            string ExpectedMatchString = this.utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
+            var ExpectedMatchString = utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
                                                                          Constants.ExpectedMatchStringNode);
 
             Assert.AreEqual(ExpectedMatchExtnString, actualMatchExtnString);
@@ -416,29 +420,31 @@ namespace Bio.Tests
         {
             ISequenceAligner aligner = SequenceAligners.NeedlemanWunsch;
             IAlphabet alphabet = Alphabets.Protein;
-            string origSequence1 = "KRIPKSQNLRSIHSIFPFLEDKLSHLN";
-            string origSequence2 = "LNIPSLITLNKSIYVFSKRKKRLSGFLHN";
+            var origSequence1 = "KRIPKSQNLRSIHSIFPFLEDKLSHLN";
+            var origSequence2 = "LNIPSLITLNKSIYVFSKRKKRLSGFLHN";
 
             // Create input sequences
-            var inputSequences = new List<ISequence>();
-            inputSequences.Add(new Sequence(alphabet, origSequence1));
-            inputSequences.Add(new Sequence(alphabet, origSequence2));
+            var inputSequences = new List<ISequence>
+            {
+                new Sequence(alphabet, origSequence1),
+                new Sequence(alphabet, origSequence2)
+            };
 
             // Get aligned sequences
-            IList<ISequenceAlignment> alignments = aligner.Align(inputSequences);
+            var alignments = aligner.Align(inputSequences);
             ISequenceAlignment alignment = new SequenceAlignment();
-            for (int ialigned = 0; ialigned < alignments[0].AlignedSequences.Count; ialigned++)
+            for (var ialigned = 0; ialigned < alignments[0].AlignedSequences.Count; ialigned++)
             {
                 alignment.AlignedSequences.Add(alignments[0].AlignedSequences[ialigned]);
             }
 
-            foreach (string key in alignments[0].Metadata.Keys)
+            foreach (var key in alignments[0].Metadata.Keys)
             {
                 alignment.Metadata.Add(key, alignments[0].Metadata[key]);
             }
 
-            string actualSequenceAlignmentString = alignment.ToString();
-            string ExpectedSequenceAlignmentString = this.utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
+            var actualSequenceAlignmentString = alignment.ToString();
+            var ExpectedSequenceAlignmentString = utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
                                                                                      Constants
                                                                                          .SequenceAlignmentExpectedNode);
 
@@ -458,8 +464,8 @@ namespace Bio.Tests
             const int gapCost = -10;
             const double mergeThreshold = 4;
             const double consensusThreshold = 66;
-            string seq2Str = this.utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName, Constants.Seq2StrNode);
-            string seq1Str = this.utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName, Constants.Seq1StrNode);
+            var seq2Str = utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName, Constants.Seq2StrNode);
+            var seq1Str = utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName, Constants.Seq1StrNode);
 
             ISequence seq1 = new Sequence(Alphabets.DNA, seq1Str);
             ISequence seq2 = new Sequence(Alphabets.DNA, seq2Str);
@@ -480,39 +486,39 @@ namespace Bio.Tests
 
             var seqAssembly = (IOverlapDeNovoAssembly) assembler.Assemble(new List<ISequence> {seq1, seq2});
 
-            Contig contig0 = seqAssembly.Contigs[0];
-            string actualString = contig0.ToString();
-            string expectedString = this.utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
+            var contig0 = seqAssembly.Contigs[0];
+            var actualString = contig0.ToString();
+            var expectedString = utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
                                                                     Constants.OverlapDenovoExpectedNode);
             Assert.AreEqual(expectedString.Replace("\\r\\n", ""), actualString.Replace("\r\n", ""));
 
             // Get the parameters from Xml
-            int matchScore1 =
+            var matchScore1 =
                 int.Parse(
-                    this.utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName, Constants.MatchScoreNode), null);
-            int mismatchScore1 =
+                    utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName, Constants.MatchScoreNode), null);
+            var mismatchScore1 =
                 int.Parse(
-                    this.utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName, Constants.MisMatchScoreNode),
+                    utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName, Constants.MisMatchScoreNode),
                     null);
-            int gapCost1 =
-                int.Parse(this.utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName, Constants.GapCostNode),
+            var gapCost1 =
+                int.Parse(utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName, Constants.GapCostNode),
                           null);
-            double mergeThreshold1 =
+            var mergeThreshold1 =
                 double.Parse(
-                    this.utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName, Constants.MergeThresholdNode),
+                    utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName, Constants.MergeThresholdNode),
                     null);
-            double consensusThreshold1 =
+            var consensusThreshold1 =
                 double.Parse(
-                    this.utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
+                    utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
                                                     Constants.ConsensusThresholdNode), null);
-            string sequence1 = this.utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
+            var sequence1 = utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
                                                                Constants.SequenceNode1);
-            string sequence2 = this.utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
+            var sequence2 = utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
                                                                Constants.SequenceNode2);
-            string sequence3 = this.utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
+            var sequence3 = utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
                                                                Constants.SequenceNode3);
-            IAlphabet alphabet =
-                Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
+            var alphabet =
+                Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
                                                                     Constants.AlphabetNameNode));
 
             ISequence seq4 = new Sequence(alphabet, sequence1);
@@ -535,8 +541,8 @@ namespace Bio.Tests
 
             // Assembles all the sequences.
             var seqAssembly1 = (IOverlapDeNovoAssembly) assembler1.Assemble(new List<ISequence> {seq4, seq5, seq6});
-            Contig contig1 = seqAssembly1.Contigs[0];
-            string actualString1 = contig1.ToString();
+            var contig1 = seqAssembly1.Contigs[0];
+            var actualString1 = contig1.ToString();
             const string expectedString1 = "TATAAAGCGCCAAAATTTAGGCACCCGCGGTATT";
 
             Assert.AreEqual(expectedString1, actualString1);
@@ -550,8 +556,8 @@ namespace Bio.Tests
         public void ValidateMatePairToString()
         {
             var p = new MatePair("2K") {ForwardReadID = "F", ReverseReadID = "R"};
-            string actualString = p.ToString();
-            string expectedString = this.utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
+            var actualString = p.ToString();
+            var expectedString = utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
                                                                     Constants.MatePairExpectedNode);
             Assert.AreEqual(actualString, expectedString);
         }
@@ -570,10 +576,10 @@ namespace Bio.Tests
             const double consensusThreshold = 66;
 
             ISequence seq1 = new Sequence(Alphabets.DNA,
-                                          this.utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
+                                          utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
                                                                           Constants.Seq1StrNode));
             ISequence seq2 = new Sequence(Alphabets.DNA,
-                                          this.utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
+                                          utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
                                                                           Constants.Seq2StrNode));
 
             var assembler = new OverlapDeNovoAssembler
@@ -604,38 +610,38 @@ namespace Bio.Tests
                                              };
             seqAssembly = (OverlapDeNovoAssembly) assembler.Assemble(inputs);
 
-            string actualString = seqAssembly.ToString();
+            var actualString = seqAssembly.ToString();
             const string expectedString = "ACAAAAGCAACAAAAATGAAGGCAATACTAGTAGTTCTGCTATATACATTTGCAACCGCAAATG... +[1678]";
             Assert.AreEqual(expectedString, actualString.Replace(System.Environment.NewLine, ""));
 
             // Get the parameters from Xml
-            int matchScore1 =
+            var matchScore1 =
                 int.Parse(
-                    this.utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName, Constants.MatchScoreNode), null);
-            int mismatchScore1 =
+                    utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName, Constants.MatchScoreNode), null);
+            var mismatchScore1 =
                 int.Parse(
-                    this.utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName, Constants.MisMatchScoreNode),
+                    utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName, Constants.MisMatchScoreNode),
                     null);
-            int gapCost1 =
-                int.Parse(this.utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName, Constants.GapCostNode),
+            var gapCost1 =
+                int.Parse(utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName, Constants.GapCostNode),
                           null);
-            double mergeThreshold1 =
+            var mergeThreshold1 =
                 double.Parse(
-                    this.utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName, Constants.MergeThresholdNode),
+                    utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName, Constants.MergeThresholdNode),
                     null);
-            double consensusThreshold1 =
+            var consensusThreshold1 =
                 double.Parse(
-                    this.utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
+                    utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
                                                     Constants.ConsensusThresholdNode), null);
 
-            string sequence1 = this.utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
+            var sequence1 = utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
                                                                Constants.SequenceNode1);
-            string sequence2 = this.utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
+            var sequence2 = utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
                                                                Constants.SequenceNode2);
-            string sequence3 = this.utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
+            var sequence3 = utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
                                                                Constants.SequenceNode3);
-            IAlphabet alphabet =
-                Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
+            var alphabet =
+                Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
                                                                     Constants.AlphabetNameNode));
 
             var seq4 = new Sequence(alphabet, sequence1);
@@ -667,7 +673,7 @@ namespace Bio.Tests
             assembler1.OverlapAlgorithm = new SmithWatermanAligner();
             seqAssembly = (OverlapDeNovoAssembly) assembler1.Assemble(inputs1);
 
-            string expectedString1 = "TYMKWRRGCGCCAAAATTTAGGC" + System.Environment.NewLine;
+            var expectedString1 = "TYMKWRRGCGCCAAAATTTAGGC" + System.Environment.NewLine;
             actualString = seqAssembly.ToString();
             Assert.AreEqual(expectedString1, actualString);
         }
@@ -722,24 +728,24 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateSequenceConvertToString()
         {
-            string seqLargeString = this.utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
+            var seqLargeString = utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
                                                                     Constants.seqLargeStringNode);
             ISequence seqLarge = new Sequence(Alphabets.DNA, seqLargeString);
-            string ActualLargeString = seqLarge.ToString();
-            string seqLargeExpected = this.utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
+            var ActualLargeString = seqLarge.ToString();
+            var seqLargeExpected = utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
                                                                       Constants.seqLargeExpected2Node);
-            string expectedLargeString = string.Format(CultureInfo.CurrentCulture,
+            var expectedLargeString = string.Format(CultureInfo.CurrentCulture,
                                                        seqLargeExpected,
                                                        (seqLarge.Count - Helper.AlphabetsToShowInToString));
             Assert.AreEqual(expectedLargeString, ActualLargeString);
 
             List<ISequence> seqsList;
             // Gets the expected sequence from the Xml
-            string filePath = this.utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
+            var filePath = utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
                                                               Constants.FilePathNode).TestDir();
 
             var parser = new FastAParser { Alphabet = Alphabets.Protein };
-            IEnumerable<ISequence> seq = parser.Parse(filePath);
+            var seq = parser.Parse(filePath);
 
             //Create a list of sequences.
             seqsList = seq.ToList();
@@ -755,26 +761,26 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateDerivedSequenceConvertToString()
         {
-            string seqLargeStr = this.utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
+            var seqLargeStr = utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
                                                                  Constants.seqLargeStringNode);
             ISequence seqLarge = new Sequence(Alphabets.DNA, seqLargeStr);
             ISequence DeriveSeqLarge = new DerivedSequence(seqLarge, false, true);
 
-            string ActualLargeString = DeriveSeqLarge.ToString();
-            string seqLargeExpected = this.utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
+            var ActualLargeString = DeriveSeqLarge.ToString();
+            var seqLargeExpected = utilityObj.xmlUtil.GetTextValue(Constants.ToStringNodeName,
                                                                       Constants.seqLargeExpectedNode);
-            string expectedLargeString = string.Format(CultureInfo.CurrentCulture,
+            var expectedLargeString = string.Format(CultureInfo.CurrentCulture,
                                                        seqLargeExpected,
                                                        (seqLarge.Count - Helper.AlphabetsToShowInToString));
 
             Assert.AreEqual(expectedLargeString, ActualLargeString);
 
             // Get input and expected values from xml
-            string expectedSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinDerivedSequenceNode, Constants.ExpectedSequence);
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinDerivedSequenceNode, Constants.AlphabetNameNode);
-            IAlphabet alphabet = Utility.GetAlphabet(alphabetName);
+            var alphabet = Utility.GetAlphabet(alphabetName);
 
             // Create derived Sequence
             ISequence seq = new Sequence(alphabet, expectedSequence);

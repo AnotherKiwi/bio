@@ -27,7 +27,7 @@ namespace Bio.Padena.Tests
             const int dangleThreshold = 3;
             const int redundantThreshold = 7;
 
-            using (ParallelDeNovoAssembler assembler = new ParallelDeNovoAssembler())
+            using (var assembler = new ParallelDeNovoAssembler())
             {
                 assembler.KmerLength = kmerLength;
                 assembler.DanglingLinksThreshold = dangleThreshold;
@@ -37,16 +37,16 @@ namespace Bio.Padena.Tests
                 assembler.Depth = 3;
                 CloneLibrary.Instance.AddLibrary("abc", 5, 20);
 
-                PadenaAssembly result = (PadenaAssembly)assembler.Assemble(TestInputs.GetReadsForScaffolds(), true);
+                var result = (PadenaAssembly)assembler.Assemble(TestInputs.GetReadsForScaffolds(), true);
 
-                HashSet<string> expectedContigs = new HashSet<string>
+                var expectedContigs = new HashSet<string>
                 {
                     "TTTTTT","CGCGCG","TTAGCGCG","CGCGCCGCGC","GCGCGC","TTTTTA","TTTTAA","TTTAAA","TTTTAGC","ATGCCTCCTATCTTAGC"
                 };
 
                 AlignmentHelpers.CompareSequenceLists(expectedContigs, result.ContigSequences);
 
-                HashSet<string> expectedScaffolds = new HashSet<string>
+                var expectedScaffolds = new HashSet<string>
                 {
                     "ATGCCTCCTATCTTAGCGCGC","TTTAAA","TTTTTT","TTTTAGC","TTTTAA","CGCGCCGCGC","TTTTTA","CGCGCG"
                 };

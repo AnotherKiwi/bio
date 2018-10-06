@@ -36,7 +36,7 @@ namespace Bio.Algorithms.Assembly.Padena
         {
             if (deBruijnGraph == null)
             {
-                throw new ArgumentNullException("deBruijnGraph");
+                throw new ArgumentNullException(nameof(deBruijnGraph));
             }
 
             if (coverageThresholdForContigs <= 0)
@@ -63,7 +63,7 @@ namespace Bio.Algorithms.Assembly.Padena
         {
             if (deBruijnGraph == null)
             {
-                throw new ArgumentNullException("deBruijnGraph");
+                throw new ArgumentNullException(nameof(deBruijnGraph));
             }
 
             _graph = deBruijnGraph;
@@ -85,11 +85,11 @@ namespace Bio.Algorithms.Assembly.Padena
         {
             Parallel.ForEach(_graph.GetNodes(), node =>
                 {
-                    bool isPalindrome = node.IsPalindrome(this._graph.KmerLength);
+                    var isPalindrome = node.IsPalindrome(_graph.KmerLength);
                     if (isPalindrome || node.LeftExtensionNodesCount > 1)
                     {
                         // Ambiguous. Remove all extensions
-                        foreach (DeBruijnNode left in node.GetLeftExtensionNodes())
+                        foreach (var left in node.GetLeftExtensionNodes())
                         {
                             left.MarkExtensionInvalid(node);
                             node.MarkLeftExtensionAsInvalid(left);
@@ -106,7 +106,7 @@ namespace Bio.Algorithms.Assembly.Padena
                     if ( isPalindrome || node.RightExtensionNodesCount > 1)
                     {
                         // Ambiguous. Remove all extensions
-                        foreach (DeBruijnNode right in node.GetRightExtensionNodes())
+                        foreach (var right in node.GetRightExtensionNodes())
                         {
                             right.MarkExtensionInvalid(node);
                             node.MarkRightExtensionAsInvalid(right);
@@ -131,7 +131,7 @@ namespace Bio.Algorithms.Assembly.Padena
         {
             //set flag to false so we can find any nodes that are missed during the build
             _graph.SetNodeVisitState(false);
-            List<ISequence> paths = new List<ISequence>();
+            var paths = new List<ISequence>();
             Parallel.ForEach(_graph.GetNodes(), node =>
                 {
                     int validLeftExtensionsCount = node.LeftExtensionNodesCount;
@@ -195,11 +195,11 @@ namespace Bio.Algorithms.Assembly.Padena
         /// <param name="DuplicatesPossible">Boolean indicating if duplicates are possible, true if both the forward and reverse path could be generated</param>
         private void TraceSimplePath(List<ISequence> assembledContigs, DeBruijnNode node, bool isForwardDirection, bool createContigSequences,bool DuplicatesPossible)
         {
-            ISequence nodeSequence = _graph.GetNodeSequence(node);
-            List<byte> contigSequence = new List<byte>(nodeSequence);
+            var nodeSequence = _graph.GetNodeSequence(node);
+            var contigSequence = new List<byte>(nodeSequence);
             node.IsVisited = true;
-            List<DeBruijnNode> contigPath = new List<DeBruijnNode> { node };
-            KeyValuePair<DeBruijnNode, bool> nextNode =
+            var contigPath = new List<DeBruijnNode> { node };
+            var nextNode =
                 isForwardDirection ? node.GetRightExtensionNodesWithOrientation().First() : node.GetLeftExtensionNodesWithOrientation().First();
             
             TraceSimplePathLinks(contigPath, contigSequence, isForwardDirection, nextNode.Value, nextNode.Key, createContigSequences);
@@ -212,7 +212,7 @@ namespace Bio.Algorithms.Assembly.Padena
                 {
                     // Definition from Velvet Manual: http://helix.nih.gov/Applications/velvet_manual.pdf
                     // "k-mer coverage" is how many times a k-mer has been seen among the reads.
-                    double coverage = contigPath.Average(n => n.KmerCount);
+                    var coverage = contigPath.Average(n => n.KmerCount);
                     if (coverage < _coverageThreshold)
                     {
                         contigPath.ForEach(n => n.MarkNodeForDelete());
@@ -248,12 +248,12 @@ namespace Bio.Algorithms.Assembly.Padena
             DeBruijnNode node,
             bool createContigSequences)
         {
-            bool endFound = false;
+            var endFound = false;
             while (!endFound)
             {
                 node.IsVisited = true;
                 // Get extensions going in same directions.
-                Dictionary<DeBruijnNode, bool> sameDirectionExtensions = (isForwardDirection ^ sameOrientation) 
+                var sameDirectionExtensions = (isForwardDirection ^ sameOrientation) 
                     ? node.GetLeftExtensionNodesWithOrientation() 
                     : node.GetRightExtensionNodesWithOrientation();
 
@@ -324,7 +324,7 @@ namespace Bio.Algorithms.Assembly.Padena
             if (createContigSequences)
             {
                 // Update contig sequence with sequence from next node
-                byte symbol = _graph.GetNextSymbolFrom(nextNode, isForwardDirection, isSameOrientation);
+                var symbol = _graph.GetNextSymbolFrom(nextNode, isForwardDirection, isSameOrientation);
 
                 if (isForwardDirection)
                 {

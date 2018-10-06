@@ -21,17 +21,17 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
         /// <param name="tags"></param>
         public Ab1DataValidator(IEnumerable<AB_RootDataTag> tags)
         {
-            this.tagsByType = new Dictionary<string, List<AB_RootDataTag>>();
+            tagsByType = new Dictionary<string, List<AB_RootDataTag>>();
 
             tags.ToList().ForEach(
                 tag =>
                     {
                         List<AB_RootDataTag> typeTags;
-                        string adjustedType = GetAdjustedType(tag);
-                        if (!this.tagsByType.TryGetValue(adjustedType, out typeTags))
+                        var adjustedType = GetAdjustedType(tag);
+                        if (!tagsByType.TryGetValue(adjustedType, out typeTags))
                         {
                             typeTags = new List<AB_RootDataTag>();
-                            this.tagsByType.Add(adjustedType, typeTags);
+                            tagsByType.Add(adjustedType, typeTags);
                         }
 
                         typeTags.Add(tag);
@@ -59,7 +59,7 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
         /// <returns></returns>
         private AB_RootDataTag RetrieveTag(IAb1DataItem item)
         {
-            return this.tagsByType[item.Name].First(tag =>
+            return tagsByType[item.Name].First(tag =>
                                                     tag.ID == item.Entry.TagNumber.ToString(CultureInfo.InvariantCulture)
                                                     && tag.Name == item.Entry.TagName);
         }
@@ -83,7 +83,7 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
         {
             Assert.AreEqual(expected.Count, actual.Count);
 
-            for (int i = 0; i < expected.Count; i++)
+            for (var i = 0; i < expected.Count; i++)
             {
                 Assert.AreEqual(expected[i], actual[i]);
             }
@@ -103,8 +103,8 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
         /// <param name="item"></param>
         public void Visit(ByteDataItem item)
         {
-            if (item == null) throw new ArgumentNullException("item");
-            AB_RootDataTag tag = RetrieveTag(item);
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            var tag = RetrieveTag(item);
             ValidateAreEqual(GetData(tag.Value, value => byte.Parse(value, CultureInfo.InvariantCulture)), item.Value);
         }
 
@@ -114,8 +114,8 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
         /// <param name="item"></param>
         public void Visit(CharDataItem item)
         {
-            if (item == null) throw new ArgumentNullException("item");
-            AB_RootDataTag tag = RetrieveTag(item);
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            var tag = RetrieveTag(item);
 
             if (tag.Type == "char_byte")
             {
@@ -134,9 +134,9 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
         /// <param name="item"></param>
         public void Visit(WordDataItem item)
         {
-            if (item == null) throw new ArgumentNullException("item");
+            if (item == null) throw new ArgumentNullException(nameof(item));
             // TODO: Test file does not hit this yet.
-            AB_RootDataTag tag = RetrieveTag(item);
+            var tag = RetrieveTag(item);
             ValidateAreEqual(GetData(tag.Value, value => ushort.Parse(value, CultureInfo.InvariantCulture)), item.Value);
         }
 
@@ -146,8 +146,8 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
         /// <param name="item"></param>
         public void Visit(ShortDataItem item)
         {
-            if (item == null) throw new ArgumentNullException("item");
-            AB_RootDataTag tag = RetrieveTag(item);
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            var tag = RetrieveTag(item);
             ValidateAreEqual(GetData(tag.Value, value => short.Parse(value, CultureInfo.InvariantCulture)), item.Value);
         }
 
@@ -157,8 +157,8 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
         /// <param name="item"></param>
         public void Visit(LongDataItem item)
         {
-            if (item == null) throw new ArgumentNullException("item");
-            AB_RootDataTag tag = RetrieveTag(item);
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            var tag = RetrieveTag(item);
             ValidateAreEqual(GetData(tag.Value, value => int.Parse(value, CultureInfo.InvariantCulture)), item.Value);
         }
 
@@ -168,8 +168,8 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
         /// <param name="item"></param>
         public void Visit(FloatDataItem item)
         {
-            if (item == null) throw new ArgumentNullException("item");
-            AB_RootDataTag tag = RetrieveTag(item);
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            var tag = RetrieveTag(item);
 
             //
             // Xml converter only stores 3 decimal places
@@ -186,9 +186,9 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
         /// <param name="item"></param>
         public void Visit(DoubleDataItem item)
         {
-            if (item == null) throw new ArgumentNullException("item");
+            if (item == null) throw new ArgumentNullException(nameof(item));
             // TODO: Test file does not hit this yet.
-            AB_RootDataTag tag = RetrieveTag(item);
+            var tag = RetrieveTag(item);
             Assert.AreEqual(GetData(tag.Value, value => double.Parse(value, CultureInfo.InvariantCulture)), item.Value);
         }
 
@@ -198,9 +198,9 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
         /// <param name="item"></param>
         public void Visit(DateDataItem item)
         {
-            if (item == null) throw new ArgumentNullException("item");
-            AB_RootDataTag tag = RetrieveTag(item);
-            DateTime value = DateTime.Parse(tag.Value, CultureInfo.InvariantCulture);
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            var tag = RetrieveTag(item);
+            var value = DateTime.Parse(tag.Value, CultureInfo.InvariantCulture);
             Assert.IsTrue(value.Equals(item.Value));
         }
 
@@ -210,9 +210,9 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
         /// <param name="item"></param>
         public void Visit(TimeDataItem item)
         {
-            if (item == null) throw new ArgumentNullException("item");
-            AB_RootDataTag tag = RetrieveTag(item);
-            DateTime value = DateTime.Parse(tag.Value, CultureInfo.InvariantCulture);
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            var tag = RetrieveTag(item);
+            var value = DateTime.Parse(tag.Value, CultureInfo.InvariantCulture);
             Assert.IsTrue(value.Equals(item.Value));
         }
 
@@ -222,8 +222,8 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
         /// <param name="item"></param>
         public void Visit(PStringDataItem item)
         {
-            if (item == null) throw new ArgumentNullException("item");
-            AB_RootDataTag tag = RetrieveTag(item);
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            var tag = RetrieveTag(item);
             Assert.AreEqual(tag.Value, "\"" + item.Value + "\"");
         }
 
@@ -233,7 +233,7 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
         /// <param name="item"></param>
         public void Visit(ThumbDataItem item)
         {
-            if (item == null) throw new ArgumentNullException("item");
+            if (item == null) throw new ArgumentNullException(nameof(item));
             // Not tested with current data file, obsolete.
             throw new NotImplementedException();
         }
@@ -244,7 +244,7 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
         /// <param name="item"></param>
         public void Visit(BoolDataItem item)
         {
-            if (item == null) throw new ArgumentNullException("item");
+            if (item == null) throw new ArgumentNullException(nameof(item));
             // Not tested with current data file, obsolete.
             throw new NotImplementedException();
         }
@@ -255,7 +255,7 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
         /// <param name="item"></param>
         public void Visit(UserDataItem item)
         {
-            if (item == null) throw new ArgumentNullException("item");
+            if (item == null) throw new ArgumentNullException(nameof(item));
             // Not tested with current data file, obsolete.
             throw new NotImplementedException();
         }
@@ -266,8 +266,8 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
         /// <param name="item"></param>
         public void Visit(CStringDataItem item)
         {
-            if (item == null) throw new ArgumentNullException("item");
-            AB_RootDataTag tag = RetrieveTag(item);
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            var tag = RetrieveTag(item);
             Assert.AreEqual(tag.Value, "\"" + item.Value + "\"");
         }
 

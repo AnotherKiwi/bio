@@ -31,75 +31,75 @@ namespace Bio.Padena.Tests.Scaffold
             const int KmerLength = 7;
             ISequence sequence = new Sequence(Alphabets.DNA, "GATTCAAGGGCTGGGGG");
             IList<ISequence> contigsSequence = SequenceToKmerBuilder.GetKmerSequences(sequence, KmerLength).ToList();
-            ContigGraph graph = new ContigGraph();
+            var graph = new ContigGraph();
             graph.BuildContigGraph(contigsSequence, KmerLength);
-            List<Node> contigs = graph.Nodes.ToList();
+            var contigs = graph.Nodes.ToList();
             IList<ScaffoldPath> paths =
                 new List<ScaffoldPath>();
-            ScaffoldPath path = new ScaffoldPath();
-            foreach (Node node in contigs)
+            var path = new ScaffoldPath();
+            foreach (var node in contigs)
             {
                 path.Add(new KeyValuePair<Node, Edge>(node, null));
             }
 
             paths.Add(path);
             path = new ScaffoldPath();
-            foreach (Node node in contigs.GetRange(2, 5))
+            foreach (var node in contigs.GetRange(2, 5))
             {
                 path.Add(new KeyValuePair<Node, Edge>(node, null));
             }
 
             paths.Add(path);
             path = new ScaffoldPath();
-            foreach (Node node in contigs.GetRange(3, 5))
+            foreach (var node in contigs.GetRange(3, 5))
             {
                 path.Add(new KeyValuePair<Node, Edge>(node, null));
             }
 
             paths.Add(path);
             path = new ScaffoldPath();
-            foreach (Node node in contigs.GetRange(6, 5))
+            foreach (var node in contigs.GetRange(6, 5))
             {
                 path.Add(new KeyValuePair<Node, Edge>(node, null));
             }
 
             paths.Add(path);
             path = new ScaffoldPath();
-            foreach (Node node in contigs.GetRange(0, 11))
+            foreach (var node in contigs.GetRange(0, 11))
             {
                 path.Add(new KeyValuePair<Node, Edge>(node, null));
             }
 
             paths.Add(path);
             path = new ScaffoldPath();
-            foreach (Node node in contigs.GetRange(7, 4))
+            foreach (var node in contigs.GetRange(7, 4))
             {
                 path.Add(new KeyValuePair<Node, Edge>(node, null));
             }
 
             paths.Add(path);
             path = new ScaffoldPath();
-            foreach (Node node in contigs.GetRange(11, 0))
+            foreach (var node in contigs.GetRange(11, 0))
             {
                 path.Add(new KeyValuePair<Node, Edge>(node, null));
             }
 
             paths.Add(path);
             path = new ScaffoldPath();
-            foreach (Node node in contigs.GetRange(2, 9))
+            foreach (var node in contigs.GetRange(2, 9))
             {
                 path.Add(new KeyValuePair<Node, Edge>(node, null));
             }
 
             paths.Add(path);
             path = new ScaffoldPath();
-            foreach (Node node in contigs.GetRange(1, 10))
+            foreach (var node in contigs.GetRange(1, 10))
             {
                 path.Add(new KeyValuePair<Node, Edge>(node, null));
             }
 
             paths.Add(path);
-            PathPurger assembler = new PathPurger();
+            var assembler = new PathPurger();
             assembler.PurgePath(paths);
             Assert.AreEqual(paths.Count, 1);
             Assert.IsTrue(Compare(paths.First(), contigs));
@@ -114,76 +114,76 @@ namespace Bio.Padena.Tests.Scaffold
             const int KmerLength = 7;
             ISequence sequence = new Sequence(Alphabets.DNA, "GATTCAAGGGCTGGGGG");
             IList<ISequence> contigsSequence = SequenceToKmerBuilder.GetKmerSequences(sequence, KmerLength).ToList();
-            ContigGraph graph = new ContigGraph();
+            var graph = new ContigGraph();
             graph.BuildContigGraph(contigsSequence, KmerLength);
-            List<Node> contigs = graph.Nodes.ToList();
+            var contigs = graph.Nodes.ToList();
             IList<ScaffoldPath> paths =
                 new List<ScaffoldPath>();
-            ScaffoldPath path = new ScaffoldPath();
+            var path = new ScaffoldPath();
 
-            foreach (Node node in contigs.GetRange(0, 2))
+            foreach (var node in contigs.GetRange(0, 2))
             {
                 path.Add(new KeyValuePair<Node, Edge>(node, null));
             }
 
             paths.Add(path);
             path = new ScaffoldPath();
-            foreach (Node node in contigs.GetRange(3, 5))
+            foreach (var node in contigs.GetRange(3, 5))
             {
                 path.Add(new KeyValuePair<Node, Edge>(node, null));
             }
 
             paths.Add(path);
             path = new ScaffoldPath();
-            foreach (Node node in contigs.GetRange(6, 2))
+            foreach (var node in contigs.GetRange(6, 2))
             {
                 path.Add(new KeyValuePair<Node, Edge>(node, null));
             }
 
             paths.Add(path);
             path = new ScaffoldPath();
-            foreach (Node node in contigs.GetRange(3, 3))
+            foreach (var node in contigs.GetRange(3, 3))
             {
                 path.Add(new KeyValuePair<Node, Edge>(node, null));
             }
 
             paths.Add(path);
             path = new ScaffoldPath();
-            foreach (Node node in contigs.GetRange(7, 2))
+            foreach (var node in contigs.GetRange(7, 2))
             {
                 path.Add(new KeyValuePair<Node, Edge>(node, null));
             }
 
             paths.Add(path);
             path = new ScaffoldPath();
-            foreach (Node node in contigs.GetRange(8, 2))
+            foreach (var node in contigs.GetRange(8, 2))
             {
                 path.Add(new KeyValuePair<Node, Edge>(node, null));
             }
 
             paths.Add(path);
             path = new ScaffoldPath();
-            foreach (Node node in contigs.GetRange(2, 2))
+            foreach (var node in contigs.GetRange(2, 2))
             {
                 path.Add(new KeyValuePair<Node, Edge>(node, null));
             }
 
             paths.Add(path);
             path = new ScaffoldPath();
-            foreach (Node node in contigs.GetRange(1, 2))
+            foreach (var node in contigs.GetRange(1, 2))
             {
                 path.Add(new KeyValuePair<Node, Edge>(node, null));
             }
 
             paths.Add(path);
             path = new ScaffoldPath();
-            foreach (Node node in contigs.GetRange(8, 3))
+            foreach (var node in contigs.GetRange(8, 3))
             {
                 path.Add(new KeyValuePair<Node, Edge>(node, null));
             }
 
             paths.Add(path);
-            PathPurger assembler = new PathPurger();
+            var assembler = new PathPurger();
             assembler.PurgePath(paths);
             Assert.AreEqual(paths.Count, 1);
             Assert.IsTrue(Compare(paths.First(), contigs));
@@ -198,76 +198,76 @@ namespace Bio.Padena.Tests.Scaffold
             const int KmerLength = 7;
             ISequence sequence = new Sequence(Alphabets.DNA, "GATTCAAGGGCTGGGGG");
             IList<ISequence> contigsSequence = SequenceToKmerBuilder.GetKmerSequences(sequence, KmerLength).ToList();
-            ContigGraph graph = new ContigGraph();
+            var graph = new ContigGraph();
             graph.BuildContigGraph(contigsSequence, KmerLength);
-            List<Node> contigs = graph.Nodes.ToList();
+            var contigs = graph.Nodes.ToList();
             IList<ScaffoldPath> paths =
                 new List<ScaffoldPath>();
-            ScaffoldPath path = new ScaffoldPath();
-            foreach (Node node in ((List<Node>)contigs).GetRange(0, 2))
+            var path = new ScaffoldPath();
+            foreach (var node in ((List<Node>)contigs).GetRange(0, 2))
             {
                 path.Add(new KeyValuePair<Node, Edge>(node, null));
             }
 
             paths.Add(path);
             path = new ScaffoldPath();
-            foreach (Node node in contigs.GetRange(1, 2))
+            foreach (var node in contigs.GetRange(1, 2))
             {
                 path.Add(new KeyValuePair<Node, Edge>(node, null));
             }
 
             paths.Add(path);
             path = new ScaffoldPath();
-            foreach (Node node in contigs.GetRange(8, 2))
+            foreach (var node in contigs.GetRange(8, 2))
             {
                 path.Add(new KeyValuePair<Node, Edge>(node, null));
             }
 
             paths.Add(path);
             path = new ScaffoldPath();
-            foreach (Node node in contigs.GetRange(7, 2))
+            foreach (var node in contigs.GetRange(7, 2))
             {
                 path.Add(new KeyValuePair<Node, Edge>(node, null));
             }
 
             paths.Add(path);
             path = new ScaffoldPath();
-            foreach (Node node in contigs.GetRange(7, 4))
+            foreach (var node in contigs.GetRange(7, 4))
             {
                 path.Add(new KeyValuePair<Node, Edge>(node, null));
             }
 
             paths.Add(path);
             path = new ScaffoldPath();
-            foreach (Node node in contigs.GetRange(11, 0))
+            foreach (var node in contigs.GetRange(11, 0))
             {
                 path.Add(new KeyValuePair<Node, Edge>(node, null));
             }
 
             paths.Add(path);
             path = new ScaffoldPath();
-            foreach (Node node in contigs.GetRange(2, 9))
+            foreach (var node in contigs.GetRange(2, 9))
             {
                 path.Add(new KeyValuePair<Node, Edge>(node, null));
             }
 
             paths.Add(path);
             path = new ScaffoldPath();
-            foreach (Node node in contigs.GetRange(1, 10))
+            foreach (var node in contigs.GetRange(1, 10))
             {
                 path.Add(new KeyValuePair<Node, Edge>(node, null));
             }
 
             paths.Add(path);
             path = new ScaffoldPath();
-            foreach (Node node in contigs)
+            foreach (var node in contigs)
             {
                 path.Add(new KeyValuePair<Node, Edge>(node, null));
             }
 
             paths.Add(path);
 
-            PathPurger assembler = new PathPurger();
+            var assembler = new PathPurger();
             assembler.PurgePath(paths);
             Assert.AreEqual(paths.Count, 1);
             Assert.IsTrue(Compare(paths.First(), contigs));
@@ -283,7 +283,7 @@ namespace Bio.Padena.Tests.Scaffold
         {
             if (path.Count == contig.Count)
             {
-                for (int index = 0; index < contig.Count; index++)
+                for (var index = 0; index < contig.Count; index++)
                 {
                     if (path[index].Key != contig[index])
                     {

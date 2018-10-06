@@ -194,28 +194,28 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             }
 
             // Initialize countsDictionary
-            Dictionary<String, float> countsDictionary = new Dictionary<String, float>();
+            var countsDictionary = new Dictionary<String, float>();
 
             // StringBuilder 'kmer' stores the k-mer in each window.
             // When sliding the k-length window, new k-mer is generated 
             // by simply adding one item at the end and removing one in 
             // the front.
-            StringBuilder kmer = new StringBuilder();
+            var kmer = new StringBuilder();
             
-            for (int i = 0; i < kmerLength; ++i)
+            for (var i = 0; i < kmerLength; ++i)
             {
                 kmer.Append((char)seq[i]);
             }
             countsDictionary[kmer.ToString()] = 1;
 
             // Slide the window and add each kmer into countsDictionary
-            for (int i = kmerLength; i < seq.Count; ++i)
+            for (var i = kmerLength; i < seq.Count; ++i)
             {
                 // modify kmer for the new window
                 kmer.Append((char)seq[i]);
                 kmer.Remove(0, 1);
 
-                String kmerString = kmer.ToString();
+                var kmerString = kmer.ToString();
 
                 // Add into countsDictionary
                 if (countsDictionary.ContainsKey(kmerString))

@@ -32,9 +32,9 @@ namespace Bio
         /// <param name="complementSequence">Flag to indicate if the derived sequence should be complemented.</param>
         public DerivedSequence(ISequence sequence, bool reverseSequence, bool complementSequence)
         {
-            this.baseSequence = sequence;
-            this.isReversed = reverseSequence;
-            this.isComplemented = complementSequence;
+            baseSequence = sequence;
+            isReversed = reverseSequence;
+            isComplemented = complementSequence;
         }
 
         #endregion Constructors
@@ -66,7 +66,7 @@ namespace Bio
         /// </summary>
         public Dictionary<string, object> Metadata
         {
-            get { return this.baseSequence.Metadata; }
+            get { return baseSequence.Metadata; }
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Bio
             {
                 if (string.IsNullOrEmpty(id))
                 {
-                    return this.baseSequence.ID;
+                    return baseSequence.ID;
                 }
 
                 return id;
@@ -97,7 +97,7 @@ namespace Bio
         {
             get
             {
-                return this.baseSequence.Count;
+                return baseSequence.Count;
             }
         }
 
@@ -108,7 +108,7 @@ namespace Bio
         {
             get
             {
-                return this.baseSequence.Alphabet;
+                return baseSequence.Alphabet;
             }
         }
         #endregion Properties
@@ -125,11 +125,11 @@ namespace Bio
             {
                 byte returnValue;
 
-                returnValue = this.isReversed ? this.baseSequence[(this.baseSequence.Count - 1) - index] : this.baseSequence[index];
+                returnValue = isReversed ? baseSequence[(baseSequence.Count - 1) - index] : baseSequence[index];
 
-                if (this.isComplemented && returnValue != 0 && !this.baseSequence.Alphabet.TryGetComplementSymbol(returnValue, out returnValue))
+                if (isComplemented && returnValue != 0 && !baseSequence.Alphabet.TryGetComplementSymbol(returnValue, out returnValue))
                 {
-                    throw new InvalidOperationException(Properties.Resource.ComplementNotFound);
+                    throw new InvalidOperationException(ComplementNotFound);
                 }
 
                 return returnValue;
@@ -178,13 +178,13 @@ namespace Bio
         /// <returns>The sub-sequence.</returns>
         public ISequence GetSubSequence(long start, long length)
         {
-            byte[] subSequence = new byte[length];
+            var subSequence = new byte[length];
             for (long index = 0; index < length; index++)
             {
                 subSequence[index] = this[start + index];
             }
 
-            return new Sequence(this.Alphabet, subSequence);
+            return new Sequence(Alphabet, subSequence);
         }
 
         /// <summary>
@@ -241,15 +241,15 @@ namespace Bio
         {
             ISequence seq;
             string tempSeqData = null;
-            if (this.Count > Helper.AlphabetsToShowInToString)
+            if (Count > Helper.AlphabetsToShowInToString)
             {
-                seq = this.GetSubSequence(0, Helper.AlphabetsToShowInToString);
+                seq = GetSubSequence(0, Helper.AlphabetsToShowInToString);
                 tempSeqData = seq.ToString();
-                return string.Format(CultureInfo.CurrentCulture, Properties.Resource.ToStringFormat, tempSeqData, (this.Count - Helper.AlphabetsToShowInToString));
+                return string.Format(CultureInfo.CurrentCulture, ToStringFormat, tempSeqData, (Count - Helper.AlphabetsToShowInToString));
             }
             else
             {
-                seq = this.GetSubSequence(0, this.Count);
+                seq = GetSubSequence(0, Count);
                 return seq.ToString();
             }
         }
@@ -264,25 +264,25 @@ namespace Bio
         {
             if (length <= 0)
             {
-                throw new ArgumentOutOfRangeException("length", "<= 0");
+                throw new ArgumentOutOfRangeException(nameof(length), "<= 0");
             }
 
             if (startIndex < 0)
             {
-                throw new ArgumentOutOfRangeException("startIndex", "> 0");
+                throw new ArgumentOutOfRangeException(nameof(startIndex), "> 0");
             }
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             try
             {
-                for (long index = startIndex; index < startIndex+ length; index++)
+                for (var index = startIndex; index < startIndex+ length; index++)
                 {
                     sb.Append((char)this[index]);
                 }
             }
             catch (IndexOutOfRangeException rangeEx)
             {
-                throw new ArgumentOutOfRangeException("length", rangeEx.Message);
+                throw new ArgumentOutOfRangeException(nameof(length), rangeEx.Message);
             }
 
             return sb.ToString();
@@ -298,15 +298,15 @@ namespace Bio
         {
             if (byteArray == null)
             {
-                throw new ArgumentNullException(Properties.Resource.ParameterNameArray);
+                throw new ArgumentNullException(ParameterNameArray);
             }
 
-            if ((start + count) > this.Count)
+            if ((start + count) > Count)
             {
-                throw new ArgumentException(Properties.Resource.DestArrayNotLargeEnough);
+                throw new ArgumentException(DestArrayNotLargeEnough);
             }
 
-            Sequence seq = (Sequence)this.GetSubSequence(0, this.Count);
+            var seq = (Sequence)GetSubSequence(0, Count);
             seq.CopyTo(byteArray, start, count);
         }
 
@@ -316,7 +316,7 @@ namespace Bio
         /// <returns>An IEnumerator of bytes.</returns>
         public IEnumerator<byte> GetEnumerator()
         {
-            for (long i = 0; i < this.Count; i++)
+            for (long i = 0; i < Count; i++)
             {
                 yield return this[i];
             }
@@ -328,7 +328,7 @@ namespace Bio
         /// <returns>An IEnumerator of bytes.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
         #endregion
     }

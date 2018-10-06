@@ -22,24 +22,24 @@ namespace Bio.IO.BAM
         {
             if (formatter == null)
             {
-                throw new ArgumentNullException("formatter");
+                throw new ArgumentNullException(nameof(formatter));
             }
             if (sam == null)
             {
-                throw new ArgumentNullException("sam");
+                throw new ArgumentNullException(nameof(sam));
             }
             if (string.IsNullOrWhiteSpace(filename))
             {
-                throw new ArgumentNullException("filename");
+                throw new ArgumentNullException(nameof(filename));
             }
             if (string.IsNullOrWhiteSpace(indexFilename))
             {
-                throw new ArgumentNullException("indexFilename");
+                throw new ArgumentNullException(nameof(indexFilename));
             }
 
             if (filename == indexFilename)
             {
-                throw new ArgumentException("Use different filenames for index and alignment.", "indexFilename");
+                throw new ArgumentException("Use different filenames for index and alignment.", nameof(indexFilename));
             }
 
             using (var fs = File.Create(filename))
@@ -59,15 +59,15 @@ namespace Bio.IO.BAM
         {
             if (formatter == null)
             {
-                throw new ArgumentNullException("formatter");
+                throw new ArgumentNullException(nameof(formatter));
             }
             if (sam == null)
             {
-                throw new ArgumentNullException("sam");
+                throw new ArgumentNullException(nameof(sam));
             }
             if (string.IsNullOrWhiteSpace(filename))
             {
-                throw new ArgumentNullException("filename");
+                throw new ArgumentNullException(nameof(filename));
             }
 
             using (var fs = File.Create(filename))

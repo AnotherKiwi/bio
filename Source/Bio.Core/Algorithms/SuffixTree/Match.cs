@@ -29,7 +29,7 @@ namespace Bio.Algorithms.SuffixTree
         public override string ToString()
         {
             return string.Format(CultureInfo.CurrentCulture, Properties.Resource.MatchToStringFormat,
-                              this.ReferenceSequenceOffset, this.QuerySequenceOffset, this.Length);
+                              ReferenceSequenceOffset, QuerySequenceOffset, Length);
         }
     }
 }

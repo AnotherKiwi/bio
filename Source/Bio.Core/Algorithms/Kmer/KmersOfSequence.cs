@@ -23,9 +23,9 @@ namespace Bio.Algorithms.Kmer
         /// <param name="kmers">Set of associated k-mers.</param>
         public KmersOfSequence(ISequence sequence, int kmerLength, HashSet<KmerPositions> kmers)
         {
-            this.BaseSequence = sequence;
-            this.Length = kmerLength;
-            this.Kmers = kmers;
+            BaseSequence = sequence;
+            Length = kmerLength;
+            Kmers = kmers;
         }
 
         /// <summary>
@@ -36,9 +36,9 @@ namespace Bio.Algorithms.Kmer
         /// <param name="kmerLength">Length of k-mer.</param>
         public KmersOfSequence(ISequence sequence, int kmerLength)
         {
-            this.BaseSequence = sequence;
-            this.Length = kmerLength;
-            this.Kmers = null;
+            BaseSequence = sequence;
+            Length = kmerLength;
+            Kmers = null;
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Bio.Algorithms.Kmer
         /// <returns>List of k-mer sequences.</returns>
         public IEnumerable<ISequence> KmersToSequences()
         {
-            return new List<ISequence>(this.Kmers.Select(k => this.BaseSequence.GetSubSequence(k.Positions.First(), this.Length)));
+            return new List<ISequence>(Kmers.Select(k => BaseSequence.GetSubSequence(k.Positions.First(), Length)));
         }
 
         /// <summary>
@@ -77,10 +77,10 @@ namespace Bio.Algorithms.Kmer
         {
             if (kmer == null)
             {
-                throw new ArgumentNullException("kmer");
+                throw new ArgumentNullException(nameof(kmer));
             }
 
-            return this.BaseSequence.GetSubSequence(kmer.Positions.First(), this.Length);
+            return BaseSequence.GetSubSequence(kmer.Positions.First(), Length);
         }
 
         #region Nested Structure
@@ -109,7 +109,7 @@ namespace Bio.Algorithms.Kmer
             /// </summary>
             public int Count
             {
-                get { return this.Positions.Count; }
+                get { return Positions.Count; }
             }
         }
         #endregion

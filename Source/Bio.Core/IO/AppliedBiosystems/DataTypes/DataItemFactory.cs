@@ -37,7 +37,7 @@ namespace Bio.IO.AppliedBiosystems.DataTypes
         /// <returns></returns>
         public static IAb1DataItem TryCreateDataItem(Ab1DirectoryEntry entry)
         {
-            IAb1DataItem item = SupportedItems.FirstOrDefault(dataItem => dataItem.Type == entry.ElementTypeCode);
+            var item = SupportedItems.FirstOrDefault(dataItem => dataItem.Type == entry.ElementTypeCode);
             if (item == null)
                 return null;
 

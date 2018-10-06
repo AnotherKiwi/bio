@@ -78,11 +78,11 @@ namespace Bio.IO.BAM
                 
                     // Sort by Chromosomes (RName) and then by Positions (Pos) and retun "BAMSortedIndex"
                     // containing the indices of sorted SequenceAlignmentMap.QuerySequences items.
-                    SortedDictionary<string, IList<string>> sortedFiles = SortByChromosomeCoordinates();
+                    var sortedFiles = SortByChromosomeCoordinates();
 
-                    foreach (KeyValuePair<string, IList<string>> sortedFile in sortedFiles)
+                    foreach (var sortedFile in sortedFiles)
                     {
-                        BAMSortedIndex sortedIndex = new BAMSortedIndex(sortedFile.Value, sortField);
+                        var sortedIndex = new BAMSortedIndex(sortedFile.Value, sortField);
                         sortedIndex.GroupName = sortedFile.Key;
                         sortedIndices.Add(sortedIndex);
                     }
@@ -91,12 +91,12 @@ namespace Bio.IO.BAM
                     // Sort by Chromosomes Positions (Pos) and retun "BAMSortedIndex"
                     // containing the indices of sorted SequenceAlignmentMap.QuerySequences items.
                     sortedFiles = SortByChromosomeCoordinates();
-                    foreach (string refName in sequenceAlignMap.GetRefSequences())
+                    foreach (var refName in sequenceAlignMap.GetRefSequences())
                     {
                         IList<string> filenames =null;
                         if (sortedFiles.TryGetValue(refName, out filenames))
                         {
-                            BAMSortedIndex sortedIndex = new BAMSortedIndex(filenames, sortField);
+                            var sortedIndex = new BAMSortedIndex(filenames, sortField);
                             sortedIndex.GroupName = refName;
                             sortedIndices.Add(sortedIndex);
                             
@@ -124,12 +124,12 @@ namespace Bio.IO.BAM
         {
             IList<string> files = new List<string>();
 
-            var sortedList = new System.Collections.Generic.SortedList<object,string>();
+            var sortedList = new SortedList<object,string>();
 
-            for (int index = 0; index < sequenceAlignMap.QuerySequences.Count; index++)
+            for (var index = 0; index < sequenceAlignMap.QuerySequences.Count; index++)
             {
-                SAMAlignedSequence alignedSeq = sequenceAlignMap.QuerySequences[index];
-                string indices = string.Empty;
+                var alignedSeq = sequenceAlignMap.QuerySequences[index];
+                var indices = string.Empty;
                 if (!sortedList.TryGetValue(alignedSeq.QName, out indices))
                 {
                     sortedList.Add(alignedSeq.QName, index.ToString(CultureInfo.InvariantCulture));
@@ -168,22 +168,22 @@ namespace Bio.IO.BAM
         /// </summary>
         private SortedDictionary<string, IList<string>> SortByChromosomeCoordinates()
         {
-            SortedDictionary<string, IList<string>> sortedFiles = new SortedDictionary<string, IList<string>>();
+            var sortedFiles = new SortedDictionary<string, IList<string>>();
             IList<string> files = null;
 
-            var groups = new System.Collections.Generic.SortedList<string, System.Collections.Generic.SortedList<object, string>>();
-            System.Collections.Generic.SortedList<object, string> sortedList = null;
+            var groups = new SortedList<string, SortedList<object, string>>();
+            SortedList<object, string> sortedList = null;
 
-            for (int index = 0; index < sequenceAlignMap.QuerySequences.Count; index++)
+            for (var index = 0; index < sequenceAlignMap.QuerySequences.Count; index++)
             {
-                SAMAlignedSequence alignedSeq = sequenceAlignMap.QuerySequences[index];
+                var alignedSeq = sequenceAlignMap.QuerySequences[index];
                 if (!groups.TryGetValue(alignedSeq.RName, out sortedList))
                 {
-                    sortedList = new System.Collections.Generic.SortedList<object, string>();
+                    sortedList = new SortedList<object, string>();
                     groups.Add(alignedSeq.RName, sortedList);
                 }
 
-                string indices = string.Empty;
+                var indices = string.Empty;
                 if (!sortedList.TryGetValue(alignedSeq.Pos, out indices))
                 {
                     sortedList.Add(alignedSeq.Pos, index.ToString(CultureInfo.InvariantCulture));
@@ -207,7 +207,7 @@ namespace Bio.IO.BAM
                 }
             }
 
-            foreach (KeyValuePair<string, System.Collections.Generic.SortedList<object, string>> group in groups)
+            foreach (var group in groups)
             {
                 if (group.Value.Count > 0)
                 {
@@ -232,17 +232,17 @@ namespace Bio.IO.BAM
         /// </summary>
         /// <param name="sortedList">List to be written to file.</param>
         /// <returns>File name.</returns>
-        private static string WriteToFile(System.Collections.Generic.SortedList<object, string> sortedList)
+        private static string WriteToFile(SortedList<object, string> sortedList)
         {
             string[] indices;
-            string fileName = Path.GetTempFileName();
+            var fileName = Path.GetTempFileName();
 
-            using (StreamWriter writer = new StreamWriter(fileName))
+            using (var writer = new StreamWriter(fileName))
             {
-                foreach (KeyValuePair<object, string> entry in sortedList)
+                foreach (var entry in sortedList)
                 {
                     indices = entry.Value.Split(',');
-                    for (int count = 0; count < indices.Length; count++)
+                    for (var count = 0; count < indices.Length; count++)
                     {
                         writer.WriteLine(string.Format(CultureInfo.InvariantCulture, "{0},{1}", entry.Key, indices[count]));
                     }

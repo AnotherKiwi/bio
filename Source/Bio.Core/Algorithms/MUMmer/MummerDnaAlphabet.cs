@@ -15,11 +15,11 @@ namespace Bio.Algorithms.MUMmer
         /// </summary>
         protected MummerDnaAlphabet()
         {
-            this.Name = "mummerDna";
+            Name = "mummerDna";
 
-            this.ConcatenationChar = (byte)'+';
+            ConcatenationChar = (byte)'+';
 
-            this.AddNucleotide(this.ConcatenationChar, "Concatenation");
+            AddNucleotide(ConcatenationChar, "Concatenation");
         }
 
         /// <summary>

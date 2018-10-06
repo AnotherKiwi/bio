@@ -34,7 +34,7 @@
 
             // Set allowed symbols
             const string symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ*-abcdefghijklmnopqrstuvwxyz";
-            foreach (char symbol in symbols)
+            foreach (var symbol in symbols)
             {
                 supportedAlphabets.Add((byte)symbol);
             }

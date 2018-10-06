@@ -172,7 +172,7 @@ namespace Bio.IO.BAM
                     startIndex++;
                     break;
                 case 'c': //signed 8-bit integer
-                    int intValue = (array[startIndex] & 0x7F);
+                    var intValue = (array[startIndex] & 0x7F);
                     if ((array[startIndex] & 0x80) == 0x80)
                     {
                         intValue = intValue + sbyte.MinValue;
@@ -216,16 +216,16 @@ namespace Bio.IO.BAM
                     startIndex += len;
                     break;
                 case 'B':
-                    char arrayType = (char)array[startIndex];
+                    var arrayType = (char)array[startIndex];
                     startIndex++;
-                    int arrayLen = Helper.GetInt32(array, startIndex);
+                    var arrayLen = Helper.GetInt32(array, startIndex);
                     startIndex += 4;
-                    StringBuilder strBuilder = new StringBuilder();
+                    var strBuilder = new StringBuilder();
                     strBuilder.Append(arrayType);
-                    for (int i = 0; i < arrayLen; i++)
+                    for (var i = 0; i < arrayLen; i++)
                     {
                         strBuilder.Append(',');
-                        string value = GetOptionalValue(arrayType, array, ref startIndex).ToString();
+                        var value = GetOptionalValue(arrayType, array, ref startIndex).ToString();
                         strBuilder.Append(value);
                     }
 
@@ -245,7 +245,7 @@ namespace Bio.IO.BAM
         /// <param name="startIndex">Start index of array from which string is stored.</param>
         private static int GetStringLength(byte[] array, int startIndex)
         {
-            int i = startIndex;
+            var i = startIndex;
             while (i < array.Length && array[i] != '\x0')
             {
                 i++;
@@ -283,7 +283,7 @@ namespace Bio.IO.BAM
         // Gets list of possible bins for a given start and end reference sequence co-ordinates.
         private static IList<uint> Reg2Bins(uint start, uint end)
         {
-            List<uint> bins = new List<uint>();
+            var bins = new List<uint>();
             uint k;
             --end;
             bins.Add(0);
@@ -298,8 +298,8 @@ namespace Bio.IO.BAM
         // Gets all chunks for the specified ref sequence index.
         private static IList<Chunk> GetChunks(BAMReferenceIndexes refIndex)
         {
-            List<Chunk> chunks = new List<Chunk>();
-            foreach (Bin bin in refIndex.Bins)
+            var chunks = new List<Chunk>();
+            foreach (var bin in refIndex.Bins)
             {
                 chunks.InsertRange(chunks.Count, bin.Chunks);
             }
@@ -311,9 +311,9 @@ namespace Bio.IO.BAM
         private static IList<Chunk> GetChunks(BAMReferenceIndexes refIndex, int start, int end)
         {
             //get all bins that overlap
-            IList<uint> binnumbers = Reg2Bins((uint)start, (uint)end);
+            var binnumbers = Reg2Bins((uint)start, (uint)end);
             //now only get those that match
-            List<Chunk> chunks = refIndex.Bins.Where(B => binnumbers.Contains(B.BinNumber)).SelectMany(x=>x.Chunks).ToList();
+            var chunks = refIndex.Bins.Where(B => binnumbers.Contains(B.BinNumber)).SelectMany(x=>x.Chunks).ToList();
             //now use linear indexing to filter any chunks that end before the first start
             if (refIndex.LinearIndex.Count > 0)
             {
@@ -338,11 +338,11 @@ namespace Bio.IO.BAM
         /// <param name="chunks">Chunks to sort and merge.</param>
         private static List<Chunk> SortAndMergeChunks(IEnumerable<Chunk> chunks)
         {
-            List<Chunk> sortedChunks = chunks.OrderBy(C => C, ChunkSorterForMerging.GetInstance()).ToList();
-            for (int i = 0; i < sortedChunks.Count - 1; i++)
+            var sortedChunks = chunks.OrderBy(C => C, ChunkSorterForMerging.GetInstance()).ToList();
+            for (var i = 0; i < sortedChunks.Count - 1; i++)
             {
-                Chunk currentChunk = sortedChunks[i];
-                Chunk nextChunk = sortedChunks[i + 1];
+                var currentChunk = sortedChunks[i];
+                var nextChunk = sortedChunks[i + 1];
 
                 if (nextChunk.ChunkStart.CompareTo(currentChunk.ChunkStart) >= 0 && nextChunk.ChunkStart.CompareTo(currentChunk.ChunkEnd) <= 0)
                 {
@@ -365,7 +365,7 @@ namespace Bio.IO.BAM
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
 
             return GetAlignment(stream);
@@ -380,7 +380,7 @@ namespace Bio.IO.BAM
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
 
             return GetAlignment(stream);
@@ -395,7 +395,7 @@ namespace Bio.IO.BAM
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
 
             yield return GetAlignment(stream);
@@ -410,10 +410,10 @@ namespace Bio.IO.BAM
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
             
-            return this.GetAlignmentMapIterator(stream);
+            return GetAlignmentMapIterator(stream);
         }
 
         /// <summary>
@@ -437,14 +437,14 @@ namespace Bio.IO.BAM
             readStream = reader;
             ValidateReader();
             
-            SAMAlignmentHeader header = this.GetHeader();
+            var header = GetHeader();
             SequenceAlignmentMap seqMap = null;
             if (refSeqIndex.HasValue && refSeqName == null)
             {
                 // verify whether the chromosome index is there in the header or not.
                 if (refSeqIndex < 0 || refSeqIndex >= header.ReferenceSequences.Count)
                 {
-                    throw new ArgumentOutOfRangeException("refSeqIndex");
+                    throw new ArgumentOutOfRangeException(nameof(refSeqIndex));
                 }
             }
             else if (refSeqName != null && !refSeqIndex.HasValue)
@@ -452,8 +452,8 @@ namespace Bio.IO.BAM
                 refSeqIndex = refSeqNames.IndexOf(refSeqName);
                 if (refSeqIndex < 0 || !refSeqIndex.HasValue)
                 {
-                    string message = string.Format(CultureInfo.InvariantCulture, Properties.Resource.BAM_RefSeqNotFound, refSeqName);
-                    throw new ArgumentException(message, "refSeqName");
+                    var message = string.Format(CultureInfo.InvariantCulture, Properties.Resource.BAM_RefSeqNotFound, refSeqName);
+                    throw new ArgumentException(message, nameof(refSeqName));
                 }
             }
             else if (refSeqIndex.HasValue && refSeqName != null)
@@ -468,7 +468,7 @@ namespace Bio.IO.BAM
                 }
                 else
                 {
-                    throw new ArgumentNullException("refSeqIndex");
+                    throw new ArgumentNullException(nameof(refSeqIndex));
                 }
             }
             else
@@ -497,14 +497,14 @@ namespace Bio.IO.BAM
             }
             readStream = reader;
             ValidateReader();
-            SAMAlignmentHeader header = this.GetHeader();
+            var header = GetHeader();
 
             if (refSeq.HasValue && refSeqName == null)
             {
                 // verify whether the chromosome index is there in the header or not.
                 if (refSeq < 0 || refSeq >= header.ReferenceSequences.Count)
                 {
-                    throw new ArgumentOutOfRangeException("refSeq");
+                    throw new ArgumentOutOfRangeException(nameof(refSeq));
                 }
             }
             else if (refSeqName != null && !refSeq.HasValue)
@@ -512,8 +512,8 @@ namespace Bio.IO.BAM
                 refSeq = refSeqNames.IndexOf(refSeqName);
                 if (refSeq < 0 || !refSeq.HasValue)
                 {
-                    string message = string.Format(CultureInfo.InvariantCulture, Properties.Resource.BAM_RefSeqNotFound, refSeqName);
-                    throw new ArgumentException(message, "refSeqName");
+                    var message = string.Format(CultureInfo.InvariantCulture, Properties.Resource.BAM_RefSeqNotFound, refSeqName);
+                    throw new ArgumentException(message, nameof(refSeqName));
                 }
             }
             else if (refSeq.HasValue && refSeqName != null)
@@ -525,7 +525,7 @@ namespace Bio.IO.BAM
             {
                 if (bamIndexStorage != null)
                 {
-                    foreach (SAMAlignedSequence seq in GetAlignmentWithIndexYield(bamIndexStorage, (int)refSeq, start, end))
+                    foreach (var seq in GetAlignmentWithIndexYield(bamIndexStorage, (int)refSeq, start, end))
                     {
                         yield return seq;
                     }
@@ -537,7 +537,7 @@ namespace Bio.IO.BAM
             }
             else
             {
-                foreach (SAMAlignedSequence seq in GetAlignmentWithoutIndexYield())
+                foreach (var seq in GetAlignmentWithoutIndexYield())
                 {
                     yield return seq;
                 }
@@ -548,14 +548,14 @@ namespace Bio.IO.BAM
         {
             IList<Chunk> chunks;
 
-            BAMIndex bamIndexInfo = bamIndexStorage.Read();
+            var bamIndexInfo = bamIndexStorage.Read();
 
             if (refSeqIndex != -1 && bamIndexInfo.RefIndexes.Count <= refSeqIndex)
             {
-                throw new ArgumentOutOfRangeException("refSeqIndex");
+                throw new ArgumentOutOfRangeException(nameof(refSeqIndex));
             }
 
-            BAMReferenceIndexes refIndex = bamIndexInfo.RefIndexes[refSeqIndex];
+            var refIndex = bamIndexInfo.RefIndexes[refSeqIndex];
 
             if (start == 0 && end == int.MaxValue)
             {
@@ -566,8 +566,8 @@ namespace Bio.IO.BAM
                 chunks = GetChunks(refIndex, start, end);
             }
 
-            IList<SAMAlignedSequence> alignedSeqs = GetAlignedSequences(chunks, start, end);
-            foreach (SAMAlignedSequence alignedSeq in alignedSeqs)
+            var alignedSeqs = GetAlignedSequences(chunks, start, end);
+            foreach (var alignedSeq in alignedSeqs)
             {
                 yield return alignedSeq;
             }
@@ -581,14 +581,14 @@ namespace Bio.IO.BAM
             IList<Chunk> chunks;
             seqMap = new SequenceAlignmentMap(header);
 
-            BAMIndex bamIndexInfo = bamIndexStorage.Read();
+            var bamIndexInfo = bamIndexStorage.Read();
 
             if (refSeqIndex != -1 && bamIndexInfo.RefIndexes.Count <= refSeqIndex)
             {
-                throw new ArgumentOutOfRangeException("refSeqIndex");
+                throw new ArgumentOutOfRangeException(nameof(refSeqIndex));
             }
 
-            BAMReferenceIndexes refIndex = bamIndexInfo.RefIndexes[refSeqIndex];
+            var refIndex = bamIndexInfo.RefIndexes[refSeqIndex];
 
             if (start == 0 && end == int.MaxValue)
             {
@@ -599,8 +599,8 @@ namespace Bio.IO.BAM
                 chunks = GetChunks(refIndex, start, end);
             }
 
-            IList<SAMAlignedSequence> alignedSeqs = GetAlignedSequences(chunks, start, end);
-            foreach (SAMAlignedSequence alignedSeq in alignedSeqs)
+            var alignedSeqs = GetAlignedSequences(chunks, start, end);
+            foreach (var alignedSeq in alignedSeqs)
             {
                 seqMap.QuerySequences.Add(alignedSeq);
             }
@@ -611,18 +611,18 @@ namespace Bio.IO.BAM
         private void GetAlignmentWithoutIndex(SAMAlignmentHeader header, ref SequenceAlignmentMap seqMap)
         {
             Chunk lastChunk = null;
-            FileOffset lastOffSet = new FileOffset(0,0);
+            var lastOffSet = new FileOffset(0,0);
             BAMReferenceIndexes refIndices = null;
-            int lastBin = int.MaxValue;
-            int lastRefSeqIndex = 0;
-            int lastRefPos = Int32.MinValue;
+            var lastBin = int.MaxValue;
+            var lastRefSeqIndex = 0;
+            var lastRefPos = Int32.MinValue;
             
             if (createBamIndex)
             {
                 bamIndex = new BAMIndex();
-                foreach (int len in this.refSeqLengths)
+                foreach (var len in refSeqLengths)
                 {
-                    this.bamIndex.RefIndexes.Add(new BAMReferenceIndexes(len));
+                    bamIndex.RefIndexes.Add(new BAMReferenceIndexes(len));
                 }
                 refIndices = bamIndex.RefIndexes[0];
             }
@@ -638,13 +638,13 @@ namespace Bio.IO.BAM
                 {
                     lastOffSet=new FileOffset((ulong)currentCompressedBlockStartPos,(ushort)deCompressedStream.Position);
                 }
-                SAMAlignedSequence alignedSeq = GetAlignedSequence(0, int.MaxValue);
+                var alignedSeq = GetAlignedSequence(0, int.MaxValue);
 
                 // BAM indexing
                 if (createBamIndex)
                 {
                     //TODO: This linear lookup is probably performance murder if many names
-                    int curRefSeqIndex = refSeqNames.IndexOf(alignedSeq.RName);
+                    var curRefSeqIndex = refSeqNames.IndexOf(alignedSeq.RName);
                     if (lastRefSeqIndex != curRefSeqIndex)
                     {
                         //switch to a new reference sequence and force the last bins to be unequal
@@ -667,7 +667,7 @@ namespace Bio.IO.BAM
                     if (lastBin != alignedSeq.Bin)
                     {
                         //do we need to add a new bin here or have we already seen it?
-                        Bin bin = refIndices.Bins.FirstOrDefault(B => B.BinNumber == alignedSeq.Bin);
+                        var bin = refIndices.Bins.FirstOrDefault(B => B.BinNumber == alignedSeq.Bin);
                         if (bin == null)
                         {
                             bin = new Bin();
@@ -680,7 +680,7 @@ namespace Bio.IO.BAM
                             lastChunk.ChunkEnd = lastOffSet;
                         }
                         //make a new chunk for the new bin
-                        Chunk chunk = new Chunk();
+                        var chunk = new Chunk();
                         chunk.ChunkStart = lastOffSet;
                         bin.Chunks.Add(chunk);
                         //update variables
@@ -700,13 +700,13 @@ namespace Bio.IO.BAM
             // BAM indexing
             if (createBamIndex)
             {
-                ulong compressedOff=(ulong)readStream.Position;
+                var compressedOff=(ulong)readStream.Position;
                 ushort uncompressedEnd=0;
                 //TODO: Shouldn't this always be true?  Or go to max value?
                 if (deCompressedStream != null) {
                     uncompressedEnd = (ushort)deCompressedStream.Position;
                 }
-                FileOffset veryLast=new FileOffset(compressedOff,uncompressedEnd);
+                var veryLast=new FileOffset(compressedOff,uncompressedEnd);
                 lastChunk.ChunkEnd=veryLast;
                 foreach (var ri in bamIndex.RefIndexes)
                 {
@@ -725,7 +725,7 @@ namespace Bio.IO.BAM
 
             while (!IsEOF())
             {
-                SAMAlignedSequence alignedSeq = GetAlignedSequence(0, int.MaxValue);
+                var alignedSeq = GetAlignedSequence(0, int.MaxValue);
                 yield return alignedSeq;
             }
         }
@@ -738,7 +738,7 @@ namespace Bio.IO.BAM
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
 
             try
@@ -763,7 +763,7 @@ namespace Bio.IO.BAM
         {
             if (bamStream == null)
             {
-                throw new ArgumentNullException("bamStream");
+                throw new ArgumentNullException(nameof(bamStream));
             }
 
             readStream = bamStream;
@@ -822,7 +822,7 @@ namespace Bio.IO.BAM
         private void ValidateReader()
         {
             isCompressed = true;
-            byte[] array = new byte[4];
+            var array = new byte[4];
 
             if (readStream.Read(array, 0, 4) != 4)
             {
@@ -849,40 +849,40 @@ namespace Bio.IO.BAM
         /// </summary>
         private SAMAlignmentHeader GetHeader()
         {
-            SAMAlignmentHeader header = new SAMAlignmentHeader();
+            var header = new SAMAlignmentHeader();
             refSeqNames = new RegexValidatedStringList(SAMAlignedSequenceHeader.RNameRegxExprPattern);
             refSeqLengths = new List<int>();
 
             readStream.Seek(0, SeekOrigin.Begin);
-            this.deCompressedStream = null;
-            byte[] array = new byte[8];
+            deCompressedStream = null;
+            var array = new byte[8];
             ReadUnCompressedData(array, 0, 8);
-            int l_text = Helper.GetInt32(array, 4);
-            byte[] samHeaderData = new byte[l_text];
+            var l_text = Helper.GetInt32(array, 4);
+            var samHeaderData = new byte[l_text];
             if (l_text != 0)
             {
                 ReadUnCompressedData(samHeaderData, 0, l_text);
             }
 
             ReadUnCompressedData(array, 0, 4);
-            int noofRefSeqs = Helper.GetInt32(array, 0);
+            var noofRefSeqs = Helper.GetInt32(array, 0);
 
-            for (int i = 0; i < noofRefSeqs; i++)
+            for (var i = 0; i < noofRefSeqs; i++)
             {
                 ReadUnCompressedData(array, 0, 4);
-                int len = Helper.GetInt32(array, 0);
-                byte[] refName = new byte[len];
+                var len = Helper.GetInt32(array, 0);
+                var refName = new byte[len];
                 ReadUnCompressedData(refName, 0, len);
                 ReadUnCompressedData(array, 0, 4);
-                int refLen = Helper.GetInt32(array, 0);
+                var refLen = Helper.GetInt32(array, 0);
                 refSeqNames.Add(Encoding.UTF8.GetString(refName, 0, refName.Length - 1));
                 refSeqLengths.Add(refLen);
             }
 
             if (samHeaderData.Length != 0)
             {
-                string str = Encoding.UTF8.GetString(samHeaderData, 0, samHeaderData.Length);
-                using (StringReader reader = new StringReader(str))
+                var str = Encoding.UTF8.GetString(samHeaderData, 0, samHeaderData.Length);
+                using (var reader = new StringReader(str))
                 {
                     header = SAMParser.ParseSAMHeader(reader);
                 }
@@ -890,10 +890,10 @@ namespace Bio.IO.BAM
 
             header.ReferenceSequences.Clear();
 
-            for (int i = 0; i < refSeqNames.Count; i++)
+            for (var i = 0; i < refSeqNames.Count; i++)
             {
-                string refname = refSeqNames[i];
-                int length = refSeqLengths[i];
+                var refname = refSeqNames[i];
+                var length = refSeqLengths[i];
                 header.ReferenceSequences.Add(new ReferenceSequenceInfo(refname, length));
             }
 
@@ -909,16 +909,16 @@ namespace Bio.IO.BAM
             if (bamIndex == null)
                 return;
 
-            for (int i = 0; i < bamIndex.RefIndexes.Count; i++)
+            for (var i = 0; i < bamIndex.RefIndexes.Count; i++)
             {
-                BAMReferenceIndexes bamRefIndex = bamIndex.RefIndexes[i];
+                var bamRefIndex = bamIndex.RefIndexes[i];
 
-                for (int j = 0; j < bamRefIndex.Bins.Count; j++)
+                for (var j = 0; j < bamRefIndex.Bins.Count; j++)
                 {
-                    Bin bin = bamRefIndex.Bins[j];
-                    int lastIndex = 0;
-                    int noofchunksToRemove = 0;
-                    for (int k = 1; k < bin.Chunks.Count; k++)
+                    var bin = bamRefIndex.Bins[j];
+                    var lastIndex = 0;
+                    var noofchunksToRemove = 0;
+                    for (var k = 1; k < bin.Chunks.Count; k++)
                     {
                         // check for the chunks which are in the same compressed blocks.
                         //note picard merges the same or adjacent blocks, though I think that may be a coding error oon their part
@@ -934,7 +934,7 @@ namespace Bio.IO.BAM
                     }
                     if (noofchunksToRemove > 0)
                     {
-                        for (int index = 0; index < noofchunksToRemove; index++)
+                        for (var index = 0; index < noofchunksToRemove; index++)
                         {
                             bin.Chunks.RemoveAt(bin.Chunks.Count - 1);
                         }
@@ -949,19 +949,19 @@ namespace Bio.IO.BAM
         /// </summary>
         private SAMAlignedSequence GetAlignedSequence(int start, int end)
         {
-            byte[] array = new byte[4];
+            var array = new byte[4];
 
             ReadUnCompressedData(array, 0, 4);
-            int blockLen = Helper.GetInt32(array, 0);
-            byte[] alignmentBlock = new byte[blockLen];
+            var blockLen = Helper.GetInt32(array, 0);
+            var alignmentBlock = new byte[blockLen];
             ReadUnCompressedData(alignmentBlock, 0, blockLen);
-            SAMAlignedSequence alignedSeq = new SAMAlignedSequence();
+            var alignedSeq = new SAMAlignedSequence();
             int value;
             UInt32 UnsignedValue;
             // 0-4 bytes
-            int refSeqIndex = Helper.GetInt32(alignmentBlock, 0);
+            var refSeqIndex = Helper.GetInt32(alignmentBlock, 0);
 
-            alignedSeq.SetPreValidatedRName(refSeqIndex == -1 ? "*" : this.refSeqNames[refSeqIndex]);
+            alignedSeq.SetPreValidatedRName(refSeqIndex == -1 ? "*" : refSeqNames[refSeqIndex]);
 
             // 4-8 bytes
             alignedSeq.Pos = Helper.GetInt32(alignmentBlock, 4) + 1;
@@ -982,21 +982,21 @@ namespace Bio.IO.BAM
             // 9th bytes
             alignedSeq.MapQ = (int)(UnsignedValue & 0x0000FF00) >> 8;
             // 8th bytes
-            int queryNameLen = (int)(UnsignedValue & 0x000000FF);
+            var queryNameLen = (int)(UnsignedValue & 0x000000FF);
 
             // 12 - 16 bytes
             UnsignedValue = Helper.GetUInt32(alignmentBlock, 12);
             // 14-16 bytes
-            int flagValue = (int)(UnsignedValue & 0xFFFF0000) >> 16;
+            var flagValue = (int)(UnsignedValue & 0xFFFF0000) >> 16;
             alignedSeq.Flag = (SAMFlags)flagValue;
             // 12-14 bytes
-            int cigarLen = (int)(UnsignedValue & 0x0000FFFF);
+            var cigarLen = (int)(UnsignedValue & 0x0000FFFF);
 
             // 16-20 bytes
-            int readLen = Helper.GetInt32(alignmentBlock, 16);
+            var readLen = Helper.GetInt32(alignmentBlock, 16);
 
             // 20-24 bytes
-            int mateRefSeqIndex = Helper.GetInt32(alignmentBlock, 20);
+            var mateRefSeqIndex = Helper.GetInt32(alignmentBlock, 20);
             if (mateRefSeqIndex != -1)
             {
                 alignedSeq.SetPreValidatedMRNM(refSeqNames[mateRefSeqIndex]);
@@ -1014,13 +1014,13 @@ namespace Bio.IO.BAM
 
             // 32-(32+readLen) bytes
             alignedSeq.QName = Encoding.UTF8.GetString(alignmentBlock, 32, queryNameLen - 1);
-            StringBuilder strbuilder = new StringBuilder();
-            int startIndex = 32 + queryNameLen;
+            var strbuilder = new StringBuilder();
+            var startIndex = 32 + queryNameLen;
 
-            for (int i = startIndex; i < (startIndex + cigarLen * 4); i += 4)
+            for (var i = startIndex; i < (startIndex + cigarLen * 4); i += 4)
             {
                 // Get the CIGAR operation length stored in first 28 bits.
-                UInt32 cigarValue = Helper.GetUInt32(alignmentBlock, i);
+                var cigarValue = Helper.GetUInt32(alignmentBlock, i);
                 strbuilder.Append(((cigarValue & 0xFFFFFFF0) >> 4).ToString(CultureInfo.InvariantCulture));
 
                 // Get the CIGAR operation stored in last 4 bits.
@@ -1061,7 +1061,7 @@ namespace Bio.IO.BAM
                 }
             }
 
-            string cigar = strbuilder.ToString();
+            var cigar = strbuilder.ToString();
             alignedSeq.SetPreValidatedCIGAR(string.IsNullOrWhiteSpace(cigar) ? "*" : cigar);
             // if there is no overlap no need to parse further.
             // ZeroBasedRefEnd < start
@@ -1073,8 +1073,8 @@ namespace Bio.IO.BAM
 
             startIndex += cigarLen * 4;
             byte[] sequence;
-            int sequenceIndex = 0;
-            int index = startIndex;
+            var sequenceIndex = 0;
+            var index = startIndex;
             /* A read length of 0 indicates a double read, and apparently samtools does encode this 
                as an asterisk but leaves it to the parser to fill in a "*" for the sequence and quality scores,
                we detect and avoid this edge case for both the sequence and quality score creation by evaluating 
@@ -1113,16 +1113,16 @@ namespace Bio.IO.BAM
             if (alignmentBlock[startIndex] != 0xFF && readLen != 0)
             {
                 qualValues = new byte[readLen];
-                for (int i = startIndex; i < (startIndex + readLen); i++)
+                for (var i = startIndex; i < (startIndex + readLen); i++)
                 {
                     qualValues[i - startIndex] = (byte)(alignmentBlock[i] + 33);
                 }
                 //validate quality scores here
                 byte badVal;
-                bool ok = QualitativeSequence.ValidateQualScores(qualValues, SAMParser.QualityFormatType, out badVal);
+                var ok = QualitativeSequence.ValidateQualScores(qualValues, SAMParser.QualityFormatType, out badVal);
                 if (!ok)
                 {
-                    string message = string.Format(CultureInfo.CurrentUICulture,
+                    var message = string.Format(CultureInfo.CurrentUICulture,
                                          Properties.Resource.InvalidEncodedQualityScoreFound,
                                          (char)badVal,
                                          SAMParser.QualityFormatType);
@@ -1141,12 +1141,12 @@ namespace Bio.IO.BAM
             {
                 for (index = startIndex; index < alignmentBlock.Length; )
                 {
-                    SAMOptionalField optionalField = new SAMOptionalField
+                    var optionalField = new SAMOptionalField
                         {
                             Tag = Encoding.UTF8.GetString(alignmentBlock, index, 2)
                         };
                     index += 2;
-                    char vType = (char)alignmentBlock[index++];
+                    var vType = (char)alignmentBlock[index++];
                     
                     // SAM format supports [AifZH] for value type.
                     // In BAM, an integer may be stored as a signed 8-bit integer (c), unsigned 8-bit integer (C), signed short (s), unsigned
@@ -1192,13 +1192,13 @@ namespace Bio.IO.BAM
                 GetNextBlock();
             }
 
-            long remainingBlockSize = deCompressedStream.Length - deCompressedStream.Position;
+            var remainingBlockSize = deCompressedStream.Length - deCompressedStream.Position;
             if (remainingBlockSize == 0)
             {
                 return;
             }
 
-            int bytesToRead = remainingBlockSize >= (long)count ? count : (int)remainingBlockSize;
+            var bytesToRead = remainingBlockSize >= (long)count ? count : (int)remainingBlockSize;
             deCompressedStream.Read(array, offset, bytesToRead);
 
             if (bytesToRead < count)
@@ -1213,10 +1213,10 @@ namespace Bio.IO.BAM
         /// </summary>
         private void GetNextBlock()
         {
-            int ELEN = 0;
-            int BSIZE = 0;
-            int size = 0;
-            byte[] arrays = new byte[18];
+            var ELEN = 0;
+            var BSIZE = 0;
+            var size = 0;
+            var arrays = new byte[18];
             deCompressedStream = null;
             if (readStream.Length <= readStream.Position)
             {
@@ -1236,8 +1236,8 @@ namespace Bio.IO.BAM
 
             size = BSIZE + 1;
 
-            byte[] block = new byte[size];
-            using (MemoryStream memStream = new MemoryStream(size))
+            var block = new byte[size];
+            using (var memStream = new MemoryStream(size))
             {
                 arrays.CopyTo(block, 0);
 
@@ -1246,7 +1246,7 @@ namespace Bio.IO.BAM
                     throw new Exception(Properties.Resource.BAM_UnableToReadCompressedBlock);
                 }
 
-                uint unCompressedBlockSize = Helper.GetUInt32(block, size - 4);
+                var unCompressedBlockSize = Helper.GetUInt32(block, size - 4);
 
                 deCompressedStream = GetTempStream(unCompressedBlockSize);
 
@@ -1313,7 +1313,7 @@ namespace Bio.IO.BAM
 
         internal IEnumerable<SAMAlignedSequence> GetAlignmentYield(Stream bamStream, BAMIndexStorage bamIndexStorage, int refSeqIndex)
         {
-            return this.GetAlignmentMapIterator(bamStream, bamIndexStorage, null, refSeqIndex);
+            return GetAlignmentMapIterator(bamStream, bamIndexStorage, null, refSeqIndex);
         }
 
         // Returns SequenceAlignmentMap by parsing specified BAM stream and BAMIndexFile for the specified reference sequence name.
@@ -1324,7 +1324,7 @@ namespace Bio.IO.BAM
 
         internal IEnumerable<SAMAlignedSequence> GetAlignmentYield(Stream bamStream, BAMIndexStorage bamIndexStorage, string refSeqName)
         {
-            return this.GetAlignmentMapIterator(bamStream, bamIndexStorage, refSeqName);
+            return GetAlignmentMapIterator(bamStream, bamIndexStorage, refSeqName);
         }
 
         // Returns SequenceAlignmentMap by prasing specified BAM stream and BAMIndexFile for the specified reference sequence index.
@@ -1336,7 +1336,7 @@ namespace Bio.IO.BAM
 
         internal IEnumerable<SAMAlignedSequence> GetAlignmentYield(Stream bamStream, BAMIndexStorage bamIndexStorage, string refSeqName, int start, int end)
         {
-            return this.GetAlignmentMapIterator(bamStream, bamIndexStorage, refSeqName, -1, start, end);
+            return GetAlignmentMapIterator(bamStream, bamIndexStorage, refSeqName, -1, start, end);
         }
 
         // Returns SequenceAlignmentMap by prasing specified BAM stream and BAMIndexFile for the specified reference sequence index.
@@ -1348,14 +1348,14 @@ namespace Bio.IO.BAM
 
         internal IEnumerable<SAMAlignedSequence> GetAlignmentYield(Stream bamStream, BAMIndexStorage bamIndexStorage, int refSeqIndex, int start, int end)
         {
-            return this.GetAlignmentMapIterator(bamStream, bamIndexStorage, null, refSeqIndex, start, end);
+            return GetAlignmentMapIterator(bamStream, bamIndexStorage, null, refSeqIndex, start, end);
         }
 
         // Gets aligned sequence from the specified chunks of the BAM file which overlaps with the specified start and end co-ordinates.
         internal IList<SAMAlignedSequence> GetAlignedSequences(IList<Chunk> chunks, int start, int end)
         {
-            List<SAMAlignedSequence> alignedSeqs = new List<SAMAlignedSequence>();
-            foreach (Chunk chunk in chunks)
+            var alignedSeqs = new List<SAMAlignedSequence>();
+            foreach (var chunk in chunks)
             {
                 readStream.Seek((long)chunk.ChunkStart.CompressedBlockOffset, SeekOrigin.Begin);
                 GetNextBlock();
@@ -1366,7 +1366,7 @@ namespace Bio.IO.BAM
                     // read until eof or end of the chunck is reached.
                     while (!IsEOF() && (currentCompressedBlockStartPos < (long)chunk.ChunkEnd.CompressedBlockOffset || deCompressedStream.Position < chunk.ChunkEnd.UncompressedBlockOffset))
                     {
-                        SAMAlignedSequence alignedSeq = GetAlignedSequence(start, end);
+                        var alignedSeq = GetAlignedSequence(start, end);
                         if (alignedSeq != null)
                         {
                             alignedSeqs.Add(alignedSeq);

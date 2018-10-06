@@ -28,22 +28,22 @@ namespace Bio.Padena.Tests
             const int DangleThreshold = 3;
             const int RedundantThreshold = 10;
 
-            List<ISequence> readSeqs = TestInputs.GetDanglingReads();
-            using (ParallelDeNovoAssembler assembler = new ParallelDeNovoAssembler())
+            var readSeqs = TestInputs.GetDanglingReads();
+            using (var assembler = new ParallelDeNovoAssembler())
             {
                 assembler.KmerLength = KmerLength;
                 assembler.DanglingLinksThreshold = DangleThreshold;
                 assembler.RedundantPathLengthThreshold = RedundantThreshold;
-                IDeNovoAssembly result = assembler.Assemble(readSeqs);
+                var result = assembler.Assemble(readSeqs);
 
                 // Compare the two graphs
                 Assert.AreEqual(1, result.AssembledSequences.Count());
-                HashSet<string> expectedContigs = new HashSet<string>() 
+                var expectedContigs = new HashSet<string>() 
             { 
                 "ATCGCTAGCATCGAACGATCATT" 
             };
 
-                foreach (ISequence contig in result.AssembledSequences)
+                foreach (var contig in result.AssembledSequences)
                 {
                     Assert.IsTrue(expectedContigs.Contains(new string(contig.Select(a => (char)a).ToArray())));
                 }
@@ -59,11 +59,11 @@ namespace Bio.Padena.Tests
         public void PalindromicAssembleTest()
         {
             const int KmerLength = 19;
-            string testSeq = @"TTTTTTCAATTGAAAAAAATCTGTATT";
-            string testSeq2 = "T" + testSeq;
+            var testSeq = @"TTTTTTCAATTGAAAAAAATCTGTATT";
+            var testSeq2 = "T" + testSeq;
             var testSequence = new Sequence(DnaAlphabet.Instance, testSeq);
             var testSequence2 = new Sequence(DnaAlphabet.Instance, testSeq2);
-            List<ISequence> seqs = new List<ISequence>();
+            var seqs = new List<ISequence>();
             
             //two test sequences that are different but assemble to the same sequence
             //only one of these can be done correctly in current algorithmic setup
@@ -72,7 +72,7 @@ namespace Bio.Padena.Tests
             {
                 seqs.Clear();
                 seqs.Add(curTestSeq);
-                using (ParallelDeNovoAssembler assembler = new ParallelDeNovoAssembler())
+                using (var assembler = new ParallelDeNovoAssembler())
                 {
                     assembler.KmerLength = KmerLength;
                     assembler.AllowErosion = false;
@@ -80,10 +80,10 @@ namespace Bio.Padena.Tests
                     assembler.ContigCoverageThreshold = 0;
                     assembler.DanglingLinksThreshold = 0;
 
-                    IDeNovoAssembly result = assembler.Assemble(seqs);
+                    var result = assembler.Assemble(seqs);
                     // Compare the two graphs, ensure that an additional base is not added (which might be inco
                     Assert.AreEqual(1, result.AssembledSequences.Count);
-                    bool correctContig = result.AssembledSequences[0].SequenceEqual(testSequence);
+                    var correctContig = result.AssembledSequences[0].SequenceEqual(testSequence);
                     if (!correctContig)
                         correctContig = result.AssembledSequences[0].GetReverseComplementedSequence().SequenceEqual(testSequence);
                     Assert.IsTrue(correctContig);

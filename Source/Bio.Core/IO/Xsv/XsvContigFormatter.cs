@@ -49,23 +49,23 @@ namespace Bio.IO.Xsv
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
 
             if (contig == null)
             {
-                throw new ArgumentNullException("contig");
+                throw new ArgumentNullException(nameof(contig));
             }
 
             // Write the consensus sequence out.
-            base.Format(stream, contig.Consensus);
+            Format(stream, contig.Consensus);
 
             // Write out the contigs.
-            using (StreamWriter writer = stream.OpenWrite(leaveOpen: true))
+            using (var writer = stream.OpenWrite(leaveOpen: true))
             {
-                foreach (Contig.AssembledSequence aSeq in contig.Sequences)
+                foreach (var aSeq in contig.Sequences)
                 {
-                    this.Write(writer, aSeq.Sequence, (long)aSeq.Sequence.Metadata[XsvSparseParser.MetadataOffsetKey]);
+                    Write(writer, aSeq.Sequence, (long)aSeq.Sequence.Metadata[XsvSparseParser.MetadataOffsetKey]);
                 }
             }
         }

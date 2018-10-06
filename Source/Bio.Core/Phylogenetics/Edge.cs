@@ -26,7 +26,7 @@
         /// <returns>Edge as object</returns>
         public Edge Clone()
         {
-            return (Edge) this.MemberwiseClone();
+            return (Edge) MemberwiseClone();
         }
     }
 

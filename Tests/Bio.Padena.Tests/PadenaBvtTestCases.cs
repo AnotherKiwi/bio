@@ -62,7 +62,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep1BuildKmers()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidateDe2AssemblerBuildKmers(Constants.OneLineReadsNode);
             }
@@ -79,7 +79,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep1KmerBuilderBuild()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidateKmerBuilderBuild(Constants.OneLineReadsNode);
             }
@@ -96,7 +96,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep1KmerBuilderBuildWithSequence()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidateKmerBuilderBuildWithSequence(Constants.OneLineReadsNode);
             }
@@ -115,7 +115,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep1KmersOfSequenceCtorWithBuildKmers()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidateKmersOfSequenceCtorWithBuildKmers(Constants.SmallChromosomeReadsNode);
             }
@@ -134,7 +134,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep1KmersOfSequenceCtor()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidateKmersOfSequenceCtor(Constants.OneLineReadsNode);
             }
@@ -150,7 +150,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep1KmersOfSequenceToSequences()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidateKmersOfSequenceToSequences(Constants.OneLineReadsNode);
             }
@@ -167,7 +167,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep1KmersOfSequenceGetKmers()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidateKmersOfSequenceCtor(Constants.OneLineReadsNode);
             }
@@ -188,7 +188,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep2BuildGraph()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidateDe2AssemblerBuildGraph(Constants.OneLineStep2GraphNode);
             }
@@ -205,7 +205,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep2DeBruijnGraph()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidateDeBruijnGraphBuild(Constants.OneLineStep2GraphNode);
             }
@@ -221,7 +221,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep2DeBruijnNode()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidateDeBruijnNodeCtor(Constants.OneLineStep2GraphNode);
             }
@@ -237,7 +237,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep2DeBruijnNodeAddLeftExtension()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidateDeBruijnNodeAddLeftExtension(Constants.OneLineStep2GraphNode);
             }
@@ -253,7 +253,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep2DeBruijnNodeAddRightExtension()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidateDeBruijnNodeAddRightExtension(Constants.OneLineStep2GraphNode);
             }
@@ -274,7 +274,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep3UndangleGraph()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidateDe2AssemblerUnDangleGraph(Constants.OneLineStep3GraphNode);
             }
@@ -291,7 +291,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep3DetectErrorNodes()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidatePadenaDetectErrorNodes(Constants.OneLineStep3GraphNode);
             }
@@ -308,7 +308,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep3RemoveErrorNodes()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidatePadenaRemoveErrorNodes(Constants.OneLineStep3GraphNode);
             }
@@ -328,7 +328,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep4RemoveRedundancy()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidateDe2AssemblerRemoveRedundancy(
                     Constants.OneLineStep4ReadsAfterRemoveRedundancy);
@@ -346,7 +346,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep4RedundantPathPurgerCtor()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidateRedundantPathPurgerCtor(Constants.OneLineStep4ReadsAfterErrorRemove);
             }
@@ -362,7 +362,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep4DetectErrorNodes()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidateRedundantPathPurgerCtor(Constants.OneLineStep4ReadsAfterErrorRemove);
             }
@@ -378,7 +378,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep4RemoveErrorNodes()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidateRedundantPathPurgerCtor(Constants.OneLineStep4ReadsAfterErrorRemove);
             }
@@ -398,7 +398,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep5BuildContigs()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidateDe2AssemblerBuildContigs(Constants.OneLineStep5ReadsNode);
             }
@@ -414,7 +414,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep5SimpleContigBuilderBuildContigs()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidateSimpleContigBuilderBuild(Constants.OneLineStep5ReadsNode);
             }
@@ -434,7 +434,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep6X1Y1FormatPairedReads()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidatePairedReads(Constants.X1AndY1PairedReadsNode);
             }
@@ -450,7 +450,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep6OneAndTwoFormatPairedReads()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidatePairedReads(Constants.OneAndTwoPairedReadsNode);
             }
@@ -466,7 +466,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep6FAndRFormatPairedReads()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidatePairedReads(Constants.FAndRPairedReadsNode);
             }
@@ -482,7 +482,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep6Libraryinformation()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.AddLibraryInformation(Constants.X1AndY1FormatPairedReadAddLibrary);
             }
@@ -502,7 +502,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep6MapReadsToContigs()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidateMapReadsToContig(Constants.MapReadsToContigFullOverlapNode, true);
             }
@@ -518,7 +518,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep6MapReadsToContigsForPartialOverlap()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidateMapReadsToContig(Constants.MapReadsToContigPartialOverlapNode, false);
             }
@@ -539,7 +539,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep6FilterPairedReadsForForwardOrientation()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidateFilterPaired(Constants.FilterPairedReadContigsNode);
             }
@@ -556,7 +556,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep6FilterPairedReadsUsingRedundancy()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidateFilterPaired(Constants.FilterPairedReadContigsUsingRedundancy);
             }
@@ -574,7 +574,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep6FilterPairedReadsForReverseOrientation()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidateFilterPaired(Constants.FilterPairedReadReverseOrietnationContigsNode);
             }
@@ -595,7 +595,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep6CalculateDistanceForForwardPairedContigs()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidateContigDistance(Constants.FilterPairedReadContigsNode);
             }
@@ -613,7 +613,7 @@ namespace Bio.Padena.Tests
         [Ignore("This test is currently broken")]
         public void ValidatePadenaStep6CalculateDistanceForReversePairedContigs()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidateContigDistance(Constants.FilterPairedReadReverseOrietnationContigsNode);
             }
@@ -635,7 +635,7 @@ namespace Bio.Padena.Tests
         [Ignore("This test is currently broken")]
         public void ValidatePadenaStep6ScaffoldPathForForwardOrientation()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidateScaffoldPath(Constants.ScaffoldPathWithOverlapNode);
             }
@@ -653,7 +653,7 @@ namespace Bio.Padena.Tests
         [Ignore("This test is currently broken")]
         public void ValidatePadenaStep6ScaffoldPathForReverseOrientation()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidateScaffoldPath(Constants.ScaffoldPathWithOverlapReverseNode);
             }
@@ -675,7 +675,7 @@ namespace Bio.Padena.Tests
         [Ignore("This test is currently broken")]
         public void ValidatePadenaStep6AssembledPathWithOverlapContigs()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidateAssembledPath(Constants.AssembledPathWithOverlapNode);
             }
@@ -693,7 +693,7 @@ namespace Bio.Padena.Tests
         [Ignore("This test is currently broken")]
         public void ValidatePadenaStep6AssembledPathWithPartialOverlapContigs()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidateAssembledPath(Constants.AssembledPathWithoutOverlap);
             }
@@ -709,7 +709,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaStep6AssembledSequencesWithSmallReads()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidatePadenaAssembledSeqs(
                     Constants.AssembledSequencesForSequenceReadsNode, true, false,
@@ -727,7 +727,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidateParallelDenovoAssemblerProperties()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ParallelDenovoAssemblyProperties(
                     Constants.AssembledSequencesForSequenceReadsNode);
@@ -744,7 +744,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaSequenceContigsWithSmallReads()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidatePadenaAssembledSeqs(
                     Constants.AssembledContigsForSequenceReadsNode,
@@ -762,7 +762,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaAssembledSeqsForSmallReadsWithErosion()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidatePadenaAssembledSeqs(
                     Constants.AssembledSequencesForSequenceReadsWithErosionNode,
@@ -781,7 +781,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaAssembledSeqsForSmallReadsWithLowCoverageContig()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidatePadenaAssembledSeqs(
                     Constants.AssembledSequencesForSequenceReadsWithLCCNode,
@@ -800,7 +800,7 @@ namespace Bio.Padena.Tests
         [Category("Padena")]
         public void ValidatePadenaAssembledSeqsWithErosionAndLowCoverageContig()
         {
-            using (PadenaBvtTest testObj = new PadenaBvtTest())
+            using (var testObj = new PadenaBvtTest())
             {
                 testObj.ValidatePadenaAssembledSeqs(
                     Constants.AssembledSequencesForSequenceReadsWithErosionAndLCCNode,
@@ -821,15 +821,15 @@ namespace Bio.Padena.Tests
         public void ValidateReadContigMap()
         {
             // Read all the input sequences from xml config file
-            string filePath = utilityObj.xmlUtil.GetTextValue(Constants.SmallChromosomeReadsNode,
+            var filePath = utilityObj.xmlUtil.GetTextValue(Constants.SmallChromosomeReadsNode,
               Constants.FilePathNode).TestDir();
             IEnumerable<ISequence> sequenceReads = null;
-            FastAParser parser = new FastAParser ();
+            var parser = new FastAParser ();
             sequenceReads = parser.Parse(filePath).ToList();
             
-            ReadContigMap map = new ReadContigMap(sequenceReads);
+            var map = new ReadContigMap(sequenceReads);
             Assert.IsNotNull(map);
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 Assert.IsTrue(map.ContainsKey(sequenceReads.ElementAt(0).ID));
             }
@@ -845,14 +845,14 @@ namespace Bio.Padena.Tests
             ISequence sequence = new Sequence(Alphabets.DNA, "GATTCAAGGGCTGGGGG");
             ISequence sequenceNew;
             IList<ISequence> contigsSequence = SequenceToKmerBuilder.GetKmerSequences(sequence, KmerLength).ToList();
-            using (ContigGraph graph = new ContigGraph())
+            using (var graph = new ContigGraph())
             {
 
                 graph.BuildContigGraph(contigsSequence, KmerLength);
-                List<Node> contigs = graph.Nodes.ToList();
-                ScaffoldPath path = new ScaffoldPath();
+                var contigs = graph.Nodes.ToList();
+                var path = new ScaffoldPath();
 
-                foreach (Node node in contigs.GetRange(0, 11))
+                foreach (var node in contigs.GetRange(0, 11))
                 {
                     path.Add(new KeyValuePair<Node, Edge>(node, new Edge(true)));
                 }
@@ -885,22 +885,22 @@ namespace Bio.Padena.Tests
         internal void ValidateDe2AssemblerBuildKmers(string nodeName)
         {
             // Read all the input sequences from xml config file
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName,
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName,
               Constants.FilePathNode).TestDir();
-            string kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName,
+            var kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName,
               Constants.KmerLengthNode);
 
             // set kmerLength
-            this.KmerLength = int.Parse(kmerLength, (IFormatProvider)null);
+            KmerLength = int.Parse(kmerLength, (IFormatProvider)null);
             IEnumerable<ISequence> sequenceReads = null;
-            FastAParser parser = new FastAParser ();
+            var parser = new FastAParser ();
             sequenceReads = parser.Parse(filePath).ToList();
 
-            this.SequenceReads.Clear();                // set all the input reads and execute build kmers
-            this.SetSequenceReads(sequenceReads.ToList());
-            IEnumerable<KmersOfSequence> lstKmers =
-                (new SequenceToKmerBuilder()).Build(this.SequenceReads,
-                this.KmerLength);
+            SequenceReads.Clear();                // set all the input reads and execute build kmers
+            SetSequenceReads(sequenceReads.ToList());
+            var lstKmers =
+                (new SequenceToKmerBuilder()).Build(SequenceReads,
+                KmerLength);
 
             ValidateKmersList(new List<KmersOfSequence>(lstKmers),
                 new List<ISequence>(sequenceReads), nodeName);
@@ -917,20 +917,20 @@ namespace Bio.Padena.Tests
         /// <param name="nodeName">xml node name for test data</param>
         internal void ValidateKmerBuilderBuild(string nodeName)
         {
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
               nodeName, Constants.FilePathNode).TestDir();
-            string kmerLength = utilityObj.xmlUtil.GetTextValue(
+            var kmerLength = utilityObj.xmlUtil.GetTextValue(
               nodeName, Constants.KmerLengthNode);
 
             // Get the input reads
             IEnumerable<ISequence> sequenceReads = null;
-            FastAParser parser = new FastAParser ();
+            var parser = new FastAParser ();
             sequenceReads = parser.Parse(filePath).ToList();
             parser.Close ();
 
             // Pass all the input reads and kmerLength to generate kmers
-            SequenceToKmerBuilder builder = new SequenceToKmerBuilder();
-            IEnumerable<KmersOfSequence> lstKmers = builder.Build(sequenceReads,
+            var builder = new SequenceToKmerBuilder();
+            var lstKmers = builder.Build(sequenceReads,
               int.Parse(kmerLength, (IFormatProvider)null));
 
             // Validate kmers list
@@ -950,21 +950,21 @@ namespace Bio.Padena.Tests
         /// <param name="nodeName">xml node name used for different testcases</param>
         internal void ValidateKmerBuilderBuildWithSequence(string nodeName)
         {
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
               nodeName, Constants.FilePathNode).TestDir();
-            string kmerLength = utilityObj.xmlUtil.GetTextValue(
+            var kmerLength = utilityObj.xmlUtil.GetTextValue(
               nodeName, Constants.KmerLengthNode);
 
             // Get the input reads
             IEnumerable<ISequence> sequenceReads = null;
-            FastAParser parser = new FastAParser ();
+            var parser = new FastAParser ();
             sequenceReads = parser.Parse(filePath).ToList();
 
             // Pass each input read and kmerLength
             // Add all the generated kmers to kmer list
-            SequenceToKmerBuilder builder = new SequenceToKmerBuilder();
+            var builder = new SequenceToKmerBuilder();
             IList<KmersOfSequence> lstKmers = new List<KmersOfSequence>();
-            foreach (ISequence sequence in sequenceReads)
+            foreach (var sequence in sequenceReads)
             {
                 lstKmers.Add(builder.Build(sequence, int.Parse(kmerLength, (IFormatProvider)null)));
             }
@@ -986,13 +986,13 @@ namespace Bio.Padena.Tests
         internal void ValidateKmersList(IList<KmersOfSequence> lstKmers,
             IList<ISequence> inputReads, string nodeName)
         {
-            string kmerOutputFile = utilityObj.xmlUtil.GetTextValue(nodeName,
+            var kmerOutputFile = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.KmersOutputFileNode).TestDir();
             
             Assert.AreEqual(inputReads.Count, lstKmers.Count);
 
             // Get the array of kmer sequence using kmer positions
-            for (int kmerIndex = 0; kmerIndex < lstKmers.Count; kmerIndex++)
+            for (var kmerIndex = 0; kmerIndex < lstKmers.Count; kmerIndex++)
             {
                 Assert.AreEqual(
                     new string(inputReads[kmerIndex].Select(a => (char)a).ToArray()),
@@ -1000,26 +1000,26 @@ namespace Bio.Padena.Tests
             }
 
             // Validate all the generated kmer sequence with the expected kmer sequence
-            using (StreamReader kmerFile = new StreamReader(kmerOutputFile))
+            using (var kmerFile = new StreamReader(kmerOutputFile))
             {
-                string line = string.Empty;
-                List<string[]> fileContent = new List<string[]>();
+                var line = string.Empty;
+                var fileContent = new List<string[]>();
                 while (null != (line = kmerFile.ReadLine()))
                 {
                     fileContent.Add(line.Split(','));
                 }
 
-                for (int kmerIndex = 0; kmerIndex < lstKmers.Count; kmerIndex++)
+                for (var kmerIndex = 0; kmerIndex < lstKmers.Count; kmerIndex++)
                 {
-                    int count = 0;
-                    HashSet<KmersOfSequence.KmerPositions> kmers =
+                    var count = 0;
+                    var kmers =
                         lstKmers[kmerIndex].Kmers;
 
-                    foreach (KmersOfSequence.KmerPositions kmer in kmers)
+                    foreach (var kmer in kmers)
                     {
-                        ISequence sequence =
+                        var sequence =
                             lstKmers[kmerIndex].KmerToSequence(kmer);
-                        string aab = new string(sequence.Select(a => (char)a).ToArray());
+                        var aab = new string(sequence.Select(a => (char)a).ToArray());
                         Assert.AreEqual(fileContent[kmerIndex][count], aab);
                         count++;
                     }
@@ -1034,27 +1034,27 @@ namespace Bio.Padena.Tests
         /// <param name="nodeName">xml node name used for different testcases</param>
         internal void ValidateKmersOfSequenceCtor(string nodeName)
         {
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
-            string kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerLengthNode);
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            var kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerLengthNode);
 
             // Get the input reads and build kmers
             IEnumerable<ISequence> sequenceReads = null;
-            FastAParser parser = new FastAParser();
+            var parser = new FastAParser();
             sequenceReads = parser.Parse(filePath).ToList();
 
             // Validate the KmersOfSequence ctor by passing build kmers
             // Validate the kmersof sequence instance using GetKmerSequence()
-            this.KmerLength = int.Parse(kmerLength, (IFormatProvider)null);
-            this.SequenceReads.Clear();
+            KmerLength = int.Parse(kmerLength, (IFormatProvider)null);
+            SequenceReads.Clear();
 
-            this.SetSequenceReads(sequenceReads.ToList());
-            IEnumerable<KmersOfSequence> lstKmers =
-                (new SequenceToKmerBuilder()).Build(this.SequenceReads, this.KmerLength);
+            SetSequenceReads(sequenceReads.ToList());
+            var lstKmers =
+                (new SequenceToKmerBuilder()).Build(SequenceReads, KmerLength);
             IList<KmersOfSequence> newKmersList = new List<KmersOfSequence>();
-            int index = 0;
-            foreach (KmersOfSequence kmer in lstKmers)
+            var index = 0;
+            foreach (var kmer in lstKmers)
             {
-                KmersOfSequence newkmer = new KmersOfSequence(sequenceReads.ElementAt(index),
+                var newkmer = new KmersOfSequence(sequenceReads.ElementAt(index),
                     int.Parse(kmerLength, (IFormatProvider)null), kmer.Kmers);
                 newKmersList.Add(newkmer);
                 index++;
@@ -1074,25 +1074,25 @@ namespace Bio.Padena.Tests
         /// <param name="nodeName">xml node name.</param>
         internal void ValidateKmersOfSequenceCtorWithBuildKmers(string nodeName)
         {
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName,
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName,
               Constants.FilePathNode).TestDir();
-            string kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName,
+            var kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName,
               Constants.KmerLengthNode);
 
             // Get the input reads
             IEnumerable<ISequence> sequenceReads = null;
-            FastAParser parser = new FastAParser();
+            var parser = new FastAParser();
             sequenceReads = parser.Parse(filePath).ToList();
 
-            SequenceToKmerBuilder builder = new SequenceToKmerBuilder();
+            var builder = new SequenceToKmerBuilder();
             IList<KmersOfSequence> lstKmers = new List<KmersOfSequence>();
 
             // Validate KmersOfSequence ctor using build kmers
-            foreach (ISequence sequence in sequenceReads)
+            foreach (var sequence in sequenceReads)
             {
-                KmersOfSequence kmer =
+                var kmer =
                     builder.Build(sequence, int.Parse(kmerLength, (IFormatProvider)null));
-                KmersOfSequence kmerSequence = new KmersOfSequence(sequence,
+                var kmerSequence = new KmersOfSequence(sequence,
                     int.Parse(kmerLength, (IFormatProvider)null), kmer.Kmers);
                 lstKmers.Add(kmerSequence);
             }
@@ -1111,45 +1111,45 @@ namespace Bio.Padena.Tests
         /// <param name="nodeName">xml node name used for different testcases</param>
         internal void ValidateKmersOfSequenceToSequences(string nodeName)
         {
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
-            string kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerLengthNode);
-            string kmerOutputFile = utilityObj.xmlUtil.GetTextValue(nodeName,
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            var kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerLengthNode);
+            var kmerOutputFile = utilityObj.xmlUtil.GetTextValue(nodeName,
                   Constants.KmersOutputFileNode).TestDir();
 
             // Get the input reads and build kmers
             IEnumerable<ISequence> sequenceReads = null;
-            FastAParser parser = new FastAParser();
+            var parser = new FastAParser();
             sequenceReads = parser.Parse(filePath).ToList();
 
-            this.KmerLength = int.Parse(kmerLength, (IFormatProvider)null);
-            this.SequenceReads.Clear();
+            KmerLength = int.Parse(kmerLength, (IFormatProvider)null);
+            SequenceReads.Clear();
 
-            this.SetSequenceReads(sequenceReads.ToList());
+            SetSequenceReads(sequenceReads.ToList());
             IList<KmersOfSequence> lstKmers = new List<KmersOfSequence>(
-                (new SequenceToKmerBuilder()).Build(this.SequenceReads, this.KmerLength));
+                (new SequenceToKmerBuilder()).Build(SequenceReads, KmerLength));
 
             // Get the array of kmer sequence using ToSequence()
-            int index = 0;
+            var index = 0;
 
             // Validate the generated kmer sequence with the expected output
-            using (StreamReader kmerFile = new StreamReader(kmerOutputFile))
+            using (var kmerFile = new StreamReader(kmerOutputFile))
             {
-                string line = string.Empty;
-                List<string[]> fileContent = new List<string[]>();
+                var line = string.Empty;
+                var fileContent = new List<string[]>();
                 while (null != (line = kmerFile.ReadLine()))
                 {
                     fileContent.Add(line.Split(','));
                 }
 
-                foreach (ISequence sequenceRead in sequenceReads)
+                foreach (var sequenceRead in sequenceReads)
                 {
-                    int count = 0;
-                    KmersOfSequence kmerSequence = new KmersOfSequence(sequenceRead,
+                    var count = 0;
+                    var kmerSequence = new KmersOfSequence(sequenceRead,
                         int.Parse(kmerLength, (IFormatProvider)null), lstKmers[index].Kmers);
-                    IEnumerable<ISequence> sequences = kmerSequence.KmersToSequences();
-                    foreach (ISequence sequence in sequences)
+                    var sequences = kmerSequence.KmersToSequences();
+                    foreach (var sequence in sequences)
                     {
-                        string aab = new string(sequence.Select(a => (char)a).ToArray());
+                        var aab = new string(sequence.Select(a => (char)a).ToArray());
                         Assert.AreEqual(fileContent[index][count], aab);
                         count++;
                     }
@@ -1168,21 +1168,21 @@ namespace Bio.Padena.Tests
         /// <param name="nodeName">xml node name used for different testcases</param>
         internal void ValidateDe2AssemblerBuildGraph(string nodeName)
         {
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
-            string kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerLengthNode);
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            var kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerLengthNode);
 
             // Get the input reads and build kmers
             IEnumerable<ISequence> sequenceReads = null;
-            FastAParser parser = new FastAParser();
+            var parser = new FastAParser();
             sequenceReads = parser.Parse(filePath).ToList();
 
-            this.KmerLength = int.Parse(kmerLength, (IFormatProvider)null);
-            this.SequenceReads.Clear();
+            KmerLength = int.Parse(kmerLength, (IFormatProvider)null);
+            SequenceReads.Clear();
 
-            this.SetSequenceReads(sequenceReads.ToList());
+            SetSequenceReads(sequenceReads.ToList());
 
-            this.CreateGraph();
-            DeBruijnGraph graph = this.Graph;
+            CreateGraph();
+            var graph = Graph;
             ValidateGraph(graph, nodeName);
 
             ApplicationLog.WriteLine(
@@ -1196,19 +1196,19 @@ namespace Bio.Padena.Tests
         /// <param name="nodeName">xml node name used for different testcases</param>
         internal void ValidateDeBruijnGraphBuild(string nodeName)
         {
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
-            string kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerLengthNode);
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            var kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerLengthNode);
 
             // Get the input reads and build kmers
             IEnumerable<ISequence> sequenceReads = null;
-            FastAParser parser = new FastAParser();
+            var parser = new FastAParser();
             sequenceReads = parser.Parse(filePath).ToList();
 
-            this.KmerLength = int.Parse(kmerLength, (IFormatProvider)null);
-            this.SequenceReads.Clear();
-            this.SetSequenceReads(sequenceReads.ToList());
-            DeBruijnGraph graph = new DeBruijnGraph(this.KmerLength);
-            graph.Build(this.SequenceReads);
+            KmerLength = int.Parse(kmerLength, (IFormatProvider)null);
+            SequenceReads.Clear();
+            SetSequenceReads(sequenceReads.ToList());
+            var graph = new DeBruijnGraph(KmerLength);
+            graph.Build(SequenceReads);
             ValidateGraph(graph, nodeName);
 
             ApplicationLog.WriteLine(@"Padena BVT : DeBruijnGraph Build() validation for Padena step2 completed successfully");
@@ -1221,18 +1221,18 @@ namespace Bio.Padena.Tests
         /// <param name="nodeName">xml node name used for different testcases</param>
         internal void ValidateGraph(DeBruijnGraph graph, string nodeName)
         {
-            string nodesSequence = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.NodesSequenceNode);
-            string nodesLeftEdges = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.NodesLeftEdgesCountNode);
-            string nodesRightEdges = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.NodeRightEdgesCountNode);
+            var nodesSequence = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.NodesSequenceNode);
+            var nodesLeftEdges = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.NodesLeftEdgesCountNode);
+            var nodesRightEdges = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.NodeRightEdgesCountNode);
 
-            string[] leftEdgesCount = nodesLeftEdges.Split(',');
-            string[] rightEdgesCount = nodesRightEdges.Split(',');
-            string[] nodesSequences = nodesSequence.Split(',');
+            var leftEdgesCount = nodesLeftEdges.Split(',');
+            var rightEdgesCount = nodesRightEdges.Split(',');
+            var nodesSequences = nodesSequence.Split(',');
 
             // Validate the nodes 
-            for (int iseq = 0; iseq < nodesSequences.Length; iseq++)
+            for (var iseq = 0; iseq < nodesSequences.Length; iseq++)
             {
-                DeBruijnNode dbnodes = graph.GetNodes().FirstOrDefault(
+                var dbnodes = graph.GetNodes().FirstOrDefault(
                     n => graph.GetNodeSequence(n).ConvertToString() == nodesSequences[iseq]
                       || graph.GetNodeSequence(n).GetReverseComplementedSequence().ConvertToString() == nodesSequences[iseq]);
 
@@ -1255,30 +1255,30 @@ namespace Bio.Padena.Tests
         /// <param name="nodeName">xml node name used for different testcases</param>
         internal void ValidateDeBruijnNodeCtor(string nodeName)
         {
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
-            string kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerLengthNode);
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            var kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerLengthNode);
 
             // Get the input reads and build kmers
-            FastAParser parser = new FastAParser();
+            var parser = new FastAParser();
             IEnumerable<ISequence> sequenceReads = parser.Parse(filePath).ToList();
 
             // Build the kmers using assembler
-            this.KmerLength = int.Parse(kmerLength, null);
-            this.SequenceReads.Clear();
-            this.SetSequenceReads(sequenceReads.ToList());
-            IList<KmersOfSequence> lstKmers = new List<KmersOfSequence>((new SequenceToKmerBuilder()).Build(this.SequenceReads, this.KmerLength));
+            KmerLength = int.Parse(kmerLength, null);
+            SequenceReads.Clear();
+            SetSequenceReads(sequenceReads.ToList());
+            IList<KmersOfSequence> lstKmers = new List<KmersOfSequence>((new SequenceToKmerBuilder()).Build(SequenceReads, KmerLength));
 
             // Validate the node creation
             // Create node and add left node.
-            ISequence seq = this.SequenceReads.First();
-            KmerData32 kmerData = new KmerData32();
-            kmerData.SetKmerData(seq, lstKmers[0].Kmers.First().Positions[0], this.KmerLength);
+            var seq = SequenceReads.First();
+            var kmerData = new KmerData32();
+            kmerData.SetKmerData(seq, lstKmers[0].Kmers.First().Positions[0], KmerLength);
 
-            DeBruijnNode node = new DeBruijnNode(kmerData, 1);
+            var node = new DeBruijnNode(kmerData, 1);
             kmerData = new KmerData32();
-            kmerData.SetKmerData(seq, lstKmers[1].Kmers.First().Positions[0], this.KmerLength);
+            kmerData.SetKmerData(seq, lstKmers[1].Kmers.First().Positions[0], KmerLength);
 
-            DeBruijnNode leftnode = new DeBruijnNode(kmerData, 1);
+            var leftnode = new DeBruijnNode(kmerData, 1);
             node.SetExtensionNode(false, true, leftnode);
 
             Assert.AreEqual(lstKmers[1].Kmers.First().Count, node.LeftExtensionNodesCount);
@@ -1293,31 +1293,31 @@ namespace Bio.Padena.Tests
         /// <param name="nodeName">xml node name used for different testcases</param>
         internal void ValidateDeBruijnNodeAddLeftExtension(string nodeName)
         {
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
-            string kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerLengthNode);
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            var kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerLengthNode);
 
             // Get the input reads and build kmers
-            FastAParser parser = new FastAParser();
+            var parser = new FastAParser();
             IEnumerable<ISequence> sequenceReads = parser.Parse(filePath).ToList();
 
             // Build kmers from step1
-            this.KmerLength = int.Parse(kmerLength, null);
-            this.SequenceReads.Clear();
+            KmerLength = int.Parse(kmerLength, null);
+            SequenceReads.Clear();
 
-            this.SetSequenceReads(sequenceReads.ToList());
-            IList<KmersOfSequence> lstKmers = new List<KmersOfSequence>((new SequenceToKmerBuilder()).Build(this.SequenceReads, this.KmerLength));
+            SetSequenceReads(sequenceReads.ToList());
+            IList<KmersOfSequence> lstKmers = new List<KmersOfSequence>((new SequenceToKmerBuilder()).Build(SequenceReads, KmerLength));
 
             // Validate the node creation
             // Create node and add left node.
-            ISequence seq = this.SequenceReads.First();
-            KmerData32 kmerData = new KmerData32();
-            kmerData.SetKmerData(seq, lstKmers[0].Kmers.First().Positions[0], this.KmerLength);
+            var seq = SequenceReads.First();
+            var kmerData = new KmerData32();
+            kmerData.SetKmerData(seq, lstKmers[0].Kmers.First().Positions[0], KmerLength);
 
-            DeBruijnNode node = new DeBruijnNode(kmerData, 1);
+            var node = new DeBruijnNode(kmerData, 1);
             kmerData = new KmerData32();
-            kmerData.SetKmerData(seq, lstKmers[1].Kmers.First().Positions[0], this.KmerLength);
+            kmerData.SetKmerData(seq, lstKmers[1].Kmers.First().Positions[0], KmerLength);
 
-            DeBruijnNode leftnode = new DeBruijnNode(kmerData, 1);
+            var leftnode = new DeBruijnNode(kmerData, 1);
             node.SetExtensionNode(false, true, leftnode);
             Assert.AreEqual(lstKmers[1].Kmers.First().Count, node.LeftExtensionNodesCount);
 
@@ -1330,31 +1330,31 @@ namespace Bio.Padena.Tests
         /// <param name="nodeName">xml node name used for different testcases</param>
         internal void ValidateDeBruijnNodeAddRightExtension(string nodeName)
         {
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
-            string kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerLengthNode);
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            var kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerLengthNode);
 
             // Get the input reads and build kmers
-            FastAParser parser = new FastAParser();
+            var parser = new FastAParser();
             IEnumerable<ISequence> sequenceReads = parser.Parse(filePath).ToList();
 
             // Build kmers from step1
-            this.KmerLength = int.Parse(kmerLength, null);
-            this.SequenceReads.Clear();
+            KmerLength = int.Parse(kmerLength, null);
+            SequenceReads.Clear();
 
-            this.SetSequenceReads(sequenceReads.ToList());
-            IList<KmersOfSequence> lstKmers = new List<KmersOfSequence>((new SequenceToKmerBuilder()).Build(this.SequenceReads, this.KmerLength));
+            SetSequenceReads(sequenceReads.ToList());
+            IList<KmersOfSequence> lstKmers = new List<KmersOfSequence>((new SequenceToKmerBuilder()).Build(SequenceReads, KmerLength));
 
             // Validate the node creation
             // Create node and add left node.
-            ISequence seq = this.SequenceReads.First();
-            KmerData32 kmerData = new KmerData32();
-            kmerData.SetKmerData(seq, lstKmers[0].Kmers.First().Positions[0], this.KmerLength);
+            var seq = SequenceReads.First();
+            var kmerData = new KmerData32();
+            kmerData.SetKmerData(seq, lstKmers[0].Kmers.First().Positions[0], KmerLength);
 
-            DeBruijnNode node = new DeBruijnNode(kmerData, 1);
+            var node = new DeBruijnNode(kmerData, 1);
             kmerData = new KmerData32();
-            kmerData.SetKmerData(seq, lstKmers[1].Kmers.First().Positions[0], this.KmerLength);
+            kmerData.SetKmerData(seq, lstKmers[1].Kmers.First().Positions[0], KmerLength);
 
-            DeBruijnNode rightNode = new DeBruijnNode(kmerData, 1);
+            var rightNode = new DeBruijnNode(kmerData, 1);
             node.SetExtensionNode(true, true, rightNode);
             Assert.AreEqual(lstKmers[1].Kmers.First().Count, node.RightExtensionNodesCount);
 
@@ -1367,23 +1367,23 @@ namespace Bio.Padena.Tests
         /// <param name="nodeName">xml node name used for different testcases</param>
         internal void ValidateDe2AssemblerUnDangleGraph(string nodeName)
         {
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
-            string kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerLengthNode);
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            var kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerLengthNode);
 
             // Get the input reads and build kmers
-            FastAParser parser = new FastAParser();
+            var parser = new FastAParser();
             IEnumerable<ISequence> sequenceReads = parser.Parse(filePath).ToList();
             
             // Build kmers from step1,graph in step2 
             // and remove the dangling links from graph in step3
             // Validate the graph
-            this.KmerLength = int.Parse(kmerLength, null);
-            this.SequenceReads.Clear();
-            this.SetSequenceReads(sequenceReads.ToList());
-            this.CreateGraph();
-            this.UnDangleGraph();
+            KmerLength = int.Parse(kmerLength, null);
+            SequenceReads.Clear();
+            SetSequenceReads(sequenceReads.ToList());
+            CreateGraph();
+            UnDangleGraph();
 
-            ValidateGraph(this.Graph, nodeName);
+            ValidateGraph(Graph, nodeName);
 
             ApplicationLog.WriteLine(@"Padena BVT :ParallelDeNovoAssembler.UndangleGraph() validation for Padena step3 completed successfully");
         }
@@ -1395,32 +1395,32 @@ namespace Bio.Padena.Tests
         /// <param name="nodeName">xml node name used for different testcases</param>
         internal void ValidatePadenaDetectErrorNodes(string nodeName)
         {
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
-            string kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName,
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            var kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.KmerLengthNode);
-            string danglingSequence = utilityObj.xmlUtil.GetTextValue(nodeName,
+            var danglingSequence = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.DangleNodeSequenceNode);
-            string[] expectedDanglings = danglingSequence.Split(',');
+            var expectedDanglings = danglingSequence.Split(',');
 
             // Get the input reads and build kmers
-            FastAParser parser = new FastAParser();
+            var parser = new FastAParser();
             IEnumerable<ISequence> sequenceReads = parser.Parse(filePath).ToList();
 
             // Build kmers from step1,graph in step2 
             // and remove the dangling links from graph in step3
             // Validate the graph
-            this.KmerLength = int.Parse(kmerLength, null);
-            this.SequenceReads.Clear();
+            KmerLength = int.Parse(kmerLength, null);
+            SequenceReads.Clear();
 
-            this.SetSequenceReads(sequenceReads.ToList());
-            this.CreateGraph();
+            SetSequenceReads(sequenceReads.ToList());
+            CreateGraph();
 
             // Find the dangling node
-            DanglingLinksPurger danglingLinksPurger = new DanglingLinksPurger(int.Parse(kmerLength, null) + 1);
-            DeBruijnPathList danglingnodes = danglingLinksPurger.DetectErroneousNodes(this.Graph);
-            foreach (DeBruijnPath dbnodes in danglingnodes.Paths)
+            var danglingLinksPurger = new DanglingLinksPurger(int.Parse(kmerLength, null) + 1);
+            var danglingnodes = danglingLinksPurger.DetectErroneousNodes(Graph);
+            foreach (var dbnodes in danglingnodes.Paths)
             {
-                foreach (DeBruijnNode node in dbnodes.PathNodes)
+                foreach (var node in dbnodes.PathNodes)
                 {
                     Assert.IsTrue(expectedDanglings.Contains(Graph.GetNodeSequence(node).ToString()));
                 }
@@ -1437,28 +1437,28 @@ namespace Bio.Padena.Tests
         /// <param name="nodeName">xml node name used for different testcases</param>
         internal void ValidatePadenaRemoveErrorNodes(string nodeName)
         {
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
-            string kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerLengthNode);
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            var kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerLengthNode);
 
             // Get the input reads and build kmers
             IEnumerable<ISequence> sequenceReads = null;
-            FastAParser parser = new FastAParser();
+            var parser = new FastAParser();
             sequenceReads = parser.Parse(filePath).ToList();
 
             // Build kmers from step1,graph in step2 
             // and remove the dangling links from graph in step3
             // Validate the graph
-            this.KmerLength = int.Parse(kmerLength, (IFormatProvider)null);
-            this.SequenceReads.Clear();
+            KmerLength = int.Parse(kmerLength, (IFormatProvider)null);
+            SequenceReads.Clear();
 
-            this.SetSequenceReads(sequenceReads.ToList());
-            this.CreateGraph();
-            DeBruijnGraph graph = this.Graph;
+            SetSequenceReads(sequenceReads.ToList());
+            CreateGraph();
+            var graph = Graph;
 
             // Find the dangling nodes and remove the dangling node
-            DanglingLinksPurger danglingLinksPurger =
+            var danglingLinksPurger =
                 new DanglingLinksPurger(int.Parse(kmerLength, (IFormatProvider)null) + 1);
-            DeBruijnPathList danglingnodes =
+            var danglingnodes =
                 danglingLinksPurger.DetectErroneousNodes(graph);
             danglingLinksPurger.RemoveErroneousNodes(graph, danglingnodes);
             Assert.IsFalse(graph.GetNodes().Contains(danglingnodes.Paths[0].PathNodes[0]));
@@ -1475,29 +1475,29 @@ namespace Bio.Padena.Tests
         /// <param name="nodeName">xml node name used for different testcases</param>
         internal void ValidateDe2AssemblerRemoveRedundancy(string nodeName)
         {
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
-            string kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerLengthNode);
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            var kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerLengthNode);
 
             // Get the input reads and build kmers
             IEnumerable<ISequence> sequenceReads = null;
-            FastAParser parser = new FastAParser();
+            var parser = new FastAParser();
             sequenceReads = parser.Parse(filePath).ToList();
 
             // Build kmers from step1,graph in step2 
             // Remove the dangling links from graph in step3
             // Remove bubbles from graph in step4
             // Validate the graph
-            this.KmerLength = int.Parse(kmerLength, (IFormatProvider)null);
-            this.SequenceReads.Clear();
+            KmerLength = int.Parse(kmerLength, (IFormatProvider)null);
+            SequenceReads.Clear();
 
-            this.SetSequenceReads(sequenceReads.ToList());
-            this.CreateGraph();
-            this.UnDangleGraph();
-            this.RedundantPathsPurger =
+            SetSequenceReads(sequenceReads.ToList());
+            CreateGraph();
+            UnDangleGraph();
+            RedundantPathsPurger =
                 new RedundantPathsPurger(int.Parse(kmerLength, (IFormatProvider)null) + 1);
-            this.RemoveRedundancy();
+            RemoveRedundancy();
 
-            ValidateGraph(this.Graph, nodeName);
+            ValidateGraph(Graph, nodeName);
 
             ApplicationLog.WriteLine(
                 @"Padena BVT :ParallelDeNovoAssembler.RemoveRedundancy() 
@@ -1511,32 +1511,32 @@ namespace Bio.Padena.Tests
         /// <param name="nodeName">xml node name used for different testcases</param>
         internal void ValidateRedundantPathPurgerCtor(string nodeName)
         {
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
-            string kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerLengthNode);
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            var kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerLengthNode);
 
             // Get the input reads and build kmers
             IEnumerable<ISequence> sequenceReads = null;
-            FastAParser parser = new FastAParser();
+            var parser = new FastAParser();
             sequenceReads = parser.Parse(filePath).ToList();
 
             // Build kmers from step1,graph in step2 
             // Remove the dangling links from graph in step3
             // Validate the graph
-            this.KmerLength = int.Parse(kmerLength, (IFormatProvider)null);
-            this.SequenceReads.Clear();
+            KmerLength = int.Parse(kmerLength, (IFormatProvider)null);
+            SequenceReads.Clear();
 
-            this.SetSequenceReads(sequenceReads.ToList());
-            this.CreateGraph();
-            this.UnDangleGraph();
+            SetSequenceReads(sequenceReads.ToList());
+            CreateGraph();
+            UnDangleGraph();
 
             // Create RedundantPathPurger instance, detect redundant nodes and remove error nodes
-            RedundantPathsPurger redundantPathPurger =
+            var redundantPathPurger =
                 new RedundantPathsPurger(int.Parse(kmerLength, (IFormatProvider)null) + 1);
-            DeBruijnPathList redundantnodelist =
-                redundantPathPurger.DetectErroneousNodes(this.Graph);
-            redundantPathPurger.RemoveErroneousNodes(this.Graph, redundantnodelist);
+            var redundantnodelist =
+                redundantPathPurger.DetectErroneousNodes(Graph);
+            redundantPathPurger.RemoveErroneousNodes(Graph, redundantnodelist);
 
-            ValidateGraph(this.Graph, nodeName);
+            ValidateGraph(Graph, nodeName);
 
             ApplicationLog.WriteLine(
                 @"Padena BVT :RedundantPathsPurger ctor and methods validation for 
@@ -1549,16 +1549,16 @@ namespace Bio.Padena.Tests
         /// <param name="nodeName">xml node name used for different testcases</param>
         internal void ValidateDe2AssemblerBuildContigs(string nodeName)
         {
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
-            string kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName,
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            var kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.KmerLengthNode);
-            string expectedContigsString = utilityObj.xmlUtil.GetTextValue(nodeName,
+            var expectedContigsString = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.ContigsNode);
-            string[] expectedContigs = expectedContigsString.Split(',');
+            var expectedContigs = expectedContigsString.Split(',');
 
             // Get the input reads and build kmers
             IEnumerable<ISequence> sequenceReads = null;
-            FastAParser parser = new FastAParser();
+            var parser = new FastAParser();
             sequenceReads = parser.Parse(filePath).ToList();
 
             // Build kmers from step1,graph in step2 
@@ -1566,19 +1566,19 @@ namespace Bio.Padena.Tests
             // Remove bubbles form the graph in step4 
             // Pass the graph and build contigs
             // Validate the contigs
-            this.KmerLength = int.Parse(kmerLength, (IFormatProvider)null);
-            this.SequenceReads.Clear();
+            KmerLength = int.Parse(kmerLength, (IFormatProvider)null);
+            SequenceReads.Clear();
 
-            this.SetSequenceReads(sequenceReads.ToList());
-            this.CreateGraph();
-            this.UnDangleGraph();
-            this.RedundantPathsPurger =
+            SetSequenceReads(sequenceReads.ToList());
+            CreateGraph();
+            UnDangleGraph();
+            RedundantPathsPurger =
                 new RedundantPathsPurger(int.Parse(kmerLength, (IFormatProvider)null) + 1);
-            this.RemoveRedundancy();
-            this.ContigBuilder = new SimplePathContigBuilder();
-            IEnumerable<ISequence> contigs = this.BuildContigs();
+            RemoveRedundancy();
+            ContigBuilder = new SimplePathContigBuilder();
+            var contigs = BuildContigs();
 
-            for (int index = 0; index < contigs.Count(); index++)
+            for (var index = 0; index < contigs.Count(); index++)
             {
                 Assert.IsTrue(expectedContigs.Contains(
                     new string(contigs.ToList()[index].Select(a => (char)a).ToArray())));
@@ -1595,36 +1595,36 @@ namespace Bio.Padena.Tests
         /// <param name="nodeName">xml node name used for different testcases</param>
         internal void ValidateSimpleContigBuilderBuild(string nodeName)
         {
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
-            string kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerLengthNode);
-            string expectedContigsString =
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            var kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerLengthNode);
+            var expectedContigsString =
                 utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ContigsNode);
-            string[] expectedContigs = expectedContigsString.Split(',');
+            var expectedContigs = expectedContigsString.Split(',');
 
             // Get the input reads and build kmers
             IEnumerable<ISequence> sequenceReads = null;
-            FastAParser parser = new FastAParser();
+            var parser = new FastAParser();
             sequenceReads = parser.Parse(filePath).ToList();
 
             // Build kmers from step1,graph in step2 
             // Remove the dangling links from graph in step3
             // Remove bubbles from graph in step4
-            this.KmerLength = int.Parse(kmerLength, (IFormatProvider)null);
-            this.SequenceReads.Clear();
+            KmerLength = int.Parse(kmerLength, (IFormatProvider)null);
+            SequenceReads.Clear();
 
-            this.SetSequenceReads(sequenceReads.ToList());
-            this.CreateGraph();
-            this.UnDangleGraph();
-            this.RedundantPathsPurger =
+            SetSequenceReads(sequenceReads.ToList());
+            CreateGraph();
+            UnDangleGraph();
+            RedundantPathsPurger =
                 new RedundantPathsPurger(int.Parse(kmerLength, (IFormatProvider)null) + 1);
-            this.RemoveRedundancy();
+            RemoveRedundancy();
 
             // Validate the SimpleContigBuilder.Build() by passing graph
-            SimplePathContigBuilder builder = new SimplePathContigBuilder();
-            IEnumerable<ISequence> contigs = builder.Build(this.Graph);
+            var builder = new SimplePathContigBuilder();
+            var contigs = builder.Build(Graph);
 
             // Validate the contigs
-            for (int index = 0; index < contigs.Count(); index++)
+            for (var index = 0; index < contigs.Count(); index++)
             {
                 Assert.IsTrue(expectedContigs.Contains(
                         new string(contigs.ToList()[index].Select(a => (char)a).ToArray())));
@@ -1641,19 +1641,19 @@ namespace Bio.Padena.Tests
         /// <param name="nodeName">xml node name used for different testcases</param>
         internal void ValidatePairedReads(string nodeName)
         {
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName,
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName,
               Constants.FilePathNode).TestDir();
-            string expectedPairedReadsCount = utilityObj.xmlUtil.GetTextValue(
+            var expectedPairedReadsCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.PairedReadsCountNode);
-            string[] backwardReadsNode = utilityObj.xmlUtil.GetTextValues(nodeName,
+            var backwardReadsNode = utilityObj.xmlUtil.GetTextValues(nodeName,
                 Constants.BackwardReadsNode);
-            string[] forwardReadsNode = utilityObj.xmlUtil.GetTextValues(nodeName,
+            var forwardReadsNode = utilityObj.xmlUtil.GetTextValues(nodeName,
                 Constants.ForwardReadsNode);
-            string[] expectedLibrary = utilityObj.xmlUtil.GetTextValues(nodeName,
+            var expectedLibrary = utilityObj.xmlUtil.GetTextValues(nodeName,
                 Constants.LibraryNode);
-            string[] expectedMean = utilityObj.xmlUtil.GetTextValues(nodeName,
+            var expectedMean = utilityObj.xmlUtil.GetTextValues(nodeName,
                 Constants.MeanLengthNode);
-            string[] deviationNode = utilityObj.xmlUtil.GetTextValues(nodeName,
+            var deviationNode = utilityObj.xmlUtil.GetTextValues(nodeName,
                 Constants.DeviationNode);
 
             IList<ISequence> sequenceReads = new List<ISequence>();
@@ -1661,12 +1661,12 @@ namespace Bio.Padena.Tests
 
             // Get the input reads 
             IEnumerable<ISequence> sequences = null;
-            FastAParser parser = new FastAParser();
+            var parser = new FastAParser();
             sequences = parser.Parse(filePath);
 
             // Convert reads to map paired reads.
-            MatePairMapper pair = new MatePairMapper();
-            foreach (ISequence seq in sequences)
+            var pair = new MatePairMapper();
+            foreach (var seq in sequences)
             {
                 sequenceReads.Add(seq);
             }
@@ -1676,7 +1676,7 @@ namespace Bio.Padena.Tests
             Assert.AreEqual(expectedPairedReadsCount,
                 pairedreads.Count.ToString((IFormatProvider)null));
 
-            for (int index = 0; index < pairedreads.Count; index++)
+            for (var index = 0; index < pairedreads.Count; index++)
             {
                 Assert.IsTrue(
                     forwardReadsNode.Contains(
@@ -1700,32 +1700,32 @@ namespace Bio.Padena.Tests
         /// <param name="nodeName">xml node name used for different testcases</param>
         internal void AddLibraryInformation(string nodeName)
         {
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName,
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.FilePathNode).TestDir();
-            string expectedPairedReadsCount = utilityObj.xmlUtil.GetTextValue(
+            var expectedPairedReadsCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.PairedReadsCountNode);
-            string[] backwardReadsNode = utilityObj.xmlUtil.GetTextValues(nodeName,
+            var backwardReadsNode = utilityObj.xmlUtil.GetTextValues(nodeName,
                 Constants.BackwardReadsNode);
-            string[] forwardReadsNode = utilityObj.xmlUtil.GetTextValues(nodeName,
+            var forwardReadsNode = utilityObj.xmlUtil.GetTextValues(nodeName,
                 Constants.ForwardReadsNode);
-            string[] expectedLibrary = utilityObj.xmlUtil.GetTextValues(nodeName,
+            var expectedLibrary = utilityObj.xmlUtil.GetTextValues(nodeName,
                 Constants.LibraryNode);
-            string[] expectedMean = utilityObj.xmlUtil.GetTextValues(nodeName,
+            var expectedMean = utilityObj.xmlUtil.GetTextValues(nodeName,
                 Constants.MeanLengthNode);
-            string[] deviationNode = utilityObj.xmlUtil.GetTextValues(nodeName,
+            var deviationNode = utilityObj.xmlUtil.GetTextValues(nodeName,
                 Constants.DeviationNode);
-            string libraray = utilityObj.xmlUtil.GetTextValue(nodeName,
+            var libraray = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.LibraryName);
-            string StdDeviation = utilityObj.xmlUtil.GetTextValue(nodeName,
+            var StdDeviation = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.StdDeviation);
-            string mean = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.Mean);
+            var mean = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.Mean);
 
 
             IList<MatePair> pairedreads = new List<MatePair>();
 
             // Get the input reads 
             IEnumerable<ISequence> sequences = null;
-            FastAParser parser = new FastAParser();
+            var parser = new FastAParser();
             sequences = parser.Parse(filePath).ToList();
 
             IList<ISequence> sequenceReads = new List<ISequence>(sequences);
@@ -1735,13 +1735,13 @@ namespace Bio.Padena.Tests
                 float.Parse(mean, (IFormatProvider)null), float.Parse(StdDeviation, (IFormatProvider)null));
 
             // Convert reads to map paired reads. 
-            MatePairMapper pair = new MatePairMapper();
+            var pair = new MatePairMapper();
             pairedreads = pair.Map(sequenceReads);
 
             // Validate Map paired reads.
             Assert.AreEqual(expectedPairedReadsCount, pairedreads.Count.ToString((IFormatProvider)null));
 
-            for (int index = 0; index < pairedreads.Count; index++)
+            for (var index = 0; index < pairedreads.Count; index++)
             {
                 Assert.IsTrue(forwardReadsNode.Contains(
                     new string(pairedreads[index].GetForwardRead(sequenceReads).Select(a => (char)a).ToArray())));
@@ -1765,27 +1765,27 @@ namespace Bio.Padena.Tests
         /// assumptions.  This should be cleaned up.
         internal void ValidateMapReadsToContig(string nodeName, bool IsFullOverlap)
         {
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName,
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.FilePathNode).TestDir();
-            string kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName,
+            var kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.KmerLengthNode);
-            string daglingThreshold = utilityObj.xmlUtil.GetTextValue(nodeName,
+            var daglingThreshold = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.DanglingLinkThresholdNode);
-            string redundantThreshold = utilityObj.xmlUtil.GetTextValue(nodeName,
+            var redundantThreshold = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.RedundantThreshold);
-            string readMapLengthString = utilityObj.xmlUtil.GetTextValue(nodeName,
+            var readMapLengthString = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.ReadMapLength);
-            string readStartPosString = utilityObj.xmlUtil.GetTextValue(nodeName,
+            var readStartPosString = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.ReadStartPos);
-            string contigStartPosString = utilityObj.xmlUtil.GetTextValue(nodeName,
+            var contigStartPosString = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.ContigStartPos);
-            string[] expectedReadmapLength = readMapLengthString.Split(',');
-            string[] expectedReadStartPos = readStartPosString.Split(',');
-            string[] expectedContigStartPos = contigStartPosString.Split(',');
+            var expectedReadmapLength = readMapLengthString.Split(',');
+            var expectedReadStartPos = readStartPosString.Split(',');
+            var expectedContigStartPos = contigStartPosString.Split(',');
 
             // Get the input reads and build kmerssequences
             IEnumerable<ISequence> sequenceReads = null;
-            FastAParser parser = new FastAParser();
+            var parser = new FastAParser();
             sequenceReads = parser.Parse(filePath).ToList();
 
             // Build kmers from step1,graph in step2 
@@ -1793,39 +1793,39 @@ namespace Bio.Padena.Tests
             // Remove bubbles form the graph in step4 
             // Pass the graph and build contigs
             // Validate contig reads
-            this.KmerLength = Int32.Parse(kmerLength, (IFormatProvider)null);
-            this.DanglingLinksThreshold = Int32.Parse(daglingThreshold, (IFormatProvider)null); ;
-            this.DanglingLinksPurger =
+            KmerLength = Int32.Parse(kmerLength, (IFormatProvider)null);
+            DanglingLinksThreshold = Int32.Parse(daglingThreshold, (IFormatProvider)null); ;
+            DanglingLinksPurger =
                 new DanglingLinksPurger(Int32.Parse(daglingThreshold, (IFormatProvider)null));
-            this.RedundantPathsPurger =
+            RedundantPathsPurger =
                 new RedundantPathsPurger(Int32.Parse(redundantThreshold, (IFormatProvider)null));
-            this.RedundantPathLengthThreshold = Int32.Parse(redundantThreshold, (IFormatProvider)null);
-            this.SequenceReads.Clear();
+            RedundantPathLengthThreshold = Int32.Parse(redundantThreshold, (IFormatProvider)null);
+            SequenceReads.Clear();
 
-            this.SetSequenceReads(sequenceReads.ToList());
-            this.CreateGraph();
-            this.UnDangleGraph();
-            this.ContigBuilder = new SimplePathContigBuilder();
-            this.RemoveRedundancy();
+            SetSequenceReads(sequenceReads.ToList());
+            CreateGraph();
+            UnDangleGraph();
+            ContigBuilder = new SimplePathContigBuilder();
+            RemoveRedundancy();
 
             //IList<ISequence> contigs = this.BuildContigs().ToList();
 
-            IList<ISequence> listContigs = this.BuildContigs().ToList();
+            IList<ISequence> listContigs = BuildContigs().ToList();
             //Hack to satisfy the assumptions of one test by flipping the read to its reverse complement
             if (nodeName == Constants.MapReadsToContigFullOverlapNode)
             {
                 listContigs[0] = (listContigs[0] as Sequence).GetReverseComplementedSequence();
             }
 
-            IList<ISequence> sortedContigs = SortContigsData(listContigs);
-            ReadContigMapper mapper = new ReadContigMapper();
-            ReadContigMap maps = mapper.Map(sortedContigs, sequenceReads, this.KmerLength);
+            var sortedContigs = SortContigsData(listContigs);
+            var mapper = new ReadContigMapper();
+            var maps = mapper.Map(sortedContigs, sequenceReads, KmerLength);
             Assert.AreEqual(maps.Count, sequenceReads.Count());
 
-            Dictionary<ISequence, IList<ReadMap>> readMaps = maps[sequenceReads.ElementAt(0).ID];
+            var readMaps = maps[sequenceReads.ElementAt(0).ID];
             IList<ReadMap> readMap = null;
 
-            for (int i = 0; i < sortedContigs.Count; i++)
+            for (var i = 0; i < sortedContigs.Count; i++)
             {
                 readMap = readMaps[sortedContigs[i]];
                 if (IsFullOverlap)
@@ -1852,29 +1852,29 @@ namespace Bio.Padena.Tests
         /// <param name="nodeName">xml node name used for a differnt testcase.</param>
         internal void ValidateFilterPaired(string nodeName)
         {
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FilePathNode).TestDir();
-            string kmerLength = utilityObj.xmlUtil.GetTextValue(
+            var kmerLength = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.KmerLengthNode);
-            string daglingThreshold = utilityObj.xmlUtil.GetTextValue(
+            var daglingThreshold = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.DanglingLinkThresholdNode);
-            string redundantThreshold = utilityObj.xmlUtil.GetTextValue(
+            var redundantThreshold = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.RedundantThreshold);
-            string expectedContigPairedReadsCount = utilityObj.xmlUtil.GetTextValue(
+            var expectedContigPairedReadsCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ContigPairedReadsCount);
-            string forwardReadStartPos = utilityObj.xmlUtil.GetTextValue(
+            var forwardReadStartPos = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ForwardReadStartPos);
-            string reverseReadStartPos = utilityObj.xmlUtil.GetTextValue(
+            var reverseReadStartPos = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ReverseReadStartPos);
-            string reverseComplementStartPos = utilityObj.xmlUtil.GetTextValue(
+            var reverseComplementStartPos = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.RerverseReadReverseCompPos);
-            string[] expectedForwardReadStartPos = forwardReadStartPos.Split(',');
-            string[] expectedReverseReadStartPos = reverseReadStartPos.Split(',');
-            string[] expectedReverseComplementStartPos = reverseComplementStartPos.Split(',');
+            var expectedForwardReadStartPos = forwardReadStartPos.Split(',');
+            var expectedReverseReadStartPos = reverseReadStartPos.Split(',');
+            var expectedReverseComplementStartPos = reverseComplementStartPos.Split(',');
 
             // Get the input reads and build kmers
             IEnumerable<ISequence> sequenceReads = null;
-            FastAParser parser = new FastAParser();
+            var parser = new FastAParser();
             sequenceReads = parser.Parse(filePath).ToList();
 
             // Build kmers from step1,graph in step2 
@@ -1882,37 +1882,37 @@ namespace Bio.Padena.Tests
             // Remove bubbles form the graph in step4 
             // Pass the graph and build contigs
             // Validate contig reads
-            this.KmerLength = Int32.Parse(kmerLength, (IFormatProvider)null);
-            this.DanglingLinksThreshold = Int32.Parse(daglingThreshold, (IFormatProvider)null); ;
-            this.DanglingLinksPurger =
+            KmerLength = Int32.Parse(kmerLength, (IFormatProvider)null);
+            DanglingLinksThreshold = Int32.Parse(daglingThreshold, (IFormatProvider)null); ;
+            DanglingLinksPurger =
                 new DanglingLinksPurger(Int32.Parse(daglingThreshold, (IFormatProvider)null));
-            this.RedundantPathsPurger =
+            RedundantPathsPurger =
                 new RedundantPathsPurger(Int32.Parse(redundantThreshold, (IFormatProvider)null));
-            this.RedundantPathLengthThreshold = Int32.Parse(redundantThreshold, (IFormatProvider)null);
-            this.SequenceReads.Clear();
+            RedundantPathLengthThreshold = Int32.Parse(redundantThreshold, (IFormatProvider)null);
+            SequenceReads.Clear();
 
-            this.SetSequenceReads(sequenceReads.ToList());
-            this.CreateGraph();
-            this.UnDangleGraph();
+            SetSequenceReads(sequenceReads.ToList());
+            CreateGraph();
+            UnDangleGraph();
 
             // Build contig.
-            this.ContigBuilder = new SimplePathContigBuilder();
-            this.RemoveRedundancy();
-            IEnumerable<ISequence> contigs = this.BuildContigs();
+            ContigBuilder = new SimplePathContigBuilder();
+            RemoveRedundancy();
+            var contigs = BuildContigs();
             IList<ISequence> listContigs = contigs.ToList();
 
-            IList<ISequence> sortedContigs = SortContigsData(listContigs);
-            ReadContigMapper mapper = new ReadContigMapper();
+            var sortedContigs = SortContigsData(listContigs);
+            var mapper = new ReadContigMapper();
 
-            ReadContigMap maps = mapper.Map(sortedContigs, sequenceReads, this.KmerLength);
+            var maps = mapper.Map(sortedContigs, sequenceReads, KmerLength);
 
             // Find map paired reads.
-            MatePairMapper mapPairedReads = new MatePairMapper();
-            ContigMatePairs pairedReads = mapPairedReads.MapContigToMatePairs(sequenceReads,
+            var mapPairedReads = new MatePairMapper();
+            var pairedReads = mapPairedReads.MapContigToMatePairs(sequenceReads,
                 maps);
 
             // Filter paired reads based on the contig orientation.
-            OrientationBasedMatePairFilter filter =
+            var filter =
                 new OrientationBasedMatePairFilter();
             ContigMatePairs contigpairedReads = null;
 
@@ -1920,8 +1920,8 @@ namespace Bio.Padena.Tests
 
             Assert.AreEqual(expectedContigPairedReadsCount,
                 contigpairedReads.Values.Count.ToString((IFormatProvider)null));
-            ISequence sortedContig = sortedContigs[0];
-            ISequence secondSortedContig = sortedContigs[1];
+            var sortedContig = sortedContigs[0];
+            var secondSortedContig = sortedContigs[1];
 
             // Validate Contig paired reads after filtering contig sequences.
             Dictionary<ISequence, IList<ValidMatePair>> map = null;
@@ -1937,7 +1937,7 @@ namespace Bio.Padena.Tests
                 map = contigpairedReads[secondSortedContig];
                 valid = SortPairedReads(map[sortedContig], sequenceReads.ToList());
             }
-            for (int index = 0; index < valid.Count; index++)
+            for (var index = 0; index < valid.Count; index++)
             {
                 if (valid[index].ForwardReadStartPosition.Count > 1)
                 {
@@ -1974,28 +1974,28 @@ namespace Bio.Padena.Tests
         /// <param name="nodeName">xml node name used for a differnt testcase.</param>
         internal void ValidateContigDistance(string nodeName)
         {
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FilePathNode).TestDir();
-            string kmerLength = utilityObj.xmlUtil.GetTextValue(
+            var kmerLength = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.KmerLengthNode);
-            string daglingThreshold = utilityObj.xmlUtil.GetTextValue(
+            var daglingThreshold = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.DanglingLinkThresholdNode);
-            string redundantThreshold = utilityObj.xmlUtil.GetTextValue(
+            var redundantThreshold = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.RedundantThreshold);
-            string expectedContigPairedReadsCount = utilityObj.xmlUtil.GetTextValue(
+            var expectedContigPairedReadsCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ContigPairedReadsCount);
-            string distanceBetweenFirstContigs = utilityObj.xmlUtil.GetTextValue(
+            var distanceBetweenFirstContigs = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.DistanceBetweenFirstContig);
-            string distanceBetweenSecondContigs = utilityObj.xmlUtil.GetTextValue(
+            var distanceBetweenSecondContigs = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.DistanceBetweenSecondContig);
-            string firstStandardDeviation = utilityObj.xmlUtil.GetTextValue(
+            var firstStandardDeviation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FirstContigStandardDeviation);
-            string secondStandardDeviation = utilityObj.xmlUtil.GetTextValue(
+            var secondStandardDeviation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.SecondContigStandardDeviation);
 
             // Get the input reads and build kmers
             IEnumerable<ISequence> sequenceReads = null;
-            FastAParser parser = new FastAParser();
+            var parser = new FastAParser();
             sequenceReads = parser.Parse(filePath).ToList();
 
             // Build kmers from step1,graph in step2 
@@ -2003,49 +2003,49 @@ namespace Bio.Padena.Tests
             // Remove bubbles form the graph in step4 
             // Pass the graph and build contigs
             // Validate contig reads
-            this.KmerLength = Int32.Parse(kmerLength, (IFormatProvider)null);
-            this.DanglingLinksThreshold = Int32.Parse(daglingThreshold, (IFormatProvider)null); ;
-            this.DanglingLinksPurger =
+            KmerLength = Int32.Parse(kmerLength, (IFormatProvider)null);
+            DanglingLinksThreshold = Int32.Parse(daglingThreshold, (IFormatProvider)null); ;
+            DanglingLinksPurger =
                 new DanglingLinksPurger(Int32.Parse(daglingThreshold, (IFormatProvider)null));
-            this.RedundantPathsPurger =
+            RedundantPathsPurger =
                 new RedundantPathsPurger(Int32.Parse(redundantThreshold, (IFormatProvider)null));
-            this.RedundantPathLengthThreshold = Int32.Parse(redundantThreshold, (IFormatProvider)null);
-            this.SequenceReads.Clear();
+            RedundantPathLengthThreshold = Int32.Parse(redundantThreshold, (IFormatProvider)null);
+            SequenceReads.Clear();
 
-            this.SetSequenceReads(sequenceReads.ToList());
-            this.CreateGraph();
-            this.UnDangleGraph();
+            SetSequenceReads(sequenceReads.ToList());
+            CreateGraph();
+            UnDangleGraph();
 
             // Build contig.
-            this.ContigBuilder = new SimplePathContigBuilder();
-            this.RemoveRedundancy();
-            IEnumerable<ISequence> contigs = this.BuildContigs();
+            ContigBuilder = new SimplePathContigBuilder();
+            RemoveRedundancy();
+            var contigs = BuildContigs();
 
             IList<ISequence> listContigs = contigs.ToList();
 
-            IList<ISequence> sortedContigs = SortContigsData(listContigs);
-            ReadContigMapper mapper = new ReadContigMapper();
+            var sortedContigs = SortContigsData(listContigs);
+            var mapper = new ReadContigMapper();
 
-            ReadContigMap maps = mapper.Map(sortedContigs, sequenceReads, this.KmerLength);
+            var maps = mapper.Map(sortedContigs, sequenceReads, KmerLength);
 
             // Find map paired reads.
-            MatePairMapper mapPairedReads = new MatePairMapper();
-            ContigMatePairs pairedReads = mapPairedReads.MapContigToMatePairs(sequenceReads, maps);
+            var mapPairedReads = new MatePairMapper();
+            var pairedReads = mapPairedReads.MapContigToMatePairs(sequenceReads, maps);
 
             // Filter contigs based on the orientation.
-            OrientationBasedMatePairFilter filter = new OrientationBasedMatePairFilter();
-            ContigMatePairs contigpairedReads = filter.FilterPairedReads(pairedReads, 0);
+            var filter = new OrientationBasedMatePairFilter();
+            var contigpairedReads = filter.FilterPairedReads(pairedReads, 0);
 
             // Calculate the distance between contigs.
-            DistanceCalculator calc = new DistanceCalculator(contigpairedReads);
+            var calc = new DistanceCalculator(contigpairedReads);
             calc.CalculateDistance();
             Assert.AreEqual(expectedContigPairedReadsCount,
                 contigpairedReads.Values.Count.ToString((IFormatProvider)null));
 
             Dictionary<ISequence, IList<ValidMatePair>> map;
             IList<ValidMatePair> valid;
-            ISequence sortedContig = sortedContigs[0];
-            ISequence secondSortedContig = sortedContigs[1];
+            var sortedContig = sortedContigs[0];
+            var secondSortedContig = sortedContigs[1];
             if (contigpairedReads.ContainsKey(sortedContig))
             {
                 map = contigpairedReads[sortedContig];
@@ -2077,19 +2077,19 @@ namespace Bio.Padena.Tests
         /// <param name="nodeName">xml node name used for different testcases</param>
         internal void ValidateScaffoldPath(string nodeName)
         {
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
-            string kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerLengthNode);
-            string daglingThreshold = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.DanglingLinkThresholdNode);
-            string redundantThreshold = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.RedundantThreshold);
-            string[] expectedScaffoldNodes = utilityObj.xmlUtil.GetTextValues(nodeName, Constants.ScaffoldNodes);
-            string libraray = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.LibraryName);
-            string stdDeviation = utilityObj.xmlUtil.GetTextValue(nodeName,Constants.StdDeviation);
-            string mean = utilityObj.xmlUtil.GetTextValue(nodeName,Constants.Mean);
-            string expectedDepth = utilityObj.xmlUtil.GetTextValue(nodeName,Constants.DepthNode);
-            string expectedScaffoldPathCount = utilityObj.xmlUtil.GetTextValue(nodeName,Constants.ScaffoldPathCount);
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            var kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerLengthNode);
+            var daglingThreshold = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.DanglingLinkThresholdNode);
+            var redundantThreshold = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.RedundantThreshold);
+            var expectedScaffoldNodes = utilityObj.xmlUtil.GetTextValues(nodeName, Constants.ScaffoldNodes);
+            var libraray = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.LibraryName);
+            var stdDeviation = utilityObj.xmlUtil.GetTextValue(nodeName,Constants.StdDeviation);
+            var mean = utilityObj.xmlUtil.GetTextValue(nodeName,Constants.Mean);
+            var expectedDepth = utilityObj.xmlUtil.GetTextValue(nodeName,Constants.DepthNode);
+            var expectedScaffoldPathCount = utilityObj.xmlUtil.GetTextValue(nodeName,Constants.ScaffoldPathCount);
 
             // Get the input reads and build kmers
-            FastAParser parser = new FastAParser();
+            var parser = new FastAParser();
             IEnumerable<ISequence> sequenceReads = parser.Parse(filePath).ToList();
 
             // Build kmers from step1,graph in step2 
@@ -2097,54 +2097,54 @@ namespace Bio.Padena.Tests
             // Remove bubbles form the graph in step4 
             // Pass the graph and build contigs
             // Validate contig reads
-            this.KmerLength = Int32.Parse(kmerLength, null);
-            this.DanglingLinksThreshold = Int32.Parse(daglingThreshold, null); 
-            this.DanglingLinksPurger = new DanglingLinksPurger(Int32.Parse(daglingThreshold, null));
-            this.RedundantPathsPurger = new RedundantPathsPurger(Int32.Parse(redundantThreshold, null));
-            this.RedundantPathLengthThreshold = Int32.Parse(redundantThreshold, null);
-            this.SequenceReads.Clear();
+            KmerLength = Int32.Parse(kmerLength, null);
+            DanglingLinksThreshold = Int32.Parse(daglingThreshold, null); 
+            DanglingLinksPurger = new DanglingLinksPurger(Int32.Parse(daglingThreshold, null));
+            RedundantPathsPurger = new RedundantPathsPurger(Int32.Parse(redundantThreshold, null));
+            RedundantPathLengthThreshold = Int32.Parse(redundantThreshold, null);
+            SequenceReads.Clear();
 
-            this.SetSequenceReads(sequenceReads.ToList());
-            this.CreateGraph();
-            ContigGraph graph = new ContigGraph();
+            SetSequenceReads(sequenceReads.ToList());
+            CreateGraph();
+            var graph = new ContigGraph();
 
-            this.UnDangleGraph();
+            UnDangleGraph();
 
             // Build contig.
-            this.ContigBuilder = new SimplePathContigBuilder();
-            this.RemoveRedundancy();
-            IEnumerable<ISequence> contigs = this.BuildContigs();
+            ContigBuilder = new SimplePathContigBuilder();
+            RemoveRedundancy();
+            var contigs = BuildContigs();
             IList<ISequence> listContigs = contigs.ToList();
-            IList<ISequence> sortedContigs = SortContigsData(listContigs);
-            ReadContigMapper mapper = new ReadContigMapper();
+            var sortedContigs = SortContigsData(listContigs);
+            var mapper = new ReadContigMapper();
 
-            ReadContigMap maps = mapper.Map(sortedContigs, sequenceReads, this.KmerLength);
+            var maps = mapper.Map(sortedContigs, sequenceReads, KmerLength);
 
             // Find map paired reads.
             CloneLibrary.Instance.AddLibrary(libraray, float.Parse(mean, null), float.Parse(stdDeviation, null));
-            MatePairMapper mapPairedReads = new MatePairMapper();
-            ContigMatePairs pairedReads = mapPairedReads.MapContigToMatePairs(sequenceReads, maps);
+            var mapPairedReads = new MatePairMapper();
+            var pairedReads = mapPairedReads.MapContigToMatePairs(sequenceReads, maps);
 
             // Filter contigs based on the orientation.
-            OrientationBasedMatePairFilter filter = new OrientationBasedMatePairFilter();
-            ContigMatePairs contigpairedReads = filter.FilterPairedReads(pairedReads, 0);
+            var filter = new OrientationBasedMatePairFilter();
+            var contigpairedReads = filter.FilterPairedReads(pairedReads, 0);
 
-            DistanceCalculator dist = new DistanceCalculator(contigpairedReads);
+            var dist = new DistanceCalculator(contigpairedReads);
             dist.CalculateDistance();
 
-            graph.BuildContigGraph(contigs.ToList(), this.KmerLength);
+            graph.BuildContigGraph(contigs.ToList(), KmerLength);
 
             // Validate ScaffoldPath using BFS.
-            TracePath trace = new TracePath();
-            IList<ScaffoldPath> paths = trace.FindPaths(graph, contigpairedReads, Int32.Parse(kmerLength, null),
+            var trace = new TracePath();
+            var paths = trace.FindPaths(graph, contigpairedReads, Int32.Parse(kmerLength, null),
                                                         Int32.Parse(expectedDepth, null));
 
-            ScaffoldPath scaffold = paths.First();
+            var scaffold = paths.First();
             Assert.AreEqual(expectedScaffoldPathCount, paths.Count.ToString((IFormatProvider)null));
 
-            foreach (KeyValuePair<Node, Edge> kvp in scaffold)
+            foreach (var kvp in scaffold)
             {
-                string sequence = graph.GetNodeSequence(kvp.Key).ConvertToString();
+                var sequence = graph.GetNodeSequence(kvp.Key).ConvertToString();
                 Assert.IsTrue(expectedScaffoldNodes.Contains(sequence), "Missing " + sequence);
             }
 
@@ -2157,19 +2157,19 @@ namespace Bio.Padena.Tests
         /// <param name="nodeName">xml node name used for different testcases</param>
         internal void ValidateAssembledPath(string nodeName)
         {
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
-            string kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerLengthNode);
-            string daglingThreshold = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.DanglingLinkThresholdNode);
-            string redundantThreshold = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.RedundantThreshold);
-            string libraray = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.LibraryName);
-            string stdDeviation = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.StdDeviation);
-            string mean = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.Mean);
-            string expectedDepth = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.DepthNode);
-            string expectedScaffoldPathCount = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ScaffoldPathCount);
-            string[] assembledPath = utilityObj.xmlUtil.GetTextValues(nodeName, Constants.SequencePathNode);
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            var kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerLengthNode);
+            var daglingThreshold = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.DanglingLinkThresholdNode);
+            var redundantThreshold = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.RedundantThreshold);
+            var libraray = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.LibraryName);
+            var stdDeviation = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.StdDeviation);
+            var mean = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.Mean);
+            var expectedDepth = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.DepthNode);
+            var expectedScaffoldPathCount = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ScaffoldPathCount);
+            var assembledPath = utilityObj.xmlUtil.GetTextValues(nodeName, Constants.SequencePathNode);
 
             // Get the input reads and build kmers
-            FastAParser parser = new FastAParser();
+            var parser = new FastAParser();
             IEnumerable<ISequence> sequenceReads = parser.Parse(filePath).ToList();
 
             // Build kmers from step1,graph in step2 
@@ -2177,58 +2177,58 @@ namespace Bio.Padena.Tests
             // Remove bubbles form the graph in step4 
             // Pass the graph and build contigs
             // Validate contig reads
-            this.KmerLength = Int32.Parse(kmerLength, null);
-            this.DanglingLinksThreshold = Int32.Parse(daglingThreshold, null); ;
-            this.DanglingLinksPurger = new DanglingLinksPurger(Int32.Parse(daglingThreshold, null));
-            this.RedundantPathsPurger = new RedundantPathsPurger(Int32.Parse(redundantThreshold, null));
-            this.RedundantPathLengthThreshold = Int32.Parse(redundantThreshold, (IFormatProvider)null);
-            this.SequenceReads.Clear();
+            KmerLength = Int32.Parse(kmerLength, null);
+            DanglingLinksThreshold = Int32.Parse(daglingThreshold, null); ;
+            DanglingLinksPurger = new DanglingLinksPurger(Int32.Parse(daglingThreshold, null));
+            RedundantPathsPurger = new RedundantPathsPurger(Int32.Parse(redundantThreshold, null));
+            RedundantPathLengthThreshold = Int32.Parse(redundantThreshold, (IFormatProvider)null);
+            SequenceReads.Clear();
 
-            this.SetSequenceReads(sequenceReads.ToList());
-            this.CreateGraph();
-            ContigGraph graph = new ContigGraph();
-            this.UnDangleGraph();
+            SetSequenceReads(sequenceReads.ToList());
+            CreateGraph();
+            var graph = new ContigGraph();
+            UnDangleGraph();
 
             // Build contig.
-            this.ContigBuilder = new SimplePathContigBuilder();
-            this.RemoveRedundancy();
-            IEnumerable<ISequence> contigs = this.BuildContigs();
+            ContigBuilder = new SimplePathContigBuilder();
+            RemoveRedundancy();
+            var contigs = BuildContigs();
             IList<ISequence> listContigs = contigs.ToList();
 
-            IList<ISequence> sortedContigs = SortContigsData(listContigs);
-            ReadContigMapper mapper = new ReadContigMapper();
+            var sortedContigs = SortContigsData(listContigs);
+            var mapper = new ReadContigMapper();
 
-            ReadContigMap maps = mapper.Map(sortedContigs, sequenceReads, this.KmerLength);
+            var maps = mapper.Map(sortedContigs, sequenceReads, KmerLength);
 
             // Find map paired reads.
             CloneLibrary.Instance.AddLibrary(libraray, float.Parse(mean, null), float.Parse(stdDeviation, null));
-            MatePairMapper mapPairedReads = new MatePairMapper();
-            ContigMatePairs pairedReads = mapPairedReads.MapContigToMatePairs(sequenceReads, maps);
+            var mapPairedReads = new MatePairMapper();
+            var pairedReads = mapPairedReads.MapContigToMatePairs(sequenceReads, maps);
 
             // Filter contigs based on the orientation.
-            OrientationBasedMatePairFilter filter = new OrientationBasedMatePairFilter();
-            ContigMatePairs contigpairedReads = filter.FilterPairedReads(pairedReads, 0);
+            var filter = new OrientationBasedMatePairFilter();
+            var contigpairedReads = filter.FilterPairedReads(pairedReads, 0);
 
-            DistanceCalculator dist = new DistanceCalculator(contigpairedReads);
+            var dist = new DistanceCalculator(contigpairedReads);
             dist.CalculateDistance();
 
-            graph.BuildContigGraph(contigs.ToList(), this.KmerLength);
+            graph.BuildContigGraph(contigs.ToList(), KmerLength);
 
             // Validate ScaffoldPath using BFS.
-            TracePath trace = new TracePath();
-            IList<ScaffoldPath> paths = trace.FindPaths(graph, contigpairedReads, Int32.Parse(kmerLength, null), Int32.Parse(expectedDepth, null));
+            var trace = new TracePath();
+            var paths = trace.FindPaths(graph, contigpairedReads, Int32.Parse(kmerLength, null), Int32.Parse(expectedDepth, null));
 
             Assert.AreEqual(expectedScaffoldPathCount, paths.Count.ToString((IFormatProvider)null));
 
             // Assemble paths.
-            PathPurger pathsAssembler = new PathPurger();
+            var pathsAssembler = new PathPurger();
             pathsAssembler.PurgePath(paths);
 
             // Get sequences from assembled path.
             IList<ISequence> seqList = paths.Select(temp => temp.BuildSequenceFromPath(graph, Int32.Parse(kmerLength, null))).ToList();
 
             // Validate assembled sequence paths.
-            foreach (string sequence in seqList.Select(t => t.ConvertToString())) {
+            foreach (var sequence in seqList.Select(t => t.ConvertToString())) {
                 Assert.IsTrue (assembledPath.Contains (sequence), "Could not locate " + sequence);
             }
 
@@ -2248,19 +2248,19 @@ namespace Bio.Padena.Tests
             bool isScaffold, bool enableLowerContigRemoval, bool allowErosion)
         {
             // Get values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
-            string kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerLengthNode);
-            string daglingThreshold = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.DanglingLinkThresholdNode);
-            string redundantThreshold = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.RedundantThreshold);
-            string library = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.LibraryName);
-            string stdDeviation = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.StdDeviation);
-            string mean = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.Mean);
-            string erosionThreshold = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ErosionNode);
-            string lowCCThreshold = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.LowCoverageContigNode);
-            string expectedSequences = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequencePathNode);
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            var kmerLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerLengthNode);
+            var daglingThreshold = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.DanglingLinkThresholdNode);
+            var redundantThreshold = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.RedundantThreshold);
+            var library = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.LibraryName);
+            var stdDeviation = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.StdDeviation);
+            var mean = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.Mean);
+            var erosionThreshold = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ErosionNode);
+            var lowCCThreshold = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.LowCoverageContigNode);
+            var expectedSequences = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequencePathNode);
 
             // Get the input reads and build kmers
-            FastAParser parser = new FastAParser();
+            var parser = new FastAParser();
             IEnumerable<ISequence> sequenceReads = parser.Parse(filePath).ToList();
             // Create a ParallelDeNovoAssembler instance.
             ParallelDeNovoAssembler assembler = null;
@@ -2288,10 +2288,10 @@ namespace Bio.Padena.Tests
                 CloneLibrary.Instance.AddLibrary(library, float.Parse(mean, null),
                     float.Parse(stdDeviation, null));
 
-                IDeNovoAssembly assembly = assembler.Assemble(sequenceReads.ToList(), isScaffold);
+                var assembly = assembler.Assemble(sequenceReads.ToList(), isScaffold);
                 IList<ISequence> assembledSequenceList = assembly.AssembledSequences.ToList();
 
-                HashSet<string> expected = new HashSet<string>(expectedSequences.Split(',').Select(s => s.Trim()));
+                var expected = new HashSet<string>(expectedSequences.Split(',').Select(s => s.Trim()));
                 AlignmentHelpers.CompareSequenceLists(expected, assembledSequenceList);
 
                 ApplicationLog.WriteLine("Padena BVT : Assemble() validation for Padena step6:step7 completed successfully");
@@ -2310,15 +2310,15 @@ namespace Bio.Padena.Tests
         internal void ParallelDenovoAssemblyProperties(string nodeName)
         {
             // Get values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue (nodeName, Constants.FilePathNode).TestDir();
-            string kmerLength = utilityObj.xmlUtil.GetTextValue (nodeName, Constants.KmerLengthNode);
-            string library = utilityObj.xmlUtil.GetTextValue (nodeName, Constants.LibraryName);
-            string StdDeviation = utilityObj.xmlUtil.GetTextValue (nodeName, Constants.StdDeviation);
-            string mean = utilityObj.xmlUtil.GetTextValue (nodeName, Constants.Mean);
+            var filePath = utilityObj.xmlUtil.GetTextValue (nodeName, Constants.FilePathNode).TestDir();
+            var kmerLength = utilityObj.xmlUtil.GetTextValue (nodeName, Constants.KmerLengthNode);
+            var library = utilityObj.xmlUtil.GetTextValue (nodeName, Constants.LibraryName);
+            var StdDeviation = utilityObj.xmlUtil.GetTextValue (nodeName, Constants.StdDeviation);
+            var mean = utilityObj.xmlUtil.GetTextValue (nodeName, Constants.Mean);
 
             // Get the input reads and build kmers
             IEnumerable<ISequence> sequenceReads = null;
-            FastAParser parser = new FastAParser ();
+            var parser = new FastAParser ();
             sequenceReads = parser.Parse (filePath);
 
             // Build kmers from step1,graph in step2 
@@ -2326,21 +2326,21 @@ namespace Bio.Padena.Tests
             // Remove bubbles form the graph in step4 
             // Pass the graph and build contigs
             // Validate the contigs
-            this.KmerLength = int.Parse (kmerLength, (IFormatProvider)null);
-            this.SequenceReads.Clear ();
+            KmerLength = int.Parse (kmerLength, (IFormatProvider)null);
+            SequenceReads.Clear ();
 
-            this.SetSequenceReads (sequenceReads.ToList ());
-            this.CreateGraph ();
-            this.UnDangleGraph ();
-            this.RedundantPathsPurger =
+            SetSequenceReads (sequenceReads.ToList ());
+            CreateGraph ();
+            UnDangleGraph ();
+            RedundantPathsPurger =
                     new RedundantPathsPurger (int.Parse (kmerLength, (IFormatProvider)null) + 1);
-            this.RemoveRedundancy ();
-            this.ContigBuilder = new SimplePathContigBuilder ();
+            RemoveRedundancy ();
+            ContigBuilder = new SimplePathContigBuilder ();
 
             // Build contigs
-            IEnumerable<ISequence> contigs = this.BuildContigs ();
+            var contigs = BuildContigs ();
 
-            CloneLibraryInformation cloneLibInfoObj = new CloneLibraryInformation ();
+            var cloneLibInfoObj = new CloneLibraryInformation ();
             cloneLibInfoObj.LibraryName = library;
             cloneLibInfoObj.MeanLengthOfInsert = float.Parse (mean, (IFormatProvider)null);
             cloneLibInfoObj.StandardDeviationOfInsert = float.Parse (StdDeviation, (IFormatProvider)null);
@@ -2350,7 +2350,7 @@ namespace Bio.Padena.Tests
                 float.Parse (StdDeviation, (IFormatProvider)null));
 
             IEnumerable<ISequence> scaffolds = BuildScaffolds (contigs.ToList ());
-            PadenaAssembly denovoAssembly = new PadenaAssembly ();
+            var denovoAssembly = new PadenaAssembly ();
 
             denovoAssembly.AddContigs (contigs);
             denovoAssembly.AddScaffolds (scaffolds);
@@ -2361,7 +2361,7 @@ namespace Bio.Padena.Tests
             Assert.IsNull (denovoAssembly.Documentation);
 
             // Validates the Clone Library for the existing clone
-            CloneLibraryInformation actualObj = CloneLibrary.Instance.GetLibraryInformation (library);
+            var actualObj = CloneLibrary.Instance.GetLibraryInformation (library);
             Assert.IsTrue (actualObj.Equals (cloneLibInfoObj));
 
             ApplicationLog.WriteLine ("CloneLibraryInformation Equals() is successfully validated");

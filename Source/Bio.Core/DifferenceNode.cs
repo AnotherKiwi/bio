@@ -89,12 +89,12 @@ namespace Bio
         {
             if (n1 == null)
             {
-                throw new ArgumentNullException("n1");
+                throw new ArgumentNullException(nameof(n1));
             }
 
             if (n2 == null)
             {
-                throw new ArgumentNullException("n2");
+                throw new ArgumentNullException(nameof(n2));
             }
 
             return n1.Sequence1Start - n2.Sequence1Start;
@@ -111,30 +111,30 @@ namespace Bio
         {
             if (matchList == null)
             {
-                throw new ArgumentNullException("matchList");
+                throw new ArgumentNullException(nameof(matchList));
             }
 
             if (sequence1 == null)
             {
-                throw new ArgumentNullException("sequence1");
+                throw new ArgumentNullException(nameof(sequence1));
             }
 
             if (sequence2 == null)
             {
-                throw new ArgumentNullException("sequence2");
+                throw new ArgumentNullException(nameof(sequence2));
             }
 
             // Sort match list according to start indices
             matchList.Sort(CompareDifferenceNode);
 
-            List<DifferenceNode> diffList = new List<DifferenceNode>();
+            var diffList = new List<DifferenceNode>();
 
             int mismatchStart1, mismatchStart2, mismatchEnd1, mismatchEnd2;
             mismatchStart1 = 0;
             mismatchStart2 = 0;
 
             // There might be some mutation at starting
-            WordMatch first = matchList[0];
+            var first = matchList[0];
             if (first.Sequence1Start > 0 || first.Sequence2Start > 0)
             {
                 diffList.Add(new DifferenceNode(0, 0, first.Sequence1Start - 1, first.Sequence2Start - 1));
@@ -145,7 +145,7 @@ namespace Bio
             mismatchStart1 = first.Sequence1Start + first.Length;
             mismatchStart2 = first.Sequence2Start + first.Length;
 
-            foreach (WordMatch n in matchList)
+            foreach (var n in matchList)
             {
                 mismatchEnd1 = n.Sequence1Start - 1;
                 mismatchEnd2 = n.Sequence2Start - 1;
@@ -176,11 +176,11 @@ namespace Bio
         {
             if (diffList == null)
             {
-                throw new ArgumentNullException("diffList");
+                throw new ArgumentNullException(nameof(diffList));
             }
 
-            List<CompareFeature> features = new List<CompareFeature>();
-            foreach (DifferenceNode diff in diffList)
+            var features = new List<CompareFeature>();
+            foreach (var diff in diffList)
             {
                 features.AddRange(
                     ComputeFeatures(
@@ -229,11 +229,11 @@ namespace Bio
             int sequence1Index,
             int sequence2Index)
         {
-            List<CompareFeature> features = new List<CompareFeature>();
+            var features = new List<CompareFeature>();
             string noteStr, replaceStr, conflictStr, sourceStr;
 
-            int sequence1Length = sequence1End - sequence1Start + 1;
-            int sequence2Length = sequence2End - sequence2Start + 1;
+            var sequence1Length = sequence1End - sequence1Start + 1;
+            var sequence2Length = sequence2End - sequence2Start + 1;
 
             if (sequence1Length != 0)
             {
@@ -279,7 +279,7 @@ namespace Bio
                 {                    
                     if (replaceStr.Length > 0)
                     {
-                        string seqstring = new string(sequence1.Select(a => (char)a).ToArray());
+                        var seqstring = new string(sequence1.Select(a => (char)a).ToArray());
                         sourceStr = seqstring .Substring(sequence1Start, sequence1Length);
                         conflictStr = string.Format(CultureInfo.CurrentCulture, "{0} -> {1}", sourceStr, replaceStr);
                     }
@@ -350,8 +350,8 @@ namespace Bio
             /// <param name="feature">Feature details</param>
             public CompareFeature(int startPosition, int endPosition, string featureType, string feature)
             {
-                this.start = startPosition;
-                this.end = endPosition;
+                start = startPosition;
+                end = endPosition;
                 this.featureType = featureType;
                 this.feature = feature;
             }

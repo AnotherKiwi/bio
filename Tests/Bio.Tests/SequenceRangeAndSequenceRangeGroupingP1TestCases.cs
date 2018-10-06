@@ -45,7 +45,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateCompareSequenceRangeWithIdenticalStartIndex()
         {
-            this.ValidateCompareTwoSequenceRanges(Constants.CompareSequenceRangeWithIdenticalStartNode);
+            ValidateCompareTwoSequenceRanges(Constants.CompareSequenceRangeWithIdenticalStartNode);
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateCompareSequenceRangeWithIdenticalENDIndex()
         {
-            this.ValidateCompareTwoSequenceRanges(Constants.CompareSequenceRangeWithIdenticalENDNode);
+            ValidateCompareTwoSequenceRanges(Constants.CompareSequenceRangeWithIdenticalENDNode);
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateMergeWithIdenticalChromoEntries()
         {
-            this.ValidateBedOperations(Constants.MergesmallFilewithIdenticalChromosomesNode,
+            ValidateBedOperations(Constants.MergesmallFilewithIdenticalChromosomesNode,
                                   BedOperationsParameters.Merge, false, true);
         }
 
@@ -82,7 +82,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateMergeWithAllIdenticalChromoEntries()
         {
-            this.ValidateBedOperations(Constants.MergeFilewithAllIdenticalChromosomesNode,
+            ValidateBedOperations(Constants.MergeFilewithAllIdenticalChromosomesNode,
                                   BedOperationsParameters.Merge, false, false);
         }
 
@@ -95,7 +95,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateMergeTwoBedFiles()
         {
-            this.ValidateBedOperations(Constants.MergeTwosmallFilesNode,
+            ValidateBedOperations(Constants.MergeTwosmallFilesNode,
                                   BedOperationsParameters.MergeQueryWithReference, false, false);
         }
 
@@ -108,7 +108,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateMergeTwoBedFilesWithTwoIdenticalChromo()
         {
-            this.ValidateBedOperations(Constants.MergeTwoFileswithAllIdenticalChromosomesNode,
+            ValidateBedOperations(Constants.MergeTwoFileswithAllIdenticalChromosomesNode,
                                   BedOperationsParameters.MergeWithPam, false, true);
         }
 
@@ -121,7 +121,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateIntersectTwoBedFilesWithoutIntervals()
         {
-            this.ValidateBedOperations(Constants.IntersectWithIdenticalChromoWithoutIntervals,
+            ValidateBedOperations(Constants.IntersectWithIdenticalChromoWithoutIntervals,
                                   BedOperationsParameters.Intersect, false, true);
         }
 
@@ -135,7 +135,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateIntersectTwoBedFilesWithoutIntervalsForIdenticalEntries()
         {
-            this.ValidateBedOperations(Constants.IntersectWithAllIdenticalChromoWithoutIntervals,
+            ValidateBedOperations(Constants.IntersectWithAllIdenticalChromoWithoutIntervals,
                                   BedOperationsParameters.Intersect, false, false);
         }
 
@@ -148,7 +148,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateIntersectTwoBedFilesWithPiecesIntervals()
         {
-            this.ValidateBedOperations(Constants.IntersectWithIdenticalChromoWithoutIntervals,
+            ValidateBedOperations(Constants.IntersectWithIdenticalChromoWithoutIntervals,
                                   BedOperationsParameters.Intersect, true, false);
         }
 
@@ -162,7 +162,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateIntersectTwoBedFilesWithIntervalsForIdenticalEntries()
         {
-            this.ValidateBedOperations(Constants.IntersectWithAllIdenticalChromoWithoutIntervals,
+            ValidateBedOperations(Constants.IntersectWithAllIdenticalChromoWithoutIntervals,
                                   BedOperationsParameters.Intersect, true, true);
         }
 
@@ -175,7 +175,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateIntersectTenChromoWithoutPiecesIntervals()
         {
-            this.ValidateBedOperations(Constants.IntersectBedFilesWithTenChromo,
+            ValidateBedOperations(Constants.IntersectBedFilesWithTenChromo,
                                   BedOperationsParameters.Intersect, false, true);
         }
 
@@ -188,7 +188,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateIntersectTenChromoWithPiecesIntervals()
         {
-            this.ValidateBedOperations(Constants.IntersectBedFilesWithTenChromo,
+            ValidateBedOperations(Constants.IntersectBedFilesWithTenChromo,
                                   BedOperationsParameters.Intersect, true, false);
         }
 
@@ -201,7 +201,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateIntersectBedFilesWithMinimalOverlap()
         {
-            this.ValidateBedOperations(Constants.IntersectBedFilesWithTenChromoWithMinimalOverlap,
+            ValidateBedOperations(Constants.IntersectBedFilesWithTenChromoWithMinimalOverlap,
                                   BedOperationsParameters.Intersect, false, true);
         }
 
@@ -215,7 +215,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateSubtractTwoBedFilesWithMinimalandNonOverlap()
         {
-            this.ValidateBedOperations(Constants.SubtractBedFilesWithMinimalOverlapNodeName,
+            ValidateBedOperations(Constants.SubtractBedFilesWithMinimalOverlapNodeName,
                                   BedOperationsParameters.Subtract, false, false);
         }
 
@@ -229,7 +229,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateSubtractTwoBedFilesWithNonOverlapIntervals()
         {
-            this.ValidateBedOperations(Constants.SubtractBedFilesNodeName,
+            ValidateBedOperations(Constants.SubtractBedFilesNodeName,
                                   BedOperationsParameters.Subtract, false, false);
         }
 
@@ -243,7 +243,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateSubtractMultipleChromosomesWithNonOverlapIntervals()
         {
-            this.ValidateBedOperations(Constants.SubtractMultipleChromosomesBedFilesNodeName,
+            ValidateBedOperations(Constants.SubtractMultipleChromosomesBedFilesNodeName,
                                   BedOperationsParameters.Subtract, false, false);
         }
 
@@ -257,7 +257,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateSubtractMultipleChromosomesUsingIntervalsWithNoOverlap()
         {
-            this.ValidateBedOperations(Constants.SubtractMultipleChromosomesWithIntervalsNodeName,
+            ValidateBedOperations(Constants.SubtractMultipleChromosomesWithIntervalsNodeName,
                                   BedOperationsParameters.Subtract, true, false);
         }
 
@@ -271,7 +271,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateSubtractTwoBedFilesWithNonOverlappingIntervals()
         {
-            this.ValidateBedOperations(Constants.SubtractBedFilesWithIntervalsNodeName,
+            ValidateBedOperations(Constants.SubtractBedFilesWithIntervalsNodeName,
                                   BedOperationsParameters.Subtract, false, true);
         }
 
@@ -291,19 +291,19 @@ namespace Bio.Tests
                                            bool overlappingBasePair, bool isParentSeqRangeRequired)
         {
             // Get values from xml.
-            string expectedRangeIDs = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.IDNode);
-            string expectedStartIndex = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.StartNode);
-            string expectedEndIndex = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.EndNode);
-            string referenceFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
-            string queryFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.QueryFilePath).TestDir();
-            string minimalOverlap = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.OverlapValue);
+            var expectedRangeIDs = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.IDNode);
+            var expectedStartIndex = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.StartNode);
+            var expectedEndIndex = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.EndNode);
+            var referenceFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            var queryFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.QueryFilePath).TestDir();
+            var minimalOverlap = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.OverlapValue);
 
             SequenceRangeGrouping operationResult = null;
 
             // Parse a BED file.
             var parserObj = new BedParser();
-            SequenceRangeGrouping referenceGroup = parserObj.ParseRangeGrouping(referenceFilePath);
-            SequenceRangeGrouping queryGroup = parserObj.ParseRangeGrouping(queryFilePath);
+            var referenceGroup = parserObj.ParseRangeGrouping(referenceFilePath);
+            var queryGroup = parserObj.ParseRangeGrouping(queryFilePath);
 
             var intersectOutputType = IntersectOutputType.OverlappingIntervals;
             if (overlappingBasePair)
@@ -346,20 +346,20 @@ namespace Bio.Tests
             }
 
             // Get a result SequenceGroup Id.
-            IEnumerable<string> groupId = operationResult.GroupIDs;
-            string[] expectedRangeIdsArray = expectedRangeIDs.Split(',');
-            string[] expectedStartIndexArray = expectedStartIndex.Split(',');
-            string[] expectedEndIndexArray = expectedEndIndex.Split(',');
-            int i = 0;
+            var groupId = operationResult.GroupIDs;
+            var expectedRangeIdsArray = expectedRangeIDs.Split(',');
+            var expectedStartIndexArray = expectedStartIndex.Split(',');
+            var expectedEndIndexArray = expectedEndIndex.Split(',');
+            var i = 0;
 
-            foreach (string grpId in groupId)
+            foreach (var grpId in groupId)
             {
-                string rangeId = grpId;
+                var rangeId = grpId;
 
-                List<ISequenceRange> rangeList = operationResult.GetGroup(rangeId);
+                var rangeList = operationResult.GetGroup(rangeId);
 
                 // Validate result sequence range.
-                foreach (ISequenceRange range in rangeList)
+                foreach (var range in rangeList)
                 {
                     Assert.AreEqual(expectedRangeIdsArray[i], range.ID);
                     Assert.AreEqual(expectedStartIndexArray[i], range.Start.ToString((IFormatProvider) null));
@@ -369,7 +369,7 @@ namespace Bio.Tests
             }
 
             // Validate ParentSeqRange.
-            bool result = ValidateParentSeqRange(operationResult, referenceGroup, queryGroup, isParentSeqRangeRequired);
+            var result = ValidateParentSeqRange(operationResult, referenceGroup, queryGroup, isParentSeqRangeRequired);
             Assert.IsTrue(result);
 
             ApplicationLog.WriteLine("Bed Operations BVT: Successfully validated the BED SequenceID, Start and End Ranges");
@@ -382,13 +382,13 @@ namespace Bio.Tests
         private void ValidateCompareTwoSequenceRanges(string nodeName)
         {
             // Get values from xml.
-            string expectedRangeId = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.IDNode);
-            string expectedStartIndex = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.StartNode);
-            string expectedEndIndex = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.EndNode);
-            string expectedRangeId1 = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.IDNode1);
-            string expectedStartIndex1 = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.StartNode1);
-            string expectedEndIndex1 = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.EndNode1);
-            string expectedResults = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ComparisonResult);
+            var expectedRangeId = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.IDNode);
+            var expectedStartIndex = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.StartNode);
+            var expectedEndIndex = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.EndNode);
+            var expectedRangeId1 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.IDNode1);
+            var expectedStartIndex1 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.StartNode1);
+            var expectedEndIndex1 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.EndNode1);
+            var expectedResults = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ComparisonResult);
 
             // Create first SequenceRange.
             var seqRange = new SequenceRange(expectedRangeId, long.Parse(expectedStartIndex, null), long.Parse(expectedEndIndex, null));
@@ -397,7 +397,7 @@ namespace Bio.Tests
             var secondSeqRange = new SequenceRange(expectedRangeId1, long.Parse(expectedStartIndex1, null), long.Parse(expectedEndIndex1, null));
 
             // Compare two SequenceRanges which are identical.
-            int result = seqRange.CompareTo(secondSeqRange);
+            var result = seqRange.CompareTo(secondSeqRange);
 
             // Validate result of comparison.
             Assert.AreEqual(Convert.ToInt32(expectedResults, null), result);
@@ -420,9 +420,9 @@ namespace Bio.Tests
             IList<ISequenceRange> refSeqRangeList = new List<ISequenceRange>();
             IList<ISequenceRange> querySeqRangeList = new List<ISequenceRange>();
 
-            IEnumerable<string> groupIds = resultSeq.GroupIDs;
+            var groupIds = resultSeq.GroupIDs;
 
-            foreach (string groupId in groupIds)
+            foreach (var groupId in groupIds)
             {
                 if (null != refSeq)
                 {
@@ -434,7 +434,7 @@ namespace Bio.Tests
                     querySeqRangeList = querySeq.GetGroup(groupId);
                 }
 
-                foreach (ISequenceRange resultRange in resultSeq.GetGroup(groupId))
+                foreach (var resultRange in resultSeq.GetGroup(groupId))
                 {
                     if (!isParentSeqRangeRequired)
                     {
@@ -445,8 +445,8 @@ namespace Bio.Tests
                     }
                     else
                     {
-                        int refSeqRangeCount = refSeqRangeList.Count(s => resultRange.ParentSeqRanges.Contains(s));
-                        int querySeqRangeCount = querySeqRangeList.Count(s => resultRange.ParentSeqRanges.Contains(s));
+                        var refSeqRangeCount = refSeqRangeList.Count(s => resultRange.ParentSeqRanges.Contains(s));
+                        var querySeqRangeCount = querySeqRangeList.Count(s => resultRange.ParentSeqRanges.Contains(s));
 
                         if (resultRange.ParentSeqRanges.Count != refSeqRangeCount + querySeqRangeCount)
                         {

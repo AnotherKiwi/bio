@@ -40,11 +40,11 @@ namespace Bio.IO
         {
             get
             {
-                return this.Parser.Alphabet;
+                return Parser.Alphabet;
             }
             set
             {
-                this.Parser.Alphabet = value;
+                Parser.Alphabet = value;
             }
         }
     }
@@ -65,7 +65,7 @@ namespace Bio.IO
         /// </summary>
 	    public GZipParser()
 	    {
-	        this.Parser = new TP();
+	        Parser = new TP();
 	    }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace Bio.IO
         /// <param name="parser">Parser to use.</param>
 	    public GZipParser(TP parser)
 	    {
-	        this.Parser = parser;
+	        Parser = parser;
 	    }
 
 	    /// <summary>
@@ -89,12 +89,12 @@ namespace Bio.IO
 
             filename = filename.Substring(0, filename.Length - Util.Helper.ZippedFileExtension.Length);
 
-	        int extensionDelimiter = filename.LastIndexOf('.');
+	        var extensionDelimiter = filename.LastIndexOf('.');
             if (-1 < extensionDelimiter)
             {
-                string fileExtension = filename.Substring(extensionDelimiter);
-                string validExtensions = this.Parser.SupportedFileTypes;
-                string[] extensions = validExtensions.Split(',');
+                var fileExtension = filename.Substring(extensionDelimiter);
+                var validExtensions = Parser.SupportedFileTypes;
+                var extensions = validExtensions.Split(',');
                 return extensions.Any(extension => fileExtension.Equals(extension, StringComparison.CurrentCultureIgnoreCase));
             }
 
@@ -109,7 +109,7 @@ namespace Bio.IO
 	    {
             using (var gz = new GZipStream(stream, CompressionMode.Decompress))
             {
-                foreach (var seq in this.Parser.Parse(gz))
+                foreach (var seq in Parser.Parse(gz))
                 {
                     yield return seq;
                 }
@@ -131,21 +131,21 @@ namespace Bio.IO
 	    /// Gets the name of the parser being implemented. 
 	    /// This is intended to give the developer name of the parser.
 	    /// </summary>
-	    public string Name { get { return this.Parser.Name; } }
+	    public string Name { get { return Parser.Name; } }
 
 	    /// <summary>
 	    /// Gets the description of the parser being
 	    /// implemented. This is intended to give the
 	    /// developer some information of the parser.
 	    /// </summary>
-        public string Description { get { return this.Parser.Description; } }
+        public string Description { get { return Parser.Description; } }
 
 	    /// <summary>
 	    /// Gets the file extensions that the parser supports.
 	    /// If multiple extensions are supported then this property 
 	    /// will return a string containing all extensions with a ',' delimited.
 	    /// </summary>
-        public string SupportedFileTypes { get { return this.Parser.SupportedFileTypes; } }
+        public string SupportedFileTypes { get { return Parser.SupportedFileTypes; } }
 	}
 }
 

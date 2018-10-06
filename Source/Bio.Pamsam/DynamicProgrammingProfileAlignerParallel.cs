@@ -341,12 +341,12 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         {
             if (profileAlignmentA == null)
             {
-                throw new ArgumentNullException("profileAlignmentA");
+                throw new ArgumentNullException(nameof(profileAlignmentA));
             }
 
             if (profileAlignmentB == null)
             {
-                throw new ArgumentNullException("profileAlignmentB");
+                throw new ArgumentNullException(nameof(profileAlignmentB));
             }
 
             _profileAlignmentA = profileAlignmentA;
@@ -378,7 +378,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
 
             //DumpF();  // Writes F-matrix to application log, used for development and testing
 
-            float optScore = Traceback(out _alignedA, out _alignedB);
+            var optScore = Traceback(out _alignedA, out _alignedB);
 
             #region Convert aligned sequences back to Sequence objects, load output SequenceAlignment object
             ProfileAlignment results = null;
@@ -415,12 +415,12 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         {
             if (profileAlignmentA == null)
             {
-                throw new ArgumentNullException("profileAlignmentA");
+                throw new ArgumentNullException(nameof(profileAlignmentA));
             }
 
             if (profileAlignmentB == null)
             {
-                throw new ArgumentNullException("profileAlignmentB");
+                throw new ArgumentNullException(nameof(profileAlignmentB));
             }
 
             _profileAlignmentA = profileAlignmentA;
@@ -451,7 +451,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             //DumpF();  // Writes matrix to application log, used for development and testing
             //DumpAffine(); // Writes matrix to application log in great detail.  Useful only for small cases.
 
-            float optScore = Traceback(out _alignedA, out _alignedB);
+            var optScore = Traceback(out _alignedA, out _alignedB);
 
             #region Convert aligned sequences back to Sequence objects, load output SequenceAlignment object
             ProfileAlignment results = null;
@@ -497,7 +497,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             }
             catch (OutOfMemoryException ex)
             {
-                string msg = BuildOutOfMemoryMessage(ex, false);
+                var msg = BuildOutOfMemoryMessage(ex, false);
                 ApplicationLog.WriteLine(msg);
                 throw new Exception(msg);
             }
@@ -507,24 +507,24 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
 
             // Fill by columns
             // Parallel version
-            int numberOfIterations = _numberOfPartitions * 2 - 1;
+            var numberOfIterations = _numberOfPartitions * 2 - 1;
 
-            Dictionary<int, List<int[]>> parallelIndexMaster = ParallelIndexMasterGenerator(_nRows, _nCols, _numberOfPartitions);
+            var parallelIndexMaster = ParallelIndexMasterGenerator(_nRows, _nCols, _numberOfPartitions);
 
-            for (int i = 0; i < numberOfIterations; ++i)
+            for (var i = 0; i < numberOfIterations; ++i)
             {
                 foreach (var pair in parallelIndexMaster)
                 {
-                    List<int[]> indexPositions = parallelIndexMaster[pair.Key];
+                    var indexPositions = parallelIndexMaster[pair.Key];
 
                     // Parallel in anti-diagonal direction
                     Parallel.ForEach(indexPositions, PAMSAMMultipleSequenceAligner.ParallelOption, indexPosition =>
                     {
-                        int[] rowPositions = IndexLocator(1, _nRows, _numberOfPartitions, indexPosition[0]);
-                        int[] colPositions = IndexLocator(1, _nCols, _numberOfPartitions, indexPosition[0]);
-                        for (int col = colPositions[0]; col < colPositions[1]; col++)
+                        var rowPositions = IndexLocator(1, _nRows, _numberOfPartitions, indexPosition[0]);
+                        var colPositions = IndexLocator(1, _nCols, _numberOfPartitions, indexPosition[0]);
+                        for (var col = colPositions[0]; col < colPositions[1]; col++)
                         {
-                            for (int row = rowPositions[0]; row < rowPositions[1]; row++)
+                            for (var row = rowPositions[0]; row < rowPositions[1]; row++)
                             {
                                 FillCellSimple(col, row);
                             }
@@ -553,7 +553,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             }
             catch (OutOfMemoryException ex)
             {
-                string msg = BuildOutOfMemoryMessage(ex, true);
+                var msg = BuildOutOfMemoryMessage(ex, true);
                 ApplicationLog.WriteLine(msg);
                 throw new Exception(msg);
             }
@@ -563,22 +563,22 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
 
             // Fill by columns
             // Parallel version
-            int numberOfIterations = _numberOfPartitions * 2 - 1;
+            var numberOfIterations = _numberOfPartitions * 2 - 1;
 
-            Dictionary<int, List<int[]>> parallelIndexMaster = ParallelIndexMasterGenerator(_nRows, _nCols, _numberOfPartitions);
+            var parallelIndexMaster = ParallelIndexMasterGenerator(_nRows, _nCols, _numberOfPartitions);
 
-            for (int i = 0; i < numberOfIterations; ++i)
+            for (var i = 0; i < numberOfIterations; ++i)
             {
-                List<int[]> indexPositions = parallelIndexMaster[i];
+                var indexPositions = parallelIndexMaster[i];
 
                 // Parallel in anti-diagonal direction
                 Parallel.ForEach(indexPositions, PAMSAMMultipleSequenceAligner.ParallelOption, indexPosition =>
                 {
-                    int[] rowPositions = IndexLocator(1, _nRows, _numberOfPartitions, indexPosition[0]);
-                    int[] colPositions = IndexLocator(1, _nCols, _numberOfPartitions, indexPosition[1]);
-                    for (int col = colPositions[0]; col < colPositions[1]; col++)
+                    var rowPositions = IndexLocator(1, _nRows, _numberOfPartitions, indexPosition[0]);
+                    var colPositions = IndexLocator(1, _nCols, _numberOfPartitions, indexPosition[1]);
+                    for (var col = colPositions[0]; col < colPositions[1]; col++)
                     {
-                        for (int row = rowPositions[0]; row < rowPositions[1]; row++)
+                        for (var row = rowPositions[0]; row < rowPositions[1]; row++)
                         {
                             FillCellAffine(col, row);
                         }
@@ -617,7 +617,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <returns>Message to send to user.</returns>
         private string BuildOutOfMemoryMessage(Exception ex, bool isAffine)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.AppendLine(ex.Message);
             // memory required is about 5 * N*M for simple gap penalty, 13 * N*M for affine gap
             sb.AppendFormat("Sequence lengths are {0:N0} and {1:N0}.", _a.Length, _b.Length);
@@ -625,8 +625,8 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             sb.AppendLine("Dynamic programming algorithms are order NxM in memory use, with N and M the sequence lengths.");
             // Large sequences can easily overflow an int.  Use intermediate variables to avoid hard-to-read casts.
             long factor = (isAffine) ? 13 : 5;
-            long estimatedMemory = (long)_nCols * (long)_nRows * factor;
-            double estimatedGig = (estimatedMemory) / 1073741824.0;
+            var estimatedMemory = (long)_nCols * (long)_nRows * factor;
+            var estimatedGig = (estimatedMemory) / 1073741824.0;
             sb.AppendFormat("Current problem requires about {0:N0} bytes (approx {1:N2} Gbytes) of free memory.", estimatedMemory, estimatedGig);
             sb.AppendLine();
             return sb.ToString();
@@ -657,9 +657,9 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <returns>score for cell</returns>
         protected float SetCellValuesSimple(int col, int row)
         {
-            float diagScore = _FScore[col - 1, row - 1] + _profileProfileScoreFunction(_similarityMatrix, _a[col - 1], _b[row - 1]);
-            float upScore = _FScore[col, row - 1] + _gapOpenPenalty;
-            float leftScore = _FScore[col - 1, row] + _gapOpenPenalty;
+            var diagScore = _FScore[col - 1, row - 1] + _profileProfileScoreFunction(_similarityMatrix, _a[col - 1], _b[row - 1]);
+            var upScore = _FScore[col, row - 1] + _gapOpenPenalty;
+            var leftScore = _FScore[col - 1, row] + _gapOpenPenalty;
             if (diagScore >= upScore)
             {
                 if (diagScore >= leftScore)
@@ -757,7 +757,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                 source = SourceDirection.Up;
             }
             */
-            sbyte source = SourceDirection.Invalid;
+            var source = SourceDirection.Invalid;
             if (score == Iy)
             {
                 source = SourceDirection.Up;
@@ -917,10 +917,10 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         public List<int> GenerateEString(int[] aligned)
         {
             // generate eString
-            List<int> eString = new List<int>();
-            int counter = 0;
+            var eString = new List<int>();
+            var counter = 0;
 
-            for (int i = 0; i < aligned.Length; ++i)
+            for (var i = 0; i < aligned.Length; ++i)
             {
                 if (aligned[i] == _gapCode)
                 {
@@ -959,9 +959,9 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="seq">a sequece to aligned</param>
         public Sequence GenerateSequenceFromEString(List<int> eString, ISequence seq)
         {
-            List<byte> seqbytes = new List<byte>();
+            var seqbytes = new List<byte>();
             int x = 0, n;
-            for (int i = 0; i < eString.Count; ++i)
+            for (var i = 0; i < eString.Count; ++i)
             {
                 n = eString[i];
                 if (n > 0)
@@ -1006,16 +1006,16 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         {
             if (profileAlignmentA == null)
             {
-                throw new ArgumentNullException("profileAlignmentA");
+                throw new ArgumentNullException(nameof(profileAlignmentA));
             }
 
             if (profileAlignmentB == null)
             {
-                throw new ArgumentNullException("profileAlignmentB");
+                throw new ArgumentNullException(nameof(profileAlignmentB));
             }
 
-            int rowSize = profileAlignmentB.ProfilesMatrix.RowSize;
-            int colSize = profileAlignmentB.ProfilesMatrix.ColumnSize;
+            var rowSize = profileAlignmentB.ProfilesMatrix.RowSize;
+            var colSize = profileAlignmentB.ProfilesMatrix.ColumnSize;
 
             _cachedMatrix = new float[rowSize][];
 
@@ -1023,9 +1023,9 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             Parallel.For(0, rowSize, PAMSAMMultipleSequenceAligner.ParallelOption, row =>
             {
                 _cachedMatrix[row] = new float[colSize];
-                for (int i = 0; i < colSize; ++i)
+                for (var i = 0; i < colSize; ++i)
                 {
-                    for (int j = 0; j < colSize; ++j)
+                    for (var j = 0; j < colSize; ++j)
                     {
                         _cachedMatrix[row][i] += profileAlignmentB.ProfilesMatrix[row][j] * similarityMatrix[i, j];
                     }
@@ -1043,12 +1043,12 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         {
             if (profileAlignment == null)
             {
-                throw new ArgumentNullException("profileAlignment");
+                throw new ArgumentNullException(nameof(profileAlignment));
             }
 
-            int rowSize = profileAlignment.ProfilesMatrix.RowSize;
-            int colSize = profileAlignment.ProfilesMatrix.ColumnSize;
-            int[][] _indexAs = new int[rowSize][];
+            var rowSize = profileAlignment.ProfilesMatrix.RowSize;
+            var colSize = profileAlignment.ProfilesMatrix.ColumnSize;
+            var _indexAs = new int[rowSize][];
             //for (int i = 0; i < rowSize; ++i)
             Parallel.For(0, rowSize, PAMSAMMultipleSequenceAligner.ParallelOption, i =>
             {
@@ -1149,16 +1149,16 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="profileIndexB">the second profile vector (normalized)</param>
         protected float WeightedInnerProductCached(SimilarityMatrix similarityMatrix, int profileIndexA, int profileIndexB)
         {
-            float[] profileA = _profileAlignmentA.ProfilesMatrix[profileIndexA];
-            float[] profileB = _profileAlignmentB.ProfilesMatrix[profileIndexB];
-            int dimension = profileA.Length - 1;
+            var profileA = _profileAlignmentA.ProfilesMatrix[profileIndexA];
+            var profileB = _profileAlignmentB.ProfilesMatrix[profileIndexB];
+            var dimension = profileA.Length - 1;
             float result = 0;
 
             _indexA = _indexAs[profileIndexA];
 
-            for (int i = 0; i < dimension; ++i)
+            for (var i = 0; i < dimension; ++i)
             {
-                int ii = _indexA[i];
+                var ii = _indexA[i];
                 if (profileA[ii] == 0)
                 {
                     break;
@@ -1177,27 +1177,27 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="profileIndexB">the second profile vector (normalized)</param>
         protected float WeightedInnerProduct(SimilarityMatrix similarityMatrix, int profileIndexA, int profileIndexB)
         {
-            float[] profileA = _profileAlignmentA.ProfilesMatrix[profileIndexA];
-            float[] profileB = _profileAlignmentB.ProfilesMatrix[profileIndexB];
+            var profileA = _profileAlignmentA.ProfilesMatrix[profileIndexA];
+            var profileB = _profileAlignmentB.ProfilesMatrix[profileIndexB];
             if (profileA.Length != profileB.Length)
             {
                 throw new ArgumentException("Unequal length profiles");
             }
-            int dimension = profileA.Length - 1;
+            var dimension = profileA.Length - 1;
 
-            float[] cachedW = new float[dimension];
+            var cachedW = new float[dimension];
 
-            for (int i = 0; i < dimension; ++i)
+            for (var i = 0; i < dimension; ++i)
             //Parallel.For(0, dimension, PAMSAMMultipleSequenceAligner.parallelOption, i =>
             {
-                for (int j = 0; j < dimension; ++j)
+                for (var j = 0; j < dimension; ++j)
                 {
                     cachedW[i] += similarityMatrix[i, j] * profileB[j];
                 }
                 //});
             }
             float result = 0;
-            for (int i = 0; i < dimension; ++i)
+            for (var i = 0; i < dimension; ++i)
             {
                 result += profileA[i] * cachedW[i];
             }
@@ -1214,13 +1214,13 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="profileIndexB">the second profile vector (normalized)</param>
         protected float WeightedInnerProductFast(SimilarityMatrix similarityMatrix, int profileIndexA, int profileIndexB)
         {
-            float[] profileA = _profileAlignmentA.ProfilesMatrix[profileIndexA];
-            float[] profileB = _profileAlignmentB.ProfilesMatrix[profileIndexB];
+            var profileA = _profileAlignmentA.ProfilesMatrix[profileIndexA];
+            var profileB = _profileAlignmentB.ProfilesMatrix[profileIndexB];
             if (profileA.Length != profileB.Length)
             {
                 throw new ArgumentException("Unequal length profiles");
             }
-            int dimension = profileA.Length - 1;
+            var dimension = profileA.Length - 1;
 
             _indexA = MsaUtils.CreateIndexArray(dimension);
             _indexB = MsaUtils.CreateIndexArray(dimension);
@@ -1231,13 +1231,13 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
 
             float result = 0;
 
-            for (int i = 0; i < dimension; ++i)
+            for (var i = 0; i < dimension; ++i)
             {
                 if (profileA[_indexA[i]] == 0)
                 {
                     break;
                 }
-                for (int j = 0; j < dimension; ++j)
+                for (var j = 0; j < dimension; ++j)
                 {
                     if (profileB[_indexB[j]] == 0)
                     {
@@ -1258,17 +1258,17 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="profileIndexB">the second profile vector (normalized)</param>
         protected float WeightedEuclideanDistance(SimilarityMatrix similarityMatrix, int profileIndexA, int profileIndexB)
         {
-            float[] profileA = _profileAlignmentA.ProfilesMatrix[profileIndexA];
-            float[] profileB = _profileAlignmentB.ProfilesMatrix[profileIndexB];
+            var profileA = _profileAlignmentA.ProfilesMatrix[profileIndexA];
+            var profileB = _profileAlignmentB.ProfilesMatrix[profileIndexB];
             if (profileA.Length != profileB.Length)
             {
                 throw new ArgumentException("Unequal length profiles");
             }
-            int dimension = profileA.Length;
+            var dimension = profileA.Length;
             float result = 0;
-            for (int i = 0; i < dimension; ++i)
+            for (var i = 0; i < dimension; ++i)
             {
-                for (int j = 0; j < dimension; ++j)
+                for (var j = 0; j < dimension; ++j)
                 {
                     result += (float)Math.Pow(profileA[i] - profileB[j], 2) * similarityMatrix[i, j];
                 }
@@ -1284,14 +1284,14 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="profileIndexB">the second profile vector (normalized)</param>
         protected float WeightedEuclideanDistanceFast(SimilarityMatrix similarityMatrix, int profileIndexA, int profileIndexB)
         {
-            float[] profileA = _profileAlignmentA.ProfilesMatrix[profileIndexA];
-            float[] profileB = _profileAlignmentB.ProfilesMatrix[profileIndexB];
+            var profileA = _profileAlignmentA.ProfilesMatrix[profileIndexA];
+            var profileB = _profileAlignmentB.ProfilesMatrix[profileIndexB];
             if (profileA.Length != profileB.Length)
             {
                 throw new ArgumentException("Unequal length profiles");
             }
 
-            int dimension = profileA.Length;
+            var dimension = profileA.Length;
             float result = 0;
 
             _indexA = MsaUtils.CreateIndexArray(dimension);
@@ -1301,9 +1301,9 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             MsaUtils.QuickSort(profileA, _indexA, 0, dimension - 1);
             MsaUtils.QuickSort(profileB, _indexB, 0, dimension - 1);
 
-            for (int i = 0; i < dimension; ++i)
+            for (var i = 0; i < dimension; ++i)
             {
-                for (int j = 0; j < dimension; ++j)
+                for (var j = 0; j < dimension; ++j)
                 {
                     if (profileA[_indexA[i]] == 0 && profileB[_indexB[i]] == 0)
                     {
@@ -1323,16 +1323,16 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="profileIndexB">the second profile vector (normalized)</param>
         protected float InnerProduct(SimilarityMatrix similarityMatrix, int profileIndexA, int profileIndexB)
         {
-            float[] profileA = _profileAlignmentA.ProfilesMatrix[profileIndexA];
-            float[] profileB = _profileAlignmentB.ProfilesMatrix[profileIndexB];
+            var profileA = _profileAlignmentA.ProfilesMatrix[profileIndexA];
+            var profileB = _profileAlignmentB.ProfilesMatrix[profileIndexB];
             if (profileA.Length != profileB.Length)
             {
                 throw new ArgumentException("Unequal length profiles");
             }
-            int dimension = profileA.Length;
+            var dimension = profileA.Length;
             float result = 0;
 
-            for (int i = 0; i < dimension; ++i)
+            for (var i = 0; i < dimension; ++i)
             {
                 result += profileA[i] * profileB[i] * similarityMatrix[i, i];
             }
@@ -1348,20 +1348,20 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="profileIndexB">the second profile vector (normalized)</param>
         protected float InnerProductFast(SimilarityMatrix similarityMatrix, int profileIndexA, int profileIndexB)
         {
-            float[] profileA = _profileAlignmentA.ProfilesMatrix[profileIndexA];
-            float[] profileB = _profileAlignmentB.ProfilesMatrix[profileIndexB];
+            var profileA = _profileAlignmentA.ProfilesMatrix[profileIndexA];
+            var profileB = _profileAlignmentB.ProfilesMatrix[profileIndexB];
             if (profileA.Length != profileB.Length)
             {
                 throw new ArgumentException("Unequal length profiles");
             }
 
-            int dimension = profileA.Length;
+            var dimension = profileA.Length;
             float result = 0;
 
-            int[] _indexA = _indexAs[profileIndexA];
-            for (int i = 0; i < dimension; ++i)
+            var _indexA = _indexAs[profileIndexA];
+            for (var i = 0; i < dimension; ++i)
             {
-                int ii = _indexA[i];
+                var ii = _indexA[i];
                 if (profileA[ii] == 0)
                 {
                     break;
@@ -1379,25 +1379,25 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="profileIndexB">the second profile vector (normalized)</param>
         protected float WeightedInnerProductShifted(SimilarityMatrix similarityMatrix, int profileIndexA, int profileIndexB)
         {
-            float[] profileA = _profileAlignmentA.ProfilesMatrix[profileIndexA];
-            float[] profileB = _profileAlignmentB.ProfilesMatrix[profileIndexB];
+            var profileA = _profileAlignmentA.ProfilesMatrix[profileIndexA];
+            var profileB = _profileAlignmentB.ProfilesMatrix[profileIndexB];
             if (profileA.Length != profileB.Length)
             {
                 throw new ArgumentException("Unequal length profiles");
             }
 
-            int dimension = profileA.Length - 1;
-            float[] cachedW = new float[dimension];
+            var dimension = profileA.Length - 1;
+            var cachedW = new float[dimension];
 
-            for (int i = 0; i < dimension; ++i)
+            for (var i = 0; i < dimension; ++i)
             {
-                for (int j = 0; j < dimension; ++j)
+                for (var j = 0; j < dimension; ++j)
                 {
                     cachedW[i] += (similarityMatrix[i, j] + (float)0.5) * profileB[j];
                 }
             }
             float result = 0;
-            for (int i = 0; i < dimension; ++i)
+            for (var i = 0; i < dimension; ++i)
             {
                 result += profileA[i] * cachedW[i];
             }
@@ -1412,14 +1412,14 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="profileIndexB">the second profile vector (normalized)</param>
         protected float WeightedInnerProductShiftedFast(SimilarityMatrix similarityMatrix, int profileIndexA, int profileIndexB)
         {
-            float[] profileA = _profileAlignmentA.ProfilesMatrix[profileIndexA];
-            float[] profileB = _profileAlignmentB.ProfilesMatrix[profileIndexB];
+            var profileA = _profileAlignmentA.ProfilesMatrix[profileIndexA];
+            var profileB = _profileAlignmentB.ProfilesMatrix[profileIndexB];
             if (profileA.Length != profileB.Length)
             {
                 throw new ArgumentException("Unequal length profiles");
             }
 
-            int dimension = profileA.Length - 1;
+            var dimension = profileA.Length - 1;
 
             _indexA = MsaUtils.CreateIndexArray(dimension);
             _indexB = MsaUtils.CreateIndexArray(dimension);
@@ -1430,13 +1430,13 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
 
             float result = 0;
 
-            for (int i = 0; i < dimension; ++i)
+            for (var i = 0; i < dimension; ++i)
             {
                 if (profileA[_indexA[i]] == 0)
                 {
                     break;
                 }
-                for (int j = 0; j < dimension; ++j)
+                for (var j = 0; j < dimension; ++j)
                 {
                     if (profileB[_indexB[j]] == 0)
                     {
@@ -1457,8 +1457,8 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="profileIndexB">the second profile vector (normalized)</param>
         protected float PearsonCorrelation(SimilarityMatrix similarityMatrix, int profileIndexA, int profileIndexB)
         {
-            float[] profileA = _profileAlignmentA.ProfilesMatrix[profileIndexA];
-            float[] profileB = _profileAlignmentB.ProfilesMatrix[profileIndexB];
+            var profileA = _profileAlignmentA.ProfilesMatrix[profileIndexA];
+            var profileB = _profileAlignmentB.ProfilesMatrix[profileIndexB];
             if (profileA.Length != profileB.Length)
             {
                 throw new ArgumentException("Unequal length profiles");
@@ -1474,17 +1474,17 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="profileIndexB">the second profile vector (normalized)</param>
         protected float LogExponentialInnerProduct(SimilarityMatrix similarityMatrix, int profileIndexA, int profileIndexB)
         {
-            float[] profileA = _profileAlignmentA.ProfilesMatrix[profileIndexA];
-            float[] profileB = _profileAlignmentB.ProfilesMatrix[profileIndexB];
+            var profileA = _profileAlignmentA.ProfilesMatrix[profileIndexA];
+            var profileB = _profileAlignmentB.ProfilesMatrix[profileIndexB];
             if (profileA.Length != profileB.Length)
             {
                 throw new ArgumentException("Unequal length profiles");
             }
-            int dimension = profileA.Length - 1;
+            var dimension = profileA.Length - 1;
             float result = 0;
-            for (int i = 0; i < dimension; ++i)
+            for (var i = 0; i < dimension; ++i)
             {
-                for (int j = 0; j < dimension; ++j)
+                for (var j = 0; j < dimension; ++j)
                 {
                     result += profileA[i] * profileB[j] * (float)Math.Pow(2, similarityMatrix[i, j]);
                 }
@@ -1501,14 +1501,14 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="profileIndexB">the second profile vector (normalized)</param>
         protected float LogExponentialInnerProductFast(SimilarityMatrix similarityMatrix, int profileIndexA, int profileIndexB)
         {
-            float[] profileA = _profileAlignmentA.ProfilesMatrix[profileIndexA];
-            float[] profileB = _profileAlignmentB.ProfilesMatrix[profileIndexB];
+            var profileA = _profileAlignmentA.ProfilesMatrix[profileIndexA];
+            var profileB = _profileAlignmentB.ProfilesMatrix[profileIndexB];
             if (profileA.Length != profileB.Length)
             {
                 throw new ArgumentException("Unequal length profiles");
             }
 
-            int dimension = profileA.Length - 1;
+            var dimension = profileA.Length - 1;
             float result = 0;
 
             _indexA = MsaUtils.CreateIndexArray(dimension);
@@ -1519,13 +1519,13 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             MsaUtils.QuickSort(_profileAlignmentB.ProfilesMatrix[profileIndexB], _indexB, 0, dimension - 1);
 
 
-            for (int i = 0; i < dimension; ++i)
+            for (var i = 0; i < dimension; ++i)
             {
                 if (profileA[_indexA[i]] == 0)
                 {
                     break;
                 }
-                for (int j = 0; j < dimension; ++j)
+                for (var j = 0; j < dimension; ++j)
                 {
                     if (profileB[_indexB[j]] == 0)
                     {
@@ -1547,17 +1547,17 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="profileIndexB">the second profile vector (normalized)</param>
         protected float LogExponentialInnerProductShifted(SimilarityMatrix similarityMatrix, int profileIndexA, int profileIndexB)
         {
-            float[] profileA = _profileAlignmentA.ProfilesMatrix[profileIndexA];
-            float[] profileB = _profileAlignmentB.ProfilesMatrix[profileIndexB];
+            var profileA = _profileAlignmentA.ProfilesMatrix[profileIndexA];
+            var profileB = _profileAlignmentB.ProfilesMatrix[profileIndexB];
             if (profileA.Length != profileB.Length)
             {
                 throw new ArgumentException("Unequal length profiles");
             }
-            int dimension = profileA.Length - 1;
+            var dimension = profileA.Length - 1;
             float result = 0;
-            for (int i = 0; i < dimension; ++i)
+            for (var i = 0; i < dimension; ++i)
             {
-                for (int j = 0; j < dimension; ++j)
+                for (var j = 0; j < dimension; ++j)
                 {
                     result += profileA[i] * profileB[j] * (float)Math.Pow(2, similarityMatrix[i, j] + 0.5);
                 }
@@ -1574,14 +1574,14 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="profileIndexB">the second profile vector (normalized)</param>
         protected float LogExponentialInnerProductShiftedFast(SimilarityMatrix similarityMatrix, int profileIndexA, int profileIndexB)
         {
-            float[] profileA = _profileAlignmentA.ProfilesMatrix[profileIndexA];
-            float[] profileB = _profileAlignmentB.ProfilesMatrix[profileIndexB];
+            var profileA = _profileAlignmentA.ProfilesMatrix[profileIndexA];
+            var profileB = _profileAlignmentB.ProfilesMatrix[profileIndexB];
             if (profileA.Length != profileB.Length)
             {
                 throw new ArgumentException("Unequal length profiles");
             }
 
-            int dimension = profileA.Length - 1;
+            var dimension = profileA.Length - 1;
             float result = 0;
 
             _indexA = MsaUtils.CreateIndexArray(dimension);
@@ -1592,13 +1592,13 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             MsaUtils.QuickSort(profileB, _indexB, 0, dimension - 1);
 
 
-            for (int i = 0; i < dimension; ++i)
+            for (var i = 0; i < dimension; ++i)
             {
                 if (profileA[_indexA[i]] == 0)
                 {
                     break;
                 }
-                for (int j = 0; j < dimension; ++j)
+                for (var j = 0; j < dimension; ++j)
                 {
                     if (profileB[_indexB[j]] == 0)
                     {
@@ -1654,15 +1654,15 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                 throw new ArgumentException("Invalid numbers");
             }
 
-            int numberOfIterations = numberOfPartitions * 2 - 1;
+            var numberOfIterations = numberOfPartitions * 2 - 1;
 
-            Dictionary<int, List<int[]>> parallelIndexMaster = new Dictionary<int, List<int[]>>(numberOfIterations);
+            var parallelIndexMaster = new Dictionary<int, List<int[]>>(numberOfIterations);
 
-            for (int i = 0; i < numberOfIterations; ++i)
+            for (var i = 0; i < numberOfIterations; ++i)
             {
-                List<int[]> indexBlocks = new List<int[]>();
+                var indexBlocks = new List<int[]>();
 
-                for (int j = 0; j <= i; ++j)
+                for (var j = 0; j <= i; ++j)
                 {
                     if (j < numberOfPartitions && i - j < numberOfPartitions)
                     {
@@ -1695,8 +1695,8 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                 throw new ArgumentException("End position should be larger than the starting position");
             }
 
-            int positionA = ((endPosition - startPosition) * index / numberOfPartitions) + startPosition;
-            int positionB = ((endPosition - startPosition) * (index + 1) / numberOfPartitions) + startPosition;
+            var positionA = ((endPosition - startPosition) * index / numberOfPartitions) + startPosition;
+            var positionB = ((endPosition - startPosition) * (index + 1) / numberOfPartitions) + startPosition;
 
             return new int[2] { positionA, positionB };
         }

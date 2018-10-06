@@ -1,32 +1,29 @@
-﻿using System;
+﻿using Bio.Properties;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
-using Bio.Properties;
-
 namespace Bio
 {
-    /// <summary>
-    /// Adds symbols for ambiguous amino acid to those in the <see cref="ProteinAlphabet"/>.<br/>
-    /// Specifically:
-    /// B - Asp or Asn,
-    /// J - Leu or Ile,
-    /// X - any amino acid,
-    /// Z - Glu or Gln.
-    /// </summary>
+    /// <inheritdoc cref="IAmbiguousProteinAlphabet" />
     /// <seealso cref="ProteinAlphabet"/>,
-    /// <seealso cref="IAmbiguousProteinAlphabet"/>,
-    /// <seealso cref="IAlphabet"/>
+    /// <seealso cref="IAmbiguousProteinAlphabet"/>
+
     public class AmbiguousProteinAlphabet : ProteinAlphabet, IAmbiguousProteinAlphabet
     {
         /// <summary>
-        /// Instance of the AmbiguousProteinAlphabet class.
+        ///     Instance of the AmbiguousProteinAlphabet class.
         /// </summary>
         public new static readonly AmbiguousProteinAlphabet Instance;
 
         /// <summary>
-        /// Initializes static members of the AmbiguousProteinAlphabet class.
+        ///     Contains only ambiguous symbols including Termination.
+        /// </summary>
+        private readonly HashSet<byte> _ambiguousSymbols = new HashSet<byte>();
+
+        /// <summary>
+        ///     Initializes static members of the AmbiguousProteinAlphabet class.
         /// </summary>
         static AmbiguousProteinAlphabet()
         {
@@ -34,17 +31,24 @@ namespace Bio
         }
 
         /// <summary>
-        /// Initializes a new instance of the AmbiguousProteinAlphabet class.
+        ///     Initializes a new instance of the AmbiguousProteinAlphabet class.
         /// </summary>
         protected AmbiguousProteinAlphabet()
         {
             Name = Resource.AmbiguousProteinAlphabetName;
             HasAmbiguity = true;
 
-            X = (byte)'X';
-            Z = (byte)'Z';
             B = (byte)'B';
             J = (byte)'J';
+            X = (byte)'X';
+            Z = (byte)'Z';
+
+            // Add to ambiguous symbols
+            _ambiguousSymbols.Add(B); _ambiguousSymbols.Add((byte)char.ToLower((char)B));
+            _ambiguousSymbols.Add(J); _ambiguousSymbols.Add((byte)char.ToLower((char)J));
+            _ambiguousSymbols.Add(X); _ambiguousSymbols.Add((byte)char.ToLower((char)X));
+            _ambiguousSymbols.Add(Z); _ambiguousSymbols.Add((byte)char.ToLower((char)Z));
+            _ambiguousSymbols.Add(Ter);
 
             AddAminoAcid(X, "Xaa", "Undetermined or atypical", (byte)'x');
             AddAminoAcid(Z, "Glx", "Glutamic Acid or Glutamine", (byte)'z');
@@ -71,6 +75,14 @@ namespace Bio
         public byte Z { get; }
 
         /// <inheritdoc />
+        /// <remarks></remarks>
+        public override bool CheckIsAmbiguous(byte item)
+        {
+            return _ambiguousSymbols.Contains(item);
+        }
+
+        /// <inheritdoc />
+        /// <remarks></remarks>
         public override byte GetConsensusSymbol(HashSet<byte> symbols)
         {
             if (symbols == null)

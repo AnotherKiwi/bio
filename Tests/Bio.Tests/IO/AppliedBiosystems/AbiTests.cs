@@ -21,7 +21,7 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
 
         private static void ValidateHeader(AB_Root xmlData, IParserContext rawData)
         {
-            AB_RootHeader xmlHeader = xmlData.Items.OfType<AB_RootHeader>().First();
+            var xmlHeader = xmlData.Items.OfType<AB_RootHeader>().First();
 
             Assert.AreEqual(xmlHeader.Version, rawData.Header.Version.ToString(CultureInfo.InvariantCulture));
             Assert.AreEqual(int.Parse(xmlHeader.Directory_Elements, CultureInfo.InvariantCulture), rawData.Header.DirectoryEntries.Count);
@@ -53,8 +53,8 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
         [Category("Priority0")]
         public void ValidateBinaryParserVsXml()
         {
-            IParserContext rawData = Ab1Examples.GetRawData(Ab1Examples.Ab1SampleBinaryFileName.TestDir());
-            AB_Root xmlData = Ab1Examples.GetXmlData(Ab1Examples.Ab1SampleXmlFileName.TestDir());
+            var rawData = Ab1Examples.GetRawData(Ab1Examples.Ab1SampleBinaryFileName.TestDir());
+            var xmlData = Ab1Examples.GetXmlData(Ab1Examples.Ab1SampleXmlFileName.TestDir());
 
             ValidateHeader(xmlData, rawData);
             ValidateDataItems(xmlData, rawData);
@@ -70,7 +70,7 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
             var parser = new Ab1Parser();
             using (parser.Open(Ab1Examples.Ab1SampleBinaryFileName.TestDir()))
             {
-                ISequence sequence = parser.Parse().First();
+                var sequence = parser.Parse().First();
                 Trace.WriteLine(sequence);
             }
         }

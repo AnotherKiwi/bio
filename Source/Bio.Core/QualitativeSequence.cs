@@ -161,28 +161,28 @@ namespace Bio
         {
             if (alphabet == null)
             {
-                throw new ArgumentNullException("alphabet");
+                throw new ArgumentNullException(nameof(alphabet));
             }
 
             if (sequence == null)
             {
-                throw new ArgumentNullException("sequence");
+                throw new ArgumentNullException(nameof(sequence));
             }
 
             if (encodedQualityScores == null)
             {
-                throw new ArgumentNullException("encodedQualityScores");
+                throw new ArgumentNullException(nameof(encodedQualityScores));
             }
 
-            this.Alphabet = alphabet;
-            this.ID = string.Empty;
-            this.FormatType = fastQFormatType;
+            Alphabet = alphabet;
+            ID = string.Empty;
+            FormatType = fastQFormatType;
 
             if (validate)
             {
                 if (sequence.GetLongLength() != encodedQualityScores.GetLongLength())
                 {
-                    string message = string.Format(CultureInfo.CurrentUICulture,
+                    var message = string.Format(CultureInfo.CurrentUICulture,
                                                 Properties.Resource.DifferenceInSequenceAndQualityScoresLengthMessage,
                                                 sequence.GetLongLength(),
                                                 encodedQualityScores.GetLongLength());
@@ -190,30 +190,30 @@ namespace Bio
                 }
 
                 // Validate sequence data
-                if (!this.Alphabet.ValidateSequence(sequence, 0, sequence.GetLongLength()))
+                if (!Alphabet.ValidateSequence(sequence, 0, sequence.GetLongLength()))
                 {
-                    throw Helper.GenerateAlphabetCheckFailureException(this.Alphabet, sequence);
+                    throw Helper.GenerateAlphabetCheckFailureException(Alphabet, sequence);
                 }
 
                 byte invalidEncodedQualityScore;
                 // Validate quality scores
-                if (!ValidateQualScores(encodedQualityScores, this.FormatType, out invalidEncodedQualityScore))
+                if (!ValidateQualScores(encodedQualityScores, FormatType, out invalidEncodedQualityScore))
                 {
-                    string message = string.Format(CultureInfo.CurrentUICulture,
+                    var message = string.Format(CultureInfo.CurrentUICulture,
                                         Properties.Resource.InvalidEncodedQualityScoreFound,
                                         (char)invalidEncodedQualityScore,
-                                        this.FormatType);
-                    throw new ArgumentOutOfRangeException("encodedQualityScores", message);
+                                        FormatType);
+                    throw new ArgumentOutOfRangeException(nameof(encodedQualityScores), message);
                 }
             }
 
-            this.sequenceData = new byte[sequence.GetLongLength()];
-            this.qualityScores = new sbyte[encodedQualityScores.GetLongLength()];
+            sequenceData = new byte[sequence.GetLongLength()];
+            qualityScores = new sbyte[encodedQualityScores.GetLongLength()];
 
-            Helper.Copy(sequence, this.sequenceData, sequence.GetLongLength());
-            this.qualityScores = GetDecodedQualScoresInSignedBytes(encodedQualityScores, this.FormatType);
+            Helper.Copy(sequence, sequenceData, sequence.GetLongLength());
+            qualityScores = GetDecodedQualScoresInSignedBytes(encodedQualityScores, FormatType);
 
-            this.Count = this.sequenceData.GetLongLength();
+            Count = sequenceData.GetLongLength();
         }
 
         /// <summary>
@@ -244,57 +244,57 @@ namespace Bio
         {
             if (alphabet == null)
             {
-                throw new ArgumentNullException("alphabet");
+                throw new ArgumentNullException(nameof(alphabet));
             }
 
-            this.Alphabet = alphabet;
-            this.ID = string.Empty;
+            Alphabet = alphabet;
+            ID = string.Empty;
 
             if (sequence == null)
             {
-                throw new ArgumentNullException("sequence");
+                throw new ArgumentNullException(nameof(sequence));
             }
 
             if (encodedQualityScores == null)
             {
-                throw new ArgumentNullException("encodedQualityScores");
+                throw new ArgumentNullException(nameof(encodedQualityScores));
             }
 
-            this.FormatType = fastQFormatType;
-            this.sequenceData = UTF8Encoding.UTF8.GetBytes(sequence);
-            byte[] encodedQualityScoresarray = UTF8Encoding.UTF8.GetBytes(encodedQualityScores);
+            FormatType = fastQFormatType;
+            sequenceData = Encoding.UTF8.GetBytes(sequence);
+            var encodedQualityScoresarray = Encoding.UTF8.GetBytes(encodedQualityScores);
 
             if (validate)
             {
-                if (this.sequenceData.GetLongLength() != encodedQualityScoresarray.GetLongLength())
+                if (sequenceData.GetLongLength() != encodedQualityScoresarray.GetLongLength())
                 {
-                    string message = string.Format(CultureInfo.CurrentUICulture,
+                    var message = string.Format(CultureInfo.CurrentUICulture,
                                                 Properties.Resource.DifferenceInSequenceAndQualityScoresLengthMessage,
-                                                 this.sequenceData.GetLongLength(),
+                                                 sequenceData.GetLongLength(),
                                                 encodedQualityScoresarray.GetLongLength());
                     throw new ArgumentException(message);
                 }
 
                 // Validate sequence data
-                if (!this.Alphabet.ValidateSequence(this.sequenceData, 0, this.sequenceData.GetLongLength()))
+                if (!Alphabet.ValidateSequence(sequenceData, 0, sequenceData.GetLongLength()))
                 {
-                    throw Helper.GenerateAlphabetCheckFailureException(this.Alphabet, sequenceData);
+                    throw Helper.GenerateAlphabetCheckFailureException(Alphabet, sequenceData);
                 }
 
                 byte invalidEncodedQualityScore;
                 // Validate quality scores
-                if (!ValidateQualScores(encodedQualityScoresarray, this.FormatType, out invalidEncodedQualityScore))
+                if (!ValidateQualScores(encodedQualityScoresarray, FormatType, out invalidEncodedQualityScore))
                 {
-                    string message = string.Format(CultureInfo.CurrentUICulture,
+                    var message = string.Format(CultureInfo.CurrentUICulture,
                                             Properties.Resource.InvalidEncodedQualityScoreFound,
                                             (char)invalidEncodedQualityScore,
-                                            this.FormatType);
-                    throw new ArgumentOutOfRangeException("encodedQualityScores", message);
+                                            FormatType);
+                    throw new ArgumentOutOfRangeException(nameof(encodedQualityScores), message);
                 }
             }
 
-            this.qualityScores = GetDecodedQualScoresInSignedBytes(encodedQualityScoresarray, this.FormatType);
-            this.Count = this.sequenceData.GetLongLength();
+            qualityScores = GetDecodedQualScoresInSignedBytes(encodedQualityScoresarray, FormatType);
+            Count = sequenceData.GetLongLength();
         }
 
 
@@ -316,27 +316,27 @@ namespace Bio
         {
             if (alphabet == null)
             {
-                throw new ArgumentNullException("alphabet");
+                throw new ArgumentNullException(nameof(alphabet));
             }
 
             if (sequence == null)
             {
-                throw new ArgumentNullException("sequence");
+                throw new ArgumentNullException(nameof(sequence));
             }
 
             if (qualityScores == null)
             {
-                throw new ArgumentNullException("qualityScores");
+                throw new ArgumentNullException(nameof(qualityScores));
             }
 
-            this.Alphabet = alphabet;
-            this.ID = string.Empty;
-            this.FormatType = fastQFormatType;
+            Alphabet = alphabet;
+            ID = string.Empty;
+            FormatType = fastQFormatType;
             if (validate)
             {
                 if (sequence.GetLongLength() != qualityScores.GetLongLength())
                 {
-                    string message = string.Format(CultureInfo.CurrentUICulture,
+                    var message = string.Format(CultureInfo.CurrentUICulture,
                                                 Properties.Resource.DifferenceInSequenceAndQualityScoresLengthMessage,
                                                 sequence.GetLongLength(),
                                                 qualityScores.GetLongLength());
@@ -344,30 +344,30 @@ namespace Bio
                 }
 
                 // Validate sequence data
-                if (!this.Alphabet.ValidateSequence(sequence, 0, sequence.GetLongLength()))
+                if (!Alphabet.ValidateSequence(sequence, 0, sequence.GetLongLength()))
                 {
-                    throw Helper.GenerateAlphabetCheckFailureException(this.Alphabet, sequence);
+                    throw Helper.GenerateAlphabetCheckFailureException(Alphabet, sequence);
                 }
 
                 sbyte invalidQualityScore;
 
                 // Validate quality scores
-                if (!ValidateQualScores(qualityScores, this.FormatType, out invalidQualityScore))
+                if (!ValidateQualScores(qualityScores, FormatType, out invalidQualityScore))
                 {
-                    string message = string.Format(CultureInfo.CurrentUICulture,
+                    var message = string.Format(CultureInfo.CurrentUICulture,
                                             Properties.Resource.InvalidQualityScoreFound,
                                             invalidQualityScore,
-                                            this.FormatType);
-                    throw new ArgumentOutOfRangeException("qualityScores", message);
+                                            FormatType);
+                    throw new ArgumentOutOfRangeException(nameof(qualityScores), message);
                 }
             }
 
-            this.sequenceData = new byte[sequence.GetLongLength()];
+            sequenceData = new byte[sequence.GetLongLength()];
             this.qualityScores = new sbyte[qualityScores.GetLongLength()];
-            Helper.Copy(sequence, this.sequenceData, sequence.GetLongLength());
+            Helper.Copy(sequence, sequenceData, sequence.GetLongLength());
             Helper.Copy(qualityScores, this.qualityScores, qualityScores.GetLongLength());
 
-            this.Count = this.sequenceData.GetLongLength();
+            Count = sequenceData.GetLongLength();
         }
 
         /// <summary>
@@ -386,27 +386,27 @@ namespace Bio
         {
             if (alphabet == null)
             {
-                throw new ArgumentNullException("alphabet");
+                throw new ArgumentNullException(nameof(alphabet));
             }
 
             if (sequence == null)
             {
-                throw new ArgumentNullException("sequence");
+                throw new ArgumentNullException(nameof(sequence));
             }
 
             if (qualityScores == null)
             {
-                throw new ArgumentNullException("qualityScores");
+                throw new ArgumentNullException(nameof(qualityScores));
             }
 
-            this.Alphabet = alphabet;
-            this.ID = string.Empty;
-            this.FormatType = fastQFormatType;
+            Alphabet = alphabet;
+            ID = string.Empty;
+            FormatType = fastQFormatType;
             if (validate)
             {
                 if (sequence.GetLongLength() != qualityScores.GetLongLength())
                 {
-                    string message = string.Format(CultureInfo.CurrentUICulture,
+                    var message = string.Format(CultureInfo.CurrentUICulture,
                                                 Properties.Resource.DifferenceInSequenceAndQualityScoresLengthMessage,
                                                 sequence.GetLongLength(),
                                                 qualityScores.GetLongLength());
@@ -414,35 +414,35 @@ namespace Bio
                 }
 
                 // Validate sequence data
-                if (!this.Alphabet.ValidateSequence(sequence, 0, sequence.GetLongLength()))
+                if (!Alphabet.ValidateSequence(sequence, 0, sequence.GetLongLength()))
                 {
-                    throw Helper.GenerateAlphabetCheckFailureException(this.Alphabet, sequence);
+                    throw Helper.GenerateAlphabetCheckFailureException(Alphabet, sequence);
                 }
 
                 int invalidQualityScore;
 
                 // Validate quality scores
-                if (!ValidateQualScores(qualityScores, this.FormatType, out invalidQualityScore))
+                if (!ValidateQualScores(qualityScores, FormatType, out invalidQualityScore))
                 {
-                    string message = string.Format(CultureInfo.CurrentUICulture,
+                    var message = string.Format(CultureInfo.CurrentUICulture,
                                             Properties.Resource.InvalidQualityScoreFound,
                                             invalidQualityScore,
-                                            this.FormatType);
-                    throw new ArgumentOutOfRangeException("qualityScores", message);
+                                            FormatType);
+                    throw new ArgumentOutOfRangeException(nameof(qualityScores), message);
                 }
             }
 
-            long len = qualityScores.GetLongLength();
-            this.sequenceData = new byte[sequence.GetLongLength()];
+            var len = qualityScores.GetLongLength();
+            sequenceData = new byte[sequence.GetLongLength()];
             this.qualityScores = new sbyte[len];
-            Helper.Copy(sequence, this.sequenceData, sequence.GetLongLength());
+            Helper.Copy(sequence, sequenceData, sequence.GetLongLength());
 
             for (long i = 0; i < len; i++)
             {
                 this.qualityScores[i] = (sbyte)qualityScores[i];
             }
 
-            this.Count = this.sequenceData.GetLongLength();
+            Count = sequenceData.GetLongLength();
         }
         #endregion
 
@@ -506,17 +506,17 @@ namespace Bio
         {
             get
             {
-                if (this.metadata == null)
+                if (metadata == null)
                 {
-                    this.metadata = new Dictionary<string, object>();
+                    metadata = new Dictionary<string, object>();
                 }
 
-                return this.metadata;
+                return metadata;
             }
 
             set
             {
-                this.metadata = value;
+                metadata = value;
             }
         }
         #endregion
@@ -530,7 +530,7 @@ namespace Bio
         /// <returns>Symbol at the given index.</returns>
         public byte this[long index]
         {
-            get { return this.sequenceData[index]; }
+            get { return sequenceData[index]; }
         }
         #endregion
 
@@ -545,7 +545,7 @@ namespace Bio
         }
 
 
-        private new void CopyTo(byte[] byteArray, long start, long count)
+        private void CopyTo(byte[] byteArray, long start, long count)
         { }
 
         /// <summary>
@@ -561,8 +561,8 @@ namespace Bio
 
             if (!ValidateQualScores(new int[] { qualScore }, fromFormatType, out invalidQualScore))
             {
-                string message = string.Format(CultureInfo.CurrentUICulture, Properties.Resource.InvalidQualityScore, invalidQualScore);
-                throw new ArgumentOutOfRangeException("qualScore", message);
+                var message = string.Format(CultureInfo.CurrentUICulture, Properties.Resource.InvalidQualityScore, invalidQualScore);
+                throw new ArgumentOutOfRangeException(nameof(qualScore), message);
             }
 
 
@@ -572,8 +572,8 @@ namespace Bio
             }
             else
             {
-                BaseQualityScoreType fromQualityType = GetQualityScoreType(fromFormatType);
-                BaseQualityScoreType toQualityType = GetQualityScoreType(toFormatType);
+                var fromQualityType = GetQualityScoreType(fromFormatType);
+                var toQualityType = GetQualityScoreType(toFormatType);
                 if (fromQualityType == toQualityType)
                 {
                     result = qualScore;
@@ -597,14 +597,14 @@ namespace Bio
         {
             if (qualScores == null)
             {
-                throw new ArgumentNullException("qualScores");
+                throw new ArgumentNullException(nameof(qualScores));
             }
 
             int invalidQualScore;
             if (!ValidateQualScores(qualScores, fromFormatType, out invalidQualScore))
             {
-                string message = string.Format(CultureInfo.CurrentUICulture, Properties.Resource.InvalidQualityScore, invalidQualScore);
-                throw new ArgumentOutOfRangeException("qualScores", message);
+                var message = string.Format(CultureInfo.CurrentUICulture, Properties.Resource.InvalidQualityScore, invalidQualScore);
+                throw new ArgumentOutOfRangeException(nameof(qualScores), message);
             }
 
             int[] result;
@@ -615,8 +615,8 @@ namespace Bio
             }
             else
             {
-                BaseQualityScoreType fromQualityType = GetQualityScoreType(fromFormatType);
-                BaseQualityScoreType toQualityType = GetQualityScoreType(toFormatType);
+                var fromQualityType = GetQualityScoreType(fromFormatType);
+                var toQualityType = GetQualityScoreType(toFormatType);
                 if (fromQualityType == toQualityType)
                 {
                     result = new int[qualScores.GetLongLength()];
@@ -641,14 +641,14 @@ namespace Bio
         {
             if (qualScores == null)
             {
-                throw new ArgumentNullException("qualScores");
+                throw new ArgumentNullException(nameof(qualScores));
             }
 
             sbyte invalidQualScore;
             if (!ValidateQualScores(qualScores, fromFormatType, out invalidQualScore))
             {
-                string message = string.Format(CultureInfo.CurrentUICulture, Properties.Resource.InvalidQualityScore, invalidQualScore);
-                throw new ArgumentOutOfRangeException("qualScores", message);
+                var message = string.Format(CultureInfo.CurrentUICulture, Properties.Resource.InvalidQualityScore, invalidQualScore);
+                throw new ArgumentOutOfRangeException(nameof(qualScores), message);
             }
 
             sbyte[] result;
@@ -659,8 +659,8 @@ namespace Bio
             }
             else
             {
-                BaseQualityScoreType fromQualityType = GetQualityScoreType(fromFormatType);
-                BaseQualityScoreType toQualityType = GetQualityScoreType(toFormatType);
+                var fromQualityType = GetQualityScoreType(fromFormatType);
+                var toQualityType = GetQualityScoreType(toFormatType);
                 if (fromQualityType == toQualityType)
                 {
                     result = new sbyte[qualScores.GetLongLength()];
@@ -687,8 +687,8 @@ namespace Bio
             byte invalidQualScore;
             if (!ValidateQualScores(new byte[] {encodedqualScore}, fromFormatType, out invalidQualScore))
             {
-                string message = string.Format(CultureInfo.CurrentUICulture, Properties.Resource.InvalidQualityScore, (char)invalidQualScore);
-                throw new ArgumentOutOfRangeException("encodedqualScore", message);
+                var message = string.Format(CultureInfo.CurrentUICulture, Properties.Resource.InvalidQualityScore, (char)invalidQualScore);
+                throw new ArgumentOutOfRangeException(nameof(encodedqualScore), message);
             }
 
             if (fromFormatType == toFormatType)
@@ -697,8 +697,8 @@ namespace Bio
             }
             else
             {
-                int fromQualScore = GetDecodedQualScore(encodedqualScore, fromFormatType);
-                int toQualScore = ConvertQualityScore(fromFormatType, toFormatType, fromQualScore);
+                var fromQualScore = GetDecodedQualScore(encodedqualScore, fromFormatType);
+                var toQualScore = ConvertQualityScore(fromFormatType, toFormatType, fromQualScore);
                 result = GetEncodedQualScore(toQualScore, toFormatType);
             }
 
@@ -715,13 +715,13 @@ namespace Bio
         {
             if (encodedqualScores == null)
             {
-                throw new ArgumentNullException("encodedqualScores");
+                throw new ArgumentNullException(nameof(encodedqualScores));
             }
             byte invalidQualScore;
             if (!ValidateQualScores(encodedqualScores, fromFormatType, out invalidQualScore))
             {
-                string message = string.Format(CultureInfo.CurrentUICulture, Properties.Resource.InvalidQualityScore,(char) invalidQualScore);
-                throw new ArgumentOutOfRangeException("encodedqualScores", message);
+                var message = string.Format(CultureInfo.CurrentUICulture, Properties.Resource.InvalidQualityScore,(char) invalidQualScore);
+                throw new ArgumentOutOfRangeException(nameof(encodedqualScores), message);
             }
 
             byte[] result;
@@ -732,8 +732,8 @@ namespace Bio
             }
             else
             {
-                int[] fromQualScore = GetDecodedQualScores(encodedqualScores, fromFormatType);
-                int[] toQualScore = ConvertQualityScores(fromFormatType, toFormatType, fromQualScore);
+                var fromQualScore = GetDecodedQualScores(encodedqualScores, fromFormatType);
+                var toQualScore = ConvertQualityScores(fromFormatType, toFormatType, fromQualScore);
                 result = GetEncodedQualScores(toQualScore, toFormatType);
             }
 
@@ -817,7 +817,7 @@ namespace Bio
         /// <returns>Quality Score at the given index.</returns>
         public byte GetEncodedQualityScore(long index)
         {
-            return GetEncodedQualScore(this.qualityScores[index], this.FormatType);
+            return GetEncodedQualScore(qualityScores[index], FormatType);
         }
 
         /// <summary>
@@ -825,7 +825,7 @@ namespace Bio
         /// </summary>
         public byte[] GetEncodedQualityScores()
         {
-            return GetEncodedQualScores(this.qualityScores, this.FormatType);
+            return GetEncodedQualScores(qualityScores, FormatType);
         }
 
         /// <summary>
@@ -837,7 +837,7 @@ namespace Bio
         /// <returns></returns>
         public int GetQualityScore(long index)
         {
-            return this.qualityScores[index];
+            return qualityScores[index];
         }
 
         /// <summary>
@@ -847,9 +847,9 @@ namespace Bio
         /// </summary>
         public int[] GetQualityScores()
         {
-            long count = this.qualityScores.GetLongLength();
-            int[] baseQualityScores = new int[count];
-            Helper.Copy(this.qualityScores, baseQualityScores, count);
+            var count = qualityScores.GetLongLength();
+            var baseQualityScores = new int[count];
+            Helper.Copy(qualityScores, baseQualityScores, count);
 
             return baseQualityScores;
         }
@@ -862,14 +862,14 @@ namespace Bio
         public int GetPhredQualityScore(long index)
         {
             int phredQualityScore;
-            if (this.FormatType == FastQFormatType.Solexa_Illumina_v1_0)
+            if (FormatType == FastQFormatType.Solexa_Illumina_v1_0)
             {
-                int solexaQualityScore = this.qualityScores[index];
+                int solexaQualityScore = qualityScores[index];
                 phredQualityScore = ConvertSolexaToPhred(solexaQualityScore);
             }
             else
             {
-                phredQualityScore = this.qualityScores[index];
+                phredQualityScore = qualityScores[index];
             }
 
             return phredQualityScore;
@@ -880,19 +880,19 @@ namespace Bio
         /// </summary>
         public int[] GetPhredQualityScores()
         {
-            long count = this.qualityScores.GetLongLength();
-            int[] phredQualityScores = new int[count];
-            BaseQualityScoreType fromQualityScoreType = GetQualityScoreType(this.FormatType);
-            BaseQualityScoreType toQualityScoreType = BaseQualityScoreType.PhredBaseQualityScore;
+            var count = qualityScores.GetLongLength();
+            var phredQualityScores = new int[count];
+            var fromQualityScoreType = GetQualityScoreType(FormatType);
+            var toQualityScoreType = BaseQualityScoreType.PhredBaseQualityScore;
             if (fromQualityScoreType == toQualityScoreType)
             {
-                Helper.Copy(this.qualityScores, phredQualityScores, count);
+                Helper.Copy(qualityScores, phredQualityScores, count);
             }
             else
             {
                 for (long i = 0; i < count; i++)
                 {
-                    phredQualityScores[i] = Convert(fromQualityScoreType, toQualityScoreType, this.qualityScores[i]);
+                    phredQualityScores[i] = Convert(fromQualityScoreType, toQualityScoreType, qualityScores[i]);
                 }
             }
 
@@ -907,13 +907,13 @@ namespace Bio
         public int GetSolexaQualityScore(long index)
         {
             int solexaQualityScore;
-            if (this.FormatType == FastQFormatType.Solexa_Illumina_v1_0)
+            if (FormatType == FastQFormatType.Solexa_Illumina_v1_0)
             {
-                solexaQualityScore = this.qualityScores[index];
+                solexaQualityScore = qualityScores[index];
             }
             else
             {
-                int pharedQualityScore = this.qualityScores[index];
+                int pharedQualityScore = qualityScores[index];
                 solexaQualityScore = ConvertPhredToSolexa(pharedQualityScore);
             }
 
@@ -925,19 +925,19 @@ namespace Bio
         /// </summary>
         public int[] GetSolexaQualityScores()
         {
-            long count = this.qualityScores.GetLongLength();
-            int[] solexaQualityScores = new int[count];
-            BaseQualityScoreType fromQualityScoreType = GetQualityScoreType(this.FormatType);
-            BaseQualityScoreType toQualityScoreType = BaseQualityScoreType.SolexaBaseQualityScore;
+            var count = qualityScores.GetLongLength();
+            var solexaQualityScores = new int[count];
+            var fromQualityScoreType = GetQualityScoreType(FormatType);
+            var toQualityScoreType = BaseQualityScoreType.SolexaBaseQualityScore;
             if (fromQualityScoreType == toQualityScoreType)
             {
-                Helper.Copy(this.qualityScores, solexaQualityScores, count);
+                Helper.Copy(qualityScores, solexaQualityScores, count);
             }
             else
             {
                 for (long i = 0; i < count; i++)
                 {
-                    solexaQualityScores[i] = Convert(fromQualityScoreType, toQualityScoreType, this.qualityScores[i]);
+                    solexaQualityScores[i] = Convert(fromQualityScoreType, toQualityScoreType, qualityScores[i]);
                 }
             }
 
@@ -951,11 +951,11 @@ namespace Bio
         /// <param name="formatType">FastQ format type to convert.</param>
         public QualitativeSequence ConvertTo(FastQFormatType formatType)
         {
-            sbyte[] convertedQualityScores = ConvertQualityScores(this.FormatType, formatType, this.qualityScores);
+            var convertedQualityScores = ConvertQualityScores(FormatType, formatType, qualityScores);
 
-            QualitativeSequence seq = new QualitativeSequence(this.Alphabet, formatType, this.sequenceData, convertedQualityScores, false);
-            seq.ID = this.ID;
-            seq.metadata = this.metadata;
+            var seq = new QualitativeSequence(Alphabet, formatType, sequenceData, convertedQualityScores, false);
+            seq.ID = ID;
+            seq.metadata = metadata;
 
             return seq;
         }
@@ -965,18 +965,18 @@ namespace Bio
         /// </summary>
         public ISequence GetReversedSequence()
         {
-            byte[] newSequenceData = new byte[this.sequenceData.GetLongLength()];
-            sbyte[] newQualityScores = new sbyte[this.qualityScores.GetLongLength()];
+            var newSequenceData = new byte[sequenceData.GetLongLength()];
+            var newQualityScores = new sbyte[qualityScores.GetLongLength()];
 
-            for (long index = 0; index < this.sequenceData.GetLongLength(); index++)
+            for (long index = 0; index < sequenceData.GetLongLength(); index++)
             {
-                newSequenceData[index] = this.sequenceData[this.sequenceData.GetLongLength() - index - 1];
-                newQualityScores[index] = (this.qualityScores[this.qualityScores.GetLongLength() - index - 1]);
+                newSequenceData[index] = sequenceData[sequenceData.GetLongLength() - index - 1];
+                newQualityScores[index] = (qualityScores[qualityScores.GetLongLength() - index - 1]);
             }
 
-            QualitativeSequence seq = new QualitativeSequence(this.Alphabet, this.FormatType, newSequenceData, newQualityScores, false);
-            seq.ID = this.ID;
-            seq.metadata = this.metadata;
+            var seq = new QualitativeSequence(Alphabet, FormatType, newSequenceData, newQualityScores, false);
+            seq.ID = ID;
+            seq.metadata = metadata;
 
             return seq;
         }
@@ -986,24 +986,24 @@ namespace Bio
         /// </summary>
         public ISequence GetComplementedSequence()
         {
-            byte[] newSequenceData = new byte[this.sequenceData.GetLongLength()];
-            sbyte[] newQualityScores = this.qualityScores;
+            var newSequenceData = new byte[sequenceData.GetLongLength()];
+            var newQualityScores = qualityScores;
 
-            for (long index = 0; index < this.sequenceData.GetLongLength(); index++)
+            for (long index = 0; index < sequenceData.GetLongLength(); index++)
             {
                 byte complementedSymbol;
-                byte symbol = this.sequenceData[index];
-                if (!this.Alphabet.TryGetComplementSymbol(symbol, out complementedSymbol))
+                var symbol = sequenceData[index];
+                if (!Alphabet.TryGetComplementSymbol(symbol, out complementedSymbol))
                 {
-                    throw new NotSupportedException(string.Format(CultureInfo.CurrentUICulture, Properties.Resource.ComplementNotSupportedByalphabet, (char)symbol, this.Alphabet.Name));
+                    throw new NotSupportedException(string.Format(CultureInfo.CurrentUICulture, Properties.Resource.ComplementNotSupportedByalphabet, (char)symbol, Alphabet.Name));
                 }
 
                 newSequenceData[index] = complementedSymbol;
             }
 
-            QualitativeSequence seq = new QualitativeSequence(this.Alphabet, this.FormatType, newSequenceData, newQualityScores, false);
-            seq.ID = this.ID;
-            seq.metadata = this.metadata;
+            var seq = new QualitativeSequence(Alphabet, FormatType, newSequenceData, newQualityScores, false);
+            seq.ID = ID;
+            seq.metadata = metadata;
 
             return seq;
         }
@@ -1013,27 +1013,27 @@ namespace Bio
         /// </summary>
         public ISequence GetReverseComplementedSequence()
         {
-            byte[] newSequenceData = new byte[this.sequenceData.GetLongLength()];
-            sbyte[] newQualityScores = new sbyte[this.qualityScores.GetLongLength()];
+            var newSequenceData = new byte[sequenceData.GetLongLength()];
+            var newQualityScores = new sbyte[qualityScores.GetLongLength()];
 
-            for (long index = 0; index < this.sequenceData.GetLongLength(); index++)
+            for (long index = 0; index < sequenceData.GetLongLength(); index++)
             {
                 byte complementedSymbol;
-                byte symbol = this.sequenceData[this.sequenceData.GetLongLength() - index - 1];
+                var symbol = sequenceData[sequenceData.GetLongLength() - index - 1];
 
-                if (!this.Alphabet.TryGetComplementSymbol(symbol, out complementedSymbol))
+                if (!Alphabet.TryGetComplementSymbol(symbol, out complementedSymbol))
                 {
-                    throw new NotSupportedException(string.Format(CultureInfo.CurrentUICulture, Properties.Resource.ComplementNotSupportedByalphabet, (char)symbol, this.Alphabet.Name));
+                    throw new NotSupportedException(string.Format(CultureInfo.CurrentUICulture, Properties.Resource.ComplementNotSupportedByalphabet, (char)symbol, Alphabet.Name));
                 }
 
                 newSequenceData[index] = complementedSymbol;
 
-                newQualityScores[index] = this.qualityScores[this.qualityScores.GetLongLength() - index - 1];
+                newQualityScores[index] = qualityScores[qualityScores.GetLongLength() - index - 1];
             }
 
-            QualitativeSequence seq = new QualitativeSequence(this.Alphabet, this.FormatType, newSequenceData, newQualityScores, false);
-            seq.ID = this.ID;
-            seq.metadata = this.metadata;
+            var seq = new QualitativeSequence(Alphabet, FormatType, newSequenceData, newQualityScores, false);
+            seq.ID = ID;
+            seq.metadata = metadata;
 
             return seq;
         }
@@ -1046,29 +1046,29 @@ namespace Bio
         /// <returns>The sub-sequence.</returns>
         public ISequence GetSubSequence(long start, long length)
         {
-            if (start >= this.sequenceData.GetLongLength())
+            if (start >= sequenceData.GetLongLength())
             {
-                throw new ArgumentOutOfRangeException("start");
+                throw new ArgumentOutOfRangeException(nameof(start));
             }
 
-            if (start + length > this.sequenceData.GetLongLength())
+            if (start + length > sequenceData.GetLongLength())
             {
-                throw new ArgumentOutOfRangeException("length");
+                throw new ArgumentOutOfRangeException(nameof(length));
             }
 
-            byte[] newSequenceData = new byte[length];
-            sbyte[] newQualityScores = new sbyte[length];
+            var newSequenceData = new byte[length];
+            var newQualityScores = new sbyte[length];
 
             for (long index = 0; index < length; index++)
             {
-                newSequenceData[index] = this.sequenceData[start + index];
-                newQualityScores[index] = this.qualityScores[start + index];
+                newSequenceData[index] = sequenceData[start + index];
+                newQualityScores[index] = qualityScores[start + index];
             }
 
-            return new QualitativeSequence(this.Alphabet, this.FormatType, newSequenceData, newQualityScores, false)
+            return new QualitativeSequence(Alphabet, FormatType, newSequenceData, newQualityScores, false)
             {
-                ID = this.ID, 
-                metadata = this.metadata
+                ID = ID, 
+                metadata = metadata
             };
         }
 
@@ -1078,7 +1078,7 @@ namespace Bio
         /// <returns>If found returns a zero based index of the first non-gap symbol, otherwise returns -1.</returns>
         public long IndexOfNonGap()
         {
-            return this.IndexOfNonGap(0);
+            return IndexOfNonGap(0);
         }
 
         /// <summary>
@@ -1089,21 +1089,21 @@ namespace Bio
         /// <returns>If found returns a zero based index of the first non-gap symbol, otherwise returns -1.</returns>
         public long IndexOfNonGap(long startPos)
         {
-            if (startPos >= this.sequenceData.GetLongLength())
+            if (startPos >= sequenceData.GetLongLength())
             {
-                throw new ArgumentOutOfRangeException("startPos");
+                throw new ArgumentOutOfRangeException(nameof(startPos));
             }
 
             HashSet<byte> gapSymbols;
-            if (!this.Alphabet.TryGetGapSymbols(out gapSymbols))
+            if (!Alphabet.TryGetGapSymbols(out gapSymbols))
             {
                 return startPos;
             }
 
-            byte[] aliasSymbolsMap = this.Alphabet.GetSymbolValueMap();
-            for (long index = startPos; index < this.sequenceData.GetLongLength(); index++)
+            var aliasSymbolsMap = Alphabet.GetSymbolValueMap();
+            for (var index = startPos; index < sequenceData.GetLongLength(); index++)
             {
-                byte symbol = aliasSymbolsMap[this.sequenceData[index]];
+                var symbol = aliasSymbolsMap[sequenceData[index]];
                 if (!gapSymbols.Contains(symbol))
                 {
                     return index;
@@ -1119,7 +1119,7 @@ namespace Bio
         /// <returns>If found returns a zero based index of the last non-gap symbol, otherwise returns -1.</returns>
         public long LastIndexOfNonGap()
         {
-            return this.LastIndexOfNonGap(this.Count - 1);
+            return LastIndexOfNonGap(Count - 1);
         }
 
         /// <summary>
@@ -1131,15 +1131,15 @@ namespace Bio
         {
             HashSet<byte> gapSymbols;
 
-            if (!this.Alphabet.TryGetGapSymbols(out gapSymbols))
+            if (!Alphabet.TryGetGapSymbols(out gapSymbols))
             {
                 return endPos;
             }
 
-            byte[] aliasSymbolsMap = this.Alphabet.GetSymbolValueMap();
-            for (long index = endPos; index >= 0; index--)
+            var aliasSymbolsMap = Alphabet.GetSymbolValueMap();
+            for (var index = endPos; index >= 0; index--)
             {
-                byte symbol = aliasSymbolsMap[this.sequenceData[index]];
+                var symbol = aliasSymbolsMap[sequenceData[index]];
                 if (!gapSymbols.Contains(symbol))
                 {
                     return index;
@@ -1156,19 +1156,19 @@ namespace Bio
         /// </summary>
         public override string ToString()
         {
-            if (this.Count > Helper.AlphabetsToShowInToString)
+            if (Count > Helper.AlphabetsToShowInToString)
             {
                 return string.Format(CultureInfo.CurrentCulture, Properties.Resource.QualitativeSequenceToStringFormatForLongSequence,
-                                     new string(this.sequenceData.Take(Helper.AlphabetsToShowInToString).Select((a => (char)a)).ToArray()),
-                                     (this.Count - Helper.AlphabetsToShowInToString),
-                                     new string(this.qualityScores.Take(Helper.AlphabetsToShowInToString).Select(a => (char)GetEncodedQualScore(a, this.FormatType)).ToArray()),
-                                     (this.Count - Helper.AlphabetsToShowInToString));
+                                     new string(sequenceData.Take(Helper.AlphabetsToShowInToString).Select((a => (char)a)).ToArray()),
+                                     (Count - Helper.AlphabetsToShowInToString),
+                                     new string(qualityScores.Take(Helper.AlphabetsToShowInToString).Select(a => (char)GetEncodedQualScore(a, FormatType)).ToArray()),
+                                     (Count - Helper.AlphabetsToShowInToString));
             }
             else
             {
                 return string.Format(CultureInfo.CurrentCulture, Properties.Resource.QualitativeSequenceToStringFormatForSmallSequence,
-                                     new string(this.sequenceData.Take(this.sequenceData.Length).Select((a => (char)a)).ToArray()),
-                                     new string(this.qualityScores.Take(this.qualityScores.Length).Select(a => (char)GetEncodedQualScore(a, this.FormatType)).ToArray()));
+                                     new string(sequenceData.Take(sequenceData.Length).Select((a => (char)a)).ToArray()),
+                                     new string(qualityScores.Take(qualityScores.Length).Select(a => (char)GetEncodedQualScore(a, FormatType)).ToArray()));
             }
         }
 
@@ -1178,9 +1178,9 @@ namespace Bio
         /// <returns>An IEnumerator of bytes.</returns>
         public IEnumerator<byte> GetEnumerator()
         {
-            for (long index = 0; index < this.sequenceData.GetLongLength(); index++)
+            for (long index = 0; index < sequenceData.GetLongLength(); index++)
             {
-                yield return this.sequenceData[index];
+                yield return sequenceData[index];
             }
         }
 
@@ -1190,7 +1190,7 @@ namespace Bio
         /// <returns>An IEnumerator of bytes.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
 
         /// <summary>
@@ -1261,9 +1261,9 @@ namespace Bio
         /// <returns>Returns quality scores.</returns>
         private static int[] GetDecodedQualScores(byte[] encodedQualScores, FastQFormatType formatType)
         {
-            int baseValue = GetAsciiBaseValue(formatType);
-            long count = encodedQualScores.GetLongLength();
-            int[] result = new int[count];
+            var baseValue = GetAsciiBaseValue(formatType);
+            var count = encodedQualScores.GetLongLength();
+            var result = new int[count];
             for (long i = 0; i < count; i++)
             {
                 result[i] = DecodeQualityScore(encodedQualScores[i], baseValue);
@@ -1280,9 +1280,9 @@ namespace Bio
         /// <returns>Returns quality scores.</returns>
         private static sbyte[] GetDecodedQualScoresInSignedBytes(byte[] encodedQualScores, FastQFormatType formatType)
         {
-            int baseValue = GetAsciiBaseValue(formatType);
-            long count = encodedQualScores.GetLongLength();
-            sbyte[] result = new sbyte[count];
+            var baseValue = GetAsciiBaseValue(formatType);
+            var count = encodedQualScores.GetLongLength();
+            var result = new sbyte[count];
             for (long i = 0; i < count; i++)
             {
                 result[i] = (sbyte)DecodeQualityScore(encodedQualScores[i], baseValue);
@@ -1330,9 +1330,9 @@ namespace Bio
         /// <returns>ASCII encoded quality scores.</returns>
         private static byte[] GetEncodedQualScores(int[] qualScores, FastQFormatType formatType)
         {
-            int baseValue = GetAsciiBaseValue(formatType);
-            long count = qualScores.GetLongLength();
-            byte[] result = new byte[count];
+            var baseValue = GetAsciiBaseValue(formatType);
+            var count = qualScores.GetLongLength();
+            var result = new byte[count];
             for (long i = 0; i < count; i++)
             {
                 result[i] = EncodeQualityScore(qualScores[i], baseValue);
@@ -1349,9 +1349,9 @@ namespace Bio
         /// <returns>ASCII encoded quality scores.</returns>
         private static byte[] GetEncodedQualScores(sbyte[] qualScores, FastQFormatType formatType)
         {
-            int baseValue = GetAsciiBaseValue(formatType);
-            long count = qualScores.GetLongLength();
-            byte[] result = new byte[count];
+            var baseValue = GetAsciiBaseValue(formatType);
+            var count = qualScores.GetLongLength();
+            var result = new byte[count];
             for (long i = 0; i < count; i++)
             {
                 result[i] = EncodeQualityScore(qualScores[i], baseValue);
@@ -1398,8 +1398,8 @@ namespace Bio
         /// <param name="qualScores">Quality scores</param>
         private static sbyte[] Convert(BaseQualityScoreType fromQualityScoreType, BaseQualityScoreType toQualityScoreType, sbyte[] qualScores)
         {
-            long count = qualScores.GetLongLength();
-            sbyte[] result = new sbyte[count];
+            var count = qualScores.GetLongLength();
+            var result = new sbyte[count];
             if (fromQualityScoreType == toQualityScoreType)
             {
                 Helper.Copy(qualScores, result, qualScores.GetLongLength());
@@ -1434,8 +1434,8 @@ namespace Bio
         /// <param name="qualScores">Quality scores</param>
         private static int[] Convert(BaseQualityScoreType fromQualityScoreType, BaseQualityScoreType toQualityScoreType, int[] qualScores)
         {
-            long count = qualScores.GetLongLength();
-            int[] result = new int[count];
+            var count = qualScores.GetLongLength();
+            var result = new int[count];
             if (fromQualityScoreType == toQualityScoreType)
             {
                 Helper.Copy(qualScores, result, qualScores.GetLongLength());
@@ -1509,14 +1509,14 @@ namespace Bio
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#")]
         public static bool ValidateQualScores(byte[] encodedQualScore, FastQFormatType formatType, out byte invalidQualScore)
         {
-            bool result = true;
+            var result = true;
             invalidQualScore = 0;
             int minScore = GetMinEncodedQualScore(formatType);
             int maxScore = GetMaxEncodedQualScore(formatType);
-            long count = encodedQualScore.GetLongLength();
+            var count = encodedQualScore.GetLongLength();
             for (long index = 0; index < count; index++)
             {
-                byte qualScore = encodedQualScore[index];
+                var qualScore = encodedQualScore[index];
                 if (qualScore < minScore || qualScore > maxScore)
                 {
                     result = false;
@@ -1537,14 +1537,14 @@ namespace Bio
         /// <returns>Returns true if the specified quality scores are with in the limit, otherwise false.</returns>
         private static bool ValidateQualScores(sbyte[] qualScores, FastQFormatType formatType, out sbyte invalidQualScore)
         {
-            bool result = true;
+            var result = true;
             invalidQualScore = 0;
-            int minScore = GetDecodedQualScore(GetMinEncodedQualScore(formatType), formatType);
-            int maxScore = GetDecodedQualScore(GetMaxEncodedQualScore(formatType), formatType);
-            long count = qualScores.GetLongLength();
+            var minScore = GetDecodedQualScore(GetMinEncodedQualScore(formatType), formatType);
+            var maxScore = GetDecodedQualScore(GetMaxEncodedQualScore(formatType), formatType);
+            var count = qualScores.GetLongLength();
             for (long index = 0; index < count; index++)
             {
-                sbyte qualScore = qualScores[index];
+                var qualScore = qualScores[index];
                 if (qualScore < minScore || qualScore > maxScore)
                 {
                     result = false;
@@ -1565,14 +1565,14 @@ namespace Bio
         /// <returns>Returns true if the specified quality scores are with in the limit, otherwise false.</returns>
         private static bool ValidateQualScores(int[] qualScores, FastQFormatType formatType, out int invalidQualScore)
         {
-            bool result = true;
+            var result = true;
             invalidQualScore = 0;
-            int minScore = GetDecodedQualScore(GetMinEncodedQualScore(formatType), formatType);
-            int maxScore = GetDecodedQualScore(GetMaxEncodedQualScore(formatType), formatType);
-            long count = qualScores.GetLongLength();
+            var minScore = GetDecodedQualScore(GetMinEncodedQualScore(formatType), formatType);
+            var maxScore = GetDecodedQualScore(GetMaxEncodedQualScore(formatType), formatType);
+            var count = qualScores.GetLongLength();
             for (long index = 0; index < count; index++)
             {
-                int qualScore = qualScores[index];
+                var qualScore = qualScores[index];
                 if (qualScore < minScore || qualScore > maxScore)
                 {
                     result = false;

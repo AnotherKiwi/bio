@@ -68,7 +68,7 @@ namespace Bio.IO.ClustalW
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
 
             // No empty files allowed
@@ -101,12 +101,12 @@ namespace Bio.IO.ClustalW
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
 
             using (var reader = stream.OpenRead())
             {
-                return this.ParseOne(reader);
+                return ParseOne(reader);
             }
         }
 
@@ -127,7 +127,7 @@ namespace Bio.IO.ClustalW
             if (!line.StartsWith("CLUSTAL", StringComparison.OrdinalIgnoreCase))
             {
                 throw new InvalidDataException(
-                    string.Format(CultureInfo.CurrentCulture, Properties.Resource.INVALID_INPUT_FILE, this.Name));
+                    string.Format(CultureInfo.CurrentCulture, Properties.Resource.INVALID_INPUT_FILE, Name));
             }
 
             ReadNextLine(reader);  // Skip blank lines until we get to the first block.
@@ -137,8 +137,8 @@ namespace Bio.IO.ClustalW
 
             var mapIdToSequence = new Dictionary<string, Tuple<ISequence, List<byte>>>();
             IAlphabet alignmentAlphabet = null;
-            bool isFirstBlock = true;
-            bool inBlock = false;
+            var isFirstBlock = true;
+            var inBlock = false;
             var endOfBlockSymbols = new HashSet<char> { '*', ' ', '.', '+', ':' };
 
             while (reader.Peek() != -1)
@@ -157,12 +157,12 @@ namespace Bio.IO.ClustalW
                 {
                     // It's a data line in a block.
                     // Lines begin with sequence id, then the sequence segment, and optionally a number, which we will ignore
-                    string[] tokens = line.Split((char[])null, StringSplitOptions.RemoveEmptyEntries); // (char[])null uses whitespace delimiters
-                    string id = tokens[0];
-                    string data = tokens[1].ToUpperInvariant();
-                    byte[] byteData = Encoding.UTF8.GetBytes(data);
+                    var tokens = line.Split((char[])null, StringSplitOptions.RemoveEmptyEntries); // (char[])null uses whitespace delimiters
+                    var id = tokens[0];
+                    var data = tokens[1].ToUpperInvariant();
+                    var byteData = Encoding.UTF8.GetBytes(data);
                     Tuple<ISequence, List<byte>> sequenceTuple;
-                    IAlphabet alphabet = Alphabet;
+                    var alphabet = Alphabet;
 
                     inBlock = true;
                     if (isFirstBlock)

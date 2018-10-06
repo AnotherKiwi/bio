@@ -24,7 +24,7 @@ namespace Bio.Tests.IO.SFF
         [Category("Priority0")]
         public void TestSffWhenParsingOneOfMany()
         {
-            SFFParser parser = new SFFParser();
+            var parser = new SFFParser();
             using (parser.Open(filePath))
             {
                 var sequence = parser.Parse().FirstOrDefault();
@@ -45,7 +45,7 @@ namespace Bio.Tests.IO.SFF
                                             "CAGTCAATGAAGCCCGCAAGGATAGTATAAGGATTAGATACCATGATGGCCATCTTAAATTCCTTCTTCAAGCGATCAAG" +
                                             "GAAGGTGTTAATTTGAAGGGGCTTA";
 
-            SFFParser parser = new SFFParser();
+            var parser = new SFFParser();
             using (parser.Open(filePath))
             {
                 var sequence = parser.Parse().FirstOrDefault();
@@ -81,10 +81,10 @@ namespace Bio.Tests.IO.SFF
                 Tuple.Create("E3MFGYR02F7Z7G", 219),
             };
 
-            SFFParser parser = new SFFParser();
+            var parser = new SFFParser();
             using (parser.Open(filePath))
             {
-                int index = 0;
+                var index = 0;
                 foreach (var sequence in parser.Parse())
                 {
                     Assert.IsTrue(expectedData.Length > index);

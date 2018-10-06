@@ -70,19 +70,19 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         /// </summary>
         public GraphScaffoldBuilder()
         {
-            this.mapPairedReads = new MatePairMapper();
-            this.readContigMap = new ReadContigMapper();
-            this.pairedReadFilter = new OrientationBasedMatePairFilter();
-            this.tracePath = new TracePath();
-            this.pathAssembler = new PathPurger();
+            mapPairedReads = new MatePairMapper();
+            readContigMap = new ReadContigMapper();
+            pairedReadFilter = new OrientationBasedMatePairFilter();
+            tracePath = new TracePath();
+            pathAssembler = new PathPurger();
 
             //Hierarchical Scaffolding With Bambus
             //by: Mihai Pop, Daniel S. Kosack, Steven L. Salzberg
             //Genome Research, Vol. 14, No. 1. (January 2004), pp. 149-159.
-            this.redundancyField = 2;
+            redundancyField = 2;
 
             //Memory and performance optimization.
-            this.depthField = 10;
+            depthField = 10;
         }
 
         /// <summary>
@@ -117,10 +117,10 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
             //Hierarchical Scaffolding With Bambus
             //by: Mihai Pop, Daniel S. Kosack, Steven L. Salzberg
             //Genome Research, Vol. 14, No. 1. (January 2004), pp. 149-159.
-            this.redundancyField = 2;
+            redundancyField = 2;
 
             //Memory and performance optimization.
-            this.depthField = 10;
+            depthField = 10;
         }
 
         /// <summary>
@@ -144,12 +144,12 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         {
             if (contigs == null)
             {
-                throw new ArgumentNullException("contigs");
+                throw new ArgumentNullException(nameof(contigs));
             }
 
             if (null == reads)
             {
-                throw new ArgumentNullException("reads");
+                throw new ArgumentNullException(nameof(reads));
             }
 
             if (lengthofKmer <= 0)
@@ -167,28 +167,28 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
                 throw new ArgumentException(Resource.NegativeRedundancy);
             }
 
-            this.depthField = depth;
-            this.redundancyField = redundancy;
-            this.kmerLength = lengthofKmer;
+            depthField = depth;
+            redundancyField = redundancy;
+            kmerLength = lengthofKmer;
 
-            IEnumerable<ISequence> readSeqs = ValidateReads(reads);
+            var readSeqs = ValidateReads(reads);
 
             //Step1: Generate contig overlap graph.
             IList<ISequence> contigsList = new List<ISequence>(contigs);
-            ContigGraph contigGraph = GenerateContigOverlapGraph(contigsList);
-            IEnumerable<Node> nodes = contigGraph.Nodes.Where(t => t.ExtensionsCount == 0);
+            var contigGraph = GenerateContigOverlapGraph(contigsList);
+            var nodes = contigGraph.Nodes.Where(t => t.ExtensionsCount == 0);
 
-            foreach (Node node in nodes)
+            foreach (var node in nodes)
             {
                 contigsList.Remove(contigGraph.GetNodeSequence(node));
             }
 
             // Step2: Map Reads to contigs.
-            ReadContigMap readContigMaps = ReadContigMap(contigsList, readSeqs);
+            var readContigMaps = ReadContigMap(contigsList, readSeqs);
             contigsList = null;
 
             // Step3: Generate Contig Mate Pair Map.
-            ContigMatePairs contigMatePairs = MapPairedReadsToContigs(readContigMaps, readSeqs);
+            var contigMatePairs = MapPairedReadsToContigs(readContigMaps, readSeqs);
             readContigMaps = null;
 
             // Step4: Filter Paired Reads.
@@ -198,7 +198,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
             CalculateDistanceBetweenContigs(contigMatePairs);
 
             // Step6: Trace Scaffold Paths.
-            IList<ScaffoldPath> paths = TracePath(contigGraph, contigMatePairs);
+            var paths = TracePath(contigGraph, contigMatePairs);
             contigMatePairs = null;
 
             // Step7: Assemble paths.
@@ -215,7 +215,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         /// </summary>
         public void Dispose()
         {
-            this.Dispose(true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -228,11 +228,11 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         {
             if (contigs == null)
             {
-                throw new ArgumentNullException("contigs");
+                throw new ArgumentNullException(nameof(contigs));
             }
 
-            ContigGraph contigGraph = new ContigGraph();
-            contigGraph.BuildContigGraph(contigs, this.kmerLength);
+            var contigGraph = new ContigGraph();
+            contigGraph.BuildContigGraph(contigs, kmerLength);
             return contigGraph;
         }
 
@@ -244,7 +244,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         /// <returns>Map of reads and contigs.</returns>
         protected ReadContigMap ReadContigMap(IList<ISequence> contigs, IEnumerable<ISequence> reads)
         {
-            return this.readContigMap.Map(contigs, reads, this.kmerLength);
+            return readContigMap.Map(contigs, reads, kmerLength);
         }
 
         /// <summary>
@@ -255,7 +255,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         /// <returns>Contig Mate Pair map.</returns>
         protected ContigMatePairs MapPairedReadsToContigs(ReadContigMap readContigMaps, IEnumerable<ISequence> reads)
         {
-            return this.mapPairedReads.MapContigToMatePairs(reads, readContigMaps);
+            return mapPairedReads.MapContigToMatePairs(reads, readContigMaps);
         }
 
         /// <summary>
@@ -265,7 +265,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         /// <returns>Returns Contig Mate Pair map.</returns>
         protected ContigMatePairs FilterReadsBasedOnOrientation(ContigMatePairs contigMatePairs)
         {
-            return this.pairedReadFilter.FilterPairedReads(contigMatePairs, this.redundancyField);
+            return pairedReadFilter.FilterPairedReads(contigMatePairs, redundancyField);
         }
 
         /// <summary>
@@ -277,17 +277,17 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         {
             if (contigMatePairs == null)
             {
-                throw new ArgumentNullException("contigMatePairs");
+                throw new ArgumentNullException(nameof(contigMatePairs));
             }
 
-            if (this.distanceCalculator == null)
+            if (distanceCalculator == null)
             {
-                this.distanceCalculator = new DistanceCalculator(contigMatePairs);
-                contigMatePairs = this.distanceCalculator.CalculateDistance();
+                distanceCalculator = new DistanceCalculator(contigMatePairs);
+                contigMatePairs = distanceCalculator.CalculateDistance();
             }
             else
             {
-                contigMatePairs = this.distanceCalculator.CalculateDistance();
+                contigMatePairs = distanceCalculator.CalculateDistance();
             }
 
             // this dictionary is updated in this step.
@@ -302,7 +302,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         /// <returns>List of Scaffold Paths.</returns>
         protected IList<ScaffoldPath> TracePath(ContigGraph contigGraph, ContigMatePairs contigMatePairs)
         {
-            return this.tracePath.FindPaths(contigGraph, contigMatePairs, this.kmerLength, this.depthField);
+            return tracePath.FindPaths(contigGraph, contigMatePairs, kmerLength, depthField);
         }
 
         /// <summary>
@@ -314,10 +314,10 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         {
             if (paths == null)
             {
-                throw new ArgumentNullException("paths");
+                throw new ArgumentNullException(nameof(paths));
             }
 
-            this.pathAssembler.PurgePath(paths);
+            pathAssembler.PurgePath(paths);
             return paths.Count;
         }
 
@@ -333,15 +333,15 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         {
             if (contigGraph == null)
             {
-                throw new ArgumentNullException("contigGraph");
+                throw new ArgumentNullException(nameof(contigGraph));
             }
 
             if (paths == null)
             {
-                throw new ArgumentNullException("paths");
+                throw new ArgumentNullException(nameof(paths));
             }
 
-            List<ISequence> scaffolds = paths.AsParallel().Select(t => t.BuildSequenceFromPath(contigGraph, this.kmerLength)).ToList();
+            var scaffolds = paths.AsParallel().Select(t => t.BuildSequenceFromPath(contigGraph, kmerLength)).ToList();
             IEnumerable<Node> visitedNodes = contigGraph.Nodes.AsParallel().Where(t => !t.IsMarked());
             scaffolds.AddRange(visitedNodes.AsParallel().Select(t => contigGraph.GetNodeSequence(t)));
             contigGraph.Dispose();
@@ -356,12 +356,12 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         {
             if (disposeManaged)
             {
-                this.distanceCalculator = null;
-                this.mapPairedReads = null;
-                this.pairedReadFilter = null;
-                this.pathAssembler = null;
-                this.readContigMap = null;
-                this.tracePath = null;
+                distanceCalculator = null;
+                mapPairedReads = null;
+                pairedReadFilter = null;
+                pathAssembler = null;
+                readContigMap = null;
+                tracePath = null;
             }
         }
 
@@ -372,22 +372,22 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         /// <returns>Valid reads.</returns>
         private IEnumerable<ISequence> ValidateReads(IEnumerable<ISequence> reads)
         {
-            IAlphabet readAlphabet = Alphabets.GetAmbiguousAlphabet(reads.First().Alphabet);
-            HashSet<byte> ambiguousSymbols = readAlphabet.GetAmbiguousSymbols();
+            var readAlphabet = Alphabets.GetAmbiguousAlphabet(reads.First().Alphabet);
+            var ambiguousSymbols = readAlphabet.GetAmbiguousSymbols();
             HashSet<byte> gapSymbols;
             readAlphabet.TryGetGapSymbols(out gapSymbols);
 
-            foreach (ISequence read in reads)
+            foreach (var read in reads)
             {
                 string originalSequenceId;
                 string pairedReadType;
                 bool forward;
                 string libraryName;
-                if (Bio.Util.Helper.ValidatePairedSequenceId(read.ID, out originalSequenceId, out forward, out pairedReadType, out libraryName))
+                if (Util.Helper.ValidatePairedSequenceId(read.ID, out originalSequenceId, out forward, out pairedReadType, out libraryName))
                 {
                     if (!read.Alphabet.HasAmbiguity)
                     {
-                        bool gapSymbolFound = false;
+                        var gapSymbolFound = false;
                         for (long index = 0; index < read.Count; index++)
                         {
                             if (gapSymbols.Contains(read[index]))
@@ -399,7 +399,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
                         if (!gapSymbolFound)
                         {
                             // Exclude the otherinfo if any.
-                            read.ID = Bio.Util.Helper.GetReadIdExcludingOtherInfo(read.ID);
+                            read.ID = Util.Helper.GetReadIdExcludingOtherInfo(read.ID);
                             yield return read;
                         }
                     }

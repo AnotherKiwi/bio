@@ -111,19 +111,19 @@ namespace Bio.IO.Gff
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
 
-            this.sequences = new List<Tuple<ISequence, List<byte>>>();
-            this.sequencesInHeader = new List<Tuple<ISequence, List<byte>>>();
+            sequences = new List<Tuple<ISequence, List<byte>>>();
+            sequencesInHeader = new List<Tuple<ISequence, List<byte>>>();
 
-            IAlphabet alphabet = this.Alphabet ?? Alphabets.DNA;
-            this.commonSeq = new Sequence(alphabet, String.Empty);
+            var alphabet = Alphabet ?? Alphabets.DNA;
+            commonSeq = new Sequence(alphabet, String.Empty);
 
             using (var reader = stream.OpenRead())
             {
                 // The GFF spec says that all headers need to be at the top of the file.
-                string line = this.ParseHeaders(reader);
+                var line = ParseHeaders(reader);
 
                 // A feature file with no features? May it never be.
                 if (reader.EndOfStream)
@@ -133,13 +133,13 @@ namespace Bio.IO.Gff
 
                 while (line != null)
                 {
-                    line = this.ParseFeatures(reader, line);
+                    line = ParseFeatures(reader, line);
                 }
 
-                this.CopyMetadata();
+                CopyMetadata();
 
                 return
-                    this.sequences.Select(seq => new Sequence(seq.Item1.Alphabet, seq.Item2.ToArray()) {
+                    sequences.Select(seq => new Sequence(seq.Item1.Alphabet, seq.Item2.ToArray()) {
                             ID = seq.Item1.ID,
                             Metadata = seq.Item1.Metadata
                         })
@@ -154,9 +154,9 @@ namespace Bio.IO.Gff
         /// <returns></returns>
         private string ParseHeaders(TextReader reader)
         {
-            string comments = string.Empty;
-            int commentsCount = 1;
-            string line = reader.ReadLine();
+            var comments = string.Empty;
+            var commentsCount = 1;
+            var line = reader.ReadLine();
             while (line == "")
             {
                 line = reader.ReadLine();
@@ -167,12 +167,12 @@ namespace Bio.IO.Gff
                 // process headers, but ignore other comments
                 if (line.StartsWith(HeaderMark, StringComparison.Ordinal))
                 {
-                    string[] fields = line.Substring(3 - 1).Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    var fields = line.Substring(3 - 1).Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
                     // Add if any comments.
                     if (!string.IsNullOrEmpty(comments))
                     {
-                        this.commonSeq.Metadata[CommentSectionKey + commentsCount.ToString(CultureInfo.InvariantCulture)
+                        commonSeq.Metadata[CommentSectionKey + commentsCount.ToString(CultureInfo.InvariantCulture)
                             ] = comments;
                         comments = string.Empty;
                         commentsCount++;
@@ -184,7 +184,7 @@ namespace Bio.IO.Gff
                         case GffVersionKey:
                             if (fields.Length > 1 && fields[1] != "2")
                             {
-                                string message = String.Format(
+                                var message = String.Format(
                                     CultureInfo.CurrentCulture,
                                     Resource.GffUnsupportedVersion);
                                 Trace.Report(message);
@@ -192,7 +192,7 @@ namespace Bio.IO.Gff
                             }
 
                             // Store "GFF-VERSION" to get keep the order of comments/headers.
-                            this.commonSeq.Metadata[GffVersionKey] = fields[1];
+                            commonSeq.Metadata[GffVersionKey] = fields[1];
 
                             break;
 
@@ -201,48 +201,48 @@ namespace Bio.IO.Gff
                             var sourceVersion = new MetadataListItem<string>(SourceVersionKey, string.Empty);
                             sourceVersion.SubItems.Add(SourceKey, fields[1]);
                             sourceVersion.SubItems.Add(VersionKey, fields[2]);
-                            this.commonSeq.Metadata[SourceVersionKey] = sourceVersion;
+                            commonSeq.Metadata[SourceVersionKey] = sourceVersion;
 
                             break;
                         case DateKey:
                             DateTime date;
                             if (!DateTime.TryParse(fields[1], out date))
                             {
-                                string message = String.Format(CultureInfo.CurrentCulture, Resource.ParserInvalidDate);
+                                var message = String.Format(CultureInfo.CurrentCulture, Resource.ParserInvalidDate);
                                 Trace.Report(message);
                                 throw new FormatException(message);
                             }
 
-                            this.commonSeq.Metadata[DateLowerCaseKey] = date;
+                            commonSeq.Metadata[DateLowerCaseKey] = date;
                             break;
                         case TypeKey:
                             if (fields.Length == 2)
                             {
-                                this.commonSeq.Alphabet = GetAlphabetType(fields[1]);
-                                if (this.commonSeq.Alphabet == null)
+                                commonSeq.Alphabet = GetAlphabetType(fields[1]);
+                                if (commonSeq.Alphabet == null)
                                 {
-                                    string message = String.Format(CultureInfo.CurrentCulture, Resource.InvalidType);
+                                    var message = String.Format(CultureInfo.CurrentCulture, Resource.InvalidType);
                                     Trace.Report(message);
                                     throw new FormatException(message);
                                 }
 
                                 // Store "TYPE" to get keep the order of comments/headers.
-                                this.commonSeq.Metadata[TypeKey] = fields[1];
+                                commonSeq.Metadata[TypeKey] = fields[1];
                             }
                             else
                             {
-                                specificSeq = this.GetSpecificSequence(fields[2], GetAlphabetType(fields[1]), false);
+                                specificSeq = GetSpecificSequence(fields[2], GetAlphabetType(fields[1]), false);
 
                                 if (specificSeq.Item1.Alphabet == null)
                                 {
-                                    string message = String.Format(CultureInfo.CurrentCulture, Resource.InvalidType);
+                                    var message = String.Format(CultureInfo.CurrentCulture, Resource.InvalidType);
                                     Trace.Report(message);
                                     throw new FormatException(message);
                                 }
 
                                 // Store "TYPE" to get keep the order of comments/headers.
                                 // Store seq id as value.
-                                this.commonSeq.Metadata[MultiTypeKey + fields[2]] = fields[2];
+                                commonSeq.Metadata[MultiTypeKey + fields[2]] = fields[2];
                             }
                             break;
                         case "DNA":
@@ -251,21 +251,21 @@ namespace Bio.IO.Gff
                             line = reader.ReadLine();
 
                             // Store seq id as value.
-                            this.commonSeq.Metadata[MultiSeqDataKey + fields[1]] = fields[1];
-                            specificSeq = this.GetSpecificSequence(fields[1], GetAlphabetType(fields[0]), false);
+                            commonSeq.Metadata[MultiSeqDataKey + fields[1]] = fields[1];
+                            specificSeq = GetSpecificSequence(fields[1], GetAlphabetType(fields[0]), false);
 
                             long sequenceDataLength = 0;
                             while ((line != null) && line != SeqDataEnd + fields[0])
                             {
                                 if (!line.StartsWith(HeaderMark, StringComparison.Ordinal))
                                 {
-                                    string message = String.Format(
+                                    var message = String.Format(
                                         CultureInfo.CurrentCulture,
                                         Resource.GffInvalidSequence);
                                     Trace.Report(message);
                                     throw new FormatException(message);
                                 }
-                                byte[] tempSeqData = Encoding.UTF8.GetBytes(line.Substring(3 - 1).ToCharArray());
+                                var tempSeqData = Encoding.UTF8.GetBytes(line.Substring(3 - 1).ToCharArray());
                                 sequenceDataLength += tempSeqData.Length;
 
                                 specificSeq.Item2.AddRange(tempSeqData);
@@ -274,12 +274,12 @@ namespace Bio.IO.Gff
                             break;
                         case SeqRegKey:
 
-                            specificSeq = this.GetSpecificSequence(fields[1], null, false);
+                            specificSeq = GetSpecificSequence(fields[1], null, false);
                             specificSeq.Item1.Metadata["start"] = fields[2];
                             specificSeq.Item1.Metadata["end"] = fields[3];
 
                             // Store seq id as value.
-                            this.commonSeq.Metadata[MultiSeqRegKey + fields[1]] = fields[1];
+                            commonSeq.Metadata[MultiSeqRegKey + fields[1]] = fields[1];
                             break;
                     }
                 }
@@ -297,7 +297,7 @@ namespace Bio.IO.Gff
 
             if (!string.IsNullOrEmpty(comments))
             {
-                this.commonSeq.Metadata[CommentSectionKey + commentsCount.ToString(CultureInfo.InvariantCulture)] =
+                commonSeq.Metadata[CommentSectionKey + commentsCount.ToString(CultureInfo.InvariantCulture)] =
                     comments;
                 comments = string.Empty;
             }
@@ -331,14 +331,14 @@ namespace Bio.IO.Gff
                 }
                 else
                 {
-                    string[] featureFields = line.Split(new[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                    var featureFields = line.Split(new[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
 
                     if (featureFields.Length < MinFieldsPerFeature || featureFields.Length > MaxFieldsPerFeature)
                     {
-                        string message = string.Format(
+                        var message = string.Format(
                             CultureInfo.CurrentCulture,
                             Resource.INVALID_INPUT_FILE,
-                            this.Name);
+                            Name);
                         ;
                         throw new InvalidDataException(message);
                     }
@@ -357,7 +357,7 @@ namespace Bio.IO.Gff
                     // Process sequence name.
                     if (specificSeq == null)
                     {
-                        specificSeq = this.GetSpecificSequence(featureFields[0], null);
+                        specificSeq = GetSpecificSequence(featureFields[0], null);
 
                         // Retrieve features list, or add empty features list to metadata if this
                         // is the first feature.
@@ -378,7 +378,7 @@ namespace Bio.IO.Gff
                     }
 
                     // use feature name as key; attributes field is stored as free text
-                    string attributes = (featureFields.Length == 9 ? featureFields[8] : string.Empty);
+                    var attributes = (featureFields.Length == 9 ? featureFields[8] : string.Empty);
                     var feature = new MetadataListItem<List<string>>(featureFields[2], attributes);
 
                     // source
@@ -388,7 +388,7 @@ namespace Bio.IO.Gff
                     int ignoreMe;
                     if (!int.TryParse(featureFields[3], out ignoreMe))
                     {
-                        string message = String.Format(
+                        var message = String.Format(
                             CultureInfo.CurrentCulture,
                             Resource.GffInvalidField,
                             "start",
@@ -401,7 +401,7 @@ namespace Bio.IO.Gff
                     // end is an int
                     if (!int.TryParse(featureFields[4], out ignoreMe))
                     {
-                        string message = String.Format(
+                        var message = String.Format(
                             CultureInfo.CurrentCulture,
                             Resource.GffInvalidField,
                             "end",
@@ -418,7 +418,7 @@ namespace Bio.IO.Gff
                         double ignoreMeToo;
                         if (!double.TryParse(featureFields[5], out ignoreMeToo))
                         {
-                            string message = String.Format(
+                            var message = String.Format(
                                 CultureInfo.CurrentCulture,
                                 Resource.GffInvalidField,
                                 "score",
@@ -434,7 +434,7 @@ namespace Bio.IO.Gff
                     {
                         if (featureFields[6] != "+" && featureFields[6] != "-")
                         {
-                            string message = String.Format(
+                            var message = String.Format(
                                 CultureInfo.CurrentCulture,
                                 Resource.GffInvalidField,
                                 "strand",
@@ -450,7 +450,7 @@ namespace Bio.IO.Gff
                     {
                         if (!int.TryParse(featureFields[7], out ignoreMe))
                         {
-                            string message = String.Format(
+                            var message = String.Format(
                                 CultureInfo.CurrentCulture,
                                 Resource.GffInvalidField,
                                 "frame",
@@ -469,11 +469,11 @@ namespace Bio.IO.Gff
             }
 
             // if any seqs are left in _sequencesInHeader add it to _sequences
-            if (this.sequencesInHeader.Count > 0)
+            if (sequencesInHeader.Count > 0)
             {
-                this.sequences.AddRange(this.sequencesInHeader);
+                sequences.AddRange(sequencesInHeader);
 
-                this.sequencesInHeader.Clear();
+                sequencesInHeader.Clear();
             }
             return line;
         }
@@ -495,7 +495,7 @@ namespace Bio.IO.Gff
             {
                 // Sequence is referred in header.
 
-                seq = this.sequencesInHeader.FirstOrDefault(S => S.Item1.ID.Equals(sequenceName));
+                seq = sequencesInHeader.FirstOrDefault(S => S.Item1.ID.Equals(sequenceName));
                 if (seq != null)
                 {
                     return seq;
@@ -505,32 +505,32 @@ namespace Bio.IO.Gff
                     new Sequence(alphabetType, string.Empty) { ID = sequenceName },
                     new List<byte>());
 
-                this.sequencesInHeader.Add(seq);
+                sequencesInHeader.Add(seq);
             }
             else
             {
-                if (this.sequencesInHeader.Count > 0)
+                if (sequencesInHeader.Count > 0)
                 {
-                    seq = this.sequencesInHeader.FirstOrDefault(S => S.Item1.ID.Equals(sequenceName));
+                    seq = sequencesInHeader.FirstOrDefault(S => S.Item1.ID.Equals(sequenceName));
                     if (seq != null)
                     {
-                        this.sequencesInHeader.Remove(seq);
-                        this.sequences.Add(seq);
+                        sequencesInHeader.Remove(seq);
+                        sequences.Add(seq);
                     }
                 }
 
-                if (this.sequences.Count == 0)
+                if (sequences.Count == 0)
                 {
                     seq =
                         new Tuple<ISequence, List<byte>>(
                             new Sequence(alphabetType, string.Empty) { ID = sequenceName },
                             new List<byte>());
 
-                    this.sequences.Add(seq);
+                    sequences.Add(seq);
                 }
                 else if (seq == null)
                 {
-                    seq = this.sequences.FirstOrDefault(S => S.Item1.ID.Equals(sequenceName));
+                    seq = sequences.FirstOrDefault(S => S.Item1.ID.Equals(sequenceName));
 
                     if (seq == null)
                     {
@@ -538,7 +538,7 @@ namespace Bio.IO.Gff
                             new Tuple<ISequence, List<byte>>(
                                 new Sequence(alphabetType, string.Empty) { ID = sequenceName },
                                 new List<byte>());
-                        this.sequences.Add(seq);
+                        sequences.Add(seq);
                     }
                 }
             }
@@ -554,9 +554,9 @@ namespace Bio.IO.Gff
         /// will be set to true, otherwise it will be set to false.
         private void CopyMetadata()
         {
-            foreach (var seq in this.sequences)
+            foreach (var seq in sequences)
             {
-                foreach (var pair in this.commonSeq.Metadata)
+                foreach (var pair in commonSeq.Metadata)
                 {
                     seq.Item1.Metadata[pair.Key] = pair.Value;
                 }
@@ -573,7 +573,7 @@ namespace Bio.IO.Gff
         {
             if (type == null)
             {
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
             }
 
             type = type.ToUpperInvariant();

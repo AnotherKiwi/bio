@@ -29,8 +29,8 @@ namespace Bio.Algorithms.Assembly.Padena
         /// </summary>
         public PadenaAssembly()
         {
-            this.contigSequences = new List<ISequence>();
-            this.scaffolds = new List<ISequence>();
+            contigSequences = new List<ISequence>();
+            scaffolds = new List<ISequence>();
         }
 
         #endregion Constructors
@@ -43,13 +43,13 @@ namespace Bio.Algorithms.Assembly.Padena
         {
             get
             {
-                if (this.scaffolds != null && this.scaffolds.Count() > 0)
+                if (scaffolds != null && scaffolds.Count() > 0)
                 {
-                    return this.scaffolds;
+                    return scaffolds;
                 }
                 else
                 {
-                    return this.contigSequences;
+                    return contigSequences;
                 }
             }
         }
@@ -70,7 +70,7 @@ namespace Bio.Algorithms.Assembly.Padena
         {
             get
             {
-                return this.contigSequences;
+                return contigSequences;
             }
         }
 
@@ -79,7 +79,7 @@ namespace Bio.Algorithms.Assembly.Padena
         /// </summary>
         public IList<ISequence> Scaffolds
         {
-            get { return this.scaffolds; }
+            get { return scaffolds; }
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Bio.Algorithms.Assembly.Padena
         {
             if (contigs != null)
             {
-                this.contigSequences.AddRange(contigs);
+                contigSequences.AddRange(contigs);
             }
         }
 
@@ -102,7 +102,7 @@ namespace Bio.Algorithms.Assembly.Padena
         {
             if (scaffoldsLists != null)
             {
-                this.scaffolds.AddRange(scaffoldsLists);
+                scaffolds.AddRange(scaffoldsLists);
             }
         }
 
@@ -112,8 +112,8 @@ namespace Bio.Algorithms.Assembly.Padena
         /// <returns>All Contig sequences Data.</returns>
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder();
-            foreach (ISequence contigSequence in ContigSequences)
+            var builder = new StringBuilder();
+            foreach (var contigSequence in ContigSequences)
             {
                 builder.AppendLine(contigSequence.ToString());
             }

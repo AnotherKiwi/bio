@@ -21,7 +21,7 @@ namespace Bio.IO.FastQ
         /// </summary>
         public FastQParser()
         {
-            this.FormatType = FastQFormatType.Illumina_v1_8;
+            FormatType = FastQFormatType.Illumina_v1_8;
         }
 
         /// <summary>
@@ -84,16 +84,16 @@ namespace Bio.IO.FastQ
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
 
-            FastQFormatType formatType = this.FormatType;
+            var formatType = FormatType;
 
-            using (StreamReader reader = stream.OpenRead())
+            using (var reader = stream.OpenRead())
             {
                 while (reader.Peek() != -1)
                 {
-                    IQualitativeSequence seq = ParseOne(reader, formatType);
+                    var seq = ParseOne(reader, formatType);
                     if (seq != null)
                     {
                         yield return seq;
@@ -109,7 +109,7 @@ namespace Bio.IO.FastQ
         /// <returns>Returns a QualitativeSequence.</returns>
         public IQualitativeSequence ParseOne(Stream stream)
         {
-            return ParseOne(stream, this.FormatType);
+            return ParseOne(stream, FormatType);
         }
 
         /// <summary>
@@ -122,10 +122,10 @@ namespace Bio.IO.FastQ
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
 
-            using (StreamReader reader = stream.OpenRead())
+            using (var reader = stream.OpenRead())
             {
                 return ParseOne(reader, formatType);
             }
@@ -144,30 +144,30 @@ namespace Bio.IO.FastQ
                 return null;
             }
 
-            string line = ReadNextLine(reader, true);
+            var line = ReadNextLine(reader, true);
             if (line == null || !line.StartsWith("@", StringComparison.Ordinal))
             {
-                string message = string.Format(CultureInfo.CurrentCulture, Resource.INVALID_INPUT_FILE, this.Name);
+                var message = string.Format(CultureInfo.CurrentCulture, Resource.INVALID_INPUT_FILE, Name);
                 throw new Exception(message);
             }
 
             // Process header line.
-            string id = line.Substring(1).Trim();
+            var id = line.Substring(1).Trim();
 
             line = ReadNextLine(reader, true);
             if (string.IsNullOrEmpty(line))
             {
-                string details = string.Format(CultureInfo.CurrentCulture, Resource.FastQ_InvalidSequenceLine, id);
-                string message = string.Format(
+                var details = string.Format(CultureInfo.CurrentCulture, Resource.FastQ_InvalidSequenceLine, id);
+                var message = string.Format(
                     CultureInfo.CurrentCulture,
                     Resource.IOFormatErrorMessage,
-                    this.Name,
+                    Name,
                     details);
                 throw new Exception(message);
             }
 
             // Get sequence from second line.
-            byte[] sequenceData = Encoding.ASCII.GetBytes(line);
+            var sequenceData = Encoding.ASCII.GetBytes(line);
 
             // Goto third line.
             line = ReadNextLine(reader, true);
@@ -175,30 +175,30 @@ namespace Bio.IO.FastQ
             // Check for '+' symbol in the third line.
             if (line == null || !line.StartsWith("+", StringComparison.Ordinal))
             {
-                string details = string.Format(
+                var details = string.Format(
                     CultureInfo.CurrentCulture,
                     Resource.FastQ_InvalidQualityScoreHeaderLine,
                     id);
-                string message = string.Format(
+                var message = string.Format(
                     CultureInfo.CurrentCulture,
                     Resource.IOFormatErrorMessage,
-                    this.Name,
+                    Name,
                     details);
                 throw new Exception(message);
             }
 
-            string qualScoreId = line.Substring(1).Trim();
+            var qualScoreId = line.Substring(1).Trim();
 
             if (!string.IsNullOrEmpty(qualScoreId) && !id.Equals(qualScoreId))
             {
-                string details = string.Format(
+                var details = string.Format(
                     CultureInfo.CurrentCulture,
                     Resource.FastQ_InvalidQualityScoreHeaderData,
                     id);
-                string message = string.Format(
+                var message = string.Format(
                     CultureInfo.CurrentCulture,
                     Resource.IOFormatErrorMessage,
-                    this.Name,
+                    Name,
                     details);
                 throw new Exception(message);
             }
@@ -208,35 +208,35 @@ namespace Bio.IO.FastQ
 
             if (string.IsNullOrEmpty(line))
             {
-                string details = string.Format(CultureInfo.CurrentCulture, Resource.FastQ_EmptyQualityScoreLine, id);
-                string message = string.Format(
+                var details = string.Format(CultureInfo.CurrentCulture, Resource.FastQ_EmptyQualityScoreLine, id);
+                var message = string.Format(
                     CultureInfo.CurrentCulture,
                     Resource.IOFormatErrorMessage,
-                    this.Name,
+                    Name,
                     details);
                 throw new Exception(message);
             }
 
             // Get the quality scores from the fourth line.
-            byte[] qualScores = Encoding.ASCII.GetBytes(line);
+            var qualScores = Encoding.ASCII.GetBytes(line);
 
             // Check for sequence length and quality score length.
             if (sequenceData.GetLongLength() != qualScores.GetLongLength())
             {
-                string details = string.Format(
+                var details = string.Format(
                     CultureInfo.CurrentCulture,
                     Resource.FastQ_InvalidQualityScoresLength,
                     id);
-                string message = string.Format(
+                var message = string.Format(
                     CultureInfo.CurrentCulture,
                     Resource.IOFormatErrorMessage,
-                    this.Name,
+                    Name,
                     details);
                 throw new Exception(message);
             }
 
             // Auto detect alphabet if alphabet is set to null, else validate with already set alphabet
-            IAlphabet alphabet = this.Alphabet;
+            var alphabet = Alphabet;
             if (alphabet == null)
             {
                 alphabet = Alphabets.AutoDetectAlphabet(sequenceData, 0, sequenceData.GetLongLength(), alphabet);
@@ -268,7 +268,7 @@ namespace Bio.IO.FastQ
         private static string ReadNextLine(TextReader reader, bool skipBlankLine)
         {
             // Continue reading if blank line found.
-            string line = reader.ReadLine();
+            var line = reader.ReadLine();
             while (skipBlankLine && line != null && string.IsNullOrEmpty(line))
             {
                 line = reader.ReadLine();

@@ -17,23 +17,23 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority0")]
         public void ValidateNUCmerAttributes()
         {
-            NUCmerAttributes nucAttrib = new NUCmerAttributes();
-            Dictionary<string, AlignmentInfo> attributes = nucAttrib.Attributes;
+            var nucAttrib = new NUCmerAttributes();
+            var attributes = nucAttrib.Attributes;
 
             Assert.AreEqual(9, attributes.Count);
 
             // Validating all the NUCmer attributes
-            AlignmentInfo similarityMatrixObj = attributes["SIMILARITYMATRIX"];
-            AlignmentInfo gapOpenCostObj = attributes["GAPOPENCOST"];
-            AlignmentInfo gapExtensionCostObj = attributes["GAPEXTENSIONCOST"];
+            var similarityMatrixObj = attributes["SIMILARITYMATRIX"];
+            var gapOpenCostObj = attributes["GAPOPENCOST"];
+            var gapExtensionCostObj = attributes["GAPEXTENSIONCOST"];
 
-            AlignmentInfo lenOfMumObj = attributes["LENGTHOFMUM"];
-            AlignmentInfo fixedSepObj = attributes["FIXEDSEPARATION"];
-            AlignmentInfo maxSepObj = attributes["MAXIMUMSEPARATION"];
+            var lenOfMumObj = attributes["LENGTHOFMUM"];
+            var fixedSepObj = attributes["FIXEDSEPARATION"];
+            var maxSepObj = attributes["MAXIMUMSEPARATION"];
 
-            AlignmentInfo minScoreObj = attributes["MINIMUMSCORE"];
-            AlignmentInfo sepFactorObj = attributes["SEPARATIONFACTOR"];
-            AlignmentInfo breakLengthObj = attributes["BREAKLENGTH"];
+            var minScoreObj = attributes["MINIMUMSCORE"];
+            var sepFactorObj = attributes["SEPARATIONFACTOR"];
+            var breakLengthObj = attributes["BREAKLENGTH"];
 
             Assert.AreEqual("Similarity Matrix", similarityMatrixObj.Name);
             Assert.AreEqual("Gap Cost", gapOpenCostObj.Name);

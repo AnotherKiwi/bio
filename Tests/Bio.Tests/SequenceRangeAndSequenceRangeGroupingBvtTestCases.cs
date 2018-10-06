@@ -31,9 +31,9 @@ namespace Bio.Tests
         public void ValidateSequenceRange()
         {
             // Get values from xml.
-            string expectedRangeId = this.utilityObj.xmlUtil.GetTextValue(Constants.SequenceRangeNode, Constants.IDNode);
-            string expectedStartIndex = this.utilityObj.xmlUtil.GetTextValue(Constants.SequenceRangeNode, Constants.StartNode);
-            string expectedEndIndex = this.utilityObj.xmlUtil.GetTextValue(Constants.SequenceRangeNode, Constants.EndNode);
+            var expectedRangeId = utilityObj.xmlUtil.GetTextValue(Constants.SequenceRangeNode, Constants.IDNode);
+            var expectedStartIndex = utilityObj.xmlUtil.GetTextValue(Constants.SequenceRangeNode, Constants.StartNode);
+            var expectedEndIndex = utilityObj.xmlUtil.GetTextValue(Constants.SequenceRangeNode, Constants.EndNode);
 
             // Create a SequenceRange.
             var seqRange = new SequenceRange(expectedRangeId,
@@ -56,12 +56,12 @@ namespace Bio.Tests
         public void ValidateCompareTwoSequenceRanges()
         {
             // Get values from xml.
-            string expectedRangeId = this.utilityObj.xmlUtil.GetTextValue(Constants.SequenceRangeNode, Constants.IDNode);
-            string expectedStartIndex = this.utilityObj.xmlUtil.GetTextValue(Constants.SequenceRangeNode, Constants.StartNode);
-            string expectedEndIndex = this.utilityObj.xmlUtil.GetTextValue(Constants.SequenceRangeNode, Constants.EndNode);
-            string expectedRangeId1 = this.utilityObj.xmlUtil.GetTextValue(Constants.SequenceRangeNode, Constants.IDNode1);
-            string expectedStartIndex1 = this.utilityObj.xmlUtil.GetTextValue(Constants.SequenceRangeNode, Constants.StartNode1);
-            string expectedEndIndex1 = this.utilityObj.xmlUtil.GetTextValue(Constants.SequenceRangeNode, Constants.EndNode1);
+            var expectedRangeId = utilityObj.xmlUtil.GetTextValue(Constants.SequenceRangeNode, Constants.IDNode);
+            var expectedStartIndex = utilityObj.xmlUtil.GetTextValue(Constants.SequenceRangeNode, Constants.StartNode);
+            var expectedEndIndex = utilityObj.xmlUtil.GetTextValue(Constants.SequenceRangeNode, Constants.EndNode);
+            var expectedRangeId1 = utilityObj.xmlUtil.GetTextValue(Constants.SequenceRangeNode, Constants.IDNode1);
+            var expectedStartIndex1 = utilityObj.xmlUtil.GetTextValue(Constants.SequenceRangeNode, Constants.StartNode1);
+            var expectedEndIndex1 = utilityObj.xmlUtil.GetTextValue(Constants.SequenceRangeNode, Constants.EndNode1);
 
             // Create first SequenceRange.
             var seqRange = new SequenceRange(expectedRangeId, long.Parse(expectedStartIndex, null), long.Parse(expectedEndIndex, null));
@@ -70,7 +70,7 @@ namespace Bio.Tests
             var secondSeqRange = new SequenceRange(expectedRangeId1, long.Parse(expectedStartIndex1, null), long.Parse(expectedEndIndex1, null));
 
             // Compare two SequenceRanges which are identical.
-            int result = seqRange.CompareTo(secondSeqRange);
+            var result = seqRange.CompareTo(secondSeqRange);
 
             // Validate result of comparison.
             Assert.AreEqual(0, result);
@@ -86,7 +86,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateSequenceRangeGrouping()
         {
-            this.CreateSequenceRangeGrouping(Constants.SmallSizeBedNodeName);
+            CreateSequenceRangeGrouping(Constants.SmallSizeBedNodeName);
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateAdditionOfSequenceRange()
         {
-            this.CreateSequenceRangeGrouping(Constants.LongStartEndBedNodeName);
+            CreateSequenceRangeGrouping(Constants.LongStartEndBedNodeName);
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateSequenceRangeGetGroup()
         {
-            this.CreateSequenceRangeGrouping(Constants.SequenceRangeNode);
+            CreateSequenceRangeGrouping(Constants.SequenceRangeNode);
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateSequenceRangeMergeOverlaps()
         {
-            this.MergeSequenceRange(Constants.MergeBedFileNode, false, false);
+            MergeSequenceRange(Constants.MergeBedFileNode, false, false);
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateMergeTwoBedFiles()
         {
-            this.MergeSequenceRange(Constants.MergeTwoFiles, true, true);
+            MergeSequenceRange(Constants.MergeTwoFiles, true, true);
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateIntersectSequenceRangeGroupingWithoutPiecesOfIntervals()
         {
-            this.IntersectSequenceRange(Constants.IntersectResultsWithoutPiecesOfIntervals, false, true);
+            IntersectSequenceRange(Constants.IntersectResultsWithoutPiecesOfIntervals, false, true);
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateIntersectSequenceRangeGroupingWithPiecesOfIntervals()
         {
-            this.IntersectSequenceRange(Constants.IntersectResultsWithPiecesOfIntervals, true, true);
+            IntersectSequenceRange(Constants.IntersectResultsWithPiecesOfIntervals, true, true);
         }
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateIntersectSequenceRangeGroupingForSmallSizeBedFiles()
         {
-            this.IntersectSequenceRange(Constants.IntersectWithoutPiecesOfIntervalsForSmallSizeFile,
+            IntersectSequenceRange(Constants.IntersectWithoutPiecesOfIntervalsForSmallSizeFile,
                                    false, true);
         }
 
@@ -185,7 +185,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateIntersectSequenceRangeGroupingWithPiecesOfIntervalsForSmallSizeBedFiles()
         {
-            this.IntersectSequenceRange(Constants.IntersectWithPiecesOfIntervalsForSmallSizeFile,
+            IntersectSequenceRange(Constants.IntersectWithPiecesOfIntervalsForSmallSizeFile,
                                    true, false);
         }
 
@@ -199,23 +199,23 @@ namespace Bio.Tests
         public void ValidateFlatten()
         {
             // Get values from xml.
-            string expectedRangeIDs = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedRangeIDs = utilityObj.xmlUtil.GetTextValue(
                 Constants.SmallSizeBedNodeName, Constants.IDNode);
-            string expectedStartIndex = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedStartIndex = utilityObj.xmlUtil.GetTextValue(
                 Constants.SmallSizeBedNodeName, Constants.StartNode);
-            string expectedEndIndex = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedEndIndex = utilityObj.xmlUtil.GetTextValue(
                 Constants.SmallSizeBedNodeName, Constants.EndNode);
-            string expectedSequenceRangeCount = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSequenceRangeCount = utilityObj.xmlUtil.GetTextValue(
                 Constants.SmallSizeBedNodeName, Constants.SequenceRangeCountNode);
 
-            string[] rangeIDs = expectedRangeIDs.Split(',');
-            string[] rangeStarts = expectedStartIndex.Split(',');
-            string[] rangeEnds = expectedEndIndex.Split(',');
+            var rangeIDs = expectedRangeIDs.Split(',');
+            var rangeStarts = expectedStartIndex.Split(',');
+            var rangeEnds = expectedEndIndex.Split(',');
             var seqRangeGrouping = new SequenceRangeGrouping();
             List<ISequenceRange> rangeList = null;
 
             // Create a SequenceRange and add to SequenceRangeList.
-            for (int i = 0; i < rangeIDs.Length; i++)
+            for (var i = 0; i < rangeIDs.Length; i++)
             {
                 var seqRange = new SequenceRange(rangeIDs[i],
                                                  long.Parse(rangeStarts[i], null),
@@ -227,9 +227,9 @@ namespace Bio.Tests
             //Convert SequenceRangeGroup to SequenceRangeList.
             rangeList = seqRangeGrouping.Flatten();
 
-            int j = 0;
+            var j = 0;
             // Validate created SequenceRanges.
-            foreach (ISequenceRange seqRange in rangeList)
+            foreach (var seqRange in rangeList)
             {
                 Assert.AreEqual(rangeStarts[j], seqRange.Start.ToString((IFormatProvider) null));
                 Assert.AreEqual(rangeEnds[j], seqRange.End.ToString((IFormatProvider) null));
@@ -251,7 +251,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateSubtractTwoBedFilesWithMinimalandNonOverlap()
         {
-            this.SubtractSequenceRange(Constants.SubtractSmallBedFilesWithMinimalOverlapNodeName,
+            SubtractSequenceRange(Constants.SubtractSmallBedFilesWithMinimalOverlapNodeName,
                                   false, true);
         }
 
@@ -265,7 +265,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateSubtractTwoBedFilesWithNonOverlapIntervals()
         {
-            this.SubtractSequenceRange(Constants.SubtractSmallBedFilesNodeName,
+            SubtractSequenceRange(Constants.SubtractSmallBedFilesNodeName,
                                   false, false);
         }
 
@@ -279,7 +279,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateSubtractTwoBedFilesUsingIntervalsWithNoOverlap()
         {
-            this.SubtractSequenceRange(Constants.SubtractSmallBedFilesWithIntervalsNodeName,
+            SubtractSequenceRange(Constants.SubtractSmallBedFilesWithIntervalsNodeName,
                                   true, true);
         }
 
@@ -301,7 +301,7 @@ namespace Bio.Tests
             Assert.AreEqual(Constants.BedParser, parserRange[0].ToString());
 
             //Validate Bed property
-            Type parserType = SequenceRangeParsers.Bed.GetType();
+            var parserType = SequenceRangeParsers.Bed.GetType();
             Assert.AreEqual(parserType.ToString(), Constants.BedParser);
             ApplicationLog.WriteLine("Sequence Range Parser BVT: Validation of Sequence Range Parser Public properties completed successfully.");
         }
@@ -324,7 +324,7 @@ namespace Bio.Tests
             Assert.AreEqual(Constants.BedFormatter, formatterRange[0].ToString());
 
             //Validate Bed property
-            Type formatterType = SequenceRangeFormatters.Bed.GetType();
+            var formatterType = SequenceRangeFormatters.Bed.GetType();
             Assert.AreEqual(formatterType.ToString(), Constants.BedFormatter);
             ApplicationLog.WriteLine(
                 "Sequence Range Formatter BVT: Validation of Sequence Range Formatter Public properties completed successfully.");
@@ -342,23 +342,23 @@ namespace Bio.Tests
         private void CreateSequenceRangeGrouping(string nodeName)
         {
             // Get values from xml.
-            string expectedRangeIDs = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedRangeIDs = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.IDNode);
-            string expectedStartIndex = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedStartIndex = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.StartNode);
-            string expectedEndIndex = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedEndIndex = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.EndNode);
-            string expectedSequenceRangeCount = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSequenceRangeCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.SequenceRangeCountNode);
 
-            string[] rangeIDs = expectedRangeIDs.Split(',');
-            string[] rangeStarts = expectedStartIndex.Split(',');
-            string[] rangeEnds = expectedEndIndex.Split(',');
+            var rangeIDs = expectedRangeIDs.Split(',');
+            var rangeStarts = expectedStartIndex.Split(',');
+            var rangeEnds = expectedEndIndex.Split(',');
             var seqRangeGrouping = new SequenceRangeGrouping();
             List<ISequenceRange> rangeList = null;
 
             // Create a SequenceRange and add to SequenceRangeList.
-            for (int i = 0; i < rangeIDs.Length; i++)
+            for (var i = 0; i < rangeIDs.Length; i++)
             {
                 var seqRange = new SequenceRange(rangeIDs[i],
                                                  long.Parse(rangeStarts[i], null), long.Parse(rangeEnds[i], null));
@@ -366,11 +366,11 @@ namespace Bio.Tests
                 seqRangeGrouping.Add(seqRange);
             }
 
-            IEnumerable<string> rangeGroupIds = seqRangeGrouping.GroupIDs;
-            string rangeID = string.Empty;
-            int j = 0;
+            var rangeGroupIds = seqRangeGrouping.GroupIDs;
+            var rangeID = string.Empty;
+            var j = 0;
 
-            foreach (string groupID in rangeGroupIds)
+            foreach (var groupID in rangeGroupIds)
             {
                 rangeID = groupID;
 
@@ -378,7 +378,7 @@ namespace Bio.Tests
                 rangeList = seqRangeGrouping.GetGroup(rangeID);
 
                 // Validate created SequenceRanges.
-                foreach (ISequenceRange seqRange in rangeList)
+                foreach (var seqRange in rangeList)
                 {
                     Assert.AreEqual(rangeStarts[j], seqRange.Start.ToString((IFormatProvider) null));
                     Assert.AreEqual(rangeEnds[j], seqRange.End.ToString((IFormatProvider) null));
@@ -402,23 +402,23 @@ namespace Bio.Tests
                                             bool overlappingBasePair, bool isParentSeqRangeRequired)
         {
             // Get values from xml.
-            string[] expectedRangeIDs = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedRangeIDs = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.IDNode).Split(',');
-            string[] expectedStartIndex = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedStartIndex = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.StartNode).Split(',');
-            string[] expectedEndIndex = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedEndIndex = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.EndNode).Split(',');
-            string referenceFilePath = this.utilityObj.xmlUtil.GetTextValue(
+            var referenceFilePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FilePathNode).TestDir();
-            string queryFilePath = this.utilityObj.xmlUtil.GetTextValue(
+            var queryFilePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.QueryFilePath).TestDir();
-            string minimalOverlap = this.utilityObj.xmlUtil.GetTextValue(
+            var minimalOverlap = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.OverlapValue);
 
             // Parse a BED file.
             var parserObj = new BedParser();
-            SequenceRangeGrouping referenceGroup = parserObj.ParseRangeGrouping(referenceFilePath);
-            SequenceRangeGrouping queryGroup = parserObj.ParseRangeGrouping(queryFilePath);
+            var referenceGroup = parserObj.ParseRangeGrouping(referenceFilePath);
+            var queryGroup = parserObj.ParseRangeGrouping(queryFilePath);
 
             var outputType = IntersectOutputType.OverlappingIntervals;
             if (overlappingBasePair)
@@ -427,19 +427,19 @@ namespace Bio.Tests
             }
 
             // Intersect a SequenceRangeGroup.
-            SequenceRangeGrouping intersectGroup = referenceGroup.Intersect(queryGroup, long.Parse(minimalOverlap, null), outputType);
+            var intersectGroup = referenceGroup.Intersect(queryGroup, long.Parse(minimalOverlap, null), outputType);
 
             // Get a intersect SequenceGroup Id.
-            IEnumerable<string> groupIds = intersectGroup.GroupIDs;
-            int j = 0;
-            foreach (string grpId in groupIds)
+            var groupIds = intersectGroup.GroupIDs;
+            var j = 0;
+            foreach (var grpId in groupIds)
             {
-                string rangeId = grpId;
+                var rangeId = grpId;
 
-                List<ISequenceRange> rangeList = intersectGroup.GetGroup(rangeId);
+                var rangeList = intersectGroup.GetGroup(rangeId);
 
                 // Validate intersect sequence range.
-                foreach (ISequenceRange range in rangeList)
+                foreach (var range in rangeList)
                 {
                     Assert.AreEqual(expectedStartIndex[j], range.Start.ToString((IFormatProvider) null));
                     Assert.AreEqual(expectedEndIndex[j], range.End.ToString((IFormatProvider) null));
@@ -449,7 +449,7 @@ namespace Bio.Tests
             }
 
             // Validate ParentSeqRanges.
-            bool result = ValidateParentSeqRange(intersectGroup, referenceGroup, queryGroup, isParentSeqRangeRequired);
+            var result = ValidateParentSeqRange(intersectGroup, referenceGroup, queryGroup, isParentSeqRangeRequired);
             Assert.IsTrue(result);
 
             ApplicationLog.WriteLine(
@@ -465,32 +465,32 @@ namespace Bio.Tests
         private void MergeSequenceRange(string nodeName, bool isMergePam, bool isParentSeqRangesRequired)
         {
             // Get values from xml.
-            string[] expectedRangeIDs = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.IDNode).Split(',');
-            string[] expectedStartIndex = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.StartNode).Split(',');
-            string[] expectedEndIndex = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.EndNode).Split(',');
-            string filePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
-            string queryFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.QueryFilePath).TestDir();
+            var expectedRangeIDs = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.IDNode).Split(',');
+            var expectedStartIndex = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.StartNode).Split(',');
+            var expectedEndIndex = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.EndNode).Split(',');
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            var queryFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.QueryFilePath).TestDir();
 
             // Parse a BED file.
             var parserObj = new BedParser();
-            SequenceRangeGrouping referenceGroup = parserObj.ParseRangeGrouping(filePath);
-            SequenceRangeGrouping queryGroup = parserObj.ParseRangeGrouping(queryFilePath);
+            var referenceGroup = parserObj.ParseRangeGrouping(filePath);
+            var queryGroup = parserObj.ParseRangeGrouping(queryFilePath);
 
             // Merge a SequenceRangeGroup.
-            SequenceRangeGrouping mergedGroup = isMergePam ? referenceGroup.MergeOverlaps(queryGroup, 0, isParentSeqRangesRequired) : referenceGroup.MergeOverlaps();
+            var mergedGroup = isMergePam ? referenceGroup.MergeOverlaps(queryGroup, 0, isParentSeqRangesRequired) : referenceGroup.MergeOverlaps();
 
             // Get a merged SequenceGroup Id.
-            IEnumerable<string> groupIds = mergedGroup.GroupIDs;
+            var groupIds = mergedGroup.GroupIDs;
 
-            int j = 0;
-            foreach (string grpId in groupIds)
+            var j = 0;
+            foreach (var grpId in groupIds)
             {
-                string rangeId = grpId;
+                var rangeId = grpId;
 
-                List<ISequenceRange> rangeList = mergedGroup.GetGroup(rangeId);
+                var rangeList = mergedGroup.GetGroup(rangeId);
 
                 // Validate merged sequence range.
-                foreach (ISequenceRange range in rangeList)
+                foreach (var range in rangeList)
                 {
                     Assert.AreEqual(expectedStartIndex[j], range.Start.ToString((IFormatProvider) null));
                     Assert.AreEqual(expectedEndIndex[j], range.End.ToString((IFormatProvider) null));
@@ -500,7 +500,7 @@ namespace Bio.Tests
             }
 
             // Validate Parent SequenceRanges.
-            bool result = ValidateParentSeqRange(mergedGroup,referenceGroup, queryGroup, isParentSeqRangesRequired);
+            var result = ValidateParentSeqRange(mergedGroup,referenceGroup, queryGroup, isParentSeqRangesRequired);
             Assert.IsTrue(result);
 
             ApplicationLog.WriteLine("Merge SequenceRangeGrouping BVT: Successfully validated the merged SequeID, Start and End Ranges");
@@ -515,25 +515,25 @@ namespace Bio.Tests
         private void SubtractSequenceRange(string nodeName, bool overlappingBasePair, bool isParentSeqRangeRequired)
         {
             // Get values from xml.
-            string[] expectedRangeIDs = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedRangeIDs = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.IDNode).Split(',');
-            string[] expectedStartIndex = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedStartIndex = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.StartNode).Split(',');
-            string[] expectedEndIndex = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedEndIndex = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.EndNode).Split(',');
-            string referenceFilePath = this.utilityObj.xmlUtil.GetTextValue(
+            var referenceFilePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FilePathNode).TestDir();
-            string queryFilePath = this.utilityObj.xmlUtil.GetTextValue(
+            var queryFilePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.QueryFilePath).TestDir();
-            string minimalOverlap = this.utilityObj.xmlUtil.GetTextValue(
+            var minimalOverlap = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.OverlapValue);
-            string rangeID = string.Empty;
-            bool result = false;
+            var rangeID = string.Empty;
+            var result = false;
 
             // Parse a BED file.
             var parserObj = new BedParser();
-            SequenceRangeGrouping referenceGroup = parserObj.ParseRangeGrouping(referenceFilePath);
-            SequenceRangeGrouping queryGroup = parserObj.ParseRangeGrouping(queryFilePath);
+            var referenceGroup = parserObj.ParseRangeGrouping(referenceFilePath);
+            var queryGroup = parserObj.ParseRangeGrouping(queryFilePath);
 
             var subtractOutputType = SubtractOutputType.NonOverlappingPiecesOfIntervals;
             if (overlappingBasePair)
@@ -542,22 +542,22 @@ namespace Bio.Tests
             }
 
             // Subtract a SequenceRangeGroup.
-            SequenceRangeGrouping subtractGroup = referenceGroup.Subtract(queryGroup,
+            var subtractGroup = referenceGroup.Subtract(queryGroup,
                                                                           long.Parse(minimalOverlap, null),
                                                                           subtractOutputType, isParentSeqRangeRequired);
 
             // Get a intersect SequenceGroup Id.
-            IEnumerable<string> groupIds = subtractGroup.GroupIDs;
+            var groupIds = subtractGroup.GroupIDs;
 
-            int j = 0;
-            foreach (string grpID in groupIds)
+            var j = 0;
+            foreach (var grpID in groupIds)
             {
                 rangeID = grpID;
 
-                List<ISequenceRange> rangeList = subtractGroup.GetGroup(rangeID);
+                var rangeList = subtractGroup.GetGroup(rangeID);
 
                 // Validate intersect sequence range.
-                foreach (ISequenceRange range in rangeList)
+                foreach (var range in rangeList)
                 {
                     Assert.AreEqual(expectedStartIndex[j], range.Start.ToString((IFormatProvider) null));
                     Assert.AreEqual(expectedEndIndex[j], range.End.ToString((IFormatProvider) null));
@@ -589,9 +589,9 @@ namespace Bio.Tests
             IList<ISequenceRange> refSeqRangeList = new List<ISequenceRange>();
             IList<ISequenceRange> querySeqRangeList = new List<ISequenceRange>();
 
-            IEnumerable<string> groupIds = resultSeq.GroupIDs;
+            var groupIds = resultSeq.GroupIDs;
 
-            foreach (string groupId in groupIds)
+            foreach (var groupId in groupIds)
             {
                 if (null != refSeq)
                 {
@@ -603,7 +603,7 @@ namespace Bio.Tests
                     querySeqRangeList = querySeq.GetGroup(groupId);
                 }
 
-                foreach (ISequenceRange resultRange in resultSeq.GetGroup(groupId))
+                foreach (var resultRange in resultSeq.GetGroup(groupId))
                 {
                     if (!isParentSeqRangeRequired)
                     {
@@ -614,8 +614,8 @@ namespace Bio.Tests
                     }
                     else
                     {
-                        int refSeqRangeCount = refSeqRangeList.Count(s => resultRange.ParentSeqRanges.Contains(s));
-                        int querySeqRangeCount = querySeqRangeList.Count(s => resultRange.ParentSeqRanges.Contains(s));
+                        var refSeqRangeCount = refSeqRangeList.Count(s => resultRange.ParentSeqRanges.Contains(s));
+                        var querySeqRangeCount = querySeqRangeList.Count(s => resultRange.ParentSeqRanges.Contains(s));
                         if (resultRange.ParentSeqRanges.Count != refSeqRangeCount + querySeqRangeCount)
                         {
                             return false;

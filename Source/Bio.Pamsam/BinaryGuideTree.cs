@@ -163,7 +163,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         {
             if (r == null)
             {
-                throw new ArgumentNullException("r");
+                throw new ArgumentNullException(nameof(r));
             }
 
             _id = r.ID;
@@ -206,8 +206,8 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         public List<BinaryGuideTreeNode> ExtractSubTreeNodes(BinaryGuideTreeNode node)
         {
             // mark whether the node is descendent of this node
-            List<bool> mark = new List<bool>(_numberOfNodes);
-            for (int i = 0; i < _numberOfNodes; ++i)
+            var mark = new List<bool>(_numberOfNodes);
+            for (var i = 0; i < _numberOfNodes; ++i)
             {
                 mark.Add(false);
             }
@@ -215,8 +215,8 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             // Mark the subtree nodes by depth first search algorithm
             DepthFirstSearch(node, mark);
 
-            List<BinaryGuideTreeNode> result = new List<BinaryGuideTreeNode>();
-            for (int i = 0; i < mark.Count; ++i)
+            var result = new List<BinaryGuideTreeNode>();
+            for (var i = 0; i < mark.Count; ++i)
             {
                 if (mark[i])
                 {
@@ -234,8 +234,8 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         public List<BinaryGuideTreeNode> ExtractSubTreeLeafNodes(BinaryGuideTreeNode node)
         {
             // mark whether the node is descendent of this node
-            List<bool> mark = new List<bool>(_numberOfNodes);
-            for (int i = 0; i < _numberOfNodes; ++i)
+            var mark = new List<bool>(_numberOfNodes);
+            for (var i = 0; i < _numberOfNodes; ++i)
             {
                 mark.Add(false);
             }
@@ -243,8 +243,8 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             // Mark the subtree nodes by depth first search algorithm
             DepthFirstSearch(node, mark);
 
-            List<BinaryGuideTreeNode> result = new List<BinaryGuideTreeNode>();
-            for (int i = 0; i < mark.Count; ++i)
+            var result = new List<BinaryGuideTreeNode>();
+            for (var i = 0; i < mark.Count; ++i)
             {
                 if (mark[i] && _nodes[i].IsLeaf)
                 {
@@ -265,7 +265,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         {
             if (node == null)
             {
-                throw new ArgumentNullException("node");
+                throw new ArgumentNullException(nameof(node));
             }
 
             mark[node.ID] = true;
@@ -309,12 +309,12 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         {
             if (nodeA == null)
             {
-                throw new ArgumentNullException("nodeA");
+                throw new ArgumentNullException(nameof(nodeA));
             }
 
             if (nodeB == null)
             {
-                throw new ArgumentNullException("nodeB");
+                throw new ArgumentNullException(nameof(nodeB));
             }
 
             //TODO the order of left/right child nodes do not have to be the same to be identical
@@ -352,12 +352,12 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         {
             if (treeA == null)
             {
-                throw new ArgumentNullException("treeA");
+                throw new ArgumentNullException(nameof(treeA));
             }
 
             if (treeB == null)
             {
-                throw new ArgumentNullException("treeB");
+                throw new ArgumentNullException(nameof(treeB));
             }
 
             if (treeA.NumberOfNodes != treeB.NumberOfNodes || treeA.NumberOfLeaves != treeB.NumberOfLeaves)
@@ -365,15 +365,15 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                 throw new ArgumentException("The two trees are not comparable");
             }
 
-            Dictionary<int, int> nodeID2ListIndex = new Dictionary<int, int>(treeB.NumberOfNodes);
-            for (int i = 0; i < treeB.NumberOfNodes; ++i)
+            var nodeID2ListIndex = new Dictionary<int, int>(treeB.NumberOfNodes);
+            for (var i = 0; i < treeB.NumberOfNodes; ++i)
             {
                 nodeID2ListIndex[treeB.Nodes[i].ID] = i;
             }
 
             BinaryGuideTreeNode node, nodeB;
 
-            for (int i = treeA.NumberOfLeaves; i < treeA.NumberOfNodes; ++i)
+            for (var i = treeA.NumberOfLeaves; i < treeA.NumberOfNodes; ++i)
             {
                 node = treeA.Nodes[i];
                 if (node.LeftChildren.NeedReAlignment == true || node.RightChildren.NeedReAlignment == true)
@@ -440,8 +440,8 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             }
 
             // generate two new trees
-            BinaryGuideTree treeA = new BinaryGuideTree(_root);
-            BinaryGuideTree treeB = new BinaryGuideTree(_edges[edgeIndex].ChildNode);
+            var treeA = new BinaryGuideTree(_root);
+            var treeB = new BinaryGuideTree(_edges[edgeIndex].ChildNode);
 
             treeA.NumberOfNodes = _numberOfNodes;
             treeB.NumberOfNodes = _numberOfNodes;
@@ -461,14 +461,14 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             treeB.NumberOfNodes = treeB.Nodes.Count;
             treeA.NumberOfLeaves = 0;
             treeB.NumberOfLeaves = 0;
-            for (int i = 0; i < treeA.Nodes.Count; ++i)
+            for (var i = 0; i < treeA.Nodes.Count; ++i)
             {
                 if (treeA.Nodes[i].IsLeaf)
                 {
                     ++treeA.NumberOfLeaves;
                 }
             }
-            for (int i = 0; i < treeB.Nodes.Count; ++i)
+            for (var i = 0; i < treeB.Nodes.Count; ++i)
             {
                 if (treeB.Nodes[i].IsLeaf)
                 {
@@ -507,16 +507,16 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             }
 
             // pull the subtree nodes out for the two new roots
-            List<BinaryGuideTreeNode> NodesA = (List<BinaryGuideTreeNode>)ExtractSubTreeLeafNodes(_edges[edgeIndex].ChildNode);
+            var NodesA = (List<BinaryGuideTreeNode>)ExtractSubTreeLeafNodes(_edges[edgeIndex].ChildNode);
 
-            List<int> resultA = new List<int>(NodesA.Count);
-            List<int> resultB = new List<int>(_numberOfLeaves - NodesA.Count);
+            var resultA = new List<int>(NodesA.Count);
+            var resultB = new List<int>(_numberOfLeaves - NodesA.Count);
 
-            for (int i = 0; i < NodesA.Count; ++i)
+            for (var i = 0; i < NodesA.Count; ++i)
             {
                 resultA.Add(NodesA[i].SequenceID);
             }
-            for (int i = 0; i < _numberOfLeaves; ++i)
+            for (var i = 0; i < _numberOfLeaves; ++i)
             {
                 if (resultA.IndexOf(i) < 0)
                 {

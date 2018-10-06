@@ -72,15 +72,15 @@ namespace Bio.Matrix
             var rowKeys = new Dictionary<TRowKey, int>(_rowKeys.Count);
             var colKeys = new Dictionary<TColKey, int>(_colKeys.Count);
 
-            int rowIdx = 0;
-            foreach (TRowKey rowKey in RowKeys)
+            var rowIdx = 0;
+            foreach (var rowKey in RowKeys)
             {
                 rowKeys.Add(rowKey, rowIdx);
                 rowIdx++;
             }
 
-            int colIdx = 0;
-            foreach (TColKey colKey in ColKeys)
+            var colIdx = 0;
+            foreach (var colKey in ColKeys)
             {
                 colKeys.Add(colKey, colIdx);
                 colIdx++;
@@ -115,7 +115,7 @@ namespace Bio.Matrix
             {
                 if (_rowToColToVal.ContainsKey(rowKey))
                 {
-                    Dictionary<TColKey, TValue> row = _rowToColToVal[rowKey];
+                    var row = _rowToColToVal[rowKey];
                     row.Remove(colKey);
                     if (row.Count == 0)
                     {
@@ -178,11 +178,11 @@ namespace Bio.Matrix
         {
             matrix = null;
             var variableToCaseIdToNonMissingValue = new Dictionary<TRowKey, Dictionary<TColKey, TValue>>();
-            HashSet<TColKey> colKeys = new HashSet<TColKey>();
+            var colKeys = new HashSet<TColKey>();
 
-            string header = "var\tcid\tval";
-            bool isFirst = true;
-            foreach (string line in FileUtils.ReadEachLine(textReader))
+            var header = "var\tcid\tval";
+            var isFirst = true;
+            foreach (var line in FileUtils.ReadEachLine(textReader))
             {
                 if (isFirst)
                 {
@@ -195,13 +195,13 @@ namespace Bio.Matrix
                 }
                 else
                 {
-                    string[] fields = line.Split('\t');
+                    var fields = line.Split('\t');
                     try
                     {
                         //!!! Use TryParse instead!!
-                        TRowKey rowKey = Parser.Parse<TRowKey>(fields[0]);
-                        TColKey colKey = Parser.Parse<TColKey>(fields[1]);
-                        TValue value = Parser.Parse<TValue>(fields[2]);
+                        var rowKey = Parser.Parse<TRowKey>(fields[0]);
+                        var colKey = Parser.Parse<TColKey>(fields[1]);
+                        var value = Parser.Parse<TValue>(fields[2]);
 
                         variableToCaseIdToNonMissingValue.GetValueOrDefault(rowKey)[colKey] = value;
                         colKeys.Add(colKey);
@@ -305,7 +305,7 @@ namespace Bio.Matrix
         {
 
             var sparseMatrix = SparseMatrix<TRowKey, TColKey, TValue>.CreateEmptyInstance(matrix.RowKeys, matrix.ColKeys, matrix.MissingValue);
-            foreach (RowKeyColKeyValue<TRowKey, TColKey, TValue> triple in matrix.RowKeyColKeyValues)
+            foreach (var triple in matrix.RowKeyColKeyValues)
             {
                 sparseMatrix[triple.RowKey, triple.ColKey] = matrix[triple.RowKey, triple.ColKey];
             }

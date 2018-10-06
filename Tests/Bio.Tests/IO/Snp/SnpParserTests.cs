@@ -49,7 +49,7 @@ namespace Bio.Tests.IO.Snp
         [Category("Priority0")]
         public void SnpParserPropertiesTest()
         {
-            SimpleSnpParser snpParser = new SimpleSnpParser(Alphabets.DNA);
+            var snpParser = new SimpleSnpParser(Alphabets.DNA);
             Assert.AreEqual("Basic SNP Parser that uses XSV format", snpParser.Description);
             Assert.AreEqual("Basic SNP", snpParser.Name);
             Assert.IsTrue(snpParser.ParseAlleleOne);
@@ -63,11 +63,11 @@ namespace Bio.Tests.IO.Snp
         [Category("Priority0")]
         public void SnpItemValidateEqualsSnpItem()
         {
-            SnpItem snpItem1 = new SnpItem();
+            var snpItem1 = new SnpItem();
             snpItem1.AlleleOne = 'A';
             snpItem1.AlleleTwo = 'G';
 
-            SnpItem snpItem2 = new SnpItem();
+            var snpItem2 = new SnpItem();
             snpItem2.AlleleOne = 'A';
             snpItem2.AlleleTwo = 'G';
 
@@ -81,11 +81,11 @@ namespace Bio.Tests.IO.Snp
         [Category("Priority0")]
         public void SnpItemValidateEqualsObject()
         {
-            SnpItem snpItem1 = new SnpItem();
+            var snpItem1 = new SnpItem();
             snpItem1.AlleleOne = 'A';
             snpItem1.AlleleTwo = 'G';
 
-            SnpItem snpItem2 = new SnpItem();
+            var snpItem2 = new SnpItem();
             snpItem2.AlleleOne = 'A';
             snpItem2.AlleleTwo = 'G';
 
@@ -104,23 +104,23 @@ namespace Bio.Tests.IO.Snp
 
             IList<ISequence> seqList = null;
             SparseSequence sparseSeq = null;
-            SimpleSnpParser parser = new SimpleSnpParser();
+            var parser = new SimpleSnpParser();
 
-            string expectedPosition = "45162,72434,145160,172534,245162,292534";
+            var expectedPosition = "45162,72434,145160,172534,245162,292534";
 
-            string[] expectedPositions = expectedPosition.Split(',');
+            var expectedPositions = expectedPosition.Split(',');
             string[] expectedCharacters = null;
 
             switch (switchParam)
             {
                 case "ParseAlleleTwo":
                     parser.ParseAlleleOne = false;
-                    string expectedAlleleTwoSequence = "T,A,T,C,T,A";
+                    var expectedAlleleTwoSequence = "T,A,T,C,T,A";
                         
                     expectedCharacters = expectedAlleleTwoSequence.Split(',');
                     break;
                 default:
-                    string expectedSequence = "C,G,A,G,C,G";
+                    var expectedSequence = "C,G,A,G,C,G";
                     expectedCharacters = expectedSequence.Split(',');
                     break;
             }
@@ -134,16 +134,16 @@ namespace Bio.Tests.IO.Snp
                 Assert.AreEqual(1, seqList.Count);
             }
 
-            for (int i = 0; i < expectedPositions.Length; i++)
+            for (var i = 0; i < expectedPositions.Length; i++)
             {
-                byte item = sparseSeq[int.Parse(expectedPositions[i], null)];
-                char s = (char)item;
+                var item = sparseSeq[int.Parse(expectedPositions[i], null)];
+                var s = (char)item;
                 Assert.AreEqual(expectedCharacters[i], s.ToString());
             }
 
             Assert.IsNotNull(sparseSeq.Alphabet);
             Assert.AreEqual(sparseSeq.Alphabet.Name.ToLower(), AmbiguousDnaAlphabet.Instance.Name.ToLower());
-            string expSequenceID = "Chr1";
+            var expSequenceID = "Chr1";
             Assert.AreEqual(expSequenceID, sparseSeq.ID);
         }
     }

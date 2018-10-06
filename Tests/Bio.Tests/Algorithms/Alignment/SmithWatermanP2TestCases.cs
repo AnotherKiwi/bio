@@ -117,7 +117,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void SmithWatermanSimpleAlignTwoLowerCaseSequencesFromTextFile()
         {
-            this.ValidateSmithWatermanAlignment(
+            ValidateSmithWatermanAlignment(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerCase,
@@ -133,10 +133,10 @@ namespace Bio.Tests.Algorithms.Alignment
         public void SmithWatermanThrowsExceptionWhenTooLarge()
         {
             // What size squared is too large?
-            int seq_size = (int)Math.Sqrt ((double)Int32.MaxValue) + 5;
-            byte[] seq = new byte[seq_size];
+            var seq_size = (int)Math.Sqrt ((double)Int32.MaxValue) + 5;
+            var seq = new byte[seq_size];
             // Now let's generate sequences of those size
-            for (int i = 0; i < seq.Length; i++) {
+            for (var i = 0; i < seq.Length; i++) {
                 seq [i] = (byte)'A';
             }
             var seq1 = new Sequence (DnaAlphabet.Instance, seq, false);
@@ -180,7 +180,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void SmithWatermanSimpleAlignTwoUpperCaseSequencesFromTextFile()
         {
-            this.ValidateSmithWatermanAlignment(
+            ValidateSmithWatermanAlignment(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.UpperCase,
@@ -199,7 +199,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void SmithWatermanSimpleAlignWith1000BP()
         {
-            this.ValidateSmithWatermanAlignment(
+            ValidateSmithWatermanAlignment(
                 Constants.SmithWatermanAlignAlgorithmNodeNameFor1000BP,
                 true,
                 SequenceCaseType.UpperCase,
@@ -219,7 +219,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void SmithWatermanSimpleAlignTwoLowerUpperCaseSequencesFromTextFile()
         {
-            this.ValidateSmithWatermanAlignment(
+            ValidateSmithWatermanAlignment(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerUpperCase,
@@ -238,7 +238,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void SmithWatermanSimpleAlignTwoLowerCaseSequencesFromCode()
         {
-            this.ValidateSmithWatermanAlignment(
+            ValidateSmithWatermanAlignment(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 false,
                 SequenceCaseType.LowerCase,
@@ -257,7 +257,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void SmithWatermanSimpleAlignTwoUpperCaseSequencesFromCode()
         {
-            this.ValidateSmithWatermanAlignment(
+            ValidateSmithWatermanAlignment(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 false,
                 SequenceCaseType.UpperCase,
@@ -276,7 +276,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void SmithWatermanSimpleAlignTwoLowerUpperCaseSequencesFromCode()
         {
-            this.ValidateSmithWatermanAlignment(
+            ValidateSmithWatermanAlignment(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 false,
                 SequenceCaseType.LowerUpperCase,
@@ -295,7 +295,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void SmithWatermanSimpleAlignListLowerCaseSequencesFromTextFile()
         {
-            this.ValidateSmithWatermanAlignment(
+            ValidateSmithWatermanAlignment(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerCase,
@@ -314,7 +314,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void SmithWatermanSimpleAlignListUpperCaseSequencesFromTextFile()
         {
-            this.ValidateSmithWatermanAlignment(
+            ValidateSmithWatermanAlignment(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.UpperCase,
@@ -333,7 +333,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void SmithWatermanSimpleAlignListLowerUpperCaseSequencesFromTextFile()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanAlignAlgorithmNodeName, true,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanAlignAlgorithmNodeName, true,
                                            SequenceCaseType.LowerUpperCase,
                                            AlignParameters.AlignList);
         }
@@ -350,7 +350,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void SmithWatermanSimpleAlignAllParamsLowerCaseSequencesFromTextFile()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanAlignAlgorithmNodeName, true,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanAlignAlgorithmNodeName, true,
                                            SequenceCaseType.LowerCase,
                                            AlignParameters.AllParam);
         }
@@ -367,7 +367,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void SmithWatermanSimpleAlignAllParamsUpperCaseSequencesFromTextFile()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanAlignAlgorithmNodeName, true,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanAlignAlgorithmNodeName, true,
                                            SequenceCaseType.UpperCase,
                                            AlignParameters.AllParam);
         }
@@ -384,7 +384,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void SmithWatermanSimpleAlignAllParamsLowerUpperCaseSequencesFromTextFile()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanAlignAlgorithmNodeName, true,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanAlignAlgorithmNodeName, true,
                                            SequenceCaseType.LowerUpperCase, AlignParameters.AllParam);
         }
 
@@ -398,7 +398,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignTwoSequencesWithNonMatchingSimilarityMatrix()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
+            InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
                 Constants.SmithWatermanAlignAlgorithmNodeName, true,
                 SimilarityMatrixInvalidTypes.NonMatchingSimilarityMatrix, AlignParameters.AlignTwo,
                 AlignmentType.SimpleAlign);
@@ -414,7 +414,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignListSequencesWithNonMatchingSimilarityMatrix()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
+            InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
                 Constants.SmithWatermanAlignAlgorithmNodeName, true,
                 SimilarityMatrixInvalidTypes.NonMatchingSimilarityMatrix, AlignParameters.AlignList,
                 AlignmentType.SimpleAlign);
@@ -430,7 +430,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignAllParamsSequencesWithNonMatchingSimilarityMatrix()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
+            InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
                 Constants.SmithWatermanAlignAlgorithmNodeName, true,
                 SimilarityMatrixInvalidTypes.NonMatchingSimilarityMatrix, AlignParameters.AllParam,
                 AlignmentType.SimpleAlign);
@@ -446,7 +446,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignTwoSequencesWithEmptySimilarityMatrix()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
+            InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
                 Constants.SmithWatermanAlignAlgorithmNodeName, true,
                 SimilarityMatrixInvalidTypes.EmptySimilaityMatrix, AlignParameters.AlignTwo,
                 AlignmentType.SimpleAlign);
@@ -462,7 +462,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignListSequencesWithEmptySimilarityMatrix()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
+            InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
                 Constants.SmithWatermanAlignAlgorithmNodeName, true,
                 SimilarityMatrixInvalidTypes.EmptySimilaityMatrix,
                 AlignParameters.AlignList,
@@ -479,7 +479,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignAllParamsSequencesWithEmptySimilarityMatrix()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
+            InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.EmptySimilaityMatrix,
@@ -497,7 +497,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignTwoSequencesWithOnlyAlphabetSimilarityMatrix()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
+            InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
                 Constants.SmithWatermanAlignAlgorithmNodeName, true,
                 SimilarityMatrixInvalidTypes.OnlyAlphabetSimilarityMatrix,
                 AlignParameters.AlignTwo,
@@ -514,7 +514,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignListSequencesWithOnlyAlphabetSimilarityMatrix()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
+            InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.OnlyAlphabetSimilarityMatrix,
@@ -532,7 +532,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignAllParamsSequencesWithOnlyAlphabetSimilarityMatrix()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
+            InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.OnlyAlphabetSimilarityMatrix,
@@ -550,7 +550,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignTwoSequencesWithModifiedSimilarityMatrix()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
+            InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.ModifiedSimilarityMatrix,
@@ -568,7 +568,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignListSequencesWithModifiedSimilarityMatrix()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
+            InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.ModifiedSimilarityMatrix,
@@ -586,7 +586,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignAllParamsSequencesWithModifiedSimilarityMatrix()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
+            InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.ModifiedSimilarityMatrix,
@@ -604,7 +604,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignTwoSequencesWithFewAlphabetSimilarityMatrix()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
+            InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.FewAlphabetsSimilarityMatrix,
@@ -622,7 +622,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignListSequencesWithFewAlphabetSimilarityMatrix()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
+            InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.FewAlphabetsSimilarityMatrix,
@@ -640,7 +640,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignAllParamsSequencesWithFewAlphabetSimilarityMatrix()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
+            InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.FewAlphabetsSimilarityMatrix,
@@ -658,7 +658,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignTwoSequencesFromCodeWithEmptySimilarityMatrix()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
+            InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 false,
                 SimilarityMatrixInvalidTypes.EmptySimilaityMatrix,
@@ -676,7 +676,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignListSequencesFromCodeWithEmptySimilarityMatrix()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
+            InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 false,
                 SimilarityMatrixInvalidTypes.EmptySimilaityMatrix,
@@ -694,7 +694,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignAllParamsSequencesFromCodeWithEmptySimilarityMatrix()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
+            InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 false,
                 SimilarityMatrixInvalidTypes.EmptySimilaityMatrix,
@@ -712,7 +712,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignTwoSequencesFromCodeWithOnlyAlphabetSimilarityMatrix()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
+            InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 false,
                 SimilarityMatrixInvalidTypes.OnlyAlphabetSimilarityMatrix,
@@ -730,7 +730,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignListSequencesFromCodeWithOnlyAlphabetSimilarityMatrix()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
+            InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 false,
                 SimilarityMatrixInvalidTypes.OnlyAlphabetSimilarityMatrix,
@@ -748,7 +748,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignAllParamsSequencesFromCodeWithOnlyAlphabetSimilarityMatrix()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
+            InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 false,
                 SimilarityMatrixInvalidTypes.OnlyAlphabetSimilarityMatrix,
@@ -766,7 +766,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignTwoSequencesFromCodeWithNullSimilarityMatrix()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
+            InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 false,
                 SimilarityMatrixInvalidTypes.NullSimilarityMatrix,
@@ -784,7 +784,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignListSequencesFromCodeWithNullSimilarityMatrix()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
+            InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 false,
                 SimilarityMatrixInvalidTypes.NullSimilarityMatrix,
@@ -802,7 +802,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignAllParamsSequencesFromCodeWithNullSimilarityMatrix()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
+            InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 false,
                 SimilarityMatrixInvalidTypes.NullSimilarityMatrix,
@@ -820,7 +820,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignTwoSequencesWithInvalidDiagonalSimilarityMatrix()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
+            InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
                 Constants.SmithWatermanDiagonalSimMatAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.NonMatchingSimilarityMatrix,
@@ -838,7 +838,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignListSequencesWithInvalidDiagonalSimilarityMatrix()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
+            InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
                 Constants.SmithWatermanDiagonalSimMatAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.NonMatchingSimilarityMatrix,
@@ -856,7 +856,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignAllParamsSequencesWithInvalidDiagonalSimilarityMatrix()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
+            InValidateSmithWatermanAlignmentWithInvalidSimilarityMatrix(
                 Constants.SmithWatermanDiagonalSimMatAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.NonMatchingSimilarityMatrix,
@@ -874,7 +874,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignTwoWithInvalidSequencesFromTextFile()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSequence(
+            InValidateSmithWatermanAlignmentWithInvalidSequence(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithSpecialChars,
@@ -893,7 +893,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignListWithInvalidSequencesFromTextFile()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSequence(
+            InValidateSmithWatermanAlignmentWithInvalidSequence(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithSpecialChars,
@@ -912,7 +912,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignAllParamsWithInvalidSequencesFromTextFile()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSequence(
+            InValidateSmithWatermanAlignmentWithInvalidSequence(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithSpecialChars,
@@ -931,7 +931,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignTwoWithEmptySequencesFromTextFile()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSequence(
+            InValidateSmithWatermanAlignmentWithInvalidSequence(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.EmptySequence,
@@ -950,7 +950,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignListWithEmptySequencesFromTextFile()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSequence(
+            InValidateSmithWatermanAlignmentWithInvalidSequence(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.EmptySequence,
@@ -969,7 +969,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignAllParamsWithEmptySequencesFromTextFile()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSequence(
+            InValidateSmithWatermanAlignmentWithInvalidSequence(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.EmptySequence,
@@ -988,7 +988,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignTwoWithGapSequencesFromTextFile()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSequence(
+            InValidateSmithWatermanAlignmentWithInvalidSequence(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithGap,
@@ -1007,7 +1007,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignListWithGapSequencesFromTextFile()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSequence(
+            InValidateSmithWatermanAlignmentWithInvalidSequence(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithGap,
@@ -1026,7 +1026,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignAllParamsWithGapSequencesFromTextFile()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSequence(
+            InValidateSmithWatermanAlignmentWithInvalidSequence(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithGap,
@@ -1045,7 +1045,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignTwoWithUnicodeSequencesFromTextFile()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSequence(
+            InValidateSmithWatermanAlignmentWithInvalidSequence(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithUnicodeChars,
@@ -1064,7 +1064,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignListWithUnicodeSequencesFromTextFile()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSequence(
+            InValidateSmithWatermanAlignmentWithInvalidSequence(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithUnicodeChars,
@@ -1083,7 +1083,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignAllParamsWithUnicodeSequencesFromTextFile()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSequence(
+            InValidateSmithWatermanAlignmentWithInvalidSequence(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithUnicodeChars,
@@ -1102,7 +1102,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignTwoSequencesWithSpacesFromTextFile()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSequence(
+            InValidateSmithWatermanAlignmentWithInvalidSequence(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithSpaces,
@@ -1121,7 +1121,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignListSequencesWithSpacesFromTextFile()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSequence(
+            InValidateSmithWatermanAlignmentWithInvalidSequence(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithSpaces,
@@ -1140,7 +1140,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void InValidatePOSimpleAlignParamsSequencesWithSpacesFromTextFile()
         {
-            this.InValidateSmithWatermanAlignmentWithInvalidSequence(
+            InValidateSmithWatermanAlignmentWithInvalidSequence(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithSpaces,
@@ -1162,7 +1162,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void ValidateSmithWatermanAlignTwoDnaSequences()
         {
-            this.ValidateSmithWatermanAlignment(
+            ValidateSmithWatermanAlignment(
                 Constants.SmithWatermanDnaAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerCase,
@@ -1182,7 +1182,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void ValidateSmithWatermanAlignTwoRnaSequences()
         {
-            this.ValidateSmithWatermanAlignment(
+            ValidateSmithWatermanAlignment(
                 Constants.SmithWatermanRnaAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerCase,
@@ -1202,7 +1202,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void ValidateSmithWatermanAlignTwoProteinSequences()
         {
-            this.ValidateSmithWatermanAlignment(
+            ValidateSmithWatermanAlignment(
                 Constants.SmithWatermanProAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerCase,
@@ -1223,7 +1223,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void ValidateSmithWatermanAlignTwoSequencesGapCostMin()
         {
-            this.ValidateSmithWatermanAlignment(
+            ValidateSmithWatermanAlignment(
                 Constants.SmithWatermanGapCostMinAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerCase,
@@ -1243,7 +1243,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void ValidateSmithWatermanAlignTwoSequencesWithBlosomSimilarityMatrix()
         {
-            this.ValidateSmithWatermanAlignment(
+            ValidateSmithWatermanAlignment(
                 Constants.SmithWatermanBlosumAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerCase,
@@ -1263,7 +1263,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void ValidateSmithWatermanAlignTwoSequencesWithPamSimilarityMatrix()
         {
-            this.ValidateSmithWatermanAlignment(
+            ValidateSmithWatermanAlignment(
                 Constants.SmithWatermanPamAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerCase,
@@ -1283,7 +1283,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void ValidateSmithWatermanAlignTwoSequencesWithTextReaderSimilarityMatrix()
         {
-            this.ValidateSmithWatermanAlignment(
+            ValidateSmithWatermanAlignment(
                 Constants.SmithWatermanAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerCase,
@@ -1304,7 +1304,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void ValidateSmithWatermanAlignTwoSequencesWithDiagonalSimilarityMatrix()
         {
-            this.ValidateSmithWatermanAlignment(
+            ValidateSmithWatermanAlignment(
                 Constants.SmithWatermanDiagonalSimMatAlignAlgorithmNodeName,
                 true, SequenceCaseType.LowerCase,
                 AlignParameters.AlignTwo,
@@ -1324,7 +1324,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority2")]
         public void ValidateSmithWatermanAlignTwoSequencesWithEqualGapOpenAndExtensionCost()
         {
-            this.ValidateSmithWatermanAlignment(
+            ValidateSmithWatermanAlignment(
                 Constants.SmithWatermanEqualAlignAlgorithmNodeName,
                 true, SequenceCaseType.LowerCase,
                 AlignParameters.AlignTwo,
@@ -1346,7 +1346,7 @@ namespace Bio.Tests.Algorithms.Alignment
                                                     bool isTextFile, SequenceCaseType caseType,
                                                     AlignParameters additionalParameter)
         {
-            this.ValidateSmithWatermanAlignment(nodeName, isTextFile, caseType, additionalParameter,
+            ValidateSmithWatermanAlignment(nodeName, isTextFile, caseType, additionalParameter,
                                            AlignmentType.SimpleAlign);
         }
 
@@ -1362,7 +1362,7 @@ namespace Bio.Tests.Algorithms.Alignment
                                                     SequenceCaseType caseType, AlignParameters additionalParameter,
                                                     AlignmentType alignType)
         {
-            this.ValidateSmithWatermanAlignment(nodeName, isTextFile, caseType, additionalParameter,
+            ValidateSmithWatermanAlignment(nodeName, isTextFile, caseType, additionalParameter,
                                            alignType, SimilarityMatrixParameters.Default);
         }
 
@@ -1383,14 +1383,14 @@ namespace Bio.Tests.Algorithms.Alignment
                                                     SimilarityMatrixParameters similarityMatrixParam)
         {
             Sequence aInput, bInput;
-            IAlphabet alphabet =
-                Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.AlphabetNameNode));
+            var alphabet =
+                Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.AlphabetNameNode));
 
             if (isTextFile)
             {
                 // Read the xml file for getting both the files for aligning.
-                string filePath1 = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode1).TestDir();
-                string filePath2 = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode2).TestDir();
+                var filePath1 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode1).TestDir();
+                var filePath2 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode2).TestDir();
 
                 // Parse the files and get the sequence.
                 ISequence originalSequence1 = null;
@@ -1406,8 +1406,8 @@ namespace Bio.Tests.Algorithms.Alignment
             }
             else
             {
-                string originalSequence1 = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode1);
-                string originalSequence2 = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode2);
+                var originalSequence1 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode1);
+                var originalSequence2 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode2);
 
                 // Create input sequence for sequence string in different cases.
                 GetSequenceWithCaseType(
@@ -1425,7 +1425,7 @@ namespace Bio.Tests.Algorithms.Alignment
                                                    bInput.ConvertToString()));
 
             // Create similarity matrix object for a given file.
-            string blosumFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.BlosumFilePathNode).TestDir();
+            var blosumFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.BlosumFilePathNode).TestDir();
             SimilarityMatrix sm;
             switch (similarityMatrixParam)
             {
@@ -1434,8 +1434,8 @@ namespace Bio.Tests.Algorithms.Alignment
                         sm = new SimilarityMatrix(reader);
                     break;
                 case SimilarityMatrixParameters.DiagonalMatrix:
-                    string matchValue = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MatchScoreNode);
-                    string misMatchValue = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    var matchValue = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MatchScoreNode);
+                    var misMatchValue = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.MisMatchScoreNode);
                     sm = new DiagonalSimilarityMatrix(int.Parse(matchValue, null),
                                                       int.Parse(misMatchValue, null));
@@ -1445,8 +1445,8 @@ namespace Bio.Tests.Algorithms.Alignment
                     break;
             }
 
-            int gapOpenCost = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapOpenCostNode), null);
-            int gapExtensionCost = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapExtensionCostNode),
+            var gapOpenCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapOpenCostNode), null);
+            var gapExtensionCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapExtensionCostNode),
                                              null);
 
             // Create SmithWatermanAligner instance and set its values.
@@ -1506,51 +1506,51 @@ namespace Bio.Tests.Algorithms.Alignment
             switch (alignType)
             {
                 case AlignmentType.Align:
-                    expectedScore = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedScore = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                     Constants.ExpectedGapExtensionScoreNode);
 
                     switch (caseType)
                     {
                         case SequenceCaseType.LowerCase:
-                            expectedSequence1 = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                            expectedSequence1 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                 Constants
                                                                                     .ExpectedGapExtensionSequence1InLower);
-                            expectedSequence2 = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                            expectedSequence2 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                 Constants
                                                                                     .ExpectedGapExtensionSequence2InLower);
                             break;
                         default:
-                            expectedSequence1 = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                            expectedSequence1 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                 Constants
                                                                                     .ExpectedGapExtensionSequence1Node);
-                            expectedSequence2 = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                            expectedSequence2 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                 Constants
                                                                                     .ExpectedGapExtensionSequence2Node);
                             break;
                     }
                     break;
                 default:
-                    expectedScore = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedScore = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                     Constants.ExpectedScoreNode);
 
                     switch (caseType)
                     {
                         case SequenceCaseType.LowerCase:
-                            expectedSequence1 = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                            expectedSequence1 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                 Constants.ExpectedSequence1inLowerNode);
-                            expectedSequence2 = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                            expectedSequence2 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                 Constants.ExpectedSequence2inLowerNode);
                             break;
                         case SequenceCaseType.LowerUpperCase:
-                            expectedSequence1 = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                            expectedSequence1 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                 Constants.ExpectedSequence1inLowerNode);
-                            expectedSequence2 = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                            expectedSequence2 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                 Constants.ExpectedSequenceNode2);
                             break;
                         default:
-                            expectedSequence1 = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                            expectedSequence1 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                 Constants.ExpectedSequenceNode1);
-                            expectedSequence2 = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                            expectedSequence2 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                 Constants.ExpectedSequenceNode2);
                             break;
                     }
@@ -1599,7 +1599,7 @@ namespace Bio.Tests.Algorithms.Alignment
                                                                          AlignmentType alignType,
                                                                          InvalidSequenceType sequenceType)
         {
-            IAlphabet alphabet = Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(nodeName,
+            var alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                      Constants.AlphabetNameNode));
 
             Exception actualException = null;
@@ -1609,7 +1609,7 @@ namespace Bio.Tests.Algorithms.Alignment
             if (isTextFile)
             {
                 // Read the xml file for getting both the files for aligning.
-                string filepath = this.GetInputFileNameWithInvalidType(nodeName, invalidSequenceType);
+                var filepath = GetInputFileNameWithInvalidType(nodeName, invalidSequenceType);
 
                 // Create input sequence for sequence string in different cases.
                 try
@@ -1627,7 +1627,7 @@ namespace Bio.Tests.Algorithms.Alignment
             }
             else
             {
-                string originalSequence = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                var originalSequence = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                           Constants.InvalidSequence1);
 
                 // Create input sequence for sequence string in different cases.
@@ -1646,15 +1646,15 @@ namespace Bio.Tests.Algorithms.Alignment
                 bInput = aInput;
 
                 // Create similarity matrix object for a given file.
-                string blosumFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                var blosumFilePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                         Constants.BlosumFilePathNode).TestDir();
 
                 var sm = new SimilarityMatrix(new StreamReader(blosumFilePath));
 
-                int gapOpenCost = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                var gapOpenCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                             Constants.GapOpenCostNode), null);
 
-                int gapExtensionCost = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                var gapExtensionCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                  Constants.GapExtensionCostNode), null);
 
                 // Create SmithWatermanAligner instance and set its values.
@@ -1752,7 +1752,7 @@ namespace Bio.Tests.Algorithms.Alignment
             }
 
             // Validate Error messages for Invalid Sequence types.
-            string expectedErrorMessage = this.GetExpectedErrorMeesageWithInvalidSequenceType(nodeName,
+            var expectedErrorMessage = GetExpectedErrorMeesageWithInvalidSequenceType(nodeName,
                                                                                          sequenceType);
 
             Assert.AreEqual(expectedErrorMessage, actualException.Message);
@@ -1782,14 +1782,14 @@ namespace Bio.Tests.Algorithms.Alignment
             ISequence inputSequence1;
             ISequence inputSequence2;
 
-            IAlphabet alphabet = Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(nodeName,
+            var alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                      Constants.AlphabetNameNode));
             if (isTextFile)
             {
                 // Read the xml file for getting both the files for aligning.
-                string firstInputFilepath = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                var firstInputFilepath = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                             Constants.FilePathNode1).TestDir();
-                string secondInputFilepath = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                var secondInputFilepath = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                              Constants.FilePathNode2).TestDir();
 
                 // Parse the files and get the sequence.
@@ -1804,8 +1804,8 @@ namespace Bio.Tests.Algorithms.Alignment
             }
             else
             {
-                string firstInputSequence = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode1);
-                string secondInputSequence = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode2);
+                var firstInputSequence = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode1);
+                var secondInputSequence = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode2);
 
                 // Create input sequence for sequence string in different cases.
                 GetSequenceWithCaseType(firstInputSequence, secondInputSequence,
@@ -1820,7 +1820,7 @@ namespace Bio.Tests.Algorithms.Alignment
                 new string(bInput.Select(a => (char) a).ToArray())));
 
             // Create similarity matrix object for a invalid file.
-            string blosumFilePath = this.GetSimilarityMatrixFileWithInvalidType(nodeName, invalidType);
+            var blosumFilePath = GetSimilarityMatrixFileWithInvalidType(nodeName, invalidType);
             Exception actualExpection = null;
 
             // For invalid similarity matrix data format; exception will be thrown while instantiating
@@ -1840,10 +1840,10 @@ namespace Bio.Tests.Algorithms.Alignment
             // For non matching similarity matrix exception will be thrown while alignment
             if (actualExpection == null)
             {
-                int gapOpenCost = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                var gapOpenCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                             Constants.GapOpenCostNode), null);
 
-                int gapExtensionCost = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                var gapExtensionCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                  Constants.GapExtensionCostNode), null);
 
                 // Create SmithWatermanAligner instance and set its values.
@@ -1940,7 +1940,7 @@ namespace Bio.Tests.Algorithms.Alignment
             }
 
             // Validate that expected exception is thrown using error message.
-            string expectedErrorMessage = this.GetExpectedErrorMeesageWithInvalidSimilarityMatrixType(nodeName,
+            var expectedErrorMessage = GetExpectedErrorMeesageWithInvalidSimilarityMatrixType(nodeName,
                                                                                                  invalidType);
             Assert.AreEqual(expectedErrorMessage, actualExpection.Message);
 
@@ -1957,36 +1957,36 @@ namespace Bio.Tests.Algorithms.Alignment
         private string GetExpectedErrorMeesageWithInvalidSimilarityMatrixType(string nodeName,
                                                                               SimilarityMatrixInvalidTypes invalidType)
         {
-            string expectedErrorMessage = string.Empty;
+            var expectedErrorMessage = string.Empty;
             switch (invalidType)
             {
                 case SimilarityMatrixInvalidTypes.FewAlphabetsSimilarityMatrix:
                 case SimilarityMatrixInvalidTypes.NonMatchingSimilarityMatrix:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.ExpectedErrorMessage);
                     break;
                 case SimilarityMatrixInvalidTypes.EmptySimilaityMatrix:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.EmptyMatrixErrorMessage);
                     break;
                 case SimilarityMatrixInvalidTypes.OnlyAlphabetSimilarityMatrix:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.SimilarityMatrixFewerLinesException);
                     break;
                 case SimilarityMatrixInvalidTypes.ModifiedSimilarityMatrix:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.ModifiedMatrixErrorMessage);
                     break;
                 case SimilarityMatrixInvalidTypes.NullSimilarityMatrix:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.NullErrorMessage);
                     break;
                 case SimilarityMatrixInvalidTypes.EmptySequence:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetFileTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetFileTextValue(nodeName,
                                                                                Constants.EmptySequenceErrorMessage);
                     break;
                 case SimilarityMatrixInvalidTypes.ExpectedErrorMessage:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetFileTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetFileTextValue(nodeName,
                                                                                Constants.ExpectedErrorMessage);
                     break;
                 default:
@@ -2004,31 +2004,31 @@ namespace Bio.Tests.Algorithms.Alignment
         /// <returns>Returns expected error message</returns>
         private string GetExpectedErrorMeesageWithInvalidSequenceType(string nodeName, InvalidSequenceType sequenceType)
         {
-            string expectedErrorMessage = string.Empty;
+            var expectedErrorMessage = string.Empty;
             switch (sequenceType)
             {
                 case InvalidSequenceType.SequenceWithInvalidChars:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.EmptySequenceErrorMessage);
                     break;
                 case InvalidSequenceType.InvalidSequence:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.InvalidSequenceErrorMessage);
                     break;
                 case InvalidSequenceType.SequenceWithUnicodeChars:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.UnicodeSequenceErrorMessage);
                     break;
                 case InvalidSequenceType.SequenceWithSpaces:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.SequenceWithSpaceErrorMessage);
                     break;
                 case InvalidSequenceType.AlphabetMap:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.InvalidAlphabetErrorMessage);
                     break;
                 default:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.ExpectedErrorMessage);
                     break;
             }
@@ -2045,8 +2045,8 @@ namespace Bio.Tests.Algorithms.Alignment
         private string GetSimilarityMatrixFileWithInvalidType(string nodeName,
                                                               SimilarityMatrixInvalidTypes invalidType)
         {
-            string invalidFileNode = string.Empty;
-            string invalidFilePath = string.Empty;
+            var invalidFileNode = string.Empty;
+            var invalidFilePath = string.Empty;
             switch (invalidType)
             {
                 case SimilarityMatrixInvalidTypes.NonMatchingSimilarityMatrix:
@@ -2069,7 +2069,7 @@ namespace Bio.Tests.Algorithms.Alignment
             }
             if (1 == string.Compare(invalidFileNode, string.Empty, StringComparison.CurrentCulture))
             {
-                invalidFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, invalidFileNode);
+                invalidFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, invalidFileNode);
             }
             return invalidFilePath.TestDir();
         }
@@ -2083,24 +2083,24 @@ namespace Bio.Tests.Algorithms.Alignment
         private string GetInputFileNameWithInvalidType(string nodeName,
                                                        InvalidSequenceType invalidSequenceType)
         {
-            string invalidFilePath = string.Empty;
+            var invalidFilePath = string.Empty;
             switch (invalidSequenceType)
             {
                 case InvalidSequenceType.SequenceWithSpecialChars:
-                    invalidFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    invalidFilePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                       Constants.InvalidFilePathNode1);
                     break;
                 case InvalidSequenceType.EmptySequence:
-                    invalidFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.EmptyFilePath1);
+                    invalidFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.EmptyFilePath1);
                     break;
                 case InvalidSequenceType.SequenceWithSpaces:
-                    invalidFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SpacesFilePath1);
+                    invalidFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SpacesFilePath1);
                     break;
                 case InvalidSequenceType.SequenceWithGap:
-                    invalidFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapFilePath1);
+                    invalidFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapFilePath1);
                     break;
                 case InvalidSequenceType.SequenceWithUnicodeChars:
-                    invalidFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.UnicodeFilePath1);
+                    invalidFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.UnicodeFilePath1);
                     break;
                 default:
                     break;

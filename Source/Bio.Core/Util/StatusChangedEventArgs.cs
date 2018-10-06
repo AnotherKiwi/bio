@@ -12,7 +12,7 @@ namespace Bio.Util
         /// </summary>
         public StatusChangedEventArgs()
         {
-            this.StatusMessage = ".";
+            StatusMessage = ".";
         }
 
         /// <summary>
@@ -21,7 +21,7 @@ namespace Bio.Util
         /// <param name="statusMessage">Status message.</param>
         public StatusChangedEventArgs(string statusMessage)
         {
-            this.StatusMessage = statusMessage;
+            StatusMessage = statusMessage;
         }
 
         /// <summary>

@@ -48,26 +48,26 @@ namespace Bio.TestAutomation.Algorithms.MUMmer
         private void ValidateMUMmerAlignGeneralTestCases(string nodeName)
         {
             // Gets the reference sequence from the configuration file
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
 
             Assert.IsNotNull(filePath);
             ApplicationLog.WriteLine(string.Format(null, "MUMmer P2 : Successfully validated the File Path '{0}'.", filePath));
 
             var fastaParserObj = new FastAParser();
-            IEnumerable<ISequence> referenceSeqs = fastaParserObj.Parse(filePath);
+            var referenceSeqs = fastaParserObj.Parse(filePath);
 
-            ISequence referenceSeq = referenceSeqs.ElementAt(0);
+            var referenceSeq = referenceSeqs.ElementAt(0);
 
             // Gets the reference sequence from the configuration file
-            string queryFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SearchSequenceFilePathNode).TestDir();
+            var queryFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SearchSequenceFilePathNode).TestDir();
 
             Assert.IsNotNull(queryFilePath);
             ApplicationLog.WriteLine(string.Format(null, "MUMmer P2 : Successfully validated the Search File Path '{0}'.", queryFilePath));
 
             var fastaParserObj1 = new FastAParser();
-            IEnumerable<ISequence> querySeqs = fastaParserObj1.Parse(queryFilePath);
+            var querySeqs = fastaParserObj1.Parse(queryFilePath);
 
-            string mumLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMAlignLengthNode);
+            var mumLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMAlignLengthNode);
 
             var mum = new MUMmerAligner
             {
@@ -77,14 +77,14 @@ namespace Bio.TestAutomation.Algorithms.MUMmer
                 GapOpenCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapOpenCostNode), null)
             };
 
-            IList<IPairwiseSequenceAlignment> align = mum.Align(referenceSeq, querySeqs);
+            var align = mum.Align(referenceSeq, querySeqs);
 
             // Validate FinalMUMs and MUMs Properties.
             Assert.IsNotNull(mum.MUMs);
 
-            string expectedScore = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ScoreNodeName);
+            var expectedScore = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ScoreNodeName);
 
-            string[] expectedSequences = utilityObj.xmlUtil.GetTextValues(nodeName, Constants.ExpectedSequencesNode);
+            var expectedSequences = utilityObj.xmlUtil.GetTextValues(nodeName, Constants.ExpectedSequencesNode);
             IList<IPairwiseSequenceAlignment> expectedOutput = new List<IPairwiseSequenceAlignment>();
 
             IPairwiseSequenceAlignment seqAlign = new PairwiseSequenceAlignment();

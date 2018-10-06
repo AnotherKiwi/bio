@@ -22,7 +22,7 @@ namespace Bio.Algorithms.Assembly.Comparative
         {
             if (alignmentBetweenReferenceAndReads == null)
             {
-                throw new ArgumentNullException("alignmentBetweenReferenceAndReads");
+                throw new ArgumentNullException(nameof(alignmentBetweenReferenceAndReads));
             }
 
             // Process reads and add to result list.
@@ -32,7 +32,7 @@ namespace Bio.Algorithms.Assembly.Comparative
                 if (curReadDeltas == null)
                     continue;
 
-                int deltasInCurrentRead = curReadDeltas.Count;
+                var deltasInCurrentRead = curReadDeltas.Count;
 
                 // If curReadDeltas has only one delta, then there are no repeats so add it to result
                 // Or if any delta is a partial alignment, dont try to resolve, add all deltas to result
@@ -51,13 +51,13 @@ namespace Bio.Algorithms.Assembly.Comparative
                 else
                 {
                     // Resolve repeats
-                    string sequenceId = curReadDeltas[0].QuerySequence.ID;
+                    var sequenceId = curReadDeltas[0].QuerySequence.ID;
                     string originalSequenceId;
                     bool forwardRead;
                     string pairedReadType;
                     string libraryName;
 
-                    bool pairedRead =Helper.ValidatePairedSequenceId(sequenceId, out originalSequenceId, out forwardRead,out pairedReadType, out libraryName);
+                    var pairedRead =Helper.ValidatePairedSequenceId(sequenceId, out originalSequenceId, out forwardRead,out pairedReadType, out libraryName);
 
                     // If read is not having proper ID, ignore the read
                     if (!pairedRead)
@@ -71,10 +71,10 @@ namespace Bio.Algorithms.Assembly.Comparative
                         continue;
                     }
 
-                    string pairedReadId = Helper.GetPairedReadId(originalSequenceId, Helper.GetMatePairedReadType(pairedReadType), libraryName);
+                    var pairedReadId = Helper.GetPairedReadId(originalSequenceId, Helper.GetMatePairedReadType(pairedReadType), libraryName);
 
                     // Find mate pair
-                    List<DeltaAlignment> mateDeltas = alignmentBetweenReferenceAndReads.GetDeltaAlignmentFor(pairedReadId);
+                    var mateDeltas = alignmentBetweenReferenceAndReads.GetDeltaAlignmentFor(pairedReadId);
 
                     // If mate pair not found, ignore current read
                     if (mateDeltas.Count == 0)
@@ -88,7 +88,7 @@ namespace Bio.Algorithms.Assembly.Comparative
                     }
 
                     // Resolve using distance method
-                    List<DeltaAlignment> resolvedDeltas = ResolveRepeatUsingMatePair(curReadDeltas, mateDeltas, libraryName);
+                    var resolvedDeltas = ResolveRepeatUsingMatePair(curReadDeltas, mateDeltas, libraryName);
                     if (resolvedDeltas != null)
                     {
                         //result.AddRange(resolvedDeltas);
@@ -117,23 +117,23 @@ namespace Bio.Algorithms.Assembly.Comparative
             }
 
             // Get clone library information
-            CloneLibraryInformation libraryInfo = CloneLibrary.Instance.GetLibraryInformation(libraryName);
-            float mean = libraryInfo.MeanLengthOfInsert;
-            float stdDeviation = libraryInfo.StandardDeviationOfInsert;
+            var libraryInfo = CloneLibrary.Instance.GetLibraryInformation(libraryName);
+            var mean = libraryInfo.MeanLengthOfInsert;
+            var stdDeviation = libraryInfo.StandardDeviationOfInsert;
 
             // Find delta with a matching distance.
-            for(int indexFR =0;indexFR<curReadDeltas.Count; indexFR++)
+            for(var indexFR =0;indexFR<curReadDeltas.Count; indexFR++)
             {
-                DeltaAlignment pair1 = curReadDeltas[indexFR];
-                for (int indexRR =0;indexRR<mateDeltas.Count;indexRR++)
+                var pair1 = curReadDeltas[indexFR];
+                for (var indexRR =0;indexRR<mateDeltas.Count;indexRR++)
                 {
-                    DeltaAlignment pair2 = mateDeltas[indexRR];
-                    long distance = Math.Abs(pair1.FirstSequenceStart - pair2.FirstSequenceEnd);
+                    var pair2 = mateDeltas[indexRR];
+                    var distance = Math.Abs(pair1.FirstSequenceStart - pair2.FirstSequenceEnd);
 
                     // Find delta with matching distance.
                     if (distance - mean <= stdDeviation)
                     {
-                        List<DeltaAlignment> resolvedDeltas = new List<DeltaAlignment>(2) { pair1, pair2 };
+                        var resolvedDeltas = new List<DeltaAlignment>(2) { pair1, pair2 };
 
                         return resolvedDeltas;
                     }

@@ -46,7 +46,7 @@ namespace Bio.Matrix
             _rowKeyToMatrix = new Dictionary<TRowKey, Matrix<TRowKey, TColKey, TValue>>();
             matrices[0].RowKeys.ForEach(rowKey => _rowKeyToMatrix.Add(rowKey, matrices[0]));
 
-            for (int i = 1; i < matrices.Length; i++)
+            for (var i = 1; i < matrices.Length; i++)
             {
                 if (colsMustMatch)
                 {
@@ -64,7 +64,7 @@ namespace Bio.Matrix
                     {
                         var prevMatrix = _rowKeyToMatrix[rowKey];
                         // check that all the values are identical. not that GetValueOrMissing().Equals is not safe because missing value may be null.
-                        Helper.CheckCondition<System.ArgumentException>(colKeys.All(colKey =>
+                        Helper.CheckCondition<ArgumentException>(colKeys.All(colKey =>
                             prevMatrix.IsMissing(rowKey, colKey) ?
                                 matrices[i].IsMissing(rowKey, colKey) :
                                 prevMatrix[rowKey, colKey].Equals(matrices[i].GetValueOrMissing(rowKey, colKey))), Properties.Resource.ThereAreDuplicateRowsWhichDoNotHDupRowsNonIdenticalValues);
@@ -94,8 +94,8 @@ namespace Bio.Matrix
             m = null;
             mappedColIndex = mappedRowIndex = -1;
 
-            TRowKey rowKey = _rowKeys[rowIndex];
-            TColKey colKey = _colKeys[colIndex];
+            var rowKey = _rowKeys[rowIndex];
+            var colKey = _colKeys[colIndex];
 
             m = _rowKeyToMatrix[rowKey];
 
@@ -110,7 +110,7 @@ namespace Bio.Matrix
             mappedColKey = colKey;
             mappedRowKey = rowKey;
 
-            bool isOK = _rowKeyToMatrix.TryGetValue(rowKey, out m);
+            var isOK = _rowKeyToMatrix.TryGetValue(rowKey, out m);
             Helper.CheckCondition<KeyNotFoundException>(isOK, "RowKey '{0}' not found", rowKey);
             //m = _rowKeyToMatrix[rowKey];
         }

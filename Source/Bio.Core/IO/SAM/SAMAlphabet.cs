@@ -19,12 +19,12 @@
             Equal = (byte)'=';
             Dot = (byte)'.';
 
-            AddNucleotide(this.Equal, "Equal to reference");
-            AddNucleotide(this.Dot, "Space holder to represent Intron");
+            AddNucleotide(Equal, "Equal to reference");
+            AddNucleotide(Dot, "Space holder to represent Intron");
 
             // map complements.
-            MapComplementNucleotide(this.Dot, this.Dot);    
-            MapComplementNucleotide(this.Equal, this.Equal);
+            MapComplementNucleotide(Dot, Dot);    
+            MapComplementNucleotide(Equal, Equal);
         }
 
         /// <summary>
@@ -35,7 +35,7 @@
         /// <returns>True if the specified item is a ambiguous</returns>
         public override bool CheckIsAmbiguous(byte item)
         {
-            if (item == this.Equal || item == this.Dot)
+            if (item == Equal || item == Dot)
             {
                 return false;
             }

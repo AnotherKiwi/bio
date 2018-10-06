@@ -23,11 +23,11 @@ namespace Bio.Algorithms.MUMmer
         /// </summary>
         protected MummerProteinAlphabet()
         {
-            this.Name = "mummerProtein";
+            Name = "mummerProtein";
 
-            this.ConcatenationChar = (byte)'+';
+            ConcatenationChar = (byte)'+';
 
-            this.AddAminoAcid(this.ConcatenationChar, "Cat", "Concatenation");
+            AddAminoAcid(ConcatenationChar, "Cat", "Concatenation");
         }
 
         /// <summary>

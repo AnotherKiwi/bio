@@ -41,7 +41,7 @@ namespace Bio.IO.GenBank
         /// <returns>A new Location that is a copy of this Location.</returns>
         public Location Clone()
         {
-            Location loc = new Location();
+            var loc = new Location();
             loc.Accession = Accession;
             loc.StartData = StartData;
             loc.EndData = EndData;
@@ -49,7 +49,7 @@ namespace Bio.IO.GenBank
             loc.Operator = Operator;
             loc.Resolver = Resolver.Clone();
 
-            foreach (ILocation subloc in SubLocations)
+            foreach (var subloc in SubLocations)
             {
                 loc.SubLocations.Add(subloc.Clone());
             }
@@ -231,7 +231,7 @@ namespace Bio.IO.GenBank
         /// </summary>
         public List<ILocation> GetLeafLocations()
         {
-            List<ILocation> locations = new List<ILocation>();
+            var locations = new List<ILocation>();
             GetLeafLocations(locations, this);
             return locations;
         }
@@ -260,20 +260,20 @@ namespace Bio.IO.GenBank
         /// </returns>
         public int CompareTo(object obj)
         {
-            ILocation other = obj as ILocation;
+            var other = obj as ILocation;
             if (other == null)
             {
                 return 1;
             }
 
-            int startresult = LocationStart.CompareTo(other.LocationStart);
+            var startresult = LocationStart.CompareTo(other.LocationStart);
 
             if (startresult != 0)
             {
                 return startresult;
             }
 
-            int endresult = LocationEnd.CompareTo(other.LocationEnd);
+            var endresult = LocationEnd.CompareTo(other.LocationEnd);
             if (startresult == endresult)
             {
                 return 0;
@@ -294,7 +294,7 @@ namespace Bio.IO.GenBank
         {
             if (location.SubLocations.Count > 0)
             {
-                foreach (ILocation loc in location.SubLocations)
+                foreach (var loc in location.SubLocations)
                 {
                     GetLeafLocations(locations, loc);
                 }

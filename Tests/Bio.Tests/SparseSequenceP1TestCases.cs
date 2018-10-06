@@ -56,11 +56,11 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateRnaSparseSequenceConstAlpIndexByte()
         {
-            byte[] byteArrayObj = Encoding.ASCII.GetBytes("AGCU");
+            var byteArrayObj = Encoding.ASCII.GetBytes("AGCU");
             var sparseSeq = new SparseSequence(Alphabets.DNA, 1, byteArrayObj[0]);
             Assert.IsNotNull(sparseSeq);
             Assert.IsNotNull(sparseSeq.Statistics);
-            SequenceStatistics seqStatObj = sparseSeq.Statistics;
+            var seqStatObj = sparseSeq.Statistics;
             Assert.AreEqual(1, seqStatObj.GetCount('A'));
 
             ApplicationLog.WriteLine("SparseSequence P1: Validation of SparseSequence(alp, index, byte) constructor is completed");
@@ -74,7 +74,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateRnaSparseSequenceConstAlpIndexByteList()
         {
-            byte[] byteArrayObj = Encoding.ASCII.GetBytes("AGCU");
+            var byteArrayObj = Encoding.ASCII.GetBytes("AGCU");
 
             IEnumerable<byte> seqItems =
                 new List<Byte> {byteArrayObj[0], byteArrayObj[1], byteArrayObj[2], byteArrayObj[3]};
@@ -83,7 +83,7 @@ namespace Bio.Tests
             Assert.IsNotNull(sparseSeq);
             Assert.IsNotNull(sparseSeq.Statistics);
             Assert.AreEqual(8, sparseSeq.Count);
-            SequenceStatistics seqStatObj = sparseSeq.Statistics;
+            var seqStatObj = sparseSeq.Statistics;
             Assert.AreEqual(1, seqStatObj.GetCount('A'));
             Assert.AreEqual(1, seqStatObj.GetCount('G'));
             Assert.AreEqual(1, seqStatObj.GetCount('C'));
@@ -132,11 +132,11 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateProteinSparseSequenceConstAlpIndexByte()
         {
-            byte[] byteArrayObj = Encoding.ASCII.GetBytes("KIEG");
+            var byteArrayObj = Encoding.ASCII.GetBytes("KIEG");
             var sparseSeq = new SparseSequence(Alphabets.Protein, 1, byteArrayObj[0]);
             Assert.IsNotNull(sparseSeq);
             Assert.IsNotNull(sparseSeq.Statistics);
-            SequenceStatistics seqStatObj = sparseSeq.Statistics;
+            var seqStatObj = sparseSeq.Statistics;
             Assert.AreEqual(1, seqStatObj.GetCount('K'));
 
             ApplicationLog.WriteLine("SparseSequence P1: Validation of SparseSequence(alp, index, byte) constructor is completed");
@@ -150,7 +150,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateProteinSparseSequenceConstAlpIndexByteList()
         {
-            byte[] byteArrayObj = Encoding.ASCII.GetBytes("KIEG");
+            var byteArrayObj = Encoding.ASCII.GetBytes("KIEG");
 
             IEnumerable<byte> seqItems =
                 new List<Byte> {byteArrayObj[0], byteArrayObj[1], byteArrayObj[2], byteArrayObj[3]};
@@ -159,7 +159,7 @@ namespace Bio.Tests
             Assert.IsNotNull(sparseSeq);
             Assert.IsNotNull(sparseSeq.Statistics);
             Assert.AreEqual(8, sparseSeq.Count);
-            SequenceStatistics seqStatObj = sparseSeq.Statistics;
+            var seqStatObj = sparseSeq.Statistics;
             Assert.AreEqual(1, seqStatObj.GetCount('K'));
             Assert.AreEqual(1, seqStatObj.GetCount('I'));
             Assert.AreEqual(1, seqStatObj.GetCount('E'));

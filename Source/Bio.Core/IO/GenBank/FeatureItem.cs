@@ -24,7 +24,7 @@ namespace Bio.IO.GenBank
                 throw new ArgumentNullException(Properties.Resource.ParameterNameLocation);
             }
 
-            this.Location = location;
+            Location = location;
             Qualifiers = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
         }
 
@@ -45,9 +45,9 @@ namespace Bio.IO.GenBank
         protected FeatureItem(FeatureItem other)
         {
             Key = other.Key;
-            this.Location = other.Location.Clone();
+            Location = other.Location.Clone();
             Qualifiers = new Dictionary<string, List<string>>();
-            foreach (KeyValuePair<string, List<string>> kvp in other.Qualifiers)
+            foreach (var kvp in other.Qualifiers)
             {
                 if (kvp.Value != null)
                 {
@@ -109,15 +109,15 @@ namespace Bio.IO.GenBank
         /// <param name="sequenceFeatures">SequenceFeatures instance.</param>
         public List<FeatureItem> GetSubFeatures(SequenceFeatures sequenceFeatures)
         {
-            List<FeatureItem> subFeatures = new List<FeatureItem>();
+            var subFeatures = new List<FeatureItem>();
             if (sequenceFeatures != null)
             {
-                int start = this.Location.LocationStart;
-                int end = this.Location.LocationEnd;
-                foreach (FeatureItem item in sequenceFeatures.All)
+                var start = Location.LocationStart;
+                var end = Location.LocationEnd;
+                foreach (var item in sequenceFeatures.All)
                 {
-                    int subItemStart = item.Location.LocationStart;
-                    int subItemEnd = item.Location.LocationEnd;
+                    var subItemStart = item.Location.LocationStart;
+                    var subItemEnd = item.Location.LocationEnd;
                     if (subItemStart >= start && subItemEnd <= end && string.IsNullOrEmpty(item.Location.Accession))
                     {
                         // do not add items with the same start and end positions.
@@ -142,7 +142,7 @@ namespace Bio.IO.GenBank
             ISequence seq = null;
             if (sequence != null)
             {
-                seq = this.Location.GetSubSequence(sequence);
+                seq = Location.GetSubSequence(sequence);
             }
 
             return seq;
@@ -169,7 +169,7 @@ namespace Bio.IO.GenBank
             ISequence seq = null;
             if (sequence != null)
             {
-                seq = this.Location.GetSubSequence(sequence, referredSequences);
+                seq = Location.GetSubSequence(sequence, referredSequences);
             }
 
             return seq;
@@ -199,7 +199,7 @@ namespace Bio.IO.GenBank
         /// <returns>Qualifier value.</returns>
         protected string GetSingleTextQualifier(string qualifierName)
         {
-            List<string> list = GetQualifier(qualifierName);
+            var list = GetQualifier(qualifierName);
             if (list.Count > 0)
             {
                 return list[0];
@@ -219,7 +219,7 @@ namespace Bio.IO.GenBank
         /// <param name="value">Value to set.</param>
         protected void SetSingleTextQualifier(string qualifierName, string value)
         {
-            List<string> list = GetQualifier(qualifierName);
+            var list = GetQualifier(qualifierName);
             if (string.IsNullOrEmpty(value))
             {
                 list.Clear();
@@ -252,7 +252,7 @@ namespace Bio.IO.GenBank
         {
             if (GetSingleBooleanQualifier(qualifierName) != value)
             {
-                List<string> list = GetQualifier(qualifierName);
+                var list = GetQualifier(qualifierName);
                 list.Clear();
 
                 if (value)

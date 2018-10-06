@@ -46,7 +46,7 @@ namespace Bio.Matrix
             _colKeyToMatrix = new Dictionary<TColKey, Matrix<TRowKey, TColKey, TValue>>();
             matrices[0].ColKeys.ForEach(colKey => _colKeyToMatrix.Add(colKey, matrices[0]));
 
-            for (int i = 1; i < matrices.Length; i++)
+            for (var i = 1; i < matrices.Length; i++)
             {
                 if (rowsMustMatch)
                 {
@@ -77,8 +77,8 @@ namespace Bio.Matrix
             m = null;
             mappedColIndex = mappedRowIndex = -1;
 
-            TRowKey rowKey = _rowKeys[rowIndex];
-            TColKey colKey = _colKeys[colIndex];
+            var rowKey = _rowKeys[rowIndex];
+            var colKey = _colKeys[colIndex];
 
             m = _colKeyToMatrix[colKey];
 

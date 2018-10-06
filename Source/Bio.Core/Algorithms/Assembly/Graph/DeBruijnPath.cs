@@ -18,7 +18,7 @@ namespace Bio.Algorithms.Assembly.Graph
         /// </summary>
         public DeBruijnPath()
         {
-            this.path = new List<DeBruijnNode>();
+            path = new List<DeBruijnNode>();
         }
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <param name="nodes">List of nodes.</param>
         public DeBruijnPath(IEnumerable<DeBruijnNode> nodes)
         {
-            this.path = new List<DeBruijnNode>(nodes);
+            path = new List<DeBruijnNode>(nodes);
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <param name="node">Graph node.</param>
         public DeBruijnPath(DeBruijnNode node)
         {
-            this.path = new List<DeBruijnNode> { node };
+            path = new List<DeBruijnNode> { node };
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Bio.Algorithms.Assembly.Graph
         /// </summary>
         public IList<DeBruijnNode> PathNodes
         {
-            get { return this.path; }
+            get { return path; }
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <param name="predicate">Predicate to remove nodes.</param>
         public void RemoveAll(Predicate<DeBruijnNode> predicate)
         {
-            this.path.RemoveAll(predicate);
+            path.RemoveAll(predicate);
         }
     }
 }

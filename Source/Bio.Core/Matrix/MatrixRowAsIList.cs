@@ -13,8 +13,8 @@ namespace Bio.Matrix
         public MatrixRowAsIList(Matrix<TRowKey, TColKey, TValue> matrix, int rowIndex)
         {
             // TODO: Complete member initialization
-            this.Matrix = matrix;
-            this.RowIndex = rowIndex;
+            Matrix = matrix;
+            RowIndex = rowIndex;
         }
 
         #region IList<TValue> Members
@@ -69,10 +69,10 @@ namespace Bio.Matrix
         {
             if (array == null)
             {
-                throw new ArgumentNullException("array");
+                throw new ArgumentNullException(nameof(array));
             }
 
-            for (int colIndex = 0; colIndex < Matrix.ColCount; ++colIndex)
+            for (var colIndex = 0; colIndex < Matrix.ColCount; ++colIndex)
             {
                 array[arrayIndex + colIndex] = Matrix.GetValueOrMissing(RowIndex, colIndex);
             }
@@ -102,7 +102,7 @@ namespace Bio.Matrix
 
         IEnumerator<TValue> IEnumerable<TValue>.GetEnumerator()
         {
-            for (int colIndex = 0; colIndex < Matrix.ColCount; ++colIndex)
+            for (var colIndex = 0; colIndex < Matrix.ColCount; ++colIndex)
             {
                 yield return Matrix.GetValueOrMissing(RowIndex, colIndex);
             }

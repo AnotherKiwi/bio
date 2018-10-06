@@ -62,20 +62,20 @@ namespace Bio.IO.Wiggle
         {
             if (data == null)
             {
-                throw new ArgumentNullException("data");
+                throw new ArgumentNullException(nameof(data));
             }
 
             if (chromosome == null)
             {
-                throw new ArgumentNullException("chromosome");
+                throw new ArgumentNullException(nameof(chromosome));
             }
 
-            this.SetFixedStepAnnotationData(data);
-            this.Chromosome = chromosome;
-            this.BasePosition = start;
-            this.Step = step;
-            this.Span = span;
-            this.Metadata = new Dictionary<string, string> { { WiggleSchema.Type, WiggleSchema.Wiggle0 } };
+            SetFixedStepAnnotationData(data);
+            Chromosome = chromosome;
+            BasePosition = start;
+            Step = step;
+            Span = span;
+            Metadata = new Dictionary<string, string> { { WiggleSchema.Type, WiggleSchema.Wiggle0 } };
         }
 
         /// <summary>
@@ -98,18 +98,18 @@ namespace Bio.IO.Wiggle
         {
             if (data == null)
             {
-                throw new ArgumentNullException("data");
+                throw new ArgumentNullException(nameof(data));
             }
 
             if (chromosome == null)
             {
-                throw new ArgumentNullException("chromosome");
+                throw new ArgumentNullException(nameof(chromosome));
             }
 
-            this.SetVariableStepAnnotationData(data);
-            this.Chromosome = chromosome;
-            this.Span = span;
-            this.Metadata = new Dictionary<string, string> { { WiggleSchema.Type, WiggleSchema.Wiggle0 } };
+            SetVariableStepAnnotationData(data);
+            Chromosome = chromosome;
+            Span = span;
+            Metadata = new Dictionary<string, string> { { WiggleSchema.Type, WiggleSchema.Wiggle0 } };
         }
 
         /// <summary>
@@ -117,8 +117,8 @@ namespace Bio.IO.Wiggle
         /// </summary>
         internal WiggleAnnotation()
         {
-            this.Span = -1;
-            this.Metadata = new Dictionary<string, string> { { WiggleSchema.Type, WiggleSchema.Wiggle0 } };
+            Span = -1;
+            Metadata = new Dictionary<string, string> { { WiggleSchema.Type, WiggleSchema.Wiggle0 } };
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace Bio.IO.Wiggle
         {
             get
             {
-                return this.annotationComments;
+                return annotationComments;
             }
         }
 
@@ -179,18 +179,18 @@ namespace Bio.IO.Wiggle
         {
             get
             {
-                if (index < 0 || index >= this.Count)
+                if (index < 0 || index >= Count)
                 {
-                    throw new ArgumentOutOfRangeException("index");
+                    throw new ArgumentOutOfRangeException(nameof(index));
                 }
 
-                if (this.AnnotationType == WiggleAnnotationType.FixedStep)
+                if (AnnotationType == WiggleAnnotationType.FixedStep)
                 {
                     return new KeyValuePair<long, float>(
-                        this.BasePosition + (index * this.Step),
-                        this.fixedStepValues[index]);
+                        BasePosition + (index * Step),
+                        fixedStepValues[index]);
                 }
-                return this.variableStepValues[index];
+                return variableStepValues[index];
             }
         }
 
@@ -200,7 +200,7 @@ namespace Bio.IO.Wiggle
         /// <returns>Annotation items enumerator.</returns>
         public IEnumerator<KeyValuePair<long, float>> GetEnumerator()
         {
-            for (int i = 0; i < this.Count; i++)
+            for (var i = 0; i < Count; i++)
             {
                 yield return this[i];
             }
@@ -212,7 +212,7 @@ namespace Bio.IO.Wiggle
         /// <returns>Annotation items enumerator.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
 
         /// <summary>
@@ -224,18 +224,18 @@ namespace Bio.IO.Wiggle
         /// <returns>Sub set of annotation data.</returns>
         public float[] GetValueArray(long startIndex, long length)
         {
-            if (startIndex < 0 || startIndex + length > this.Count)
+            if (startIndex < 0 || startIndex + length > Count)
             {
-                throw new ArgumentOutOfRangeException("startIndex");
+                throw new ArgumentOutOfRangeException(nameof(startIndex));
             }
 
-            if (this.AnnotationType == WiggleAnnotationType.VariableStep)
+            if (AnnotationType == WiggleAnnotationType.VariableStep)
             {
                 throw new NotSupportedException(Resource.WiggleNotSupportedOnVariableStep);
             }
 
             var result = new float[length];
-            Helper.Copy(this.fixedStepValues, startIndex, result, 0, length);
+            Helper.Copy(fixedStepValues, startIndex, result, 0, length);
 
             return result;
         }
@@ -248,12 +248,12 @@ namespace Bio.IO.Wiggle
         {
             if (values == null)
             {
-                throw new ArgumentNullException("values");
+                throw new ArgumentNullException(nameof(values));
             }
 
-            this.AnnotationType = WiggleAnnotationType.FixedStep;
-            this.fixedStepValues = values;
-            this.Count = values.GetLongLength();
+            AnnotationType = WiggleAnnotationType.FixedStep;
+            fixedStepValues = values;
+            Count = values.GetLongLength();
         }
 
         /// <summary>
@@ -264,12 +264,12 @@ namespace Bio.IO.Wiggle
         {
             if (values == null)
             {
-                throw new ArgumentNullException("values");
+                throw new ArgumentNullException(nameof(values));
             }
 
-            this.AnnotationType = WiggleAnnotationType.VariableStep;
-            this.variableStepValues = values;
-            this.Count = values.GetLongLength();
+            AnnotationType = WiggleAnnotationType.VariableStep;
+            variableStepValues = values;
+            Count = values.GetLongLength();
         }
     }
 }

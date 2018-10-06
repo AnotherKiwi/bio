@@ -25,7 +25,7 @@ namespace Bio.Algorithms.Kmer
         {
             if (sequences == null)
             {
-                throw new ArgumentNullException("sequences");
+                throw new ArgumentNullException(nameof(sequences));
             }
 
             if (kmerLength <= 0)
@@ -35,29 +35,29 @@ namespace Bio.Algorithms.Kmer
 
             var kmerTasks = new Task<KmerPositionDictionary>[sequences.Count];
             
-            for (int index = 0; index < sequences.Count; index++)
+            for (var index = 0; index < sequences.Count; index++)
             {
-                ISequence localSequence = sequences[index];
+                var localSequence = sequences[index];
                 kmerTasks[index] = Task<KmerPositionDictionary>.Factory.StartNew(
                     o => BuildKmerDictionary(localSequence, kmerLength), TaskCreationOptions.None);
             }
 
           
             IList<KmerIndexer> kmerIndex;
-            List<KmerPositionDictionary> kmerPositionDictionaries = new List<KmerPositionDictionary>(kmerTasks.Length);
+            var kmerPositionDictionaries = new List<KmerPositionDictionary>(kmerTasks.Length);
 
-            int totalElements = 0;
-            for (int index = 0; index < kmerTasks.Length; index++)
+            var totalElements = 0;
+            for (var index = 0; index < kmerTasks.Length; index++)
             {
-                KmerPositionDictionary kmerPositionDictionary = kmerTasks[index].Result;
+                var kmerPositionDictionary = kmerTasks[index].Result;
                 kmerPositionDictionaries.Add(kmerPositionDictionary);
                 totalElements += kmerPositionDictionary.Count;
             }
 
-            KmerIndexerDictionary maps = new KmerIndexerDictionary(totalElements);
-            for (int index = 0; index < kmerPositionDictionaries.Count; index++)
+            var maps = new KmerIndexerDictionary(totalElements);
+            for (var index = 0; index < kmerPositionDictionaries.Count; index++)
             {
-                foreach (KeyValuePair<ISequence, IList<long>> value in kmerPositionDictionaries[index])
+                foreach (var value in kmerPositionDictionaries[index])
                 {
                     if (maps.TryGetValue(value.Key, out kmerIndex) ||
                         maps.TryGetValue(value.Key.GetReverseComplementedSequence(), out kmerIndex))
@@ -87,7 +87,7 @@ namespace Bio.Algorithms.Kmer
         {
             if (sequence == null)
             {
-                throw new ArgumentNullException("sequence");
+                throw new ArgumentNullException(nameof(sequence));
             }
 
             if (kmerLength > sequence.Count)
@@ -96,13 +96,13 @@ namespace Bio.Algorithms.Kmer
             }
 
             // kmers maintains the map between k-mer strings to list of positions in sequence.
-            KmerPositionDictionary kmers = new KmerPositionDictionary();
+            var kmers = new KmerPositionDictionary();
 
             // Sequence 'kmer' stores the k-mer in each window.
             // Construct each k-mer using range from sequence.
             for (long i = 0; i <= sequence.Count - kmerLength; ++i)
             {
-                ISequence kmerString = sequence.GetSubSequence(i, kmerLength);
+                var kmerString = sequence.GetSubSequence(i, kmerLength);
                 if (kmers.ContainsKey(kmerString))
                 {
                     kmers[kmerString].Add(i);
@@ -126,7 +126,7 @@ namespace Bio.Algorithms.Kmer
         {
             if (sequence == null)
             {
-                throw new ArgumentNullException("sequence");
+                throw new ArgumentNullException(nameof(sequence));
             }
 
             if (kmerLength <= 0)
@@ -140,9 +140,9 @@ namespace Bio.Algorithms.Kmer
             }
 
             IList<ISequence> kmers = new List<ISequence>();
-            for (int i = 0; i <= sequence.Count - kmerLength; ++i)
+            for (var i = 0; i <= sequence.Count - kmerLength; ++i)
             {
-                ISequence kmer = sequence.GetSubSequence(i, kmerLength);
+                var kmer = sequence.GetSubSequence(i, kmerLength);
                 kmers.Add(kmer);
             }
 
@@ -166,17 +166,17 @@ namespace Bio.Algorithms.Kmer
 
             if (sequences == null)
             {
-                throw new ArgumentNullException("sequences");
+                throw new ArgumentNullException(nameof(sequences));
             }
 
-            Task<KmersOfSequence>[] kmerTasks = new Task<KmersOfSequence>[sequences.Count()];
+            var kmerTasks = new Task<KmersOfSequence>[sequences.Count()];
             long ndx = 0;
 
-            foreach (ISequence sequence in sequences)
+            foreach (var sequence in sequences)
             {
-                ISequence localSequence = sequence;
+                var localSequence = sequence;
                 kmerTasks[ndx] = Task<KmersOfSequence>.Factory.StartNew(
-                    o => this.Build(localSequence, kmerLength), TaskCreationOptions.None);
+                    o => Build(localSequence, kmerLength), TaskCreationOptions.None);
                 ndx++;
             }
 
@@ -210,13 +210,13 @@ namespace Bio.Algorithms.Kmer
             }
 
             // kmers maintains the map between k-mer strings to list of positions in sequence.
-            Dictionary<string, List<long>> kmers = new Dictionary<string, List<long>>();
+            var kmers = new Dictionary<string, List<long>>();
 
             // Sequence 'kmer' stores the k-mer in each window.
             // Construct each k-mer using range from sequence.
             for (long i = 0; i <= sequence.Count - kmerLength; ++i)
             {
-                string kmerString = new string(sequence.GetSubSequence(i, kmerLength).Select(a => (char)a).ToArray());
+                var kmerString = new string(sequence.GetSubSequence(i, kmerLength).Select(a => (char)a).ToArray());
                 if (kmers.ContainsKey(kmerString))
                 {
                     kmers[kmerString].Add(i);

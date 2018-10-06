@@ -29,7 +29,7 @@ namespace Bio.Algorithms.SuffixTree
         /// <param name="startIndex">Index of first symbol of the edge.</param>
         public MultiWaySuffixEdge(long startIndex)
         {
-            this.StartIndex = startIndex;
+            StartIndex = startIndex;
             Children = null;
             SuffixLink = null;
         }
@@ -42,7 +42,7 @@ namespace Bio.Algorithms.SuffixTree
             get
             {
                 // if there are no children then it is a leaf edge.
-                return this.Children == null ? true : false;
+                return Children == null ? true : false;
             }
         }
 
@@ -54,10 +54,10 @@ namespace Bio.Algorithms.SuffixTree
         /// <returns>Returns endIndex of this edge.</returns>
         public long GetEndIndex(long sequenceLength)
         {
-            if (this.Children != null)
+            if (Children != null)
             {
                 // return the minimum start index of children -1
-                return this.Children[0].StartIndex - 1;
+                return Children[0].StartIndex - 1;
             }
 
             // Sequence length + length of terminating symbol ($) -1.

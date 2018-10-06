@@ -70,27 +70,27 @@ namespace Bio.Padena.Tests.Scaffold
             RemoveRedundancy();
 
             IList<ISequence> contigs = BuildContigs().ToList();
-            ReadContigMapper mapper = new ReadContigMapper();
+            var mapper = new ReadContigMapper();
 
-            ReadContigMap maps = mapper.Map(contigs, sequences, kmerLengthConst);
-            MatePairMapper builder = new MatePairMapper();
+            var maps = mapper.Map(contigs, sequences, kmerLengthConst);
+            var builder = new MatePairMapper();
             CloneLibrary.Instance.AddLibrary("abc", 5, 15);
-            ContigMatePairs pairedReads = builder.MapContigToMatePairs(sequences, maps);
+            var pairedReads = builder.MapContigToMatePairs(sequences, maps);
 
-            OrientationBasedMatePairFilter filter = new OrientationBasedMatePairFilter();
+            var filter = new OrientationBasedMatePairFilter();
             
-            ContigMatePairs overlap = filter.FilterPairedReads(pairedReads, 0);
-            DistanceCalculator dist = new DistanceCalculator(overlap);
+            var overlap = filter.FilterPairedReads(pairedReads, 0);
+            var dist = new DistanceCalculator(overlap);
             
             overlap = dist.CalculateDistance();
-            ContigGraph graph = new ContigGraph();
-            graph.BuildContigGraph(contigs, this.KmerLength);
-            TracePath path = new TracePath();
-            IList<ScaffoldPath> paths = path.FindPaths(graph, overlap, kmerLengthConst, 3);
+            var graph = new ContigGraph();
+            graph.BuildContigGraph(contigs, KmerLength);
+            var path = new TracePath();
+            var paths = path.FindPaths(graph, overlap, kmerLengthConst, 3);
 
             Assert.AreEqual(paths.Count, 3);
             Assert.AreEqual(paths.First().Count, 3);
-            ScaffoldPath scaffold = paths.First();
+            var scaffold = paths.First();
 
             Assert.AreEqual("ATGCCTCCTATCTTAGC", graph.GetNodeSequence(scaffold[0].Key).ConvertToString());
             Assert.AreEqual("TTAGCGCG", graph.GetNodeSequence(scaffold[1].Key).ConvertToString());

@@ -342,21 +342,21 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateAdditionGenBankFeatures()
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.MediumSizeRNAGenBankFeaturesNode, Constants.FilePathNode).TestDir();
-            string addFirstKey = utilityObj.xmlUtil.GetTextValue(
+            var addFirstKey = utilityObj.xmlUtil.GetTextValue(
                 Constants.MediumSizeRNAGenBankFeaturesNode, Constants.FirstKey);
-            string addSecondKey = utilityObj.xmlUtil.GetTextValue(
+            var addSecondKey = utilityObj.xmlUtil.GetTextValue(
                 Constants.MediumSizeRNAGenBankFeaturesNode, Constants.SecondKey);
-            string addFirstLocation = utilityObj.xmlUtil.GetTextValue(
+            var addFirstLocation = utilityObj.xmlUtil.GetTextValue(
                 Constants.MediumSizeRNAGenBankFeaturesNode, Constants.FirstLocation);
-            string addSecondLocation = utilityObj.xmlUtil.GetTextValue(
+            var addSecondLocation = utilityObj.xmlUtil.GetTextValue(
                 Constants.MediumSizeRNAGenBankFeaturesNode, Constants.SecondLocation);
 
             // Parse a GenBank file.
             var locBuilder = new LocationBuilder();
             ISequenceParser parserObj = new GenBankParser();
-            IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+            var seqList = parserObj.Parse(filePath);
 
             var metadata =
                 (GenBankMetadata) seqList.ElementAt(0).Metadata[Constants.GenBank];
@@ -388,23 +388,23 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateAdditionGenBankQualifiers()
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.MediumSizeRNAGenBankFeaturesNode, Constants.FilePathNode).TestDir();
-            string addFirstKey = utilityObj.xmlUtil.GetTextValue(
+            var addFirstKey = utilityObj.xmlUtil.GetTextValue(
                 Constants.MediumSizeRNAGenBankFeaturesNode, Constants.FirstKey);
-            string addSecondKey = utilityObj.xmlUtil.GetTextValue(
+            var addSecondKey = utilityObj.xmlUtil.GetTextValue(
                 Constants.MediumSizeRNAGenBankFeaturesNode, Constants.SecondKey);
-            string addFirstLocation = utilityObj.xmlUtil.GetTextValue(
+            var addFirstLocation = utilityObj.xmlUtil.GetTextValue(
                 Constants.MediumSizeRNAGenBankFeaturesNode, Constants.FirstLocation);
-            string addSecondLocation = utilityObj.xmlUtil.GetTextValue(
+            var addSecondLocation = utilityObj.xmlUtil.GetTextValue(
                 Constants.MediumSizeRNAGenBankFeaturesNode, Constants.SecondLocation);
-            string addFirstQualifier = utilityObj.xmlUtil.GetTextValue(
+            var addFirstQualifier = utilityObj.xmlUtil.GetTextValue(
                 Constants.MediumSizeRNAGenBankFeaturesNode, Constants.FirstQualifier);
-            string addSecondQualifier = utilityObj.xmlUtil.GetTextValue(
+            var addSecondQualifier = utilityObj.xmlUtil.GetTextValue(
                 Constants.MediumSizeRNAGenBankFeaturesNode, Constants.SecondQualifier);
 
             ISequenceParser parserObj = new GenBankParser();
-            IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+            var seqList = parserObj.Parse(filePath);
 
             var locBuilder = new LocationBuilder();
 
@@ -415,16 +415,20 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
             metadata.Features = new SequenceFeatures();
             var feature = new FeatureItem(addFirstKey,
                                           addFirstLocation);
-            var qualifierValues = new List<string>();
-            qualifierValues.Add(addFirstQualifier);
-            qualifierValues.Add(addFirstQualifier);
+            var qualifierValues = new List<string>
+            {
+                addFirstQualifier,
+                addFirstQualifier
+            };
             feature.Qualifiers.Add(addFirstQualifier, qualifierValues);
             metadata.Features.All.Add(feature);
 
             feature = new FeatureItem(addSecondKey, addSecondLocation);
-            qualifierValues = new List<string>();
-            qualifierValues.Add(addSecondQualifier);
-            qualifierValues.Add(addSecondQualifier);
+            qualifierValues = new List<string>
+            {
+                addSecondQualifier,
+                addSecondQualifier
+            };
             feature.Qualifiers.Add(addSecondQualifier, qualifierValues);
             metadata.Features.All.Add(feature);
 
@@ -452,27 +456,27 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateMediumSizePROTEINSequenceCDSQualifiers()
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleGenBankProNodeName, Constants.FilePathNode).TestDir();
-            string expectedCDSException = utilityObj.xmlUtil.GetTextValue(
+            var expectedCDSException = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleGenBankProNodeName, Constants.CDSException);
-            string expectedCDSLabel = utilityObj.xmlUtil.GetTextValue(
+            var expectedCDSLabel = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleGenBankProNodeName, Constants.CDSLabel);
-            string expectedCDSDBReference = utilityObj.xmlUtil.GetTextValue(
+            var expectedCDSDBReference = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleGenBankProNodeName, Constants.CDSDBReference);
-            string expectedGeneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var expectedGeneSymbol = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleGenBankProNodeName, Constants.GeneSymbol);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
-            ISequence sequence = parserObj.Parse(filePath).FirstOrDefault();
+            var sequence = parserObj.Parse(filePath).FirstOrDefault();
 
             var metadata =
                 sequence.Metadata[Constants.GenBank] as GenBankMetadata;
 
             // Get CDS qaulifier.value.
-            List<CodingSequence> cdsQualifiers = metadata.Features.CodingSequences;
-            List<string> dbReferenceValue = cdsQualifiers[0].DatabaseCrossReference;
+            var cdsQualifiers = metadata.Features.CodingSequences;
+            var dbReferenceValue = cdsQualifiers[0].DatabaseCrossReference;
             Assert.AreEqual(cdsQualifiers[0].Label, expectedCDSLabel);
             Assert.AreEqual(cdsQualifiers[0].Exception.ToString(null), expectedCDSException);
             Assert.IsTrue(string.IsNullOrEmpty(cdsQualifiers[0].Allele));
@@ -492,15 +496,15 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateRemoveFeatureItem()
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleGenBankDnaNodeName, Constants.FilePathNode).TestDir();
-            string allFeaturesCount = utilityObj.xmlUtil.GetTextValue(
+            var allFeaturesCount = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleGenBankDnaNodeName, Constants.GenBankFeaturesCount);
 
             // Parse a file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> sequenceList = parserObj.Parse(filePath);
+                var sequenceList = parserObj.Parse(filePath);
 
                 // GenBank metadata.
                 var metadata =
@@ -532,15 +536,15 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateRemoveFeatureItemForProteinSequence()
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleGenBankProNodeName, Constants.FilePathNode).TestDir();
-            string allFeaturesCount = utilityObj.xmlUtil.GetTextValue(
+            var allFeaturesCount = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleGenBankProNodeName, Constants.GenBankFeaturesCount);
 
             // Parse a file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> sequenceList = parserObj.Parse(filePath);
+                var sequenceList = parserObj.Parse(filePath);
 
                 // GenBank metadata.
                 var metadata =
@@ -695,17 +699,17 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateAdditionSingleGenBankFeature()
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.MediumSizeRNAGenBankFeaturesNode, Constants.FilePathNode).TestDir();
-            string addFirstKey = utilityObj.xmlUtil.GetTextValue(
+            var addFirstKey = utilityObj.xmlUtil.GetTextValue(
                 Constants.MediumSizeRNAGenBankFeaturesNode, Constants.FirstKey);
-            string addFirstLocation = utilityObj.xmlUtil.GetTextValue(
+            var addFirstLocation = utilityObj.xmlUtil.GetTextValue(
                 Constants.MediumSizeRNAGenBankFeaturesNode, Constants.FirstLocation);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+                var seqList = parserObj.Parse(filePath);
                 var locBuilder = new LocationBuilder();
 
                 var metadata = (GenBankMetadata) seqList.ElementAt(0).Metadata[Constants.GenBank];
@@ -735,21 +739,21 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateAdditionSingleGenBankQualifier()
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.MediumSizeRNAGenBankFeaturesNode, Constants.FilePathNode).TestDir();
-            string addFirstKey = utilityObj.xmlUtil.GetTextValue(
+            var addFirstKey = utilityObj.xmlUtil.GetTextValue(
                 Constants.MediumSizeRNAGenBankFeaturesNode, Constants.FirstKey);
-            string addFirstLocation = utilityObj.xmlUtil.GetTextValue(
+            var addFirstLocation = utilityObj.xmlUtil.GetTextValue(
                 Constants.MediumSizeRNAGenBankFeaturesNode, Constants.FirstLocation);
-            string addFirstQualifier = utilityObj.xmlUtil.GetTextValue(
+            var addFirstQualifier = utilityObj.xmlUtil.GetTextValue(
                 Constants.MediumSizeRNAGenBankFeaturesNode, Constants.FirstQualifier);
-            string addSecondQualifier = utilityObj.xmlUtil.GetTextValue(
+            var addSecondQualifier = utilityObj.xmlUtil.GetTextValue(
                 Constants.MediumSizeRNAGenBankFeaturesNode, Constants.SecondQualifier);
 
             // Parse a GenBank file.            
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+                var seqList = parserObj.Parse(filePath);
                 var locBuilder = new LocationBuilder();
 
                 // Validate Minus35Signal feature all qualifiers.
@@ -759,15 +763,19 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
                 // Add a new features to Genbank features list.
                 metadata.Features = new SequenceFeatures();
                 var feature = new FeatureItem(addFirstKey, addFirstLocation);
-                var qualifierValues = new List<string>();
-                qualifierValues.Add(addFirstQualifier);
-                qualifierValues.Add(addFirstQualifier);
+                var qualifierValues = new List<string>
+                {
+                    addFirstQualifier,
+                    addFirstQualifier
+                };
                 feature.Qualifiers.Add(addFirstQualifier, qualifierValues);
                 metadata.Features.All.Add(feature);
 
-                qualifierValues = new List<string>();
-                qualifierValues.Add(addSecondQualifier);
-                qualifierValues.Add(addSecondQualifier);
+                qualifierValues = new List<string>
+                {
+                    addSecondQualifier,
+                    addSecondQualifier
+                };
                 feature.Qualifiers.Add(addSecondQualifier, qualifierValues);
                 metadata.Features.All.Add(feature);
 
@@ -1196,31 +1204,31 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateGenBankMPeptideFeatureQualifiers()
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinGenBankMPeptideQualifiersNode,
                 Constants.FilePathNode).TestDir();
-            string mPeptideCount = utilityObj.xmlUtil.GetTextValue(
+            var mPeptideCount = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinGenBankMPeptideQualifiersNode,
                 Constants.MiscPeptideCount);
-            string geneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var geneSymbol = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinGenBankMPeptideQualifiersNode,
                 Constants.GeneSymbol);
-            string mPeptideLocation = utilityObj.xmlUtil.GetTextValue(
+            var mPeptideLocation = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinGenBankMPeptideQualifiersNode,
                 Constants.Location);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
-            IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+            var seqList = parserObj.Parse(filePath);
             var locBuilder = new LocationBuilder();
 
             // Validate Minus35Signal feature all qualifiers.
             var metadata =
                 (GenBankMetadata) seqList.ElementAt(0).Metadata[Constants.GenBank];
-            List<MaturePeptide> mPeptideList = metadata.Features.MaturePeptides;
+            var mPeptideList = metadata.Features.MaturePeptides;
 
             // Create a clone and validate all qualifiers.
-            MaturePeptide clonemPeptide = mPeptideList[0].Clone();
+            var clonemPeptide = mPeptideList[0].Clone();
             Assert.AreEqual(mPeptideList.Count.ToString((IFormatProvider) null), mPeptideCount);
             Assert.AreEqual(clonemPeptide.GeneSymbol.ToString(null), geneSymbol);
             Assert.IsFalse(string.IsNullOrEmpty(clonemPeptide.DatabaseCrossReference.ToString()));
@@ -1255,25 +1263,25 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateGenBankAttenuatorFeatureQualifiers()
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankAttenuatorQualifiers, Constants.FilePathNode).TestDir();
-            string attenuatorLocation = utilityObj.xmlUtil.GetTextValue(
+            var attenuatorLocation = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankAttenuatorQualifiers, Constants.Location);
-            string featureCount = utilityObj.xmlUtil.GetTextValue(
+            var featureCount = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankAttenuatorQualifiers, Constants.QualifierCount);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
-            IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+            var seqList = parserObj.Parse(filePath);
             var locBuilder = new LocationBuilder();
 
             var metadata =
                 (GenBankMetadata) seqList.ElementAt(0).Metadata[Constants.GenBank];
 
-            List<Attenuator> attenuatorList = metadata.Features.Attenuators;
+            var attenuatorList = metadata.Features.Attenuators;
 
             // Create a clone of attenuator feature.
-            Attenuator attenuatorClone = attenuatorList[0].Clone();
+            var attenuatorClone = attenuatorList[0].Clone();
             Assert.AreEqual(attenuatorList.Count.ToString((IFormatProvider) null), featureCount);
             Assert.IsTrue(string.IsNullOrEmpty(attenuatorList[0].GeneSymbol));
             Assert.IsFalse(string.IsNullOrEmpty(attenuatorClone.DatabaseCrossReference.ToString()));
@@ -1321,28 +1329,28 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateGenBankMinus35SignalFeatureQualifiers()
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankMinus35SignalNode, Constants.FilePathNode).TestDir();
-            string minus35Location = utilityObj.xmlUtil.GetTextValue(
+            var minus35Location = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankMinus35SignalNode, Constants.Location);
-            string featureCount = utilityObj.xmlUtil.GetTextValue(
+            var featureCount = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankMinus35SignalNode, Constants.QualifierCount);
-            string geneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var geneSymbol = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankMinus35SignalNode, Constants.GeneSymbol);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+                var seqList = parserObj.Parse(filePath);
                 var locBuilder = new LocationBuilder();
 
                 // Validate Minus35Signal feature all qualifiers.
                 var metadata =
                     (GenBankMetadata) seqList.ElementAt(0).Metadata[Constants.GenBank];
-                List<Minus35Signal> minus35Signal = metadata.Features.Minus35Signals;
+                var minus35Signal = metadata.Features.Minus35Signals;
 
                 // Create a clone of Minus35Signal feature feature.
-                Minus35Signal cloneMinus35Signal = minus35Signal[0].Clone();
+                var cloneMinus35Signal = minus35Signal[0].Clone();
                 Assert.AreEqual(minus35Signal.Count.ToString((IFormatProvider) null), featureCount);
                 Assert.IsFalse(string.IsNullOrEmpty(cloneMinus35Signal.GeneSymbol));
                 Assert.IsFalse(string.IsNullOrEmpty(cloneMinus35Signal.DatabaseCrossReference.ToString()));
@@ -1388,27 +1396,27 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateGenBankMinus10SignalFeatureQualifiers()
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankMInus10SignalNode, Constants.FilePathNode).TestDir();
-            string minus10Location = utilityObj.xmlUtil.GetTextValue(
+            var minus10Location = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankMInus10SignalNode, Constants.Location);
-            string featureCount = utilityObj.xmlUtil.GetTextValue(
+            var featureCount = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankMInus10SignalNode, Constants.QualifierCount);
-            string geneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var geneSymbol = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankMInus10SignalNode, Constants.GeneSymbol);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+                var seqList = parserObj.Parse(filePath);
                 var locBuilder = new LocationBuilder();
 
                 var metadata =
                     (GenBankMetadata) seqList.ElementAt(0).Metadata[Constants.GenBank];
-                List<Minus10Signal> minus10Signal = metadata.Features.Minus10Signals;
+                var minus10Signal = metadata.Features.Minus10Signals;
 
                 // Create a clone of Minus10Signalfeature feature.
-                Minus10Signal cloneMinus10Signal = minus10Signal[0].Clone();
+                var cloneMinus10Signal = minus10Signal[0].Clone();
                 Assert.AreEqual(minus10Signal.Count.ToString((IFormatProvider) null), featureCount);
                 Assert.IsFalse(string.IsNullOrEmpty(cloneMinus10Signal.GeneSymbol));
                 Assert.IsFalse(string.IsNullOrEmpty(cloneMinus10Signal.DatabaseCrossReference.ToString()));
@@ -1454,28 +1462,28 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateGenBankPolyASignalFeatureQualifiers()
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankPolyASignalNode, Constants.FilePathNode).TestDir();
-            string polyALocation = utilityObj.xmlUtil.GetTextValue(
+            var polyALocation = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankPolyASignalNode, Constants.Location);
-            string featureCount = utilityObj.xmlUtil.GetTextValue(
+            var featureCount = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankPolyASignalNode, Constants.QualifierCount);
-            string geneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var geneSymbol = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankPolyASignalNode, Constants.GeneSymbol);
 
             // Parse a GenBank file.            
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+                var seqList = parserObj.Parse(filePath);
                 var locBuilder = new LocationBuilder();
 
                 // Validate Minus35Signal feature all qualifiers.
                 var metadata =
                     (GenBankMetadata) seqList.ElementAt(0).Metadata[Constants.GenBank];
-                List<PolyASignal> polyASignalList = metadata.Features.PolyASignals;
+                var polyASignalList = metadata.Features.PolyASignals;
 
                 // Create a clone of PolyASignal feature feature.
-                PolyASignal cloneMinus10Signal = polyASignalList[0].Clone();
+                var cloneMinus10Signal = polyASignalList[0].Clone();
                 Assert.AreEqual(polyASignalList.Count.ToString((IFormatProvider) null), featureCount);
                 Assert.AreEqual(cloneMinus10Signal.GeneSymbol, geneSymbol);
                 Assert.IsFalse(string.IsNullOrEmpty(cloneMinus10Signal.DatabaseCrossReference.ToString()));
@@ -1519,27 +1527,27 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateGenBankTerminatorFeatureQualifiers()
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankTerminatorNode, Constants.FilePathNode).TestDir();
-            string terminatorLocation = utilityObj.xmlUtil.GetTextValue(
+            var terminatorLocation = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankTerminatorNode, Constants.Location);
-            string featureCount = utilityObj.xmlUtil.GetTextValue(
+            var featureCount = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankTerminatorNode, Constants.QualifierCount);
-            string geneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var geneSymbol = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankTerminatorNode, Constants.GeneSymbol);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+                var seqList = parserObj.Parse(filePath);
                 var locBuilder = new LocationBuilder();
 
                 var metadata =
                     (GenBankMetadata) seqList.ElementAt(0).Metadata[Constants.GenBank];
-                List<Terminator> terminatorList = metadata.Features.Terminators;
+                var terminatorList = metadata.Features.Terminators;
 
                 // Create a clone of Terminator feature feature.
-                Terminator cloneTerminator = terminatorList[0].Clone();
+                var cloneTerminator = terminatorList[0].Clone();
                 Assert.AreEqual(terminatorList.Count.ToString((IFormatProvider) null), featureCount);
                 Assert.AreEqual(cloneTerminator.GeneSymbol, geneSymbol);
                 Assert.IsFalse(string.IsNullOrEmpty(cloneTerminator.DatabaseCrossReference.ToString()));
@@ -1584,32 +1592,32 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateGenBankMiscSignalFeatureQualifiers()
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankMiscSignalNode, Constants.FilePathNode).TestDir();
-            string miscSignalLocation = utilityObj.xmlUtil.GetTextValue(
+            var miscSignalLocation = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankMiscSignalNode, Constants.Location);
-            string featureCount = utilityObj.xmlUtil.GetTextValue(
+            var featureCount = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankMiscSignalNode, Constants.QualifierCount);
-            string geneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var geneSymbol = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankMiscSignalNode, Constants.GeneSymbol);
-            string function = utilityObj.xmlUtil.GetTextValue(
+            var function = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankMiscSignalNode, Constants.FunctionNode);
-            string dbReferenceNode = utilityObj.xmlUtil.GetTextValue(
+            var dbReferenceNode = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankMiscSignalNode, Constants.DbReferenceNode);
 
             // Parse a GenBank file.            
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+                var seqList = parserObj.Parse(filePath);
                 var locBuilder = new LocationBuilder();
 
                 // Validate Minus35Signal feature all qualifiers.
                 var metadata =
                     (GenBankMetadata) seqList.ElementAt(0).Metadata[Constants.GenBank];
-                List<MiscSignal> miscSignalList = metadata.Features.MiscSignals;
+                var miscSignalList = metadata.Features.MiscSignals;
 
                 // Create a clone of MiscSignal feature feature.
-                MiscSignal cloneMiscSignal = miscSignalList[0].Clone();
+                var cloneMiscSignal = miscSignalList[0].Clone();
                 Assert.AreEqual(miscSignalList.Count.ToString((IFormatProvider) null), featureCount);
                 Assert.AreEqual(cloneMiscSignal.GeneSymbol, geneSymbol);
                 Assert.AreEqual(cloneMiscSignal.DatabaseCrossReference[0], dbReferenceNode);
@@ -1655,27 +1663,27 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateGenBankDLoopFeatureQualifiers()
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankDLoopNode, Constants.FilePathNode).TestDir();
-            string dLoopLocation = utilityObj.xmlUtil.GetTextValue(
+            var dLoopLocation = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankDLoopNode, Constants.Location);
-            string featureCount = utilityObj.xmlUtil.GetTextValue(
+            var featureCount = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankDLoopNode, Constants.QualifierCount);
-            string geneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var geneSymbol = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankDLoopNode, Constants.GeneSymbol);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+                var seqList = parserObj.Parse(filePath);
                 var locBuilder = new LocationBuilder();
 
                 var metadata =
                     (GenBankMetadata) seqList.ElementAt(0).Metadata[Constants.GenBank];
-                List<DisplacementLoop> dLoopList = metadata.Features.DisplacementLoops;
+                var dLoopList = metadata.Features.DisplacementLoops;
 
                 // Create a clone of DLoop feature feature.
-                DisplacementLoop cloneDLoop = dLoopList[0].Clone();
+                var cloneDLoop = dLoopList[0].Clone();
                 Assert.AreEqual(dLoopList.Count.ToString((IFormatProvider) null), featureCount);
                 Assert.AreEqual(cloneDLoop.GeneSymbol, geneSymbol);
                 Assert.IsFalse(string.IsNullOrEmpty(cloneDLoop.DatabaseCrossReference.ToString()));
@@ -1720,25 +1728,25 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateGenBankInterveningDNAFeatureQualifiers()
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankInterveningDNA, Constants.FilePathNode).TestDir();
-            string iDNALocation = utilityObj.xmlUtil.GetTextValue(
+            var iDNALocation = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankInterveningDNA, Constants.Location);
-            string featureCount = utilityObj.xmlUtil.GetTextValue(
+            var featureCount = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankInterveningDNA, Constants.QualifierCount);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+                var seqList = parserObj.Parse(filePath);
                 var locBuilder = new LocationBuilder();
 
                 var metadata =
                     (GenBankMetadata) seqList.ElementAt(0).Metadata[Constants.GenBank];
-                List<InterveningDna> iDNAList = metadata.Features.InterveningDNAs;
+                var iDNAList = metadata.Features.InterveningDNAs;
 
                 // Create a clone copy and validate.
-                InterveningDna iDNAClone = iDNAList[0].Clone();
+                var iDNAClone = iDNAList[0].Clone();
                 Assert.AreEqual(iDNAList.Count.ToString((IFormatProvider) null), featureCount);
                 Assert.IsTrue(string.IsNullOrEmpty(iDNAClone.GeneSymbol.ToString(null)));
                 Assert.IsFalse(string.IsNullOrEmpty(iDNAClone.DatabaseCrossReference.ToString()));
@@ -1786,24 +1794,24 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateGenBankMiscRecombinationFeatureQualifiers()
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinGenBankMiscRecombinationQualifiersNode,
                 Constants.FilePathNode).TestDir();
-            string miscCombinationCount = utilityObj.xmlUtil.GetTextValue(
+            var miscCombinationCount = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinGenBankMiscRecombinationQualifiersNode,
                 Constants.FeaturesCount);
-            string miscCombinationLocation = utilityObj.xmlUtil.GetTextValue(
+            var miscCombinationLocation = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinGenBankMiscRecombinationQualifiersNode,
                 Constants.Location);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
-            IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+            var seqList = parserObj.Parse(filePath);
             var locBuilder = new LocationBuilder();
 
             var metadata =
                 (GenBankMetadata) seqList.ElementAt(0).Metadata[Constants.GenBank];
-            List<MiscRecombination> miscRecombinationList =
+            var miscRecombinationList =
                 metadata.Features.MiscRecombinations;
 
             Assert.AreEqual(miscRecombinationList.Count.ToString((IFormatProvider) null),
@@ -1840,28 +1848,28 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateGenBankMiscRNAFeatureQualifiers()
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinGenBankMiscRNAQualifiersNode,
                 Constants.FilePathNode).TestDir();
-            string miscRnaCount = utilityObj.xmlUtil.GetTextValue(
+            var miscRnaCount = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinGenBankMiscRNAQualifiersNode,
                 Constants.FeaturesCount);
-            string miscRnaLocation = utilityObj.xmlUtil.GetTextValue(
+            var miscRnaLocation = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinGenBankMiscRNAQualifiersNode,
                 Constants.Location);
 
             // Parse a GenBank file.            
             ISequenceParser parserObj = new GenBankParser();
-            IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+            var seqList = parserObj.Parse(filePath);
             var locBuilder = new LocationBuilder();
 
             // Validate MiscRNA feature all qualifiers.
             var metadata =
                 (GenBankMetadata) seqList.ElementAt(0).Metadata[Constants.GenBank];
-            List<MiscRna> miscRnaList = metadata.Features.MiscRNAs;
+            var miscRnaList = metadata.Features.MiscRNAs;
 
             // Create a clone of MiscRNA feature and validate
-            MiscRna cloneMiscRna = miscRnaList[0].Clone();
+            var cloneMiscRna = miscRnaList[0].Clone();
             Assert.AreEqual(miscRnaList.Count.ToString((IFormatProvider) null), miscRnaCount);
             Assert.AreEqual(locBuilder.GetLocationString(
                 metadata.Features.MiscRNAs[0].Location), miscRnaLocation);
@@ -1895,22 +1903,22 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateGenBankRibosomalRNAFeatureQualifiers()
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankrRNAQualifiersNode, Constants.FilePathNode).TestDir();
-            string rRnaCount = utilityObj.xmlUtil.GetTextValue(
+            var rRnaCount = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankrRNAQualifiersNode, Constants.FeaturesCount);
-            string rRnaLocation = utilityObj.xmlUtil.GetTextValue(
+            var rRnaLocation = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankrRNAQualifiersNode, Constants.Location);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
-            IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+            var seqList = parserObj.Parse(filePath);
             var locBuilder = new LocationBuilder();
 
             // Validate RibosomalRNA feature all qualifiers.
             var metadata =
                 (GenBankMetadata) seqList.ElementAt(0).Metadata[Constants.GenBank];
-            List<RibosomalRna> ribosomalRnaList =
+            var ribosomalRnaList =
                 metadata.Features.RibosomalRNAs;
 
             Assert.AreEqual(ribosomalRnaList.Count.ToString((IFormatProvider) null), rRnaCount);
@@ -1944,22 +1952,22 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateGenBankRepeatOriginFeatureQualifiers()
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankrRNAQualifiersNode, Constants.FilePathNode).TestDir();
-            string rOriginCount = utilityObj.xmlUtil.GetTextValue(
+            var rOriginCount = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankrRNAQualifiersNode, Constants.ROriginCount);
-            string rOriginLocation = utilityObj.xmlUtil.GetTextValue(
+            var rOriginLocation = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankrRNAQualifiersNode, Constants.ROriginLocation);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
-            IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+            var seqList = parserObj.Parse(filePath);
             var locBuilder = new LocationBuilder();
 
             // Validate Repeat Origin feature all qualifiers.
             var metadata =
                 (GenBankMetadata) seqList.ElementAt(0).Metadata[Constants.GenBank];
-            List<ReplicationOrigin> repeatOriginList =
+            var repeatOriginList =
                 metadata.Features.ReplicationOrigins;
 
             Assert.AreEqual(repeatOriginList.Count.ToString((IFormatProvider) null), rOriginCount);
@@ -1992,25 +2000,25 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateGenBankCaatSignalFeatureQualifiers()
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankrRNAQualifiersNode, Constants.FilePathNode).TestDir();
-            string caatSignalCount = utilityObj.xmlUtil.GetTextValue(
+            var caatSignalCount = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankrRNAQualifiersNode, Constants.CaatSignalCount);
-            string expectedGeneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var expectedGeneSymbol = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankrRNAQualifiersNode, Constants.CaatSignalGene);
-            string expectedLocation = utilityObj.xmlUtil.GetTextValue(
+            var expectedLocation = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankrRNAQualifiersNode, Constants.CaatSignalLocation);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+                var seqList = parserObj.Parse(filePath);
                 var locBuilder = new LocationBuilder();
 
                 // Validate CaatSignal feature all qualifiers.
                 var metadata =
                     (GenBankMetadata) seqList.ElementAt(0).Metadata[Constants.GenBank];
-                List<CaatSignal> caatSignalList = metadata.Features.CAATSignals;
+                var caatSignalList = metadata.Features.CAATSignals;
                 Assert.AreEqual(caatSignalList.Count.ToString((IFormatProvider) null), caatSignalCount);
                 Assert.AreEqual(locBuilder.GetLocationString(
                     metadata.Features.CAATSignals[0].Location), expectedLocation);
@@ -2042,25 +2050,25 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateGenBankTataSignalFeatureQualifiers()
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankrRNAQualifiersNode, Constants.FilePathNode).TestDir();
-            string tataSignalCount = utilityObj.xmlUtil.GetTextValue(
+            var tataSignalCount = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankrRNAQualifiersNode, Constants.TataSignalCount);
-            string expectedGeneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var expectedGeneSymbol = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankrRNAQualifiersNode, Constants.TataSignalGene);
-            string expectedLocation = utilityObj.xmlUtil.GetTextValue(
+            var expectedLocation = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankrRNAQualifiersNode, Constants.TataSignalLocation);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+                var seqList = parserObj.Parse(filePath);
                 var locBuilder = new LocationBuilder();
 
                 // Validate TataSignal feature all qualifiers.
                 var metadata =
                     (GenBankMetadata) seqList.ElementAt(0).Metadata[Constants.GenBank];
-                List<TataSignal> tataSignalList = metadata.Features.TATASignals;
+                var tataSignalList = metadata.Features.TATASignals;
                 Assert.AreEqual(tataSignalList.Count.ToString((IFormatProvider) null), tataSignalCount);
                 Assert.AreEqual(locBuilder.GetLocationString(
                     metadata.Features.TATASignals[0].Location), expectedLocation);
@@ -2091,22 +2099,22 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateGenBankThreePrimeUTRsFeatureQualifiers()
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankrRNAQualifiersNode, Constants.FilePathNode).TestDir();
-            string threePrimeUTRCount = utilityObj.xmlUtil.GetTextValue(
+            var threePrimeUTRCount = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankrRNAQualifiersNode, Constants.ThreePrimeUTRCount);
-            string expectedGeneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var expectedGeneSymbol = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankrRNAQualifiersNode, Constants.ThreePrimeUTRGene);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+                var seqList = parserObj.Parse(filePath);
 
                 // Validate 3'UTRs feature all qualifiers.
                 var metadata =
                     (GenBankMetadata) seqList.ElementAt(0).Metadata[Constants.GenBank];
-                List<ThreePrimeUtr> threeprimeUTRsList =
+                var threeprimeUTRsList =
                     metadata.Features.ThreePrimeUTRs;
                 Assert.AreEqual(threeprimeUTRsList.Count.ToString((IFormatProvider) null), threePrimeUTRCount);
                 Assert.AreEqual(threeprimeUTRsList[0].GeneSymbol, expectedGeneSymbol);
@@ -2136,25 +2144,25 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateGenBankFivePrimeUTRsFeatureQualifiers()
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankrRNAQualifiersNode, Constants.FilePathNode).TestDir();
-            string fivePrimeUTRCount = utilityObj.xmlUtil.GetTextValue(
+            var fivePrimeUTRCount = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankrRNAQualifiersNode, Constants.ThreePrimeUTRCount);
-            string expectedGeneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var expectedGeneSymbol = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankrRNAQualifiersNode, Constants.FivePrimeUTRGene);
-            string expectedLocation = utilityObj.xmlUtil.GetTextValue(
+            var expectedLocation = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankrRNAQualifiersNode, Constants.FivePrimeUTRLocation);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+                var seqList = parserObj.Parse(filePath);
                 var locBuilder = new LocationBuilder();
 
                 // Validate 5'UTRs feature all qualifiers.
                 var metadata =
                     (GenBankMetadata) seqList.ElementAt(0).Metadata[Constants.GenBank];
-                List<FivePrimeUtr> fivePrimeUTRsList =
+                var fivePrimeUTRsList =
                     metadata.Features.FivePrimeUTRs;
                 Assert.AreEqual(fivePrimeUTRsList.Count.ToString((IFormatProvider) null), fivePrimeUTRCount);
                 Assert.AreEqual(fivePrimeUTRsList[0].GeneSymbol, expectedGeneSymbol);
@@ -2186,26 +2194,26 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateGenBankSignalPeptideFeatureQualifiers()
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankrRNAQualifiersNode,
                 Constants.FilePathNode).TestDir();
-            string signalPeptideCount = utilityObj.xmlUtil.GetTextValue(
+            var signalPeptideCount = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankrRNAQualifiersNode,
                 Constants.ThreePrimeUTRCount);
-            string expectedLocation = utilityObj.xmlUtil.GetTextValue(
+            var expectedLocation = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankrRNAQualifiersNode,
                 Constants.SignalPeptideLocation);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+                var seqList = parserObj.Parse(filePath);
                 var locBuilder = new LocationBuilder();
 
                 // Validate SignalPeptide feature all qualifiers.
                 var metadata =
                     (GenBankMetadata) seqList.ElementAt(0).Metadata[Constants.GenBank];
-                List<SignalPeptide> signalPeptideQualifiersList =
+                var signalPeptideQualifiersList =
                     metadata.Features.SignalPeptides;
                 Assert.AreEqual(signalPeptideQualifiersList.Count.ToString((IFormatProvider) null),
                                 signalPeptideCount);
@@ -2239,26 +2247,26 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateGenBankRepeatRegionFeatureQualifiers()
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankRepeatRegionQualifiersNode,
                 Constants.FilePathNode).TestDir();
-            string repeatRegionCount = utilityObj.xmlUtil.GetTextValue(
+            var repeatRegionCount = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankRepeatRegionQualifiersNode,
                 Constants.ThreePrimeUTRCount);
-            string expectedLocation = utilityObj.xmlUtil.GetTextValue(
+            var expectedLocation = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankRepeatRegionQualifiersNode,
                 Constants.RepeatRegionLocation);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+                var seqList = parserObj.Parse(filePath);
                 var locBuilder = new LocationBuilder();
 
                 // Validate RepeatRegion feature all qualifiers.
                 var metadata =
                     (GenBankMetadata) seqList.ElementAt(0).Metadata[Constants.GenBank];
-                List<RepeatRegion> repeatRegionsList =
+                var repeatRegionsList =
                     metadata.Features.RepeatRegions;
                 Assert.AreEqual(repeatRegionsList.Count.ToString((IFormatProvider) null),
                                 repeatRegionCount);
@@ -2293,23 +2301,23 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateGenBankSubSequence()
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankRepeatRegionQualifiersNode,
                 Constants.FilePathNode).TestDir();
-            string expectedSubSequence = utilityObj.xmlUtil.GetTextValue(
+            var expectedSubSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankRepeatRegionQualifiersNode,
                 Constants.ExpectedFeatureSubSequence);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                ISequence sequence = parserObj.ParseOne(filePath);
+                var sequence = parserObj.ParseOne(filePath);
                 ILocationResolver locResolver = new LocationResolver();
 
                 // Get repeatregion subsequence.
                 var metadata =
                     (GenBankMetadata) sequence.Metadata[Constants.GenBank];
-                ISequence subSeq = locResolver.GetSubSequence(
+                var subSeq = locResolver.GetSubSequence(
                     metadata.Features.RepeatRegions[0].Location, sequence);
                 var sequenceString = new string(subSeq.Select(a => (char) a).ToArray());
 
@@ -2333,17 +2341,17 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateGenBankLocationStartAndEndRange()
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.GenBankRepeatRegionQualifiersNode,
                 Constants.FilePathNode).TestDir();
-            bool startLocResult = false;
-            bool endLocResult = false;
-            bool rangeLocResult = false;
+            var startLocResult = false;
+            var endLocResult = false;
+            var rangeLocResult = false;
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                ISequence sequence = parserObj.ParseOne(filePath);
+                var sequence = parserObj.ParseOne(filePath);
                 ILocationResolver locResolver = new LocationResolver();
 
                 // Validate Start,End and Range of Gene feature location.
@@ -2376,11 +2384,11 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateLocationRangeWithAccession()
         {
             // Get Values from XML node.
-            string acessionNumber = utilityObj.xmlUtil.GetTextValue(
+            var acessionNumber = utilityObj.xmlUtil.GetTextValue(
                 Constants.LocationRangesNode, Constants.Accession);
-            string startLoc = utilityObj.xmlUtil.GetTextValue(
+            var startLoc = utilityObj.xmlUtil.GetTextValue(
                 Constants.LocationRangesNode, Constants.LoocationStartNode);
-            string endLoc = utilityObj.xmlUtil.GetTextValue(
+            var endLoc = utilityObj.xmlUtil.GetTextValue(
                 Constants.LocationRangesNode, Constants.LoocationEndNode);
 
             // Create a Location Range.
@@ -2407,9 +2415,9 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateLocationRanges()
         {
             // Get Values from XML node.
-            string startLoc = utilityObj.xmlUtil.GetTextValue(
+            var startLoc = utilityObj.xmlUtil.GetTextValue(
                 Constants.LocationRangesNode, Constants.LoocationStartNode);
-            string endLoc = utilityObj.xmlUtil.GetTextValue(
+            var endLoc = utilityObj.xmlUtil.GetTextValue(
                 Constants.LocationRangesNode, Constants.LoocationEndNode);
 
             // Create a Location Range.
@@ -2633,13 +2641,13 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateStandardQualifierNames()
         {
             // Get Values from XML node.
-            string expectedAlleleQualifier = utilityObj.xmlUtil.GetTextValue(
+            var expectedAlleleQualifier = utilityObj.xmlUtil.GetTextValue(
                 Constants.StandardQualifierNamesNode, Constants.AlleleQualifier);
-            string expectedGeneSymbolQualifier = utilityObj.xmlUtil.GetTextValue(
+            var expectedGeneSymbolQualifier = utilityObj.xmlUtil.GetTextValue(
                 Constants.StandardQualifierNamesNode, Constants.GeneQualifier);
-            string expectedDbReferenceQualifier = utilityObj.xmlUtil.GetTextValue(
+            var expectedDbReferenceQualifier = utilityObj.xmlUtil.GetTextValue(
                 Constants.StandardQualifierNamesNode, Constants.DBReferenceQualifier);
-            string allQualifiersCount = utilityObj.xmlUtil.GetTextValue(
+            var allQualifiersCount = utilityObj.xmlUtil.GetTextValue(
                 Constants.StandardQualifierNamesNode, Constants.QualifierCount);
 
             // Validate GenBank feature standard qualifier names.
@@ -2792,16 +2800,16 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateCompareGenBankLocationsObject()
         {
             // Get Values from XML node.
-            string locationFirstInput = utilityObj.xmlUtil.GetTextValue(
+            var locationFirstInput = utilityObj.xmlUtil.GetTextValue(
                 Constants.CompareLocationsNode, Constants.Location1Node);
-            string locationSecondInput = utilityObj.xmlUtil.GetTextValue(
+            var locationSecondInput = utilityObj.xmlUtil.GetTextValue(
                 Constants.CompareLocationsNode, Constants.Location2Node);
-            string locationThirdInput = utilityObj.xmlUtil.GetTextValue(
+            var locationThirdInput = utilityObj.xmlUtil.GetTextValue(
                 Constants.CompareLocationsNode, Constants.Location3Node);
 
             // Create two location instance.
             ILocationBuilder locBuilder = new LocationBuilder();
-            ILocation loc1 = locBuilder.GetLocation(locationFirstInput);
+            var loc1 = locBuilder.GetLocation(locationFirstInput);
             object loc2 = locBuilder.GetLocation(locationSecondInput);
             object loc3 = locBuilder.GetLocation(locationThirdInput);
 
@@ -2828,25 +2836,25 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateGenBankLeafLocations()
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.RNAGenBankFeaturesNode, Constants.FilePathNode).TestDir();
-            string expectedLeafLocation = utilityObj.xmlUtil.GetTextValue(
+            var expectedLeafLocation = utilityObj.xmlUtil.GetTextValue(
                 Constants.RNAGenBankFeaturesNode,
                 Constants.LeafLocationCountNode);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+                var seqList = parserObj.Parse(filePath);
 
                 // Validate Minus35Signal feature all qualifiers.
                 var metadata =
                     (GenBankMetadata) seqList.ElementAt(0).Metadata[Constants.GenBank];
 
-                List<CodingSequence> cdsList = metadata.Features.CodingSequences;
+                var cdsList = metadata.Features.CodingSequences;
 
-                ILocation newLoc = cdsList[0].Location;
-                List<ILocation> leafsList = newLoc.GetLeafLocations();
+                var newLoc = cdsList[0].Location;
+                var leafsList = newLoc.GetLeafLocations();
 
                 Assert.AreEqual(expectedLeafLocation, leafsList.Count.ToString((IFormatProvider) null));
                 ApplicationLog.WriteLine(
@@ -2864,20 +2872,20 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         public void ValidateGenBankLocationPositions()
         {
             // Get Values from XML node.
-            string location = utilityObj.xmlUtil.GetTextValue(
+            var location = utilityObj.xmlUtil.GetTextValue(
                 Constants.LocationWithEndDataUsingOperatorNode,
                 Constants.Location);
-            string expectedEndData = utilityObj.xmlUtil.GetTextValue(
+            var expectedEndData = utilityObj.xmlUtil.GetTextValue(
                 Constants.LocationWithEndDataUsingOperatorNode,
                 Constants.EndData);
-            string expectedStartData = utilityObj.xmlUtil.GetTextValue(
+            var expectedStartData = utilityObj.xmlUtil.GetTextValue(
                 Constants.LocationWithEndDataUsingOperatorNode,
                 Constants.StartData);
-            string position = utilityObj.xmlUtil.GetTextValue(
+            var position = utilityObj.xmlUtil.GetTextValue(
                 Constants.LocationWithEndDataUsingOperatorNode,
                 Constants.Position);
 
-            bool result = false;
+            var result = false;
 
             // Build a location.
             var locResolver = new LocationResolver();
@@ -2918,24 +2926,24 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         private void ValidateGenBankGeneFeatureQualifiers(string nodeName)
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FilePathNode).TestDir();
-            string GenesCount = utilityObj.xmlUtil.GetTextValue(
+            var GenesCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GeneCount);
-            string GenesDBCount = utilityObj.xmlUtil.GetTextValue(
+            var GenesDBCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.CDSCodonStart);
-            string geneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var geneSymbol = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GeneFeatureGeneSymbol);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+                var seqList = parserObj.Parse(filePath);
 
                 // Validate Minus35Signal feature all qualifiers.
                 var metadata =
                     (GenBankMetadata) seqList.ElementAt(0).Metadata[Constants.GenBank];
-                List<Gene> genesList = metadata.Features.Genes;
+                var genesList = metadata.Features.Genes;
                 Assert.AreEqual(genesList.Count.ToString((IFormatProvider) null), GenesCount);
                 Assert.AreEqual(genesList[0].GeneSymbol.ToString(null),
                                 geneSymbol);
@@ -2971,26 +2979,26 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         private void ValidateGenBanktRNAFeatureQualifiers(string nodeName)
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FilePathNode).TestDir();
-            string tRNAsCount = utilityObj.xmlUtil.GetTextValue(
+            var tRNAsCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.tRNACount);
-            string tRNAGeneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var tRNAGeneSymbol = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.TRNAGeneSymbol);
-            string tRNAComplement = utilityObj.xmlUtil.GetTextValue(
+            var tRNAComplement = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.TRNAComplement);
-            string tRNADBCount = utilityObj.xmlUtil.GetTextValue(
+            var tRNADBCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.CDSCodonStart);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+                var seqList = parserObj.Parse(filePath);
                 var locBuilder = new LocationBuilder();
 
                 var metadata =
                     (GenBankMetadata) seqList.ElementAt(0).Metadata[Constants.GenBank];
-                List<TransferRna> tRANsList =
+                var tRANsList =
                     metadata.Features.TransferRNAs;
                 Assert.AreEqual(tRANsList.Count.ToString((IFormatProvider) null),
                                 tRNAsCount);
@@ -3028,36 +3036,36 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         private void ValidateGenBankmRNAFeatureQualifiers(string nodeName)
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FilePathNode).TestDir();
-            string mRNAGeneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var mRNAGeneSymbol = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.MRNAGeneSymbol);
-            string mRNAComplement = utilityObj.xmlUtil.GetTextValue(
+            var mRNAComplement = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.MRNAComplement);
-            string mRNADBCount = utilityObj.xmlUtil.GetTextValue(
+            var mRNADBCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.CDSCodonStart);
-            string mRNAStart = utilityObj.xmlUtil.GetTextValue(
+            var mRNAStart = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.MRNAComplementStart);
-            string mRNAStdName = utilityObj.xmlUtil.GetTextValue(
+            var mRNAStdName = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.StandardNameNode);
-            string mRNAAllele = utilityObj.xmlUtil.GetTextValue(
+            var mRNAAllele = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.CDSCodonStart);
-            string mRNAOperon = utilityObj.xmlUtil.GetTextValue(
+            var mRNAOperon = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.AlleleNode);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+                var seqList = parserObj.Parse(filePath);
 
                 // Validate tRNA feature all qualifiers.
                 var metadata =
                     (GenBankMetadata) seqList.ElementAt(0).Metadata[Constants.GenBank];
-                List<MessengerRna> mRANsList =
+                var mRANsList =
                     metadata.Features.MessengerRNAs;
 
                 // Create a copy of mRNA list
-                MessengerRna mRNAClone = mRANsList[0].Clone();
+                var mRNAClone = mRANsList[0].Clone();
                 Assert.AreEqual(mRANsList[0].GeneSymbol.ToString(null),
                                 mRNAGeneSymbol);
                 Assert.AreEqual(mRANsList[0].DatabaseCrossReference.Count,
@@ -3118,33 +3126,33 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         private void ValidateGenBankFeatures(string nodeName, string methodName)
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FilePathNode).TestDir();
-            string mRNAFeatureCount = utilityObj.xmlUtil.GetTextValue(
+            var mRNAFeatureCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.mRNACount);
-            string exonFeatureCount = utilityObj.xmlUtil.GetTextValue(
+            var exonFeatureCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExonCount);
-            string intronFeatureCount = utilityObj.xmlUtil.GetTextValue(
+            var intronFeatureCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.IntronCount);
-            string cdsFeatureCount = utilityObj.xmlUtil.GetTextValue(
+            var cdsFeatureCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.CDSCount);
-            string allFeaturesCount = utilityObj.xmlUtil.GetTextValue(
+            var allFeaturesCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GenBankFeaturesCount);
-            string expectedCDSKey = utilityObj.xmlUtil.GetTextValue(
+            var expectedCDSKey = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.CDSKey);
-            string expectedIntronKey = utilityObj.xmlUtil.GetTextValue(
+            var expectedIntronKey = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.IntronKey);
-            string expectedExonKey = utilityObj.xmlUtil.GetTextValue(
+            var expectedExonKey = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExonKey);
-            string mRNAKey = utilityObj.xmlUtil.GetTextValue(
+            var mRNAKey = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.mRNAKey);
-            string sourceKeyName = utilityObj.xmlUtil.GetTextValue(
+            var sourceKeyName = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.SourceKey);
 
             // Parse a file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> sequenceList = parserObj.Parse(filePath);
+                var sequenceList = parserObj.Parse(filePath);
 
                 // GenBank metadata.
                 var metadata = new GenBankMetadata();
@@ -3210,23 +3218,23 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         private void ValidateCloneGenBankFeatures(string nodeName)
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FilePathNode).TestDir();
-            string mRNAFeatureCount = utilityObj.xmlUtil.GetTextValue(
+            var mRNAFeatureCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.mRNACount);
-            string exonFeatureCount = utilityObj.xmlUtil.GetTextValue(
+            var exonFeatureCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExonCount);
-            string intronFeatureCount = utilityObj.xmlUtil.GetTextValue(
+            var intronFeatureCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.IntronCount);
-            string cdsFeatureCount = utilityObj.xmlUtil.GetTextValue(
+            var cdsFeatureCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.CDSCount);
-            string allFeaturesCount = utilityObj.xmlUtil.GetTextValue(
+            var allFeaturesCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GenBankFeaturesCount);
 
             // Parse a file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> sequenceList = parserObj.Parse(filePath);
+                var sequenceList = parserObj.Parse(filePath);
 
                 var metadata =
                     sequenceList.ElementAt(0).Metadata[Constants.GenBank] as GenBankMetadata;
@@ -3248,7 +3256,7 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
                 Assert.AreEqual(metadata.Features.Enhancers.Count, 0);
 
                 // Clone GenBank Features.
-                GenBankMetadata CloneGenBankMetadat = metadata.Clone();
+                var CloneGenBankMetadat = metadata.Clone();
 
                 // Validate cloned GenBank Metadata.
                 Assert.AreEqual(CloneGenBankMetadat.Features.All.Count,
@@ -3277,23 +3285,23 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
                                                      string methodName)
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FilePathNode).TestDir();
-            string expectedCondingSeqCount = utilityObj.xmlUtil.GetTextValue(
+            var expectedCondingSeqCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.CDSCount);
-            string expectedCDSKey = utilityObj.xmlUtil.GetTextValue(
+            var expectedCDSKey = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.CDSKey);
-            string expectedIntronKey = utilityObj.xmlUtil.GetTextValue(
+            var expectedIntronKey = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.IntronKey);
-            string mRNAKey = utilityObj.xmlUtil.GetTextValue(
+            var mRNAKey = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.mRNAKey);
-            string allFeaturesCount = utilityObj.xmlUtil.GetTextValue(
+            var allFeaturesCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.StandardFeaturesCount);
 
             // Parse a file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seq = parserObj.Parse(filePath);
+                var seq = parserObj.Parse(filePath);
 
                 var metadata =
                     seq.ElementAt(0).Metadata[Constants.GenBank] as GenBankMetadata;
@@ -3332,35 +3340,35 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         private void ValidateGetFeatures(string nodeName)
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FilePathNode).TestDir();
-            string expectedFirstRangeStartPoint = utilityObj.xmlUtil.GetTextValue(
+            var expectedFirstRangeStartPoint = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FirstRangeStartPoint);
-            string expectedSecondRangeStartPoint = utilityObj.xmlUtil.GetTextValue(
+            var expectedSecondRangeStartPoint = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.SecondRangeStartPoint);
-            string expectedFirstRangeEndPoint = utilityObj.xmlUtil.GetTextValue(
+            var expectedFirstRangeEndPoint = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FirstRangeEndPoint);
-            string expectedSecondRangeEndPoint = utilityObj.xmlUtil.GetTextValue(
+            var expectedSecondRangeEndPoint = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.SecondRangeEndPoint);
-            string expectedCountWithinSecondRange = utilityObj.xmlUtil.GetTextValue(
+            var expectedCountWithinSecondRange = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.SecondRangeCount);
-            string expectedCountWithinFirstRange = utilityObj.xmlUtil.GetTextValue(
+            var expectedCountWithinFirstRange = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FirstRangeCount);
-            string expectedQualifierName = utilityObj.xmlUtil.GetTextValue(
+            var expectedQualifierName = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.CDSKey);
-            string expectedQualifiers = utilityObj.xmlUtil.GetTextValue(
+            var expectedQualifiers = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.QualifiersCount);
-            string firstFeaturesCount = string.Empty;
-            string secodFeaturesCount = string.Empty;
+            var firstFeaturesCount = string.Empty;
+            var secodFeaturesCount = string.Empty;
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                ISequence seq = parserObj.ParseOne(filePath);
+                var seq = parserObj.ParseOne(filePath);
                 var metadata = seq.Metadata[Constants.GenBank] as GenBankMetadata;
 
                 // Validate GetFeature within specified range.
-                List<FeatureItem> features =
+                var features =
                     metadata.GetFeatures(Convert.ToInt32(
                         expectedFirstRangeStartPoint, null), Convert.ToInt32(
                             expectedFirstRangeEndPoint, null));
@@ -3391,23 +3399,23 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
                                                 FeatureGroup featureName)
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FilePathNode).TestDir();
-            string expectedCitationReferenced = utilityObj.xmlUtil.GetTextValue(
+            var expectedCitationReferenced = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.citationReferencedCount);
-            string expectedmRNACitationReferenced = utilityObj.xmlUtil.GetTextValue(
+            var expectedmRNACitationReferenced = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.citationReferencedCount);
-            string expectedExonACitationReferenced = utilityObj.xmlUtil.GetTextValue(
+            var expectedExonACitationReferenced = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExonCitationReferencedCount);
-            string expectedIntronCitationReferenced = utilityObj.xmlUtil.GetTextValue(
+            var expectedIntronCitationReferenced = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.IntronCitationReferencedCount);
-            string expectedpromoterCitationReferenced = utilityObj.xmlUtil.GetTextValue(
+            var expectedpromoterCitationReferenced = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.PromotersCitationReferencedCount);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                ISequence seq = parserObj.ParseOne(filePath);
+                var seq = parserObj.ParseOne(filePath);
 
                 var metadata =
                     seq.Metadata[Constants.GenBank] as GenBankMetadata;
@@ -3475,26 +3483,26 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         private void ValidateGenBankMiscFeatureQualifiers(string nodeName)
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FilePathNode).TestDir();
-            string miscFeatureCount = utilityObj.xmlUtil.GetTextValue(
+            var miscFeatureCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.MiscFeatureCount);
-            string location = utilityObj.xmlUtil.GetTextValue(
+            var location = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Location);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+                var seqList = parserObj.Parse(filePath);
 
                 // Validate Misc feature all qualifiers.
                 var metadata =
                     (GenBankMetadata) seqList.ElementAt(0).Metadata[Constants.GenBank];
-                List<MiscFeature> miscFeatureList = metadata.Features.MiscFeatures;
+                var miscFeatureList = metadata.Features.MiscFeatures;
                 var locBuilder = new LocationBuilder();
 
                 // Create copy of misc feature and validate all qualifiers
-                MiscFeature cloneMiscFeatureList =
+                var cloneMiscFeatureList =
                     miscFeatureList[0].Clone();
                 Assert.AreEqual(miscFeatureList.Count.ToString((IFormatProvider) null),
                                 miscFeatureCount);
@@ -3527,24 +3535,24 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         private void ValidateGenBankExonFeatureQualifiers(string nodeName)
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FilePathNode).TestDir();
-            string expectedExonFeatureCount = utilityObj.xmlUtil.GetTextValue(
+            var expectedExonFeatureCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExonCount);
-            string expectedExonGeneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var expectedExonGeneSymbol = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExonGeneSymbol);
-            string expectedExonNumber = utilityObj.xmlUtil.GetTextValue(
+            var expectedExonNumber = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExonNumber);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+                var seqList = parserObj.Parse(filePath);
 
                 // Validate Misc feature all qualifiers.
                 var metadata =
                     (GenBankMetadata) seqList.ElementAt(0).Metadata[Constants.GenBank];
-                List<Exon> exonFeatureList = metadata.Features.Exons;
+                var exonFeatureList = metadata.Features.Exons;
                 Assert.AreEqual(exonFeatureList.Count.ToString((IFormatProvider) null),
                                 expectedExonFeatureCount);
                 Assert.AreEqual(exonFeatureList[0].GeneSymbol,
@@ -3576,24 +3584,24 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         private void ValidateGenBankIntronFeatureQualifiers(string nodeName)
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FilePathNode).TestDir();
-            string expectedIntronGeneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var expectedIntronGeneSymbol = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.IntronGeneSymbol);
-            string expectedIntronComplement = utilityObj.xmlUtil.GetTextValue(
+            var expectedIntronComplement = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.IntronComplement);
-            string expectedIntronNumber = utilityObj.xmlUtil.GetTextValue(
+            var expectedIntronNumber = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.IntronNumber);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+                var seqList = parserObj.Parse(filePath);
 
                 // Validate Misc feature all qualifiers.
                 var metadata =
                     (GenBankMetadata) seqList.ElementAt(0).Metadata[Constants.GenBank];
-                List<Intron> intronFeatureList =
+                var intronFeatureList =
                     metadata.Features.Introns;
                 Assert.AreEqual(intronFeatureList[0].GeneSymbol,
                                 expectedIntronGeneSymbol);
@@ -3626,23 +3634,23 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         private void ValidateGenBankPromoterFeatureQualifiers(string nodeName)
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FilePathNode).TestDir();
-            string expectedPromoterComplement = utilityObj.xmlUtil.GetTextValue(
+            var expectedPromoterComplement = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.PromoterComplement);
-            string expectedPromoterCount = utilityObj.xmlUtil.GetTextValue(
+            var expectedPromoterCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.PromoterCount);
 
             // Parse a GenBank file.            
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+                var seqList = parserObj.Parse(filePath);
                 var locBuilder = new LocationBuilder();
 
                 // Validate Misc feature all qualifiers.
                 var metadata =
                     (GenBankMetadata) seqList.ElementAt(0).Metadata[Constants.GenBank];
-                List<Promoter> promotersFeatureList =
+                var promotersFeatureList =
                     metadata.Features.Promoters;
                 Assert.AreEqual(locBuilder.GetLocationString(
                     metadata.Features.Promoters[0].Location),
@@ -3675,22 +3683,22 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         private void ValidateGenBankVariationFeatureQualifiers(string nodeName)
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FilePathNode).TestDir();
-            string expectedVariationCount = utilityObj.xmlUtil.GetTextValue(
+            var expectedVariationCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.VarationCount);
-            string expectedVariationReplace = utilityObj.xmlUtil.GetTextValue(
+            var expectedVariationReplace = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.VariationReplace);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+                var seqList = parserObj.Parse(filePath);
 
                 // Validate Misc feature all qualifiers.
                 var metadata =
                     (GenBankMetadata) seqList.ElementAt(0).Metadata[Constants.GenBank];
-                List<Variation> variationFeatureList =
+                var variationFeatureList =
                     metadata.Features.Variations;
                 Assert.AreEqual(variationFeatureList.Count.ToString((IFormatProvider) null),
                                 expectedVariationCount);
@@ -3720,22 +3728,22 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         private void ValidateGenBankMiscDiffFeatureQualifiers(string nodeName)
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FilePathNode).TestDir();
-            string expectedMiscDiffCount = utilityObj.xmlUtil.GetTextValue(
+            var expectedMiscDiffCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.MiscDiffCount);
-            string expectedGeneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var expectedGeneSymbol = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GeneSymbol);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+                var seqList = parserObj.Parse(filePath);
 
                 // Validate Protein feature all qualifiers.
                 var metadata =
                     (GenBankMetadata) seqList.ElementAt(1).Metadata[Constants.GenBank];
-                List<MiscDifference> miscDifferenceFeatureList =
+                var miscDifferenceFeatureList =
                     metadata.Features.MiscDifferences;
                 Assert.AreEqual(miscDifferenceFeatureList.Count.ToString((IFormatProvider) null),
                                 expectedMiscDiffCount);
@@ -3781,21 +3789,21 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         private void ValidateGenBankProteinBindingFeatureQualifiers(string nodeName)
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FilePathNode).TestDir();
-            string expectedProteinBindingCount =
+            var expectedProteinBindingCount =
                 utilityObj.xmlUtil.GetTextValue(
                     nodeName, Constants.ProteinBindingCount);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+                var seqList = parserObj.Parse(filePath);
 
                 // Validate ProteinBinding feature all qualifiers.
                 var metadata =
                     (GenBankMetadata) seqList.ElementAt(1).Metadata[Constants.GenBank];
-                List<ProteinBindingSite> proteinBindingFeatureList =
+                var proteinBindingFeatureList =
                     metadata.Features.ProteinBindingSites;
                 Assert.AreEqual(proteinBindingFeatureList.Count.ToString((IFormatProvider) null),
                                 expectedProteinBindingCount);
@@ -3824,20 +3832,20 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         private void ValidateGenBankFeaturesClonning(string nodeName, FeatureGroup featureName)
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
-            string expectedExonFeatureCount = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExonCount);
-            string expectedExonGeneSymbol = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExonGeneSymbol);
-            string expectedExonNumber = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExonNumber);
-            string expectedMiscDiffCount = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MiscQualifiersCount);
-            string expectedGeneSymbol = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GeneSymbol);
-            string expectedIntronGeneSymbol = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.IntronGeneSymbol);
-            string expectedIntronNumber = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.IntronNumber);
-            string expectedVariationReplace = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.VariationReplace);
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            var expectedExonFeatureCount = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExonCount);
+            var expectedExonGeneSymbol = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExonGeneSymbol);
+            var expectedExonNumber = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExonNumber);
+            var expectedMiscDiffCount = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MiscQualifiersCount);
+            var expectedGeneSymbol = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GeneSymbol);
+            var expectedIntronGeneSymbol = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.IntronGeneSymbol);
+            var expectedIntronNumber = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.IntronNumber);
+            var expectedVariationReplace = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.VariationReplace);
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                ISequence seq = parserObj.ParseOne(filePath);
+                var seq = parserObj.ParseOne(filePath);
                 Assert.IsNotNull(seq);
 
                 var metadata = seq.Metadata[Constants.GenBank] as GenBankMetadata;
@@ -3847,7 +3855,7 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
                 switch (featureName)
                 {
                     case FeatureGroup.Exon:
-                        List<Exon> exonFeatureList = metadata.Features.Exons;
+                        var exonFeatureList = metadata.Features.Exons;
 
                         // Validate Exon feature before clonning.
                         Assert.AreEqual(exonFeatureList.Count.ToString((IFormatProvider) null), expectedExonFeatureCount);
@@ -3855,7 +3863,7 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
                         Assert.AreEqual(exonFeatureList[0].Number, expectedExonNumber);
 
                         // Clone Exon feature.
-                        Exon clonedExons = exonFeatureList[0].Clone();
+                        var clonedExons = exonFeatureList[0].Clone();
 
                         // Validate Exon feature after clonning.
                         Assert.AreEqual(clonedExons.GeneSymbol, expectedExonGeneSymbol);
@@ -3863,24 +3871,24 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
                         break;
                     case FeatureGroup.miscDifference:
                         // Validate Misc Difference feature before clonning.
-                        List<MiscDifference> miscDifferenceFeatureList = metadata.Features.MiscDifferences;
+                        var miscDifferenceFeatureList = metadata.Features.MiscDifferences;
                         Assert.AreEqual(miscDifferenceFeatureList.Count.ToString((IFormatProvider) null), expectedMiscDiffCount);
                         Assert.AreEqual(miscDifferenceFeatureList[0].GeneSymbol, expectedGeneSymbol);
 
                         // Clone Misc Difference feature 
-                        MiscDifference clonedMiscDifferences = miscDifferenceFeatureList[0].Clone();
+                        var clonedMiscDifferences = miscDifferenceFeatureList[0].Clone();
 
                         // Validate Misc Difference feature  after clonning.
                         Assert.AreEqual(clonedMiscDifferences.GeneSymbol, expectedGeneSymbol);
                         break;
                     case FeatureGroup.Intron:
                         // Validate Intron feature before clonning.
-                        List<Intron> intronFeatureList = metadata.Features.Introns;
+                        var intronFeatureList = metadata.Features.Introns;
                         Assert.AreEqual(intronFeatureList[0].GeneSymbol, expectedIntronGeneSymbol);
                         Assert.AreEqual(intronFeatureList[0].Number, expectedIntronNumber);
 
                         // Clone Intron feature.
-                        Intron clonedIntrons = intronFeatureList[0].Clone();
+                        var clonedIntrons = intronFeatureList[0].Clone();
 
                         // Validate Intron feature after clonning.
                         Assert.AreEqual(clonedIntrons.GeneSymbol, expectedIntronGeneSymbol);
@@ -3888,11 +3896,11 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
                         break;
                     case FeatureGroup.variation:
                         // Validate Variation feature before clonning.
-                        List<Variation> variationFeatureList = metadata.Features.Variations;
+                        var variationFeatureList = metadata.Features.Variations;
                         Assert.AreEqual(variationFeatureList[0].Replace, expectedVariationReplace);
 
                         // Clone Variation feature.
-                        Variation clonedVariations = variationFeatureList[0].Clone();
+                        var clonedVariations = variationFeatureList[0].Clone();
 
                         // Validate Intron feature after clonning.
                         Assert.AreEqual(clonedVariations.Replace, expectedVariationReplace);
@@ -3911,13 +3919,13 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         private void ValidateGeneralGenBankFeatureQualifiers(string nodeName, FeatureGroup featureName)
         {
             // Get Values from XML node.
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FilePathNode).TestDir();
 
             // Parse a GenBank file.
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parserObj.Parse(filePath);
+                var seqList = parserObj.Parse(filePath);
 
                 // Validate ProteinBinding feature all qualifiers.
                 var metadata =
@@ -3991,43 +3999,43 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
                                                          GenBankMetadata genMetadata)
         {
             // Get Values from XML node.            
-            string expectedLocation = utilityObj.xmlUtil.GetTextValue(
+            var expectedLocation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Location);
-            string expectedAllele = utilityObj.xmlUtil.GetTextValue(
+            var expectedAllele = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.AlleleNode);
-            string featureCount = utilityObj.xmlUtil.GetTextValue(
+            var featureCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.QualifierCount);
-            string expectedDbReference = utilityObj.xmlUtil.GetTextValue(
+            var expectedDbReference = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.DbReferenceNode);
-            string geneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var geneSymbol = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GeneSymbol);
-            string expectedCitation = utilityObj.xmlUtil.GetTextValue(
+            var expectedCitation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.CitationNode);
-            string expectedExperiment = utilityObj.xmlUtil.GetTextValue(
+            var expectedExperiment = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExperimentNode);
-            string expectedFunction = utilityObj.xmlUtil.GetTextValue(
+            var expectedFunction = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FunctionNode);
-            string expectedGeneSynonym = utilityObj.xmlUtil.GetTextValue(
+            var expectedGeneSynonym = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GeneSynonymNode);
-            string expectedInference = utilityObj.xmlUtil.GetTextValue(
+            var expectedInference = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.InferenceNode);
-            string expectedLabel = utilityObj.xmlUtil.GetTextValue(
+            var expectedLabel = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.LabelNode);
-            string expectedLocusTag = utilityObj.xmlUtil.GetTextValue(
+            var expectedLocusTag = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.LocusTagNode);
-            string expectedNote = utilityObj.xmlUtil.GetTextValue(
+            var expectedNote = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Note);
-            string expectedOldLocusTag = utilityObj.xmlUtil.GetTextValue(
+            var expectedOldLocusTag = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.OldLocusTagNode);
-            string expectedMap = utilityObj.xmlUtil.GetTextValue(
+            var expectedMap = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GenbankMapNode);
 
-            List<MiscStructure> miscStrFeatureList =
+            var miscStrFeatureList =
                 genMetadata.Features.MiscStructures;
             var locBuilder = new LocationBuilder();
 
             // Create a copy of Misc structure.
-            MiscStructure cloneMiscStr = miscStrFeatureList[0].Clone();
+            var cloneMiscStr = miscStrFeatureList[0].Clone();
 
             // Validate MiscStructure qualifiers.
             Assert.AreEqual(miscStrFeatureList.Count.ToString((IFormatProvider) null), featureCount);
@@ -4085,43 +4093,43 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
                                                          GenBankMetadata genMetadata)
         {
             // Get Values from XML node.           
-            string expectedLocation = utilityObj.xmlUtil.GetTextValue(
+            var expectedLocation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Location);
-            string expectedAllele = utilityObj.xmlUtil.GetTextValue(
+            var expectedAllele = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.AlleleNode);
-            string featureCount = utilityObj.xmlUtil.GetTextValue(
+            var featureCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.QualifierCount);
-            string expectedDbReference = utilityObj.xmlUtil.GetTextValue(
+            var expectedDbReference = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.DbReferenceNode);
-            string geneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var geneSymbol = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GeneSymbol);
-            string expectedCitation = utilityObj.xmlUtil.GetTextValue(
+            var expectedCitation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.CitationNode);
-            string expectedExperiment = utilityObj.xmlUtil.GetTextValue(
+            var expectedExperiment = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExperimentNode);
-            string expectedFunction = utilityObj.xmlUtil.GetTextValue(
+            var expectedFunction = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FunctionNode);
-            string expectedGeneSynonym = utilityObj.xmlUtil.GetTextValue(
+            var expectedGeneSynonym = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GeneSynonymNode);
-            string expectedInference = utilityObj.xmlUtil.GetTextValue(
+            var expectedInference = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.InferenceNode);
-            string expectedLabel = utilityObj.xmlUtil.GetTextValue(
+            var expectedLabel = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.LabelNode);
-            string expectedLocusTag = utilityObj.xmlUtil.GetTextValue(
+            var expectedLocusTag = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.LocusTagNode);
-            string expectedNote = utilityObj.xmlUtil.GetTextValue(
+            var expectedNote = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Note);
-            string expectedOldLocusTag = utilityObj.xmlUtil.GetTextValue(
+            var expectedOldLocusTag = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.OldLocusTagNode);
-            string expectedMap = utilityObj.xmlUtil.GetTextValue(
+            var expectedMap = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GenbankMapNode);
 
-            List<TransitPeptide> tansitPeptideFeatureList =
+            var tansitPeptideFeatureList =
                 genMetadata.Features.TransitPeptides;
             var locBuilder = new LocationBuilder();
 
             // Create a copy of transit peptide features.
-            TransitPeptide cloneTransit = tansitPeptideFeatureList[0].Clone();
+            var cloneTransit = tansitPeptideFeatureList[0].Clone();
 
             // Validate transit peptide qualifiers.
             Assert.AreEqual(tansitPeptideFeatureList.Count.ToString((IFormatProvider) null), featureCount);
@@ -4178,42 +4186,42 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
                                                     GenBankMetadata genMetadata)
         {
             // Get Values from XML node.
-            string expectedLocation = utilityObj.xmlUtil.GetTextValue(
+            var expectedLocation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Location);
-            string expectedAllele = utilityObj.xmlUtil.GetTextValue(
+            var expectedAllele = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.AlleleNode);
-            string featureCount = utilityObj.xmlUtil.GetTextValue(
+            var featureCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.QualifierCount);
-            string expectedDbReference = utilityObj.xmlUtil.GetTextValue(
+            var expectedDbReference = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.DbReferenceNode);
-            string geneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var geneSymbol = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GeneSymbol);
-            string expectedCitation = utilityObj.xmlUtil.GetTextValue(
+            var expectedCitation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.CitationNode);
-            string expectedExperiment = utilityObj.xmlUtil.GetTextValue(
+            var expectedExperiment = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExperimentNode);
-            string expectedFunction = utilityObj.xmlUtil.GetTextValue(
+            var expectedFunction = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FunctionNode);
-            string expectedGeneSynonym = utilityObj.xmlUtil.GetTextValue(
+            var expectedGeneSynonym = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GeneSynonymNode);
-            string expectedInference = utilityObj.xmlUtil.GetTextValue(
+            var expectedInference = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.InferenceNode);
-            string expectedLabel = utilityObj.xmlUtil.GetTextValue(
+            var expectedLabel = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.LabelNode);
-            string expectedLocusTag = utilityObj.xmlUtil.GetTextValue(
+            var expectedLocusTag = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.LocusTagNode);
-            string expectedNote = utilityObj.xmlUtil.GetTextValue(
+            var expectedNote = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Note);
-            string expectedOldLocusTag = utilityObj.xmlUtil.GetTextValue(
+            var expectedOldLocusTag = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.OldLocusTagNode);
-            string expectedMap = utilityObj.xmlUtil.GetTextValue(
+            var expectedMap = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GenbankMapNode);
 
-            List<StemLoop> sLoopFeatureList = genMetadata.Features.StemLoops;
+            var sLoopFeatureList = genMetadata.Features.StemLoops;
             var locBuilder = new LocationBuilder();
 
             // Create a copy of StemLoop feature.
-            StemLoop cloneSLoop = sLoopFeatureList[0].Clone();
+            var cloneSLoop = sLoopFeatureList[0].Clone();
 
             // Validate transit peptide qualifiers.
             Assert.AreEqual(sLoopFeatureList.Count.ToString((IFormatProvider) null),
@@ -4273,41 +4281,41 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
                                                         GenBankMetadata genMetadata)
         {
             // Get Values from XML node.           
-            string expectedLocation = utilityObj.xmlUtil.GetTextValue(
+            var expectedLocation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Location);
-            string expectedAllele = utilityObj.xmlUtil.GetTextValue(
+            var expectedAllele = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.AlleleNode);
-            string featureCount = utilityObj.xmlUtil.GetTextValue(
+            var featureCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.QualifierCount);
-            string expectedDbReference = utilityObj.xmlUtil.GetTextValue(
+            var expectedDbReference = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.DbReferenceNode);
-            string geneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var geneSymbol = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GeneSymbol);
-            string expectedCitation = utilityObj.xmlUtil.GetTextValue(
+            var expectedCitation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.CitationNode);
-            string expectedExperiment = utilityObj.xmlUtil.GetTextValue(
+            var expectedExperiment = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExperimentNode);
-            string expectedGeneSynonym = utilityObj.xmlUtil.GetTextValue(
+            var expectedGeneSynonym = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GeneSynonymNode);
-            string expectedInference = utilityObj.xmlUtil.GetTextValue(
+            var expectedInference = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.InferenceNode);
-            string expectedLabel = utilityObj.xmlUtil.GetTextValue(
+            var expectedLabel = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.LabelNode);
-            string expectedLocusTag = utilityObj.xmlUtil.GetTextValue(
+            var expectedLocusTag = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.LocusTagNode);
-            string expectedNote = utilityObj.xmlUtil.GetTextValue(
+            var expectedNote = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Note);
-            string expectedOldLocusTag = utilityObj.xmlUtil.GetTextValue(
+            var expectedOldLocusTag = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.OldLocusTagNode);
-            string expectedMap = utilityObj.xmlUtil.GetTextValue(
+            var expectedMap = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GenbankMapNode);
 
-            List<ModifiedBase> modifiedBaseFeatureList =
+            var modifiedBaseFeatureList =
                 genMetadata.Features.ModifiedBases;
             var locBuilder = new LocationBuilder();
 
             // Create a copy of Modified base feature.
-            ModifiedBase cloneModifiedBase = modifiedBaseFeatureList[0].Clone();
+            var cloneModifiedBase = modifiedBaseFeatureList[0].Clone();
 
             // Validate Modified Base qualifiers.
             Assert.AreEqual(modifiedBaseFeatureList.Count.ToString((IFormatProvider) null),
@@ -4365,43 +4373,43 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
                                                         GenBankMetadata genMetadata)
         {
             // Get Values from XML node.           
-            string expectedLocation = utilityObj.xmlUtil.GetTextValue(
+            var expectedLocation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Location);
-            string expectedAllele = utilityObj.xmlUtil.GetTextValue(
+            var expectedAllele = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.AlleleNode);
-            string featureCount = utilityObj.xmlUtil.GetTextValue(
+            var featureCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.QualifierCount);
-            string expectedDbReference = utilityObj.xmlUtil.GetTextValue(
+            var expectedDbReference = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.DbReferenceNode);
-            string geneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var geneSymbol = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GeneSymbol);
-            string expectedCitation = utilityObj.xmlUtil.GetTextValue(
+            var expectedCitation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.CitationNode);
-            string expectedExperiment = utilityObj.xmlUtil.GetTextValue(
+            var expectedExperiment = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExperimentNode);
-            string expectedFunction = utilityObj.xmlUtil.GetTextValue(
+            var expectedFunction = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FunctionNode);
-            string expectedGeneSynonym = utilityObj.xmlUtil.GetTextValue(
+            var expectedGeneSynonym = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GeneSynonymNode);
-            string expectedInference = utilityObj.xmlUtil.GetTextValue(
+            var expectedInference = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.InferenceNode);
-            string expectedLabel = utilityObj.xmlUtil.GetTextValue(
+            var expectedLabel = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.LabelNode);
-            string expectedLocusTag = utilityObj.xmlUtil.GetTextValue(
+            var expectedLocusTag = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.LocusTagNode);
-            string expectedNote = utilityObj.xmlUtil.GetTextValue(
+            var expectedNote = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Note);
-            string expectedOldLocusTag = utilityObj.xmlUtil.GetTextValue(
+            var expectedOldLocusTag = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.OldLocusTagNode);
-            string expectedMap = utilityObj.xmlUtil.GetTextValue(
+            var expectedMap = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GenbankMapNode);
 
-            List<PrecursorRna> precursorRNAFeatureList =
+            var precursorRNAFeatureList =
                 genMetadata.Features.PrecursorRNAs;
             var locBuilder = new LocationBuilder();
 
             // Create a copy of Precursor RNA feature.
-            PrecursorRna clonePrecursorRNA =
+            var clonePrecursorRNA =
                 precursorRNAFeatureList[0].Clone();
 
             // Validate Precursor RNA qualifiers.
@@ -4463,40 +4471,40 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
                                                     GenBankMetadata genMetadata)
         {
             // Get Values from XML node.            
-            string expectedLocation = utilityObj.xmlUtil.GetTextValue(
+            var expectedLocation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Location);
-            string expectedAllele = utilityObj.xmlUtil.GetTextValue(
+            var expectedAllele = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.AlleleNode);
-            string featureCount = utilityObj.xmlUtil.GetTextValue(
+            var featureCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.QualifierCount);
-            string expectedDbReference = utilityObj.xmlUtil.GetTextValue(
+            var expectedDbReference = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.DbReferenceNode);
-            string geneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var geneSymbol = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GeneSymbol);
-            string expectedCitation = utilityObj.xmlUtil.GetTextValue(
+            var expectedCitation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.CitationNode);
-            string expectedExperiment = utilityObj.xmlUtil.GetTextValue(
+            var expectedExperiment = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExperimentNode);
-            string expectedGeneSynonym = utilityObj.xmlUtil.GetTextValue(
+            var expectedGeneSynonym = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GeneSynonymNode);
-            string expectedInference = utilityObj.xmlUtil.GetTextValue(
+            var expectedInference = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.InferenceNode);
-            string expectedLabel = utilityObj.xmlUtil.GetTextValue(
+            var expectedLabel = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.LabelNode);
-            string expectedLocusTag = utilityObj.xmlUtil.GetTextValue(
+            var expectedLocusTag = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.LocusTagNode);
-            string expectedNote = utilityObj.xmlUtil.GetTextValue(
+            var expectedNote = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Note);
-            string expectedOldLocusTag = utilityObj.xmlUtil.GetTextValue(
+            var expectedOldLocusTag = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.OldLocusTagNode);
-            string expectedMap = utilityObj.xmlUtil.GetTextValue(
+            var expectedMap = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GenbankMapNode);
 
-            List<PolyASite> polySiteFeatureList = genMetadata.Features.PolyASites;
+            var polySiteFeatureList = genMetadata.Features.PolyASites;
             var locBuilder = new LocationBuilder();
 
             // Create a copy of Poly site feature.
-            PolyASite clonePolySite = polySiteFeatureList[0].Clone();
+            var clonePolySite = polySiteFeatureList[0].Clone();
 
             // Validate Poly site qualifiers.
             Assert.AreEqual(polySiteFeatureList.Count.ToString((IFormatProvider) null),
@@ -4551,40 +4559,40 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
                                                        GenBankMetadata genMetadata)
         {
             // Get Values from XML node.           
-            string expectedLocation = utilityObj.xmlUtil.GetTextValue(
+            var expectedLocation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Location);
-            string expectedAllele = utilityObj.xmlUtil.GetTextValue(
+            var expectedAllele = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.AlleleNode);
-            string featureCount = utilityObj.xmlUtil.GetTextValue(
+            var featureCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.QualifierCount);
-            string expectedDbReference = utilityObj.xmlUtil.GetTextValue(
+            var expectedDbReference = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.DbReferenceNode);
-            string geneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var geneSymbol = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GeneSymbol);
-            string expectedCitation = utilityObj.xmlUtil.GetTextValue(
+            var expectedCitation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.CitationNode);
-            string expectedExperiment = utilityObj.xmlUtil.GetTextValue(
+            var expectedExperiment = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExperimentNode);
-            string expectedGeneSynonym = utilityObj.xmlUtil.GetTextValue(
+            var expectedGeneSynonym = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GeneSynonymNode);
-            string expectedInference = utilityObj.xmlUtil.GetTextValue(
+            var expectedInference = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.InferenceNode);
-            string expectedLabel = utilityObj.xmlUtil.GetTextValue(
+            var expectedLabel = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.LabelNode);
-            string expectedLocusTag = utilityObj.xmlUtil.GetTextValue(
+            var expectedLocusTag = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.LocusTagNode);
-            string expectedNote = utilityObj.xmlUtil.GetTextValue(
+            var expectedNote = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Note);
-            string expectedOldLocusTag = utilityObj.xmlUtil.GetTextValue(
+            var expectedOldLocusTag = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.OldLocusTagNode);
-            string expectedMap = utilityObj.xmlUtil.GetTextValue(
+            var expectedMap = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GenbankMapNode);
 
-            List<MiscBinding> miscBindingFeatureList = genMetadata.Features.MiscBindings;
+            var miscBindingFeatureList = genMetadata.Features.MiscBindings;
             var locBuilder = new LocationBuilder();
 
             // Create a copy of Misc Binding feature.
-            MiscBinding cloneMiscBinding = miscBindingFeatureList[0].Clone();
+            var cloneMiscBinding = miscBindingFeatureList[0].Clone();
 
             // Validate Misc Binding qualifiers.
             Assert.AreEqual(miscBindingFeatureList.Count.ToString((IFormatProvider) null),
@@ -4641,39 +4649,39 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
                                                     GenBankMetadata genMetadata)
         {
             // Get Values from XML node.            
-            string expectedLocation = utilityObj.xmlUtil.GetTextValue(
+            var expectedLocation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Location);
-            string expectedAllele = utilityObj.xmlUtil.GetTextValue(
+            var expectedAllele = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.AlleleNode);
-            string featureCount = utilityObj.xmlUtil.GetTextValue(
+            var featureCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.QualifierCount);
-            string expectedDbReference = utilityObj.xmlUtil.GetTextValue(
+            var expectedDbReference = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.DbReferenceNode);
-            string geneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var geneSymbol = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GeneSymbol);
-            string expectedCitation = utilityObj.xmlUtil.GetTextValue(
+            var expectedCitation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.CitationNode);
-            string expectedExperiment = utilityObj.xmlUtil.GetTextValue(
+            var expectedExperiment = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExperimentNode);
-            string expectedGeneSynonym = utilityObj.xmlUtil.GetTextValue(
+            var expectedGeneSynonym = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GeneSynonymNode);
-            string expectedInference = utilityObj.xmlUtil.GetTextValue(
+            var expectedInference = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.InferenceNode);
-            string expectedLabel = utilityObj.xmlUtil.GetTextValue(
+            var expectedLabel = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.LabelNode);
-            string expectedLocusTag = utilityObj.xmlUtil.GetTextValue(
+            var expectedLocusTag = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.LocusTagNode);
-            string expectedNote = utilityObj.xmlUtil.GetTextValue(
+            var expectedNote = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Note);
-            string expectedOldLocusTag = utilityObj.xmlUtil.GetTextValue(
+            var expectedOldLocusTag = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.OldLocusTagNode);
-            string expectedMap = utilityObj.xmlUtil.GetTextValue(
+            var expectedMap = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GenbankMapNode);
 
-            List<Enhancer> enhancerFeatureList = genMetadata.Features.Enhancers;
+            var enhancerFeatureList = genMetadata.Features.Enhancers;
 
             // Create a copy of Enhancer feature.
-            Enhancer cloneEnhancer = enhancerFeatureList[0].Clone();
+            var cloneEnhancer = enhancerFeatureList[0].Clone();
             var locBuilder = new LocationBuilder();
 
             // Validate Enhancer qualifiers.
@@ -4731,40 +4739,40 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
                                                     GenBankMetadata genMetadata)
         {
             // Get Values from XML node.            
-            string expectedLocation = utilityObj.xmlUtil.GetTextValue(
+            var expectedLocation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Location);
-            string expectedAllele = utilityObj.xmlUtil.GetTextValue(
+            var expectedAllele = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.AlleleNode);
-            string featureCount = utilityObj.xmlUtil.GetTextValue(
+            var featureCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.QualifierCount);
-            string expectedDbReference = utilityObj.xmlUtil.GetTextValue(
+            var expectedDbReference = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.DbReferenceNode);
-            string geneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var geneSymbol = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GeneSymbol);
-            string expectedCitation = utilityObj.xmlUtil.GetTextValue(
+            var expectedCitation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.CitationNode);
-            string expectedExperiment = utilityObj.xmlUtil.GetTextValue(
+            var expectedExperiment = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExperimentNode);
-            string expectedGeneSynonym = utilityObj.xmlUtil.GetTextValue(
+            var expectedGeneSynonym = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GeneSynonymNode);
-            string expectedInference = utilityObj.xmlUtil.GetTextValue(
+            var expectedInference = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.InferenceNode);
-            string expectedLabel = utilityObj.xmlUtil.GetTextValue(
+            var expectedLabel = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.LabelNode);
-            string expectedLocusTag = utilityObj.xmlUtil.GetTextValue(
+            var expectedLocusTag = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.LocusTagNode);
-            string expectedNote = utilityObj.xmlUtil.GetTextValue(
+            var expectedNote = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Note);
-            string expectedOldLocusTag = utilityObj.xmlUtil.GetTextValue(
+            var expectedOldLocusTag = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.OldLocusTagNode);
-            string expectedMap = utilityObj.xmlUtil.GetTextValue(
+            var expectedMap = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GenbankMapNode);
 
-            List<GcSingal> gcSignalFeatureList = genMetadata.Features.GCSignals;
+            var gcSignalFeatureList = genMetadata.Features.GCSignals;
             var locBuilder = new LocationBuilder();
 
             // Create a copy of GC_Signal feature.
-            GcSingal cloneGCSignal = gcSignalFeatureList[0].Clone();
+            var cloneGCSignal = gcSignalFeatureList[0].Clone();
 
             // Validate GC_Signal qualifiers.
             Assert.AreEqual(gcSignalFeatureList.Count.ToString((IFormatProvider) null),
@@ -4821,43 +4829,43 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
                                                GenBankMetadata genMetadata)
         {
             // Get Values from XML node.           
-            string expectedLocation = utilityObj.xmlUtil.GetTextValue(
+            var expectedLocation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Location);
-            string expectedAllele = utilityObj.xmlUtil.GetTextValue(
+            var expectedAllele = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.AlleleNode);
-            string featureCount = utilityObj.xmlUtil.GetTextValue(
+            var featureCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.QualifierCount);
-            string expectedDbReference = utilityObj.xmlUtil.GetTextValue(
+            var expectedDbReference = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.DbReferenceNode);
-            string geneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var geneSymbol = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GeneSymbol);
-            string expectedCitation = utilityObj.xmlUtil.GetTextValue(
+            var expectedCitation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.CitationNode);
-            string expectedExperiment = utilityObj.xmlUtil.GetTextValue(
+            var expectedExperiment = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExperimentNode);
-            string expectedFunction = utilityObj.xmlUtil.GetTextValue(
+            var expectedFunction = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FunctionNode);
-            string expectedGeneSynonym = utilityObj.xmlUtil.GetTextValue(
+            var expectedGeneSynonym = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GeneSynonymNode);
-            string expectedInference = utilityObj.xmlUtil.GetTextValue(
+            var expectedInference = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.InferenceNode);
-            string expectedLabel = utilityObj.xmlUtil.GetTextValue(
+            var expectedLabel = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.LabelNode);
-            string expectedLocusTag = utilityObj.xmlUtil.GetTextValue(
+            var expectedLocusTag = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.LocusTagNode);
-            string expectedNote = utilityObj.xmlUtil.GetTextValue(
+            var expectedNote = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Note);
-            string expectedOldLocusTag = utilityObj.xmlUtil.GetTextValue(
+            var expectedOldLocusTag = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.OldLocusTagNode);
-            string expectedMap = utilityObj.xmlUtil.GetTextValue(
+            var expectedMap = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GenbankMapNode);
 
-            List<LongTerminalRepeat> LTRFeatureList =
+            var LTRFeatureList =
                 genMetadata.Features.LongTerminalRepeats;
             var locBuilder = new LocationBuilder();
 
             // Create a copy of Long Terminal Repeat feature.
-            LongTerminalRepeat cloneLTR = LTRFeatureList[0].Clone();
+            var cloneLTR = LTRFeatureList[0].Clone();
 
             // Validate Long Terminal Repeat qualifiers.
             Assert.AreEqual(LTRFeatureList.Count.ToString((IFormatProvider) null),
@@ -4917,33 +4925,33 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
                                            GenBankMetadata genMetadata)
         {
             // Get Values from XML node.            
-            string expectedLocation = utilityObj.xmlUtil.GetTextValue(
+            var expectedLocation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Location);
-            string expectedAllele = utilityObj.xmlUtil.GetTextValue(
+            var expectedAllele = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.AlleleNode);
-            string featureCount = utilityObj.xmlUtil.GetTextValue(
+            var featureCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.QualifierCount);
-            string expectedDbReference = utilityObj.xmlUtil.GetTextValue(
+            var expectedDbReference = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.DbReferenceNode);
-            string expectedCitation = utilityObj.xmlUtil.GetTextValue(
+            var expectedCitation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.CitationNode);
-            string expectedExperiment = utilityObj.xmlUtil.GetTextValue(
+            var expectedExperiment = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExperimentNode);
-            string expectedInference = utilityObj.xmlUtil.GetTextValue(
+            var expectedInference = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.InferenceNode);
-            string expectedLabel = utilityObj.xmlUtil.GetTextValue(
+            var expectedLabel = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.LabelNode);
-            string expectedNote = utilityObj.xmlUtil.GetTextValue(
+            var expectedNote = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Note);
-            string expectedMap = utilityObj.xmlUtil.GetTextValue(
+            var expectedMap = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GenbankMapNode);
 
-            List<OperonRegion> operonFeatureList =
+            var operonFeatureList =
                 genMetadata.Features.OperonRegions;
             var locBuilder = new LocationBuilder();
 
             // Create a copy of Long Terminal Repeat feature.
-            OperonRegion cloneOperon = operonFeatureList[0].Clone();
+            var cloneOperon = operonFeatureList[0].Clone();
 
             // Validate Operon region qualifiers.
             Assert.AreEqual(operonFeatureList.Count.ToString((IFormatProvider) null),
@@ -4998,34 +5006,34 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
                                                          GenBankMetadata genMetadata)
         {
             // Get Values from XML node.           
-            string expectedLocation = utilityObj.xmlUtil.GetTextValue(
+            var expectedLocation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Location);
-            string expectedAllele = utilityObj.xmlUtil.GetTextValue(
+            var expectedAllele = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.AlleleNode);
-            string featureCount = utilityObj.xmlUtil.GetTextValue(
+            var featureCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.QualifierCount);
-            string expectedDbReference = utilityObj.xmlUtil.GetTextValue(
+            var expectedDbReference = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.DbReferenceNode);
-            string geneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var geneSymbol = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GeneSymbol);
-            string expectedCitation = utilityObj.xmlUtil.GetTextValue(
+            var expectedCitation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.CitationNode);
-            string expectedExperiment = utilityObj.xmlUtil.GetTextValue(
+            var expectedExperiment = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExperimentNode);
-            string expectedInference = utilityObj.xmlUtil.GetTextValue(
+            var expectedInference = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.InferenceNode);
-            string expectedLabel = utilityObj.xmlUtil.GetTextValue(
+            var expectedLabel = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.LabelNode);
-            string expectedNote = utilityObj.xmlUtil.GetTextValue(
+            var expectedNote = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Note);
-            string expectedMap = utilityObj.xmlUtil.GetTextValue(
+            var expectedMap = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GenbankMapNode);
 
-            List<UnsureSequenceRegion> unsureSeqRegionFeatureList =
+            var unsureSeqRegionFeatureList =
                 genMetadata.Features.UnsureSequenceRegions;
 
             // Create a copy of Unsure Seq Region feature.
-            UnsureSequenceRegion cloneUnSureSeqRegion =
+            var cloneUnSureSeqRegion =
                 unsureSeqRegionFeatureList[0].Clone();
             var locBuilder = new LocationBuilder();
 
@@ -5085,34 +5093,34 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
                                                         GenBankMetadata genMetadata)
         {
             // Get Values from XML node.           
-            string expectedLocation = utilityObj.xmlUtil.GetTextValue(
+            var expectedLocation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Location);
-            string expectedAllele = utilityObj.xmlUtil.GetTextValue(
+            var expectedAllele = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.AlleleNode);
-            string featureCount = utilityObj.xmlUtil.GetTextValue(
+            var featureCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.QualifierCount);
-            string expectedDbReference = utilityObj.xmlUtil.GetTextValue(
+            var expectedDbReference = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.DbReferenceNode);
-            string geneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var geneSymbol = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GeneSymbol);
-            string expectedCitation = utilityObj.xmlUtil.GetTextValue(
+            var expectedCitation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.CitationNode);
-            string expectedExperiment = utilityObj.xmlUtil.GetTextValue(
+            var expectedExperiment = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExperimentNode);
-            string expectedInference = utilityObj.xmlUtil.GetTextValue(
+            var expectedInference = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.InferenceNode);
-            string expectedLabel = utilityObj.xmlUtil.GetTextValue(
+            var expectedLabel = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.LabelNode);
-            string expectedNote = utilityObj.xmlUtil.GetTextValue(
+            var expectedNote = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Note);
-            string expectedMap = utilityObj.xmlUtil.GetTextValue(
+            var expectedMap = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GenbankMapNode);
 
-            List<RibosomeBindingSite> ribosomeSite =
+            var ribosomeSite =
                 genMetadata.Features.RibosomeBindingSites;
 
             // Create a copy of RibosomeBindigSite  Region feature.
-            RibosomeBindingSite cloneRibosomeSite =
+            var cloneRibosomeSite =
                 ribosomeSite[0].Clone();
             var locBuilder = new LocationBuilder();
 
@@ -5171,21 +5179,21 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
                                                  GenBankMetadata genMetadata)
         {
             // Get Values from XML node.           
-            string expectedLocation = utilityObj.xmlUtil.GetTextValue(
+            var expectedLocation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Location);
-            string featureCount = utilityObj.xmlUtil.GetTextValue(
+            var featureCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.QualifierCount);
-            string expectedLabel = utilityObj.xmlUtil.GetTextValue(
+            var expectedLabel = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.LabelNode);
-            string expectedNonCodingRnaClass = utilityObj.xmlUtil.GetTextValue(
+            var expectedNonCodingRnaClass = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.NonCodingRnaClassNode);
 
-            List<NonCodingRna> nonCodingRNAFeatureList =
+            var nonCodingRNAFeatureList =
                 genMetadata.Features.NonCodingRNAs;
             var locBuilder = new LocationBuilder();
 
             // Create a copy of Non coding RNA feature.
-            NonCodingRna cloneNonCodingRNA =
+            var cloneNonCodingRNA =
                 nonCodingRNAFeatureList[0].Clone();
 
             // Validate Non Coding RNA Region qualifiers.
@@ -5225,39 +5233,39 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
                                                 GenBankMetadata genMetadata)
         {
             // Get Values from XML node.            
-            string expectedLocation = utilityObj.xmlUtil.GetTextValue(
+            var expectedLocation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Location);
-            string expectedAllele = utilityObj.xmlUtil.GetTextValue(
+            var expectedAllele = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.AlleleNode);
-            string featureCount = utilityObj.xmlUtil.GetTextValue(
+            var featureCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.QualifierCount);
-            string expectedDbReference = utilityObj.xmlUtil.GetTextValue(
+            var expectedDbReference = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.DbReferenceNode);
-            string geneSymbol = utilityObj.xmlUtil.GetTextValue(
+            var geneSymbol = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GeneSymbol);
-            string expectedCitation = utilityObj.xmlUtil.GetTextValue(
+            var expectedCitation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.CitationNode);
-            string expectedExperiment = utilityObj.xmlUtil.GetTextValue(
+            var expectedExperiment = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExperimentNode);
-            string expectedInference = utilityObj.xmlUtil.GetTextValue(
+            var expectedInference = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.InferenceNode);
-            string expectedLabel = utilityObj.xmlUtil.GetTextValue(
+            var expectedLabel = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.LabelNode);
-            string expectedNote = utilityObj.xmlUtil.GetTextValue(
+            var expectedNote = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Note);
-            string expectedMap = utilityObj.xmlUtil.GetTextValue(
+            var expectedMap = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GenbankMapNode);
-            string expectedTranslation = utilityObj.xmlUtil.GetTextValue(
+            var expectedTranslation = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.GenbankTranslationNode);
-            string expectedCodonStart = utilityObj.xmlUtil.GetTextValue(
+            var expectedCodonStart = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.CodonStartNode);
 
-            List<CodingSequence> codingSequenceFeatureList =
+            var codingSequenceFeatureList =
                 genMetadata.Features.CodingSequences;
             var locBuilder = new LocationBuilder();
 
             // Create a copy of Coding Seq Region feature.
-            CodingSequence cloneCDS = codingSequenceFeatureList[0].Clone();
+            var cloneCDS = codingSequenceFeatureList[0].Clone();
 
             // Validate Unsure Seq Region qualifiers.
             Assert.AreEqual(codingSequenceFeatureList.Count.ToString((IFormatProvider) null),
@@ -5304,7 +5312,7 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
             var cds = new CodingSequence(expectedLocation);
             var cdsWithLoc = new CodingSequence(
                 genMetadata.Features.CodingSequences[0].Location);
-            Sequence seq = cds.GetTranslation();
+            var seq = cds.GetTranslation();
             Assert.IsNotNull(seq);
 
             // Set and validate qualifiers.
@@ -5330,13 +5338,13 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
                                                      FeatureOperator operatorName, bool isOperator)
         {
             // Get Values from XML node.
-            string sequence = utilityObj.xmlUtil.GetTextValue(
+            var sequence = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExpectedSequence);
-            string location = utilityObj.xmlUtil.GetTextValue(
+            var location = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Location);
-            string alphabet = utilityObj.xmlUtil.GetTextValue(
+            var alphabet = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.AlphabetNameNode);
-            string expectedSeq = utilityObj.xmlUtil.GetTextValue(
+            var expectedSeq = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExpSequenceWithOperator);
 
             // Create a sequence object.
@@ -5346,7 +5354,7 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
 
             // Build a location.
             ILocationBuilder locBuilder = new LocationBuilder();
-            ILocation loc = locBuilder.GetLocation(location);
+            var loc = locBuilder.GetLocation(location);
 
             if (isOperator)
             {
@@ -5385,19 +5393,19 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
         private void ValidateLocationEndData(string nodeName)
         {
             // Get Values from XML node.
-            string location = utilityObj.xmlUtil.GetTextValue(
+            var location = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Location);
-            string expectedEndData = utilityObj.xmlUtil.GetTextValue(
+            var expectedEndData = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.EndData);
-            string position = utilityObj.xmlUtil.GetTextValue(
+            var position = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.Position);
 
-            bool result = false;
+            var result = false;
 
             // Build a location.
             var locResolver = new LocationResolver();
             ILocationBuilder locBuilder = new LocationBuilder();
-            ILocation loc = locBuilder.GetLocation(location);
+            var loc = locBuilder.GetLocation(location);
             loc.EndData = expectedEndData;
 
             // Validate whether mentioned end data is present in the location

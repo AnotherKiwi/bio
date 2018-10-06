@@ -32,7 +32,7 @@ namespace Bio
         /// <param name="threshold">Threshold Value.</param>
         public SimpleConsensusResolver(double threshold)
         {
-            this.Threshold = threshold;
+            Threshold = threshold;
         }
 
         /// <summary>
@@ -42,8 +42,8 @@ namespace Bio
         /// <param name="threshold">Threshold Value.</param>
         public SimpleConsensusResolver(IAlphabet seqAlphabet, double threshold)
         {
-            this.SequenceAlphabet = seqAlphabet;
-            this.Threshold = threshold;
+            SequenceAlphabet = seqAlphabet;
+            Threshold = threshold;
         }
 
         /// <summary>
@@ -53,8 +53,8 @@ namespace Bio
         /// <param name="seqAlphabet">Sequence Alphabet.</param>
         public SimpleConsensusResolver(IAlphabet seqAlphabet)
         {
-            this.SequenceAlphabet = seqAlphabet;
-            this.Threshold = 99;
+            SequenceAlphabet = seqAlphabet;
+            Threshold = 99;
         }
 
         /// <summary>
@@ -99,14 +99,14 @@ namespace Bio
         /// <returns>Consensus Symbol.</returns>
         public byte GetConsensus(byte[] items)
         {
-            if (this.SequenceAlphabet == null)
+            if (SequenceAlphabet == null)
             {
                 throw new ArgumentNullException(Properties.Resource.ALPHABET_NULL);
             }
 
             if (items == null)
             {
-                throw new ArgumentNullException("items");
+                throw new ArgumentNullException(nameof(items));
             }
 
             if (items.Length == 0)
@@ -114,19 +114,19 @@ namespace Bio
                 throw new ArgumentException(Properties.Resource.LIST_EMPTY);
             }
 
-            Dictionary<byte, double> symbolFrequency = new Dictionary<byte, double>();
-            int symbolsCount = 0;
+            var symbolFrequency = new Dictionary<byte, double>();
+            var symbolsCount = 0;
 
             HashSet<byte> gapSymbols = null;
-            this.SequenceAlphabet.TryGetGapSymbols(out gapSymbols);
+            SequenceAlphabet.TryGetGapSymbols(out gapSymbols);
 
-            HashSet<byte> ambiguousSymbols = this.SequenceAlphabet.GetAmbiguousSymbols();
+            var ambiguousSymbols = SequenceAlphabet.GetAmbiguousSymbols();
             HashSet<byte> basicSymbols = null;
 
             byte defaultGap;
-            this.SequenceAlphabet.TryGetDefaultGapSymbol(out defaultGap);
+            SequenceAlphabet.TryGetDefaultGapSymbol(out defaultGap);
 
-            foreach (byte item in items)
+            foreach (var item in items)
             {
                 if (gapSymbols.Contains(item))
                 {
@@ -138,10 +138,10 @@ namespace Bio
 
                 if (ambiguousSymbols.Contains(item))
                 {
-                    this.SequenceAlphabet.TryGetBasicSymbols(item, out basicSymbols);
+                    SequenceAlphabet.TryGetBasicSymbols(item, out basicSymbols);
 
-                    double baseProbability = 1 / (double)basicSymbols.Count;
-                    foreach (byte s in basicSymbols)
+                    var baseProbability = 1 / (double)basicSymbols.Count;
+                    foreach (var s in basicSymbols)
                     {
                         symbolFrequency[s] =
                             (symbolFrequency.ContainsKey(s) ? symbolFrequency[s] : 0) + baseProbability;
@@ -161,12 +161,12 @@ namespace Bio
             }
 
             // Check which characters are above threshold
-            HashSet<byte> aboveThresholdSymbols = new HashSet<byte>();
+            var aboveThresholdSymbols = new HashSet<byte>();
 
-            foreach (KeyValuePair<byte, double> item in symbolFrequency)
+            foreach (var item in symbolFrequency)
             {
-                double frequency = (item.Value * 100) / symbolsCount;
-                if (frequency > this.Threshold)
+                var frequency = (item.Value * 100) / symbolsCount;
+                if (frequency > Threshold)
                 {
                     aboveThresholdSymbols.Add(item.Key);
                 }
@@ -174,7 +174,7 @@ namespace Bio
 
             // If there are characters above threshold, consider those characters for consensus
             // Else, consider all characters 
-            return this.SequenceAlphabet.GetConsensusSymbol(aboveThresholdSymbols.Count > 0 
+            return SequenceAlphabet.GetConsensusSymbol(aboveThresholdSymbols.Count > 0 
                 ? aboveThresholdSymbols 
                 : new HashSet<byte>(symbolFrequency.Keys));
         }

@@ -23,8 +23,8 @@ namespace Bio.IO.Text
         /// </summary>
         public FieldTextFileParser()
         {
-            this.ContainsHeader = true;
-            this.Delimiter = '\t';
+            ContainsHeader = true;
+            Delimiter = '\t';
         }
 
         /// <summary>
@@ -102,16 +102,16 @@ namespace Bio.IO.Text
         {
             using (var sr = stream.OpenRead())
             {
-                string fileLine = sr.ReadLine();
+                var fileLine = sr.ReadLine();
 
-                if (this.ContainsHeader)
+                if (ContainsHeader)
                 {
                     fileLine = sr.ReadLine();
                 }
 
                 while (!string.IsNullOrEmpty(fileLine))
                 {
-                    yield return this.ParseLine(fileLine);
+                    yield return ParseLine(fileLine);
                     fileLine = sr.ReadLine();
                 }
             }
@@ -124,14 +124,14 @@ namespace Bio.IO.Text
         /// <returns></returns>
         private ISequence ParseLine(string line)
         {
-            string[] splitLine = line.Split(this.Delimiter);
+            var splitLine = line.Split(Delimiter);
             if (splitLine.Length != 2)
                 throw new Exception(string.Format(CultureInfo.InvariantCulture, Resource.INVALID_INPUT_FILE, line));
 
-            IAlphabet alphabet = this.Alphabet;
+            var alphabet = Alphabet;
             if (alphabet == null)
             {
-                byte[] byteArray = Encoding.UTF8.GetBytes(splitLine[1]);
+                var byteArray = Encoding.UTF8.GetBytes(splitLine[1]);
                 alphabet = Alphabets.AutoDetectAlphabet(byteArray, 0, byteArray.Length, null);
                 if (alphabet == null)
                     throw new Exception(string.Format(CultureInfo.InvariantCulture, Resource.InvalidSymbolInString, splitLine[1]));

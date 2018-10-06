@@ -85,11 +85,11 @@ namespace Bio.Algorithms.SuffixTree
         /// <param name="mum">Maximum Unique Match</param>
         public MatchExtension(Match mum)
         {
-            this.ReferenceSequenceOffset = mum.ReferenceSequenceOffset;
-            this.QuerySequenceOffset = mum.QuerySequenceOffset;
-            this.Length = mum.Length;
-            this.IsGood = false;
-            this.IsTentative = false;
+            ReferenceSequenceOffset = mum.ReferenceSequenceOffset;
+            QuerySequenceOffset = mum.QuerySequenceOffset;
+            Length = mum.Length;
+            IsGood = false;
+            IsTentative = false;
         }
 
         /// <summary>
@@ -100,20 +100,20 @@ namespace Bio.Algorithms.SuffixTree
         {
             if (match != null)
             {
-                match.ReferenceSequenceMumOrder = this.ReferenceSequenceMumOrder;
-                match.ReferenceSequenceOffset = this.ReferenceSequenceOffset;
-                match.QuerySequenceMumOrder = this.QuerySequenceMumOrder;
-                match.QuerySequenceOffset = this.QuerySequenceOffset;
-                match.Length = this.Length;
-                match.Query = this.Query;
+                match.ReferenceSequenceMumOrder = ReferenceSequenceMumOrder;
+                match.ReferenceSequenceOffset = ReferenceSequenceOffset;
+                match.QuerySequenceMumOrder = QuerySequenceMumOrder;
+                match.QuerySequenceOffset = QuerySequenceOffset;
+                match.Length = Length;
+                match.Query = Query;
 
-                match.ID = this.ID;
-                match.IsGood = this.IsGood;
-                match.IsTentative = this.IsTentative;
-                match.Score = this.Score;
-                match.Adjacent = this.Adjacent;
-                match.From = this.From;
-                match.WrapScore = this.WrapScore;
+                match.ID = ID;
+                match.IsGood = IsGood;
+                match.IsTentative = IsTentative;
+                match.Score = Score;
+                match.Adjacent = Adjacent;
+                match.From = From;
+                match.WrapScore = WrapScore;
             }
         }
 
@@ -124,9 +124,9 @@ namespace Bio.Algorithms.SuffixTree
         public override string ToString()
         {
             return string.Format(CultureInfo.CurrentCulture, Properties.Resource.MatchExtensionToStringFormat,
-                              this.ReferenceSequenceOffset, this.QuerySequenceOffset,
-                              this.Length,
-                              this.Score, this.WrapScore, this.IsGood);
+                              ReferenceSequenceOffset, QuerySequenceOffset,
+                              Length,
+                              Score, WrapScore, IsGood);
         }
 
     }

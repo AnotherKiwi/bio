@@ -24,7 +24,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         {
             if (contigPairedReads == null)
             {
-                throw new ArgumentNullException("contigPairedReads");
+                throw new ArgumentNullException(nameof(contigPairedReads));
             }
 
             this.contigPairedReads = contigPairedReads;
@@ -39,14 +39,14 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         public ContigMatePairs CalculateDistance()
         {
             Parallel.ForEach(
-                this.contigPairedReads, 
+                contigPairedReads, 
                 (KeyValuePair<ISequence, 
                     Dictionary<ISequence, IList<ValidMatePair>>> contigPairedRead) =>
             {
                 CalculateInterContigDistance(contigPairedRead, contigPairedRead.Key.Count);
             });
 
-            return this.contigPairedReads;
+            return contigPairedReads;
         }
 
         #endregion
@@ -120,7 +120,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         /// <param name="contigPairedRead">List of Valid Paired Reads.</param>
         private static void EdgeBundling(IList<ValidMatePair> contigPairedRead)
         {
-            int index = 0;
+            var index = 0;
             List<ValidMatePair> estimatedDistances;
             while (index < contigPairedRead.Count())
             {
@@ -133,10 +133,10 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
                     contigPairedRead[index].StandardDeviation.First()))).ToList();
                 if (estimatedDistances.Count > 1)
                 {
-                    float p = (float)estimatedDistances.Sum(dist => dist.DistanceBetweenContigs[0]
+                    var p = (float)estimatedDistances.Sum(dist => dist.DistanceBetweenContigs[0]
                         / Math.Pow(dist.StandardDeviation[0], 2));
-                    float q = (float)estimatedDistances.Sum(sd => 1 / Math.Pow(sd.StandardDeviation[0], 2));
-                    ValidMatePair distance = new ValidMatePair();
+                    var q = (float)estimatedDistances.Sum(sd => 1 / Math.Pow(sd.StandardDeviation[0], 2));
+                    var distance = new ValidMatePair();
                     distance.DistanceBetweenContigs.Add(p / q);
                     distance.StandardDeviation.Add((float)(1 / Math.Sqrt(q)));
 
@@ -146,7 +146,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
 
                     distance.DistanceBetweenContigs.Add(p / q);
                     distance.StandardDeviation.Add((float)(1 / Math.Sqrt(q)));
-                    foreach (ValidMatePair est in estimatedDistances)
+                    foreach (var est in estimatedDistances)
                     {
                         contigPairedRead.Remove(est);
                     }
@@ -169,7 +169,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         /// <param name="distances">List of valid mate pairs.</param>
         private static void CalculateWeigthedEdge(IList<ValidMatePair> distances)
         {
-            ValidMatePair finalDistance = new ValidMatePair();
+            var finalDistance = new ValidMatePair();
             finalDistance.DistanceBetweenContigs.Add(
                 distances.Sum(distance => distance.DistanceBetweenContigs[0] * distance.Weight));
             finalDistance.StandardDeviation.Add(

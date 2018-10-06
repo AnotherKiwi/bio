@@ -43,12 +43,12 @@ namespace Bio.IO.Wiggle
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
 
             if (data == null)
             {
-                throw new ArgumentNullException("data");
+                throw new ArgumentNullException(nameof(data));
             }
 
             using (var writer = stream.OpenWrite())
@@ -66,12 +66,12 @@ namespace Bio.IO.Wiggle
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
 
             if (annotations == null)
             {
-                throw new ArgumentNullException("annotations");
+                throw new ArgumentNullException(nameof(annotations));
             }
 
             using (var writer = stream.OpenWrite())

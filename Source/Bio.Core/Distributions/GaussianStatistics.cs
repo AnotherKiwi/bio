@@ -86,19 +86,19 @@ namespace Bio.Distributions
         {
             if (observations == null)
             {
-                throw new ArgumentNullException("observations");
+                throw new ArgumentNullException(nameof(observations));
             }
 
-            int n = 0;
+            var n = 0;
             double sum = 0;
-            foreach (double d in observations)
+            foreach (var d in observations)
             {
                 sum += d;
                 n++;
             }
-            double mean = sum / n;
+            var mean = sum / n;
             double variance = 0;
-            foreach (double d in observations)
+            foreach (var d in observations)
             {
                 variance += (d - mean) * (d - mean);
             }
@@ -170,7 +170,7 @@ namespace Bio.Distributions
             }
             else
             {
-                string[] fields = val.Split(',');
+                var fields = val.Split(',');
                 if (!(fields.Length == 3))
                 {
                     return false;
@@ -182,7 +182,7 @@ namespace Bio.Distributions
                     double.TryParse(fields[1], out variance) &&
                     int.TryParse(fields[2], out sampleSize))
                 {
-                    result = GaussianStatistics.GetInstance(mean, variance, sampleSize);
+                    result = GetInstance(mean, variance, sampleSize);
                     return true;
                 }
 
@@ -215,7 +215,7 @@ namespace Bio.Distributions
         /// <returns>Returns true if fount equals.</returns>
         public override bool Equals(object obj)
         {
-            SufficientStatistics stats = obj as SufficientStatistics;
+            var stats = obj as SufficientStatistics;
 
             if (stats != null)
             {
@@ -244,7 +244,7 @@ namespace Bio.Distributions
                 return true;
             }
 
-            GaussianStatistics gaussStats = stats.AsGaussianStatistics();
+            var gaussStats = stats.AsGaussianStatistics();
 
             return _mean == gaussStats._mean && _variance == gaussStats._variance && _sampleSize == gaussStats._sampleSize;
         }
@@ -270,7 +270,7 @@ namespace Bio.Distributions
                 return null;
             }
 
-            return GaussianStatistics.GetMissingInstance;
+            return GetMissingInstance;
         }
 
         /// <summary>
@@ -315,7 +315,7 @@ namespace Bio.Distributions
         /// <returns>Boolean Statistics.</returns>
         public override BooleanStatistics AsBooleanStatistics()
         {
-            int meanAsInt = (int)Mean;
+            var meanAsInt = (int)Mean;
             if (!IsMissing() && (meanAsInt < -1 || meanAsInt > 1))
                 throw new InvalidCastException(string.Format(CultureInfo.InvariantCulture, "Cannot cast {0} to Boolean.", Mean));
 
@@ -332,24 +332,24 @@ namespace Bio.Distributions
         {
             if (x == null)
             {
-                throw new ArgumentNullException("x");
+                throw new ArgumentNullException(nameof(x));
             }
 
             if (y == null)
             {
-                throw new ArgumentNullException("y");
+                throw new ArgumentNullException(nameof(y));
             }
 
-            int rN = x.SampleSize + y.SampleSize;
-            double rMean = (x.SampleSize * x.Mean + y.SampleSize * y.Mean) / rN;
-            double rVar = (x.SumOfSquares + y.SumOfSquares) / rN - rMean * rMean;
+            var rN = x.SampleSize + y.SampleSize;
+            var rMean = (x.SampleSize * x.Mean + y.SampleSize * y.Mean) / rN;
+            var rVar = (x.SumOfSquares + y.SumOfSquares) / rN - rMean * rMean;
             if (rVar < 0)
             {
                 Helper.CheckCondition(rVar > -1e-10, "Computed negative variance! " + rVar);
                 rVar = 0;
             }
 
-            GaussianStatistics result = GaussianStatistics.GetInstance(rMean, rVar, rN);
+            var result = GetInstance(rMean, rVar, rN);
             return result;
         }
 

@@ -72,10 +72,10 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold.ContigOverlapGraph
             }
 
             this.sequenceIndex = sequenceIndex;
-            this.contigLength = length;
-            this.rightEndExtensionNodes = new Dictionary<Node, Edge>();
-            this.leftEndExtensionNodes = new Dictionary<Node, Edge>();
-            this.coverage = 1;
+            contigLength = length;
+            rightEndExtensionNodes = new Dictionary<Node, Edge>();
+            leftEndExtensionNodes = new Dictionary<Node, Edge>();
+            coverage = 1;
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold.ContigOverlapGraph
         {
             get
             {
-                return this.rightEndExtensionNodes;
+                return rightEndExtensionNodes;
             }
         }
 
@@ -96,7 +96,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold.ContigOverlapGraph
         {
             get
             {
-                return this.leftEndExtensionNodes;
+                return leftEndExtensionNodes;
             }
         }
 
@@ -105,7 +105,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold.ContigOverlapGraph
         /// </summary>
         public long ContigLength
         {
-            get { return this.contigLength; }
+            get { return contigLength; }
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold.ContigOverlapGraph
         /// </summary>
         public int SequenceIndex
         {
-            get { return this.sequenceIndex; }
+            get { return sequenceIndex; }
         }
 
         /// <summary>
@@ -121,9 +121,9 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold.ContigOverlapGraph
         /// </summary>
         public int Coverage
         {
-            get { return this.coverage; }
+            get { return coverage; }
 
-            set { this.coverage = value; }
+            set { coverage = value; }
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold.ContigOverlapGraph
         /// </summary>
         public int ExtensionsCount
         {
-            get { return this.RightExtensionNodes.Count + this.LeftExtensionNodes.Count; }
+            get { return RightExtensionNodes.Count + LeftExtensionNodes.Count; }
         }
         
         #endregion
@@ -146,13 +146,13 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold.ContigOverlapGraph
         {
             ValidateNode(node);
             Edge edge;
-            if (this.leftEndExtensionNodes.TryGetValue(node, out edge))
+            if (leftEndExtensionNodes.TryGetValue(node, out edge))
             {
-                this.leftEndExtensionNodes[node].IsSameOrientation ^= isSameOrientation;
+                leftEndExtensionNodes[node].IsSameOrientation ^= isSameOrientation;
             }
             else
             {
-                this.leftEndExtensionNodes[node] = new Edge(isSameOrientation);
+                leftEndExtensionNodes[node] = new Edge(isSameOrientation);
             }
         }
 
@@ -166,13 +166,13 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold.ContigOverlapGraph
         {
             ValidateNode(node);
             Edge edge;
-            if (this.rightEndExtensionNodes.TryGetValue(node, out edge))
+            if (rightEndExtensionNodes.TryGetValue(node, out edge))
             {
-                this.rightEndExtensionNodes[node].IsSameOrientation ^= isSameOrientation;
+                rightEndExtensionNodes[node].IsSameOrientation ^= isSameOrientation;
             }
             else
             {
-                this.rightEndExtensionNodes[node] = new Edge(isSameOrientation);
+                rightEndExtensionNodes[node] = new Edge(isSameOrientation);
             }
         }
 
@@ -184,7 +184,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold.ContigOverlapGraph
         /// </summary>
         public void MarkNode()
         {
-            this.isMarked = true;
+            isMarked = true;
         }
 
         /// <summary>
@@ -194,7 +194,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold.ContigOverlapGraph
         /// <returns>True if marked; otherwise false.</returns>
         public bool IsMarked()
         {
-            return this.isMarked;
+            return isMarked;
         }
 
         /// <summary>
@@ -205,7 +205,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold.ContigOverlapGraph
         {
             if (node == null)
             {
-                throw new ArgumentNullException("node");
+                throw new ArgumentNullException(nameof(node));
             }
         }
     }

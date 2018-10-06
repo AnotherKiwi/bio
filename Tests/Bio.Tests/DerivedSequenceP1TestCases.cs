@@ -27,14 +27,14 @@ namespace Bio.Tests
         public void ValidateRnaDerivedSequence()
         {
             // Get input and expected values from xml
-            string expectedSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.RnaDerivedSequenceNode, Constants.ExpectedSequence);
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.RnaDerivedSequenceNode, Constants.AlphabetNameNode);
-            IAlphabet alphabet = Utility.GetAlphabet(alphabetName);
+            var alphabet = Utility.GetAlphabet(alphabetName);
 
             // Create derived Sequence
-            DerivedSequence derSequence = CreateDerivedSequence(
+            var derSequence = CreateDerivedSequence(
                 alphabet, expectedSequence);
 
             // Validate derived Sequence.
@@ -52,14 +52,14 @@ namespace Bio.Tests
         public void ValidateRnaDerivedSequenceIndexOfNonGap()
         {
             // Get input and expected values from xml
-            string expectedSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.RnaDerivedSequenceNode, Constants.ExpectedSequence);
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.RnaDerivedSequenceNode, Constants.AlphabetNameNode);
-            IAlphabet alphabet = Utility.GetAlphabet(alphabetName);
+            var alphabet = Utility.GetAlphabet(alphabetName);
 
             // Create derived Sequence
-            DerivedSequence derSequence = CreateDerivedSequence(
+            var derSequence = CreateDerivedSequence(
                 alphabet, expectedSequence);
 
             try
@@ -82,14 +82,14 @@ namespace Bio.Tests
         public void ValidateRnaDerivedSequenceIndexOfNonGapInt()
         {
             // Get input and expected values from xml
-            string expectedSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.RnaDerivedSequenceNode, Constants.ExpectedSequence);
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.RnaDerivedSequenceNode, Constants.AlphabetNameNode);
-            IAlphabet alphabet = Utility.GetAlphabet(alphabetName);
+            var alphabet = Utility.GetAlphabet(alphabetName);
 
             // Create derived Sequence
-            DerivedSequence derSequence = CreateDerivedSequence(
+            var derSequence = CreateDerivedSequence(
                 alphabet, expectedSequence);
 
             try
@@ -112,14 +112,14 @@ namespace Bio.Tests
         public void ValidateRnaDerivedSequenceLastIndexOfNonGap()
         {
             // Get input and expected values from xml
-            string expectedSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.RnaDerivedSequenceNode, Constants.ExpectedSequence);
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.RnaDerivedSequenceNode, Constants.AlphabetNameNode);
-            IAlphabet alphabet = Utility.GetAlphabet(alphabetName);
+            var alphabet = Utility.GetAlphabet(alphabetName);
 
             // Create derived Sequence
-            DerivedSequence derSequence = CreateDerivedSequence(
+            var derSequence = CreateDerivedSequence(
                 alphabet, expectedSequence);
 
             try
@@ -142,14 +142,14 @@ namespace Bio.Tests
         public void ValidateRnaDerivedSequenceLastIndexOfNonGapInt()
         {
             // Get input and expected values from xml
-            string expectedSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.RnaDerivedSequenceNode, Constants.ExpectedSequence);
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.RnaDerivedSequenceNode, Constants.AlphabetNameNode);
-            IAlphabet alphabet = Utility.GetAlphabet(alphabetName);
+            var alphabet = Utility.GetAlphabet(alphabetName);
 
             // Create derived Sequence
-            DerivedSequence derSequence = CreateDerivedSequence(
+            var derSequence = CreateDerivedSequence(
                 alphabet, expectedSequence);
 
             try
@@ -172,18 +172,18 @@ namespace Bio.Tests
         public void ValidateRnaDerivedSequenceGetReverseComplemented()
         {
             // Get input and expected values from xml
-            string expectedSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.RnaDerivedSequenceNode, Constants.ExpectedSequence);
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.RnaDerivedSequenceNode, Constants.AlphabetNameNode);
-            string reverseCompObj = this.utilityObj.xmlUtil.GetTextValue(
+            var reverseCompObj = utilityObj.xmlUtil.GetTextValue(
                 Constants.RnaDerivedSequenceNode, Constants.ReverseComplement);
-            string derivedSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var derivedSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.RnaDerivedSequenceNode, Constants.DerivedSequence);
-            IAlphabet alphabet = Utility.GetAlphabet(alphabetName);
+            var alphabet = Utility.GetAlphabet(alphabetName);
 
             // Create derived Sequence
-            DerivedSequence derSequence = CreateDerivedSequence(
+            var derSequence = CreateDerivedSequence(
                 alphabet, expectedSequence);
 
             // Validate IndexOf() derived Sequence.
@@ -202,18 +202,18 @@ namespace Bio.Tests
         public void ValidateRnaDerivedSequenceGetReversed()
         {
             // Get input and expected values from xml
-            string expectedSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.RnaDerivedSequenceNode, Constants.ExpectedSequence);
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.RnaDerivedSequenceNode, Constants.AlphabetNameNode);
-            string reverseObj = this.utilityObj.xmlUtil.GetTextValue(
+            var reverseObj = utilityObj.xmlUtil.GetTextValue(
                 Constants.RnaDerivedSequenceNode, Constants.Reverse);
-            string derivedSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var derivedSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.RnaDerivedSequenceNode, Constants.DerivedSequence);
-            IAlphabet alphabet = Utility.GetAlphabet(alphabetName);
+            var alphabet = Utility.GetAlphabet(alphabetName);
 
             // Create derived Sequence
-            DerivedSequence derSequence = CreateDerivedSequence(
+            var derSequence = CreateDerivedSequence(
                 alphabet, expectedSequence);
 
             // Validate IndexOf() derived Sequence.
@@ -232,18 +232,18 @@ namespace Bio.Tests
         public void ValidateRnaDerivedSequenceGetComplemented()
         {
             // Get input and expected values from xml
-            string expectedSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.RnaDerivedSequenceNode, Constants.ExpectedSequence);
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.RnaDerivedSequenceNode, Constants.AlphabetNameNode);
-            string complementObj = this.utilityObj.xmlUtil.GetTextValue(
+            var complementObj = utilityObj.xmlUtil.GetTextValue(
                 Constants.RnaDerivedSequenceNode, Constants.Complement);
-            string derivedSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var derivedSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.RnaDerivedSequenceNode, Constants.DerivedSequence);
-            IAlphabet alphabet = Utility.GetAlphabet(alphabetName);
+            var alphabet = Utility.GetAlphabet(alphabetName);
 
             // Create derived Sequence
-            DerivedSequence derSequence = CreateDerivedSequence(
+            var derSequence = CreateDerivedSequence(
                 alphabet, expectedSequence);
 
             // Validate IndexOf() derived Sequence.
@@ -262,22 +262,22 @@ namespace Bio.Tests
         public void ValidateRnaDerivedSequenceGetSubSequence()
         {
             // Get input and expected values from xml
-            string expectedSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.RnaDerivedSequenceNode, Constants.ExpectedSequence);
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.RnaDerivedSequenceNode, Constants.AlphabetNameNode);
-            string rangeObj = this.utilityObj.xmlUtil.GetTextValue(
+            var rangeObj = utilityObj.xmlUtil.GetTextValue(
                 Constants.RnaDerivedSequenceNode, Constants.Range);
-            string expSubSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var expSubSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.RnaDerivedSequenceNode, Constants.RangeSequence);
-            string derivedSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var derivedSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.RnaDerivedSequenceNode, Constants.DerivedSequence);
-            IAlphabet alphabet = Utility.GetAlphabet(alphabetName);
+            var alphabet = Utility.GetAlphabet(alphabetName);
 
             // Create derived Sequence
-            DerivedSequence derSequence = CreateDerivedSequence(
+            var derSequence = CreateDerivedSequence(
                 alphabet, expectedSequence);
-            string[] ranges = rangeObj.Split(',');
+            var ranges = rangeObj.Split(',');
 
             // Validate IndexOf() derived Sequence.
             Assert.AreEqual(derivedSequence, new string(derSequence.Select(a => (char)a).ToArray()));
@@ -297,14 +297,14 @@ namespace Bio.Tests
         public void ValidateProteinDerivedSequence()
         {
             // Get input and expected values from xml
-            string expectedSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinDerivedSequenceNode, Constants.ExpectedSequence);
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinDerivedSequenceNode, Constants.AlphabetNameNode);
-            IAlphabet alphabet = Utility.GetAlphabet(alphabetName);
+            var alphabet = Utility.GetAlphabet(alphabetName);
 
             // Create derived Sequence
-            DerivedSequence derSequence = CreateDerivedSequence(
+            var derSequence = CreateDerivedSequence(
                 alphabet, expectedSequence);
 
             // Validate derived Sequence.
@@ -322,14 +322,14 @@ namespace Bio.Tests
         public void ValidateProteinDerivedSequenceIndexOfNonGap()
         {
             // Get input and expected values from xml
-            string expectedSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinDerivedSequenceNode, Constants.ExpectedSequence);
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinDerivedSequenceNode, Constants.AlphabetNameNode);
-            IAlphabet alphabet = Utility.GetAlphabet(alphabetName);
+            var alphabet = Utility.GetAlphabet(alphabetName);
 
             // Create derived Sequence
-            DerivedSequence derSequence = CreateDerivedSequence(
+            var derSequence = CreateDerivedSequence(
                 alphabet, expectedSequence);
 
             try
@@ -352,14 +352,14 @@ namespace Bio.Tests
         public void ValidateProteinDerivedSequenceIndexOfNonGapInt()
         {
             // Get input and expected values from xml
-            string expectedSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinDerivedSequenceNode, Constants.ExpectedSequence);
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinDerivedSequenceNode, Constants.AlphabetNameNode);
-            IAlphabet alphabet = Utility.GetAlphabet(alphabetName);
+            var alphabet = Utility.GetAlphabet(alphabetName);
 
             // Create derived Sequence
-            DerivedSequence derSequence = CreateDerivedSequence(
+            var derSequence = CreateDerivedSequence(
                 alphabet, expectedSequence);
 
             try
@@ -382,14 +382,14 @@ namespace Bio.Tests
         public void ValidateProteinDerivedSequenceLastIndexOfNonGap()
         {
             // Get input and expected values from xml
-            string expectedSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinDerivedSequenceNode, Constants.ExpectedSequence);
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinDerivedSequenceNode, Constants.AlphabetNameNode);
-            IAlphabet alphabet = Utility.GetAlphabet(alphabetName);
+            var alphabet = Utility.GetAlphabet(alphabetName);
 
             // Create derived Sequence
-            DerivedSequence derSequence = CreateDerivedSequence(
+            var derSequence = CreateDerivedSequence(
                 alphabet, expectedSequence);
 
             try
@@ -412,14 +412,14 @@ namespace Bio.Tests
         public void ValidateProteinDerivedSequenceLastIndexOfNonGapInt()
         {
             // Get input and expected values from xml
-            string expectedSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinDerivedSequenceNode, Constants.ExpectedSequence);
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinDerivedSequenceNode, Constants.AlphabetNameNode);
-            IAlphabet alphabet = Utility.GetAlphabet(alphabetName);
+            var alphabet = Utility.GetAlphabet(alphabetName);
 
             // Create derived Sequence
-            DerivedSequence derSequence = CreateDerivedSequence(
+            var derSequence = CreateDerivedSequence(
                 alphabet, expectedSequence);
 
             try
@@ -442,18 +442,18 @@ namespace Bio.Tests
         public void ValidateProteinDerivedSequenceGetReversed()
         {
             // Get input and expected values from xml
-            string expectedSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinDerivedSequenceNode, Constants.ExpectedSequence);
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinDerivedSequenceNode, Constants.AlphabetNameNode);
-            string reverseObj = this.utilityObj.xmlUtil.GetTextValue(
+            var reverseObj = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinDerivedSequenceNode, Constants.Reverse);
-            string derivedSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var derivedSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinDerivedSequenceNode, Constants.DerivedSequence);
-            IAlphabet alphabet = Utility.GetAlphabet(alphabetName);
+            var alphabet = Utility.GetAlphabet(alphabetName);
 
             // Create derived Sequence
-            DerivedSequence derSequence = CreateDerivedSequence(
+            var derSequence = CreateDerivedSequence(
                 alphabet, expectedSequence);
 
             // Validate IndexOf() derived Sequence.
@@ -472,22 +472,22 @@ namespace Bio.Tests
         public void ValidateProteinDerivedSequenceGetSubSequence()
         {
             // Get input and expected values from xml
-            string expectedSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinDerivedSequenceNode, Constants.ExpectedSequence);
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinDerivedSequenceNode, Constants.AlphabetNameNode);
-            string rangeObj = this.utilityObj.xmlUtil.GetTextValue(
+            var rangeObj = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinDerivedSequenceNode, Constants.Range);
-            string expSubSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var expSubSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinDerivedSequenceNode, Constants.RangeSequence);
-            string derivedSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var derivedSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinDerivedSequenceNode, Constants.DerivedSequence);
-            IAlphabet alphabet = Utility.GetAlphabet(alphabetName);
+            var alphabet = Utility.GetAlphabet(alphabetName);
 
             // Create derived Sequence
-            DerivedSequence derSequence = CreateDerivedSequence(
+            var derSequence = CreateDerivedSequence(
                 alphabet, expectedSequence);
-            string[] ranges = rangeObj.Split(',');
+            var ranges = rangeObj.Split(',');
 
             // Validate IndexOf() derived Sequence.
             Assert.AreEqual(derivedSequence, new string(derSequence.Select(a => (char)a).ToArray()));
@@ -511,7 +511,7 @@ namespace Bio.Tests
             IAlphabet alphabet, string source)
         {
             ISequence seq = new Sequence(alphabet, source);
-            DerivedSequence derSequence = new DerivedSequence(seq, false, false);
+            var derSequence = new DerivedSequence(seq, false, false);
 
             return derSequence;
         }

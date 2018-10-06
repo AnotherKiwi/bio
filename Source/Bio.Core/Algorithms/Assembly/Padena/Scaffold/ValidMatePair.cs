@@ -49,7 +49,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         /// </summary>
         public IList<long> ForwardReadStartPosition
         {
-            get { return this.forwardReadStartPosition; }
+            get { return forwardReadStartPosition; }
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         /// </summary>
         public IList<long> ReverseReadStartPosition
         {
-            get { return this.reverseReadStartPosition; }
+            get { return reverseReadStartPosition; }
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         /// </summary>
         public IList<long> ReverseReadReverseComplementStartPosition
         {
-            get { return this.reverseReadReverseComplementStartPosition; }
+            get { return reverseReadReverseComplementStartPosition; }
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         /// </summary>
         public IList<float> DistanceBetweenContigs
         {
-            get { return this.distanceBetweenContigs; }
+            get { return distanceBetweenContigs; }
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         /// </summary>
         public IList<float> StandardDeviation
         {
-            get { return this.standardDeviationBetweenContigs; }
+            get { return standardDeviationBetweenContigs; }
         }
 
         /// <summary>

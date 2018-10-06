@@ -147,10 +147,10 @@ namespace Bio.TestAutomation.IO.Phylip
         {
             try
             {
-                string filePath = utilityObj.xmlUtil.GetTextValue(
+                var filePath = utilityObj.xmlUtil.GetTextValue(
                     nodeName,
                     Constants.FilePathNode);
-                PhylipParser parser = new PhylipParser();
+                var parser = new PhylipParser();
 
                 switch (method)
                 {

@@ -76,7 +76,7 @@ namespace Bio.Util
         {
             if (enc == null)
             {
-                throw new ArgumentNullException("enc");
+                throw new ArgumentNullException(nameof(enc));
             }
 
             if(string.IsNullOrEmpty(str))
@@ -84,7 +84,7 @@ namespace Bio.Util
                 return str;
             }
 
-            byte[] bytes = enc.GetBytes(str);
+            var bytes = enc.GetBytes(str);
             return new string(UrlEncodeToBytes(bytes, 0, bytes.Length).Select(b => (char)b).ToArray());
         }
         #endregion
@@ -97,20 +97,20 @@ namespace Bio.Util
             if (bytes == null)
                 return null;
 
-            int len = bytes.Length;
+            var len = bytes.Length;
             if (len == 0)
                 return new byte[0];
 
             if (offset < 0 || offset >= len)
-                throw new ArgumentOutOfRangeException("offset");
+                throw new ArgumentOutOfRangeException(nameof(offset));
 
             if (count < 0 || count > len - offset)
-                throw new ArgumentOutOfRangeException("count");
+                throw new ArgumentOutOfRangeException(nameof(count));
 
-            using (MemoryStream result = new MemoryStream(count))
+            using (var result = new MemoryStream(count))
             {
-                int end = offset + count;
-                for (int i = offset; i < end; i++)
+                var end = offset + count;
+                for (var i = offset; i < end; i++)
                     UrlEncodeChar((char)bytes[i], result, false);
 
                 return result.ToArray();
@@ -123,9 +123,9 @@ namespace Bio.Util
             if (ch > 255)
             {
                 if (!isUnicode)
-                    throw new ArgumentOutOfRangeException("ch", ch, Properties.Resource.ParamCHmustbeLessThan256);
+                    throw new ArgumentOutOfRangeException(nameof(ch), ch, Properties.Resource.ParamCHmustbeLessThan256);
                 int idx;
-                int i = (int)ch;
+                var i = (int)ch;
 
                 result.WriteByte((byte)'%');
                 result.WriteByte((byte)'u');
@@ -165,7 +165,7 @@ namespace Bio.Util
                 else
                     result.WriteByte((byte)'%');
 
-                int idx = ((int)ch) >> 4;
+                var idx = ((int)ch) >> 4;
                 result.WriteByte((byte)hexChars[idx]);
                 idx = ((int)ch) & 0x0F;
                 result.WriteByte((byte)hexChars[idx]);

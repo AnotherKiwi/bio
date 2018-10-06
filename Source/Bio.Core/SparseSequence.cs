@@ -95,12 +95,12 @@ namespace Bio
         {
             if (alphabet == null)
             {
-                throw new ArgumentNullException("alphabet");
+                throw new ArgumentNullException(nameof(alphabet));
             }
 
             if (size < 0)
             {
-                throw new ArgumentOutOfRangeException(Properties.Resource.ParameterNameSize, Properties.Resource.ParameterMustNonNegative);
+                throw new ArgumentOutOfRangeException(ParameterNameSize, ParameterMustNonNegative);
             }
 
             Count = size;
@@ -128,14 +128,14 @@ namespace Bio
 
             if (alphabet == null)
             {
-                throw new ArgumentNullException("alphabet");
+                throw new ArgumentNullException(nameof(alphabet));
             }
 
             if (index < 0 || index == int.MaxValue)
             {
                 throw new ArgumentOutOfRangeException(
-                    Properties.Resource.ParameterNameIndex,
-                    Properties.Resource.SparseSequenceConstructorIndexOutofRange);
+                    ParameterNameIndex,
+                    SparseSequenceConstructorIndexOutofRange);
             }
 
             if (!alphabet.ValidateSequence(new[] { item }, 0, 1))
@@ -143,7 +143,7 @@ namespace Bio
                 throw new ArgumentException(
                     string.Format(
                     CultureInfo.CurrentCulture,
-                    Properties.Resource.InvalidSymbol,
+                    InvalidSymbol,
                     item));
             }
 
@@ -172,31 +172,31 @@ namespace Bio
         {
             if (alphabet == null)
             {
-                throw new ArgumentNullException("alphabet");
+                throw new ArgumentNullException(nameof(alphabet));
             }
 
             if (index < 0 || index == int.MaxValue)
             {
                 throw new ArgumentOutOfRangeException(
-                    Properties.Resource.ParameterNameIndex,
-                    Properties.Resource.SparseSequenceConstructorIndexOutofRange);
+                    ParameterNameIndex,
+                    SparseSequenceConstructorIndexOutofRange);
             }
 
             if (sequenceItems == null)
             {
-                throw new ArgumentNullException(Properties.Resource.ParameterNameSequenceItems);
+                throw new ArgumentNullException(ParameterNameSequenceItems);
             }
 
             var sequenceArray = sequenceItems.ToArray();
             if (!alphabet.ValidateSequence(sequenceArray, 0, sequenceArray.GetLongLength()))
             {
-                throw new ArgumentOutOfRangeException("sequenceItems");
+                throw new ArgumentOutOfRangeException(nameof(sequenceItems));
             }
 
             Statistics = new SequenceStatistics(alphabet);
 
-            int position = index;
-            foreach (byte sequenceItem in sequenceArray)
+            var position = index;
+            foreach (var sequenceItem in sequenceArray)
             {
                 sparseSeqItems.Add(position, sequenceItem);
                 Statistics.Add((char)sequenceItem);
@@ -240,7 +240,7 @@ namespace Bio
             {
                 if (value < 0)
                 {
-                    throw new ArgumentOutOfRangeException(Properties.Resource.ParameterNameValue, Properties.Resource.ParameterMustNonNegative);
+                    throw new ArgumentOutOfRangeException(ParameterNameValue, ParameterMustNonNegative);
                 }
 
                 count = value;
@@ -309,10 +309,10 @@ namespace Bio
             {
                 if (index < 0 || index >= Count)
                     throw new ArgumentOutOfRangeException(
-                         Properties.Resource.ParameterNameIndex,
-                         Properties.Resource.ParameterMustLessThanCount);
+                         ParameterNameIndex,
+                         ParameterMustLessThanCount);
 
-                byte item = byte.MinValue;
+                var item = byte.MinValue;
                 if (sparseSeqItems.ContainsKey(index))
                 {
                     item = sparseSeqItems[index];
@@ -325,8 +325,8 @@ namespace Bio
             {
                 if (index < 0 || index >= Count)
                     throw new ArgumentOutOfRangeException(
-                         Properties.Resource.ParameterNameIndex,
-                         Properties.Resource.ParameterMustLessThanCount);
+                         ParameterNameIndex,
+                         ParameterMustLessThanCount);
 
                 Replace(index, value);
             }
@@ -370,23 +370,23 @@ namespace Bio
         /// <returns>The sub-sequence.</returns>
         public ISequence GetSubSequence(long start, long length)
         {
-            if (start >= this.Count)
+            if (start >= Count)
             {
-                throw new ArgumentOutOfRangeException("start");
+                throw new ArgumentOutOfRangeException(nameof(start));
             }
 
-            if (start + length > this.Count)
+            if (start + length > Count)
             {
-                throw new ArgumentOutOfRangeException("length");
+                throw new ArgumentOutOfRangeException(nameof(length));
             }
 
-            byte[] subSequence = new byte[length];
+            var subSequence = new byte[length];
             for (long index = 0; index < length; index++)
             {
                 subSequence[index] = this[start + index];
             }
 
-            return new Sequence(this.Alphabet, subSequence, false);
+            return new Sequence(Alphabet, subSequence, false);
         }
 
         /// <summary>
@@ -399,15 +399,15 @@ namespace Bio
         {
             if (byteArray == null)
             {
-                throw new ArgumentNullException(Properties.Resource.ParameterNameArray);
+                throw new ArgumentNullException(ParameterNameArray);
             }
 
             if ((start + count) > this.count)
             {
-                throw new ArgumentException(Properties.Resource.DestArrayNotLargeEnough);
+                throw new ArgumentException(DestArrayNotLargeEnough);
             }
 
-            Sequence seq = (Sequence)this.GetSubSequence(0, this.sparseSeqItems.Count);
+            var seq = (Sequence)GetSubSequence(0, sparseSeqItems.Count);
             seq.CopyTo(byteArray, start, count);
         }
 
@@ -444,24 +444,24 @@ namespace Bio
             if (startPos < 0 || startPos >= Count)
             {
                 throw new ArgumentOutOfRangeException(
-                    Properties.Resource.ParameterNameStartPos,
-                    Properties.Resource.ParameterMustLessThanCount);
+                    ParameterNameStartPos,
+                    ParameterMustLessThanCount);
             }
 
             try
             {
                 HashSet<byte> gapSymbols;
 
-                if (!this.Alphabet.TryGetGapSymbols(out gapSymbols))
+                if (!Alphabet.TryGetGapSymbols(out gapSymbols))
                 {
                     return startPos;
                 }
 
-                byte[] aliasSymbolsMap = this.Alphabet.GetSymbolValueMap();
+                var aliasSymbolsMap = Alphabet.GetSymbolValueMap();
 
-                for (long index = startPos; index < this.Count; index++)
+                for (var index = startPos; index < Count; index++)
                 {
-                    byte symbol = aliasSymbolsMap[this.sparseSeqItems[index]];
+                    var symbol = aliasSymbolsMap[sparseSeqItems[index]];
                     if (!gapSymbols.Contains(symbol))
                     {
                         return index;
@@ -500,24 +500,24 @@ namespace Bio
             if (endPos < 0 || endPos >= Count)
             {
                 throw new ArgumentOutOfRangeException(
-                    Properties.Resource.ParameterNameEndPos,
-                    Properties.Resource.ParameterMustLessThanCount);
+                    ParameterNameEndPos,
+                    ParameterMustLessThanCount);
             }
 
             try
             {
                 HashSet<byte> gapSymbols;
 
-                if (!this.Alphabet.TryGetGapSymbols(out gapSymbols))
+                if (!Alphabet.TryGetGapSymbols(out gapSymbols))
                 {
                     return endPos;
                 }
 
-                byte[] aliasSymbolsMap = this.Alphabet.GetSymbolValueMap();
+                var aliasSymbolsMap = Alphabet.GetSymbolValueMap();
 
-                for (long index = endPos; index >= 0; index--)
+                for (var index = endPos; index >= 0; index--)
                 {
-                    byte symbol = aliasSymbolsMap[this.sparseSeqItems[index]];
+                    var symbol = aliasSymbolsMap[sparseSeqItems[index]];
                     if (!gapSymbols.Contains(symbol))
                     {
                         return index;
@@ -538,7 +538,7 @@ namespace Bio
         /// <returns>Sequence items with their position as ReadOnlyCollection of IndexedSequenceItem.</returns>
         public IReadOnlyList<IndexedItem<byte>> GetKnownSequenceItems()
         {
-            List<IndexedItem<byte>> indexedSeqItems = sparseSeqItems.Keys.Select(key => new IndexedItem<byte>(key, sparseSeqItems[key])).ToList();
+            var indexedSeqItems = sparseSeqItems.Keys.Select(key => new IndexedItem<byte>(key, sparseSeqItems[key])).ToList();
             return indexedSeqItems;
         }
 
@@ -548,7 +548,7 @@ namespace Bio
         /// <returns>An IEnumerator of bytes.</returns>
         public IEnumerator<byte> GetEnumerator()
         {
-            for (long index = 0; index < this.Count; index++)
+            for (long index = 0; index < Count; index++)
             {
                 yield return this[index];
             }
@@ -560,7 +560,7 @@ namespace Bio
         /// <returns>An IEnumerator of bytes.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
 
         /// <summary>
@@ -573,8 +573,8 @@ namespace Bio
             if (position < 0 || position >= Count)
             {
                 throw new ArgumentOutOfRangeException(
-                    Properties.Resource.ParameterNamePosition,
-                    Properties.Resource.ParameterMustLessThanCount);
+                    ParameterNamePosition,
+                    ParameterMustLessThanCount);
             }
 
             if (item == 0)
@@ -592,7 +592,7 @@ namespace Bio
                     throw new ArgumentException(
                         string.Format(
                         CultureInfo.CurrentCulture,
-                        Properties.Resource.InvalidSymbol,
+                        InvalidSymbol,
                         item));
                 }
 

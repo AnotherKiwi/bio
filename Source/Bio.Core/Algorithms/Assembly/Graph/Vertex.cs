@@ -21,7 +21,7 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <param name="id">Id for new Vertex.</param>
         public Vertex(long id)
         {
-            this.Id = id;
+            Id = id;
         }
 
         /// <summary>
@@ -31,8 +31,8 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <param name="data">Data to store in new Vertex.</param>
         public Vertex(long id, T data)
         {
-            this.Data = data;
-            this.Id = id;
+            Data = data;
+            Id = id;
         }
         #endregion
 
@@ -64,10 +64,10 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             get
             {
-                int count = 0;
-                if (this.IncomingEdges != null)
+                var count = 0;
+                if (IncomingEdges != null)
                 {
-                    count = this.IncomingEdges.Count;
+                    count = IncomingEdges.Count;
                 }
 
                 return count;
@@ -81,10 +81,10 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             get
             {
-                int count = 0;
-                if (this.OutgoingEdges != null)
+                var count = 0;
+                if (OutgoingEdges != null)
                 {
-                    count = this.OutgoingEdges.Count;
+                    count = OutgoingEdges.Count;
                 }
 
                 return count;
@@ -99,12 +99,12 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <param name="edgeID">Edge id to add.</param>
         public void AddIncomingEdge(long edgeID)
         {
-            if (this.IncomingEdges == null)
+            if (IncomingEdges == null)
             {
-                this.IncomingEdges = new List<long>();
+                IncomingEdges = new List<long>();
             }
 
-            this.IncomingEdges.Add(edgeID);
+            IncomingEdges.Add(edgeID);
         }
 
         /// <summary>
@@ -113,12 +113,12 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <param name="edgeId">Edge id to add.</param>
         public void AddOutgoingEdge(long edgeId)
         {
-            if (this.OutgoingEdges == null)
+            if (OutgoingEdges == null)
             {
-                this.OutgoingEdges = new List<long>();
+                OutgoingEdges = new List<long>();
             }
 
-            this.OutgoingEdges.Add(edgeId);
+            OutgoingEdges.Add(edgeId);
         }
 
         /// <summary>
@@ -129,10 +129,10 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <returns>Returns true if edge id found and successfully removed from the incoming list, else returns false.</returns>
         public bool RemoveFromIncomingEdge(long edgeID)
         {
-            bool result = false;
-            if (this.IncomingEdges != null)
+            var result = false;
+            if (IncomingEdges != null)
             {
-                result = this.IncomingEdges.Remove(edgeID);
+                result = IncomingEdges.Remove(edgeID);
             }
 
             return result;
@@ -146,10 +146,10 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <returns>Returns true if edge id found and successfully removed from the outgoing list, else returns false.</returns>
         public bool RemoveFromOutgoingEdge(long edgeId)
         {
-            bool result = false;
-            if (this.OutgoingEdges != null)
+            var result = false;
+            if (OutgoingEdges != null)
             {
-                result = this.OutgoingEdges.Remove(edgeId);
+                result = OutgoingEdges.Remove(edgeId);
             }
 
             return result;
@@ -163,13 +163,13 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <returns>Returns true if the oldEdgeId found and replaced with newEdgeid, else returns false.</returns>
         public bool ReplaceIncomingEdge(long oldEdgeId, long newEdgeId)
         {
-            bool result = false;
-            if (this.IncomingEdges != null)
+            var result = false;
+            if (IncomingEdges != null)
             {
-                int index = this.IncomingEdges.IndexOf(oldEdgeId);
+                var index = IncomingEdges.IndexOf(oldEdgeId);
                 if (index >= 0)
                 {
-                    this.IncomingEdges[index] = newEdgeId;
+                    IncomingEdges[index] = newEdgeId;
                     result = true;
                 }
             }
@@ -185,13 +185,13 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <returns>Returns true if the oldEdgeId found and replaced with newEdgeid, else returns false.</returns>
         public bool ReplaceOutgoingEdge(long oldEdgeId, long newEdgeId)
         {
-            bool result = false;
-            if (this.OutgoingEdges != null)
+            var result = false;
+            if (OutgoingEdges != null)
             {
-                int index = this.OutgoingEdges.IndexOf(oldEdgeId);
+                var index = OutgoingEdges.IndexOf(oldEdgeId);
                 if (index >= 0)
                 {
-                    this.OutgoingEdges[index] = newEdgeId;
+                    OutgoingEdges[index] = newEdgeId;
                     result = true;
                 }
             }
@@ -207,12 +207,12 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <returns>Returns true if the index is valid and replaced with edgeId, else returns false.</returns>
         public bool ReplaceIncomingEdge(int index, long edgeId)
         {
-            if (this.IncomingEdges == null || index >= this.IncomingEdges.Count)
+            if (IncomingEdges == null || index >= IncomingEdges.Count)
             {
                 return false;
             }
 
-            this.IncomingEdges[index] = edgeId;
+            IncomingEdges[index] = edgeId;
             return true;
         }
 
@@ -224,12 +224,12 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <returns>Returns true if the index is valid and replaced with edgeId, else returns false.</returns>
         public bool ReplaceOutgoingEdge(int index, long edgeId)
         {
-            if (this.OutgoingEdges == null || index >= this.OutgoingEdges.Count)
+            if (OutgoingEdges == null || index >= OutgoingEdges.Count)
             {
                 return false;
             }
 
-            this.OutgoingEdges[index] = edgeId;
+            OutgoingEdges[index] = edgeId;
 
             return true;
         }
@@ -239,8 +239,8 @@ namespace Bio.Algorithms.Assembly.Graph
         /// </summary>
         public void ClearAllEdges()
         {
-            this.ClearIncomingEdges();
-            this.ClearOutgoingEdges();
+            ClearIncomingEdges();
+            ClearOutgoingEdges();
         }
 
         /// <summary>
@@ -248,10 +248,10 @@ namespace Bio.Algorithms.Assembly.Graph
         /// </summary>
         public void ClearIncomingEdges()
         {
-            if (this.IncomingEdges != null)
+            if (IncomingEdges != null)
             {
-                this.IncomingEdges.Clear();
-                this.IncomingEdges = null;
+                IncomingEdges.Clear();
+                IncomingEdges = null;
             }
         }
 
@@ -260,10 +260,10 @@ namespace Bio.Algorithms.Assembly.Graph
         /// </summary>
         public void ClearOutgoingEdges()
         {
-            if (this.OutgoingEdges != null)
+            if (OutgoingEdges != null)
             {
-                this.OutgoingEdges.Clear();
-                this.OutgoingEdges = null;
+                OutgoingEdges.Clear();
+                OutgoingEdges = null;
             }
         }
       
@@ -274,12 +274,12 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <returns>Returns Edgeid if the index is valid, else returns -1.</returns>
         public long GetIncomingEdge(int index)
         {
-            if (this.IncomingEdges == null || index >= this.IncomingEdges.Count)
+            if (IncomingEdges == null || index >= IncomingEdges.Count)
             {
                 return -1;
             }
 
-            return this.IncomingEdges[index];
+            return IncomingEdges[index];
         }
 
         /// <summary>
@@ -289,12 +289,12 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <returns>Returns Edgeid if the index is valid, else returns -1.</returns>
         public long GetOutgoingEdge(int index)
         {
-            if (this.OutgoingEdges == null || index >= this.OutgoingEdges.Count)
+            if (OutgoingEdges == null || index >= OutgoingEdges.Count)
             {
                 return -1;
             }
 
-            return this.OutgoingEdges[index];
+            return OutgoingEdges[index];
         }
         #endregion
     }

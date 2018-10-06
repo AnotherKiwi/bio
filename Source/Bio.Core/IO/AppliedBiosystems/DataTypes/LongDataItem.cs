@@ -44,7 +44,7 @@ namespace Bio.IO.AppliedBiosystems.DataTypes
         /// <param name="visitor"></param>
         public override void Accept(IAb1DataVisitor visitor)
         {
-            if (visitor == null) throw new ArgumentNullException("visitor");
+            if (visitor == null) throw new ArgumentNullException(nameof(visitor));
             visitor.Visit(this);
         }
 

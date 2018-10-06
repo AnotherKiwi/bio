@@ -27,7 +27,7 @@ namespace Bio.Matrix
         {
             get
             {
-                int count = _matrix.ColKeys.Where(colKey => !_matrix.IsMissing(_rowKey, colKey)).Count();
+                var count = _matrix.ColKeys.Where(colKey => !_matrix.IsMissing(_rowKey, colKey)).Count();
                 return count;
             }
         }
@@ -69,7 +69,7 @@ namespace Bio.Matrix
 
         public IEnumerator<KeyValuePair<TColKey, TValue>> GetEnumerator()
         {
-            foreach (TColKey colKey in _matrix.ColKeys)
+            foreach (var colKey in _matrix.ColKeys)
             {
                 TValue value;
                 if (_matrix.TryGetValue(_rowKey, colKey, out value))
@@ -127,7 +127,7 @@ namespace Bio.Matrix
 
         public void Clear()
         {
-            foreach (TColKey colKey in _matrix.ColKeys)
+            foreach (var colKey in _matrix.ColKeys)
             {
                 _matrix.Remove(_rowKey, colKey);
             }
@@ -141,7 +141,7 @@ namespace Bio.Matrix
 
         public void CopyTo(KeyValuePair<TColKey, TValue>[] array, int arrayIndex)
         {
-            foreach (KeyValuePair<TColKey, TValue> keyVal in this)
+            foreach (var keyVal in this)
             {
                 array[arrayIndex++] = keyVal;
             }
@@ -177,7 +177,7 @@ namespace Bio.Matrix
         {
             get
             {
-                int count = _matrix.RowKeys.Where(rowKey => !_matrix.IsMissing(rowKey, _colKey)).Count();
+                var count = _matrix.RowKeys.Where(rowKey => !_matrix.IsMissing(rowKey, _colKey)).Count();
                 return count;
             }
         }
@@ -219,7 +219,7 @@ namespace Bio.Matrix
 
         public IEnumerator<KeyValuePair<TRowKey, TValue>> GetEnumerator()
         {
-            foreach (TRowKey rowKey in _matrix.RowKeys)
+            foreach (var rowKey in _matrix.RowKeys)
             {
                 TValue value;
                 if (_matrix.TryGetValue(rowKey, _colKey, out value))
@@ -276,7 +276,7 @@ namespace Bio.Matrix
 
         public void Clear()
         {
-            foreach (TRowKey rowKey in _matrix.RowKeys)
+            foreach (var rowKey in _matrix.RowKeys)
             {
                 _matrix.Remove(rowKey, _colKey);
             }
@@ -290,7 +290,7 @@ namespace Bio.Matrix
 
         public void CopyTo(KeyValuePair<TRowKey, TValue>[] array, int arrayIndex)
         {
-            foreach (KeyValuePair<TRowKey, TValue> keyVal in this)
+            foreach (var keyVal in this)
             {
                 array[arrayIndex++] = keyVal;
             }

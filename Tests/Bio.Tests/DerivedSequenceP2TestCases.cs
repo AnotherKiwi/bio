@@ -25,14 +25,14 @@ namespace Bio.Tests
         public void InvalidateCopyTo()
         {
             // Get input and expected values from xml
-            string expectedSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.DnaDerivedSequenceNode, Constants.ExpectedSequence);
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.DnaDerivedSequenceNode, Constants.AlphabetNameNode);
-            IAlphabet alphabet = Utility.GetAlphabet(alphabetName);
+            var alphabet = Utility.GetAlphabet(alphabetName);
 
             // Create derived Sequence
-            DerivedSequence seqObj = CreateDerivedSequence(
+            var seqObj = CreateDerivedSequence(
                 alphabet, expectedSequence);
 
             //check with null array
@@ -97,7 +97,7 @@ namespace Bio.Tests
             IAlphabet alphabet, string source)
         {
             ISequence seq = new Sequence(alphabet, source);
-            DerivedSequence derSequence = new DerivedSequence(seq, false, false);
+            var derSequence = new DerivedSequence(seq, false, false);
 
             return derSequence;
         }

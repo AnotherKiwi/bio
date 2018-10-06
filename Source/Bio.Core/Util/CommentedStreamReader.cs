@@ -67,7 +67,7 @@ namespace Bio.Util
         /// <returns>The next noncomment line</returns>
         public override string ReadLine()
         {
-            return this.ReadCommentOrNonCommentLine(false);
+            return ReadCommentOrNonCommentLine(false);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Bio.Util
         /// <returns>A comment line</returns>
         public string ReadCommentLine()
         {
-            return this.ReadCommentOrNonCommentLine(true);
+            return ReadCommentOrNonCommentLine(true);
         }
 
         /// <summary>
@@ -86,45 +86,45 @@ namespace Bio.Util
         /// <returns>the next line</returns>
         protected string ReadCommentOrNonCommentLine(bool returnComment)
         {
-            string line = base.ReadLine();
+            var line = base.ReadLine();
 
             if (line == null)
             {
                 return null;
             }
-            if (!this.haveReadFirstLine)
+            if (!haveReadFirstLine)
             {
-                this.haveReadFirstLine = true;
+                haveReadFirstLine = true;
                 if (line.StartsWith(CommentHeader))
                 {
-                    this.CommentToken = line.Substring(CommentHeader.Length);
-                    this.isCommented = true;
+                    CommentToken = line.Substring(CommentHeader.Length);
+                    isCommented = true;
                     Helper.CheckCondition(
-                        this.CommentToken.Length > 0,
+                        CommentToken.Length > 0,
                         () => "Expected non-zero length comment");
                     if (returnComment)
                     {
                         return line;
                     }
-                    return this.ReadCommentOrNonCommentLine(returnComment);
+                    return ReadCommentOrNonCommentLine(returnComment);
                 }
                 if (returnComment)
                 {
-                    return this.ReadCommentOrNonCommentLine(returnComment);
+                    return ReadCommentOrNonCommentLine(returnComment);
                 }
                 return line;
             }
-            if (this.isCommented && line.StartsWith(this.CommentToken))
+            if (isCommented && line.StartsWith(CommentToken))
             {
                 if (returnComment)
                 {
                     return line;
                 }
-                return this.ReadCommentOrNonCommentLine(returnComment);
+                return ReadCommentOrNonCommentLine(returnComment);
             }
             if (returnComment)
             {
-                return this.ReadCommentOrNonCommentLine(returnComment);
+                return ReadCommentOrNonCommentLine(returnComment);
             }
             return line;
         }
@@ -188,7 +188,7 @@ namespace Bio.Util
         {
             var sb = new StringBuilder();
             string line;
-            while (null != (line = this.ReadLine()))
+            while (null != (line = ReadLine()))
             {
                 sb.AppendLine(line);
             }
@@ -202,7 +202,7 @@ namespace Bio.Util
         public IEnumerable<string> ReadAllComments()
         {
             string line;
-            while (null != (line = this.ReadCommentLine()))
+            while (null != (line = ReadCommentLine()))
             {
                 yield return line;
             }

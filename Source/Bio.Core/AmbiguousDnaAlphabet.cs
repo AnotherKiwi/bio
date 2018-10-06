@@ -7,18 +7,18 @@ using Bio.Properties;
 
 namespace Bio
 {
-    /// <summary>
-    /// Ambiguous symbol in the DNA.
-    /// </summary>
-    public class AmbiguousDnaAlphabet : DnaAlphabet
+    /// <inheritdoc cref="IAmbiguousDnaAlphabet" />
+    /// <seealso cref="DnaAlphabet"/>, 
+    /// <seealso cref="IAmbiguousDnaAlphabet"/>
+    public class AmbiguousDnaAlphabet : DnaAlphabet, IAmbiguousDnaAlphabet
     {
         /// <summary>
-        /// New instance of Ambiguous symbol.
+        ///     New instance of AmbiguousDnaAlphabet class.
         /// </summary>
-        public static readonly new AmbiguousDnaAlphabet Instance;
+        public new static readonly AmbiguousDnaAlphabet Instance;
 
         /// <summary>
-        /// Initializes static members of the AmbiguousDnaAlphabet class.
+        ///     Initializes static members of the AmbiguousDnaAlphabet class.
         /// </summary>
         static AmbiguousDnaAlphabet()
         {
@@ -26,129 +26,103 @@ namespace Bio
         }
 
         /// <summary>
-        /// Initializes a new instance of the AmbiguousDnaAlphabet class.
+        ///     Initializes a new instance of the AmbiguousDnaAlphabet class.
         /// </summary>
         protected AmbiguousDnaAlphabet()
         {
             Name = Resource.AmbiguousDnaAlphabetName;
             HasAmbiguity = true;
 
-            this.AC = (byte)'M';
-            this.GA = (byte)'R';
-            this.GC = (byte)'S';
-            this.AT = (byte)'W';
-            this.TC = (byte)'Y';
-            this.GT = (byte)'K';
-            this.GCA = (byte)'V';
-            this.ACT = (byte)'H';
-            this.GAT = (byte)'D';
-            this.GTC = (byte)'B';
-            this.Any = (byte)'N';
+            AC = (byte)'M';
+            GA = (byte)'R';
+            GC = (byte)'S';
+            AT = (byte)'W';
+            TC = (byte)'Y';
+            GT = (byte)'K';
+            GCA = (byte)'V';
+            ACT = (byte)'H';
+            GAT = (byte)'D';
+            GTC = (byte)'B';
+            Any = (byte)'N';
 
-            AddNucleotide(this.AC, "Adenine or Cytosine", (byte)'m');
-            AddNucleotide(this.GA, "Guanine or Adenine", (byte)'r');
-            AddNucleotide(this.GC, "Guanine or Cytosine", (byte)'s');
-            AddNucleotide(this.AT, "Adenine or Thymine", (byte)'w');
-            AddNucleotide(this.TC, "Thymine or Cytosine", (byte)'y');
-            AddNucleotide(this.GT, "Guanine or Thymine", (byte)'k');
-            AddNucleotide(this.GCA, "Guanine or Cytosine or Adenine", (byte)'v');
-            AddNucleotide(this.ACT, "Adenine or Cytosine or Thymine", (byte)'h');
-            AddNucleotide(this.GAT, "Guanine or Adenine or Thymine", (byte)'d');
-            AddNucleotide(this.GTC, "Guanine or Thymine or Cytosine", (byte)'b');
-            AddNucleotide(this.Any, "Any", (byte)'n');
+            AddNucleotide(AC, "Adenine or Cytosine", (byte)'m');
+            AddNucleotide(GA, "Guanine or Adenine", (byte)'r');
+            AddNucleotide(GC, "Guanine or Cytosine", (byte)'s');
+            AddNucleotide(AT, "Adenine or Thymine", (byte)'w');
+            AddNucleotide(TC, "Thymine or Cytosine", (byte)'y');
+            AddNucleotide(GT, "Guanine or Thymine", (byte)'k');
+            AddNucleotide(GCA, "Guanine or Cytosine or Adenine", (byte)'v');
+            AddNucleotide(ACT, "Adenine or Cytosine or Thymine", (byte)'h');
+            AddNucleotide(GAT, "Guanine or Adenine or Thymine", (byte)'d');
+            AddNucleotide(GTC, "Guanine or Thymine or Cytosine", (byte)'b');
+            AddNucleotide(Any, "Any", (byte)'n');
 
             // map complements.
-            MapComplementNucleotide(this.Any, this.Any);
-            MapComplementNucleotide(this.AC, this.GT);
-            MapComplementNucleotide(this.AT, this.AT);
-            MapComplementNucleotide(this.ACT, this.GAT);
-            MapComplementNucleotide(this.GA, this.TC);
-            MapComplementNucleotide(this.GC, this.GC);
-            MapComplementNucleotide(this.GT, this.AC);
-            MapComplementNucleotide(this.GAT, this.ACT);
-            MapComplementNucleotide(this.GCA, this.GTC);
-            MapComplementNucleotide(this.GTC, this.GCA);
-            MapComplementNucleotide(this.TC, this.GA);
+            MapComplementNucleotide(Any, Any);
+            MapComplementNucleotide(AC, GT);
+            MapComplementNucleotide(AT, AT);
+            MapComplementNucleotide(ACT, GAT);
+            MapComplementNucleotide(GA, TC);
+            MapComplementNucleotide(GC, GC);
+            MapComplementNucleotide(GT, AC);
+            MapComplementNucleotide(GAT, ACT);
+            MapComplementNucleotide(GCA, GTC);
+            MapComplementNucleotide(GTC, GCA);
+            MapComplementNucleotide(TC, GA);
 
             // Map ambiguous symbols.
-            MapAmbiguousNucleotide(this.Any, new byte[] { A, C, G, T });
-            MapAmbiguousNucleotide(this.AC, new byte[] { A, C });
-            MapAmbiguousNucleotide(this.GA, new byte[] { G, A });
-            MapAmbiguousNucleotide(this.GC, new byte[] { G, C });
-            MapAmbiguousNucleotide(this.AT, new byte[] { A, T });
-            MapAmbiguousNucleotide(this.TC, new byte[] { T, C });
-            MapAmbiguousNucleotide(this.GT, new byte[] { G, T });
-            MapAmbiguousNucleotide(this.GCA, new byte[] { G, C, A });
-            MapAmbiguousNucleotide(this.ACT, new byte[] { A, C, T });
-            MapAmbiguousNucleotide(this.GAT, new byte[] { G, A, T });
-            MapAmbiguousNucleotide(this.GTC, new byte[] { G, T, C });
+            MapAmbiguousNucleotide(Any, new byte[] { A, C, G, T });
+            MapAmbiguousNucleotide(AC, new byte[] { A, C });
+            MapAmbiguousNucleotide(GA, new byte[] { G, A });
+            MapAmbiguousNucleotide(GC, new byte[] { G, C });
+            MapAmbiguousNucleotide(AT, new byte[] { A, T });
+            MapAmbiguousNucleotide(TC, new byte[] { T, C });
+            MapAmbiguousNucleotide(GT, new byte[] { G, T });
+            MapAmbiguousNucleotide(GCA, new byte[] { G, C, A });
+            MapAmbiguousNucleotide(ACT, new byte[] { A, C, T });
+            MapAmbiguousNucleotide(GAT, new byte[] { G, A, T });
+            MapAmbiguousNucleotide(GTC, new byte[] { G, T, C });
         }
 
-        /// <summary>
-        /// Gets Ambiguous symbol A-Adenine C-Cytosine.
-        /// </summary>
+        /// <inheritdoc />
         public byte AC { get; private set; }
 
-        /// <summary>
-        /// Gets Ambiguous symbol G-Guanine A-Adenine.
-        /// </summary>
+        /// <inheritdoc />
         public byte GA { get; private set; }
 
-        /// <summary>
-        /// Gets Ambiguous symbol G-Guanine C-Cytosine.
-        /// </summary>
+        /// <inheritdoc />
         public byte GC { get; private set; }
 
-        /// <summary>
-        /// Gets Ambiguous symbol A-Adenine T-Thymine.
-        /// </summary>
+        /// <inheritdoc />
         public byte AT { get; private set; }
 
-        /// <summary>
-        /// Gets Ambiguous symbol T-Thymine C-Cytosine.
-        /// </summary>
+        /// <inheritdoc />
         public byte TC { get; private set; }
 
-        /// <summary>
-        /// Gets Ambiguous symbol  G-Guanine T-Thymine.
-        /// </summary>
+        /// <inheritdoc />
         public byte GT { get; private set; }
 
-        /// <summary>
-        /// Gets Ambiguous symbol G-Guanine C-Cytosine A-Adenine.
-        /// </summary>
+        /// <inheritdoc />
         public byte GCA { get; private set; }
 
-        /// <summary>
-        /// Gets Ambiguous symbol A-Adenine C-Cytosine T-Thymine.
-        /// </summary>
+        /// <inheritdoc />
         public byte ACT { get; private set; }
 
-        /// <summary>
-        /// Gets Ambiguous symbol G-Guanine A-Adenine T-Thymine.
-        /// </summary>
+        /// <inheritdoc />
         public byte GAT { get; private set; }
 
-        /// <summary>
-        /// Gets Ambiguous symbol G-Guanine T-Thymine C-Cytosine.
-        /// </summary>
+        /// <inheritdoc />
         public byte GTC { get; private set; }
 
-        /// <summary>
-        /// Gets Ambiguous symbol Any.
-        /// </summary>
+        /// <inheritdoc />
         public byte Any { get; private set; }
 
-        /// <summary>
-        /// Find the consensus nucleotide for a set of nucleotides.
-        /// </summary>
-        /// <param name="symbols">Set of sequence items.</param>
-        /// <returns>Consensus nucleotide.</returns>
+        /// <inheritdoc />
         public override byte GetConsensusSymbol(HashSet<byte> symbols)
         {
             if (symbols == null)
             {
-                throw new ArgumentNullException("symbols");
+                throw new ArgumentNullException(nameof(symbols));
             }
 
             if (symbols.Count == 0)
@@ -156,12 +130,12 @@ namespace Bio
                 throw new ArgumentException(Resource.SymbolCountZero);
             }
 
-            HashSet<byte> symbolsInUpperCase = new HashSet<byte>();
+            var symbolsInUpperCase = new HashSet<byte>();
             
             // Validate that all are valid DNA symbols
-            HashSet<byte> validValues = GetValidSymbols();
+            var validValues = GetValidSymbols();
 
-            foreach (byte symbol in symbols)
+            foreach (var symbol in symbols)
             {
                 if (!validValues.Contains(symbol))
                 {
@@ -169,7 +143,7 @@ namespace Bio
                         CultureInfo.CurrentCulture, Resource.INVALID_SYMBOL, (char)symbol, Name));
                 }
 
-                byte upperCaseSymbol = symbol;
+                var upperCaseSymbol = symbol;
                 if (symbol >= 97 && symbol <= 122)
                 {
                     upperCaseSymbol = (byte)(symbol - 32);
@@ -179,11 +153,11 @@ namespace Bio
             }
 
             // Remove all gap symbols
-            HashSet<byte> gapItems = null;
-            this.TryGetGapSymbols(out gapItems);
+            HashSet<byte> gapItems;
+            TryGetGapSymbols(out gapItems);
 
-            byte defaultGap = 0;
-            this.TryGetDefaultGapSymbol(out defaultGap);
+            byte defaultGap;
+            TryGetDefaultGapSymbol(out defaultGap);
 
             symbolsInUpperCase.ExceptWith(gapItems);
 
@@ -198,10 +172,10 @@ namespace Bio
             }
             else
             {
-                HashSet<byte> baseSet = new HashSet<byte>();
+                var baseSet = new HashSet<byte>();
                 HashSet<byte> ambiguousSymbols;
 
-                foreach (byte n in symbolsInUpperCase)
+                foreach (var n in symbolsInUpperCase)
                 {
                     ambiguousSymbols = null;
                     if (TryGetBasicSymbols(n, out ambiguousSymbols))

@@ -51,7 +51,7 @@ namespace Bio.IO.BAM
         /// <param name="other">Other file offset to compare.</param>
         public int CompareTo(FileOffset other)
         {
-            return this.BothDataElements.CompareTo(other.BothDataElements);
+            return BothDataElements.CompareTo(other.BothDataElements);
         }
 
         /// <summary>
@@ -62,8 +62,8 @@ namespace Bio.IO.BAM
         public override bool Equals(object obj)
         {
             if (!(obj is FileOffset)) { return false; }
-            FileOffset other = (FileOffset) obj;
-            return this.BothDataElements == other.BothDataElements ;
+            var other = (FileOffset) obj;
+            return BothDataElements == other.BothDataElements ;
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Bio.IO.BAM
         /// <returns> true if other has the same value as this instance; otherwise, false.</returns>
         public bool Equals(FileOffset other)
         {
-            return this.BothDataElements == other.BothDataElements;
+            return BothDataElements == other.BothDataElements;
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace Bio.IO.BAM
         /// </summary>
         public override int GetHashCode()
         {
-            return this.CompressedBlockOffset.GetHashCode() ^ this.UncompressedBlockOffset.GetHashCode();
+            return CompressedBlockOffset.GetHashCode() ^ UncompressedBlockOffset.GetHashCode();
         }
     }
 }

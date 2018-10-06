@@ -50,7 +50,7 @@ namespace Bio.Matrix
         {
             if (converter == null)
             {
-                throw new ArgumentNullException("converter");
+                throw new ArgumentNullException(nameof(converter));
             }
 
             ParentMatrix = parentMatrix;
@@ -127,7 +127,7 @@ namespace Bio.Matrix
         public override TValueView MissingValue
 #pragma warning restore 1591
         {
-            get { return this.missingValue; }
+            get { return missingValue; }
         }
 
 #pragma warning disable 1591
@@ -152,7 +152,7 @@ namespace Bio.Matrix
             }
             else
             {
-                TValueParent valueParent = ViewValueToParentValue(value);
+                var valueParent = ViewValueToParentValue(value);
                 Helper.CheckCondition(!ParentMatrix.IsMissing(valueParent), Properties.Resource.MayNotConvert);
                 return valueParent;
             }

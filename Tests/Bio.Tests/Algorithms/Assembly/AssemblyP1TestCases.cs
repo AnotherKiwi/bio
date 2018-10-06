@@ -53,7 +53,7 @@ namespace Bio.Tests.Algorithms.Assembly
         [Category("Priority1")]
         public void SequenceAssemblerWithAssembleMethodForDna()
         {
-            this.ValidateSequenceAssemblerGeneral(Constants.AssemblySequenceAlgorithmNodeName,
+            ValidateSequenceAssemblerGeneral(Constants.AssemblySequenceAlgorithmNodeName,
                                              AssemblyParameters.Assemble, false);
         }
 
@@ -69,7 +69,7 @@ namespace Bio.Tests.Algorithms.Assembly
         [Category("Priority1")]
         public void SequenceAssemblerWithAssembleMethodForMaxSequences()
         {
-            this.ValidateSequenceAssemblerGeneral(Constants.AssemblyMaxSequenceAlgorithmNodeName,
+            ValidateSequenceAssemblerGeneral(Constants.AssemblyMaxSequenceAlgorithmNodeName,
                                              AssemblyParameters.Assemble, false);
         }
 
@@ -85,7 +85,7 @@ namespace Bio.Tests.Algorithms.Assembly
         [Category("Priority1")]
         public void SequenceAssemblerWithAssembleMethodForMinSequences()
         {
-            this.ValidateSequenceAssemblerGeneral(Constants.AssemblyMinSequenceAlgorithmNodeName,
+            ValidateSequenceAssemblerGeneral(Constants.AssemblyMinSequenceAlgorithmNodeName,
                                              AssemblyParameters.Assemble, false);
         }
 
@@ -101,7 +101,7 @@ namespace Bio.Tests.Algorithms.Assembly
         [Category("Priority1")]
         public void SequenceAssemblerWithAssembleMethodForValidThreshold()
         {
-            this.ValidateSequenceAssemblerGeneral(Constants.AssemblySequenceAlgorithmNodeName,
+            ValidateSequenceAssemblerGeneral(Constants.AssemblySequenceAlgorithmNodeName,
                                              AssemblyParameters.Assemble, false);
         }
 
@@ -117,7 +117,7 @@ namespace Bio.Tests.Algorithms.Assembly
         [Category("Priority1")]
         public void SequenceAssemblerWithAssembleMethodForMaxThreshold()
         {
-            this.ValidateSequenceAssemblerGeneral(Constants.AssemblyMaxThresholdSequenceAlgorithmNodeName,
+            ValidateSequenceAssemblerGeneral(Constants.AssemblyMaxThresholdSequenceAlgorithmNodeName,
                                              AssemblyParameters.Assemble, false);
         }
 
@@ -133,7 +133,7 @@ namespace Bio.Tests.Algorithms.Assembly
         [Category("Priority1")]
         public void SequenceAssemblerWithAssembleMethodForMinThreshold()
         {
-            this.ValidateSequenceAssemblerGeneral(Constants.AssemblyMinThresholdSequenceAlgorithmNodeName,
+            ValidateSequenceAssemblerGeneral(Constants.AssemblyMinThresholdSequenceAlgorithmNodeName,
                                              AssemblyParameters.Assemble, false);
         }
 
@@ -149,7 +149,7 @@ namespace Bio.Tests.Algorithms.Assembly
         [Category("Priority1")]
         public void SequenceAssemblerWithAssembleMethodForDiagonalSM()
         {
-            this.ValidateSequenceAssemblerGeneral(Constants.AssemblySequenceAlgorithmNodeName,
+            ValidateSequenceAssemblerGeneral(Constants.AssemblySequenceAlgorithmNodeName,
                                              AssemblyParameters.DiagonalSM, false);
         }
 
@@ -165,7 +165,7 @@ namespace Bio.Tests.Algorithms.Assembly
         [Category("Priority1")]
         public void SequenceAssemblerWithAssembleMethodForSimilarityMatrix()
         {
-            this.ValidateSequenceAssemblerGeneral(Constants.AssemblySequenceAlgorithmNodeName,
+            ValidateSequenceAssemblerGeneral(Constants.AssemblySequenceAlgorithmNodeName,
                                              AssemblyParameters.SimilarityMatrix, false);
         }
 
@@ -185,7 +185,7 @@ namespace Bio.Tests.Algorithms.Assembly
         [Category("Priority1")]
         public void SimpleConsensusWithMakeConsensusMethodForDna()
         {
-            this.ValidateSequenceAssemblerGeneral(Constants.AssemblySequenceAlgorithmNodeName,
+            ValidateSequenceAssemblerGeneral(Constants.AssemblySequenceAlgorithmNodeName,
                                              AssemblyParameters.Consensus, false);
         }
 
@@ -201,7 +201,7 @@ namespace Bio.Tests.Algorithms.Assembly
         [Category("Priority1")]
         public void SimpleConsensusWithMakeConsensusMethodForMaxThreshold()
         {
-            this.ValidateSequenceAssemblerGeneral(Constants.AssemblyMaxThresholdSequenceAlgorithmNodeName,
+            ValidateSequenceAssemblerGeneral(Constants.AssemblyMaxThresholdSequenceAlgorithmNodeName,
                                              AssemblyParameters.Consensus, false);
         }
 
@@ -217,7 +217,7 @@ namespace Bio.Tests.Algorithms.Assembly
         [Category("Priority1")]
         public void SimpleConsensusWithMakeConsensusMethodForMinThreshold()
         {
-            this.ValidateSequenceAssemblerGeneral(Constants.AssemblyMinThresholdSequenceAlgorithmNodeName,
+            ValidateSequenceAssemblerGeneral(Constants.AssemblyMinThresholdSequenceAlgorithmNodeName,
                                              AssemblyParameters.Consensus, false);
         }
 
@@ -233,7 +233,7 @@ namespace Bio.Tests.Algorithms.Assembly
         [Category("Priority1")]
         public void SimpleConsensusWithMakeConsensusForValidThreshold()
         {
-            this.ValidateSequenceAssemblerGeneral(Constants.AssemblySequenceAlgorithmNodeName,
+            ValidateSequenceAssemblerGeneral(Constants.AssemblySequenceAlgorithmNodeName,
                                              AssemblyParameters.Consensus, false);
         }
 
@@ -248,7 +248,7 @@ namespace Bio.Tests.Algorithms.Assembly
         [Category("Priority1")]
         public void SequenceAssemblerWithAssembleMethodForDnaUsingSeqAssemblyCtr()
         {
-            this.ValidateSequenceAssemblerGeneral(Constants.AssemblySequenceAlgorithmNodeName,
+            ValidateSequenceAssemblerGeneral(Constants.AssemblySequenceAlgorithmNodeName,
                                              AssemblyParameters.Assemble, true);
         }
 
@@ -261,7 +261,7 @@ namespace Bio.Tests.Algorithms.Assembly
         [Category("Priority1")]
         public void ValidateKmerSequenceProperties()
         {
-            this.ValidateKmer(Constants.AssemblyAlgorithmNodeName, false);
+            ValidateKmer(Constants.AssemblyAlgorithmNodeName, false);
         }
 
         /// <summary>
@@ -273,7 +273,7 @@ namespace Bio.Tests.Algorithms.Assembly
         [Category("Priority1")]
         public void ValidateBuilderKmer()
         {
-            this.ValidateKmer(Constants.KmerbuilderNode, true);
+            ValidateKmer(Constants.KmerbuilderNode, true);
         }
 
         /// <summary>
@@ -285,7 +285,7 @@ namespace Bio.Tests.Algorithms.Assembly
         [Category("Priority1")]
         public void ValidateCompareTwoSequences()
         {
-            this.ValidateComputeFeature(
+            ValidateComputeFeature(
                 Constants.CompareTwoSequencesNode,
                 AssemblyParameters.Consensus);
         }
@@ -299,7 +299,7 @@ namespace Bio.Tests.Algorithms.Assembly
         [Category("Priority1")]
         public void ValidateComputeFeatures()
         {
-            this.ValidateComputeFeature(
+            ValidateComputeFeature(
                 Constants.CompareTwoProtienSequencesNode,
                 AssemblyParameters.Assemble);
         }
@@ -313,7 +313,7 @@ namespace Bio.Tests.Algorithms.Assembly
         [Category("Priority1")]
         public void ValidateComputeMoleculeFeatures()
         {
-            this.ValidateComputeFeature(
+            ValidateComputeFeature(
                 Constants.CompareTwoSequencesNode,
                 AssemblyParameters.Assemble);
         }
@@ -343,20 +343,20 @@ namespace Bio.Tests.Algorithms.Assembly
         [Category("Priority1")]
         public void ValidateSequenceCompare()
         {
-            string firstSequence = this.utilityObj.xmlUtil.GetTextValue(Constants.SequenceCompareNode,
+            var firstSequence = utilityObj.xmlUtil.GetTextValue(Constants.SequenceCompareNode,
                                                                    Constants.SequenceNode1);
-            string secondSequence = this.utilityObj.xmlUtil.GetTextValue(Constants.SequenceCompareNode,
+            var secondSequence = utilityObj.xmlUtil.GetTextValue(Constants.SequenceCompareNode,
                                                                     Constants.SequenceNode2);
-            string replace = this.utilityObj.xmlUtil.GetTextValue(Constants.SequenceCompareNode,
+            var replace = utilityObj.xmlUtil.GetTextValue(Constants.SequenceCompareNode,
                                                              Constants.ReplaceNode);
             ISequence seq1 = new Sequence(Alphabets.DNA, firstSequence);
             ISequence seq2 = new Sequence(Alphabets.DNA, secondSequence);
             var kmerBuilder = new SequenceToKmerBuilder();
-            KmersOfSequence kmers = kmerBuilder.Build(seq1, 2);
-            List<WordMatch> nodes = WordMatch.BuildMatchTable(kmers, seq2, 2);
-            List<WordMatch> matchList = WordMatch.GetMinimalList(nodes, 2);
-            List<DifferenceNode> diffNode = DifferenceNode.BuildDiffList(matchList, seq1, seq2);
-            List<DifferenceNode.CompareFeature> features = DifferenceNode.OutputDiffList(diffNode, seq1, seq2);
+            var kmers = kmerBuilder.Build(seq1, 2);
+            var nodes = WordMatch.BuildMatchTable(kmers, seq2, 2);
+            var matchList = WordMatch.GetMinimalList(nodes, 2);
+            var diffNode = DifferenceNode.BuildDiffList(matchList, seq1, seq2);
+            var features = DifferenceNode.OutputDiffList(diffNode, seq1, seq2);
 
             //Validating the behavior. 
             Assert.AreEqual(features.Count, 4);
@@ -383,22 +383,22 @@ namespace Bio.Tests.Algorithms.Assembly
                                                       AssemblyParameters additionalParameter, bool isSeqAssemblyctr)
         {
             // Get the parameters from Xml
-            int matchScore = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName,
+            var matchScore = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                        Constants.MatchScoreNode), null);
-            int mismatchScore = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName,
+            var mismatchScore = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                           Constants.MisMatchScoreNode), null);
-            int gapCost = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName,
+            var gapCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                     Constants.GapCostNode), null);
-            double mergeThreshold = double.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName,
+            var mergeThreshold = double.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                  Constants.MergeThresholdNode), null);
-            double consensusThreshold = double.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName,
+            var consensusThreshold = double.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                      Constants.ConsensusThresholdNode),
                                                      null);
-            string[] sequences = this.utilityObj.xmlUtil.GetTextValues(nodeName,
+            var sequences = utilityObj.xmlUtil.GetTextValues(nodeName,
                                                                   Constants.SequencesNode);
-            IAlphabet alphabet = Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(nodeName,
+            var alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                      Constants.AlphabetNameNode));
-            string documentation = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+            var documentation = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                    Constants.DocumentaionNode);
             var info = new SerializationInfo(typeof (OverlapDeNovoAssembly),
                                              new FormatterConverter());
@@ -409,7 +409,7 @@ namespace Bio.Tests.Algorithms.Assembly
             switch (additionalParameter)
             {
                 case AssemblyParameters.Consensus:
-                    for (int i = 0; i < sequences.Length; i++)
+                    for (var i = 0; i < sequences.Length; i++)
                     {
                         // Logs the sequences
                         ApplicationLog.WriteLine(string.Format(null, "SimpleConsensusMethod P1 : Sequence '{0}' used is '{1}'.", i, sequences[i]));
@@ -419,7 +419,7 @@ namespace Bio.Tests.Algorithms.Assembly
                     }
                     break;
                 default:
-                    for (int i = 0; i < sequences.Length; i++)
+                    for (var i = 0; i < sequences.Length; i++)
                     {
                         // Logs the sequences
                         ApplicationLog.WriteLine(string.Format(null, "SequenceAssembly P1 : Sequence '{0}' used is '{1}'.", i, sequences[i]));
@@ -449,7 +449,7 @@ namespace Bio.Tests.Algorithms.Assembly
                         new DiagonalSimilarityMatrix(matchScore, mismatchScore);
                     break;
                 case AssemblyParameters.SimilarityMatrix:
-                    string blosumFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.BlosumFilePathNode).TestDir();
+                    var blosumFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.BlosumFilePathNode).TestDir();
                     (assembler.OverlapAlgorithm).SimilarityMatrix = new SimilarityMatrix(new StreamReader(blosumFilePath));
                     break;
                 default:
@@ -462,20 +462,20 @@ namespace Bio.Tests.Algorithms.Assembly
             assembler.AssumeStandardOrientation = false;
 
             // Assembles all the sequences.
-            IOverlapDeNovoAssembly assembly = (IOverlapDeNovoAssembly) assembler.Assemble(inputs);
+            var assembly = (IOverlapDeNovoAssembly) assembler.Assemble(inputs);
 
             // Set Documentation property.
             assembly.Documentation = documentation;
 
             // Get the parameters from Xml in general
-            int contigSequencesCount = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ContigSequencesCountNode), null);
-            string contigConsensus = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ContigConsensusNode);
+            var contigSequencesCount = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ContigSequencesCountNode), null);
+            var contigConsensus = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ContigConsensusNode);
 
             switch (additionalParameter)
             {
                 case AssemblyParameters.Consensus:
                     // Read the contig from Contig method.
-                    Contig contigReadForConsensus = assembly.Contigs[0];
+                    var contigReadForConsensus = assembly.Contigs[0];
                     contigReadForConsensus.Consensus = null;
                     var simpleSeqAssembler = new OverlapDeNovoAssembler
                     {
@@ -489,16 +489,16 @@ namespace Bio.Tests.Algorithms.Assembly
                     break;
                 default:
                     // Get the parameters from Xml for Assemble() method test cases.
-                    int unMergedCount = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    var unMergedCount = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                   Constants.UnMergedSequencesCountNode),
                                                   null);
-                    int contigsCount = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    var contigsCount = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                  Constants.ContigsCountNode), null);
 
                     Assert.AreEqual(unMergedCount, assembly.UnmergedSequences.Count);
                     Assert.AreEqual(contigsCount, assembly.Contigs.Count);
                     Assert.AreEqual(documentation, assembly.Documentation);
-                    Contig contigRead = assembly.Contigs[0];
+                    var contigRead = assembly.Contigs[0];
 
                     // Logs the consensus
                     ApplicationLog.WriteLine(string.Format(null, "SequenceAssembly BVT : Un Merged Sequences Count is '{0}'.", assembly.UnmergedSequences.Count));
@@ -520,10 +520,10 @@ namespace Bio.Tests.Algorithms.Assembly
         private void ValidateKmer(string nodeName, bool IsKmerBuilder)
         {
             // Get the parameters from Xml
-            string Sequence = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode1);
-            string expectedKmerCount = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmrSeqCountNode);
-            string expectedKmerSeq = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerSequenceNode);
-            string expectedKmerPos = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.PositionsNode);
+            var Sequence = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode1);
+            var expectedKmerCount = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmrSeqCountNode);
+            var expectedKmerSeq = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerSequenceNode);
+            var expectedKmerPos = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.PositionsNode);
 
             // Create a Kmer Sequence.
             ISequence seq = new Sequence(Alphabets.DNA, Sequence);
@@ -533,7 +533,7 @@ namespace Bio.Tests.Algorithms.Assembly
             {
                 // Build Kmer.
                 var kmerBuilder = new SequenceToKmerBuilder();
-                KmersOfSequence kmerList = kmerBuilder.Build(seq, 2);
+                var kmerList = kmerBuilder.Build(seq, 2);
 
                 // Validate builder kmer.
                 Assert.AreEqual(expectedKmerCount, kmerList.Kmers.Count.ToString((IFormatProvider) null));
@@ -561,14 +561,14 @@ namespace Bio.Tests.Algorithms.Assembly
         private void ValidateComputeFeature(string node, AssemblyParameters additionalParameter)
         {
             // Get the parameters from Xml
-            string firstSequence = this.utilityObj.xmlUtil.GetTextValue(node, Constants.SequenceNode1);
-            string secondSequence = this.utilityObj.xmlUtil.GetTextValue(node, Constants.SequenceNode2);
-            string kmerLength = this.utilityObj.xmlUtil.GetTextValue(node, Constants.KmerLengthNode);
-            string expectedFeatureCount = this.utilityObj.xmlUtil.GetTextValue(node, Constants.FeatureCount);
-            string expectedFeature = this.utilityObj.xmlUtil.GetTextValue(node, Constants.FeatureName);
-            string expectedFeatureType = this.utilityObj.xmlUtil.GetTextValue(node, Constants.FeatureType);
-            string expectedStartIndex = this.utilityObj.xmlUtil.GetTextValue(node, Constants.StartIndexNode);
-            string expectedEndIndex = this.utilityObj.xmlUtil.GetTextValue(node, Constants.EndIndexNode);
+            var firstSequence = utilityObj.xmlUtil.GetTextValue(node, Constants.SequenceNode1);
+            var secondSequence = utilityObj.xmlUtil.GetTextValue(node, Constants.SequenceNode2);
+            var kmerLength = utilityObj.xmlUtil.GetTextValue(node, Constants.KmerLengthNode);
+            var expectedFeatureCount = utilityObj.xmlUtil.GetTextValue(node, Constants.FeatureCount);
+            var expectedFeature = utilityObj.xmlUtil.GetTextValue(node, Constants.FeatureName);
+            var expectedFeatureType = utilityObj.xmlUtil.GetTextValue(node, Constants.FeatureType);
+            var expectedStartIndex = utilityObj.xmlUtil.GetTextValue(node, Constants.StartIndexNode);
+            var expectedEndIndex = utilityObj.xmlUtil.GetTextValue(node, Constants.EndIndexNode);
 
             ISequence seq1 = null;
             ISequence seq2 = null;
@@ -591,18 +591,18 @@ namespace Bio.Tests.Algorithms.Assembly
             }
 
             var kmerBuilder = new SequenceToKmerBuilder();
-            KmersOfSequence kmerList =
+            var kmerList =
                 kmerBuilder.Build(seq1, int.Parse(kmerLength, null));
-            List<WordMatch> nodes =
+            var nodes =
                 WordMatch.BuildMatchTable(
                     kmerList,
                     seq2,
                     int.Parse(kmerLength, null));
-            List<WordMatch> matchList =
+            var matchList =
                 WordMatch.GetMinimalList(nodes, int.Parse(kmerLength, null));
-            List<DifferenceNode> diffNode =
+            var diffNode =
                 DifferenceNode.BuildDiffList(matchList, seq1, seq2);
-            List<DifferenceNode.CompareFeature> features =
+            var features =
                 DifferenceNode.OutputDiffList(diffNode, seq1, seq2);
 
             // Validate difference.

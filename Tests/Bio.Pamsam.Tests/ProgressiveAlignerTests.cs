@@ -27,10 +27,10 @@ namespace Bio.Pamsam.Tests
 
             MsaUtils.SetProfileItemSets(Alphabets.AmbiguousDNA);
 
-            SimilarityMatrix similarityMatrix = new SimilarityMatrix(SimilarityMatrix.StandardSimilarityMatrix.AmbiguousDna);
-            int gapOpenPenalty = -8;
-            int gapExtendPenalty = -1;
-            int kmerLength = 1;
+            var similarityMatrix = new SimilarityMatrix(SimilarityMatrix.StandardSimilarityMatrix.AmbiguousDna);
+            var gapOpenPenalty = -8;
+            var gapExtendPenalty = -1;
+            var kmerLength = 1;
 
             PAMSAMMultipleSequenceAligner.ParallelOption = new ParallelOptions { MaxDegreeOfParallelism = 2 };
             ISequence seqA = new Sequence(Alphabets.DNA, "GGGAAAAATCAGATT");
@@ -38,19 +38,21 @@ namespace Bio.Pamsam.Tests
             //ISequence seqA = new Sequence(Alphabets.DNA, "G");
             //ISequence seqB = new Sequence(Alphabets.DNA, "G");
             ISequence seqC = new Sequence(Alphabets.DNA, "GGGACAAAATCAG");
-            List<ISequence> sequences = new List<ISequence>();
-            sequences.Add(seqA);
-            sequences.Add(seqB);
-            sequences.Add(seqC);
+            var sequences = new List<ISequence>
+            {
+                seqA,
+                seqB,
+                seqC
+            };
 
-            KmerDistanceMatrixGenerator kmerDistanceMatrixGenerator =
+            var kmerDistanceMatrixGenerator =
                 new KmerDistanceMatrixGenerator(sequences, kmerLength, Alphabets.DNA);
 
             kmerDistanceMatrixGenerator.GenerateDistanceMatrix(sequences);
 
             IHierarchicalClustering hierarchicalClustering = new HierarchicalClusteringParallel(kmerDistanceMatrixGenerator.DistanceMatrix);
 
-            BinaryGuideTree tree = new BinaryGuideTree(hierarchicalClustering);
+            var tree = new BinaryGuideTree(hierarchicalClustering);
 
             IProgressiveAligner progressiveAligner = new ProgressiveAligner(ProfileAlignerNames.NeedlemanWunschProfileAligner, similarityMatrix, gapOpenPenalty, gapExtendPenalty);
 
@@ -64,25 +66,27 @@ namespace Bio.Pamsam.Tests
             //Assert.AreEqual(expectedSeqB.ToString(), progressiveAligner.AlignedSequences[1].ToString());
             //Assert.AreEqual(expectedSeqC.ToString(), progressiveAligner.AlignedSequences[2].ToString());
 
-            string expectedSeqA = "GGGA---AAAATCAGATT";
-            string expectedSeqB = "GGGAATCAAAATCAG---";
-            string expectedSeqC = "GGGA--CAAAATCAG---";
+            var expectedSeqA = "GGGA---AAAATCAGATT";
+            var expectedSeqB = "GGGAATCAAAATCAG---";
+            var expectedSeqC = "GGGA--CAAAATCAG---";
 
             Assert.AreEqual(expectedSeqA, new string(progressiveAligner.AlignedSequences[0].Select(a => (char)a).ToArray()));
             Assert.AreEqual(expectedSeqB, new string(progressiveAligner.AlignedSequences[1].Select(a => (char)a).ToArray()));
             Assert.AreEqual(expectedSeqC, new string(progressiveAligner.AlignedSequences[2].Select(a => (char)a).ToArray()));
 
-            sequences = new List<ISequence>();
-            sequences.Add(new Sequence(Alphabets.DNA, "GGGAAAAATCAGATT"));
-            sequences.Add(new Sequence(Alphabets.DNA, "GGGAATCAAAATCAG"));
-            sequences.Add(new Sequence(Alphabets.DNA, "GGGAATCAAAATCAG"));
-            sequences.Add(new Sequence(Alphabets.DNA, "GGGAAATCG"));
-            sequences.Add(new Sequence(Alphabets.DNA, "GGGAATCAATCAG"));
-            sequences.Add(new Sequence(Alphabets.DNA, "GGGAATCTTATCAG"));
-            sequences.Add(new Sequence(Alphabets.DNA, "GGGACAAAATCAG"));
-            sequences.Add(new Sequence(Alphabets.DNA, "GGGAAAAATCAGATT"));
-            sequences.Add(new Sequence(Alphabets.DNA, "GGGAATCAAAATCAG"));
-            sequences.Add(new Sequence(Alphabets.DNA, "GGGACAAAATCAG"));
+            sequences = new List<ISequence>
+            {
+                new Sequence(Alphabets.DNA, "GGGAAAAATCAGATT"),
+                new Sequence(Alphabets.DNA, "GGGAATCAAAATCAG"),
+                new Sequence(Alphabets.DNA, "GGGAATCAAAATCAG"),
+                new Sequence(Alphabets.DNA, "GGGAAATCG"),
+                new Sequence(Alphabets.DNA, "GGGAATCAATCAG"),
+                new Sequence(Alphabets.DNA, "GGGAATCTTATCAG"),
+                new Sequence(Alphabets.DNA, "GGGACAAAATCAG"),
+                new Sequence(Alphabets.DNA, "GGGAAAAATCAGATT"),
+                new Sequence(Alphabets.DNA, "GGGAATCAAAATCAG"),
+                new Sequence(Alphabets.DNA, "GGGACAAAATCAG")
+            };
 
             kmerDistanceMatrixGenerator.GenerateDistanceMatrix(sequences);
 
@@ -90,32 +94,32 @@ namespace Bio.Pamsam.Tests
 
             tree = new BinaryGuideTree(hierarchicalClustering);
 
-            for (int i = 0; i < tree.NumberOfNodes; ++i)
+            for (var i = 0; i < tree.NumberOfNodes; ++i)
             {
                 Console.WriteLine("Node {0} ID: {1}", i, tree.Nodes[i].ID);
             }
-            for (int i = 0; i < tree.NumberOfEdges; ++i)
+            for (var i = 0; i < tree.NumberOfEdges; ++i)
             {
                 Console.WriteLine("Edge {0} ID: {1}, length: {2}", i, tree.Edges[i].ID, tree.Edges[i].Length);
             }
 
-            SequenceWeighting sw = new SequenceWeighting(tree);
+            var sw = new SequenceWeighting(tree);
 
-            for (int i = 0; i < sw.Weights.Length; ++i)
+            for (var i = 0; i < sw.Weights.Length; ++i)
             {
                 Console.WriteLine("weights {0} is {1}", i, sw.Weights[i]);
             }
 
             progressiveAligner = new ProgressiveAligner(ProfileAlignerNames.NeedlemanWunschProfileAligner, similarityMatrix, gapOpenPenalty, gapExtendPenalty);
             progressiveAligner.Align(sequences, tree);
-            for (int i = 0; i < progressiveAligner.AlignedSequences.Count; ++i)
+            for (var i = 0; i < progressiveAligner.AlignedSequences.Count; ++i)
             {
                 Console.WriteLine(new string(progressiveAligner.AlignedSequences[i].Select(a => (char)a).ToArray()));
             }
 
             MsaUtils.SetProfileItemSets(Alphabets.AmbiguousProtein);
-            string filepath = @"TestUtils\Fasta\Protein\BB11001.tfa".TestDir();
-            FastAParser parser = new FastAParser();
+            var filepath = @"TestUtils\Fasta\Protein\BB11001.tfa".TestDir();
+            var parser = new FastAParser();
             IList<ISequence> orgSequences = parser.Parse(filepath).ToList();
 
             sequences = MsaUtils.UnAlign(orgSequences);
@@ -135,13 +139,13 @@ namespace Bio.Pamsam.Tests
 
             tree = new BinaryGuideTree(hierarchicalClustering);
 
-            for (int i = tree.NumberOfLeaves; i < tree.Nodes.Count; ++i)
+            for (var i = tree.NumberOfLeaves; i < tree.Nodes.Count; ++i)
             {
                 Console.WriteLine("Node {0}: leftchildren-{1}, rightChildren-{2}", i, tree.Nodes[i].LeftChildren.ID, tree.Nodes[i].RightChildren.ID);
             }
             progressiveAligner = new ProgressiveAligner(ProfileAlignerNames.NeedlemanWunschProfileAligner, similarityMatrix, gapOpenPenalty, gapExtendPenalty);
             progressiveAligner.Align(sequences, tree);
-            for (int i = 0; i < progressiveAligner.AlignedSequences.Count; ++i)
+            for (var i = 0; i < progressiveAligner.AlignedSequences.Count; ++i)
             {
                 Console.WriteLine(new string(progressiveAligner.AlignedSequences[i].Select(a => (char)a).ToArray()));
             }

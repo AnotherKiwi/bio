@@ -106,7 +106,7 @@ namespace Bio.TestAutomation.IO.Snp
             AdditionalParameters additionalParam)
         {
             // Gets the expected sequence from the Xml
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodename,
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodename,
                 Constants.FilePathNode).TestDir();
 
             Assert.IsTrue(File.Exists(filePath));
@@ -115,7 +115,7 @@ namespace Bio.TestAutomation.IO.Snp
 
             IList<ISequence> seqList = null;
             SparseSequence sparseSeq = null;
-            SimpleSnpParser parser = new SimpleSnpParser();
+            var parser = new SimpleSnpParser();
 
             switch (additionalParam)
             {
@@ -126,7 +126,7 @@ namespace Bio.TestAutomation.IO.Snp
                     break;
             }
 
-            string noOfChromos = utilityObj.xmlUtil.GetTextValue(nodename,
+            var noOfChromos = utilityObj.xmlUtil.GetTextValue(nodename,
                  Constants.NumberOfChromosomesNode);
 
             seqList = parser.Parse(filePath).ToList();
@@ -135,12 +135,12 @@ namespace Bio.TestAutomation.IO.Snp
             // Based on the number of chromosomes the validation is done reading from the xml
             if (0 == string.Compare(noOfChromos, "1", true, CultureInfo.CurrentCulture))
             {
-                string expectedPosition = utilityObj.xmlUtil.GetTextValue(nodename,
+                var expectedPosition = utilityObj.xmlUtil.GetTextValue(nodename,
                Constants.ExpectedPositionNode);
 
-                string[] expectedPositions = expectedPosition.Split(',');
+                var expectedPositions = expectedPosition.Split(',');
                 string[] expectedCharacters = null;
-                string expectedSequence = utilityObj.xmlUtil.GetTextValue(nodename,
+                var expectedSequence = utilityObj.xmlUtil.GetTextValue(nodename,
                   Constants.ExpectedSequenceNode);
 
                 expectedCharacters = expectedSequence.Split(',');
@@ -152,15 +152,15 @@ namespace Bio.TestAutomation.IO.Snp
                     seqList.Count.ToString((IFormatProvider)null)));
 
                 // Validation of sequences with positions and xml is done in this section.
-                for (int i = 0; i < expectedPositions.Length; i++)
+                for (var i = 0; i < expectedPositions.Length; i++)
                 {
-                    byte item = sparseSeq[int.Parse(expectedPositions[i], (IFormatProvider)null)];
+                    var item = sparseSeq[int.Parse(expectedPositions[i], (IFormatProvider)null)];
 
                     Assert.AreEqual(encodingObj.GetBytes(expectedCharacters[i])[0].ToString((IFormatProvider)null),
                         item.ToString((IFormatProvider)null));
                 }
 
-                string expSequenceID = utilityObj.xmlUtil.GetTextValue(nodename,
+                var expSequenceID = utilityObj.xmlUtil.GetTextValue(nodename,
                 Constants.SequenceIdNode);
 
                 Assert.AreEqual(expSequenceID, sparseSeq.ID);
@@ -169,26 +169,26 @@ namespace Bio.TestAutomation.IO.Snp
             }
             else
             {
-                string[] expectedPositions = utilityObj.xmlUtil.GetTextValues(nodename,
+                var expectedPositions = utilityObj.xmlUtil.GetTextValues(nodename,
                     Constants.ExpectedPositionsNode);
 
-                string[] expectedSequences = utilityObj.xmlUtil.GetTextValues(nodename,
+                var expectedSequences = utilityObj.xmlUtil.GetTextValues(nodename,
                     Constants.ExpectedSequencesNode);
 
-                string[] expectedSequenceIds = utilityObj.xmlUtil.GetTextValues(nodename,
+                var expectedSequenceIds = utilityObj.xmlUtil.GetTextValues(nodename,
                     Constants.SequenceIdsNode);
 
                 // Validation of sequences with positions and xml is done in this section.
-                for (int i = 0; i < int.Parse(noOfChromos, (IFormatProvider)null); i++)
+                for (var i = 0; i < int.Parse(noOfChromos, (IFormatProvider)null); i++)
                 {
-                    string[] expectedChromoPositions = expectedPositions[i].Split(',');
-                    string[] expectedChromoSequences = expectedSequences[i].Split(',');
+                    var expectedChromoPositions = expectedPositions[i].Split(',');
+                    var expectedChromoSequences = expectedSequences[i].Split(',');
 
-                    SparseSequence tempSparseSeq = (SparseSequence)seqList[i];
+                    var tempSparseSeq = (SparseSequence)seqList[i];
 
-                    for (int j = 0; j < expectedChromoPositions.Length; j++)
+                    for (var j = 0; j < expectedChromoPositions.Length; j++)
                     {
-                        byte item = tempSparseSeq[int.Parse(expectedChromoPositions[j], (IFormatProvider)null)];
+                        var item = tempSparseSeq[int.Parse(expectedChromoPositions[j], (IFormatProvider)null)];
                         Assert.AreEqual(encodingObj.GetBytes(expectedChromoSequences[j])[0].ToString((IFormatProvider)null),
                             item.ToString((IFormatProvider)null));
                     }

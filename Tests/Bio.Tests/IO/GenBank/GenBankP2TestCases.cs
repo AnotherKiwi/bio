@@ -39,8 +39,8 @@ using NUnit.Framework;
 
         static string FilePath
         {
-            get { return GenBankP2TestCases.filePath; }
-            set { GenBankP2TestCases.filePath = value; }
+            get { return filePath; }
+            set { filePath = value; }
         }
 
         #endregion Properties
@@ -364,7 +364,7 @@ using NUnit.Framework;
 
             try
             {
-                GenBankParser parserObj = new GenBankParser();
+                var parserObj = new GenBankParser();
                 if (string.Equals(Constants.SimpleGenBankNodeName, node))
                 {
                     parserObj.LocationBuilder = null;

@@ -52,10 +52,10 @@ namespace Bio.Util
         /// </summary>
         public DeltaAlignmentSorter()
         {
-            this.holderHooks.Add(new Holder());
-            this.endHolder = this.Root;
-            this.holderCapacity = 1;
-            this.IncreaseCapacityTo(HoldersCapacityIncrementsBy);
+            holderHooks.Add(new Holder());
+            endHolder = Root;
+            holderCapacity = 1;
+            IncreaseCapacityTo(HoldersCapacityIncrementsBy);
         }
 
         /// <summary>
@@ -64,10 +64,10 @@ namespace Bio.Util
         /// <param name="referenceSequenceLength">Reference sequence length.</param>
         public DeltaAlignmentSorter(long referenceSequenceLength)
         {
-            this.holderHooks.Add(new Holder());
-            this.endHolder = this.Root;
-            this.holderCapacity = 1;
-            this.IncreaseCapacityTo(referenceSequenceLength);
+            holderHooks.Add(new Holder());
+            endHolder = Root;
+            holderCapacity = 1;
+            IncreaseCapacityTo(referenceSequenceLength);
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace Bio.Util
         {
             get
             {
-                return this.holderHooks[0];
+                return holderHooks[0];
             }
         }
 
@@ -93,10 +93,10 @@ namespace Bio.Util
         /// <param name="value">Value to sort.</param>
         public void Add(long id, long value)
         {
-            Node node = new Node();
+            var node = new Node();
             node.ID = id;
             node.Value = value;
-            this.Add(node);
+            Add(node);
         }
 
         /// <summary>
@@ -105,10 +105,10 @@ namespace Bio.Util
         /// <returns>IEnumerable of ids.</returns>
         public IEnumerable<long> GetSortedIds()
         {
-            Holder holder = this.Root;
+            var holder = Root;
             while (holder != null)
             {
-                Node node = holder.ValueNode;
+                var node = holder.ValueNode;
                 while (node != null)
                 {
                     yield return node.ID;
@@ -125,10 +125,10 @@ namespace Bio.Util
         /// <returns>IEnumerable of id and value pair.</returns>
         public IEnumerable<Node> GetSortedNodes()
         {
-            Holder holder = this.Root;
+            var holder = Root;
             while (holder != null)
             {
-                Node node = holder.ValueNode;
+                var node = holder.ValueNode;
                 while (node != null)
                 {
                     yield return node;
@@ -147,10 +147,10 @@ namespace Bio.Util
         {
             if (node == null)
             {
-                throw new ArgumentNullException("node");
+                throw new ArgumentNullException(nameof(node));
             }
 
-            Holder holder = this.GetHolderFor(node.Value);
+            var holder = GetHolderFor(node.Value);
 
             // add the node to the holder.
             if (holder.ValueNode == null)
@@ -159,7 +159,7 @@ namespace Bio.Util
             }
             else
             {
-                Node previousNode = holder.ValueNode;
+                var previousNode = holder.ValueNode;
                 while (previousNode.Next != null)
                 {
                     previousNode = previousNode.Next;
@@ -168,7 +168,7 @@ namespace Bio.Util
                 previousNode.Next = node;
             }
 
-            this.Count++;
+            Count++;
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace Bio.Util
         /// <returns>Returns the last holder.</returns>
         private void IncreaseCapacityTo(long capacity)
         {
-            if (capacity <= this.holderCapacity)
+            if (capacity <= holderCapacity)
             {
                 return;
             }
@@ -188,13 +188,13 @@ namespace Bio.Util
                 capacity = HoldersCapacityIncrementsBy;
             }
 
-            long index = this.holderCapacity - 1;
-            Holder holder = this.endHolder;
-            int remainder = (int)(index % HooksIntervals);
+            var index = holderCapacity - 1;
+            var holder = endHolder;
+            var remainder = (int)(index % HooksIntervals);
             while (index < capacity - 1)
             {
-                int loopCount = HooksIntervals - remainder;
-                for (int i = 0; i < loopCount && index < capacity - 1; i++)
+                var loopCount = HooksIntervals - remainder;
+                for (var i = 0; i < loopCount && index < capacity - 1; i++)
                 {
                     holder.Right = new Holder();
                     holder = holder.Right;
@@ -204,12 +204,12 @@ namespace Bio.Util
                 remainder = (int)(index % HooksIntervals);
                 if (remainder == 0)
                 {
-                    this.holderHooks.Add(holder);
+                    holderHooks.Add(holder);
                 }
             }
 
-            this.endHolder = holder;
-            this.holderCapacity = capacity;
+            endHolder = holder;
+            holderCapacity = capacity;
         }
 
         /// <summary>
@@ -218,29 +218,29 @@ namespace Bio.Util
         /// <param name="value">Value for which holder is required.</param>
         private Holder GetHolderFor(long value)
         {
-            Holder holder = this.Root;
+            var holder = Root;
             long index = 0;
 
             // node.value is start from zero thus capacity should be value + 1
-            if (this.holderCapacity < value + 1)
+            if (holderCapacity < value + 1)
             {
-                long nextValue = HoldersCapacityIncrementsBy + this.holderCapacity;
+                var nextValue = HoldersCapacityIncrementsBy + holderCapacity;
                 if (nextValue < value + 1)
                 {
                     nextValue = value + 1;
                 }
 
                 // If holders are not present create holders.
-                this.IncreaseCapacityTo(nextValue);
+                IncreaseCapacityTo(nextValue);
             }
 
             if (value > HooksIntervals)
             {
-                int hooksindex = (int)(value / HooksIntervals);
+                var hooksindex = (int)(value / HooksIntervals);
                 index = hooksindex * HooksIntervals;
 
                 // index start from zero.
-                holder = this.holderHooks[hooksindex];
+                holder = holderHooks[hooksindex];
             }
 
             // Navigate to the holder equal to the specified value.

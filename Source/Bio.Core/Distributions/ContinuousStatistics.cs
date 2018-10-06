@@ -81,7 +81,7 @@ namespace Bio.Distributions
             double valAsDouble;
             if (double.TryParse(val, out valAsDouble))
             {
-                result = ContinuousStatistics.GetInstance(valAsDouble);
+                result = GetInstance(valAsDouble);
                 return true;
             }
             else
@@ -119,7 +119,7 @@ namespace Bio.Distributions
         {
             if (stats == null)
             {
-                throw new ArgumentNullException("stats");
+                throw new ArgumentNullException(nameof(stats));
             }
             return stats.Value;
         }
@@ -136,7 +136,7 @@ namespace Bio.Distributions
                 return null;
             }
 
-            return ContinuousStatistics.GetMissingInstance;
+            return GetMissingInstance;
         }
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace Bio.Distributions
                 return null;
             }
 
-            return discreteStats.IsMissing() ? ContinuousStatistics.GetMissingInstance : ContinuousStatistics.GetInstance(discreteStats.Value);
+            return discreteStats.IsMissing() ? GetMissingInstance : GetInstance(discreteStats.Value);
         }
 
         /// <summary>
@@ -176,7 +176,7 @@ namespace Bio.Distributions
         /// <returns>True if both the objects are equal.</returns>
         public override bool Equals(object obj)
         {
-            SufficientStatistics stats = obj as SufficientStatistics;
+            var stats = obj as SufficientStatistics;
             if (stats != null)
             {
                 return Equals(stats);
@@ -196,7 +196,7 @@ namespace Bio.Distributions
         {
             if (stats == null)
             {
-                throw new ArgumentNullException("stats");
+                throw new ArgumentNullException(nameof(stats));
             }
 
             if (IsMissing() && stats.IsMissing())
@@ -204,7 +204,7 @@ namespace Bio.Distributions
                 return true;
             }
 
-            return this.AsGaussianStatistics().Equals(stats);  // let the most general class decide
+            return AsGaussianStatistics().Equals(stats);  // let the most general class decide
         }
 
         /// <summary>
@@ -267,7 +267,7 @@ namespace Bio.Distributions
         /// <returns>Boolean Statistics.</returns>
         public override BooleanStatistics AsBooleanStatistics()
         {
-            int valAsInt = (int)Value;
+            var valAsInt = (int)Value;
             if (!IsMissing() && !(valAsInt < -1 || valAsInt > 1))
             {
                 throw new InvalidCastException(string.Format(CultureInfo.InvariantCulture,"Cannot convert {0} to Boolean.", Value));

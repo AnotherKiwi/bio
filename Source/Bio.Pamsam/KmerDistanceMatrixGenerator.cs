@@ -117,7 +117,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
 
                 Parallel.For(0, sequences.Count, i =>
                 {
-                    Dictionary<string, float> currentDictionary = KmerDistanceScoreCalculator.CalculateKmerCounting(sequences[i], _kmerLength);
+                    var currentDictionary = KmerDistanceScoreCalculator.CalculateKmerCounting(sequences[i], _kmerLength);
                     MsaUtils.Normalize(currentDictionary);
                     _allCountsDictionary[i] = currentDictionary;
                 });
@@ -134,9 +134,9 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             // Fill in DistanceMatrix
             Parallel.For(1, sequences.Count, PAMSAMMultipleSequenceAligner.ParallelOption, row =>
             {
-                for (int col = 0; col < row; ++col)
+                for (var col = 0; col < row; ++col)
                 {
-                    float distanceScore = _kmerScoreCalculator.CalculateDistanceScore
+                    var distanceScore = _kmerScoreCalculator.CalculateDistanceScore
                                 (_allCountsDictionary[row], _allCountsDictionary[col]);
                     _distanceMatrix[row, col] = distanceScore;
                     _distanceMatrix[col, row] = distanceScore;

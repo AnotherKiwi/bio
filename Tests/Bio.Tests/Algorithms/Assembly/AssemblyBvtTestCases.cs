@@ -34,24 +34,24 @@ namespace Bio.Tests.Algorithms.Assembly
         [Category("Priority0")]
         public void SequenceAssemblerWithAssembleMethod()
         {
-            IOverlapDeNovoAssembly assembly = this.GetSequenceAssembly("assemble");
-            string contigConsensus = this.utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
+            var assembly = GetSequenceAssembly("assemble");
+            var contigConsensus = utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
                                                                      Constants.ContigConsensusNode);
-            int contigSequencesCount = int.Parse(this.utilityObj.xmlUtil.GetTextValue(
+            var contigSequencesCount = int.Parse(utilityObj.xmlUtil.GetTextValue(
                 Constants.AssemblyAlgorithmNodeName,
                 Constants.ContigSequencesCountNode), null);
 
             // Get the parameters from Xml for Assemble() method test cases.
-            int unMergedCount = int.Parse(this.utilityObj.xmlUtil.GetTextValue(
+            var unMergedCount = int.Parse(utilityObj.xmlUtil.GetTextValue(
                 Constants.AssemblyAlgorithmNodeName,
                 Constants.UnMergedSequencesCountNode), null);
-            int contigsCount = int.Parse(this.utilityObj.xmlUtil.GetTextValue(
+            var contigsCount = int.Parse(utilityObj.xmlUtil.GetTextValue(
                 Constants.AssemblyAlgorithmNodeName,
                 Constants.ContigsCountNode), null);
 
             Assert.AreEqual(unMergedCount, assembly.UnmergedSequences.Count);
             Assert.AreEqual(contigsCount, assembly.Contigs.Count);
-            Contig contigRead = assembly.Contigs[0];
+            var contigRead = assembly.Contigs[0];
 
             Assert.AreEqual(contigConsensus, new String(contigRead.Consensus.Select(a => (char) a).ToArray()));
             Assert.AreEqual(contigSequencesCount, contigRead.Sequences.Count);
@@ -82,15 +82,15 @@ namespace Bio.Tests.Algorithms.Assembly
         [Category("Priority0")]
         public void SequenceAssemblerWithContigMethod()
         {
-            IOverlapDeNovoAssembly assembly = this.GetSequenceAssembly("contig");
-            string contigConsensus = this.utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
+            var assembly = GetSequenceAssembly("contig");
+            var contigConsensus = utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
                                                                      Constants.ContigConsensusNode);
-            int contigSequencesCount = int.Parse(this.utilityObj.xmlUtil.GetTextValue(
+            var contigSequencesCount = int.Parse(utilityObj.xmlUtil.GetTextValue(
                 Constants.AssemblyAlgorithmNodeName,
                 Constants.ContigSequencesCountNode), null);
 
             // Read the contig from Contig method.
-            Contig contigsRead = assembly.Contigs[0];
+            var contigsRead = assembly.Contigs[0];
 
             // Log the required info.
             ApplicationLog.WriteLine(string.Format(null,
@@ -116,18 +116,18 @@ namespace Bio.Tests.Algorithms.Assembly
         [Category("Priority0")]
         public void SimpleConsensusWithMakeConsensusMethod()
         {
-            IOverlapDeNovoAssembly assembly = this.GetSequenceAssembly("consensus");
+            var assembly = GetSequenceAssembly("consensus");
 
-            string contigConsensus = this.utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
+            var contigConsensus = utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
                                                                      Constants.ContigConsensusNode);
-            double consensusThreshold = double.Parse(this.utilityObj.xmlUtil.GetTextValue(
+            var consensusThreshold = double.Parse(utilityObj.xmlUtil.GetTextValue(
                 Constants.AssemblyAlgorithmNodeName,
                 Constants.ConsensusThresholdNode), null);
-            IAlphabet alphabet = Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(
+            var alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(
                 Constants.AssemblyAlgorithmNodeName,
                 Constants.AlphabetNameNode));
             // Read the contig from Contig method.
-            Contig contigReadForConsensus = assembly.Contigs[0];
+            var contigReadForConsensus = assembly.Contigs[0];
             contigReadForConsensus.Consensus = null;
             var simpleSeqAssembler = new OverlapDeNovoAssembler();
             simpleSeqAssembler.ConsensusResolver = new SimpleConsensusResolver(consensusThreshold);
@@ -153,25 +153,25 @@ namespace Bio.Tests.Algorithms.Assembly
         private IOverlapDeNovoAssembly GetSequenceAssembly(string additionalParameter)
         {
             // Get the parameters from Xml
-            int matchScore = int.Parse(this.utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
+            var matchScore = int.Parse(utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
                                                                        Constants.MatchScoreNode), null);
-            int mismatchScore = int.Parse(this.utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
+            var mismatchScore = int.Parse(utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
                                                                           Constants.MisMatchScoreNode), null);
-            int gapCost = int.Parse(this.utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
+            var gapCost = int.Parse(utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
                                                                     Constants.GapCostNode), null);
-            double mergeThreshold = double.Parse(this.utilityObj.xmlUtil.GetTextValue(
+            var mergeThreshold = double.Parse(utilityObj.xmlUtil.GetTextValue(
                 Constants.AssemblyAlgorithmNodeName,
                 Constants.MergeThresholdNode), null);
-            double consensusThreshold = double.Parse(this.utilityObj.xmlUtil.GetTextValue(
+            var consensusThreshold = double.Parse(utilityObj.xmlUtil.GetTextValue(
                 Constants.AssemblyAlgorithmNodeName,
                 Constants.ConsensusThresholdNode), null);
-            string sequence1 = this.utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
+            var sequence1 = utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
                                                                Constants.SequenceNode1);
-            string sequence2 = this.utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
+            var sequence2 = utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
                                                                Constants.SequenceNode2);
-            string sequence3 = this.utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
+            var sequence3 = utilityObj.xmlUtil.GetTextValue(Constants.AssemblyAlgorithmNodeName,
                                                                Constants.SequenceNode3);
-            IAlphabet alphabet = Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(
+            var alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(
                 Constants.AssemblyAlgorithmNodeName,
                 Constants.AlphabetNameNode));
 
@@ -221,10 +221,12 @@ namespace Bio.Tests.Algorithms.Assembly
             assembler.ConsensusResolver = new SimpleConsensusResolver(consensusThreshold);
             assembler.AssumeStandardOrientation = false;
 
-            var inputs = new List<ISequence>();
-            inputs.Add(seq1);
-            inputs.Add(seq2);
-            inputs.Add(seq3);
+            var inputs = new List<ISequence>
+            {
+                seq1,
+                seq2,
+                seq3
+            };
 
             // Assembles all the sequences.
             return (IOverlapDeNovoAssembly) assembler.Assemble(inputs);

@@ -37,8 +37,8 @@ namespace Bio.Extensions
             if (string.IsNullOrEmpty(data))
                 return null;
 
-            byte[] rc = new byte[data.Length];
-            for (int i = 0; i < data.Length; i++)
+            var rc = new byte[data.Length];
+            for (var i = 0; i < data.Length; i++)
             {
                 rc[i] = (byte)data[i];
             }
@@ -67,7 +67,7 @@ namespace Bio.Extensions
             if (String.IsNullOrEmpty(text))
                 return text;
 
-            char[] charArray = text.ToCharArray();
+            var charArray = text.ToCharArray();
             Array.Reverse(charArray);
             return new string(charArray);
         }
@@ -83,9 +83,9 @@ namespace Bio.Extensions
         /// <returns>Strings between split characters that are not wrapped in protecting parens.</returns>
         public static IEnumerable<string> ProtectedSplit(this string text, char openParenCharacter, char closeParenCharacter, bool removeEmptyItems, params char[] splitCharacters)
         {
-            int depth = 0;
-            StringBuilder sb = new StringBuilder();
-            foreach (char c in text)
+            var depth = 0;
+            var sb = new StringBuilder();
+            foreach (var c in text)
             {
                 if (c == openParenCharacter)
                 {

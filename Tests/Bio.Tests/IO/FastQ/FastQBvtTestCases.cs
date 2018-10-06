@@ -312,13 +312,13 @@ namespace Bio.Silverlight.TestAutomation.IO.FastQ
         private void ValidateFastQParser(string nodeName)
         {
             // Gets the expected sequence from the Xml
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FilePathNode).TestDir();
-            string expectedQualitativeSequence = utilityObj.xmlUtil.GetTextValue(
+            var expectedQualitativeSequence = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExpectedSequenceNode);
-            string expectedSequenceId = utilityObj.xmlUtil.GetTextValue(
+            var expectedSequenceId = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.SequenceIdNode);
-            int expectedSeqCount = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SeqsCount));
+            var expectedSeqCount = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SeqsCount));
 
             // Parse a FastQ file.
             var fastQParserObj = new FastQParser();
@@ -345,11 +345,11 @@ namespace Bio.Silverlight.TestAutomation.IO.FastQ
         private void ValidateFastQParserOnAStream(string nodeName)
         {
             // Gets the expected sequence from the Xml
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FilePathNode).TestDir();
-            string expectedQualitativeSequence = utilityObj.xmlUtil.GetTextValue(
+            var expectedQualitativeSequence = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExpectedSequenceNode);
-            string expectedSequenceId = utilityObj.xmlUtil.GetTextValue(
+            var expectedSequenceId = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.SequenceIdNode);
             IList<IQualitativeSequence> qualSequenceList;
 
@@ -360,8 +360,8 @@ namespace Bio.Silverlight.TestAutomation.IO.FastQ
                 qualSequenceList = fastQParserObj.Parse(reader).ToList();
             }
 
-            string actualQualitativeSequence = qualSequenceList[0].ConvertToString();
-            string actualId = qualSequenceList[0].ID;
+            var actualQualitativeSequence = qualSequenceList[0].ConvertToString();
+            var actualId = qualSequenceList[0].ID;
 
             // Validate qualitative Sequence upon parsing FastQ file.                                                                
             Assert.AreEqual(expectedQualitativeSequence, actualQualitativeSequence);
@@ -381,16 +381,16 @@ namespace Bio.Silverlight.TestAutomation.IO.FastQ
         private void ValidateFastQFormatter(string nodeName, FastQFileParameters fileExtension)
         {
             // Gets the expected sequence from the Xml
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
-            string expectedQualitativeSequence = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExpectedSequenceNode);
-            string expectedSequenceId = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceIdNode);
-            string tempFileName = Path.GetTempFileName();
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            var expectedQualitativeSequence = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExpectedSequenceNode);
+            var expectedSequenceId = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceIdNode);
+            var tempFileName = Path.GetTempFileName();
 
             // Parse a FastQ file using parseOne method.
             var fastQParserObj = new FastQParser();
             using (fastQParserObj.Open(filePath))
             {
-                IQualitativeSequence oneSequence = fastQParserObj.ParseOne();
+                var oneSequence = fastQParserObj.ParseOne();
 
                 // Format Parsed Sequence to temp file with different extension.
                 var fastQFormatter = new FastQFormatter();
@@ -429,10 +429,10 @@ namespace Bio.Silverlight.TestAutomation.IO.FastQ
         private void ValidateFastQFormatterOnAStream(string nodeName)
         {
             // Gets the expected sequence from the Xml
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
-            string expectedQualitativeSequence = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExpectedSequenceNode);
-            string expectedSequenceId = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceIdNode);
-            string tempFileName1 = Path.GetTempFileName();
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            var expectedQualitativeSequence = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExpectedSequenceNode);
+            var expectedSequenceId = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceIdNode);
+            var tempFileName1 = Path.GetTempFileName();
 
             // Parse a FastQ file using parseOne method.
             var fastQParserObj = new FastQParser();

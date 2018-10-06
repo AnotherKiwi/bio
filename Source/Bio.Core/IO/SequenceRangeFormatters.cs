@@ -53,7 +53,7 @@ namespace Bio.IO
         static SequenceRangeFormatters()
         {
             // get the registered parsers
-            IEnumerable<ISequenceRangeFormatter> registeredFormatters = GetSequenceRangeFormatters();
+            var registeredFormatters = GetSequenceRangeFormatters();
             if (null != registeredFormatters)
             {
                 foreach (var formatter in registeredFormatters.Where(
@@ -77,7 +77,7 @@ namespace Bio.IO
             {
                 try
                 {
-                    ISequenceRangeFormatter formatter = Activator.CreateInstance(impl) as ISequenceRangeFormatter;
+                    var formatter = Activator.CreateInstance(impl) as ISequenceRangeFormatter;
                     if (formatter != null)
                         registeredFormatters.Add(formatter);
                 }

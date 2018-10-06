@@ -61,8 +61,8 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <returns>The node representing this value</returns>
         public DeBruijnNode SetNewOrGetOld(KmerData32 value)
         {
-            int bucket = AssignBucket(value);
-            BinaryTreeOfDebrujinNodes curBucket = _buckets[bucket];
+            var bucket = AssignBucket(value);
+            var curBucket = _buckets[bucket];
 
             //keep it thread safe for additions
             DeBruijnNode toReturn;
@@ -90,8 +90,8 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <returns>true if the item has previously been assigned a serial number; otherwise, false.</returns>
         public DeBruijnNode TryGetOld(KmerData32 kmer)
         {
-            int bucketIndex = AssignBucket(kmer);
-            BinaryTreeOfDebrujinNodes tree = _buckets[bucketIndex];
+            var bucketIndex = AssignBucket(kmer);
+            var tree = _buckets[bucketIndex];
             return tree.SearchTree(kmer);
         }
 

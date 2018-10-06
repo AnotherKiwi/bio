@@ -1,4 +1,6 @@
-﻿namespace Bio
+﻿using System;
+
+namespace Bio
 {
     /// <summary>
     /// An alphabet that extends <see cref="IAlphabet"/> by adding symbols for unambiguous amino acids.
@@ -8,7 +10,7 @@
     /// (where O is pyrrolysine and U is selenocysteine).<br/>
     /// Symbols for ambiguous amino acids, terminations or gaps are not included in this alphabet.
     /// </remarks>
-    /// <seealso cref="IAlphabet" />
+
     public interface IBasicProteinAlphabet : IAlphabet
     {
 
@@ -122,5 +124,28 @@
         /// </summary>
         byte Y { get; }
 
+        /// <summary>
+        /// 	Gets the invalid symbols in the specified sequence, in ascending order.
+        /// </summary>
+        /// <param name="sequence">The sequence to check for invalid symbols.</param>
+        /// <returns>
+        ///  	<see cref="T:byte[]"/>: the invalid symbols in the specified sequence.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">sequence</exception>
+        byte[] GetInvalidSymbols(ISequence sequence);
+
+        /// <summary>
+        /// Gets the symbol from a three-letter abbreviation.
+        /// </summary>
+        /// <param name="item">Three-letter abbreviation to find symbol.</param>
+        /// <returns>Symbol corresponding to three-letter abbreviation.</returns>
+        byte GetSymbolFromThreeLetterAbbrev(string item);
+
+        /// <summary>
+        ///     Gets the three-letter abbreviation of a given symbol.
+        /// </summary>
+        /// <param name="item">Symbol to find three-letter abbreviation.</param>
+        /// <returns>Three-letter abbreviation of the given symbol.</returns>
+        string GetThreeLetterAbbreviation(byte item);
     }
 }

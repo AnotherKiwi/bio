@@ -206,6 +206,10 @@ file specification, and converts the data to in-memory SequenceAlignmentMap obje
   <data name="BAM_UnableToReadCompressedBlock" xml:space="preserve">
     <value>Unable to read compressed block</value>
   </data>
+  <data name="BasicProteinAlphabetName" xml:space="preserve">
+    <value>BasicProtein</value>
+    <comment>Added by Stephen Haines</comment>
+  </data>
   <data name="BedDesc" xml:space="preserve">
     <value>Chromosome sequence ranges format.</value>
   </data>

@@ -79,9 +79,9 @@ namespace Bio.Util
         /// </summary>
         public void Dispose()
         {
-            if (!this.disposed)
+            if (!disposed)
             {
-                this.disposed = true;
+                disposed = true;
                 var stack = Scope.Value;
                 if (stack != null)
                 {
@@ -149,15 +149,15 @@ namespace Bio.Util
 
             public SuspendScope()
             {
-                this._suspendedStackNode = SuspendParallelOptionsScope();
+                _suspendedStackNode = SuspendParallelOptionsScope();
             }
 
             public void Dispose()
             {
-                if (!this._disposed)
+                if (!_disposed)
                 {
-                    this._disposed = true;
-                    RestoreParallelOptionsScope(this._suspendedStackNode);
+                    _disposed = true;
+                    RestoreParallelOptionsScope(_suspendedStackNode);
                 }
             }
 

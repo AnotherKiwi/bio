@@ -36,7 +36,7 @@ namespace Bio.Web.Selectome
         {
             get
             {
-                return this.vetebrateQueryResult.SelectionInferred;
+                return vetebrateQueryResult.SelectionInferred;
             } 
         }
 
@@ -51,17 +51,17 @@ namespace Bio.Web.Selectome
             {
                 throw new FormatException("Could not parse the vertebrate group data from the XML received from selectome.\n");
             }
-            this.Label = label;
-            this.vetebrateQueryResult = initiatingResults[SelectomeTaxaGroup.Euteleostomi];
+            Label = label;
+            vetebrateQueryResult = initiatingResults[SelectomeTaxaGroup.Euteleostomi];
         }
 
         private async Task<string> GetStringFromURLRequest(string suffix)
         {
             //make a URL like
             //http://selectome.unil.ch/wwwtmp/ENSGT00550000074556/Euteleostomi/ENSGT00550000074556.Euteleostomi.003.nhx
-            var treePrefix = "." + new String('0', 3 - this.vetebrateQueryResult.RelatedLink.SubTree.Length)+this.vetebrateQueryResult.RelatedLink.SubTree;
-            string url = SelectomeConstantsAndEnums.BaseSelectomeWebsite+"wwwtmp/"+this.vetebrateQueryResult.RelatedLink.Tree+"/"+SelectomeConstantsAndEnums.VertebratesGroupName+"/"
-                +this.vetebrateQueryResult.RelatedLink.Tree+"."+SelectomeConstantsAndEnums.VertebratesGroupName+treePrefix+"."+suffix;
+            var treePrefix = "." + new String('0', 3 - vetebrateQueryResult.RelatedLink.SubTree.Length)+vetebrateQueryResult.RelatedLink.SubTree;
+            var url = SelectomeConstantsAndEnums.BaseSelectomeWebsite+"wwwtmp/"+vetebrateQueryResult.RelatedLink.Tree+"/"+SelectomeConstantsAndEnums.VertebratesGroupName+"/"
+                +vetebrateQueryResult.RelatedLink.Tree+"."+SelectomeConstantsAndEnums.VertebratesGroupName+treePrefix+"."+suffix;
 
             var reqUri = new Uri(url);
             return await new HttpClient().GetStringAsync(reqUri);
@@ -72,8 +72,8 @@ namespace Bio.Web.Selectome
         /// <returns></returns>
         public double GetMaskedBlosum90AlignmentScore()
         {
-            var blosum = new Bio.SimilarityMatrices.SimilarityMatrix(SimilarityMatrices.SimilarityMatrix.StandardSimilarityMatrix.Blosum90);
-            return MultiSequenceAlignment.MultipleAlignmentScoreFunction(this.MaskedAminoAcidAlignment.Sequences.ToList(), blosum, -5, -2);
+            var blosum = new SimilarityMatrices.SimilarityMatrix(SimilarityMatrices.SimilarityMatrix.StandardSimilarityMatrix.Blosum90);
+            return MultiSequenceAlignment.MultipleAlignmentScoreFunction(MaskedAminoAcidAlignment.Sequences.ToList(), blosum, -5, -2);
         }
 
         /// <summary>
@@ -82,8 +82,8 @@ namespace Bio.Web.Selectome
         /// <returns></returns>
         public double GetUnmaskedBlosum90AlignmentScore()
         {
-            var blosum = new Bio.SimilarityMatrices.SimilarityMatrix(SimilarityMatrices.SimilarityMatrix.StandardSimilarityMatrix.Blosum90);
-            return MultiSequenceAlignment.MultipleAlignmentScoreFunction(this.UnmaskedAminoAcidAlignment.Sequences.ToList(), blosum, -5, -2);
+            var blosum = new SimilarityMatrices.SimilarityMatrix(SimilarityMatrices.SimilarityMatrix.StandardSimilarityMatrix.Blosum90);
+            return MultiSequenceAlignment.MultipleAlignmentScoreFunction(UnmaskedAminoAcidAlignment.Sequences.ToList(), blosum, -5, -2);
         }
         /// <summary>
         /// The vertebrate tree returned
@@ -92,15 +92,15 @@ namespace Bio.Web.Selectome
         {
             get 
             {
-                if (this.vetebrateTree == null)
+                if (vetebrateTree == null)
                 {
                     //make the tree
-                    var treeString = this.GetStringFromURLRequest("nhx").Result;
-                    NewickParser np = new NewickParser();
+                    var treeString = GetStringFromURLRequest("nhx").Result;
+                    var np = new NewickParser();
                     var tmpTree = np.Parse(new StringBuilder(treeString));
-                    this.vetebrateTree = new SelectomeTree(tmpTree);
+                    vetebrateTree = new SelectomeTree(tmpTree);
                 }
-                return this.vetebrateTree;
+                return vetebrateTree;
             }
         }
         /// <summary>
@@ -111,7 +111,7 @@ namespace Bio.Web.Selectome
             get
             {
                 //make the tree
-                var treeString = this.GetStringFromURLRequest("nhx").Result;
+                var treeString = GetStringFromURLRequest("nhx").Result;
                 var np = new NewickParser();
                 {
                     return np.Parse(new StringBuilder(treeString));
@@ -128,8 +128,8 @@ namespace Bio.Web.Selectome
         {
             get 
             {
-                this.DownloadAlignmentIfNeccessary(ref this.maskedVertebrateAminoAcidAlignment, "aa_masked.fas",Alphabets.AmbiguousProtein);
-                return this.maskedVertebrateAminoAcidAlignment;
+                DownloadAlignmentIfNeccessary(ref maskedVertebrateAminoAcidAlignment, "aa_masked.fas",Alphabets.AmbiguousProtein);
+                return maskedVertebrateAminoAcidAlignment;
             }
         }
         /// <summary>
@@ -139,8 +139,8 @@ namespace Bio.Web.Selectome
         {
             get
             {
-                this.DownloadAlignmentIfNeccessary(ref this.unmaskedVertebrateAminoAcidAlignment, "aa.fas",Alphabets.AmbiguousProtein);
-                return this.unmaskedVertebrateAminoAcidAlignment;
+                DownloadAlignmentIfNeccessary(ref unmaskedVertebrateAminoAcidAlignment, "aa.fas",Alphabets.AmbiguousProtein);
+                return unmaskedVertebrateAminoAcidAlignment;
             }
         }
         /// <summary>
@@ -150,8 +150,8 @@ namespace Bio.Web.Selectome
         {
             get
             {
-                this.DownloadAlignmentIfNeccessary(ref this.unmaskedVertebrateNucleotideAlignment, "nt.fas");
-                return this.unmaskedVertebrateNucleotideAlignment;
+                DownloadAlignmentIfNeccessary(ref unmaskedVertebrateNucleotideAlignment, "nt.fas");
+                return unmaskedVertebrateNucleotideAlignment;
             }
         }
 
@@ -162,15 +162,15 @@ namespace Bio.Web.Selectome
         {
             get
             {
-                this.DownloadAlignmentIfNeccessary(ref this.maskedVertebrateNucleotideAlignment, "nt_masked.fas");
-                return this.maskedVertebrateNucleotideAlignment;
+                DownloadAlignmentIfNeccessary(ref maskedVertebrateNucleotideAlignment, "nt_masked.fas");
+                return maskedVertebrateNucleotideAlignment;
             }
         }
         private void DownloadAlignmentIfNeccessary(ref MultiSequenceAlignment msa, string suffix,IAlphabet alphabet=null)
         {
             if (msa == null)
             {
-                var alignmentString = this.GetStringFromURLRequest(suffix).Result;
+                var alignmentString = GetStringFromURLRequest(suffix).Result;
                 var parser = new FastAParser { Alphabet = alphabet };
                 var seqs = parser.Parse(new MemoryStream(Encoding.Unicode.GetBytes(alignmentString)));
                 msa = new MultiSequenceAlignment(seqs.ToList());

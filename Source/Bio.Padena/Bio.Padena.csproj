@@ -39,6 +39,6 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <ProjectExtensions><VisualStudio><UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_DetectChanges="" BuildVersion_StartDate="2000/1/1" BuildVersion_IncrementBeforeBuild="" /></VisualStudio></ProjectExtensions>
+  <ProjectExtensions><VisualStudio><UserProperties BuildVersion_UseGlobalSettings="" BuildVersion_DetectChanges="" BuildVersion_StartDate="2000/1/1" BuildVersion_IncrementBeforeBuild="" /></VisualStudio></ProjectExtensions>
 
 </Project>

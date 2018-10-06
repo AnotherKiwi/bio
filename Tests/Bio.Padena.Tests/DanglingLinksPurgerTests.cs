@@ -24,15 +24,15 @@ namespace Bio.Padena.Tests
             const int KmerLength = 11;
             const int DangleThreshold = 3;
 
-            List<ISequence> readSeqs = TestInputs.GetDanglingReads();
+            var readSeqs = TestInputs.GetDanglingReads();
             SequenceReads.Clear();
-            this.SetSequenceReads(readSeqs);
+            SetSequenceReads(readSeqs);
             this.KmerLength = KmerLength;
             DanglingLinksThreshold = DangleThreshold;
             DanglingLinksPurger = new DanglingLinksPurger(DangleThreshold);
 
             CreateGraph();
-            long graphCount = Graph.NodeCount;
+            var graphCount = Graph.NodeCount;
 
             long graphEdges = Graph.GetNodes().Select(n => n.ExtensionsCount).Sum();
             var graphNodes = Graph.GetNodes().Select(n => Graph.GetNodeSequence(n)).ToList();
@@ -40,7 +40,7 @@ namespace Bio.Padena.Tests
             DanglingLinksThreshold = DangleThreshold;
             UnDangleGraph();
 
-            long dangleRemovedGraphCount = Graph.NodeCount;
+            var dangleRemovedGraphCount = Graph.NodeCount;
             long dangleRemovedGraphEdge = Graph.GetNodes().Select(n => n.ExtensionsCount).Sum();
             var dangleRemovedGraphNodes = Graph.GetNodes().Select(n => Graph.GetNodeSequence(n)).ToList();
 
@@ -49,7 +49,7 @@ namespace Bio.Padena.Tests
             Assert.AreEqual(4, graphEdges - dangleRemovedGraphEdge);
             var checkList = graphNodes.Except(dangleRemovedGraphNodes, new SequenceEqualityComparer());
 
-            HashSet<string> expected = new HashSet<string> { "ATCGAACGATG","TCGAACGATGA" };
+            var expected = new HashSet<string> { "ATCGAACGATG","TCGAACGATGA" };
             AlignmentHelpers.CompareSequenceLists(expected, checkList);
         }
     }

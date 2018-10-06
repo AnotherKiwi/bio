@@ -37,8 +37,8 @@ namespace Bio.Web.Blast
         /// </summary>
         public BlastRequestParameters(IEnumerable<KeyValuePair<string,string>> extraParameters = null)
         {
-            this.Initialize(extraParameters);
-            this.Sequences = new List<ISequence>();
+            Initialize(extraParameters);
+            Sequences = new List<ISequence>();
         }
 
         /// <summary>
@@ -49,8 +49,8 @@ namespace Bio.Web.Blast
         public BlastRequestParameters(IEnumerable<ISequence> sequences, 
             IEnumerable<KeyValuePair<string, string>> extraParameters = null)
         {
-            this.Initialize(extraParameters);
-            this.Sequences = new List<ISequence>(sequences);
+            Initialize(extraParameters);
+            Sequences = new List<ISequence>(sequences);
         }
 
         /// <summary>
@@ -58,11 +58,11 @@ namespace Bio.Web.Blast
         /// </summary>
         private void Initialize(IEnumerable<KeyValuePair<string,string>> extraParameters)
         {
-            this.ExtraParameters = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            this.Program = BlastProgram.Blastn;
+            ExtraParameters = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            Program = BlastProgram.Blastn;
             if (extraParameters != null) {
                 foreach (var item in extraParameters)
-                    this.ExtraParameters.Add(item);
+                    ExtraParameters.Add(item);
             }
         }
     }

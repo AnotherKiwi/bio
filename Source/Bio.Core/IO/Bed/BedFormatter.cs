@@ -30,16 +30,16 @@ namespace Bio.IO.Bed
 
             if (ranges == null)
             {
-                throw new ArgumentNullException("ranges");
+                throw new ArgumentNullException(nameof(ranges));
             }
 
             // TODO: Need support for tracks and for optional metadata columns
 
             // Open the output stream - we leave the underlying stream open.
-            using (StreamWriter writer = stream.OpenWrite())
+            using (var writer = stream.OpenWrite())
             {
-                int lineCount = 0;
-                foreach (ISequenceRange range in ranges)
+                var lineCount = 0;
+                foreach (var range in ranges)
                 {
                     writer.Write(range.ID);
                     writer.Write('\t');
@@ -125,15 +125,15 @@ namespace Bio.IO.Bed
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
 
             if (rangeGroup == null)
             {
-                throw new ArgumentNullException("rangeGroup");
+                throw new ArgumentNullException(nameof(rangeGroup));
             }
 
-            this.Format(stream, rangeGroup.Flatten());
+            Format(stream, rangeGroup.Flatten());
         }
 
         /// <summary>

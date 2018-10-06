@@ -29,12 +29,12 @@ namespace Bio.Algorithms.Assembly
         {
             get
             {
-                return this.sequences;
+                return sequences;
             }
 
             set
             {
-                this.sequences = value;
+                sequences = value;
             }
         }
 
@@ -54,14 +54,14 @@ namespace Bio.Algorithms.Assembly
         {
             get
             {
-                if (this.Consensus == null)
+                if (Consensus == null)
                 {
-                    string message = Properties.Resource.ContigLength;
+                    var message = Properties.Resource.ContigLength;
                     Trace.Report(message);
                     throw new ArgumentNullException(message);
                 }
 
-                return this.Consensus.Count;
+                return Consensus.Count;
             }
         }        
 
@@ -119,7 +119,7 @@ namespace Bio.Algorithms.Assembly
         /// <returns>Consensus Sequence Data.</returns>
         public override string ToString()
         {
-            return this.Consensus.ToString();
+            return Consensus.ToString();
         }
 
         #endregion

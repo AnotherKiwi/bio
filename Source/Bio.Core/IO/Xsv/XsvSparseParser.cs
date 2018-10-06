@@ -68,9 +68,9 @@ namespace Bio.IO.Xsv
         /// <param name="sequenceIdPrefixchar">Sequence ID Prefix.</param>
         protected XsvSparseParser(IAlphabet alphabet, char separatorChar, char sequenceIdPrefixchar)
         {
-            this.Alphabet = alphabet;
-            this.separator = separatorChar;
-            this.sequenceIdPrefix = sequenceIdPrefixchar;
+            Alphabet = alphabet;
+            separator = separatorChar;
+            sequenceIdPrefix = sequenceIdPrefixchar;
         }
 
         /// <summary>
@@ -96,11 +96,11 @@ namespace Bio.IO.Xsv
         {
             // Check input arguments
             if (stream == null)
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
 
             using (var reader = stream.OpenRead())
             {
-                return this.Parse(reader);
+                return Parse(reader);
             }
         }
 
@@ -146,7 +146,7 @@ namespace Bio.IO.Xsv
             // Check input arguments
             if (sparseReader == null)
             {
-                throw new ArgumentNullException("sparseReader");
+                throw new ArgumentNullException(nameof(sparseReader));
             }
 
             if (!sparseReader.HasLines) return null;
@@ -155,7 +155,7 @@ namespace Bio.IO.Xsv
                 throw new InvalidDataException(Properties.Resource.XsvOffsetNotFound);
 
             // create a new sparse sequence
-            SparseSequence sequence = new SparseSequence(Alphabet) { ID = sparseReader.GetSequenceId() };
+            var sequence = new SparseSequence(Alphabet) { ID = sparseReader.GetSequenceId() };
 
             // read the sequence ID, count and offset
             long offset = sparseReader.GetSequenceOffset();
@@ -168,8 +168,8 @@ namespace Bio.IO.Xsv
             while (sparseReader.HasLines && !sparseReader.HasCommentLine)
             {
                 // add offset to position
-                long position = long.Parse(sparseReader.Fields[0], CultureInfo.InvariantCulture) + offset;
-                char symbol = sparseReader.Fields[1][0];
+                var position = long.Parse(sparseReader.Fields[0], CultureInfo.InvariantCulture) + offset;
+                var symbol = sparseReader.Fields[1][0];
                 if (sequence.Count <= position)
                     sequence.Count = position + 1; 
                 sequence[position] = (byte)symbol;

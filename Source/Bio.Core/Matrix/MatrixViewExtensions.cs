@@ -248,7 +248,7 @@ namespace Bio.Matrix
             this Matrix<TRowKey, TColKey, TValue> parentMatrix)
         {
             //If this is a transpose of a transpose, simplify
-            TransposeView<TRowKey, TColKey, TValue> parentTransposeViewOrNull = parentMatrix as TransposeView<TRowKey, TColKey, TValue>;
+            var parentTransposeViewOrNull = parentMatrix as TransposeView<TRowKey, TColKey, TValue>;
             if (null != parentTransposeViewOrNull)
             {
                 return parentTransposeViewOrNull.ParentMatrix;
@@ -391,7 +391,7 @@ namespace Bio.Matrix
             }
 
             //If this is a permutation of a permutation, simplify
-            PermuteValuesView<TRowKey, TColKey, TValue> parentPermuteValuesViewOrNull = parentMatrix as PermuteValuesView<TRowKey, TColKey, TValue>;
+            var parentPermuteValuesViewOrNull = parentMatrix as PermuteValuesView<TRowKey, TColKey, TValue>;
             if (null != parentPermuteValuesViewOrNull)
             {
                 var colIndexSequenceTwo = colIndexSequence.Select(i => parentPermuteValuesViewOrNull.IndexOfParentCol[i]);
@@ -482,7 +482,7 @@ namespace Bio.Matrix
             this Matrix<TRowKey, TColKey, TValue> parentMatrix)
         {
             //If this is a HashableView of a HashableView, simplify
-            HashableView<TRowKey, TColKey, TValue> parentHashableViewOrNull = parentMatrix as HashableView<TRowKey, TColKey, TValue>;
+            var parentHashableViewOrNull = parentMatrix as HashableView<TRowKey, TColKey, TValue>;
             if (null != parentHashableViewOrNull)
             {
                 return parentHashableViewOrNull.ParentMatrix;

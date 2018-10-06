@@ -15,7 +15,7 @@ namespace Bio.Web.Blast
         /// </summary>
         public BlastResult()
         {
-            this.Records = new List<BlastSearchRecord>();
+            Records = new List<BlastSearchRecord>();
         }
 
         /// <summary>

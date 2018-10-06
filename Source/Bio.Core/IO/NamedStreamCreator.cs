@@ -19,15 +19,15 @@ namespace Bio.IO
         {
             if (name == null)
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
             }
             if (creator == null)
             {
-                throw new ArgumentNullException("creator");
+                throw new ArgumentNullException(nameof(creator));
             }
 
-            this.Name = name;
-            this.Creator = creator;
+            Name = name;
+            Creator = creator;
         }
         /// <summary>
         /// The name of the data source. This might be a file name, a resource name, the name of a text box on a form, etc. This name is mostly used

@@ -82,7 +82,7 @@ namespace Bio
         /// <returns>Set of parsed sequences.</returns>
         public static IEnumerable<ISequenceAlignment> Parse(this ISequenceAlignmentParser parser, string fileName)
         {
-            using (FileStream fs = File.OpenRead(fileName))
+            using (var fs = File.OpenRead(fileName))
             {
                 foreach (var item in parser.Parse(fs))
                     yield return item;

@@ -77,15 +77,15 @@ namespace Bio.IO.FastA
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
 
-            byte[] buffer = new byte[PlatformManager.Services.DefaultBufferSize];
+            var buffer = new byte[PlatformManager.Services.DefaultBufferSize];
             using (var reader = stream.OpenRead())
             {
                 while (!reader.EndOfStream)
                 {
-                    var seq = this.ParseOne(reader, buffer);
+                    var seq = ParseOne(reader, buffer);
                     if (seq != null)
                         yield return seq;
                 }
@@ -101,13 +101,13 @@ namespace Bio.IO.FastA
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
 
-            byte[] buffer = new byte[PlatformManager.Services.DefaultBufferSize];
+            var buffer = new byte[PlatformManager.Services.DefaultBufferSize];
             using (var reader = stream.OpenRead())
             {
-                return this.ParseOne(reader, buffer);
+                return ParseOne(reader, buffer);
             }
         }
 
@@ -120,15 +120,15 @@ namespace Bio.IO.FastA
         ISequence ParseOne(TextReader reader, byte[] buffer)
         {
             if (reader == null)
-                throw new ArgumentNullException("reader");
+                throw new ArgumentNullException(nameof(reader));
 
             if (reader.Peek() == -1)
                 return null;
 
-            int currentBufferSize = PlatformManager.Services.DefaultBufferSize;
+            var currentBufferSize = PlatformManager.Services.DefaultBufferSize;
 
             string message;
-            string line = reader.ReadLine();
+            var line = reader.ReadLine();
 
             // Continue reading if blank line found.
             while (line != null && string.IsNullOrEmpty(line))
@@ -146,8 +146,8 @@ namespace Bio.IO.FastA
                 throw new Exception(message);
             }
 
-            string name = line.Substring(1);
-            int bufferPosition = 0;
+            var name = line.Substring(1);
+            var bufferPosition = 0;
 
             // Read next line.
             line = reader.ReadLine();
@@ -167,8 +167,8 @@ namespace Bio.IO.FastA
                 throw new Exception(message);
             }
 
-            IAlphabet alphabet = Alphabet;
-            bool tryAutoDetectAlphabet = alphabet == null;
+            var alphabet = Alphabet;
+            var tryAutoDetectAlphabet = alphabet == null;
 
             do
             {
@@ -178,17 +178,17 @@ namespace Bio.IO.FastA
                     throw new ArgumentOutOfRangeException(
                         string.Format(CultureInfo.CurrentUICulture, Properties.Resource.SequenceDataGreaterthan2GB, name));
                 }
-                int neededSize = bufferPosition + line.Length;
+                var neededSize = bufferPosition + line.Length;
                 if (neededSize >= currentBufferSize)
                 {
                     //Grow file dynamically, by buffer size, or if too small to fit the new sequence by the size of the sequence
-                    int suggestedSize = buffer.Length + PlatformManager.Services.DefaultBufferSize;
-                    int newSize = neededSize < suggestedSize ? suggestedSize : neededSize;
+                    var suggestedSize = buffer.Length + PlatformManager.Services.DefaultBufferSize;
+                    var newSize = neededSize < suggestedSize ? suggestedSize : neededSize;
                     Array.Resize(ref buffer, newSize);
                     currentBufferSize =newSize;
                 }
 
-                byte[] symbols = Encoding.UTF8.GetBytes(line);
+                var symbols = Encoding.UTF8.GetBytes(line);
 
                 // Array.Copy -- for performance improvement.
                 Array.Copy(symbols, 0, buffer, bufferPosition, symbols.Length);
@@ -198,16 +198,16 @@ namespace Bio.IO.FastA
                 {
                     // If we have a base alphabet we detected earlier, 
                     // then try that first.
-                    if (this.baseAlphabet != null &&
-                        this.baseAlphabet.ValidateSequence(buffer, bufferPosition, line.Length))
+                    if (baseAlphabet != null &&
+                        baseAlphabet.ValidateSequence(buffer, bufferPosition, line.Length))
                     {
-                        alphabet = this.baseAlphabet;
+                        alphabet = baseAlphabet;
                     }
                     // Otherwise attempt to identify alphabet
                     else
                     {
                         // Different alphabet - try to auto detect.
-                        this.baseAlphabet = null;
+                        baseAlphabet = null;
                         alphabet = Alphabets.AutoDetectAlphabet(buffer, bufferPosition, bufferPosition + line.Length, alphabet);
                         if (alphabet == null)
                         {
@@ -217,22 +217,22 @@ namespace Bio.IO.FastA
                     }
 
                     // Determine the base alphabet used.
-                    if (this.baseAlphabet == null)
+                    if (baseAlphabet == null)
                     {
-                        this.baseAlphabet = alphabet;
+                        baseAlphabet = alphabet;
                     }
                     else
                     {
                         // If they are not the same, then this might be an error.
-                        if (this.baseAlphabet != alphabet)
+                        if (baseAlphabet != alphabet)
                         {
                             // If the new alphabet includes all the base alphabet then use it instead.
                             // This happens when we hit an ambiguous form of the alphabet later in the file.
-                            if (!this.baseAlphabet.HasAmbiguity && Alphabets.GetAmbiguousAlphabet(this.baseAlphabet) == alphabet)
+                            if (!baseAlphabet.HasAmbiguity && Alphabets.GetAmbiguousAlphabet(baseAlphabet) == alphabet)
                             {
-                                this.baseAlphabet = alphabet;
+                                baseAlphabet = alphabet;
                             }
-                            else if (alphabet.HasAmbiguity || Alphabets.GetAmbiguousAlphabet(alphabet) != this.baseAlphabet)
+                            else if (alphabet.HasAmbiguity || Alphabets.GetAmbiguousAlphabet(alphabet) != baseAlphabet)
                             {
                                 throw new Exception(Properties.Resource.FastAContainsMorethanOnebaseAlphabet);
                             }
@@ -267,12 +267,12 @@ namespace Bio.IO.FastA
             while (line != null);
 
             // Truncate buffer to remove trailing 0's
-            byte[] tmpBuffer = new byte[bufferPosition];
+            var tmpBuffer = new byte[bufferPosition];
             Array.Copy(buffer, tmpBuffer, bufferPosition);
 
             if (tryAutoDetectAlphabet)
             {
-                alphabet = this.baseAlphabet;
+                alphabet = baseAlphabet;
             }
 
             // In memory sequence

@@ -26,7 +26,7 @@ namespace Bio.Tests
         public void CreateSimpleStatsWithSingleLetterSequence()
         {
             ISequence sequence = new Sequence(Alphabets.DNA, "A");
-            SequenceStatistics stats = new SequenceStatistics(sequence);
+            var stats = new SequenceStatistics(sequence);
 
             Assert.AreEqual(1, stats.GetCount('A'));
             Assert.AreEqual(1, stats.GetCount(65));
@@ -45,7 +45,7 @@ namespace Bio.Tests
         public void CreateSimpleStatsAndVerifyAlphabetIsReturned()
         {
             ISequence sequence = new Sequence(Alphabets.DNA, "A");
-            SequenceStatistics stats = new SequenceStatistics(sequence);
+            var stats = new SequenceStatistics(sequence);
 
             Assert.AreEqual(Alphabets.DNA, stats.Alphabet);
         }
@@ -57,7 +57,7 @@ namespace Bio.Tests
         public void CreateSimpleStatsAndVerifyCount()
         {
             ISequence sequence = new Sequence(Alphabets.DNA, "ACGT--ACGT--ACGT--");
-            SequenceStatistics stats = new SequenceStatistics(sequence);
+            var stats = new SequenceStatistics(sequence);
 
             Assert.AreEqual(18, stats.TotalCount);
         }
@@ -69,7 +69,7 @@ namespace Bio.Tests
         public void CreateSimpleStatsWithSingleLowercaseLetterSequence()
         {
             ISequence sequence = new Sequence(Alphabets.DNA, "a");
-            SequenceStatistics stats = new SequenceStatistics(sequence);
+            var stats = new SequenceStatistics(sequence);
 
             Assert.AreEqual(1, stats.GetCount('A'));
             Assert.AreEqual(1, stats.GetCount(65));
@@ -90,7 +90,7 @@ namespace Bio.Tests
         public void CreateStatsWithMixedcaseLetterSequence()
         {
             ISequence sequence = new Sequence(Alphabets.DNA, "aAaAaAaA");
-            SequenceStatistics stats = new SequenceStatistics(sequence);
+            var stats = new SequenceStatistics(sequence);
 
             Assert.AreEqual(8, stats.GetCount('A'));
             Assert.AreEqual(8, stats.GetCount(65));
@@ -108,7 +108,7 @@ namespace Bio.Tests
         public void CreateStatsWithSeveralMixedcaseLetterSequence()
         {
             ISequence sequence = new Sequence(Alphabets.DNA, "a-c-g-t-A-C-G-T-");
-            SequenceStatistics stats = new SequenceStatistics(sequence);
+            var stats = new SequenceStatistics(sequence);
 
             Assert.AreEqual(2, stats.GetCount('A'));
             Assert.AreEqual(2, stats.GetCount('a'));
@@ -135,9 +135,9 @@ namespace Bio.Tests
         public void CreateStatsAndConsumeEnumerable()
         {
             ISequence sequence = new Sequence(Alphabets.DNA, "ACGT--ACGT--ACGT--");
-            SequenceStatistics stats = new SequenceStatistics(sequence);
+            var stats = new SequenceStatistics(sequence);
 
-            int loopCounts = 0;
+            var loopCounts = 0;
             foreach (var value in stats.SymbolCounts)
             {
                 Assert.AreEqual(value.Item2, stats.GetCount(value.Item1));
@@ -154,10 +154,10 @@ namespace Bio.Tests
         public void CreateStatsAndCheckToString()
         {
             ISequence sequence = new Sequence(Alphabets.DNA, "ACGT--ACGT--ACGT--");
-            SequenceStatistics stats = new SequenceStatistics(sequence);
+            var stats = new SequenceStatistics(sequence);
 
-            string expectedValue = "- - 6\r\nA - 3\r\nC - 3\r\nG - 3\r\nT - 3\r\n".Replace("\r\n", Environment.NewLine);
-            string actualValue = stats.ToString();
+            var expectedValue = "- - 6\r\nA - 3\r\nC - 3\r\nG - 3\r\nT - 3\r\n".Replace("\r\n", Environment.NewLine);
+            var actualValue = stats.ToString();
 
             Assert.AreEqual(expectedValue, actualValue);
         }

@@ -49,11 +49,11 @@ namespace Bio.IO.Xsv
             // parse the consensus
             using (var reader = new StreamReader(stream))
             {
-                XsvSparseReader sparseReader = new XsvSparseReader(reader, separator, sequenceIdPrefix);
-                ISequence consensus = ParseOne(sparseReader);
+                var sparseReader = new XsvSparseReader(reader, separator, sequenceIdPrefix);
+                var consensus = ParseOne(sparseReader);
                 return consensus == null
                            ? null
-                           : new Contig { Consensus = consensus, Sequences = this.ParseAssembledSequence(sparseReader) };
+                           : new Contig { Consensus = consensus, Sequences = ParseAssembledSequence(sparseReader) };
             }
         }
 
@@ -71,13 +71,13 @@ namespace Bio.IO.Xsv
             // Check input arguments
             if (contigReader == null) 
             {
-                throw new ArgumentNullException("contigReader");
+                throw new ArgumentNullException(nameof(contigReader));
             }
 
             var sequenceList = new List<Contig.AssembledSequence>();
             while (contigReader.HasLines)
             {
-                sequenceList.Add(new Contig.AssembledSequence { Sequence = this.ParseOne(contigReader) });
+                sequenceList.Add(new Contig.AssembledSequence { Sequence = ParseOne(contigReader) });
             }
             return sequenceList;
         }

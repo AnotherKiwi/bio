@@ -104,7 +104,7 @@ namespace Bio.Algorithms.Alignment
         /// <returns>List of Cluster</returns>
         public List<Cluster> BuildClusters(List<MatchExtension> matchExtensions)
         {
-            return this.BuildClusters(matchExtensions, false);
+            return BuildClusters(matchExtensions, false);
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace Bio.Algorithms.Alignment
                 return null;
             }
 
-            int extnCount = matchExtensions.Count;
+            var extnCount = matchExtensions.Count;
             if (0 == extnCount)
             {
                 return null;
@@ -139,7 +139,7 @@ namespace Bio.Algorithms.Alignment
             unionFind = new long[extnCount];
 
             // populate unionFind
-            for (int index = 0; index < extnCount; index++)
+            for (var index = 0; index < extnCount; index++)
             {
                 unionFind[index] = -1;
             }
@@ -180,7 +180,7 @@ namespace Bio.Algorithms.Alignment
                     // this is always true as the matches are sorted on QuerySequenceOffset.
                     if (matches[counter1].QuerySequenceOffset <= matches[counter2].QuerySequenceOffset)
                     {
-                        long diagonalj = matches[counter2].QuerySequenceOffset
+                        var diagonalj = matches[counter2].QuerySequenceOffset
                                          - matches[counter2].ReferenceSequenceOffset;
                         if (diagonalIndex == diagonalj)
                         {
@@ -350,7 +350,7 @@ namespace Bio.Algorithms.Alignment
         {
             int clusterSize;
             int counter1, counter2;
-            List<Cluster> clusters = new List<Cluster>();
+            var clusters = new List<Cluster>();
 
             // Sort matches by second sequence start
             if (!sortedByQuerySequenceIndex)
@@ -365,16 +365,16 @@ namespace Bio.Algorithms.Alignment
             // If diagonal distance is less than user defined, they are clustered together
             for (counter1 = 0; counter1 < matches.Count - 1; counter1++)
             {
-                long endIndex = matches[counter1].QuerySequenceOffset
+                var endIndex = matches[counter1].QuerySequenceOffset
                         + matches[counter1].Length;
-                long diagonalIndex = matches[counter1].QuerySequenceOffset
+                var diagonalIndex = matches[counter1].QuerySequenceOffset
                         - matches[counter1].ReferenceSequenceOffset;
 
                 for (counter2 = counter1 + 1; counter2 < matches.Count; counter2++)
                 {
                     long diagonalDifference;
 
-                    long separation = matches[counter2].QuerySequenceOffset - endIndex;
+                    var separation = matches[counter2].QuerySequenceOffset - endIndex;
                     if (separation > MaximumSeparation)
                     {
                         break;
@@ -385,8 +385,8 @@ namespace Bio.Algorithms.Alignment
                             - diagonalIndex);
                     if (diagonalDifference <= Math.Max(FixedSeparation, SeparationFactor * separation))
                     {
-                        long firstMatchIndex = Find(counter1);
-                        long secondMatchIndex = Find(counter2);
+                        var firstMatchIndex = Find(counter1);
+                        var secondMatchIndex = Find(counter2);
                         if (firstMatchIndex != secondMatchIndex)
                         {
                             // add both the matches to the cluster
@@ -562,7 +562,7 @@ namespace Bio.Algorithms.Alignment
                     }
                 }
 
-                if (this.ScoreMethod == ClusterScoreMethod.MatchLength)
+                if (ScoreMethod == ClusterScoreMethod.MatchLength)
                 {
                     score = total;
                 }
@@ -573,7 +573,7 @@ namespace Bio.Algorithms.Alignment
 
                 // If the current score exceeds the minimum score
                 // and the matches to cluster
-                if (score >= this.MinimumScore)
+                if (score >= MinimumScore)
                 {
                     clusterMatches = new List<MatchExtension>();
 
@@ -581,7 +581,7 @@ namespace Bio.Algorithms.Alignment
                     {
                         if (matches[indexToSkip + counter1].IsGood)
                         {
-                            MatchExtension match = matches[indexToSkip + counter1];
+                            var match = matches[indexToSkip + counter1];
                             if (matches[indexToSkip + counter1].Adjacent != 0)
                             {
                                 match = new MatchExtension();

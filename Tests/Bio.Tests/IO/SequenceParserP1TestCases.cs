@@ -31,7 +31,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateFastAFileParser()
         {
-            this.ValidateSequenceFileParser(Constants.FastAFileParserNode, true);
+            ValidateSequenceFileParser(Constants.FastAFileParserNode, true);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateGenBankFileParser()
         {
-            this.ValidateSequenceFileParser(Constants.GenBankFileParserNode, true);
+            ValidateSequenceFileParser(Constants.GenBankFileParserNode, true);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateFastQFileParser()
         {
-            this.ValidateSequenceFileParser(Constants.FastQFileParserNode, true);
+            ValidateSequenceFileParser(Constants.FastQFileParserNode, true);
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateGffFileParser()
         {
-            this.ValidateSequenceFileParser(Constants.GffFileParserNode, true);
+            ValidateSequenceFileParser(Constants.GffFileParserNode, true);
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateFastAFileFormatter()
         {
-            this.ValidateSequenceFileParser(Constants.FastAFileFormatterNode, false);
+            ValidateSequenceFileParser(Constants.FastAFileFormatterNode, false);
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateGenBankFileFormatter()
         {
-            this.ValidateSequenceFileParser(Constants.GenBankFileFormatterNode, false);
+            ValidateSequenceFileParser(Constants.GenBankFileFormatterNode, false);
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateGffFileFormatter()
         {
-            this.ValidateSequenceFileParser(Constants.GffFileFormatterNode, false);
+            ValidateSequenceFileParser(Constants.GffFileFormatterNode, false);
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateFastQFileFormatter()
         {
-            this.ValidateSequenceFileParser(Constants.FastQFileFormatterNode, false);
+            ValidateSequenceFileParser(Constants.FastQFileFormatterNode, false);
         }
 
         /// <summary>
@@ -127,21 +127,21 @@ namespace Bio.Tests
         public void ValidateSeqParserProperties()
         {
             // Gets the expected sequence from the Xml
-            string fastaParserName = this.utilityObj.xmlUtil.GetTextValue(Constants.FastAFileParserNode,
+            var fastaParserName = utilityObj.xmlUtil.GetTextValue(Constants.FastAFileParserNode,
                                                                      Constants.ParserNameNode);
-            string genBankParserName = this.utilityObj.xmlUtil.GetTextValue(Constants.GenBankFileParserNode,
+            var genBankParserName = utilityObj.xmlUtil.GetTextValue(Constants.GenBankFileParserNode,
                                                                        Constants.ParserNameNode);
-            string gffParserName = this.utilityObj.xmlUtil.GetTextValue(Constants.GffFileParserNode,
+            var gffParserName = utilityObj.xmlUtil.GetTextValue(Constants.GffFileParserNode,
                                                                    Constants.ParserNameNode);
-            string fastQParserName = this.utilityObj.xmlUtil.GetTextValue(Constants.FastQFileParserNode,
+            var fastQParserName = utilityObj.xmlUtil.GetTextValue(Constants.FastQFileParserNode,
                                                                      Constants.ParserNameNode);
 
             // Get SequenceParser class properties.
-            FastAParser actualFastAParser = SequenceParsers.Fasta;
-            IReadOnlyList<ISequenceParser> allParser = SequenceParsers.All;
-            GenBankParser actualgenBankParserName = SequenceParsers.GenBank;
-            FastQParser actualFastQParserName = SequenceParsers.FastQ;
-            GffParser actualGffParserName = SequenceParsers.Gff;
+            var actualFastAParser = SequenceParsers.Fasta;
+            var allParser = SequenceParsers.All;
+            var actualgenBankParserName = SequenceParsers.GenBank;
+            var actualFastQParserName = SequenceParsers.FastQ;
+            var actualGffParserName = SequenceParsers.Gff;
 
             // Validate Sequence parsers
             Assert.AreEqual(fastaParserName, actualFastAParser.Name);
@@ -161,21 +161,21 @@ namespace Bio.Tests
         public void ValidateSeqFormatterProperties()
         {
             // Gets the expected sequence from the Xml
-            string fastaFormatterName = this.utilityObj.xmlUtil.GetTextValue(Constants.FastAFileParserNode,
+            var fastaFormatterName = utilityObj.xmlUtil.GetTextValue(Constants.FastAFileParserNode,
                                                                         Constants.ParserNameNode);
-            string genBankFormatterName = this.utilityObj.xmlUtil.GetTextValue(Constants.GenBankFileParserNode,
+            var genBankFormatterName = utilityObj.xmlUtil.GetTextValue(Constants.GenBankFileParserNode,
                                                                           Constants.ParserNameNode);
-            string gffFormatterName = this.utilityObj.xmlUtil.GetTextValue(Constants.GffFileParserNode,
+            var gffFormatterName = utilityObj.xmlUtil.GetTextValue(Constants.GffFileParserNode,
                                                                       Constants.ParserNameNode);
-            string fastQFormatterName = this.utilityObj.xmlUtil.GetTextValue(Constants.FastQFileParserNode,
+            var fastQFormatterName = utilityObj.xmlUtil.GetTextValue(Constants.FastQFileParserNode,
                                                                         Constants.ParserNameNode);
 
             // Get SequenceFormatter class properties.
-            FastAFormatter actualFastAFormatter = SequenceFormatters.Fasta;
-            IReadOnlyList<ISequenceFormatter> allFormatters = SequenceFormatters.All;
-            GenBankFormatter actualgenBankFormatterName = SequenceFormatters.GenBank;
-            FastQFormatter actualFastQFormatterName = SequenceFormatters.FastQ;
-            GffFormatter actualGffFormatterName = SequenceFormatters.Gff;
+            var actualFastAFormatter = SequenceFormatters.Fasta;
+            var allFormatters = SequenceFormatters.All;
+            var actualgenBankFormatterName = SequenceFormatters.GenBank;
+            var actualFastQFormatterName = SequenceFormatters.FastQ;
+            var actualGffFormatterName = SequenceFormatters.Gff;
 
             // Validate Sequence Formatter
             Assert.AreEqual(fastaFormatterName, actualFastAFormatter.Name);
@@ -201,22 +201,22 @@ namespace Bio.Tests
         private void ValidateSequenceFileParser(string nodeName, bool IsParser)
         {
             // Gets the expected sequence from the Xml
-            string[] filePaths = this.utilityObj.xmlUtil.GetTextValues(nodeName,
+            var filePaths = utilityObj.xmlUtil.GetTextValues(nodeName,
                                                                   Constants.FilePathsNode);
-            string parserDescription = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+            var parserDescription = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                        Constants.DescriptionNode);
-            string parserName = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+            var parserName = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                 Constants.ParserNameNode);
-            string fileTypes = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+            var fileTypes = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                Constants.FileTypesNode);
 
             // Get a default parser for the file types.
-            for (int i = 0; i < filePaths.Length; i++)
+            for (var i = 0; i < filePaths.Length; i++)
             {
                 if (IsParser)
                 {
-                    ISequenceParser parser = SequenceParsers.FindParserByFileName(filePaths[i]);
-                    string description = parser.Description.Replace("\r", "").Replace("\n", "");
+                    var parser = SequenceParsers.FindParserByFileName(filePaths[i]);
+                    var description = parser.Description.Replace("\r", "").Replace("\n", "");
                     // Validate parser name, description and the file type supported by parser.
                     Assert.AreEqual(parserName, parser.Name);
                     Assert.AreEqual(parserDescription, description);
@@ -224,8 +224,8 @@ namespace Bio.Tests
                 }
                 else
                 {
-                    ISequenceFormatter formatter = SequenceFormatters.FindFormatterByFileName(filePaths[i]);
-                    string description =
+                    var formatter = SequenceFormatters.FindFormatterByFileName(filePaths[i]);
+                    var description =
                         formatter.Description.Replace("\r", "").Replace("\n", "");
                     // Validate parser name, description and the file type supported by parser.
                     Assert.AreEqual(parserName, formatter.Name);

@@ -139,7 +139,7 @@ namespace Bio
             if (obj == null)
                 return 0;
 
-            SequenceRange sequenceRange = obj as SequenceRange;
+            var sequenceRange = obj as SequenceRange;
             if (obj == null)
                 return 0;
 
@@ -167,7 +167,7 @@ namespace Bio
                 return -1;
             }
 
-            int compare = Start.CompareTo(other.Start);
+            var compare = Start.CompareTo(other.Start);
 
             if (compare == 0)
                 compare = End.CompareTo(other.End);
@@ -181,7 +181,7 @@ namespace Bio
 
                 if (compare == 0)
                 {
-                    for (int index = 0; index < ParentSeqRanges.Count; index++)
+                    for (var index = 0; index < ParentSeqRanges.Count; index++)
                     {
                         compare = ParentSeqRanges[index].CompareTo(other.ParentSeqRanges[index]);
                         if (compare != 0)
@@ -227,7 +227,7 @@ namespace Bio
         /// <returns>Is LHS == RHS</returns>
         public static bool operator ==(SequenceRange leftHandSideObject, SequenceRange rightHandSideObject)
         {
-            return System.Object.ReferenceEquals(leftHandSideObject, rightHandSideObject);
+            return ReferenceEquals(leftHandSideObject, rightHandSideObject);
         }
 
         /// <summary>
@@ -249,7 +249,7 @@ namespace Bio
         /// <returns>Is LHS == RHS</returns>
         public static bool operator <(SequenceRange leftHandSideObject, SequenceRange rightHandSideObject)
         {
-            if (object.ReferenceEquals(leftHandSideObject, null) || object.ReferenceEquals(rightHandSideObject, null))
+            if (ReferenceEquals(leftHandSideObject, null) || ReferenceEquals(rightHandSideObject, null))
             {
                 return false;
             }
@@ -265,7 +265,7 @@ namespace Bio
         /// <returns>Is LHS == RHS</returns>
         public static bool operator >(SequenceRange leftHandSideObject, SequenceRange rightHandSideObject)
         {
-            if (object.ReferenceEquals(leftHandSideObject, null) || object.ReferenceEquals(rightHandSideObject, null))
+            if (ReferenceEquals(leftHandSideObject, null) || ReferenceEquals(rightHandSideObject, null))
             {
                 return false;
             }
@@ -279,7 +279,7 @@ namespace Bio
         /// <returns>ID, Start, End of the sequence.</returns>
         public override string ToString()
         {
-            return string.Format(CultureInfo.CurrentCulture, Properties.Resource.SequenceRangeToStringFormat, this.ID, this.Start, this.End);
+            return string.Format(CultureInfo.CurrentCulture, Properties.Resource.SequenceRangeToStringFormat, ID, Start, End);
         }
     }
 }

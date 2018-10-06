@@ -20,7 +20,7 @@ namespace Bio.IO.SAM
         {
             get
             {
-                return this.alignedSequences ?? (this.alignedSequences = new List<SAMAlignedSequence>());
+                return alignedSequences ?? (alignedSequences = new List<SAMAlignedSequence>());
             }
         }
 
@@ -31,18 +31,18 @@ namespace Bio.IO.SAM
         {
             get
             {
-                if (this.alignedSequences == null || this.alignedSequences.Count == 0)
+                if (alignedSequences == null || alignedSequences.Count == 0)
                 {
                     return null;
                 }
 
-                return this.alignedSequences[0];
+                return alignedSequences[0];
             }
             set
             {
-                if (this.alignedSequences != null && this.alignedSequences.Count > 0)
+                if (alignedSequences != null && alignedSequences.Count > 0)
                 {
-                    this.alignedSequences[0] = value;
+                    alignedSequences[0] = value;
                 }
                 else
                 {
@@ -61,24 +61,24 @@ namespace Bio.IO.SAM
         {
             get
             {
-                if (this.alignedSequences == null || this.alignedSequences.Count <= 1)
+                if (alignedSequences == null || alignedSequences.Count <= 1)
                 {
                     return null;
                 }
 
-                return this.alignedSequences[1];
+                return alignedSequences[1];
             }
             set
             {
-                if (this.alignedSequences != null && this.alignedSequences.Count > 1)
+                if (alignedSequences != null && alignedSequences.Count > 1)
                 {
-                    this.alignedSequences[1] = value;
+                    alignedSequences[1] = value;
                 }
                 else
                 {
                     if (value != null)
                     {
-                        int count = Reads.Count;
+                        var count = Reads.Count;
                         if (count == 0)
                         {
                             Reads.Add(null);
@@ -123,19 +123,19 @@ namespace Bio.IO.SAM
         {
             if (pairedRead == null)
             {
-                throw new ArgumentNullException("pairedRead");
+                throw new ArgumentNullException(nameof(pairedRead));
             }
 
             if (string.IsNullOrEmpty(libraryName))
             {
-                throw new ArgumentNullException("libraryName");
+                throw new ArgumentNullException(nameof(libraryName));
             }
 
-            CloneLibraryInformation libraryInfo = CloneLibrary.Instance.GetLibraryInformation(libraryName);
+            var libraryInfo = CloneLibrary.Instance.GetLibraryInformation(libraryName);
 
             if (libraryInfo == null)
             {
-                throw new ArgumentOutOfRangeException("libraryName");
+                throw new ArgumentOutOfRangeException(nameof(libraryName));
             }
 
             return GetPairedReadType(pairedRead, libraryInfo, useInsertLengthOfReads);
@@ -164,12 +164,12 @@ namespace Bio.IO.SAM
         {
             if (pairedRead == null)
             {
-                throw new ArgumentNullException("pairedRead");
+                throw new ArgumentNullException(nameof(pairedRead));
             }
 
             if (libraryInfo == null)
             {
-                throw new ArgumentNullException("libraryInfo");
+                throw new ArgumentNullException(nameof(libraryInfo));
             }
 
             return GetPairedReadType(pairedRead, libraryInfo.MeanLengthOfInsert, libraryInfo.StandardDeviationOfInsert, useInsertLengthOfReads);
@@ -201,7 +201,7 @@ namespace Bio.IO.SAM
         {
             if (pairedRead == null)
             {
-                throw new ArgumentNullException("pairedRead");
+                throw new ArgumentNullException(nameof(pairedRead));
             }
 
             if (pairedRead.alignedSequences.Count > 2)
@@ -213,15 +213,15 @@ namespace Bio.IO.SAM
             }
             else
             {
-                PairedReadType type = GetPairedReadType(pairedRead.Read1, pairedRead.Read2, meanLengthOfInsert, standardDeviationOfInsert);
+                var type = GetPairedReadType(pairedRead.Read1, pairedRead.Read2, meanLengthOfInsert, standardDeviationOfInsert);
 
                 if (type == PairedReadType.Normal || type == PairedReadType.LengthAnomaly)
                 {
-                    int insertLength = pairedRead.InsertLength;
+                    var insertLength = pairedRead.InsertLength;
                     // µ + 3σ
-                    float upperLimit = meanLengthOfInsert + (3*standardDeviationOfInsert);
+                    var upperLimit = meanLengthOfInsert + (3*standardDeviationOfInsert);
                     // µ - 3σ
-                    float lowerLimit = meanLengthOfInsert - (3*standardDeviationOfInsert);
+                    var lowerLimit = meanLengthOfInsert - (3*standardDeviationOfInsert);
                     if (insertLength > upperLimit || insertLength < lowerLimit)
                     {
                         type = PairedReadType.LengthAnomaly;
@@ -246,14 +246,14 @@ namespace Bio.IO.SAM
         {
             if (string.IsNullOrEmpty(libraryName))
             {
-                throw new ArgumentNullException("libraryName");
+                throw new ArgumentNullException(nameof(libraryName));
             }
 
-            CloneLibraryInformation libraryInfo = CloneLibrary.Instance.GetLibraryInformation(libraryName);
+            var libraryInfo = CloneLibrary.Instance.GetLibraryInformation(libraryName);
 
             if (libraryInfo == null)
             {
-                throw new ArgumentOutOfRangeException("libraryName");
+                throw new ArgumentOutOfRangeException(nameof(libraryName));
             }
 
             return GetPairedReadType(read1, read2, libraryInfo);
@@ -269,7 +269,7 @@ namespace Bio.IO.SAM
         {
             if (libraryInfo == null)
             {
-                throw new ArgumentNullException("libraryInfo");
+                throw new ArgumentNullException(nameof(libraryInfo));
             }
 
             return GetPairedReadType(read1, read2, libraryInfo.MeanLengthOfInsert, libraryInfo.StandardDeviationOfInsert);
@@ -284,10 +284,10 @@ namespace Bio.IO.SAM
         /// <param name="standardDeviationOfInsert">Standard deviation of insertion length.</param>
         public static PairedReadType GetPairedReadType(SAMAlignedSequence read1, SAMAlignedSequence read2, float meanLengthOfInsert, float standardDeviationOfInsert)
         {
-            PairedReadType type = PairedReadType.Normal;
+            var type = PairedReadType.Normal;
             if (read1 == null)
             {
-                throw new ArgumentNullException("read1");
+                throw new ArgumentNullException(nameof(read1));
             }
 
             if (read2 == null)
@@ -307,8 +307,8 @@ namespace Bio.IO.SAM
             }
             else
             {
-                bool isBothforwardReads = IsForwardRead(read1) && IsForwardRead(read2);
-                bool isBothReverseReads = IsReverseRead(read1) && IsReverseRead(read2);
+                var isBothforwardReads = IsForwardRead(read1) && IsForwardRead(read2);
+                var isBothReverseReads = IsReverseRead(read1) && IsReverseRead(read2);
 
                 if (isBothforwardReads || isBothReverseReads)
                 {
@@ -316,8 +316,8 @@ namespace Bio.IO.SAM
                 }
                 else
                 {
-                    int forwardReadStartPos = 0;
-                    int reverseReadStartPos = 0;
+                    var forwardReadStartPos = 0;
+                    var reverseReadStartPos = 0;
 
                     if (IsForwardRead(read1))
                     {
@@ -337,12 +337,12 @@ namespace Bio.IO.SAM
                     else
                     {
 
-                        int insertLength = GetInsertLength(read1, read2);
+                        var insertLength = GetInsertLength(read1, read2);
 
                         // µ + 3σ
-                        float upperLimit = meanLengthOfInsert + (3*standardDeviationOfInsert);
+                        var upperLimit = meanLengthOfInsert + (3*standardDeviationOfInsert);
                         // µ - 3σ
-                        float lowerLimit = meanLengthOfInsert - (3*standardDeviationOfInsert);
+                        var lowerLimit = meanLengthOfInsert - (3*standardDeviationOfInsert);
                         if (insertLength > upperLimit || insertLength < lowerLimit)
                         {
                             type = PairedReadType.LengthAnomaly;
@@ -386,7 +386,7 @@ namespace Bio.IO.SAM
 
             if (read1 == null)
             {
-                throw new ArgumentNullException("read1");
+                throw new ArgumentNullException(nameof(read1));
             }
 
             if (read2 == null)
@@ -397,7 +397,7 @@ namespace Bio.IO.SAM
 
             if (validate)
             {
-                PairedReadType type = GetPairedReadType(read1, read2, 0, 0);
+                var type = GetPairedReadType(read1, read2, 0, 0);
                 if (type != PairedReadType.Normal && type != PairedReadType.LengthAnomaly)
                 {
                     return 0;
@@ -415,7 +415,7 @@ namespace Bio.IO.SAM
         {
             if (read == null)
             {
-                throw new ArgumentNullException("read");
+                throw new ArgumentNullException(nameof(read));
             }
 
             return (read.Flag & SAMFlags.QueryOnReverseStrand) == 0;
@@ -429,7 +429,7 @@ namespace Bio.IO.SAM
         {
             if (read == null)
             {
-                throw new ArgumentNullException("read");
+                throw new ArgumentNullException(nameof(read));
             }
 
             return !IsForwardRead(read);

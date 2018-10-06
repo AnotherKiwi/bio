@@ -75,7 +75,7 @@ namespace Bio.IO.BAM
         /// </summary>
         /// <param name="alignedSequence"></param>
         /// <param name="offset"></param>
-        internal void AddReadToIndexInformation(SAM.SAMAlignedSequence alignedSequence, FileOffset offset)
+        internal void AddReadToIndexInformation(SAMAlignedSequence alignedSequence, FileOffset offset)
         {
             if (offset < FirstOffSetSeen) { FirstOffSetSeen = offset; }
             else if (offset > LastOffSetSeen) { LastOffSetSeen = offset; }            
@@ -128,12 +128,12 @@ namespace Bio.IO.BAM
             /// <param name="offset"></param>
             internal void UpdateLinearArrayIndex(SAMAlignedSequence alignedSeq, FileOffset offset)
             {
-                int pos = alignedSeq.Pos > 0 ? alignedSeq.Pos - 1 : 0;
-                int end = alignedSeq.RefEndPos > 0 ? alignedSeq.RefEndPos - 1 : 0;
+                var pos = alignedSeq.Pos > 0 ? alignedSeq.Pos - 1 : 0;
+                var end = alignedSeq.RefEndPos > 0 ? alignedSeq.RefEndPos - 1 : 0;
                 pos = pos >> 14;
                 end = end >> 14;
                 if (end > largestBinSeen) {largestBinSeen = end;}
-                for (int i = pos; i <= end; i++)
+                for (var i = pos; i <= end; i++)
                 {
                     var cur = offSetArray[i];
                     //TODO: Is second check necessary?  Seems to always be true as we are doing things in order
@@ -150,8 +150,8 @@ namespace Bio.IO.BAM
                 if (largestBinSeen != 0)
                 {
                     Array.Resize(ref offSetArray, largestBinSeen + 1);
-                    FileOffset lastOffSetSeen = new FileOffset();
-                    for (int i = 0; i < offSetArray.Length; i++)
+                    var lastOffSetSeen = new FileOffset();
+                    for (var i = 0; i < offSetArray.Length; i++)
                     {
                         if (offSetArray[i].BothDataElements == 0)
                         {

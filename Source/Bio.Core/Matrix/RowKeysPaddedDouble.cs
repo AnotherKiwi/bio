@@ -15,11 +15,11 @@ namespace Bio.Matrix
     {
 
 #pragma warning disable 1591
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0")]
+        [SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0")]
         protected override double ByteArrayToValueOrMissing(byte[] byteArray)
 #pragma warning restore 1591
         {
-            return double.Parse(System.Text.Encoding.UTF8.GetString(byteArray, 0, byteArray.Length));
+            return double.Parse(Encoding.UTF8.GetString(byteArray, 0, byteArray.Length));
         }
 
 #pragma warning disable 1591
@@ -27,8 +27,8 @@ namespace Bio.Matrix
 #pragma warning restore 1591
         {
             //System.Text.ASCIIEncoding  encoding=new System.Text.ASCIIEncoding();
-            string s = PaddedDouble.StoreToSparseVal(value);
-            byte[] byteArray = System.Text.Encoding.UTF8.GetBytes(s);
+            var s = PaddedDouble.StoreToSparseVal(value);
+            var byteArray = Encoding.UTF8.GetBytes(s);
             return byteArray;
         }
 
@@ -65,7 +65,7 @@ namespace Bio.Matrix
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope"), SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
         public static RowKeysPaddedDouble GetInstanceFromPaddedDouble(string paddedDoubleFileName, ParallelOptions parallelOptions, FileAccess fileAccess = FileAccess.Read, FileShare fileShare = FileShare.Read)
         {
-            RowKeysPaddedDouble rowKeysPaddedDouble = new RowKeysPaddedDouble();
+            var rowKeysPaddedDouble = new RowKeysPaddedDouble();
             rowKeysPaddedDouble.GetInstanceFromDenseStructFileNameInternal(paddedDoubleFileName, parallelOptions, fileAccess, fileShare);
             return rowKeysPaddedDouble;
         }
@@ -82,7 +82,7 @@ namespace Bio.Matrix
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope"), SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
         public static RowKeysPaddedDouble GetInstanceFromRowKeys(string rowKeysFileName, ParallelOptions parallelOptions, FileAccess fileAccess = FileAccess.Read, FileShare fileShare = FileShare.Read)
         {
-            RowKeysPaddedDouble rowKeysPaddedDouble = new RowKeysPaddedDouble();
+            var rowKeysPaddedDouble = new RowKeysPaddedDouble();
             rowKeysPaddedDouble.GetInstanceFromRowKeysStructFileNameInternal(rowKeysFileName, parallelOptions, fileAccess, fileShare);
             return rowKeysPaddedDouble;
         }

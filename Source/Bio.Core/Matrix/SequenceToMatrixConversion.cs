@@ -324,7 +324,7 @@ namespace Bio.Matrix
         /// <param name="sequences">Input sequences.</param>
         private static void ValidateSequences(IList<ISequence> sequences)
         {
-            int seqLength = sequences.First().Count();
+            var seqLength = sequences.First().Count();
             if (!sequences.All(sequence => sequence.Count == seqLength))
             {
                 throw new ArgumentException("Sequence lengths are not equal");
@@ -412,11 +412,11 @@ namespace Bio.Matrix
             out Matrix<TRow, TCol, TVal> matrix)
         {
             IList<string> columnValues;
-            int maxLength = sequences.Max(seq => seq.Count);
-            HashSet<byte>[] positionalAminoAcidDistribution = new HashSet<byte>[maxLength];
-            foreach (IList<IList<byte>> sequence in sequences)
+            var maxLength = sequences.Max(seq => seq.Count);
+            var positionalAminoAcidDistribution = new HashSet<byte>[maxLength];
+            foreach (var sequence in sequences)
             {
-                for (int pos = 0; pos < sequence.Count; pos++)
+                for (var pos = 0; pos < sequence.Count; pos++)
                 {
                     if (positionalAminoAcidDistribution[pos] == null)
                     {
@@ -429,7 +429,7 @@ namespace Bio.Matrix
                 }
             }
 
-            IList<List<SufficientStatistics>> statistics = CreateSequenceStatistics(
+            var statistics = CreateSequenceStatistics(
                 positionalAminoAcidDistribution,
                 sequences,
                 keepOneValueVariables,
@@ -440,10 +440,10 @@ namespace Bio.Matrix
                 ConvertBinaryToMultistate(statistics, columnValues);
             }
 
-            SufficientStatistics[,] matrixValues = new SufficientStatistics[statistics.Count, sequences.Count];
-            for (int i = 0; i < statistics.Count; i++)
+            var matrixValues = new SufficientStatistics[statistics.Count, sequences.Count];
+            for (var i = 0; i < statistics.Count; i++)
             {
-                for (int j = 0; j < sequences.Count; j++)
+                for (var j = 0; j < sequences.Count; j++)
                 {
                     matrixValues[i, j] = statistics[i][j];
                 }
@@ -476,17 +476,17 @@ namespace Bio.Matrix
         {
             IList<List<SufficientStatistics>> statistics = new List<List<SufficientStatistics>>();
             rowValues = new List<string>();
-            for (int pos = 0; pos < positionalAminoAcidDistribution.Length; pos++)
+            for (var pos = 0; pos < positionalAminoAcidDistribution.Length; pos++)
             {
-                foreach (byte aa in positionalAminoAcidDistribution[pos])
+                foreach (var aa in positionalAminoAcidDistribution[pos])
                 {
-                    string merAndPos = (pos + 1) + "@" + (char)aa;
-                    int?[] values = new int?[sequences.Count];
-                    HashSet<int> nonMissingValues = new HashSet<int>();
-                    for (int pidIdx = 0; pidIdx < sequences.Count; pidIdx++)
+                    var merAndPos = (pos + 1) + "@" + (char)aa;
+                    var values = new int?[sequences.Count];
+                    var nonMissingValues = new HashSet<int>();
+                    for (var pidIdx = 0; pidIdx < sequences.Count; pidIdx++)
                     {
                         int? value;
-                        IList<byte> observedAAs = sequences[pidIdx][pos];
+                        var observedAAs = sequences[pidIdx][pos];
                         if (observedAAs.Contains(Alphabets.Protein.Gap) || observedAAs.Contains(Alphabets.AmbiguousProtein.X) || observedAAs.Count == 0 ||
                             (observedAAs.Count > 1 && MixtureSemanticsValue == MixtureSemantics.none && observedAAs.Contains(aa)))
                         {
@@ -539,17 +539,17 @@ namespace Bio.Matrix
 
             var allKeys = nonAaKeys.Concat(multToBinaryPositions).ToList();
 
-            Dictionary<string, List<SufficientStatistics>> values = statistics.Select((key, idx) =>
+            var values = statistics.Select((key, idx) =>
                 new KeyValuePair<string, List<SufficientStatistics>>(columnValues[idx], key)).ToDictionary();
 
             columnValues.Clear();
             ((List<string>)columnValues).AddRange(allKeys.Select(keys => keys.Key));
             statistics.Clear();
 
-            for (int index = 0; index < allKeys.Count; index++)
+            for (var index = 0; index < allKeys.Count; index++)
             {
-                List<SufficientStatistics> posStatistics = new List<SufficientStatistics>();
-                for (int index1 = 0; index1 < values.First().Value.Count; index1++)
+                var posStatistics = new List<SufficientStatistics>();
+                for (var index1 = 0; index1 < values.First().Value.Count; index1++)
                 {
                     if (allKeys[index].Value.Count == 1)
                     {
@@ -557,11 +557,11 @@ namespace Bio.Matrix
                     }
                     else
                     {
-                        int state = 0;
-                        bool valueAdded = false;
-                        foreach (string key in allKeys[index].Value)
+                        var state = 0;
+                        var valueAdded = false;
+                        foreach (var key in allKeys[index].Value)
                         {
-                            SufficientStatistics tempValue = values[key][index1];
+                            var tempValue = values[key][index1];
                             if (ValueConverters.SufficientStatisticsToInt.ConvertForward(tempValue) == 1)
                             {
                                 posStatistics.Add(ValueConverters.SufficientStatisticsToInt.ConvertBackward(state));
@@ -607,11 +607,11 @@ namespace Bio.Matrix
         /// <returns></returns>
         private static bool TryGetMerAndPos(string variableName, out KeyValuePair<string, double> merAndPos)
         {
-            string[] fields = variableName.Split('@');
+            var fields = variableName.Split('@');
             double pos = -1;
             string mer;
 
-            int posField = -1;
+            var posField = -1;
 
             // find pos and the field that describes it.
             while (++posField < fields.Length && !double.TryParse(fields[posField], out pos)) ;
@@ -652,7 +652,7 @@ namespace Bio.Matrix
             if (gapSymbols == null) gapSymbols = new HashSet<byte>();
 
             IList<IList<byte>> sequences = new List<IList<byte>>();
-            for (int pos = readingFrame; pos < sequence.Count - 2; pos += 3)
+            for (var pos = readingFrame; pos < sequence.Count - 2; pos += 3)
             {
                 if (gapSymbols.Contains(sequence[pos]) || gapSymbols.Contains(sequence[pos + 1]) || gapSymbols.Contains(sequence[pos + 2]))
                 {
@@ -698,11 +698,11 @@ namespace Bio.Matrix
             HashSet<byte> thirdBasicSymbols;
             RnaAlphabet.Instance.TryGetBasicSymbols(thirdPos, out thirdBasicSymbols);
             
-            foreach (byte firstPosAlphabet in firstBasicSymbols)
+            foreach (var firstPosAlphabet in firstBasicSymbols)
             {
-                foreach (byte secondPosAlphabet in secondBasicSymbols)
+                foreach (var secondPosAlphabet in secondBasicSymbols)
                 {
-                    foreach (byte thirdPosAlphabet in thirdBasicSymbols)
+                    foreach (var thirdPosAlphabet in thirdBasicSymbols)
                     {
                         aminoAcids.Add(Codons.Lookup(firstPosAlphabet, secondPosAlphabet, thirdPosAlphabet));
                     }
@@ -729,13 +729,13 @@ namespace Bio.Matrix
             HashSet<byte> thirdBasicSymbols;
             DnaAlphabet.Instance.TryGetBasicSymbols(thirdPos, out thirdBasicSymbols);
 
-            foreach (byte firstPosAlphabet in firstBasicSymbols)
+            foreach (var firstPosAlphabet in firstBasicSymbols)
             {
-                byte firstPosNucleotide = Transcription.GetRnaComplement(firstPosAlphabet);
-                foreach (byte secondPosAlphabet in secondBasicSymbols)
+                var firstPosNucleotide = Transcription.GetRnaComplement(firstPosAlphabet);
+                foreach (var secondPosAlphabet in secondBasicSymbols)
                 {
-                    byte secondPosNucleotide = Transcription.GetRnaComplement(secondPosAlphabet);
-                    foreach (byte thirdPosAlphabet in thirdBasicSymbols)
+                    var secondPosNucleotide = Transcription.GetRnaComplement(secondPosAlphabet);
+                    foreach (var thirdPosAlphabet in thirdBasicSymbols)
                     {
                         aminoAcids.Add(Codons.Lookup(firstPosNucleotide, secondPosNucleotide, Transcription.GetRnaComplement(thirdPosAlphabet)));
                     }
@@ -838,7 +838,7 @@ namespace Bio.Matrix
         {
             if (alignment == null)
             {
-                throw new ArgumentNullException("alignment");
+                throw new ArgumentNullException(nameof(alignment));
             }
 
             var firstAlignment = alignment.FirstOrDefault();

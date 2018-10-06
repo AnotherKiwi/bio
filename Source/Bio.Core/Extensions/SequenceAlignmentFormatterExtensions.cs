@@ -61,7 +61,7 @@ namespace Bio
         /// <param name="fileName">Filename to write to</param>
         public static void Format(this ISequenceAlignmentFormatter formatter, IEnumerable<ISequenceAlignment> sequences, string fileName)
         {
-            using (FileStream fs = File.OpenWrite(fileName))
+            using (var fs = File.OpenWrite(fileName))
             {
                 formatter.Format(fs, sequences);
             }
@@ -86,7 +86,7 @@ namespace Bio
             }
             else
             {
-                using (FileStream fs = File.Create(fileName))
+                using (var fs = File.Create(fileName))
                 {
                     formatter.Format(fs, sequence);
                 }

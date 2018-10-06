@@ -42,7 +42,7 @@ namespace Bio.Algorithms.Translation
         public static ISequence Translate(ISequence source, int nucleotideOffset)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
 
             if (nucleotideOffset > source.Count || nucleotideOffset < 0)
                 throw new ArgumentOutOfRangeException(Properties.Resource.OffsetInvalid, "nucleotideOffset");
@@ -51,11 +51,11 @@ namespace Bio.Algorithms.Translation
             if (sourceAlphabet != Alphabets.RNA && sourceAlphabet != Alphabets.AmbiguousRNA)
                 throw new InvalidOperationException(Properties.Resource.InvalidRNASequenceInput);
 
-            long size = (source.Count - nucleotideOffset)/3;
-            byte[] translatedResult = new byte[size];
+            var size = (source.Count - nucleotideOffset)/3;
+            var translatedResult = new byte[size];
             long counter = 0;
 
-            for (int i = nucleotideOffset; i < source.Count - 2; i += 3)
+            for (var i = nucleotideOffset; i < source.Count - 2; i += 3)
             {
                 byte aminoAcid;
                 if (!Codons.TryLookup(source, i, out aminoAcid))

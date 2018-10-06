@@ -33,7 +33,7 @@ namespace Bio.Padena.Tests.Scaffold
 
             KmerLength = kmerLength;
             SequenceReads.Clear();
-            this.SetSequenceReads(sequences);
+            SetSequenceReads(sequences);
             CreateGraph();
             
             DanglingLinksThreshold = dangleThreshold;
@@ -46,10 +46,10 @@ namespace Bio.Padena.Tests.Scaffold
             IList<ISequence> contigs = BuildContigs().ToList();
             CloneLibrary.Instance.AddLibrary("abc", 5, 20);
 
-            using (GraphScaffoldBuilder scaffold = new GraphScaffoldBuilder())
+            using (var scaffold = new GraphScaffoldBuilder())
             {
-                IEnumerable<ISequence> scaffoldSeq = scaffold.BuildScaffold(sequences, contigs, this.KmerLength, 3, 0);
-                HashSet<string> expected = new HashSet<string>
+                IEnumerable<ISequence> scaffoldSeq = scaffold.BuildScaffold(sequences, contigs, KmerLength, 3, 0);
+                var expected = new HashSet<string>
                 {
                     "ATGCCTCCTATCTTAGCGCGC","CGCGCCGCGC","TTTTTT","CGCGCG","TTTTAGC","TTTTTA","TTTAAA","TTTTAA",
                 };

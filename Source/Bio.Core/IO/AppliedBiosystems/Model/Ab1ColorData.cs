@@ -44,17 +44,17 @@ namespace Bio.IO.AppliedBiosystems.Model
         /// <returns>Readings</returns>
         public static byte[] ToByteArray(Ab1ColorData data)
         {
-            if (data == null) throw new ArgumentNullException("data");
-            int dataPointCount = data.DataByResidue.Sum(residue => residue.Data.Length);
+            if (data == null) throw new ArgumentNullException(nameof(data));
+            var dataPointCount = data.DataByResidue.Sum(residue => residue.Data.Length);
 
             var values = new byte[dataPointCount * 2];
-            int index = 0;
-            foreach (Ab1ResidueColorData residue in data.DataByResidue)
+            var index = 0;
+            foreach (var residue in data.DataByResidue)
             {
-                short[] residueData = residue.Data;
-                for (int i = 0; i < residueData.Length; i++)
+                var residueData = residue.Data;
+                for (var i = 0; i < residueData.Length; i++)
                 {
-                    short value = residueData[i];
+                    var value = residueData[i];
                     values[index++] = (byte)value;
                     values[index++] = (byte)(value >> 8);
                 }
@@ -70,13 +70,13 @@ namespace Bio.IO.AppliedBiosystems.Model
         /// <returns></returns>
         public static short[] FromByteArray(byte[] value)
         {
-            if (value == null) throw new ArgumentNullException("value");
+            if (value == null) throw new ArgumentNullException(nameof(value));
             if (value.Length % 2 != 0)
-                throw new ArgumentException(Resource.Ab1ColorDataFromByteArrayEvenNumberRequired, "value");
+                throw new ArgumentException(Resource.Ab1ColorDataFromByteArrayEvenNumberRequired, nameof(value));
 
             var data = new short[value.Length / 2];
 
-            for (int i = 0; i < value.Length; i += 2)
+            for (var i = 0; i < value.Length; i += 2)
                 data[i / 2] = (short)((value[i + 1] << 8) | value[i]);
 
             return data;
@@ -90,7 +90,7 @@ namespace Bio.IO.AppliedBiosystems.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         public static string ToString(List<short> data)
         {
-            if (data == null) throw new ArgumentNullException("data");
+            if (data == null) throw new ArgumentNullException(nameof(data));
             var builder = new StringBuilder();
             data.ForEach(value => builder.AppendFormat(builder.Length == 0 ? "{0}" : " {0}", value));
 
@@ -105,9 +105,9 @@ namespace Bio.IO.AppliedBiosystems.Model
         public void Trim(int startIndex, int length)
         {
             if (startIndex < 0 || DataByResidue.Count <= startIndex)
-                throw new ArgumentException(Resource.ColorDataTrimStartIndexOutOfRange, "startIndex");
+                throw new ArgumentException(Resource.ColorDataTrimStartIndexOutOfRange, nameof(startIndex));
             if (startIndex + length > DataByResidue.Count)
-                throw new ArgumentException(Resource.ColorDataTrimLengthArgumentException, "length");
+                throw new ArgumentException(Resource.ColorDataTrimLengthArgumentException, nameof(length));
 
             DataByResidue = new List<Ab1ResidueColorData>(
                 DataByResidue.GetRange(startIndex, length));
@@ -123,13 +123,13 @@ namespace Bio.IO.AppliedBiosystems.Model
         {
             DataByResidue = new List<Ab1ResidueColorData>();
 
-            int residueDataIndex = 0;
+            var residueDataIndex = 0;
 
-            for (int i = 0; i < peakLocations.Length - 1; i++)
+            for (var i = 0; i < peakLocations.Length - 1; i++)
             {
                 int peakIndex = peakLocations[i];
                 int nextPeakIndex = peakLocations[i + 1];
-                int residueEndIndex = (peakIndex + (nextPeakIndex - peakIndex) / 2);
+                var residueEndIndex = (peakIndex + (nextPeakIndex - peakIndex) / 2);
 
                 AddResidueColorData(peakIndex, residueDataIndex, residueEndIndex, data);
 

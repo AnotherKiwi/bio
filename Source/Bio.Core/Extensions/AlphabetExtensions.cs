@@ -19,7 +19,7 @@ namespace Bio.Extensions
         public static bool CheckIsTermination(this IAlphabet alphabet, byte value)
         {
             if (alphabet == null)
-                throw new ArgumentNullException("alphabet", "Alphabet must be supplied.");
+                throw new ArgumentNullException(nameof(alphabet), "Alphabet must be supplied.");
 
             // Not supported?
             if (!alphabet.HasTerminations)
@@ -52,7 +52,7 @@ namespace Bio.Extensions
         public static bool CheckIsGap(this IAlphabet alphabet, char item)
         {
             if (alphabet == null)
-                throw new ArgumentNullException("alphabet", "Alphabet must be supplied.");
+                throw new ArgumentNullException(nameof(alphabet), "Alphabet must be supplied.");
             
             return alphabet.CheckIsGap((byte) item);
         }
@@ -66,7 +66,7 @@ namespace Bio.Extensions
         public static bool CheckIsAmbiguous(this IAlphabet alphabet, char item)
         {
             if (alphabet == null)
-                throw new ArgumentNullException("alphabet", "Alphabet must be supplied.");
+                throw new ArgumentNullException(nameof(alphabet), "Alphabet must be supplied.");
 
             return alphabet.CheckIsAmbiguous((byte)item);
         }
@@ -80,7 +80,7 @@ namespace Bio.Extensions
         public static string GetFriendlyName(this IAlphabet alphabet, char item)
         {
             if (alphabet == null)
-                throw new ArgumentNullException("alphabet", "Alphabet must be supplied.");
+                throw new ArgumentNullException(nameof(alphabet), "Alphabet must be supplied.");
 
             return alphabet.GetFriendlyName((byte)item);
         }

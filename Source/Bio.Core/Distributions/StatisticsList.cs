@@ -39,20 +39,20 @@ namespace Bio.Distributions
         {
             get
             {
-                return this.stats[idx];
+                return stats[idx];
             }
             set
             {
                 if (value != null)
                 {
-                    this.stats[idx] = value;
-                    this.isMissing |= value.IsMissing();
-                    this.hashCode = null;
+                    stats[idx] = value;
+                    isMissing |= value.IsMissing();
+                    hashCode = null;
                 }
                 else
                 {
-                    this.stats[idx] = null;
-                    this.hashCode = null;
+                    stats[idx] = null;
+                    hashCode = null;
                 }
             }
         }
@@ -62,7 +62,7 @@ namespace Bio.Distributions
         /// </summary>
         public int Count
         {
-            get { return this.stats.Count; }
+            get { return stats.Count; }
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace Bio.Distributions
         /// </summary>
         private SufficientStatistics Last
         {
-            get { return this.stats[this.stats.Count - 1]; }
+            get { return stats[stats.Count - 1]; }
         }
 
         /// <summary>
@@ -78,8 +78,8 @@ namespace Bio.Distributions
         /// </summary>
         public StatisticsList()
         {
-            this.stats = new List<SufficientStatistics>();
-            this.isMissing = true;
+            stats = new List<SufficientStatistics>();
+            isMissing = true;
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace Bio.Distributions
         private StatisticsList(IEnumerable<SufficientStatistics> stats)
             : this()
         {
-            foreach (SufficientStatistics stat in stats)
+            foreach (var stat in stats)
             {
                 Add(stat);
             }
@@ -141,7 +141,7 @@ namespace Bio.Distributions
                 return false;
             }
                         
-            string[] fields = val.Split(Separator);
+            var fields = val.Split(Separator);
             if (fields.Length < 2)
                 return false;
 
@@ -157,19 +157,19 @@ namespace Bio.Distributions
         {
             if (statsToAdd == null)
             {
-                throw new ArgumentNullException("statsToAdd");
+                throw new ArgumentNullException(nameof(statsToAdd));
             }
-            this.isMissing = (Count == 0 ? statsToAdd.IsMissing() : this.isMissing || statsToAdd.IsMissing());
-            this.hashCode = null;
+            isMissing = (Count == 0 ? statsToAdd.IsMissing() : isMissing || statsToAdd.IsMissing());
+            hashCode = null;
 
-            StatisticsList asList = statsToAdd as StatisticsList;
+            var asList = statsToAdd as StatisticsList;
             if (asList != null)
             {
-                this.stats.AddRange(asList.stats);
+                stats.AddRange(asList.stats);
             }
             else
             {
-                this.stats.Add(statsToAdd);
+                stats.Add(statsToAdd);
             }
         }
 
@@ -181,7 +181,7 @@ namespace Bio.Distributions
         /// <returns>Returns the Addition of all.</returns>
         public static StatisticsList Add(SufficientStatistics stats1, SufficientStatistics stats2)
         {
-            StatisticsList newList = StatisticsList.GetInstance(stats1);
+            var newList = GetInstance(stats1);
             newList.Add(stats2);
             return newList;
         }
@@ -192,7 +192,7 @@ namespace Bio.Distributions
         /// <returns>Returns the IsMissing flag.</returns>
         public override bool IsMissing()
         {
-            return this.isMissing;
+            return isMissing;
         }
 
         /// <summary>
@@ -217,7 +217,7 @@ namespace Bio.Distributions
         /// <returns>Returns true if fount equals.</returns>
         public override bool Equals(object obj)
         {
-            SufficientStatistics stats = obj as SufficientStatistics;
+            var stats = obj as SufficientStatistics;
             if (stats != null)
             {
                 return Equals(stats);
@@ -245,7 +245,7 @@ namespace Bio.Distributions
                 return true;
             }
 
-            StatisticsList other = stats.AsStatisticsList();
+            var other = stats.AsStatisticsList();
             if (other.stats.Count != this.stats.Count || GetHashCode() != other.GetHashCode())
             {
                 return false;
@@ -260,19 +260,19 @@ namespace Bio.Distributions
         /// <returns>Returns the Hash code.</returns>
         public override int GetHashCode()
         {
-            if (this.hashCode == null)
+            if (hashCode == null)
             {
                 if (IsMissing())
                 {
-                    this.hashCode = MissingStatistics.GetInstance.GetHashCode();
+                    hashCode = MissingStatistics.GetInstance.GetHashCode();
                 }
-                this.hashCode = 0;
-                foreach (SufficientStatistics stat in this.stats)
+                hashCode = 0;
+                foreach (var stat in stats)
                 {
-                    this.hashCode ^= stat.GetHashCode();
+                    hashCode ^= stat.GetHashCode();
                 }
             }
-            return (int)this.hashCode;
+            return (int)hashCode;
         }
 
         /// <summary>
@@ -287,9 +287,9 @@ namespace Bio.Distributions
             }
 
             // may still be missing, but enumerate all anyways. one will be missing, but we'll be able to recover the full set.
-            StringBuilder sb = new StringBuilder();
-            bool isFirst = true;
-            foreach (SufficientStatistics stat in this.stats)
+            var sb = new StringBuilder();
+            var isFirst = true;
+            foreach (var stat in stats)
             {
                 if (!isFirst)
                 {
@@ -354,7 +354,7 @@ namespace Bio.Distributions
         /// <returns>Returns Enumerator of Sufficient Statistics.</returns>
         public IEnumerator<SufficientStatistics> GetEnumerator()
         {
-            return this.stats.GetEnumerator();
+            return stats.GetEnumerator();
         }
 
         #endregion
@@ -367,7 +367,7 @@ namespace Bio.Distributions
         /// <returns>Returns Enumerator.</returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return this.stats.GetEnumerator();
+            return stats.GetEnumerator();
         }
 
         #endregion
@@ -378,7 +378,7 @@ namespace Bio.Distributions
         /// <returns>Returns clone of Statistics List.</returns>
         public object Clone()
         {
-            StatisticsList result = new StatisticsList(this.stats);
+            var result = new StatisticsList(stats);
             return result;
         }
 
@@ -389,13 +389,13 @@ namespace Bio.Distributions
         /// <returns>Returns Sufficient Statistics.</returns>
         public SufficientStatistics Remove(int i)
         {
-            SufficientStatistics stat = this.stats[i];
-            this.stats.RemoveAt(i);
+            var stat = stats[i];
+            stats.RemoveAt(i);
             if (stat.IsMissing())  // check to see if this was the reason we're missing
             {
                 ResetIsMissing();
             }
-            this.hashCode = null;
+            hashCode = null;
             return stat;
         }
 
@@ -404,10 +404,10 @@ namespace Bio.Distributions
         /// </summary>
         private void ResetIsMissing()
         {
-            this.isMissing = false;
-            foreach (SufficientStatistics ss in this.stats)
+            isMissing = false;
+            foreach (var ss in stats)
             {
-                this.isMissing |= ss.IsMissing();
+                isMissing |= ss.IsMissing();
             }
         }
 
@@ -418,8 +418,8 @@ namespace Bio.Distributions
         /// <param name="count">The no of Count to be removed.</param>
         public void RemoveRange(int startPos, int count)
         {
-            this.stats.RemoveRange(startPos, count);
-            this.hashCode = null;
+            stats.RemoveRange(startPos, count);
+            hashCode = null;
             ResetIsMissing();
         }
 
@@ -431,7 +431,7 @@ namespace Bio.Distributions
         /// <returns>Sufficient Statistics.</returns>
         public SufficientStatistics SubSequence(int start, int count)
         {
-            return count == 1 ? this.stats[start] : new StatisticsList(this.stats.GetRange(start, count));
+            return count == 1 ? stats[start] : new StatisticsList(stats.GetRange(start, count));
         }
     }
 }

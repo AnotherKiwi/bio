@@ -25,13 +25,13 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         /// <returns>Contig Read Map.</returns>
         public ReadContigMap Map(IList<ISequence> contigs, IEnumerable<ISequence> reads, int kmerLength)
         {
-            KmerIndexerDictionary map = SequenceToKmerBuilder.BuildKmerDictionary(contigs, kmerLength);
-            ReadContigMap maps = new ReadContigMap();
+            var map = SequenceToKmerBuilder.BuildKmerDictionary(contigs, kmerLength);
+            var maps = new ReadContigMap();
             Parallel.ForEach(reads, readSequence =>
             {
-                IEnumerable<ISequence> kmers = SequenceToKmerBuilder.GetKmerSequences(readSequence, kmerLength);
-                ReadIndex read = new ReadIndex(readSequence);
-                foreach (ISequence kmer in kmers)
+                var kmers = SequenceToKmerBuilder.GetKmerSequences(readSequence, kmerLength);
+                var read = new ReadIndex(readSequence);
+                foreach (var kmer in kmers)
                 {
                     IList<KmerIndexer> positions;
                     if (map.TryGetValue(kmer, out positions) ||
@@ -48,12 +48,12 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
                 IList<long> visitedContigs = new List<long>();
 
                 // Creates Task for every read in nodes for a given contig.
-                for (int index = 0; index < read.ContigReadMatchIndexes.Count; index++)
+                for (var index = 0; index < read.ContigReadMatchIndexes.Count; index++)
                 {
-                    int readPosition = index;
-                    foreach (KmerIndexer kmer in read.ContigReadMatchIndexes[index])
+                    var readPosition = index;
+                    foreach (var kmer in read.ContigReadMatchIndexes[index])
                     {
-                        long contigIndex = kmer.SequenceIndex;
+                        var contigIndex = kmer.SequenceIndex;
                         if (!visitedContigs.Contains(contigIndex))
                         {
                             visitedContigs.Add(contigIndex);
@@ -71,7 +71,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
                 }
 
                 var overlapMaps = new Dictionary<ISequence, IList<ReadMap>>();
-                for (int index = 0; index < visitedContigs.Count; index++)
+                for (var index = 0; index < visitedContigs.Count; index++)
                 {
                     overlapMaps.Add(contigs.ElementAt(visitedContigs[index]), tasks[index].Result);
                 }
@@ -111,9 +111,9 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
             int kmerLength)
         {
             IList<ReadMap> readMaps = new List<ReadMap>();
-            for (long index = position; index < contigReadMatch.Count; index++)
+            for (var index = position; index < contigReadMatch.Count; index++)
             {
-                foreach (KmerIndexer kmer in contigReadMatch[(int)index])
+                foreach (var kmer in contigReadMatch[(int)index])
                 {
                     if (kmer.SequenceIndex == contigIndex)
                     {
@@ -145,7 +145,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
             {
                 foreach (int pos in kmer.Positions)
                 {
-                    ReadMap readMap = new ReadMap
+                    var readMap = new ReadMap
                     {
                         StartPositionOfContig = pos,
                         StartPositionOfRead = position,
@@ -159,10 +159,10 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
             {
                 // Merge current kmer node with previous kmer node of DeBruijn Graph, 
                 // if they are continuous in either right or left traversal of graph.
-                bool isMerged = false;
+                var isMerged = false;
                 foreach (int pos in kmer.Positions)
                 {
-                    foreach (ReadMap read in readMaps)
+                    foreach (var read in readMaps)
                     {
                         if (IsContinousRight(read, position, pos, kmerLength) ||
                             IsContinousLeft(read, position, pos, kmerLength))
@@ -182,7 +182,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
                     // If not continuous a new object ReadMap is created to store new overlap.
                     if (isMerged == false)
                     {
-                        ReadMap readmap = new ReadMap
+                        var readmap = new ReadMap
                         {
                             StartPositionOfContig = pos,
                             StartPositionOfRead = position,
@@ -284,7 +284,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
             /// <param name="read">Read sequence.</param>
             public ReadIndex(ISequence read)
             {
-                this.readSequence = read;
+                readSequence = read;
             }
 
             /// <summary>
@@ -292,7 +292,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
             /// </summary>
             public IList<IList<KmerIndexer>> ContigReadMatchIndexes
             {
-                get { return this.contigReadMatchIndexes; }
+                get { return contigReadMatchIndexes; }
             }
 
             /// <summary>
@@ -302,7 +302,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
             {
                 get
                 {
-                    return this.readSequence;
+                    return readSequence;
                 }
             }
         }

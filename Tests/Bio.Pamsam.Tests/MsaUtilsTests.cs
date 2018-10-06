@@ -20,8 +20,8 @@ namespace Bio.Pamsam.Tests
         public void TestAlignmentScore()
         {
             ISequence templateSequence = new Sequence(Alphabets.AmbiguousDNA, "ATGCSWRYKMBVHDN-");
-            Dictionary<byte, int> itemSet = new Dictionary<byte, int>();
-            for (int i = 0; i < templateSequence.Count; ++i)
+            var itemSet = new Dictionary<byte, int>();
+            for (var i = 0; i < templateSequence.Count; ++i)
             {
                 itemSet.Add(templateSequence[i], i);
 
@@ -30,14 +30,14 @@ namespace Bio.Pamsam.Tests
             }
             Profiles.ItemSet = itemSet;
 
-            SimilarityMatrix similarityMatrix = new SimilarityMatrix(SimilarityMatrix.StandardSimilarityMatrix.AmbiguousDna);
-            int gapOpenPenalty = -8;
-            int gapExtendPenalty = -1;
+            var similarityMatrix = new SimilarityMatrix(SimilarityMatrix.StandardSimilarityMatrix.AmbiguousDna);
+            var gapOpenPenalty = -8;
+            var gapExtendPenalty = -1;
 
             // Test PairWiseScoreFunction
             ISequence seqA = new Sequence(Alphabets.AmbiguousDNA, "ACG");
             ISequence seqB = new Sequence(Alphabets.AmbiguousDNA, "ACG");
-            float score = MsaUtils.PairWiseScoreFunction(seqA, seqB, similarityMatrix, gapOpenPenalty, gapExtendPenalty);
+            var score = MsaUtils.PairWiseScoreFunction(seqA, seqB, similarityMatrix, gapOpenPenalty, gapExtendPenalty);
             //Assert.AreEqual(15, score);
 
             seqA = new Sequence(Alphabets.AmbiguousDNA, "ACG");
@@ -99,14 +99,14 @@ namespace Bio.Pamsam.Tests
             //Assert.AreEqual(56, score);
 
             // Test MultipleAlignmentScoreFunction
-            List<ISequence> sequences = new List<ISequence>();
+            var sequences = new List<ISequence>();
             seqA = new Sequence(Alphabets.AmbiguousDNA, "GGGA---AAAATCAGATT");
             seqB = new Sequence(Alphabets.AmbiguousDNA, "GGGA--CAAAATCAG---");
             sequences.Add(seqA);
             sequences.Add(seqB);
             score = MsaUtils.MultipleAlignmentScoreFunction(sequences, similarityMatrix, gapOpenPenalty, gapExtendPenalty);
             Console.WriteLine("alignment score is: {0}", score);
-            for (int i = 0; i < sequences.Count; ++i)
+            for (var i = 0; i < sequences.Count; ++i)
             {
                 Console.WriteLine(sequences[i].ToString());
             }
@@ -115,7 +115,7 @@ namespace Bio.Pamsam.Tests
             sequences.Add(new Sequence(Alphabets.AmbiguousDNA, "GGGAATCAAAATCAG---"));
             score = MsaUtils.MultipleAlignmentScoreFunction(sequences, similarityMatrix, gapOpenPenalty, gapExtendPenalty);
             Console.WriteLine("alignment score is: {0}", score);
-            for (int i = 0; i < sequences.Count; ++i)
+            for (var i = 0; i < sequences.Count; ++i)
             {
                 Console.WriteLine(sequences[i].ToString());
             }
@@ -123,12 +123,12 @@ namespace Bio.Pamsam.Tests
 
             sequences[0] = new Sequence(Alphabets.AmbiguousDNA, "GGG---AAAAATCAGATT");
             score = MsaUtils.MultipleAlignmentScoreFunction(sequences, similarityMatrix, gapOpenPenalty, gapExtendPenalty);
-            for (int i = 0; i < sequences.Count; ++i)
+            for (var i = 0; i < sequences.Count; ++i)
             {
                 Console.WriteLine(sequences[i].ToString());
             }
             Console.WriteLine("alignment score is: {0}", score);
-            for (int i = 0; i < sequences.Count; ++i)
+            for (var i = 0; i < sequences.Count; ++i)
             {
                 Console.WriteLine(sequences[i].ToString());
             }
@@ -138,9 +138,9 @@ namespace Bio.Pamsam.Tests
             seqA = new Sequence(Alphabets.AmbiguousDNA, "ABCD");
             seqB = new Sequence(Alphabets.AmbiguousDNA, "ABCD");
 
-            List<int> offset = MsaUtils.CalculateOffset(seqA, seqB);
+            var offset = MsaUtils.CalculateOffset(seqA, seqB);
             Console.WriteLine("offsets are:");
-            for (int i = 0; i < offset.Count; ++i)
+            for (var i = 0; i < offset.Count; ++i)
             {
                 Console.Write("{0}\t", offset[i]);
             }
@@ -149,7 +149,7 @@ namespace Bio.Pamsam.Tests
             seqB = new Sequence(Alphabets.AmbiguousDNA, "AB-CD");
             offset = MsaUtils.CalculateOffset(seqA, seqB);
             Console.WriteLine("\noffsets are:");
-            for (int i = 0; i < offset.Count; ++i)
+            for (var i = 0; i < offset.Count; ++i)
             {
                 Console.Write("{0}\t", offset[i]);
             }
@@ -158,7 +158,7 @@ namespace Bio.Pamsam.Tests
             seqB = new Sequence(Alphabets.AmbiguousDNA, "----AB-CD");
             offset = MsaUtils.CalculateOffset(seqA, seqB);
             Console.WriteLine("\noffsets are:");
-            for (int i = 0; i < offset.Count; ++i)
+            for (var i = 0; i < offset.Count; ++i)
             {
                 Console.Write("{0}\t", offset[i]);
             }
@@ -167,15 +167,17 @@ namespace Bio.Pamsam.Tests
             sequences.Add(seqA);
             sequences.Add(new Sequence(Alphabets.AmbiguousDNA, "ABBCG"));
 
-            List<ISequence> sequencesRef = new List<ISequence>();
-            sequencesRef.Add(seqA);
-            sequencesRef.Add(new Sequence(Alphabets.AmbiguousDNA, "ABBCG"));
+            var sequencesRef = new List<ISequence>
+            {
+                seqA,
+                new Sequence(Alphabets.AmbiguousDNA, "ABBCG")
+            };
 
-            for (int i = 0; i < sequences.Count; ++i)
+            for (var i = 0; i < sequences.Count; ++i)
             {
                 offset = MsaUtils.CalculateOffset(sequences[i], sequencesRef[i]);
                 Console.WriteLine("\noffsets are:");
-                for (int j = 0; j < offset.Count; ++j)
+                for (var j = 0; j < offset.Count; ++j)
                 {
                     Console.Write("{0}\t", offset[j]);
                 }
@@ -219,15 +221,15 @@ namespace Bio.Pamsam.Tests
             Console.WriteLine("score is: {0}", MsaUtils.MultipleAlignmentScoreFunction(sequences, similarityMatrix, gapOpenPenalty, gapExtendPenalty));
 
             // Test Quick Sort
-            float[] a = new float[5] { 0, 2, 1, 5, 4 };
-            int[] aIndex = new int[5] { 0, 1, 2, 3, 4 };
+            var a = new float[5] { 0, 2, 1, 5, 4 };
+            var aIndex = new int[5] { 0, 1, 2, 3, 4 };
             MsaUtils.QuickSort(a, aIndex, 0, a.Length - 1);
             Console.WriteLine("quicksort");
-            for (int i = 0; i < a.Length; ++i)
+            for (var i = 0; i < a.Length; ++i)
             {
                 Console.WriteLine(a[i]);
             }
-            for (int i = 0; i < a.Length; ++i)
+            for (var i = 0; i < a.Length; ++i)
             {
                 Console.WriteLine(aIndex[i]);
             }
@@ -236,20 +238,20 @@ namespace Bio.Pamsam.Tests
             a = new float[5] { 0, 2, 1, 5, 4 };
             int[] aIndexB = null;
             MsaUtils.QuickSortM(a, out aIndexB, 0, 4);
-            for (int i = 0; i < a.Length; ++i)
+            for (var i = 0; i < a.Length; ++i)
             {
                 Console.WriteLine(a[i]);
             }
-            for (int i = 0; i < a.Length; ++i)
+            for (var i = 0; i < a.Length; ++i)
             {
                 Console.WriteLine(aIndexB[i]);
             }
 
             Console.WriteLine("quicksort");
             a = new float[5] { 0, 2, 1, 5, 4 };
-            int[] aIndexC = MsaUtils.CreateIndexArray(a.Length);
+            var aIndexC = MsaUtils.CreateIndexArray(a.Length);
             MsaUtils.QuickSort(a, aIndexC, 0, a.Length - 1);
-            for (int i = 0; i < a.Length; ++i)
+            for (var i = 0; i < a.Length; ++i)
             {
                 Console.WriteLine(aIndexC[i]);
             }
@@ -257,11 +259,11 @@ namespace Bio.Pamsam.Tests
             a = new float[5] { 1, 0, 0, 0, 0 };
             aIndex = new int[5] { 0, 1, 2, 3, 4 };
             MsaUtils.QuickSort(a, aIndex, 0, a.Length - 1);
-            for (int i = 0; i < a.Length; ++i)
+            for (var i = 0; i < a.Length; ++i)
             {
                 Console.WriteLine(a[i]);
             }
-            for (int i = 0; i < a.Length; ++i)
+            for (var i = 0; i < a.Length; ++i)
             {
                 Console.WriteLine(aIndex[i]);
             }

@@ -65,11 +65,11 @@ namespace Bio.TestAutomation.IO.SAM
         [Category("Priority1")]
         public void ValidateSAMParserWithEmptyAlignmentMap()
         {
-            string fn = utilityObj.xmlUtil.GetTextValue(Constants.EmptySamFileNode, Constants.FilePathNode).TestDir();
+            var fn = utilityObj.xmlUtil.GetTextValue(Constants.EmptySamFileNode, Constants.FilePathNode).TestDir();
 
-            SAMParser parser = new SAMParser();
+            var parser = new SAMParser();
             {
-                SequenceAlignmentMap alignment = parser.ParseOne<SequenceAlignmentMap>(fn);
+                var alignment = parser.ParseOne<SequenceAlignmentMap>(fn);
                 Assert.IsNotNull(alignment);
             }
         }
@@ -105,9 +105,9 @@ namespace Bio.TestAutomation.IO.SAM
         void ValidateSAMParser(string nodeName)
         {
             // Gets the expected sequence from the Xml
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FilePathNode).TestDir();
-            string expectedSequenceFile = utilityObj.xmlUtil.GetTextValue(
+            var expectedSequenceFile = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExpectedSequence).TestDir();
             var parser = new SAMParser();
             {
@@ -120,17 +120,17 @@ namespace Bio.TestAutomation.IO.SAM
                 }
 
                 // Get expected sequences
-                FastAParser parserObj = new FastAParser();
+                var parserObj = new FastAParser();
                 {
-                    IEnumerable<ISequence> expectedSequences = parserObj.Parse(expectedSequenceFile);
+                    var expectedSequences = parserObj.Parse(expectedSequenceFile);
                     IList<ISequence> expectedSequencesList = expectedSequences.ToList();
 
                     // Validate parsed output with expected output
-                    for (int index = 0;
+                    for (var index = 0;
                         index < alignments.QuerySequences.Count;
                         index++)
                     {
-                        for (int count = 0;
+                        for (var count = 0;
                             count < alignments.QuerySequences[index].Sequences.Count;
                             count++)
                         {
@@ -150,14 +150,14 @@ namespace Bio.TestAutomation.IO.SAM
         void ValidateSAMFormatter(string nodeName)
         {
             // Gets the expected sequence from the Xml
-            string filePath = utilityObj.xmlUtil.GetTextValue(
+            var filePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FilePathNode).TestDir();
-            string expectedSequenceFile = utilityObj.xmlUtil.GetTextValue(
+            var expectedSequenceFile = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExpectedSequence).TestDir();
-            SAMParser parser = new SAMParser();
+            var parser = new SAMParser();
             {
-                SequenceAlignmentMap alignments = (SequenceAlignmentMap) parser.ParseOne(filePath);
-                SAMFormatter formatter = new SAMFormatter();
+                var alignments = (SequenceAlignmentMap) parser.ParseOne(filePath);
+                var formatter = new SAMFormatter();
 
                 using (var writer =
                             File.Create(Constants.SAMTempFileName))
@@ -168,19 +168,19 @@ namespace Bio.TestAutomation.IO.SAM
                 alignments = parser.ParseOne<SequenceAlignmentMap>(Constants.SAMTempFileName);
 
                 // Get expected sequences
-                FastAParser parserObj = new FastAParser();
+                var parserObj = new FastAParser();
                 {
-                    IEnumerable<ISequence> expectedSequences =
+                    var expectedSequences =
                         parserObj.Parse(expectedSequenceFile);
 
                     IList<ISequence> expectedSequencesList = expectedSequences.ToList();
 
                     // Validate parsed output with expected output
-                    for (int index = 0;
+                    for (var index = 0;
                         index < alignments.QuerySequences.Count;
                         index++)
                     {
-                        for (int count = 0;
+                        for (var count = 0;
                             count < alignments.QuerySequences[index].Sequences.Count;
                             count++)
                         {

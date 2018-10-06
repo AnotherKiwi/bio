@@ -28,20 +28,20 @@ namespace Bio.Extensions
         public static string ConvertToString(this ISequence sequence, long startIndex = 0, long length = Int32.MaxValue)
         {
             if (sequence == null)
-                throw new ArgumentNullException("sequence", "Sequence cannot be null.");
+                throw new ArgumentNullException(nameof(sequence), "Sequence cannot be null.");
 
             // Quick check for empty sequence
             if (sequence.Count == 0)
                 return string.Empty;
 
             if (startIndex < 0 || startIndex >= sequence.Count)
-                throw new ArgumentOutOfRangeException("startIndex");
+                throw new ArgumentOutOfRangeException(nameof(startIndex));
 
             if (length == Int32.MaxValue)
                 length = sequence.Count - startIndex;
 
             if (length <= 0 || startIndex + length > sequence.Count)
-                throw new ArgumentOutOfRangeException("length");
+                throw new ArgumentOutOfRangeException(nameof(length));
 
             return sequence is Sequence
                        ? ((Sequence) sequence).ConvertToString(startIndex, length)
@@ -57,7 +57,7 @@ namespace Bio.Extensions
         public static void MarkAsReverseComplement(this ISequence sequence)
         {
             if (sequence == null)
-                throw new ArgumentNullException("sequence", "Sequence cannot be null.");
+                throw new ArgumentNullException(nameof(sequence), "Sequence cannot be null.");
 
             if (!sequence.Metadata.ContainsKey(ReversedSequenceMetadataKey))
                 sequence.Metadata.Add(ReversedSequenceMetadataKey, true);
@@ -74,7 +74,7 @@ namespace Bio.Extensions
         public static bool IsMarkedAsReverseComplement(this ISequence sequence)
         {
             if (sequence == null)
-                throw new ArgumentNullException("sequence", "Sequence cannot be null.");
+                throw new ArgumentNullException(nameof(sequence), "Sequence cannot be null.");
 
             // We look for two things - if the ID ends with "Reverse" then it probably came from MUMmer or NUCmer which
             // do this when adding the reverse query sequence into the set.  Or, we look for a metadata key indicating it 

@@ -29,7 +29,7 @@ namespace Bio.TestAutomation.Util
         /// <param name="xmlFilePath">Config file path.</param>
         public XmlUtility(string xmlFilePath)
         {
-            string path = xmlFilePath.TestDir();
+            var path = xmlFilePath.TestDir();
             _document = XDocument.Load(path);
         }
 
@@ -41,7 +41,7 @@ namespace Bio.TestAutomation.Util
         /// <returns>Text with in the node.</returns>
         public string GetTextValue(string parentNode, string nodeName)
         {
-            XElement actualNode = GetNode(parentNode, nodeName);
+            var actualNode = GetNode(parentNode, nodeName);
             return actualNode?.Value;
         }
 
@@ -53,7 +53,7 @@ namespace Bio.TestAutomation.Util
         /// <returns>Contents of file for the path specified.</returns>
         public string GetFileTextValue(string parentNode, string nodeName)
         {
-            XElement actualNode = GetNode(parentNode, nodeName);
+            var actualNode = GetNode(parentNode, nodeName);
             return Utility.GetFileContent(actualNode.Value);
         }
 
@@ -65,12 +65,12 @@ namespace Bio.TestAutomation.Util
         /// <returns>Xml node.</returns>
         public XElement GetNode(string parentNode, string nodeName)
         {
-            IEnumerable<XElement> parent = _document.Root.Descendants(parentNode);
+            var parent = _document.Root.Descendants(parentNode);
             if (parent == null)
                 throw new XmlException(string.Format(null, "Could not find '{0}'", parentNode));
 
             //Get the child nodes.
-            IEnumerable<XElement> childNode = parent.First().Descendants(nodeName);
+            var childNode = parent.First().Descendants(nodeName);
 
             if (childNode == null)
                 throw new XmlException(string.Format(null, "Could not find '{0}'", childNode));
@@ -86,12 +86,12 @@ namespace Bio.TestAutomation.Util
         /// <returns>Text values with in the node.</returns>
         public string[] GetTextValues(string parentNode, string nodeName)
         {
-            IEnumerable<XElement> parent = _document.Root.Descendants(parentNode);
+            var parent = _document.Root.Descendants(parentNode);
             if (parent == null)
                 throw new XmlException(string.Format(null, "Could not find '{0}'", parentNode));
 
             //Get the child nodes.
-            IEnumerable<XElement> nodesChild = parent.First().Descendants(nodeName);
+            var nodesChild = parent.First().Descendants(nodeName);
             if (nodesChild == null)
                 throw new XmlException(string.Format(null, "Could not find '{0}'", nodeName));
 
@@ -99,7 +99,7 @@ namespace Bio.TestAutomation.Util
             IList<XNode> nodes = nodesChild.First().Nodes().ToList();
 
             //If the node does not have child nodes then return the Inner text of the node.            
-            string[] values = nodes.Count == 1 && nodes[0].GetType() != typeof (XElement)
+            var values = nodes.Count == 1 && nodes[0].GetType() != typeof (XElement)
                                   ? new[] {nodes[0].ToString()}
                                   : nodes.Cast<XElement>().Select(n => n.Value).ToArray();
 

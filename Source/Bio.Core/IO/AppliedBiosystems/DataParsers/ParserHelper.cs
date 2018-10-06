@@ -17,11 +17,11 @@ namespace Bio.IO.AppliedBiosystems.DataParsers
         /// <returns></returns>
         public static T[] ToArray<T>(string value, Func<string, T> parse)
         {
-            if (value == null) throw new ArgumentNullException("value");
-            if (parse == null) throw new ArgumentNullException("parse");
-            string[] values = value.Split(' ');
+            if (value == null) throw new ArgumentNullException(nameof(value));
+            if (parse == null) throw new ArgumentNullException(nameof(parse));
+            var values = value.Split(' ');
             var result = new T[values.Length];
-            for (int i = 0; i < values.Length; i++)
+            for (var i = 0; i < values.Length; i++)
             {
                 result[i] = parse(values[i]);
             }
@@ -39,18 +39,18 @@ namespace Bio.IO.AppliedBiosystems.DataParsers
         /// <returns></returns>
         public static T[][] SegmentArray<T>(T[] values, int count, bool flip)
         {
-            if (values == null) throw new ArgumentNullException("values");
+            if (values == null) throw new ArgumentNullException(nameof(values));
             if (values.Length % count != 0)
-                throw new ArgumentException(Resource.SegmentByteArrayInvalidCount, "count");
+                throw new ArgumentException(Resource.SegmentByteArrayInvalidCount, nameof(count));
 
             var result = new T[values.Length / count][];
 
-            int index = 0;
-            for (int i = 0; i < result.Length; i++)
+            var index = 0;
+            for (var i = 0; i < result.Length; i++)
             {
                 result[i] = new T[count];
 
-                for (int j = 0; j < count; j++)
+                for (var j = 0; j < count; j++)
                 {
                     if (flip)
                     {
@@ -78,11 +78,11 @@ namespace Bio.IO.AppliedBiosystems.DataParsers
         /// <returns></returns>
         public static TOut[] ConvertSegmentsToArray<TIn, TOut>(TIn[][] segments, Func<TIn[], TOut> convert)
         {
-            if (segments == null) throw new ArgumentNullException("segments");
-            if (convert == null) throw new ArgumentNullException("convert");
+            if (segments == null) throw new ArgumentNullException(nameof(segments));
+            if (convert == null) throw new ArgumentNullException(nameof(convert));
             var result = new TOut[segments.Length];
 
-            for (int i = 0; i < segments.Length; i++)
+            for (var i = 0; i < segments.Length; i++)
             {
                 result[i] = convert(segments[i]);
             }

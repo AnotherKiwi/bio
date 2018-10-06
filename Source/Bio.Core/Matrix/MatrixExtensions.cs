@@ -57,9 +57,9 @@ namespace Bio.Matrix
             }
 
             var denseMatrix = DenseMatrix<TRowKey, TColKey, TValue>.CreateDefaultInstance(inputMatrix.RowKeys, inputMatrix.ColKeys, inputMatrix.MissingValue);
-            foreach (TRowKey rowKey in inputMatrix.RowKeys)
+            foreach (var rowKey in inputMatrix.RowKeys)
             {
-                foreach (TColKey colKey in inputMatrix.ColKeys)
+                foreach (var colKey in inputMatrix.ColKeys)
                 {
                     denseMatrix.SetValueOrMissing(rowKey, colKey, inputMatrix.GetValueOrMissing(rowKey, colKey));
                 }
@@ -69,7 +69,7 @@ namespace Bio.Matrix
 
         private static DenseMatrix<TRowKey, TColKey, TValue> MaterializeTransposeViewToDenseMatrix<TRowKey, TColKey, TValue>(TransposeView<TRowKey, TColKey, TValue> transposeView)
         {
-            DenseMatrix<TColKey, TRowKey, TValue> parent = (DenseMatrix<TColKey, TRowKey, TValue>)transposeView.ParentMatrix;
+            var parent = (DenseMatrix<TColKey, TRowKey, TValue>)transposeView.ParentMatrix;
 
             var matrix = new DenseMatrix<TRowKey, TColKey, TValue>();
             matrix._rowKeys = transposeView.RowKeys;
@@ -79,9 +79,9 @@ namespace Bio.Matrix
             matrix._missingValue = parent.MissingValue;
             matrix.ValueArray = new TValue[matrix.RowCount, matrix.ColCount];
 
-            for (int newRowIndex = 0; newRowIndex < matrix.RowCount; ++newRowIndex)
+            for (var newRowIndex = 0; newRowIndex < matrix.RowCount; ++newRowIndex)
             {
-                for (int newColIndex = 0; newColIndex < matrix.ColCount; ++newColIndex)
+                for (var newColIndex = 0; newColIndex < matrix.ColCount; ++newColIndex)
                 {
                     matrix.ValueArray[newRowIndex, newColIndex] = parent.ValueArray[newColIndex, newRowIndex];
                 }
@@ -93,7 +93,7 @@ namespace Bio.Matrix
 
         private static DenseMatrix<TRowKey, TColKey, TValue> MaterializeSelectRowsColsViewToDenseMatrix<TRowKey, TColKey, TValue>(SelectRowsAndColsView<TRowKey, TColKey, TValue> selectRowsAndColsView)
         {
-            DenseMatrix<TRowKey, TColKey, TValue> parent = (DenseMatrix<TRowKey, TColKey, TValue>)selectRowsAndColsView.ParentMatrix;
+            var parent = (DenseMatrix<TRowKey, TColKey, TValue>)selectRowsAndColsView.ParentMatrix;
 
             var matrix = new DenseMatrix<TRowKey, TColKey, TValue>();
             matrix._rowKeys = selectRowsAndColsView.RowKeys;
@@ -106,11 +106,11 @@ namespace Bio.Matrix
             IList<int> oldRowIndexList = selectRowsAndColsView.IndexOfParentRowKey;
             IList<int> oldColIndexList = selectRowsAndColsView.IndexOfParentColKey;
 
-            for (int newRowIndex = 0; newRowIndex < matrix.RowCount; ++newRowIndex)
+            for (var newRowIndex = 0; newRowIndex < matrix.RowCount; ++newRowIndex)
             {
-                int oldRowIndex = oldRowIndexList[newRowIndex];
+                var oldRowIndex = oldRowIndexList[newRowIndex];
 
-                for (int newColIndex = 0; newColIndex < matrix.ColCount; ++newColIndex)
+                for (var newColIndex = 0; newColIndex < matrix.ColCount; ++newColIndex)
                 {
                     matrix.ValueArray[newRowIndex, newColIndex] = parent.ValueArray[oldRowIndex, oldColIndexList[newColIndex]];
                 }
@@ -172,7 +172,7 @@ namespace Bio.Matrix
         public static void WriteSparse<TRowKey, TColKey, TValue>(this Matrix<TRowKey, TColKey, TValue> matrix, TextWriter textWriter)
         {
             textWriter.WriteLine("var\tcid\tval");
-            foreach (RowKeyColKeyValue<TRowKey, TColKey, TValue> rowColVal in matrix.RowKeyColKeyValues)
+            foreach (var rowColVal in matrix.RowKeyColKeyValues)
             {
                 textWriter.WriteLine(Helper.CreateTabString(rowColVal.RowKey, rowColVal.ColKey, rowColVal.Value));
             }

@@ -43,7 +43,7 @@ namespace Bio.IO.BAM
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
             Source = stream;
         }
@@ -56,7 +56,7 @@ namespace Bio.IO.BAM
         {
             if (bamIndex == null)
             {
-                throw new ArgumentNullException("bamIndex");
+                throw new ArgumentNullException(nameof(bamIndex));
             }
 
             if (Source == null)
@@ -67,35 +67,35 @@ namespace Bio.IO.BAM
             byte[] magic = { 66, 65, 73, 1 };
             Write(magic, 0, 4);
 
-            byte[] arrays = Helper.GetLittleEndianByteArray(bamIndex.RefIndexes.Count);
+            var arrays = Helper.GetLittleEndianByteArray(bamIndex.RefIndexes.Count);
             Write(arrays, 0, 4);
 
-            foreach (BAMReferenceIndexes index in bamIndex.RefIndexes)
+            foreach (var index in bamIndex.RefIndexes)
             {
-                int binCount = index.Bins.Count;
-                bool addingMetaData = index.HasMetaData && BitConverter.IsLittleEndian;
+                var binCount = index.Bins.Count;
+                var addingMetaData = index.HasMetaData && BitConverter.IsLittleEndian;
                 if (addingMetaData)
                 {
                     binCount++;
                 }                
                 arrays = Helper.GetLittleEndianByteArray(binCount);
-                this.Write(arrays, 0, 4);
+                Write(arrays, 0, 4);
                 
                 //Write each bin
-                foreach (Bin bin in index.Bins)
+                foreach (var bin in index.Bins)
                 {
                     arrays = Helper.GetLittleEndianByteArray(bin.BinNumber);
-                    this.Write(arrays, 0, 4);
-                    int chunkCount = bin.Chunks.Count;
+                    Write(arrays, 0, 4);
+                    var chunkCount = bin.Chunks.Count;
                    
                     arrays = Helper.GetLittleEndianByteArray(chunkCount);
-                    this.Write(arrays, 0, 4);
-                    foreach (Chunk chunk in bin.Chunks)
+                    Write(arrays, 0, 4);
+                    foreach (var chunk in bin.Chunks)
                     {
                         arrays = GetBAMOffsetArray(chunk.ChunkStart);
-                        this.Write(arrays, 0, 8);
+                        Write(arrays, 0, 8);
                         arrays = GetBAMOffsetArray(chunk.ChunkEnd);
-                        this.Write(arrays, 0, 8);
+                        Write(arrays, 0, 8);
                     }
                 }
 
@@ -105,29 +105,29 @@ namespace Bio.IO.BAM
                 if (addingMetaData)
                 {
                     //Dummy bin to indicate meta-data
-                    arrays = Helper.GetLittleEndianByteArray(BAMIndexStorage.MaxBins);
-                    this.Write(arrays, 0, 4);
+                    arrays = Helper.GetLittleEndianByteArray(MaxBins);
+                    Write(arrays, 0, 4);
                     //2 chunks worth of meta data
                     //first the file offsets
                     arrays = Helper.GetLittleEndianByteArray((int)2);
-                    this.Write(arrays, 0, 4);
+                    Write(arrays, 0, 4);
                     arrays = GetBAMOffsetArray(index.FirstOffSetSeen);
-                    this.Write(arrays, 0, 8);
+                    Write(arrays, 0, 8);
                     arrays = GetBAMOffsetArray(index.LastOffSetSeen);
-                    this.Write(arrays, 0, 8);
+                    Write(arrays, 0, 8);
                     arrays = BitConverter.GetBytes(index.MappedReadsCount);
-                    this.Write(arrays, 0, 8);
+                    Write(arrays, 0, 8);
                     arrays = BitConverter.GetBytes(index.UnMappedReadsCount);
-                    this.Write(arrays, 0, 8);
+                    Write(arrays, 0, 8);
                 }
                 
                 arrays = Helper.GetLittleEndianByteArray(index.LinearIndex.Count);
-                this.Write(arrays, 0, 4);
+                Write(arrays, 0, 4);
                 
-                foreach (FileOffset value in index.LinearIndex)
+                foreach (var value in index.LinearIndex)
                 {
                     arrays = GetBAMOffsetArray(value);
-                    this.Write(arrays, 0, 8);
+                    Write(arrays, 0, 8);
                 }
                 Source.Flush();
             }
@@ -143,8 +143,8 @@ namespace Bio.IO.BAM
                 throw new InvalidOperationException(Properties.Resource.BAM_CantUseBAMIndexStreamDisposed);
             }
 
-            BAMIndex bamIndex = new BAMIndex();
-            byte[] arrays = new byte[20];
+            var bamIndex = new BAMIndex();
+            var arrays = new byte[20];
 
             Read(arrays, 0, 4);
 
@@ -153,24 +153,24 @@ namespace Bio.IO.BAM
                 throw new FormatException(Properties.Resource.BAM_InvalidIndexFile);
             }
             Read(arrays, 0, 4);
-            int n_ref = Helper.GetInt32(arrays, 0);
-            for (Int32 refindex = 0; refindex < n_ref; refindex++)
+            var n_ref = Helper.GetInt32(arrays, 0);
+            for (var refindex = 0; refindex < n_ref; refindex++)
             {
-                BAMReferenceIndexes bamindices = new BAMReferenceIndexes();
+                var bamindices = new BAMReferenceIndexes();
                 bamIndex.RefIndexes.Add(bamindices);
                 Read(arrays, 0, 4);
-                int n_bin = Helper.GetInt32(arrays, 0);
-                for (Int32 binIndex = 0; binIndex < n_bin; binIndex++)
+                var n_bin = Helper.GetInt32(arrays, 0);
+                for (var binIndex = 0; binIndex < n_bin; binIndex++)
                 {
-                    Bin bin = new Bin();
+                    var bin = new Bin();
                     Read(arrays, 0, 4);
                     bin.BinNumber = Helper.GetUInt32(arrays, 0);
                     Read(arrays, 0, 4);
-                    int n_chunk = Helper.GetInt32(arrays, 0);
+                    var n_chunk = Helper.GetInt32(arrays, 0);
                     if (bin.BinNumber == MaxBins)//some groups use this to place meta-data, such as the picard toolkit and now SAMTools
                     {
                         //Meta data was later added in to the SAMTools specification
-                        for (Int32 chunkIndex = 0; chunkIndex < n_chunk; chunkIndex++)
+                        for (var chunkIndex = 0; chunkIndex < n_chunk; chunkIndex++)
                         {
                             bamindices.HasMetaData = true;
                             Read(arrays, 0, 8);
@@ -187,9 +187,9 @@ namespace Bio.IO.BAM
                     else
                     {
                          bamindices.Bins.Add(bin);
-                        for (Int32 chunkIndex = 0; chunkIndex < n_chunk; chunkIndex++)
+                        for (var chunkIndex = 0; chunkIndex < n_chunk; chunkIndex++)
                         {
-                            Chunk chunk = new Chunk();
+                            var chunk = new Chunk();
                             bin.Chunks.Add(chunk);
                             Read(arrays, 0, 8);
                             chunk.ChunkStart = GetBAMOffset(arrays, 0);
@@ -200,9 +200,9 @@ namespace Bio.IO.BAM
                 }
                 //Get number of linear bins
                 Read(arrays, 0, 4);
-                int n_intv = Helper.GetInt32(arrays, 0);
+                var n_intv = Helper.GetInt32(arrays, 0);
 
-                for (Int32 offsetIndex = 0; offsetIndex < n_intv; offsetIndex++)
+                for (var offsetIndex = 0; offsetIndex < n_intv; offsetIndex++)
                 {
                     FileOffset value;
                     Read(arrays, 0, 8);
@@ -255,7 +255,7 @@ namespace Bio.IO.BAM
         // Converts FileOffset object to byte array.
         private static byte[] GetBAMOffsetArray(FileOffset offset)
         {
-            byte[] bytes = new byte[8];
+            var bytes = new byte[8];
 
             bytes[0] = (byte)(offset.UncompressedBlockOffset & 0x00FF);
             bytes[1] = (byte)((offset.UncompressedBlockOffset & 0xFF00) >> 8);

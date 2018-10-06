@@ -47,7 +47,7 @@ namespace Bio.Algorithms.Alignment
             // User will typically choose their own parameters, these defaults are reasonable for many cases.
             // Molecule type is set to protein, since this will also work for DNA and RNA in the
             // special case of a diagonal similarity matrix.
-            this.InternalSimilarityMatrix = new DiagonalSimilarityMatrix(2, -2);
+            InternalSimilarityMatrix = new DiagonalSimilarityMatrix(2, -2);
             GapOpenCost = -8;
             GapExtensionCost = -1;
         }
@@ -59,8 +59,8 @@ namespace Bio.Algorithms.Alignment
         /// <summary> Gets or sets similarity matrix for use in alignment algorithms. </summary>
         public SimilarityMatrix SimilarityMatrix
         {
-            get { return this.InternalSimilarityMatrix; }
-            set { this.InternalSimilarityMatrix = value; }
+            get { return InternalSimilarityMatrix; }
+            set { InternalSimilarityMatrix = value; }
         }
 
         /// <summary> 
@@ -118,7 +118,7 @@ namespace Bio.Algorithms.Alignment
         /// <returns>A list of sequence alignments.</returns>
         public IList<IPairwiseSequenceAlignment> AlignSimple(ISequence sequence1, ISequence sequence2)
         {
-            return AlignSimple(this.InternalSimilarityMatrix, GapOpenCost, sequence1, sequence2);
+            return AlignSimple(InternalSimilarityMatrix, GapOpenCost, sequence1, sequence2);
         }
 
         /// <summary>
@@ -131,12 +131,12 @@ namespace Bio.Algorithms.Alignment
         {
             if (inputSequences.Count() != 2)
             {
-                string message = String.Format(
+                var message = String.Format(
                         CultureInfo.CurrentCulture,
                         Properties.Resource.PairwiseAlignerWrongArgumentCount,
                         inputSequences.Count());
                 Debug.WriteLine(message);
-                throw new ArgumentException(message, "inputSequences");
+                throw new ArgumentException(message, nameof(inputSequences));
             }
 
             ISequence firstSequence = null;
@@ -145,7 +145,7 @@ namespace Bio.Algorithms.Alignment
             firstSequence = inputSequences.ElementAt(0);
             secondSequence = inputSequences.ElementAt(1);
 
-            return AlignSimple(this.InternalSimilarityMatrix, GapOpenCost, firstSequence, secondSequence);
+            return AlignSimple(InternalSimilarityMatrix, GapOpenCost, firstSequence, secondSequence);
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace Bio.Algorithms.Alignment
         /// <returns>A list of sequence alignments.</returns>
         IList<ISequenceAlignment> ISequenceAligner.AlignSimple(IEnumerable<ISequence> inputSequences)
         {
-            return this.AlignSimple(inputSequences).Cast<ISequenceAlignment>().ToList();
+            return AlignSimple(inputSequences).Cast<ISequenceAlignment>().ToList();
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace Bio.Algorithms.Alignment
         /// <returns>A list of sequence alignments.</returns>
         public IList<IPairwiseSequenceAlignment> Align(ISequence sequence1, ISequence sequence2)
         {
-            return Align(this.InternalSimilarityMatrix, GapOpenCost, GapExtensionCost, sequence1, sequence2);
+            return Align(InternalSimilarityMatrix, GapOpenCost, GapExtensionCost, sequence1, sequence2);
         }
 
         /// <summary>
@@ -183,12 +183,12 @@ namespace Bio.Algorithms.Alignment
         {
             if (inputSequences.Count() != 2)
             {
-                string message = String.Format(
+                var message = String.Format(
                         CultureInfo.CurrentCulture,
                         Properties.Resource.PairwiseAlignerWrongArgumentCount,
                         inputSequences.Count());
                 Debug.WriteLine(message);
-                throw new ArgumentException(message, "inputSequences");
+                throw new ArgumentException(message, nameof(inputSequences));
             }
 
             ISequence firstSequence = null;
@@ -197,7 +197,7 @@ namespace Bio.Algorithms.Alignment
             firstSequence = inputSequences.ElementAt(0);
             secondSequence = inputSequences.ElementAt(1);
 
-            return Align(this.InternalSimilarityMatrix, GapOpenCost, GapExtensionCost, firstSequence, secondSequence);
+            return Align(InternalSimilarityMatrix, GapOpenCost, GapExtensionCost, firstSequence, secondSequence);
         }
 
         /// <summary>
@@ -209,7 +209,7 @@ namespace Bio.Algorithms.Alignment
         /// <returns>A list of sequence alignments.</returns>
         IList<ISequenceAlignment> ISequenceAligner.Align(IEnumerable<ISequence> inputSequences)
         {
-            return this.Align(inputSequences).ToList().ConvertAll(SA => SA as ISequenceAlignment);
+            return Align(inputSequences).ToList().ConvertAll(SA => SA as ISequenceAlignment);
         }
 
         /// <summary>
@@ -226,10 +226,10 @@ namespace Bio.Algorithms.Alignment
              // Initialize and perform validations for simple alignment
             SimpleAlignPrimer(localSimilarityMatrix, gapPenalty, inputA, inputB);
 
-            DynamicProgrammingPairwiseAlignerJob alignerJob = this.CreateSimpleAlignmentJob(inputA, inputB);
+            var alignerJob = CreateSimpleAlignmentJob(inputA, inputB);
             IList<IPairwiseSequenceAlignment> result = alignerJob.Align();
 
-            foreach (IPairwiseSequenceAlignment alignment in result)
+            foreach (var alignment in result)
             {
                 foreach (PairwiseAlignedSequence sequence in alignment.AlignedSequences)
                 {
@@ -262,10 +262,10 @@ namespace Bio.Algorithms.Alignment
             SimpleAlignPrimer(localSimilarityMatrix, gapOpenPenalty, inputA, inputB);
             GapExtensionCost = gapExtensionPenalty;
 
-            DynamicProgrammingPairwiseAlignerJob alignerJob = this.CreateAffineAlignmentJob(inputA, inputB);
+            var alignerJob = CreateAffineAlignmentJob(inputA, inputB);
             IList<IPairwiseSequenceAlignment> result = alignerJob.Align();
 
-            foreach (IPairwiseSequenceAlignment alignment in result)
+            foreach (var alignment in result)
             {
                 foreach (PairwiseAlignedSequence sequence in alignment.AlignedSequences)
                 {
@@ -305,24 +305,24 @@ namespace Bio.Algorithms.Alignment
         {
             if (inputA == null)
             {
-                throw new ArgumentNullException("inputA");
+                throw new ArgumentNullException(nameof(inputA));
             }
 
             if (inputB == null)
             {
-                throw new ArgumentNullException("inputB");
+                throw new ArgumentNullException(nameof(inputB));
             }
 
             if (!Alphabets.CheckIsFromSameBase(inputA.Alphabet, inputB.Alphabet))
                 throw new ArgumentException(Properties.Resource.InputAlphabetsMismatch);
 
-            if (null == this.InternalSimilarityMatrix)
+            if (null == InternalSimilarityMatrix)
                 throw new ArgumentException(Properties.Resource.SimilarityMatrixCannotBeNull);
 
-            if (!this.InternalSimilarityMatrix.ValidateSequence(inputA))
+            if (!InternalSimilarityMatrix.ValidateSequence(inputA))
                 throw new ArgumentException(Properties.Resource.FirstInputSequenceMismatchSimilarityMatrix);
 
-            if (!this.InternalSimilarityMatrix.ValidateSequence(inputB))
+            if (!InternalSimilarityMatrix.ValidateSequence(inputB))
                 throw new ArgumentException(Properties.Resource.SecondInputSequenceMismatchSimilarityMatrix);
         }
             /// <summary>
@@ -361,13 +361,13 @@ namespace Bio.Algorithms.Alignment
             GapOpenCost = gapPenalty;
 
             // note that _gapExtensionCost is not used for linear gap penalty
-            this.InternalSimilarityMatrix = similarityMatrix;
+            InternalSimilarityMatrix = similarityMatrix;
 
             ValidateAlignInput(inputA, inputB);  // throws exception if input not valid
 
             // Convert input strings to 0-based int arrays using similarity matrix mapping
-            this.FirstInputSequence = inputA;
-            this.SecondInputSequence = inputB;
+            FirstInputSequence = inputA;
+            SecondInputSequence = inputB;
         }
 
         /// <summary>
@@ -381,17 +381,17 @@ namespace Bio.Algorithms.Alignment
         /// </param>
         private void AddSimpleConsensusToResult(PairwiseAlignedSequence alignment)
         {
-            ISequence seq0 = alignment.FirstSequence;
-            ISequence seq1 = alignment.SecondSequence;
+            var seq0 = alignment.FirstSequence;
+            var seq1 = alignment.SecondSequence;
 
-            byte[] consensus = new byte[seq0.Count];
-            for (int i = 0; i < seq0.Count; i++)
+            var consensus = new byte[seq0.Count];
+            for (var i = 0; i < seq0.Count; i++)
             {
                 consensus[i] = ConsensusResolver.GetConsensus(
                         new byte[] { seq0[i], seq1[i] });
             }
 
-            IAlphabet consensusAlphabet = Alphabets.AutoDetectAlphabet(consensus, 0, consensus.GetLongLength(), seq0.Alphabet);
+            var consensusAlphabet = Alphabets.AutoDetectAlphabet(consensus, 0, consensus.GetLongLength(), seq0.Alphabet);
             alignment.Consensus = new Sequence(consensusAlphabet, consensus, false);
         }
 
@@ -479,7 +479,7 @@ namespace Bio.Algorithms.Alignment
                     return false;
                 }
 
-                OptScoreCell other = (OptScoreCell)obj;
+                var other = (OptScoreCell)obj;
                 return this == other;
             }
 

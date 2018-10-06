@@ -52,10 +52,10 @@ namespace Bio.IO
         static SequenceParsers()
 		{
             // get the registered parsers
-            IEnumerable<ISequenceParser> registeredParsers = GetSequenceParsers();
+            var registeredParsers = GetSequenceParsers();
             if (null != registeredParsers)
             {
-                foreach (ISequenceParser parser in registeredParsers.Where(
+                foreach (var parser in registeredParsers.Where(
                     parser => parser != null && All.All(sp => string.Compare(sp.Name, parser.Name, StringComparison.OrdinalIgnoreCase) != 0)))
                 {
                     allParsers.Add(parser);
@@ -122,7 +122,7 @@ namespace Bio.IO
                 else
                 {
                     // Do a search through the known parsers to pick up custom parsers added through add-in.
-                    string fileExtension = Path.GetExtension(fileName);
+                    var fileExtension = Path.GetExtension(fileName);
                     if (!string.IsNullOrEmpty(fileExtension))
                     {
                         parser = All.FirstOrDefault(p => p.SupportedFileTypes.Contains(fileExtension));
@@ -223,7 +223,7 @@ namespace Bio.IO
             {
                 try
                 {
-                    ISequenceParser parser = Activator.CreateInstance(impl) as ISequenceParser;
+                    var parser = Activator.CreateInstance(impl) as ISequenceParser;
                     if (parser != null)
                         registeredParsers.Add(parser);
                 }

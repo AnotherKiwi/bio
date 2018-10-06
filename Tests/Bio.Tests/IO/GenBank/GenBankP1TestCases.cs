@@ -52,62 +52,62 @@ using Bio.Tests;
 
         static string AlphabetName
         {
-            get { return GenBankP1TestCases._alpName; }
-            set { GenBankP1TestCases._alpName = value; }
+            get { return _alpName; }
+            set { _alpName = value; }
         }
 
         static string FilePath
         {
-            get { return GenBankP1TestCases._filepath; }
-            set { GenBankP1TestCases._filepath = value; }
+            get { return _filepath; }
+            set { _filepath = value; }
         }
 
         static string SeqId
         {
-            get { return GenBankP1TestCases._seqId; }
-            set { GenBankP1TestCases._seqId = value; }
+            get { return _seqId; }
+            set { _seqId = value; }
         }
 
         static string StrandTopology
         {
-            get { return GenBankP1TestCases._strTopo; }
-            set { GenBankP1TestCases._strTopo = value; }
+            get { return _strTopo; }
+            set { _strTopo = value; }
         }
 
         static string StrandType
         {
-            get { return GenBankP1TestCases._strType; }
-            set { GenBankP1TestCases._strType = value; }
+            get { return _strType; }
+            set { _strType = value; }
         }
 
         static string Div
         {
-            get { return GenBankP1TestCases._div; }
-            set { GenBankP1TestCases._div = value; }
+            get { return _div; }
+            set { _div = value; }
         }
 
         static string Version
         {
-            get { return GenBankP1TestCases._version; }
-            set { GenBankP1TestCases._version = value; }
+            get { return _version; }
+            set { _version = value; }
         }
 
         static string SequenceDate
         {
-            get { return GenBankP1TestCases._date; }
-            set { GenBankP1TestCases._date = value; }
+            get { return _date; }
+            set { _date = value; }
         }
 
         static string PrimaryId
         {
-            get { return GenBankP1TestCases._primId; }
-            set { GenBankP1TestCases._primId = value; }
+            get { return _primId; }
+            set { _primId = value; }
         }
 
         static string ExpectedSequence
         {
-            get { return GenBankP1TestCases._expSeq; }
-            set { GenBankP1TestCases._expSeq = value; }
+            get { return _expSeq; }
+            set { _expSeq = value; }
         }
 
         #endregion Properties
@@ -371,7 +371,7 @@ using Bio.Tests;
             ISequenceParser parserObj = new GenBankParser();
             parserObj.Alphabet = Alphabets.Protein;
             //parserObj.Encoding = NcbiEAAEncoding.Instance;
-            IEnumerable<ISequence> seq = parserObj.Parse(FilePath);
+            var seq = parserObj.Parse(FilePath);
             ValidateParserGeneralTestCases(seq.ElementAt(0), ExpectedSequence);
         }
 
@@ -804,8 +804,8 @@ using Bio.Tests;
                 // Logs information to the log file
                 ApplicationLog.WriteLine(string.Format("GenBank Parser : File Exists in the Path '{0}'.",
                     FilePath));
-                IEnumerable<ISequence> seqList = parserObj.Parse(FilePath);
-                ISequence seq = seqList.ElementAt(0);
+                var seqList = parserObj.Parse(FilePath);
+                var seq = seqList.ElementAt(0);
                 Assert.AreEqual(Utility.GetAlphabet(AlphabetName), seq.Alphabet);
                 Assert.AreEqual(SeqId, seq.ID);
 
@@ -814,7 +814,7 @@ using Bio.Tests;
 
                 // test the metadata that is tricky to parse, and will not be tested implicitly by
                 // testing the formatting
-                GenBankMetadata metadata = (GenBankMetadata)seq.Metadata["GenBank"];
+                var metadata = (GenBankMetadata)seq.Metadata["GenBank"];
                 if (metadata.Locus.Strand != SequenceStrandType.None)
                 {
                     Assert.AreEqual(StrandType, metadata.Locus.Strand.ToString());
@@ -846,10 +846,10 @@ using Bio.Tests;
                 }
 
                 // Replace all the empty spaces, paragraphs and new line for validation
-                string updatedExpSequence =
+                var updatedExpSequence =
                     ExpectedSequence.Replace("\r", "").Replace("\n", "").Replace(" ", "").ToUpper(
                     CultureInfo.CurrentCulture);
-                string updatedActualSequence =
+                var updatedActualSequence =
                     new string(seq.Select(a => (char)a).ToArray()).Replace("\r", "").Replace("\n", "").Replace(" ", "").ToUpper(
                     CultureInfo.CurrentCulture);
 
@@ -866,7 +866,7 @@ using Bio.Tests;
         /// </summary>
         private static void ValidateParserSpecialTestCases(IEnumerable<ISequence> seqList)
         {
-            ISequence seq = seqList.ElementAt(0);
+            var seq = seqList.ElementAt(0);
             Assert.AreEqual(Utility.GetAlphabet(AlphabetName),
                 seq.Alphabet);
             Assert.AreEqual(SeqId, seq.ID);
@@ -875,7 +875,7 @@ using Bio.Tests;
 
             // Test the metadata that is tricky to parse, and will not be tested implicitly by
             // Testing the formatting
-            GenBankMetadata metadata =
+            var metadata =
                 (GenBankMetadata)seq.Metadata["GenBank"];
             if (metadata.Locus.Strand != SequenceStrandType.None)
             {
@@ -907,10 +907,10 @@ using Bio.Tests;
             }
 
             // Replace all the empty spaces, paragraphs and new line for validation
-            string updatedExpSequence =
+            var updatedExpSequence =
                 ExpectedSequence.Replace("\r", "").Replace("\n", "").Replace(" ", "").ToUpper(
                 CultureInfo.CurrentCulture);
-            string updatedActualSequence =
+            var updatedActualSequence =
                 new string(seq.Select(a => (char)a).ToArray()).Replace("\r", "").Replace("\n", "").Replace(" ", "").ToUpper(
                 CultureInfo.CurrentCulture);
 
@@ -927,21 +927,21 @@ using Bio.Tests;
         {
             // Create a Sequence with all attributes.
             // Parse and update the properties instead of parsing entire file.
-            string expectedUpdatedSequence =
+            var expectedUpdatedSequence =
                 ExpectedSequence.Replace("\r", "").Replace("\n", "").Replace(" ", "");
-            Sequence orgSeq =
+            var orgSeq =
                 new Sequence(Utility.GetAlphabet(AlphabetName), expectedUpdatedSequence);
                 orgSeq.Metadata.Add("GenBank",
                     (GenBankMetadata)seqList1.ElementAt(0).Metadata["GenBank"]);
                 orgSeq.ID = seqList1.ElementAt(0).ID;
-                string tempFileName = System.IO.Path.GetTempFileName();
+                var tempFileName = Path.GetTempFileName();
                 ISequenceFormatter formatter = new GenBankFormatter();
                 formatter.Format(orgSeq, tempFileName);
 
                 // parse
-                GenBankParser parserObj = new GenBankParser();
-                IEnumerable<ISequence> seqList = parserObj.Parse(tempFileName);
-                ISequence seq = seqList.ElementAt(0);
+                var parserObj = new GenBankParser();
+                var seqList = parserObj.Parse(tempFileName);
+                var seq = seqList.ElementAt(0);
 
                 Assert.AreEqual(Utility.GetAlphabet(AlphabetName), seq.Alphabet);
                 Assert.AreEqual(SeqId, seq.ID);
@@ -950,7 +950,7 @@ using Bio.Tests;
 
                 // test the metadata that is tricky to parse, and will not be tested implicitly by
                 // testing the formatting
-                GenBankMetadata metadata =
+                var metadata =
                     (GenBankMetadata)seq.Metadata["GenBank"];
                 if (metadata.Locus.Strand != SequenceStrandType.None)
                 {
@@ -984,10 +984,10 @@ using Bio.Tests;
                         "GenBank Parser : Successfully validated the StrandType, StrandTopology, Division, Date Properties");
                 }
 
-                string truncatedExpectedSequence =
+                var truncatedExpectedSequence =
                     ExpectedSequence.Replace("\r", "").Replace("\n", "").Replace(" ", "").ToUpper(
                     CultureInfo.CurrentCulture);
-                string truncatedActualSequence =
+                var truncatedActualSequence =
                     new string(seq.Select(a => (char)a).ToArray()).Replace("\r", "").Replace("\n", "").Replace(" ", "").ToUpper(
                     CultureInfo.CurrentCulture);
 
@@ -1006,22 +1006,22 @@ using Bio.Tests;
         {
             // Create a Sequence with all attributes.
             // Parse and update the properties instead of parsing entire file.
-            string expectedUpdatedSequence =
+            var expectedUpdatedSequence =
                 ExpectedSequence.Replace("\r", "").Replace("\n", "").Replace(" ", "");
-            Sequence orgSeq =
+            var orgSeq =
                 new Sequence(Utility.GetAlphabet(AlphabetName), expectedUpdatedSequence);
             orgSeq.Metadata.Add("GenBank",
                 (GenBankMetadata)seqList1.ElementAt(0).Metadata["GenBank"]);
             orgSeq.ID = seqList1.ElementAt(0).ID;
-            string tempFileName = System.IO.Path.GetTempFileName();
+            var tempFileName = Path.GetTempFileName();
             ISequenceFormatter formatter = new GenBankFormatter();
             {
                 formatter.Format(orgSeq, tempFileName);
 
                 // parse
-                GenBankParser parserObj = new GenBankParser();
-                IEnumerable<ISequence> seqList = parserObj.Parse(tempFileName);
-                ISequence seq = seqList.ElementAt(0);
+                var parserObj = new GenBankParser();
+                var seqList = parserObj.Parse(tempFileName);
+                var seq = seqList.ElementAt(0);
                 Assert.AreEqual(Utility.GetAlphabet(AlphabetName), seq.Alphabet);
                 Assert.AreEqual(SeqId, seq.ID);
                 ApplicationLog.WriteLine(
@@ -1029,7 +1029,7 @@ using Bio.Tests;
 
                 // test the metadata that is tricky to parse, and will not be tested implicitly by
                 // testing the formatting
-                GenBankMetadata metadata =
+                var metadata =
                     (GenBankMetadata)seq.Metadata["GenBank"];
                 if (metadata.Locus.Strand != SequenceStrandType.None)
                 {
@@ -1059,10 +1059,10 @@ using Bio.Tests;
                 }
 
 
-                string truncatedExpectedSequence =
+                var truncatedExpectedSequence =
                     ExpectedSequence.Replace("\r", "").Replace("\n", "").Replace(" ", "").ToUpper(
                     CultureInfo.CurrentCulture);
-                string truncatedActualSequence =
+                var truncatedActualSequence =
                     new string(seq.Select(a => (char)a).ToArray()).Replace("\r", "").Replace("\n", "").Replace(" ", "").ToUpper(
                     CultureInfo.CurrentCulture);
 
@@ -1083,7 +1083,7 @@ using Bio.Tests;
             // Parse the file
             ISequenceParser parseObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parseObj.Parse(FilePath);
+                var seqList = parseObj.Parse(FilePath);
 
                 // Validate the sequence and few more properties.
                 ValidateWriteGeneralTestCases(seqList);
@@ -1098,7 +1098,7 @@ using Bio.Tests;
             // Parse the file
             ISequenceParser parseObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parseObj.Parse(FilePath);
+                var seqList = parseObj.Parse(FilePath);
 
                 // Validate the sequence and few more properties.
                 ValidateWriterWithFilePathGeneralTestCases(seqList);
@@ -1113,7 +1113,7 @@ using Bio.Tests;
             // Parse the file using text reader.
             ISequenceParser parseObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parseObj.Parse(FilePath);
+                var seqList = parseObj.Parse(FilePath);
 
                 // Validate the sequence and few more properties.
                 ValidateWriteGeneralTestCases(seqList);
@@ -1127,7 +1127,7 @@ using Bio.Tests;
         {
             // Parse the file using text reader.
             ISequenceParser parserObj = new GenBankParser();
-            IEnumerable<ISequence> seqList = parserObj.Parse(FilePath);
+            var seqList = parserObj.Parse(FilePath);
 
             // Validate the sequence and few more properties.
             ValidateParserSpecialTestCases(seqList);
@@ -1142,13 +1142,13 @@ using Bio.Tests;
             Assert.IsTrue(File.Exists(FilePath));
             // Logs information to the log file
             ApplicationLog.WriteLine(string.Format("GenBank Parser : File Exists in the Path '{0}'.", FilePath));
-            string tempFileName = Path.GetTempFileName();
+            var tempFileName = Path.GetTempFileName();
 
             // parse
             ISequenceParser parserObj = new GenBankParser();
             {
-                IEnumerable<ISequence> seqList = parserObj.Parse(FilePath);
-                ISequence seq = seqList.ElementAt(0);
+                var seqList = parserObj.Parse(FilePath);
+                var seq = seqList.ElementAt(0);
                 ISequenceFormatter formatter = new GenBankFormatter();
                 {
                     formatter.Format(seq, tempFileName);
@@ -1191,10 +1191,10 @@ using Bio.Tests;
                 "FastA Parser : File Exists in the Path '{0}'.", FilePath));
 
             IEnumerable<ISequence> seqs = null;
-            GenBankParser parserObj = new GenBankParser();
+            var parserObj = new GenBankParser();
             seqs = parserObj.Parse(FilePath);
 
-            int seqCount = int.Parse(utilityObj.xmlUtil.GetTextValue(
+            var seqCount = int.Parse(utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.NumberOfSequencesNode), null);
             Assert.IsNotNull(seqs);
             Assert.AreEqual(seqCount, seqs.Count());
@@ -1205,9 +1205,9 @@ using Bio.Tests;
             // Gets the expected sequences from the Xml, in the test cases
             // we are just validating with 2 sequences and maximum 3 
             // sequences. So, based on that we are validating.
-            string expectedSequence1 = utilityObj.xmlUtil.GetTextValue(
+            var expectedSequence1 = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExpectedSequenceNode1);
-            string expectedSequence2 = utilityObj.xmlUtil.GetTextValue(
+            var expectedSequence2 = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExpectedSequenceNode2);
             string[] expSeqs = null;
             if (2 == seqCount)
@@ -1216,14 +1216,14 @@ using Bio.Tests;
             }
             else
             {
-                string expectedSequence3 = utilityObj.xmlUtil.GetTextValue(
+                var expectedSequence3 = utilityObj.xmlUtil.GetTextValue(
                     nodeName, Constants.ExpectedSequenceNode3);
                 expSeqs = new string[3] { expectedSequence1, expectedSequence2, 
                     expectedSequence3 };
             }
 
             // Validate each sequence.
-            for (int i = 0; i < seqCount; i++)
+            for (var i = 0; i < seqCount; i++)
             {
                 ValidateParserGeneralTestCases(seqs.ElementAt(i), expSeqs[i]);
             }
@@ -1247,7 +1247,7 @@ using Bio.Tests;
 
             // test the metadata that is tricky to parse, and will not be tested implicitly by
             // testing the formatting
-            GenBankMetadata metadata =
+            var metadata =
                 (GenBankMetadata)seq.Metadata["GenBank"];
             if (metadata.Locus.Strand != SequenceStrandType.None)
             {
@@ -1277,9 +1277,9 @@ using Bio.Tests;
             }
 
             // Replace all the empty spaces, paragraphs and new line for validation
-            string updatedExpSequence =
+            var updatedExpSequence =
                 expectedSequence.Replace("\r", "").Replace("\n", "").Replace(" ", "").ToUpper(CultureInfo.CurrentCulture);
-            string updatedActualSequence =
+            var updatedActualSequence =
                 new string(seq.Select(a => (char)a).ToArray()).Replace("\r", "").Replace("\n", "").Replace(" ", "").ToUpper(CultureInfo.CurrentCulture);
 
             Assert.AreEqual(updatedExpSequence, updatedActualSequence);

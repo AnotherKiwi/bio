@@ -33,7 +33,7 @@ namespace Bio.IO.SAM
         {
             get
             {
-                return this.sequences == null || this.sequences.Count == 0 ? null : this.sequences[0];
+                return sequences == null || sequences.Count == 0 ? null : sequences[0];
             }
             set
             {
@@ -293,7 +293,7 @@ namespace Bio.IO.SAM
         {
             get
             {
-                return this.sequences ?? (this.sequences = new List<ISequence>());
+                return sequences ?? (sequences = new List<ISequence>());
             }
         }
 
@@ -309,8 +309,10 @@ namespace Bio.IO.SAM
         public SAMAlignedSequence(SAMAlignedSequenceHeader seqHeader)
         {
             this.seqHeader = seqHeader;
-            metadata = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
-            metadata.Add(Helper.SAMAlignedSequenceHeaderKey, seqHeader);
+            metadata = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase)
+            {
+                { Helper.SAMAlignedSequenceHeaderKey, seqHeader }
+            };
         }
 
         /// <summary>
@@ -318,7 +320,7 @@ namespace Bio.IO.SAM
         /// </summary>
         public byte[] GetEncodedQualityScores()
         {
-            QualitativeSequence seq = QuerySequence as QualitativeSequence;
+            var seq = QuerySequence as QualitativeSequence;
             return seq != null ? seq.GetEncodedQualityScores() : new byte[0];
         }
 
@@ -327,7 +329,7 @@ namespace Bio.IO.SAM
         /// </summary>
         public int[] GetQualityScores()
         {
-            QualitativeSequence seq = QuerySequence as QualitativeSequence;
+            var seq = QuerySequence as QualitativeSequence;
             return seq != null ? seq.GetPhredQualityScores() : new int[0];
         }
     }

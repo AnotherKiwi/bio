@@ -131,7 +131,7 @@ namespace Bio.IO.Xsv
         {
             if (reader == null)
             {
-                throw new ArgumentNullException("reader");
+                throw new ArgumentNullException(nameof(reader));
             }
 
             // initialize columns
@@ -140,7 +140,7 @@ namespace Bio.IO.Xsv
             AlleleOneColumn = alleleOneColumn;
             AlleleTwoColumn = alleleTwoColumn;
 
-            this.IsFirstLine = true;
+            IsFirstLine = true;
         }
 
         /// <summary>
@@ -151,27 +151,27 @@ namespace Bio.IO.Xsv
         /// <returns>True if we have a valid SnpItem in the next line moved to</returns>
         public bool MoveNext ()
         {
-            if (!this.IsFirstLine)
+            if (!IsFirstLine)
             {
                 GoToNextLine();
             }
             else
             {
                 // skip...we've already read the first line
-                this.IsFirstLine = false;
+                IsFirstLine = false;
             }
 
             // parse the next SNP...if next line not present, set currentSnpitem to null and return false
             if (!HasLines)
             {
-                this.CurrentSnpItem = null;
+                CurrentSnpItem = null;
                 return false;
             }
 
             try 
             {
                 // we have a current Snp
-                this.CurrentSnpItem = MakeSnpForCurrentLine();
+                CurrentSnpItem = MakeSnpForCurrentLine();
             } 
             catch (Exception ex) 
             {
@@ -196,10 +196,10 @@ namespace Bio.IO.Xsv
         {
             get
             {
-                if (this.IsFirstLine)
+                if (IsFirstLine)
                     return null; // Not called MoveNext() yet. So return null as its the default behaviour of Enumerators.
 
-                return this.CurrentSnpItem;
+                return CurrentSnpItem;
             }
         }
 
@@ -231,7 +231,7 @@ namespace Bio.IO.Xsv
         public virtual bool SkipToChromosome (int chromosomeNumber)
         {
             // NOTE: same code as BufferedSnpReader.SkipToChromosome
-            bool hasMoveNext = true;
+            var hasMoveNext = true;
 
             if (Current == null)
             {
@@ -340,7 +340,7 @@ namespace Bio.IO.Xsv
         /// <returns>Returns the field value as a string for the given field enum.</returns>
         protected virtual string GetFieldValue (FieldNames column)
         {
-            int col = GetColumnNumber(column);
+            var col = GetColumnNumber(column);
             if (col < 0)
                 return null;
             return col >= Fields.Length ? null : Fields[col];
@@ -376,16 +376,16 @@ namespace Bio.IO.Xsv
         /// <returns>Creates a SnpItem for the current line in the XsvReader</returns>
         private SnpItem MakeSnpForCurrentLine ()
         {
-            string allele1 = GetFieldValue(FieldNames.AlleleOne);
-            string allele2 = GetFieldValue(FieldNames.AlleleTwo);
+            var allele1 = GetFieldValue(FieldNames.AlleleOne);
+            var allele2 = GetFieldValue(FieldNames.AlleleTwo);
 
             return new SnpItem
             {
                 Chromosome = (byte) ushort.Parse(
-                        this.GetFieldValue(FieldNames.Chromosome),
+                        GetFieldValue(FieldNames.Chromosome),
                         CultureInfo.InvariantCulture),
                 Position = int.Parse(
-                        this.GetFieldValue(FieldNames.Position),
+                        GetFieldValue(FieldNames.Position),
                         CultureInfo.InvariantCulture),
                 AlleleOne = (!string.IsNullOrEmpty(allele1)) ? allele1[0] : char.MinValue,
                 AlleleTwo = (!string.IsNullOrEmpty(allele2)) ? allele2[0] : char.MinValue

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 
 using Bio.Core.Extensions;
@@ -10,37 +9,19 @@ using Bio.Util;
 namespace Bio
 {
     /// <summary>
-    /// The basic alphabet that describes symbols used in RNA sequences.
-    /// This alphabet allows not only for the four base nucleotide symbols,
-    /// but also for various ambiguities, termination, and gap symbols.
-    /// <para>
-    /// The symbol representations come from the NCBI4na standard and
-    /// are used in many sequence file formats. The NCBI4na standard is the
-    /// same as the IUPACna standard with only the addition of the gap
-    /// symbol.
-    /// </para>
-    /// <para>
-    /// The entries in this dictionary are:
-    /// Symbol - Name
-    /// A - Adenine
-    /// C - Cytosine
-    /// M - A or C
-    /// G - Guanine
-    /// R - G or A
-    /// S - G or C
-    /// V - G or V or A
-    /// U - Uracil
-    /// W - A or U
-    /// Y - U or C
-    /// H - A or C or U
-    /// K - G or U
-    /// D - G or A or U
-    /// B - G or U or C
-    /// - - Gap
-    /// N - A or G or U or C.
-    /// </para>
+    ///     The basic alphabet that describes symbols used in RNA sequences.
+    ///     This alphabet allows only the four base nucleotide symbols, which
+    ///     come from the NCBI2na standard, with the addition of a gap symbol.
+    ///     <para>
+    ///         The entries in this dictionary are (Symbol - Name):
+    ///         A - Adenine,
+    ///         C - Cytosine,
+    ///         G - Guanine,
+    ///         U - Uracil,
+    ///         - - Gap.
+    ///     </para>
     /// </summary>
-    public class RnaAlphabet : IAlphabet
+    public class RnaAlphabet : IRnaAlphabet
     {
         #region Private members
 
@@ -69,12 +50,14 @@ namespace Bio
         /// <summary>
         /// Mapping from set of symbols to corresponding ambiguous symbol.
         /// </summary>
-        private Dictionary<HashSet<byte>, byte> basicSymbolsToAmbiguousSymbolMap = new Dictionary<HashSet<byte>, byte>(new HashSetComparer<byte>());  
+        private readonly Dictionary<HashSet<byte>, byte> basicSymbolsToAmbiguousSymbolMap 
+            = new Dictionary<HashSet<byte>, byte>(new HashSetComparer<byte>());  
 
         /// <summary>
         /// Mapping from ambiguous symbol to set of basic symbols they represent.
         /// </summary>
-        private readonly Dictionary<byte, HashSet<byte>> ambiguousSyToBasicSymbolsMap = new Dictionary<byte, HashSet<byte>>();
+        private readonly Dictionary<byte, HashSet<byte>> ambiguousSyToBasicSymbolsMap 
+            = new Dictionary<byte, HashSet<byte>>();
 
         /// <summary>
         /// Holds complements.
@@ -96,38 +79,38 @@ namespace Bio
         /// </summary>
         protected RnaAlphabet()
         {
-            this.Name = Properties.Resource.RnaAlphabetName;
-            this.HasGaps = true;
-            this.HasAmbiguity = false;
-            this.HasTerminations = false;
-            this.IsComplementSupported = true;
+            Name = Properties.Resource.RnaAlphabetName;
+            HasGaps = true;
+            HasAmbiguity = false;
+            HasTerminations = false;
+            IsComplementSupported = true;
 
-            this.A = (byte)'A';
-            this.C = (byte)'C';
-            this.G = (byte)'G';
-            this.U = (byte)'U';
-            this.Gap = (byte)'-';
+            A = (byte)'A';
+            C = (byte)'C';
+            G = (byte)'G';
+            U = (byte)'U';
+            Gap = (byte)'-';
 
             // Add to basic symbols
-            basicSymbols.Add(this.A); basicSymbols.Add((byte)char.ToLower((char)this.A));
-            basicSymbols.Add(this.C); basicSymbols.Add((byte)char.ToLower((char)this.C));
-            basicSymbols.Add(this.G); basicSymbols.Add((byte)char.ToLower((char)this.G));
-            basicSymbols.Add(this.U); basicSymbols.Add((byte)char.ToLower((char)this.U));
-            basicSymbols.Add(this.Gap);
+            basicSymbols.Add(A); basicSymbols.Add((byte)char.ToLower((char)A));
+            basicSymbols.Add(C); basicSymbols.Add((byte)char.ToLower((char)C));
+            basicSymbols.Add(G); basicSymbols.Add((byte)char.ToLower((char)G));
+            basicSymbols.Add(U); basicSymbols.Add((byte)char.ToLower((char)U));
+            basicSymbols.Add(Gap);
 
             // Add nucleotides
-            this.AddNucleotide(this.A, "Adenine", (byte)'a');
-            this.AddNucleotide(this.C, "Cytosine", (byte)'c');
-            this.AddNucleotide(this.G, "Guanine", (byte)'g');
-            this.AddNucleotide(this.U, "Uracil", (byte)'u');
-            this.AddNucleotide(this.Gap, "Gap");
+            AddNucleotide(A, "Adenine", (byte)'a');
+            AddNucleotide(C, "Cytosine", (byte)'c');
+            AddNucleotide(G, "Guanine", (byte)'g');
+            AddNucleotide(U, "Uracil", (byte)'u');
+            AddNucleotide(Gap, "Gap");
 
             // Populate compliment data
-            this.MapComplementNucleotide(this.A, this.U);
-            this.MapComplementNucleotide(this.U, this.A);
-            this.MapComplementNucleotide(this.C, this.G);
-            this.MapComplementNucleotide(this.G, this.C);
-            this.MapComplementNucleotide(this.Gap, this.Gap);
+            MapComplementNucleotide(A, U);
+            MapComplementNucleotide(U, A);
+            MapComplementNucleotide(C, G);
+            MapComplementNucleotide(G, C);
+            MapComplementNucleotide(Gap, Gap);
         }
 
         /// <summary>
@@ -208,7 +191,7 @@ namespace Bio
         {
             get
             {
-                return this.nucleotides.Count;
+                return nucleotides.Count;
             }
         }
 
@@ -219,7 +202,7 @@ namespace Bio
         /// <returns>Byte value at the given index.</returns>
         public byte this[int index]
         {
-            get { return this.nucleotides[index]; }
+            get { return nucleotides[index]; }
         }
 
         /// <summary>
@@ -244,9 +227,9 @@ namespace Bio
         {
             // verify whether the nucleotides exist or not.
             byte nucleotide;
-            if (this.nucleotideValueMap.TryGetValue(symbol, out nucleotide))
+            if (nucleotideValueMap.TryGetValue(symbol, out nucleotide))
             {
-                return this.symbolToComplementSymbolMap.TryGetValue(nucleotide, out complementSymbol);
+                return symbolToComplementSymbolMap.TryGetValue(nucleotide, out complementSymbol);
             }
             else
             {
@@ -269,14 +252,14 @@ namespace Bio
                 return false;
             }
 
-            long length = symbols.GetLongLength();
+            var length = symbols.GetLongLength();
             complementSymbols = new byte[length];
             for (long index = 0; index < length; index++)
             {
                 byte nucleotide;
                 byte complementSymbol;
-                if (this.nucleotideValueMap.TryGetValue(symbols[index], out nucleotide)
-                    && this.symbolToComplementSymbolMap.TryGetValue(nucleotide, out complementSymbol))
+                if (nucleotideValueMap.TryGetValue(symbols[index], out nucleotide)
+                    && symbolToComplementSymbolMap.TryGetValue(nucleotide, out complementSymbol))
                 {
                     complementSymbols[index] = complementSymbol;
                 }
@@ -295,7 +278,7 @@ namespace Bio
         /// <returns>True if gets else false.</returns>
         public virtual bool TryGetDefaultGapSymbol(out byte defaultGapSymbol)
         {
-            defaultGapSymbol = this.Gap;
+            defaultGapSymbol = Gap;
             return true;
         }
 
@@ -317,8 +300,10 @@ namespace Bio
         /// <returns>If Gaps found returns true. </returns>
         public virtual bool TryGetGapSymbols(out HashSet<byte> gapSymbols)
         {
-            gapSymbols = new HashSet<byte>();
-            gapSymbols.Add(this.Gap);
+            gapSymbols = new HashSet<byte>
+            {
+                Gap
+            };
             return true;
         }
 
@@ -339,7 +324,7 @@ namespace Bio
         /// <returns>True if gets else false.</returns>
         public HashSet<byte> GetValidSymbols()
         {
-            return new HashSet<byte>(this.nucleotideValueMap.Keys);
+            return new HashSet<byte>(nucleotideValueMap.Keys);
         }
 
         /// <summary>
@@ -347,7 +332,7 @@ namespace Bio
         /// </summary>
         public HashSet<byte> GetAmbiguousSymbols()
         {
-            return new HashSet<byte>(this.ambiguousSyToBasicSymbolsMap.Keys);
+            return new HashSet<byte>(ambiguousSyToBasicSymbolsMap.Keys);
         }
 
         /// <summary>
@@ -357,9 +342,9 @@ namespace Bio
         /// </summary>
         public byte[] GetSymbolValueMap()
         {
-            byte[] symbolMap = new byte[256];
+            var symbolMap = new byte[256];
 
-            foreach (KeyValuePair<byte, byte> mapping in this.nucleotideValueMap)
+            foreach (var mapping in nucleotideValueMap)
             {
                 symbolMap[mapping.Key] = mapping.Value;
             }
@@ -375,7 +360,7 @@ namespace Bio
         /// <returns>True if gets else false.</returns>
         public bool TryGetAmbiguousSymbol(HashSet<byte> symbols, out byte ambiguousSymbol)
         {
-            return this.basicSymbolsToAmbiguousSymbolMap.TryGetValue(symbols, out ambiguousSymbol);
+            return basicSymbolsToAmbiguousSymbolMap.TryGetValue(symbols, out ambiguousSymbol);
         }
 
         /// <summary>
@@ -386,7 +371,7 @@ namespace Bio
         /// <returns>True if gets else false.</returns>
         public bool TryGetBasicSymbols(byte ambiguousSymbol, out HashSet<byte> basicSymbols)
         {
-            return this.ambiguousSyToBasicSymbolsMap.TryGetValue(ambiguousSymbol, out basicSymbols);
+            return ambiguousSyToBasicSymbolsMap.TryGetValue(ambiguousSymbol, out basicSymbols);
         }
 
         /// <summary>
@@ -399,11 +384,11 @@ namespace Bio
         {
             byte nucleotideA, nucleotideB;
 
-            if (this.nucleotideValueMap.TryGetValue(x, out nucleotideA))
+            if (nucleotideValueMap.TryGetValue(x, out nucleotideA))
             {
-                if (this.nucleotideValueMap.TryGetValue(y, out nucleotideB))
+                if (nucleotideValueMap.TryGetValue(y, out nucleotideB))
                 {
-                    if (this.ambiguousSyToBasicSymbolsMap.ContainsKey(nucleotideA) || this.ambiguousSyToBasicSymbolsMap.ContainsKey(nucleotideB))
+                    if (ambiguousSyToBasicSymbolsMap.ContainsKey(nucleotideA) || ambiguousSyToBasicSymbolsMap.ContainsKey(nucleotideB))
                     {
                         return false;
                     }
@@ -412,12 +397,12 @@ namespace Bio
                 }
                 else
                 {
-                    throw new ArgumentException(Properties.Resource.InvalidParameter, "y");
+                    throw new ArgumentException(Properties.Resource.InvalidParameter, nameof(y));
                 }
             }
             else
             {
-                throw new ArgumentException(Properties.Resource.InvalidParameter, "x");
+                throw new ArgumentException(Properties.Resource.InvalidParameter, nameof(x));
             }
         }
 
@@ -450,9 +435,9 @@ namespace Bio
                 throw new ArgumentOutOfRangeException(nameof(length));
             }
 
-            for (long i = offset; i < length; i++)
+            for (var i = offset; i < length; i++)
             {
-                if (!this.nucleotideValueMap.ContainsKey(symbols[i]))
+                if (!nucleotideValueMap.ContainsKey(symbols[i]))
                 {
                     return false;
                 }
@@ -468,7 +453,7 @@ namespace Bio
         /// <returns>True if the specified item is a gap</returns>
         public virtual bool CheckIsGap(byte item)
         {
-            return item == this.Gap;
+            return item == Gap;
         }
 
         /// <summary>
@@ -487,7 +472,7 @@ namespace Bio
         /// <returns>Returns the Enumerator for nucleotides list.</returns>
         public IEnumerator<byte> GetEnumerator()
         {
-            return this.nucleotides.GetEnumerator();
+            return nucleotides.GetEnumerator();
         }
 
         /// <summary>
@@ -496,7 +481,7 @@ namespace Bio
         /// <returns>RNA alphabets.</returns>
         public override string ToString()
         {
-            return new string(this.nucleotides.Select(x => (char)x).ToArray());
+            return new string(nucleotides.Select(x => (char)x).ToArray());
         }
 
         /// <summary>
@@ -504,7 +489,7 @@ namespace Bio
         /// </summary>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
 
         /// <summary>
@@ -516,23 +501,23 @@ namespace Bio
         protected void AddNucleotide(byte nucleotideValue, string friendlyName, params byte[] otherPossibleValues)
         {
             // Verify whether the nucleotide value or other possible values already exist or not.
-            if (this.nucleotideValueMap.ContainsKey(nucleotideValue) || otherPossibleValues.Any(x => this.nucleotideValueMap.Keys.Contains(x)))
+            if (nucleotideValueMap.ContainsKey(nucleotideValue) || otherPossibleValues.Any(x => nucleotideValueMap.Keys.Contains(x)))
             {
-                throw new ArgumentException(Properties.Resource.SymbolExistsInAlphabet, "nucleotideValue");
+                throw new ArgumentException(Properties.Resource.SymbolExistsInAlphabet, nameof(nucleotideValue));
             }
             if (string.IsNullOrEmpty(friendlyName))
             {
-                throw new ArgumentNullException("friendlyName");
+                throw new ArgumentNullException(nameof(friendlyName));
             }
 
-            this.nucleotideValueMap.Add(nucleotideValue, nucleotideValue);
-            foreach (byte value in otherPossibleValues)
+            nucleotideValueMap.Add(nucleotideValue, nucleotideValue);
+            foreach (var value in otherPossibleValues)
             {
-                this.nucleotideValueMap.Add(value, nucleotideValue);
+                nucleotideValueMap.Add(value, nucleotideValue);
             }
 
-            this.nucleotides.Add(nucleotideValue);
-            this.friendlyNameMap.Add(nucleotideValue, friendlyName);
+            nucleotides.Add(nucleotideValue);
+            friendlyNameMap.Add(nucleotideValue, friendlyName);
         }
 
         /// <summary>
@@ -546,21 +531,21 @@ namespace Bio
             byte ambiguousSymbol;
 
             // Verify whether the nucleotides to map are valid nucleotides.
-            if (!this.nucleotideValueMap.TryGetValue(ambiguousNucleotide, out ambiguousSymbol) || !nucleotidesToMap.All(x => this.nucleotideValueMap.Keys.Contains(x)))
+            if (!nucleotideValueMap.TryGetValue(ambiguousNucleotide, out ambiguousSymbol) || !nucleotidesToMap.All(x => nucleotideValueMap.Keys.Contains(x)))
             {
-                throw new ArgumentException(Properties.Resource.CouldNotRecognizeSymbol, "ambiguousNucleotide");
+                throw new ArgumentException(Properties.Resource.CouldNotRecognizeSymbol, nameof(ambiguousNucleotide));
             }
 
-            byte[] mappingValues = new byte[nucleotidesToMap.Length];
-            int i = 0;
-            foreach (byte valueToMap in nucleotidesToMap)
+            var mappingValues = new byte[nucleotidesToMap.Length];
+            var i = 0;
+            foreach (var valueToMap in nucleotidesToMap)
             {
-                mappingValues[i++] = this.nucleotideValueMap[valueToMap];
+                mappingValues[i++] = nucleotideValueMap[valueToMap];
             }
 
-            HashSet<byte> basicSymbols = new HashSet<byte>(mappingValues);
-            this.ambiguousSyToBasicSymbolsMap.Add(ambiguousSymbol, basicSymbols);
-            this.basicSymbolsToAmbiguousSymbolMap.Add(basicSymbols, ambiguousSymbol);
+            var basicSymbols = new HashSet<byte>(mappingValues);
+            ambiguousSyToBasicSymbolsMap.Add(ambiguousSymbol, basicSymbols);
+            basicSymbolsToAmbiguousSymbolMap.Add(basicSymbols, ambiguousSymbol);
         }
 
         /// <summary>
@@ -572,17 +557,17 @@ namespace Bio
         {
             // verify whether the nucleotides exist or not.
             byte symbol; // validated nucleotides
-            if (this.nucleotideValueMap.TryGetValue(nucleotide, out symbol))
+            if (nucleotideValueMap.TryGetValue(nucleotide, out symbol))
             {
                 byte complementSymbol; // validated nucleotides
-                if (this.nucleotideValueMap.TryGetValue(complementNucleotide, out complementSymbol))
+                if (nucleotideValueMap.TryGetValue(complementNucleotide, out complementSymbol))
                 {
-                    this.symbolToComplementSymbolMap.Add(symbol, complementSymbol);
+                    symbolToComplementSymbolMap.Add(symbol, complementSymbol);
                     return;
                 }
             }
 
-            throw new ArgumentException(Properties.Resource.CouldNotRecognizeSymbol, "nucleotide");
+            throw new ArgumentException(Properties.Resource.CouldNotRecognizeSymbol, nameof(nucleotide));
         }
     }
 }

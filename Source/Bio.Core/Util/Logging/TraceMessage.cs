@@ -38,10 +38,10 @@ namespace Bio.Util.Logging
         /// <param name="w">When the event occurred.</param>
         public TraceMessage(string c, string m, string d, DateTime w)
         {
-            this.context = c;
-            this.message = m;
-            this.data = d;
-            this.when = w;
+            context = c;
+            message = m;
+            data = d;
+            when = w;
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace Bio.Util.Logging
         /// <returns>the string.</returns>
         public string Format()
         {
-            return string.Format(CultureInfo.InvariantCulture, this.when.ToString("u", CultureInfo.InvariantCulture) + ": {0} ({1}, data {2})", this.message, this.context, this.data);
+            return string.Format(CultureInfo.InvariantCulture, when.ToString("u", CultureInfo.InvariantCulture) + ": {0} ({1}, data {2})", message, context, data);
         }
     }
 }

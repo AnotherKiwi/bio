@@ -55,7 +55,7 @@ namespace Bio.IO.SAM
             }
             set
             {
-                string message = IsValidTag(value);
+                var message = IsValidTag(value);
                 if (!string.IsNullOrEmpty(message))
                 {
                     throw new ArgumentException(message);
@@ -72,17 +72,17 @@ namespace Bio.IO.SAM
         {
             get
             {
-                return this.valueType;
+                return valueType;
             }
             set
             {
-                string message = IsValidVType(value);
+                var message = IsValidVType(value);
                 if (!string.IsNullOrEmpty(message))
                 {
                     throw new ArgumentException(message);
                 }
 
-                this.valueType = value;
+                valueType = value;
             }
         }
 
@@ -93,17 +93,17 @@ namespace Bio.IO.SAM
         {
             get
             {
-                return this.fieldValue;
+                return fieldValue;
             }
             set
             {
-                string message = IsValidValue(value);
+                var message = IsValidValue(value);
                 if (!string.IsNullOrEmpty(message))
                 {
                     throw new ArgumentException(message);
                 }
 
-                this.fieldValue = value;
+                fieldValue = value;
             }
         }
 
@@ -133,10 +133,10 @@ namespace Bio.IO.SAM
             //z=122
             //0=48
             //9=57
-            byte c1 = (byte)tag[0];
-            byte c2 = (byte)tag[1];
-            bool oneOk = (c1>=65 && c1<=90) | (c1>=97 && c1<=122);
-            bool twoOk = (c2 >= 65 && c2 <= 90) | (c2 >= 97 && c2 <= 122) | (c2 >= 48 && c2 <= 57);
+            var c1 = (byte)tag[0];
+            var c2 = (byte)tag[1];
+            var oneOk = (c1>=65 && c1<=90) | (c1>=97 && c1<=122);
+            var twoOk = (c2 >= 65 && c2 <= 90) | (c2 >= 97 && c2 <= 122) | (c2 >= 48 && c2 <= 57);
             return oneOk & twoOk;
         }
 
@@ -165,7 +165,7 @@ namespace Bio.IO.SAM
         /// <param name="value">Value to validate.</param>
         private static string IsValidValue(string value)
         {
-            bool notOkay = Helper.StringContainsIllegalCharacters(value, ValueIllegalCharacters);
+            var notOkay = Helper.StringContainsIllegalCharacters(value, ValueIllegalCharacters);
             if (!notOkay)
             {
                 return String.Empty;

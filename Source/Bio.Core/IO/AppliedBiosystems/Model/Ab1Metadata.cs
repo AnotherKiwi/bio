@@ -137,10 +137,10 @@ namespace Bio.IO.AppliedBiosystems.Model
 
         private static byte[] ToByteArray(short[] data)
         {
-            if (data == null) throw new ArgumentNullException("data");
+            if (data == null) throw new ArgumentNullException(nameof(data));
             var values = new byte[data.Length * 2];
-            int index = 0;
-            for (int i = 0; i < data.Length; i++)
+            var index = 0;
+            for (var i = 0; i < data.Length; i++)
             {
                 values[index++] = (byte)data[i];
                 values[index++] = (byte)(data[i] >> 8);
@@ -158,7 +158,7 @@ namespace Bio.IO.AppliedBiosystems.Model
         /// <returns></returns>
         public static Ab1Metadata TryGetAb1Data(ISequence sequence)
         {
-            if (sequence == null) throw new ArgumentNullException("sequence");
+            if (sequence == null) throw new ArgumentNullException(nameof(sequence));
             object metadata;
             sequence.Metadata.TryGetValue(MetadataKey, out metadata);
             return metadata as Ab1Metadata;
@@ -171,7 +171,7 @@ namespace Bio.IO.AppliedBiosystems.Model
         /// <param name="metadata"></param>
         public static void SetAb1Data(ISequence sequence, Ab1Metadata metadata)
         {
-            if (sequence == null) throw new ArgumentNullException("sequence");
+            if (sequence == null) throw new ArgumentNullException(nameof(sequence));
             if (sequence.Metadata.ContainsKey(MetadataKey))
                 sequence.Metadata[MetadataKey] = metadata;
             else
@@ -206,12 +206,12 @@ namespace Bio.IO.AppliedBiosystems.Model
             ConfidenceData = ConfidenceData.ToList().GetRange(startIndex, length).ToArray();
 
             PeakLocations = new short[length];
-            int absolutePeakIndex = 0;
-            List<Ab1ResidueColorData> residues = AdenineColorData.DataByResidue;
+            var absolutePeakIndex = 0;
+            var residues = AdenineColorData.DataByResidue;
 
-            for (int i = 0; i < residues.Count; i++)
+            for (var i = 0; i < residues.Count; i++)
             {
-                int residuePeakIndex = residues[i].PeakIndex;
+                var residuePeakIndex = residues[i].PeakIndex;
 
                 //
                 // Adjust the absolute peak index basd on the residue peak index.
@@ -253,7 +253,7 @@ namespace Bio.IO.AppliedBiosystems.Model
             }
             else
             {
-                throw new ArgumentException(item.ToString(CultureInfo.InvariantCulture), "item");
+                throw new ArgumentException(item.ToString(CultureInfo.InvariantCulture), nameof(item));
             }
         }
 

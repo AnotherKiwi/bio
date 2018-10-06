@@ -33,12 +33,12 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         {
             if (reads == null)
             {
-                throw new ArgumentNullException("reads");
+                throw new ArgumentNullException(nameof(reads));
             }
 
-            foreach (ISequence read in reads)
+            foreach (var read in reads)
             {
-                this.Add(read.ID, new Dictionary<ISequence, IList<ReadMap>>());
+                Add(read.ID, new Dictionary<ISequence, IList<ReadMap>>());
             }
         }
         #endregion

@@ -43,12 +43,12 @@ namespace Bio.Algorithms.StringSearch
         {
             if (sequence == null)
             {
-                throw new ArgumentNullException("sequence");
+                throw new ArgumentNullException(nameof(sequence));
             }
 
             if (searchPatterns == null)
             {
-                throw new ArgumentNullException("searchPatterns");
+                throw new ArgumentNullException(nameof(searchPatterns));
             }
 
             // Create tasks
@@ -61,7 +61,7 @@ namespace Bio.Algorithms.StringSearch
             Task.WaitAll(tasks.ToArray());
 
             IDictionary<string, IList<int>> results = new Dictionary<string, IList<int>>();
-            foreach (Task<KeyValuePair<string, IList<int>>> task in tasks)
+            foreach (var task in tasks)
             {
                 results.Add(task.Result.Key, task.Result.Value);
             }
@@ -80,18 +80,18 @@ namespace Bio.Algorithms.StringSearch
         {
             if (sequence == null)
             {
-                throw new ArgumentNullException("sequence");
+                throw new ArgumentNullException(nameof(sequence));
             }
 
             if (string.IsNullOrEmpty(searchPattern))
             {
-                throw new ArgumentNullException("searchPattern");
+                throw new ArgumentNullException(nameof(searchPattern));
             }
 
             IList<int> result = new List<int>();
             int patternIndex = 0, patternfoundAt = 0, fullStringLength, searchStringLength, foundAt;
-            bool leftAngle = (searchPattern[0] == '<');
-            bool righttAngle = (searchPattern[searchPattern.Length - 1] == '>');
+            var leftAngle = (searchPattern[0] == '<');
+            var righttAngle = (searchPattern[searchPattern.Length - 1] == '>');
 
             if (leftAngle)
             {
@@ -112,20 +112,20 @@ namespace Bio.Algorithms.StringSearch
             searchStringLength = searchPattern.Length;
 
             // Find the Good suffix shifts
-            int[] goodSuffixes = GetGoodSuffixShift(searchPattern);
+            var goodSuffixes = GetGoodSuffixShift(searchPattern);
 
             // Find the Bad character shifts
-            int[] badCharacters = GetBadCharacterShift(searchPattern);
+            var badCharacters = GetBadCharacterShift(searchPattern);
 
             // Start search
             foundAt = 0;
             while (foundAt <= fullStringLength - searchStringLength)
             {
-                string[] subPattern = searchPattern.Split(Wildcard);
+                var subPattern = searchPattern.Split(Wildcard);
 
-                for (int index = subPattern.Length - 1; index >= 0; index--)
+                for (var index = subPattern.Length - 1; index >= 0; index--)
                 {
-                    string containsWildcard = subPattern[index];
+                    var containsWildcard = subPattern[index];
                     FindMismatchIndex(sequence, containsWildcard, foundAt, out patternIndex, out patternfoundAt);
 
                     if (index > 0 && patternIndex > 0)
@@ -199,7 +199,7 @@ namespace Bio.Algorithms.StringSearch
                 out int patternIndex,
                 out int patternfoundAt)
         {
-            int searchStringLength = searchPattern.Length;
+            var searchStringLength = searchPattern.Length;
 
             // Break at the index where character do not match.
             for (patternfoundAt = patternIndex = searchStringLength - 1; patternIndex >= 0; --patternIndex, --patternfoundAt)
@@ -220,9 +220,9 @@ namespace Bio.Algorithms.StringSearch
         private static int[] GetGoodSuffixShift(string searchString)
         {
             int rightIndex, leftIndex, length = searchString.Length;
-            int[] goodSuffixes = new int[length];
+            var goodSuffixes = new int[length];
 
-            int[] suffixes = Suffixes(searchString);
+            var suffixes = Suffixes(searchString);
 
             for (rightIndex = 0; rightIndex < length; ++rightIndex)
             {
@@ -261,7 +261,7 @@ namespace Bio.Algorithms.StringSearch
         /// <returns>List of bad character shifts.</returns>
         private static int[] GetBadCharacterShift(string searchString)
         {
-            int[] badCharacters = new int[256];
+            var badCharacters = new int[256];
             int index, length = searchString.Length;
 
             for (index = 0; index < badCharacters.Length; ++index)
@@ -284,8 +284,8 @@ namespace Bio.Algorithms.StringSearch
         /// <returns>Good suffixes</returns>
         private static int[] Suffixes(string searchString)
         {
-            int length = searchString.Length;
-            int[] suffixes = new int[length];
+            var length = searchString.Length;
+            var suffixes = new int[length];
             int leftIndex = 0, rightIndex, index;
 
             suffixes[length - 1] = length;

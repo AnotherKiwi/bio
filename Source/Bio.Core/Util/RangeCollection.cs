@@ -24,8 +24,8 @@ namespace Bio.Util
         /// </summary>
         public RangeCollection()
         {
-            this.startItems = new List<long>();
-            this.itemToLength = new SortedDictionary<long, long>();
+            startItems = new List<long>();
+            itemToLength = new SortedDictionary<long, long>();
         }
 
 
@@ -83,7 +83,7 @@ namespace Bio.Util
         public static RangeCollection Parse(string ranges)
         {
             ranges = ranges.Trim();
-            RangeCollection aRangeCollection = new RangeCollection();
+            var aRangeCollection = new RangeCollection();
 
             aRangeCollection.InternalParse(ranges);
 
@@ -105,8 +105,8 @@ namespace Bio.Util
         {
             get
             {
-                return from item in this.startItems 
-                       let last = item + this.itemToLength[item] - 1 
+                return from item in startItems 
+                       let last = item + itemToLength[item] - 1 
                        select new KeyValuePair<long, long>(item, last);
             }
         }
@@ -119,8 +119,8 @@ namespace Bio.Util
         {
             get
             {
-                Helper.CheckCondition<ArgumentOutOfRangeException>(this.startItems.Count > 0, Properties.Resource.RangeCollectionIsEmpty);
-                return this.startItems[0];
+                Helper.CheckCondition<ArgumentOutOfRangeException>(startItems.Count > 0, Properties.Resource.RangeCollectionIsEmpty);
+                return startItems[0];
             }
         }
 
@@ -131,9 +131,9 @@ namespace Bio.Util
         {
             get
             {
-                Helper.CheckCondition<ArgumentOutOfRangeException>(this.startItems.Count > 0, Properties.Resource.RangeCollectionIsEmpty);
-                long startItem = this.startItems[this.startItems.Count - 1];
-                return startItem + this.itemToLength[startItem] - 1;
+                Helper.CheckCondition<ArgumentOutOfRangeException>(startItems.Count > 0, Properties.Resource.RangeCollectionIsEmpty);
+                var startItem = startItems[startItems.Count - 1];
+                return startItem + itemToLength[startItem] - 1;
             }
         }
 
@@ -142,8 +142,8 @@ namespace Bio.Util
         /// </summary>
         public void Clear()
         {
-            this.startItems.Clear();
-            this.itemToLength.Clear();
+            startItems.Clear();
+            itemToLength.Clear();
         }
 
         /// <summary>
@@ -164,14 +164,14 @@ namespace Bio.Util
         public long Count(long min, long max)
         {
             long count = 0;
-            foreach (long start in this.startItems)
+            foreach (var start in startItems)
             {
-                long stop = this.itemToLength[start] + start - 1;
+                var stop = itemToLength[start] + start - 1;
 
                 // truncate start and stop around max.
-                long begin = Math.Max(start, min);
-                long last = Math.Min(stop, max);
-                long diff = Math.Max(0, last - begin + 1);
+                var begin = Math.Max(start, min);
+                var last = Math.Min(stop, max);
+                var diff = Math.Max(0, last - begin + 1);
 
                 count += diff;
             }
@@ -205,7 +205,7 @@ namespace Bio.Util
         /// </summary>
         public long RangeCount
         {
-            get { return this.startItems.Count; }
+            get { return startItems.Count; }
         }
 
         /// <summary>
@@ -224,8 +224,8 @@ namespace Bio.Util
         /// <returns>true of all the elements added are new; otherwise, false</returns>
         public bool TryAddRangeCollection(RangeCollection rangeCollection)
         {
-            bool allNew = true;
-            foreach (KeyValuePair<long, long> startAndLast in rangeCollection.Ranges)
+            var allNew = true;
+            foreach (var startAndLast in rangeCollection.Ranges)
             {
                 allNew &= TryAdd(startAndLast.Key, startAndLast.Value - startAndLast.Key + 1);
             }
@@ -238,7 +238,7 @@ namespace Bio.Util
         /// <param name="rangeAsStringSequence">A sequence of strings</param>
         public void AddRanges(IEnumerable<string> rangeAsStringSequence)
         {
-            foreach (string rangeAsString in rangeAsStringSequence)
+            foreach (var rangeAsString in rangeAsStringSequence)
             {
                 AddRange(rangeAsString);
             }
@@ -251,9 +251,9 @@ namespace Bio.Util
         public void AddRange(string rangeAsString)
         {
             Helper.CheckCondition(RangeExpression.IsMatch(rangeAsString), () => string.Format(CultureInfo.InvariantCulture, Properties.Resource.ExpectedValidRangeString, rangeAsString));
-            Match match = RangeExpression.Match(rangeAsString);
-            long begin = long.Parse(match.Groups["begin"].Value);
-            long last = string.IsNullOrEmpty(match.Groups["last"].Value) ? begin : long.Parse(match.Groups["last"].Value);
+            var match = RangeExpression.Match(rangeAsString);
+            var begin = long.Parse(match.Groups["begin"].Value);
+            var last = string.IsNullOrEmpty(match.Groups["last"].Value) ? begin : long.Parse(match.Groups["last"].Value);
             AddRange(begin, last);
         }
 
@@ -266,7 +266,7 @@ namespace Bio.Util
         public void AddRange(long begin, long last)
         {
             Helper.CheckCondition(begin <= last, () => string.Format(CultureInfo.InvariantCulture, Properties.Resource.InvalidRangeBeginMustBeLessThanLast, begin, last));
-            long length = (long)last - (long)begin + 1;
+            var length = (long)last - (long)begin + 1;
             Helper.CheckCondition(length <= long.MaxValue, () => string.Format(CultureInfo.InvariantCulture, Properties.Resource.InvalidRangeSizeOfRangeMustBeLessThanMaxValue, length));
             TryAdd(begin, (long)length);
         }
@@ -288,7 +288,7 @@ namespace Bio.Util
         /// <param name="itemList">The sequence of longs to add</param>
         public void AddRange(IEnumerable<long> itemList)
         {
-            foreach (long item in itemList)
+            foreach (var item in itemList)
             {
                 Add(item);
             }
@@ -302,9 +302,9 @@ namespace Bio.Util
         {
             if (itemList == null)
             {
-                throw new ArgumentNullException("itemList");
+                throw new ArgumentNullException(nameof(itemList));
             }
-            foreach (int item in itemList)
+            foreach (var item in itemList)
             {
                 Add(item);
             }
@@ -327,7 +327,7 @@ namespace Bio.Util
         /// <param name="item">The long to add.</param>
         public void AddNew(long item)
         {
-            bool isOK = TryAdd(item);
+            var isOK = TryAdd(item);
             Helper.CheckCondition(isOK, () => string.Format(CultureInfo.InvariantCulture, "The element {0} was already in the RangeCollection.", item));
         }
 
@@ -345,21 +345,21 @@ namespace Bio.Util
         private bool TryAdd(long item, long length)
         {
             Helper.CheckCondition(length > 0, () => string.Format(CultureInfo.InvariantCulture, Properties.Resource.InvalidRangeSizeOfRangeMustBeGreaterThanZero, length));
-            Debug.Assert(this.startItems.Count == this.itemToLength.Count); // real assert
-            int indexOfMiss = ~this.startItems.BinarySearch(item);
+            Debug.Assert(startItems.Count == itemToLength.Count); // real assert
+            var indexOfMiss = ~startItems.BinarySearch(item);
 
             long previous, last;
 
             if (indexOfMiss < 0) //Hit a start
             {
                 indexOfMiss = ~indexOfMiss;
-                if (length <= this.itemToLength[item])
+                if (length <= itemToLength[item])
                 {
                     return false;
                 }
                 else
                 {
-                    this.itemToLength[item] = length;
+                    itemToLength[item] = length;
                     indexOfMiss++;	  // indexOfMiss should point to the following range for the remainder of this method
                     previous = item;
                     last = item + length - 1;
@@ -367,8 +367,8 @@ namespace Bio.Util
             }
             else if (indexOfMiss == 0)
             {
-                this.startItems.Insert(indexOfMiss, item);
-                this.itemToLength.Add(item, length);
+                startItems.Insert(indexOfMiss, item);
+                itemToLength.Add(item, length);
                 previous = item;
                 last = item + length - 1;
                 indexOfMiss++;		  // indexOfMiss should point to the following range for the remainder of this method
@@ -376,58 +376,58 @@ namespace Bio.Util
             }
             else
             {
-                previous = this.startItems[indexOfMiss - 1];
-                last = previous + this.itemToLength[previous] - 1;
+                previous = startItems[indexOfMiss - 1];
+                last = previous + itemToLength[previous] - 1;
 
                 if (item <= last + 1)
                 {
-                    long newLength = item - previous + length;
+                    var newLength = item - previous + length;
                     Debug.Assert(newLength > 0); // real assert
-                    if (newLength < this.itemToLength[previous])
+                    if (newLength < itemToLength[previous])
                     {
                         return false;
                     }
                     else
                     {
-                        this.itemToLength[previous] = newLength;
+                        itemToLength[previous] = newLength;
                         last = previous + newLength - 1;
                     }
                 }
                 else // after previous range, not contiguous with previous range
                 {
-                    this.startItems.Insert(indexOfMiss, item);
-                    this.itemToLength.Add(item, length);
+                    startItems.Insert(indexOfMiss, item);
+                    itemToLength.Add(item, length);
                     previous = item;
                     last = item + length - 1;
                     indexOfMiss++;
                 }
             }
 
-            if (indexOfMiss == this.startItems.Count)
+            if (indexOfMiss == startItems.Count)
             {
                 return true;
             }
 
             // collapse next range into this one
-            long next = this.startItems[indexOfMiss];
+            var next = startItems[indexOfMiss];
             while (last >= next - 1)
             {
-                long newEnd = Math.Max(last, next + this.itemToLength[next] - 1);
-                this.itemToLength[previous] = newEnd - previous + 1; //ItemToLength[previous] + ItemToLength[next];
-                this.itemToLength.Remove(next);
-                this.startItems.RemoveAt(indexOfMiss);
+                var newEnd = Math.Max(last, next + itemToLength[next] - 1);
+                itemToLength[previous] = newEnd - previous + 1; //ItemToLength[previous] + ItemToLength[next];
+                itemToLength.Remove(next);
+                startItems.RemoveAt(indexOfMiss);
 
                 last = newEnd;
-                next = indexOfMiss < this.startItems.Count ? this.startItems[indexOfMiss] : long.MaxValue;
+                next = indexOfMiss < startItems.Count ? startItems[indexOfMiss] : long.MaxValue;
             }
 
 #if DEBUG
-            foreach (KeyValuePair<KeyValuePair<long, long>, KeyValuePair<long, long>> previousStartAndLastAndNextStartAndLast in Neighbors(Ranges))
+            foreach (var previousStartAndLastAndNextStartAndLast in Neighbors(Ranges))
             {
-                long previousStart = previousStartAndLastAndNextStartAndLast.Key.Key;
-                long previousLast = previousStartAndLastAndNextStartAndLast.Key.Value;
-                long nextStart = previousStartAndLastAndNextStartAndLast.Value.Key;
-                long nextLast = previousStartAndLastAndNextStartAndLast.Value.Value;
+                var previousStart = previousStartAndLastAndNextStartAndLast.Key.Key;
+                var previousLast = previousStartAndLastAndNextStartAndLast.Key.Value;
+                var nextStart = previousStartAndLastAndNextStartAndLast.Value.Key;
+                var nextLast = previousStartAndLastAndNextStartAndLast.Value.Value;
 
                 Debug.Assert(previousLast < nextStart);
             }
@@ -441,7 +441,7 @@ namespace Bio.Util
         /// </summary>
         public bool Contains(long item)
         {
-            int indexOfMiss = this.startItems.BinarySearch(item);
+            var indexOfMiss = startItems.BinarySearch(item);
             if (indexOfMiss >= 0) // item is the beginning of a range
                 return true;
 
@@ -450,8 +450,8 @@ namespace Bio.Util
             if (indexOfMiss == 0)   // item is before any of the ranges
                 return false;
 
-            long previous = this.startItems[indexOfMiss - 1];
-            long last = previous + this.itemToLength[previous];
+            var previous = startItems[indexOfMiss - 1];
+            var last = previous + itemToLength[previous];
 
             return item < last; // we already know it's greater than previous...
         }
@@ -468,17 +468,17 @@ namespace Bio.Util
             if (last < start) // can't contain an empty range.
                 return false;
 
-            int indexOfMiss = this.startItems.BinarySearch(start);
+            var indexOfMiss = startItems.BinarySearch(start);
             if (indexOfMiss >= 0) // start is the beginning of a range that is at least as long as last-start+1
-                return start + this.itemToLength[start] - 1 >= last;
+                return start + itemToLength[start] - 1 >= last;
 
             indexOfMiss = ~indexOfMiss;
 
             if (indexOfMiss == 0)   // start is before any of the ranges
                 return false;
 
-            long previous = this.startItems[indexOfMiss - 1];
-            long lastOfPrevious = previous + this.itemToLength[previous] - 1;
+            var previous = startItems[indexOfMiss - 1];
+            var lastOfPrevious = previous + itemToLength[previous] - 1;
 
             return start <= lastOfPrevious && last <= lastOfPrevious; // we already know both start and last are greater than previous...
         }
@@ -490,7 +490,7 @@ namespace Bio.Util
         /// <returns>true, if this RangeCollection is a superset; otherwise, false</returns>
         public bool Contains(RangeCollection rangeCollection)
         {
-            foreach (KeyValuePair<long, long> range in this.Ranges)
+            foreach (var range in Ranges)
             {
                 if (!Contains(range.Key, range.Value))
                     return false;
@@ -506,7 +506,7 @@ namespace Bio.Util
         /// <returns>true if every element is between these two values (inclusive); otherwise, false</returns>
         public bool IsBetween(long low, long high)
         {
-            bool isBetween = low <= FirstElement && LastElement <= high;
+            var isBetween = low <= FirstElement && LastElement <= high;
             return isBetween;
         }
 
@@ -517,7 +517,7 @@ namespace Bio.Util
         {
             get
             {
-                return this.startItems.Count == 0;
+                return startItems.Count == 0;
             }
         }
 
@@ -530,12 +530,12 @@ namespace Bio.Util
         /// <returns>A string version of the range collection.</returns>
         public string ToString(string seperator1, string separator2)
         {
-            if (this.IsEmpty)
+            if (IsEmpty)
             {
                 return "empty";
             }
-            StringBuilder sb = new StringBuilder();
-            foreach (KeyValuePair<long, long> startAndLast in Ranges)
+            var sb = new StringBuilder();
+            foreach (var startAndLast in Ranges)
             {
                 if (sb.Length != 0)
                 {
@@ -582,7 +582,7 @@ namespace Bio.Util
         /// <returns>true if a continuous set; false if empty or if gaps.</returns>
         public bool IsContiguous()
         {
-            bool b = (this.startItems.Count == 1);
+            var b = (startItems.Count == 1);
             return b;
         }
 
@@ -594,7 +594,7 @@ namespace Bio.Util
         /// <returns>true if the range collection includes all the longs between firstItem and lastItem (inclusive); otherwise, false</returns>
         public bool IsComplete(long firstItem, long lastItem)
         {
-            bool b = (this.startItems.Count == 1) && (this.startItems[0] == firstItem) && (this.itemToLength[this.startItems[0]] == lastItem - firstItem + 1);
+            var b = (startItems.Count == 1) && (startItems[0] == firstItem) && (itemToLength[startItems[0]] == lastItem - firstItem + 1);
             return b;
         }
 
@@ -605,8 +605,8 @@ namespace Bio.Util
         public RangeCollection(RangeCollection rangeCollection)
             : this()
         {
-            this.startItems = new List<long>(rangeCollection.startItems);
-            this.itemToLength = new SortedDictionary<long, long>(rangeCollection.itemToLength);
+            startItems = new List<long>(rangeCollection.startItems);
+            itemToLength = new SortedDictionary<long, long>(rangeCollection.itemToLength);
         }
 
         /// <summary>
@@ -615,9 +615,9 @@ namespace Bio.Util
         /// <param name="rangeCollectionOfIndeces">0-based indices.</param>
         public RangeCollection ElementsAt(RangeCollection rangeCollectionOfIndeces)
         {
-            RangeCollection result = new RangeCollection();
+            var result = new RangeCollection();
 
-            foreach (KeyValuePair<long, long> range in rangeCollectionOfIndeces.Ranges)
+            foreach (var range in rangeCollectionOfIndeces.Ranges)
             {
                 result.AddRangeCollection(ElementsAt(range.Key, range.Value));
             }
@@ -634,17 +634,17 @@ namespace Bio.Util
                 throw new ArgumentOutOfRangeException(string.Format("{0}-{1} must be a non-empty range that falls between 0 and {2}", startIndex, lastIndex, Count() - 1));
             }
 
-            RangeCollection result = new RangeCollection();
+            var result = new RangeCollection();
 
             long countSoFar = 0;
-            foreach (KeyValuePair<long, long> range in Ranges)
+            foreach (var range in Ranges)
             {
-                long rangeLength = range.Value - range.Key + 1;
+                var rangeLength = range.Value - range.Key + 1;
                 if (startIndex - countSoFar < rangeLength)
                 {
-                    long start = range.Key + startIndex - countSoFar;
-                    long lastIfContinuousRange = range.Key + lastIndex - countSoFar;
-                    long last = Math.Min(range.Value, lastIfContinuousRange);   // if startIdx-lastIdx falls completely in range, then take 2nd entry.
+                    var start = range.Key + startIndex - countSoFar;
+                    var lastIfContinuousRange = range.Key + lastIndex - countSoFar;
+                    var last = Math.Min(range.Value, lastIfContinuousRange);   // if startIdx-lastIdx falls completely in range, then take 2nd entry.
                     result.AddRange(start, last);
 
                     if (lastIfContinuousRange <= range.Value) // if this range covers the remaining indeces, we're done.
@@ -670,13 +670,13 @@ namespace Bio.Util
             }
 
             long countSoFar = 0;    // to make the 0-based indexing work out, we will need to effectively include the first elt of each range among things seen thus far.
-            foreach (KeyValuePair<long, long> range in Ranges)
+            foreach (var range in Ranges)
             {
-                long rangeLength = range.Value - range.Key + 1;
+                var rangeLength = range.Value - range.Key + 1;
                 //long offset = countSoFar == 0 ? 0 : countSoFar + 1;
                 if (i - countSoFar < rangeLength)
                 {
-                    long relativeIdx = i - countSoFar;
+                    var relativeIdx = i - countSoFar;
                     return range.Key + relativeIdx;
                 }
                 countSoFar += rangeLength;
@@ -691,13 +691,13 @@ namespace Bio.Util
         /// <returns></returns>
         public RangeCollection Complement(long fullRangeBegin, long fullRangeLast)
         {
-            RangeCollection result = new RangeCollection();
+            var result = new RangeCollection();
 
-            long rangeLeftToCoverBegin = fullRangeBegin;
-            foreach (KeyValuePair<long, long> range in Ranges)
+            var rangeLeftToCoverBegin = fullRangeBegin;
+            foreach (var range in Ranges)
             {
-                long start = range.Key;
-                long last = range.Value;
+                var start = range.Key;
+                var last = range.Value;
                 if (start > rangeLeftToCoverBegin)
                 {
                     result.AddRange(rangeLeftToCoverBegin, Math.Min(start - 1, fullRangeLast));
@@ -717,9 +717,9 @@ namespace Bio.Util
 
         private static IEnumerable<KeyValuePair<T, T>> Neighbors<T>(IEnumerable<T> collection)
         {
-            T previous = default(T);
-            bool first = true;
-            foreach (T item in collection)
+            var previous = default(T);
+            var first = true;
+            foreach (var item in collection)
             {
                 if (!first)
                 {
@@ -745,17 +745,17 @@ namespace Bio.Util
                 return false;
             }
 
-            if (!this.startItems.SequenceEqual(rangeCollection.startItems))
+            if (!startItems.SequenceEqual(rangeCollection.startItems))
             {
                 return false;
             }
 
-            if (!this.itemToLength.Keys.SequenceEqual(rangeCollection.itemToLength.Keys))
+            if (!itemToLength.Keys.SequenceEqual(rangeCollection.itemToLength.Keys))
             {
                 return false;
             }
 
-            if (!this.itemToLength.Values.SequenceEqual(rangeCollection.itemToLength.Values))
+            if (!itemToLength.Values.SequenceEqual(rangeCollection.itemToLength.Values))
             {
                 return false;
             }
@@ -860,11 +860,11 @@ namespace Bio.Util
         public void CopyTo(long[] array, int arrayIndex)
         {
             if (array == null)
-                throw new ArgumentNullException("array", "Array cannot be null.");
+                throw new ArgumentNullException(nameof(array), "Array cannot be null.");
             if (array.Length + arrayIndex < Count())
-                throw new ArgumentException("Array will not hold all the elements.", "array");
+                throw new ArgumentException("Array will not hold all the elements.", nameof(array));
 
-            foreach (long item in this)
+            foreach (var item in this)
             {
                 array[arrayIndex++] = item;
             }
@@ -878,7 +878,7 @@ namespace Bio.Util
         {
             get
             {
-                int count = (int) this.Count();
+                var count = (int) Count();
                 return (count > 0) ? count : 0;
             }
         }
@@ -912,9 +912,9 @@ namespace Bio.Util
         /// </summary>
         public IEnumerator<long> GetEnumerator()
         {
-            foreach (KeyValuePair<long, long> range in Ranges)
+            foreach (var range in Ranges)
             {
-                for (long i = range.Key; i <= range.Value; i++)
+                for (var i = range.Key; i <= range.Value; i++)
                 {
                     yield return i;
                 }
@@ -949,11 +949,11 @@ namespace Bio.Util
         {
             if (reader == null)
             {
-                throw new ArgumentNullException("reader");
+                throw new ArgumentNullException(nameof(reader));
             }
 
-            string range = reader.ReadInnerXml();
-            this.InternalParse(range);
+            var range = reader.ReadInnerXml();
+            InternalParse(range);
         }
 
 
@@ -964,9 +964,9 @@ namespace Bio.Util
         {
             if (writer == null)
             {
-                throw new ArgumentNullException("writer");
+                throw new ArgumentNullException(nameof(writer));
             }
-            writer.WriteString(this.ToString());
+            writer.WriteString(ToString());
         }
         #endregion
     }

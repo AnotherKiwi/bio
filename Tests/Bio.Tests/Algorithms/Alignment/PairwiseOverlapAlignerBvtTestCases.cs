@@ -66,7 +66,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority0")]
         public void PairwiseOverlapSimpleAlignTwoSequencesFromTextFile()
         {
-            this.ValidatePairwiseOverlapAlignment(true, AlignmentParamType.AlignTwo);
+            ValidatePairwiseOverlapAlignment(true, AlignmentParamType.AlignTwo);
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority0")]
         public void PairwiseOverlapSimpleAlignTwoSequencesFromXml()
         {
-            this.ValidatePairwiseOverlapAlignment(false, AlignmentParamType.AlignTwo);
+            ValidatePairwiseOverlapAlignment(false, AlignmentParamType.AlignTwo);
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority0")]
         public void PairwiseOverlapSimpleAlignListSequencesFromTextFile()
         {
-            this.ValidatePairwiseOverlapAlignment(true, AlignmentParamType.AlignList);
+            ValidatePairwiseOverlapAlignment(true, AlignmentParamType.AlignList);
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority0")]
         public void PairwiseOverlapSimpleAlignListSequencesFromXml()
         {
-            this.ValidatePairwiseOverlapAlignment(false, AlignmentParamType.AlignList);
+            ValidatePairwiseOverlapAlignment(false, AlignmentParamType.AlignList);
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority0")]
         public void PairwiseOverlapSimpleAlignListSequencesFromXm()
         {
-            this.ValidatePairwiseOverlapAlignment(false, AlignmentParamType.AlignList);
+            ValidatePairwiseOverlapAlignment(false, AlignmentParamType.AlignList);
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority0")]
         public void PairwiseOverlapSimpleAlignAllParamsFromTextFile()
         {
-            this.ValidatePairwiseOverlapAlignment(true, AlignmentParamType.AllParam);
+            ValidatePairwiseOverlapAlignment(true, AlignmentParamType.AllParam);
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority0")]
         public void PairwiseOverlapSimpleAlignAllParamsFromXml()
         {
-            this.ValidatePairwiseOverlapAlignment(false, AlignmentParamType.AllParam);
+            ValidatePairwiseOverlapAlignment(false, AlignmentParamType.AllParam);
         }
 
         #region Gap Extension Cost inclusion Test cases
@@ -173,7 +173,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority0")]
         public void PairwiseOverlapAlignTwoSequencesFromTextFile()
         {
-            this.ValidatePairwiseOverlapAlignment(true, AlignmentParamType.AlignTwo,
+            ValidatePairwiseOverlapAlignment(true, AlignmentParamType.AlignTwo,
                                              AlignmentType.Align);
         }
 
@@ -189,7 +189,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority0")]
         public void PairwiseOverlapAlignListSequencesFromTextFile()
         {
-            this.ValidatePairwiseOverlapAlignment(true, AlignmentParamType.AlignList,
+            ValidatePairwiseOverlapAlignment(true, AlignmentParamType.AlignList,
                                              AlignmentType.Align);
         }
 
@@ -205,7 +205,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority0")]
         public void PairwiseOverlapAlignAllParamsFromTextFile()
         {
-            this.ValidatePairwiseOverlapAlignment(true, AlignmentParamType.AllParam,
+            ValidatePairwiseOverlapAlignment(true, AlignmentParamType.AllParam,
                                              AlignmentType.Align);
         }
 
@@ -222,7 +222,7 @@ namespace Bio.Tests.Algorithms.Alignment
         /// <param name="alignParam">parameter based on which certain validations are done.</param>
         private void ValidatePairwiseOverlapAlignment(bool isTextFile, AlignmentParamType alignParam)
         {
-            this.ValidatePairwiseOverlapAlignment(isTextFile, alignParam, AlignmentType.SimpleAlign);
+            ValidatePairwiseOverlapAlignment(isTextFile, alignParam, AlignmentType.SimpleAlign);
         }
 
         /// <summary>
@@ -236,13 +236,13 @@ namespace Bio.Tests.Algorithms.Alignment
             ISequence aInput;
             ISequence bInput;
 
-            IAlphabet alphabet = Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(Constants.PairwiseOverlapAlignAlgorithmNodeName, Constants.AlphabetNameNode));
+            var alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(Constants.PairwiseOverlapAlignAlgorithmNodeName, Constants.AlphabetNameNode));
 
             if (isTextFile)
             {
                 // Read the xml file for getting both the files for aligning.
-                string filePath1 = this.utilityObj.xmlUtil.GetTextValue(Constants.PairwiseOverlapAlignAlgorithmNodeName, Constants.FilePathNode1).TestDir();
-                string filePath2 = this.utilityObj.xmlUtil.GetTextValue(Constants.PairwiseOverlapAlignAlgorithmNodeName, Constants.FilePathNode2).TestDir();
+                var filePath1 = utilityObj.xmlUtil.GetTextValue(Constants.PairwiseOverlapAlignAlgorithmNodeName, Constants.FilePathNode1).TestDir();
+                var filePath2 = utilityObj.xmlUtil.GetTextValue(Constants.PairwiseOverlapAlignAlgorithmNodeName, Constants.FilePathNode2).TestDir();
 
                 //Parse the files and get the sequence.               
                 var parser = new FastAParser { Alphabet = alphabet };
@@ -252,8 +252,8 @@ namespace Bio.Tests.Algorithms.Alignment
             else
             {
                 // Read the xml file for getting both the files for aligning.
-                string origSequence1 = this.utilityObj.xmlUtil.GetTextValue(Constants.PairwiseOverlapAlignAlgorithmNodeName, Constants.SequenceNode1);
-                string origSequence2 = this.utilityObj.xmlUtil.GetTextValue(Constants.PairwiseOverlapAlignAlgorithmNodeName, Constants.SequenceNode2);
+                var origSequence1 = utilityObj.xmlUtil.GetTextValue(Constants.PairwiseOverlapAlignAlgorithmNodeName, Constants.SequenceNode1);
+                var origSequence2 = utilityObj.xmlUtil.GetTextValue(Constants.PairwiseOverlapAlignAlgorithmNodeName, Constants.SequenceNode2);
                 aInput = new Sequence(alphabet, origSequence1);
                 bInput = new Sequence(alphabet, origSequence2);
             }
@@ -264,11 +264,11 @@ namespace Bio.Tests.Algorithms.Alignment
             ApplicationLog.WriteLine($"PairwiseOverlapAligner BVT : First sequence used is '{aInputString}'.");
             ApplicationLog.WriteLine($"PairwiseOverlapAligner BVT : Second sequence used is '{bInputString}'.");
 
-            string blosumFilePath = this.utilityObj.xmlUtil.GetTextValue(Constants.PairwiseOverlapAlignAlgorithmNodeName, Constants.BlosumFilePathNode).TestDir();
+            var blosumFilePath = utilityObj.xmlUtil.GetTextValue(Constants.PairwiseOverlapAlignAlgorithmNodeName, Constants.BlosumFilePathNode).TestDir();
 
             var sm = new SimilarityMatrix(new StreamReader(blosumFilePath));
-            int gapOpenCost = int.Parse(this.utilityObj.xmlUtil.GetTextValue(Constants.PairwiseOverlapAlignAlgorithmNodeName, Constants.GapOpenCostNode), null);
-            int gapExtensionCost = int.Parse(this.utilityObj.xmlUtil.GetTextValue(Constants.PairwiseOverlapAlignAlgorithmNodeName, Constants.GapExtensionCostNode), null);
+            var gapOpenCost = int.Parse(utilityObj.xmlUtil.GetTextValue(Constants.PairwiseOverlapAlignAlgorithmNodeName, Constants.GapOpenCostNode), null);
+            var gapExtensionCost = int.Parse(utilityObj.xmlUtil.GetTextValue(Constants.PairwiseOverlapAlignAlgorithmNodeName, Constants.GapExtensionCostNode), null);
 
             var pairwiseOverlapObj = new PairwiseOverlapAligner();
             if (AlignmentParamType.AllParam != alignParam)
@@ -328,26 +328,26 @@ namespace Bio.Tests.Algorithms.Alignment
             switch (alignType)
             {
                 case AlignmentType.Align:
-                    expectedScore = this.utilityObj.xmlUtil.GetTextValue(Constants.PairwiseOverlapAlignAlgorithmNodeName, Constants.ExpectedGapExtensionScoreNode);
-                    expectedSequence1 = this.utilityObj.xmlUtil.GetTextValue(Constants.PairwiseOverlapAlignAlgorithmNodeName, Constants.ExpectedGapExtensionSequence1Node);
-                    expectedSequence2 = this.utilityObj.xmlUtil.GetTextValue(Constants.PairwiseOverlapAlignAlgorithmNodeName, Constants.ExpectedGapExtensionSequence2Node);
+                    expectedScore = utilityObj.xmlUtil.GetTextValue(Constants.PairwiseOverlapAlignAlgorithmNodeName, Constants.ExpectedGapExtensionScoreNode);
+                    expectedSequence1 = utilityObj.xmlUtil.GetTextValue(Constants.PairwiseOverlapAlignAlgorithmNodeName, Constants.ExpectedGapExtensionSequence1Node);
+                    expectedSequence2 = utilityObj.xmlUtil.GetTextValue(Constants.PairwiseOverlapAlignAlgorithmNodeName, Constants.ExpectedGapExtensionSequence2Node);
                     break;
                 default:
-                    expectedScore = this.utilityObj.xmlUtil.GetTextValue(Constants.PairwiseOverlapAlignAlgorithmNodeName, Constants.ExpectedScoreNode);
-                    expectedSequence1 = this.utilityObj.xmlUtil.GetTextValue(Constants.PairwiseOverlapAlignAlgorithmNodeName, Constants.ExpectedSequenceNode1);
-                    expectedSequence2 = this.utilityObj.xmlUtil.GetTextValue(Constants.PairwiseOverlapAlignAlgorithmNodeName, Constants.ExpectedSequenceNode2);
+                    expectedScore = utilityObj.xmlUtil.GetTextValue(Constants.PairwiseOverlapAlignAlgorithmNodeName, Constants.ExpectedScoreNode);
+                    expectedSequence1 = utilityObj.xmlUtil.GetTextValue(Constants.PairwiseOverlapAlignAlgorithmNodeName, Constants.ExpectedSequenceNode1);
+                    expectedSequence2 = utilityObj.xmlUtil.GetTextValue(Constants.PairwiseOverlapAlignAlgorithmNodeName, Constants.ExpectedSequenceNode2);
                     break;
             }
 
             IList<IPairwiseSequenceAlignment> expectedOutput = new List<IPairwiseSequenceAlignment>();
             var seperators = new[] {';'};
-            string[] expectedSequences1 = expectedSequence1.Split(seperators);
-            string[] expectedSequences2 = expectedSequence2.Split(seperators);
+            var expectedSequences1 = expectedSequence1.Split(seperators);
+            var expectedSequences2 = expectedSequence2.Split(seperators);
 
             IPairwiseSequenceAlignment align = new PairwiseSequenceAlignment();
-            for (int i = 0; i < expectedSequences1.Length; i++)
+            for (var i = 0; i < expectedSequences1.Length; i++)
             {
-                PairwiseAlignedSequence alignedSeq = new PairwiseAlignedSequence
+                var alignedSeq = new PairwiseAlignedSequence
                 {
                     FirstSequence = new Sequence(alphabet, expectedSequences1[i]),
                     SecondSequence = new Sequence(alphabet, expectedSequences2[i]),

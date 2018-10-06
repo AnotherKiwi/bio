@@ -25,7 +25,7 @@ namespace Bio.Tests
         {
             ISequence seq = new Sequence(Alphabets.DNA, "ATCGATCGGATCGATCGGCTACTAATATCGATCGGCTACGATCGGCTAATCGATCGATCGGCTAATCGATCGATCGGCTAGCTA");
             const string expectedValue = "TCGATCGGCT";
-            string actualValue = seq.ConvertToString(10, 10);
+            var actualValue = seq.ConvertToString(10, 10);
             Assert.AreEqual(expectedValue, actualValue);
         }
 
@@ -35,10 +35,10 @@ namespace Bio.Tests
         [Test]
         public void TestDerivedSequenceConvertToString()
         {
-            Sequence baseSeq = new Sequence(Alphabets.DNA, "ATCGATCGGATCGATCGGCTACTAATATCGATCGGCTACGATCGGCTAATCGATCGATCGGCTAATCGATCGATCGGCTAGCTA");
-            DerivedSequence seq = new DerivedSequence(baseSeq, false, false);
+            var baseSeq = new Sequence(Alphabets.DNA, "ATCGATCGGATCGATCGGCTACTAATATCGATCGGCTACGATCGGCTAATCGATCGATCGGCTAATCGATCGATCGGCTAGCTA");
+            var seq = new DerivedSequence(baseSeq, false, false);
             const string expectedValue = "TCGATCGGCT";
-            string actualValue = seq.ConvertToString(10, 10);
+            var actualValue = seq.ConvertToString(10, 10);
             Assert.AreEqual(expectedValue, actualValue);
         }
 
@@ -48,7 +48,7 @@ namespace Bio.Tests
         [Test]
         public void TestSequenceConvertToStringWithException()
         {
-            Sequence seq = new Sequence(Alphabets.DNA, "ATCGATCGGATCGATCGGCTACTAATATCGATCGGCTACGATCGGCTAATCGATCGATCGGCTAATCGATCGATCGGCTAGCTA");
+            var seq = new Sequence(Alphabets.DNA, "ATCGATCGGATCGATCGGCTACTAATATCGATCGGCTACGATCGGCTAATCGATCGATCGGCTAATCGATCGATCGGCTAGCTA");
             try
             {
                 seq.ConvertToString(80, 10);
@@ -68,10 +68,10 @@ namespace Bio.Tests
         {
             ISequence seqSmall = new Sequence(Alphabets.DNA, "ATCG");
             ISequence seqLarge = new Sequence(Alphabets.DNA, "ATCGGGGGGGGGGGGGGGGGGGGGGGGCCCCCCCCCCCCCCCCCCCCCCGGGGGGGGGGTTTTTTTTTTTTTTT");
-            string ActualSmallString = seqSmall.ToString();
-            string ActualLargeString = seqLarge.ToString();
-            string ExpectedSmallString = "ATCG";
-            string expectedLargeString = string.Format(CultureInfo.CurrentCulture, "ATCGGGGGGGGGGGGGGGGGGGGGGGGCCCCCCCCCCCCCCCCCCCCCCGGGGGGGGGGTTTTT... +[{0}]", (seqLarge.Count - Helper.AlphabetsToShowInToString));
+            var ActualSmallString = seqSmall.ToString();
+            var ActualLargeString = seqLarge.ToString();
+            var ExpectedSmallString = "ATCG";
+            var expectedLargeString = string.Format(CultureInfo.CurrentCulture, "ATCGGGGGGGGGGGGGGGGGGGGGGGGCCCCCCCCCCCCCCCCCCCCCCGGGGGGGGGGTTTTT... +[{0}]", (seqLarge.Count - Helper.AlphabetsToShowInToString));
 
             Assert.AreEqual(ExpectedSmallString, ActualSmallString);
             Assert.AreEqual(expectedLargeString, ActualLargeString);
@@ -88,10 +88,10 @@ namespace Bio.Tests
             ISequence DeriveSeqSmall = new DerivedSequence(seqSmall, false, true);
             ISequence DeriveSeqLarge = new DerivedSequence(seqLarge, false, true);
 
-            string ActualSmallString = DeriveSeqSmall.ToString();
-            string ActualLargeString = DeriveSeqLarge.ToString();
-            string ExpectedSmallString = "TAGC";
-            string expectedLargeString = string.Format(CultureInfo.CurrentCulture, "TAGCCCCCCCCCCCCCCCCCCCCCCCCGGGGGGGGGGGGGGGGGGGGGGCCCCCCCCCCAAAAA... +[{0}]", (seqLarge.Count - Helper.AlphabetsToShowInToString));
+            var ActualSmallString = DeriveSeqSmall.ToString();
+            var ActualLargeString = DeriveSeqLarge.ToString();
+            var ExpectedSmallString = "TAGC";
+            var expectedLargeString = string.Format(CultureInfo.CurrentCulture, "TAGCCCCCCCCCCCCCCCCCCCCCCCCGGGGGGGGGGGGGGGGGGGGGGCCCCCCCCCCAAAAA... +[{0}]", (seqLarge.Count - Helper.AlphabetsToShowInToString));
 
             Assert.AreEqual(ExpectedSmallString, ActualSmallString);
             Assert.AreEqual(expectedLargeString, ActualLargeString);
@@ -103,19 +103,19 @@ namespace Bio.Tests
         [Test]
         public void TestQualitativeSequenceToString()
         {
-            byte[] seqData = new byte[4];
+            var seqData = new byte[4];
             seqData[0] = (byte)'A';
             seqData[1] = (byte)'T';
             seqData[2] = (byte)'C';
             seqData[3] = (byte)'G';
-            byte[] qualityScores = new byte[4];
+            var qualityScores = new byte[4];
             qualityScores[0] = (byte)'A';
             qualityScores[1] = (byte)'A';
             qualityScores[2] = (byte)'A';
             qualityScores[3] = (byte)'B';
-            QualitativeSequence seq = new QualitativeSequence(Alphabets.DNA, FastQFormatType.Illumina_v1_3, seqData, qualityScores);
-            string actualString = seq.ToString().Replace("\r\n", "\n");
-            string expectedString = "ATCG\nAAAB";
+            var seq = new QualitativeSequence(Alphabets.DNA, FastQFormatType.Illumina_v1_3, seqData, qualityScores);
+            var actualString = seq.ToString().Replace("\r\n", "\n");
+            var expectedString = "ATCG\nAAAB";
             Assert.AreEqual(actualString, expectedString);
         }
 
@@ -125,26 +125,26 @@ namespace Bio.Tests
         [Test]
         public void TestAllAlphabetsToString()
         {
-            DnaAlphabet dna = DnaAlphabet.Instance;
-            RnaAlphabet rna = RnaAlphabet.Instance;
-            ProteinAlphabet protein = ProteinAlphabet.Instance;
-            AmbiguousDnaAlphabet dnaAmbiguous = AmbiguousDnaAlphabet.Instance;
-            AmbiguousRnaAlphabet rnaAmbiguous = AmbiguousRnaAlphabet.Instance;
-            AmbiguousProteinAlphabet proteinAmbiguous = AmbiguousProteinAlphabet.Instance;
+            var dna = DnaAlphabet.Instance;
+            var rna = RnaAlphabet.Instance;
+            var protein = ProteinAlphabet.Instance;
+            var dnaAmbiguous = AmbiguousDnaAlphabet.Instance;
+            var rnaAmbiguous = AmbiguousRnaAlphabet.Instance;
+            var proteinAmbiguous = AmbiguousProteinAlphabet.Instance;
 
-            string dnaStringActual = dna.ToString();
-            string rnaStringActual = rna.ToString();
-            string proteinStringActual = protein.ToString();
-            string dnaAmbiguousStringActual = dnaAmbiguous.ToString();
-            string rnaAmbiguousStringActual = rnaAmbiguous.ToString();
-            string proteinAmbiguousStringActual = proteinAmbiguous.ToString();
+            var dnaStringActual = dna.ToString();
+            var rnaStringActual = rna.ToString();
+            var proteinStringActual = protein.ToString();
+            var dnaAmbiguousStringActual = dnaAmbiguous.ToString();
+            var rnaAmbiguousStringActual = rnaAmbiguous.ToString();
+            var proteinAmbiguousStringActual = proteinAmbiguous.ToString();
 
-            string dnaStringExpected = "ACGT-";
-            string rnaStringExpected = "ACGU-";
-            string proteinStringExpected = "ACDEFGHIKLMNOPQRSTUVWY-*";
-            string dnaAmbiguousStringExpected = "ACGT-MRSWYKVHDBN";
-            string rnaAmbiguousStringExpected = "ACGU-NMRSWYKVHDB";
-            string proteinAmbiguousStringExpected = "ACDEFGHIKLMNOPQRSTUVWY-*XZBJ";
+            var dnaStringExpected = "ACGT-";
+            var rnaStringExpected = "ACGU-";
+            var proteinStringExpected = "ACDEFGHIKLMNOPQRSTUVWY-*";
+            var dnaAmbiguousStringExpected = "ACGT-MRSWYKVHDBN";
+            var rnaAmbiguousStringExpected = "ACGU-NMRSWYKVHDB";
+            var proteinAmbiguousStringExpected = "ACDEFGHIKLMNOPQRSTUVWY-*XZBJ";
 
             Assert.AreEqual(dnaStringExpected, dnaStringActual);
             Assert.AreEqual(rnaStringExpected, rnaStringActual);
@@ -160,9 +160,9 @@ namespace Bio.Tests
         [Test]
         public void TestSequenceRangeToString()
         {
-            SequenceRange range = new SequenceRange("chr20", 0, 3);
-            string actualString = range.ToString();
-            string expectedString = "ID=chr20 Start=0 End=3";
+            var range = new SequenceRange("chr20", 0, 3);
+            var actualString = range.ToString();
+            var expectedString = "ID=chr20 Start=0 End=3";
             Assert.AreEqual(actualString, expectedString);
         }
 
@@ -174,14 +174,16 @@ namespace Bio.Tests
         {
             ISequenceRange range1 = new SequenceRange("chr20", 0, 3);
             ISequenceRange range2 = new SequenceRange("chr21", 0, 4);
-            IList<ISequenceRange> ranges = new List<ISequenceRange>();
-            ranges.Add(range1);
-            ranges.Add(range2);
-            
-            SequenceRangeGrouping rangegrouping = new SequenceRangeGrouping(ranges);
-            string actualString = rangegrouping.ToString();
+            IList<ISequenceRange> ranges = new List<ISequenceRange>
+            {
+                range1,
+                range2
+            };
 
-            string expectedString = "ID=chr20 Start=0 End=3\r\nID=chr21 Start=0 End=4\r\n".Replace("\r\n", Environment.NewLine);
+            var rangegrouping = new SequenceRangeGrouping(ranges);
+            var actualString = rangegrouping.ToString();
+
+            var expectedString = "ID=chr20 Start=0 End=3\r\nID=chr21 Start=0 End=4\r\n".Replace("\r\n", Environment.NewLine);
             Assert.AreEqual(actualString, expectedString);
         }
 
@@ -192,9 +194,9 @@ namespace Bio.Tests
         public void TestSequenceStatisticsToString()
         {
             ISequence seq = new Sequence(Alphabets.DNA, "ATCGATCG");
-            SequenceStatistics seqStats = new SequenceStatistics(seq);
-            string actualString = seqStats.ToString();
-            string expectedString = "A - 2\r\nC - 2\r\nG - 2\r\nT - 2\r\n".Replace("\r\n", Environment.NewLine);
+            var seqStats = new SequenceStatistics(seq);
+            var actualString = seqStats.ToString();
+            var expectedString = "A - 2\r\nC - 2\r\nG - 2\r\nT - 2\r\n".Replace("\r\n", Environment.NewLine);
             Assert.AreEqual(actualString, expectedString);
         }
 
@@ -212,7 +214,7 @@ namespace Bio.Tests
                 new Sequence(Alphabets.DNA, "GTTATCATGCGAACAATTCAACAGACACTGTAGA")
             };
 
-            NucmerPairwiseAligner num = new NucmerPairwiseAligner
+            var num = new NucmerPairwiseAligner
             {
                 BreakLength = 8,
                 FixedSeparation = 0,
@@ -223,13 +225,13 @@ namespace Bio.Tests
             };
 
             IList<ISequence> sequenceList = seqList;
-            IList<ISequenceAlignment> alignmentObj = num.Align(sequenceList);
+            var alignmentObj = num.Align(sequenceList);
             Assert.AreNotEqual(0, alignmentObj.Count);
 
             var alignedSeqs = (AlignedSequence) alignmentObj[0].AlignedSequences[0];
 
-            string actualString = alignedSeqs.ToString();
-            string ExpectedString = "CAAAAGGGATTGC---\r\nCAAAAGGGATTGC---\r\nCAAAAGGGATTGC---\r\n".Replace("\r\n", Environment.NewLine);
+            var actualString = alignedSeqs.ToString();
+            var ExpectedString = "CAAAAGGGATTGC---\r\nCAAAAGGGATTGC---\r\nCAAAAGGGATTGC---\r\n".Replace("\r\n", Environment.NewLine);
             Assert.AreEqual(ExpectedString, actualString);
         }
 
@@ -239,21 +241,23 @@ namespace Bio.Tests
         [Test]
         public void TestClusterToString()
         {
-            Match match = new Match();
+            var match = new Match();
 
-            MatchExtension matchExtn1 = new MatchExtension(match);
+            var matchExtn1 = new MatchExtension(match);
             matchExtn1.ID = 1;
             matchExtn1.Length = 20;
-            MatchExtension matchExtn2 = new MatchExtension(match);
+            var matchExtn2 = new MatchExtension(match);
             matchExtn2.ID = 2;
             matchExtn2.Length = 30;
-            IList<MatchExtension> extnList = new List<MatchExtension>();
-            extnList.Add(matchExtn1);
-            extnList.Add(matchExtn2);
+            IList<MatchExtension> extnList = new List<MatchExtension>
+            {
+                matchExtn1,
+                matchExtn2
+            };
 
-            Cluster clust = new Cluster(extnList);
-            string actualString = clust.ToString();
-            string expectedString = "RefStart=0 QueryStart=0 Length=20 Score=0 WrapScore=0 IsGood=False\r\nRefStart=0 QueryStart=0 Length=30 Score=0 WrapScore=0 IsGood=False\r\n".Replace ("\r\n", Environment.NewLine);
+            var clust = new Cluster(extnList);
+            var actualString = clust.ToString();
+            var expectedString = "RefStart=0 QueryStart=0 Length=20 Score=0 WrapScore=0 IsGood=False\r\nRefStart=0 QueryStart=0 Length=30 Score=0 WrapScore=0 IsGood=False\r\n".Replace ("\r\n", Environment.NewLine);
             Assert.AreEqual(actualString, expectedString);
         }
 
@@ -265,11 +269,11 @@ namespace Bio.Tests
         {
             ISequence refSeq = new Sequence(Alphabets.DNA, "ATCGGGGGGGGAAAAAAATTTTCCCCGGGGG");
             ISequence qrySeq = new Sequence(Alphabets.DNA, "GGGGG");
-            DeltaAlignment delta = new DeltaAlignment(refSeq, qrySeq);
+            var delta = new DeltaAlignment(refSeq, qrySeq);
             delta.FirstSequenceEnd = 21;
             delta.SecondSequenceEnd = 20;
-            string actualString = delta.ToString();
-            string expectedString = "Ref ID= Query Id= Ref start=0 Ref End=21 Query start=0 Query End=20, Direction=FORWARD";
+            var actualString = delta.ToString();
+            var expectedString = "Ref ID= Query Id= Ref start=0 Ref End=21 Query start=0 Query End=20, Direction=FORWARD";
             Assert.AreEqual(actualString, expectedString);
         }
 
@@ -279,7 +283,7 @@ namespace Bio.Tests
         [Test]
         public void TestPairwiseAlignedSequenceToString()
         {
-            PairwiseAlignedSequence alignedSeq = new PairwiseAlignedSequence();
+            var alignedSeq = new PairwiseAlignedSequence();
             alignedSeq.FirstSequence = new Sequence(Alphabets.Protein, "AWGHE");
             alignedSeq.SecondSequence = new Sequence(Alphabets.Protein, "AW-HE");
             alignedSeq.Consensus = new Sequence(Alphabets.Protein, "AWGHE");
@@ -287,8 +291,8 @@ namespace Bio.Tests
             alignedSeq.FirstOffset = 0;
             alignedSeq.SecondOffset = 3;
 
-            string actualString = alignedSeq.ToString();
-            string expectedString = "AWGHE\r\nAWGHE\r\nAW-HE\r\n".Replace("\r\n", Environment.NewLine);
+            var actualString = alignedSeq.ToString();
+            var expectedString = "AWGHE\r\nAWGHE\r\nAW-HE\r\n".Replace("\r\n", Environment.NewLine);
             Assert.AreEqual(actualString, expectedString);
         }
 
@@ -299,7 +303,7 @@ namespace Bio.Tests
         public void TestPairwiseSequenceAlignmentToString()
         {
             IPairwiseSequenceAlignment align = new PairwiseSequenceAlignment();
-            PairwiseAlignedSequence alignedSeq = new PairwiseAlignedSequence();
+            var alignedSeq = new PairwiseAlignedSequence();
             alignedSeq.FirstSequence = new Sequence(Alphabets.Protein, "AWGHE");
             alignedSeq.SecondSequence = new Sequence(Alphabets.Protein, "AW-HE");
             alignedSeq.Consensus = new Sequence(Alphabets.Protein, "AWGHE");
@@ -308,8 +312,8 @@ namespace Bio.Tests
             alignedSeq.SecondOffset = 3;
             align.PairwiseAlignedSequences.Add(alignedSeq);
 
-            string actualString = align.ToString();
-            string expectedString = "AWGHE\r\nAWGHE\r\nAW-HE\r\n\r\n".Replace("\r\n", Environment.NewLine);
+            var actualString = align.ToString();
+            var expectedString = "AWGHE\r\nAWGHE\r\nAW-HE\r\n\r\n".Replace("\r\n", Environment.NewLine);
             Assert.AreEqual(actualString, expectedString); 
         }
 
@@ -319,18 +323,18 @@ namespace Bio.Tests
         [Test]
         public void TestMatchAndMatchExtensionToString()
         {
-            Match match = new Match();
+            var match = new Match();
             match.Length = 20;
             match.QuerySequenceOffset = 33;
 
-            MatchExtension matchExtn = new MatchExtension(match);
+            var matchExtn = new MatchExtension(match);
             matchExtn.ID = 1;
             matchExtn.Length = 20;
 
-            string actualMatchExtnString = matchExtn.ToString();
-            string actualMatchstring = match.ToString();
-            string ExpectedMatchExtnString = "RefStart=0 QueryStart=33 Length=20 Score=0 WrapScore=0 IsGood=False";
-            string ExpectedMatchString = "RefStart=0 QueryStart=33 Length=20";
+            var actualMatchExtnString = matchExtn.ToString();
+            var actualMatchstring = match.ToString();
+            var ExpectedMatchExtnString = "RefStart=0 QueryStart=33 Length=20 Score=0 WrapScore=0 IsGood=False";
+            var ExpectedMatchString = "RefStart=0 QueryStart=33 Length=20";
 
             Assert.AreEqual(ExpectedMatchExtnString, actualMatchExtnString);
             Assert.AreEqual(actualMatchstring, ExpectedMatchString);
@@ -355,7 +359,7 @@ namespace Bio.Tests
                 };
 
             // Get aligned sequences
-            IList<ISequenceAlignment> alignments = aligner.Align(inputSequences);
+            var alignments = aligner.Align(inputSequences);
             ISequenceAlignment alignment = new SequenceAlignment();
             foreach (var alignedSequence in alignments[0].AlignedSequences)
                 alignment.AlignedSequences.Add(alignedSequence);
@@ -379,10 +383,10 @@ namespace Bio.Tests
             const double mergeThreshold = 4;
             const double consensusThreshold = 66;
 
-            Sequence seq2 = new Sequence(Alphabets.DNA, "ACAAAAGCAACAAAAATGAAGGCAATACTAGTAGTTCTGCTATATACATTTGCAACCGCAAATGCAGACACATTATGTATAGGTTATCATGCGAACAATTCAACAGACACTGTAGACACAGTACTAGAAAAGAATGTAACAGTAACACACTCTGTTAACCTTCTAGAAGACAAGCATAACGGGAAACTATGCAAACTAAGAGGAGTAGCCCCATTGCATTTGGGTAAATGTAACATTGCTGGCTGGATCCTGGGAAATCCAGAGTGTGAATCACTCTCCACAGCAAGCTCATGGTCCTACATTGTGGAAACATCTAGTTCAGACAATGGAACGTGTTACCCAGGAGATTTCATCGATTATGAGGAGCTAAGAGAGCAATTGAGCTCAGTGTCATCATTTGAAAGGTTTGAGATATTCCCCAAGACAAGTTCATGGCCCAATCATGACTCGAACAAAGGTGTAACGGCAGCATGTCCTCATGCTGGAGCAAAAAGCTTCTACAAAAATTTAATATGGCTAGTTAAAAAAGGAAATTCATACCCAAAGCTCAGCAAATCCTACATTAATGATAAAGGGAAAGAAGTCCTCGTGCTATGGGGCATTCACCATCCATCTACTAGTGCTGACCAACAAAGTCTCTATCAGAATGCAGATGCATATGTTTTTGTGGGGTCATCAAGATATAGCAAGAAGTTCAAGCCGGAAATAGCAATAAGACCCAAAGTGAGGGATCAAGAAGGGAGAATGAACTATTACTGGACACTAGTAGAGCCGGGAGACAAAATAACATTCGAAGCAACTGGAAATCTAGTGGTACCGAGATATGCATTCGCAATGGAAAGAAATGCTGGATCTGGTATTATCATTTCAGATACACCAGTCCACGATTGCAATACAACTTGTCAGACACCCAAGGGTGCTATAAACACCAGCCTCCCATTTCAGAATATACATCCGATCACAATTGGAAAATGTCCAAAATATGTAAAAAGCACAAAATTGAGACTGGCCACAGGATTGAGGAATGTCCCGTCTATTCAATCTAGAGGCCTATTTGGGGCCATTGCCGGTTTCATTGAAGGGGGGTGGACAGGGATGGTAGATGGATGGTACGGTTATCACCATCAAAATGAGCAGGGGTCAGGATATGCAGCCGACCTGAAGAGCACACAGAATGCCATTGACGAGATTACTAACAAAGTAAATTCTGTTATTGAAAAGATGAATATACAGTTCACAGCAGTAGGTAAAGAGTTCAACCACCTGGAAAAAAGAATAGAGAATTTAAATAAAAAAGTTGATGATGGTTTCCTGGACATTTGGACTTACAATGCCGAACTGTTGGTTCTATTGGAAAATGAAAGAACTTTGGACTACCACGATTCGAATGTGAAGAACTTATATGAAAAGGTAAGAAGCCAGCTAAAAAACAATGCCAAGGAAATTGGAAACGGCTGCTTTGAATTTTACCACAAATGCGATAACACGTGCATGGAAAGTGTCAAAAATGGGACTTATGACTACCCAAAATACTCAGAGGAAGCAAAATTAAACAGAGAAGAAATAGATGGGGTAAAGCTGGAATCAACAAGGATTTACCAGATTTTGGCGATCTATTCAACTGTCGCCAGTTCATTGGTACTGGTAGTCTCCCTGGGGGCAATCAGTTTCTGGATGTGCTCTAATGGGTCTCTACAGTGTAGAATATGTATTTAACATTAGGATTTCAGAAGCATGAGAAA");
-            Sequence seq1 = new Sequence(Alphabets.DNA, "ATGAAGGCAATACTAGTAGTTCTGCTATATACATTTGCAACCGCAAATGCAGACACATTATGTATAGGTTATCATGCGAACAATTCAACAGACACTGTAGACACAGTACTAGAAAAGAATGTAACAGTAACACACTCTGTTAACCTTCTAGAAGACAAGCATAACGGGAAACTATGCAAACTAAGAGGGGTAGCCCCATTGCATTTGGGTAAATGTAACATTGCTGGCTGGATCCTGGGAAATCCAGAGTGTGAATCACTCTCCACAGCAAGCTCATGGTCCTACATTGTGGAAACATCTAGTTCAGACAATGGAACGTGTTACCCAGGAGATTTCATCGATTATGAGGAGCTAAGAGAGCAATTGAGCTCAGTGTCATCATTTGAAAGGTTTGAGATATTCCCCAAGACAAGTTCATGGCCCAATCATGACTCGAACAAAGGTGTAACGGCAGCATGTCCTCATGCTGGAGCAAAAAGCTTCTACAAAAATTTAATATGGCTAGTTAAAAAAGGAAATTCATACCCAAAGCTCAGCAAATCCTACATTAATGATAAAGGGAAAGAAGTCCTCGTGCTATGGGGCATTCACCATCCATCTACTAGTGCTGACCAACAAAGTCTCTATCAGAATGCAGATGCATATGTTTTTGTGGGGACATCAAGATACAGCAAGAAGTTCAAGCCGGAAATAGCAATAAGACCCAAAGTGAGGGATCAAGAAGGGAGAATGAACTATTACTGGACACTAGTAGAGCCGGGAGACAAAATAACATTCGAAGCAACTGGAAATCTAGTGGTACCGAGATATGCATTCGCAATGGAAAGAAATGCTGGATCTGGTATTATCATTTCAGATACACCAGTCCACGATTGCAATACAACTTGTCAGACACCCAAGGGTGCTATAAACACCAGCCTCCCATTTCAGAATATACATCCGATCACAATTGGAAAATGTCCAAAATATGTAAAAAGCACAAAATTGAGACTGGCCACAGGATTGAGGAATGTCCCGTCTATTCAATCTAGAGGCCTATTTGGGGCCATTGCCGGTTTCATTGAAGGGGGGTGGACAGGGATGGTAGATGGATGGTACGGTTATCACCATCAAAATGAGCAGGGGTCAGGATATGCAGCCGACCTGAAGAGCACACAGAATGCCATTGACGAGATTACTAACAAAGTAAATTCTGTTATTGAAAAGATGAATACACAGTTCACAGCAGTAGGTAAAGAGTTCAACCACCTGGAAAAAAGAATAGAGAATTTAAATAAAAAAATTGATGATGGTTTCCTGGACATTTGGACTTACAATGCCGAACTGTTGGTTCTATTGGAAAATGAAAGAACTTTGGACTACCACGATTCAAATGTGAAGAACTTATATGAAAAGGTAAGAAGCCAGTTAAAAAACAATGCCAAGGAAATTGGAAACGGCTGCTTTGAATTTTACCACAAATGCGATAACACGTGCATGGAAAGTGTCAAAAATGGGACTTATGACTACCCAAAATACTCAGAGGAAGCAAAATTAAACAGAGAAGAAATAGATGGGGTAAAGCTGGAATCAACAAGGATTTACCAGATTTTGGCGATCTATTCAACTGTCGCCAGTTCATTGGTACTGGTAGTCTCCCTGGGGGCAATCAGTTTCTGGATGTGCTCTAATGGGTCTCTACAGTGTAGAATATGTATTTAA");
+            var seq2 = new Sequence(Alphabets.DNA, "ACAAAAGCAACAAAAATGAAGGCAATACTAGTAGTTCTGCTATATACATTTGCAACCGCAAATGCAGACACATTATGTATAGGTTATCATGCGAACAATTCAACAGACACTGTAGACACAGTACTAGAAAAGAATGTAACAGTAACACACTCTGTTAACCTTCTAGAAGACAAGCATAACGGGAAACTATGCAAACTAAGAGGAGTAGCCCCATTGCATTTGGGTAAATGTAACATTGCTGGCTGGATCCTGGGAAATCCAGAGTGTGAATCACTCTCCACAGCAAGCTCATGGTCCTACATTGTGGAAACATCTAGTTCAGACAATGGAACGTGTTACCCAGGAGATTTCATCGATTATGAGGAGCTAAGAGAGCAATTGAGCTCAGTGTCATCATTTGAAAGGTTTGAGATATTCCCCAAGACAAGTTCATGGCCCAATCATGACTCGAACAAAGGTGTAACGGCAGCATGTCCTCATGCTGGAGCAAAAAGCTTCTACAAAAATTTAATATGGCTAGTTAAAAAAGGAAATTCATACCCAAAGCTCAGCAAATCCTACATTAATGATAAAGGGAAAGAAGTCCTCGTGCTATGGGGCATTCACCATCCATCTACTAGTGCTGACCAACAAAGTCTCTATCAGAATGCAGATGCATATGTTTTTGTGGGGTCATCAAGATATAGCAAGAAGTTCAAGCCGGAAATAGCAATAAGACCCAAAGTGAGGGATCAAGAAGGGAGAATGAACTATTACTGGACACTAGTAGAGCCGGGAGACAAAATAACATTCGAAGCAACTGGAAATCTAGTGGTACCGAGATATGCATTCGCAATGGAAAGAAATGCTGGATCTGGTATTATCATTTCAGATACACCAGTCCACGATTGCAATACAACTTGTCAGACACCCAAGGGTGCTATAAACACCAGCCTCCCATTTCAGAATATACATCCGATCACAATTGGAAAATGTCCAAAATATGTAAAAAGCACAAAATTGAGACTGGCCACAGGATTGAGGAATGTCCCGTCTATTCAATCTAGAGGCCTATTTGGGGCCATTGCCGGTTTCATTGAAGGGGGGTGGACAGGGATGGTAGATGGATGGTACGGTTATCACCATCAAAATGAGCAGGGGTCAGGATATGCAGCCGACCTGAAGAGCACACAGAATGCCATTGACGAGATTACTAACAAAGTAAATTCTGTTATTGAAAAGATGAATATACAGTTCACAGCAGTAGGTAAAGAGTTCAACCACCTGGAAAAAAGAATAGAGAATTTAAATAAAAAAGTTGATGATGGTTTCCTGGACATTTGGACTTACAATGCCGAACTGTTGGTTCTATTGGAAAATGAAAGAACTTTGGACTACCACGATTCGAATGTGAAGAACTTATATGAAAAGGTAAGAAGCCAGCTAAAAAACAATGCCAAGGAAATTGGAAACGGCTGCTTTGAATTTTACCACAAATGCGATAACACGTGCATGGAAAGTGTCAAAAATGGGACTTATGACTACCCAAAATACTCAGAGGAAGCAAAATTAAACAGAGAAGAAATAGATGGGGTAAAGCTGGAATCAACAAGGATTTACCAGATTTTGGCGATCTATTCAACTGTCGCCAGTTCATTGGTACTGGTAGTCTCCCTGGGGGCAATCAGTTTCTGGATGTGCTCTAATGGGTCTCTACAGTGTAGAATATGTATTTAACATTAGGATTTCAGAAGCATGAGAAA");
+            var seq1 = new Sequence(Alphabets.DNA, "ATGAAGGCAATACTAGTAGTTCTGCTATATACATTTGCAACCGCAAATGCAGACACATTATGTATAGGTTATCATGCGAACAATTCAACAGACACTGTAGACACAGTACTAGAAAAGAATGTAACAGTAACACACTCTGTTAACCTTCTAGAAGACAAGCATAACGGGAAACTATGCAAACTAAGAGGGGTAGCCCCATTGCATTTGGGTAAATGTAACATTGCTGGCTGGATCCTGGGAAATCCAGAGTGTGAATCACTCTCCACAGCAAGCTCATGGTCCTACATTGTGGAAACATCTAGTTCAGACAATGGAACGTGTTACCCAGGAGATTTCATCGATTATGAGGAGCTAAGAGAGCAATTGAGCTCAGTGTCATCATTTGAAAGGTTTGAGATATTCCCCAAGACAAGTTCATGGCCCAATCATGACTCGAACAAAGGTGTAACGGCAGCATGTCCTCATGCTGGAGCAAAAAGCTTCTACAAAAATTTAATATGGCTAGTTAAAAAAGGAAATTCATACCCAAAGCTCAGCAAATCCTACATTAATGATAAAGGGAAAGAAGTCCTCGTGCTATGGGGCATTCACCATCCATCTACTAGTGCTGACCAACAAAGTCTCTATCAGAATGCAGATGCATATGTTTTTGTGGGGACATCAAGATACAGCAAGAAGTTCAAGCCGGAAATAGCAATAAGACCCAAAGTGAGGGATCAAGAAGGGAGAATGAACTATTACTGGACACTAGTAGAGCCGGGAGACAAAATAACATTCGAAGCAACTGGAAATCTAGTGGTACCGAGATATGCATTCGCAATGGAAAGAAATGCTGGATCTGGTATTATCATTTCAGATACACCAGTCCACGATTGCAATACAACTTGTCAGACACCCAAGGGTGCTATAAACACCAGCCTCCCATTTCAGAATATACATCCGATCACAATTGGAAAATGTCCAAAATATGTAAAAAGCACAAAATTGAGACTGGCCACAGGATTGAGGAATGTCCCGTCTATTCAATCTAGAGGCCTATTTGGGGCCATTGCCGGTTTCATTGAAGGGGGGTGGACAGGGATGGTAGATGGATGGTACGGTTATCACCATCAAAATGAGCAGGGGTCAGGATATGCAGCCGACCTGAAGAGCACACAGAATGCCATTGACGAGATTACTAACAAAGTAAATTCTGTTATTGAAAAGATGAATACACAGTTCACAGCAGTAGGTAAAGAGTTCAACCACCTGGAAAAAAGAATAGAGAATTTAAATAAAAAAATTGATGATGGTTTCCTGGACATTTGGACTTACAATGCCGAACTGTTGGTTCTATTGGAAAATGAAAGAACTTTGGACTACCACGATTCAAATGTGAAGAACTTATATGAAAAGGTAAGAAGCCAGTTAAAAAACAATGCCAAGGAAATTGGAAACGGCTGCTTTGAATTTTACCACAAATGCGATAACACGTGCATGGAAAGTGTCAAAAATGGGACTTATGACTACCCAAAATACTCAGAGGAAGCAAAATTAAACAGAGAAGAAATAGATGGGGTAAAGCTGGAATCAACAAGGATTTACCAGATTTTGGCGATCTATTCAACTGTCGCCAGTTCATTGGTACTGGTAGTCTCCCTGGGGGCAATCAGTTTCTGGATGTGCTCTAATGGGTCTCTACAGTGTAGAATATGTATTTAA");
 
-            OverlapDeNovoAssembler assembler = new OverlapDeNovoAssembler
+            var assembler = new OverlapDeNovoAssembler
             {
                 MergeThreshold = mergeThreshold,
                 OverlapAlgorithm = new NeedlemanWunschAligner 
@@ -394,11 +398,11 @@ namespace Bio.Tests
                 AssumeStandardOrientation = false,
             };
 
-            IOverlapDeNovoAssembly seqAssembly = (IOverlapDeNovoAssembly) assembler.Assemble(new List<ISequence> {seq1, seq2});
-            Contig contig0 = seqAssembly.Contigs[0];
-            string actualString = contig0.ToString();
+            var seqAssembly = (IOverlapDeNovoAssembly) assembler.Assemble(new List<ISequence> {seq1, seq2});
+            var contig0 = seqAssembly.Contigs[0];
+            var actualString = contig0.ToString();
             //string expectedString = "ACAAAAGCAACAAAAATGAAGGCAATACTAGTAGTTCTGCTATATACATTTGCAACCGCAAATG... +[1678]";
-            string expectedString = "AYRAARGCAAYAMWARTRRWKSYRMTAYWWRYAKTTSYRMYMKMWAMWKYWGMMACMKYAWRTR... +[1678]";
+            var expectedString = "AYRAARGCAAYAMWARTRRWKSYRMTAYWWRYAKTTSYRMYMKMWAMWKYWGMMACMKYAWRTR... +[1678]";
             Assert.AreEqual(actualString, expectedString); 
         }
 
@@ -408,8 +412,8 @@ namespace Bio.Tests
         [Test]
         public void TestMatePairToString()
         {
-            MatePair p = new MatePair("2K") {ForwardReadID = "F", ReverseReadID = "R"};
-            string actualString = p.ToString();
+            var p = new MatePair("2K") {ForwardReadID = "F", ReverseReadID = "R"};
+            var actualString = p.ToString();
             const string expectedString = "ForwardReadID=F, ReverseReadID=R, MeanLength=2000, Standard Deviation=100";
             Assert.AreEqual(actualString, expectedString); 
         }
@@ -450,8 +454,8 @@ namespace Bio.Tests
             assembler.OverlapAlgorithm = new SmithWatermanAligner();
             seqAssembly = (IOverlapDeNovoAssembly) assembler.Assemble(inputs);
 
-            string expectedString = "ACAAAAGCAACAAAAATGAAGGCAATACTAGTAGTTCTGCTATATACATTTGCAACCGCAAATG... +[1678]\r\n".Replace("\r\n",Environment.NewLine);
-            string actualString = seqAssembly.ToString();
+            var expectedString = "ACAAAAGCAACAAAAATGAAGGCAATACTAGTAGTTCTGCTATATACATTTGCAACCGCAAATG... +[1678]\r\n".Replace("\r\n",Environment.NewLine);
+            var actualString = seqAssembly.ToString();
             Assert.AreEqual(expectedString, actualString);
         }
     }

@@ -173,7 +173,7 @@ namespace Bio.Silverlight.TestAutomation.IO.FastQ
         private void InValidateFastQParser(string nodeName)
         {
             // Gets the expected sequence from the Xml
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
 
             // Create a FastQ Parser object.
             var fastQParserObj = new FastQParser();
@@ -190,7 +190,7 @@ namespace Bio.Silverlight.TestAutomation.IO.FastQ
         private void InValidateFastQFormatter(FastQFormatParameters param)
         {
             // Gets the expected sequence from the Xml
-            string filepath = utilityObj.xmlUtil.GetTextValue(
+            var filepath = utilityObj.xmlUtil.GetTextValue(
                 Constants.MultiSeqSangerRnaProNode, Constants.FilePathNode).TestDir();
 
             // Parse a FastQ file.
@@ -218,7 +218,7 @@ namespace Bio.Silverlight.TestAutomation.IO.FastQ
                     default:
                         try
                         {
-                            IEnumerable<IQualitativeSequence> sequence = fastQParser.Parse();
+                            var sequence = fastQParser.Parse();
                             fastQFormatter = new FastQFormatter();
                             fastQFormatter.Format(sequence, null);
                             Assert.Fail();

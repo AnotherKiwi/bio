@@ -22,7 +22,7 @@ namespace Bio.Extensions
 
         private static IEnumerable<Type> InternalInterface(Type t)
         {
-            TypeInfo ti = t.GetTypeInfo();
+            var ti = t.GetTypeInfo();
 
             foreach (var intf in ti.ImplementedInterfaces)
                 yield return intf;

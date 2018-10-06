@@ -18,10 +18,10 @@ namespace Bio
         {
             if (string.IsNullOrEmpty(filename))
             {
-                throw new ArgumentNullException("filename");
+                throw new ArgumentNullException(nameof(filename));
             }
 
-            using (FileStream fs = new FileStream(filename, FileMode.Open))
+            using (var fs = new FileStream(filename, FileMode.Open))
             {
                 return parser.ParseRange(fs);
             }
@@ -35,10 +35,10 @@ namespace Bio
         {
             if (string.IsNullOrEmpty(filename))
             {
-                throw new ArgumentNullException("filename");
+                throw new ArgumentNullException(nameof(filename));
             }
 
-            using (FileStream fs = new FileStream(filename, FileMode.Open))
+            using (var fs = new FileStream(filename, FileMode.Open))
             {
                 return parser.ParseRangeGrouping(fs);
             }

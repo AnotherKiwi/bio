@@ -19,15 +19,15 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         {
             if (graph == null)
             {
-                throw new ArgumentNullException("graph");
+                throw new ArgumentNullException(nameof(graph));
             }
 
-            Node startNode = this[0].Key;
-            bool isForwardDirection = this[0].Value.IsSameOrientation;
+            var startNode = this[0].Key;
+            var isForwardDirection = this[0].Value.IsSameOrientation;
             startNode.MarkNode();
-            List<byte> scaffoldSequence = new List<byte>();
+            var scaffoldSequence = new List<byte>();
             scaffoldSequence.InsertRange(0, graph.GetNodeSequence(startNode));
-            this.RemoveAt(0);
+            RemoveAt(0);
 
             // There is overlap of (k-1) symbols between adjacent contigs
             if (kmerLength > 1)
@@ -35,9 +35,9 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
                 kmerLength--;
             }
 
-            bool sameOrientation = true;
+            var sameOrientation = true;
             ISequence nextNodeSequence = null;
-            foreach (KeyValuePair<Node, Edge> extensions in this)
+            foreach (var extensions in this)
             {
                 sameOrientation = !(sameOrientation ^ extensions.Value.IsSameOrientation);
                 nextNodeSequence = sameOrientation ? graph.GetNodeSequence(extensions.Key) :

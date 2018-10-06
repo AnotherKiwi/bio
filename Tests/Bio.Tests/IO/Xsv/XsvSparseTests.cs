@@ -64,8 +64,8 @@ namespace Bio.Tests.IO.Xsv
         [Category("Priority0")]
         public void XsvSparseFormatterProperties()
         {
-            string XsvTempFileName = Path.GetTempFileName();
-            XsvSparseFormatter formatterObj = new XsvSparseFormatter(',', '#');
+            var XsvTempFileName = Path.GetTempFileName();
+            var formatterObj = new XsvSparseFormatter(',', '#');
             using (formatterObj.Open(XsvTempFileName))
             {
                 Assert.AreEqual("Sparse Sequence formatter to character separated value file", formatterObj.Description);
@@ -89,24 +89,24 @@ namespace Bio.Tests.IO.Xsv
         public void XsvContigFormatter()
         {
             // Gets the expected sequence from the Xml
-            string filePathObj = XsvFilename.TestDir();
-            string xsvTempFileName = Path.GetTempFileName();
+            var filePathObj = XsvFilename.TestDir();
+            var xsvTempFileName = Path.GetTempFileName();
             Assert.IsTrue(File.Exists(filePathObj));
 
             // Read the contigs
-            Contig contig = new XsvContigParser(Alphabets.DNA, ',', '#')
+            var contig = new XsvContigParser(Alphabets.DNA, ',', '#')
                 .ParseContig(filePathObj);
 
-            string seqId = contig.Sequences.Aggregate(string.Empty, (current, seq) => current + (seq.Sequence.ID + ","));
+            var seqId = contig.Sequences.Aggregate(string.Empty, (current, seq) => current + (seq.Sequence.ID + ","));
 
             // Format Xsv file.
             new XsvContigFormatter(',', '#')
                 .Format(contig, xsvTempFileName);
 
-            Contig expectedContig = new XsvContigParser(Alphabets.DNA, ',', '#')
+            var expectedContig = new XsvContigParser(Alphabets.DNA, ',', '#')
                 .ParseContig(xsvTempFileName);
 
-            string expectedseqId = expectedContig.Sequences.Aggregate(string.Empty, (current, seq) => current + (seq.Sequence.ID + ","));
+            var expectedseqId = expectedContig.Sequences.Aggregate(string.Empty, (current, seq) => current + (seq.Sequence.ID + ","));
 
             // Validate parsed temp file with original Xsv file.
             Assert.AreEqual(contig.Length, expectedContig.Length);
@@ -124,26 +124,26 @@ namespace Bio.Tests.IO.Xsv
         private void XsvSparseParserGeneralTestCases()
         {
             // Gets the expected sequence from the Xml
-            string filePathObj = XsvFilename.TestDir();
+            var filePathObj = XsvFilename.TestDir();
 
             Assert.IsTrue(File.Exists(filePathObj));
-            XsvContigParser parserObj = new XsvContigParser(Alphabets.DNA, ',', '#');
+            var parserObj = new XsvContigParser(Alphabets.DNA, ',', '#');
             
-            string expectedSeqIds = "Chr22+Chr22+Chr22+Chr22,m;Chr22;16,m;Chr22;17,m;Chr22;29,m;Chr22;32,m;Chr22;39,m;Chr22;54,m;Chr22;72,m;Chr22;82,m;Chr22;85,m;Chr22;96,m;Chr22;99,m;Chr22;118,m;Chr22;119,m;Chr22;129,m;Chr22;136,m;Chr22;146,m;Chr22;153,m;Chr22;161,m;Chr22;162,m;Chr22;174,m;Chr22;183,m;Chr22;209,m;Chr22;210,m;Chr22;224,m;Chr22;241,m;Chr22;243,m;Chr22;253,m;Chr22;267,m;Chr22;309,m;Chr22;310,m;Chr22;313,m;Chr22;331,m;Chr22;333,m;Chr22;338,m;Chr22;348,m;Chr22;352,m;Chr22;355,m;Chr22;357,m;Chr22;368,m;Chr22;370,m;Chr22;380,m;Chr22;382,m;Chr22;402,m;Chr22;418,m;Chr22;419,m;Chr22;429,m;Chr22;432,m;Chr22;450,m;Chr22;462,m;Chr22;482,m;Chr22;484,m;Chr22;485,m;Chr22;494,m;Chr22;508,m;Chr22;509,m;Chr22;512,";
+            var expectedSeqIds = "Chr22+Chr22+Chr22+Chr22,m;Chr22;16,m;Chr22;17,m;Chr22;29,m;Chr22;32,m;Chr22;39,m;Chr22;54,m;Chr22;72,m;Chr22;82,m;Chr22;85,m;Chr22;96,m;Chr22;99,m;Chr22;118,m;Chr22;119,m;Chr22;129,m;Chr22;136,m;Chr22;146,m;Chr22;153,m;Chr22;161,m;Chr22;162,m;Chr22;174,m;Chr22;183,m;Chr22;209,m;Chr22;210,m;Chr22;224,m;Chr22;241,m;Chr22;243,m;Chr22;253,m;Chr22;267,m;Chr22;309,m;Chr22;310,m;Chr22;313,m;Chr22;331,m;Chr22;333,m;Chr22;338,m;Chr22;348,m;Chr22;352,m;Chr22;355,m;Chr22;357,m;Chr22;368,m;Chr22;370,m;Chr22;380,m;Chr22;382,m;Chr22;402,m;Chr22;418,m;Chr22;419,m;Chr22;429,m;Chr22;432,m;Chr22;450,m;Chr22;462,m;Chr22;482,m;Chr22;484,m;Chr22;485,m;Chr22;494,m;Chr22;508,m;Chr22;509,m;Chr22;512,";
 
-            IEnumerable<ISequence> seqList = parserObj.Parse(filePathObj);
-            SparseSequence sparseSeq = (SparseSequence) seqList.FirstOrDefault();
+            var seqList = parserObj.Parse(filePathObj);
+            var sparseSeq = (SparseSequence) seqList.FirstOrDefault();
                  
             if (null == sparseSeq)
             {
-                string expCount = "57";
+                var expCount = "57";
                 Assert.IsNotNull(seqList);
                 Assert.AreEqual(expCount, seqList.ToList().Count);
 
-                StringBuilder actualId = new StringBuilder();
-                foreach (ISequence seq in seqList)
+                var actualId = new StringBuilder();
+                foreach (var seq in seqList)
                 {
-                    SparseSequence sps = (SparseSequence)seq;
+                    var sps = (SparseSequence)seq;
                     actualId.Append(sps.ID);
                     actualId.Append(",");
                 }
@@ -152,25 +152,25 @@ namespace Bio.Tests.IO.Xsv
             }
             else
             {
-                string[] idArray = expectedSeqIds.Split(',');
+                var idArray = expectedSeqIds.Split(',');
                 Assert.AreEqual(sparseSeq.ID, idArray[0]);
             }
 
-            string XsvTempFileName = Path.GetTempFileName();
-            XsvSparseFormatter formatter = new XsvSparseFormatter(',', '#');
+            var XsvTempFileName = Path.GetTempFileName();
+            var formatter = new XsvSparseFormatter(',', '#');
             using (formatter.Open(XsvTempFileName))
             {
                 formatter.Format(seqList.ToList());
             }
 
-            string expectedOutput = string.Empty;
-            using (StreamReader readerSource = new StreamReader(filePathObj))
+            var expectedOutput = string.Empty;
+            using (var readerSource = new StreamReader(filePathObj))
             {
                 expectedOutput = readerSource.ReadToEnd();
             }
 
-            string actualOutput = string.Empty;
-            using (StreamReader readerDest = new StreamReader(XsvTempFileName))
+            var actualOutput = string.Empty;
+            using (var readerDest = new StreamReader(XsvTempFileName))
             {
                 actualOutput = readerDest.ReadToEnd();
             }
@@ -194,18 +194,18 @@ namespace Bio.Tests.IO.Xsv
         private void XsvSparseFormatterGeneralTestCases(string switchParam)
         {
             // Gets the expected sequence from the Xml
-            string filePathObj = XsvFilename.TestDir();
+            var filePathObj = XsvFilename.TestDir();
 
             Assert.IsTrue(File.Exists(filePathObj));
 
-            XsvContigParser parserObj = new XsvContigParser(Alphabets.DNA, ',', '#');
-            IEnumerable<ISequence> seqList = parserObj.Parse(filePathObj);
-            SparseSequence sparseSeq = (SparseSequence) seqList.FirstOrDefault();
+            var parserObj = new XsvContigParser(Alphabets.DNA, ',', '#');
+            var seqList = parserObj.Parse(filePathObj);
+            var sparseSeq = (SparseSequence) seqList.FirstOrDefault();
 
             var sparseSeqItems = sparseSeq.GetKnownSequenceItems();
 
-            string xsvTempFileName = Path.GetTempFileName();
-            XsvSparseFormatter formatterObj = new XsvSparseFormatter(',', '#');
+            var xsvTempFileName = Path.GetTempFileName();
+            var formatterObj = new XsvSparseFormatter(',', '#');
             using (formatterObj.Open(xsvTempFileName))
             {
                 switch (switchParam)
@@ -224,12 +224,12 @@ namespace Bio.Tests.IO.Xsv
             using (parserObj1.Open(xsvTempFileName))
             {
                 seqList = parserObj1.Parse();
-                SparseSequence expectedSeq = (SparseSequence)seqList.FirstOrDefault();
+                var expectedSeq = (SparseSequence)seqList.FirstOrDefault();
 
                 var expectedSparseSeqItems = expectedSeq.GetKnownSequenceItems();
 
                 Assert.AreEqual(sparseSeqItems.Count, expectedSparseSeqItems.Count);
-                for (int i = 0; i < sparseSeqItems.Count; i++)
+                for (var i = 0; i < sparseSeqItems.Count; i++)
                 {
                     Assert.AreEqual(sparseSeqItems.ElementAt(i).Index, expectedSparseSeqItems.ElementAt(i).Index);
                     Assert.AreEqual(sparseSeqItems.ElementAt(i).Item, expectedSparseSeqItems.ElementAt(i).Item);

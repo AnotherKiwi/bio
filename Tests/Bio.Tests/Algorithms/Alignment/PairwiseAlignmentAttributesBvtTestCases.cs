@@ -24,11 +24,11 @@ namespace Bio.Tests.Algorithms.Alignment
         public void ValidatePairwiseAlignmentAttributes()
         {
             var pwAlignAttrib = new PairwiseAlignmentAttributes();
-            Dictionary<string, AlignmentInfo> attributes = pwAlignAttrib.Attributes;
+            var attributes = pwAlignAttrib.Attributes;
 
-            AlignmentInfo similarityMatrixObj = attributes["SIMILARITYMATRIX"];
-            AlignmentInfo gapOpenCostObj = attributes["GAPOPENCOST"];
-            AlignmentInfo gapExtensionCostObj = attributes["GAPEXTENSIONCOST"];
+            var similarityMatrixObj = attributes["SIMILARITYMATRIX"];
+            var gapOpenCostObj = attributes["GAPOPENCOST"];
+            var gapExtensionCostObj = attributes["GAPEXTENSIONCOST"];
 
             Assert.AreEqual("Similarity Matrix", similarityMatrixObj.Name);
 

@@ -19,7 +19,7 @@ namespace Bio.Algorithms.Kmer
         /// </summary>
         public KmerIndexerDictionary()
         {
-            this.kmerIndexer = new Dictionary<ISequence, IList<KmerIndexer>>(new SequenceEqualityComparer());
+            kmerIndexer = new Dictionary<ISequence, IList<KmerIndexer>>(new SequenceEqualityComparer());
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace Bio.Algorithms.Kmer
         /// <param name="capacity">Number of elements to store.</param>
         public KmerIndexerDictionary(int capacity)
         {
-            this.kmerIndexer = new Dictionary<ISequence, IList<KmerIndexer>>(capacity, new SequenceEqualityComparer());
+            kmerIndexer = new Dictionary<ISequence, IList<KmerIndexer>>(capacity, new SequenceEqualityComparer());
         }
 
         /// <summary>
@@ -38,8 +38,8 @@ namespace Bio.Algorithms.Kmer
         /// <returns>The value associated with the specified key.</returns>
         public IList<KmerIndexer> this[ISequence key]
         {
-            get { return this.kmerIndexer[key]; }
-            set { this.kmerIndexer[key] = value; }
+            get { return kmerIndexer[key]; }
+            set { kmerIndexer[key] = value; }
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Bio.Algorithms.Kmer
         /// <returns>Enumerator over kmers.</returns>
         public Dictionary<ISequence, IList<KmerIndexer>>.Enumerator GetEnumerator()
         {
-            return this.kmerIndexer.GetEnumerator();
+            return kmerIndexer.GetEnumerator();
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace Bio.Algorithms.Kmer
         /// <returns>Boolean indicating if key exists.</returns>
         public bool ContainsKey(ISequence key)
         {
-            return this.kmerIndexer.ContainsKey(key);
+            return kmerIndexer.ContainsKey(key);
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace Bio.Algorithms.Kmer
         /// <returns>Boolean indicating if key was found.</returns>
         public bool TryGetValue(ISequence key, out IList<KmerIndexer> value)
         {
-            return this.kmerIndexer.TryGetValue(key, out value);
+            return kmerIndexer.TryGetValue(key, out value);
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace Bio.Algorithms.Kmer
         /// <param name="value">The value of the element to add.</param>
         public void Add(ISequence key, IList<KmerIndexer> value)
         {
-            this.kmerIndexer.Add(key, value);
+            kmerIndexer.Add(key, value);
         }
     }
 }

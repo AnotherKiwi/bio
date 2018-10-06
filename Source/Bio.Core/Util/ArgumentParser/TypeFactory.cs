@@ -54,9 +54,9 @@ namespace Bio.Util.ArgumentParser
         public static bool TryGetType(string typeName, Type baseType, out Type returnType)
         {
             if (string.IsNullOrEmpty(typeName))
-                throw new ArgumentNullException("typeName");
+                throw new ArgumentNullException(nameof(typeName));
             if (baseType == null)
-                throw new ArgumentNullException("baseType");
+                throw new ArgumentNullException(nameof(baseType));
 
             var result = TypeNameAndBaseNameToType.GetOrAdd(Tuple.Create(typeName.ToLower(), baseType), typeAndBase =>
             {
@@ -108,7 +108,7 @@ namespace Bio.Util.ArgumentParser
             if (!TryGetGenericParameters(ref typeName, out genericTypes))
                 return false;
 
-            foreach (Assembly assembly in AllReferencedAssemblies)
+            foreach (var assembly in AllReferencedAssemblies)
             {
                 returnType = GetType(assembly, baseType, typeName, genericTypes);
 
@@ -158,11 +158,11 @@ namespace Bio.Util.ArgumentParser
 #endif
                 }
 
-                foreach (Type type in assembly.GetTypes())
+                foreach (var type in assembly.GetTypes())
                 {
                     if (type.Name.Equals(typeName, StringComparison.CurrentCultureIgnoreCase))
                     {
-                        Type result = type;
+                        var result = type;
                         if (null != genericTypes)
                             result = type.MakeGenericType(genericTypes);
 
@@ -181,8 +181,8 @@ namespace Bio.Util.ArgumentParser
         /// <returns>List of type.</returns>
         public static IEnumerable<Type> GetReferencedTypes()
         {
-            foreach (Assembly assembly in AllReferencedAssemblies)
-                foreach (Type type in GetAssemblyTypes(assembly))
+            foreach (var assembly in AllReferencedAssemblies)
+                foreach (var type in GetAssemblyTypes(assembly))
                     yield return type;
 
         }
@@ -215,22 +215,22 @@ namespace Bio.Util.ArgumentParser
         {
             genericTypes = null;
 
-            int firstIdx = typeName.IndexOf('<');
+            var firstIdx = typeName.IndexOf('<');
             if (firstIdx < 0)
                 return true;
 
-            int lastIdx = typeName.LastIndexOf('>');
+            var lastIdx = typeName.LastIndexOf('>');
             Helper.CheckCondition(lastIdx == typeName.Length - 1, "Unbalanced <>");
 
-            string typeListString = typeName.Substring(firstIdx + 1, lastIdx - firstIdx - 1);
+            var typeListString = typeName.Substring(firstIdx + 1, lastIdx - firstIdx - 1);
             typeName = typeName.Substring(0, firstIdx);
-            List<Type> genericTypesAsList = new List<Type>();
+            var genericTypesAsList = new List<Type>();
 
             IEnumerable<string> typeArgs;
             try { typeArgs = typeListString.ProtectedSplit('<', '>', false, ','); }
             catch (Exception) { return false; }
 
-            foreach (string typeArgument in typeArgs)
+            foreach (var typeArgument in typeArgs)
             {
                 Type genericArgumentType;
                 if (!TryGetType(typeArgument, typeof(object), out genericArgumentType))
@@ -249,7 +249,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns>List of Assembly.</returns>
         private static IEnumerable<Assembly> EnumerateAllUserAssemblyCodeBases()
         {
-            Assembly entryAssembly = SpecialFunctions.GetEntryOrCallingAssembly();
+            var entryAssembly = SpecialFunctions.GetEntryOrCallingAssembly();
 
             yield return entryAssembly;
 
@@ -257,9 +257,9 @@ namespace Bio.Util.ArgumentParser
             yield break;
 #else
 
-            string exePath = Path.GetDirectoryName(entryAssembly.Location);
+            var exePath = Path.GetDirectoryName(entryAssembly.Location);
             Assembly assembly;
-            foreach (string dllName in Directory.EnumerateFiles(exePath, "*.dll").Union(Directory.EnumerateFiles(exePath, "*.exe")))
+            foreach (var dllName in Directory.EnumerateFiles(exePath, "*.dll").Union(Directory.EnumerateFiles(exePath, "*.exe")))
             {
                 assembly = null;
                 try
@@ -287,13 +287,13 @@ namespace Bio.Util.ArgumentParser
 #if SILVERLIGHT
             yield break;
 #else
-            HashSet<string> alreadySeen = new HashSet<string>();
-            foreach (Assembly userAssembly in userAssemblies)
+            var alreadySeen = new HashSet<string>();
+            foreach (var userAssembly in userAssemblies)
             {
                 if (!alreadySeen.Contains(userAssembly.FullName))
                 {
                     alreadySeen.Add(userAssembly.FullName);
-                    foreach (AssemblyName assemblyName in userAssembly.GetReferencedAssemblies())
+                    foreach (var assemblyName in userAssembly.GetReferencedAssemblies())
                     {
                         // SpecialFunctions.CheckDate(2010, 4, 13);
                         if (assemblyName.FullName.StartsWith("System.Windows.Forms.DataVisualization"))

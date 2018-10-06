@@ -58,10 +58,10 @@ namespace Bio.IO
         static SequenceFormatters()
 		{
             // get the registered formatter
-            IEnumerable<ISequenceFormatter> registeredFormatters = GetSequenceFormatters();
+            var registeredFormatters = GetSequenceFormatters();
             if (null != registeredFormatters)
             {
-                foreach (ISequenceFormatter formatter in registeredFormatters.Where(
+                foreach (var formatter in registeredFormatters.Where(
                     formatter => formatter != null && 
                         allFormatters.All(rfm => string.Compare(rfm.Name, formatter.Name, StringComparison.OrdinalIgnoreCase) != 0)))
                 {
@@ -159,7 +159,7 @@ namespace Bio.IO
                 else
                 {
                     // Do a search through the known formatters to pick up custom formatters added through add-in.
-                    string fileExtension = Path.GetExtension(fileName);
+                    var fileExtension = Path.GetExtension(fileName);
                     if (!string.IsNullOrEmpty(fileExtension))
                     {
                         formatter = All.FirstOrDefault(p => p.SupportedFileTypes.Contains(fileExtension));
@@ -260,7 +260,7 @@ namespace Bio.IO
             {
                 try
                 {
-                    ISequenceFormatter formatter = Activator.CreateInstance(impl) as ISequenceFormatter;
+                    var formatter = Activator.CreateInstance(impl) as ISequenceFormatter;
                     if (formatter != null)
                         registeredFormatters.Add(formatter);
                 }

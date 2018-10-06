@@ -34,15 +34,15 @@ namespace Bio.Util
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
             if (queryParser == null)
             {
-                throw new ArgumentNullException("queryParser");
+                throw new ArgumentNullException(nameof(queryParser));
             }
 
-            this.deltaStream = stream;
-            this.QueryParser = queryParser;
+            deltaStream = stream;
+            QueryParser = queryParser;
         }
 
         /// <summary>
@@ -55,11 +55,11 @@ namespace Bio.Util
         /// </summary>
         public IEnumerable<long> GetPositions()
         {
-            using (StreamReader streamReader = this.deltaStream.OpenRead(leaveOpen:false))
+            using (var streamReader = deltaStream.OpenRead(leaveOpen:false))
             {
                 while (!streamReader.EndOfStream)
                 {
-                    string line = streamReader.ReadLine();
+                    var line = streamReader.ReadLine();
                     if (line.StartsWith("@"))
                     {
                         line = line.Substring(1);
@@ -76,10 +76,10 @@ namespace Bio.Util
         /// <returns>Delta alignment.</returns>
         public DeltaAlignment GetDeltaAlignmentAt(long position)
         {
-            using (var reader = this.deltaStream.OpenRead())
+            using (var reader = deltaStream.OpenRead())
             {
                 long deltaPosition = -1;
-                string line = ReadNextLine(reader);
+                var line = ReadNextLine(reader);
                 if (line == null || !line.StartsWith("@", StringComparison.OrdinalIgnoreCase))
                 {
                     throw new FormatException(string.Format(CultureInfo.CurrentCulture, Properties.Resource.CorruptedDeltaAlignmentFile, position));
@@ -97,13 +97,13 @@ namespace Bio.Util
                     throw new Exception(Properties.Resource.INVALID_INPUT_FILE);
                 }
 
-                string referenceId = line.Substring(1);
+                var referenceId = line.Substring(1);
 
                 // Read next line.
                 line = ReadNextLine(reader);
 
                 // Second line - Query sequence id
-                string queryId = line;
+                var queryId = line;
 
                 // fetch the query sequence from the query file
                 ISequence querySequence = null;
@@ -113,19 +113,19 @@ namespace Bio.Util
                 {
                     // Get the id and remove any alphas - this can happen because the delta might
                     // have "Reverse" appended to it when it's a reversed sequence.
-                    string id = queryId.Substring(queryId.LastIndexOf('@') + 1);
-                    int idx = Array.FindIndex(id.ToCharArray(), c => !Char.IsDigit(c));
+                    var id = queryId.Substring(queryId.LastIndexOf('@') + 1);
+                    var idx = Array.FindIndex(id.ToCharArray(), c => !Char.IsDigit(c));
                     if (idx > 0)
                         id = id.Substring(0, idx);
 
-                    long sequencePosition = long.Parse(id, CultureInfo.InvariantCulture);
-                    querySequence = this.QueryParser.GetSequenceAt(sequencePosition);
+                    var sequencePosition = long.Parse(id, CultureInfo.InvariantCulture);
+                    querySequence = QueryParser.GetSequenceAt(sequencePosition);
                     refEmpty = new Sequence(querySequence.Alphabet, "A", false) { ID = referenceId };
                 }
 
-                DeltaAlignment deltaAlignment = new DeltaAlignment(refEmpty, querySequence) { Id = deltaPosition };
+                var deltaAlignment = new DeltaAlignment(refEmpty, querySequence) { Id = deltaPosition };
                 line = ReadNextLine(reader);
-                string[] deltaAlignmentProperties = line.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                var deltaAlignmentProperties = line.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                 if (deltaAlignmentProperties != null && deltaAlignmentProperties.Length == 7)
                 {
                     long temp;
@@ -178,13 +178,13 @@ namespace Bio.Util
         /// <param name="position">Position of the delta alignment.</param>
         public string GetQuerySeqIdAt(long position)
         {
-            using (var reader = this.deltaStream.OpenRead())
+            using (var reader = deltaStream.OpenRead())
             {
                 reader.BaseStream.Position = position;
                 reader.DiscardBufferedData();
 
                 long deltaPosition = -1;
-                string line = ReadNextLine(reader);
+                var line = ReadNextLine(reader);
                 if (line == null || !line.StartsWith("@", StringComparison.OrdinalIgnoreCase))
                 {
                     throw new FormatException(string.Format(CultureInfo.CurrentCulture, Properties.Resource.CorruptedDeltaAlignmentFile, position));
@@ -212,20 +212,20 @@ namespace Bio.Util
         /// </summary>
         public IEnumerable<Tuple<string, string>> GetQuerySeqIds()
         {
-            using (var reader = this.deltaStream.OpenRead())
+            using (var reader = deltaStream.OpenRead())
             {
                 reader.BaseStream.Position = 0;
                 reader.DiscardBufferedData();
 
                 while (!reader.EndOfStream)
                 {
-                    string line = ReadNextLine(reader);
+                    var line = ReadNextLine(reader);
                     if (line == null || !line.StartsWith("@", StringComparison.OrdinalIgnoreCase))
                     {
                         throw new Exception(Properties.Resource.INVALID_INPUT_FILE);
                     }
 
-                    string id = line;
+                    var id = line;
                     line = ReadNextLine(reader);
                     if (line == null || !line.StartsWith(">", StringComparison.OrdinalIgnoreCase))
                     {
@@ -244,9 +244,9 @@ namespace Bio.Util
         /// <returns>Returns DeltaAlignment collection.</returns>
         public IEnumerable<DeltaAlignment> Parse()
         {
-            using (var reader = this.deltaStream.OpenRead())
+            using (var reader = deltaStream.OpenRead())
             {
-                return this.ParseFrom(reader);
+                return ParseFrom(reader);
             }
         }
 
@@ -257,11 +257,11 @@ namespace Bio.Util
         /// <returns>IEnumerable of DeltaAlignments.</returns>
         public IEnumerable<DeltaAlignment> ParseFrom(long position)
         {
-            using (var reader = this.deltaStream.OpenRead())
+            using (var reader = deltaStream.OpenRead())
             {
                 reader.BaseStream.Position = position;
                 reader.DiscardBufferedData();
-                return this.ParseFrom(reader);
+                return ParseFrom(reader);
             }
         }
 
@@ -270,7 +270,7 @@ namespace Bio.Util
         /// </summary>
         public void Dispose()
         {
-            this.Dispose(true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -282,16 +282,16 @@ namespace Bio.Util
         {
             if (disposing)
             {
-                if (this.deltaStream != null)
+                if (deltaStream != null)
                 {
-                    this.deltaStream.Dispose();
-                    this.deltaStream = null;
+                    deltaStream.Dispose();
+                    deltaStream = null;
                 }
 
-                if (this.QueryParser != null)
+                if (QueryParser != null)
                 {
-                    this.QueryParser.Dispose();
-                    this.QueryParser = null;
+                    QueryParser.Dispose();
+                    QueryParser = null;
                 }
             }            
         }
@@ -303,8 +303,8 @@ namespace Bio.Util
         private static string ReadNextLine(StreamReader streamReader)
         {
             // Read next line.
-            string line = streamReader.ReadLine();
-            string message = string.Empty;
+            var line = streamReader.ReadLine();
+            var message = string.Empty;
 
             // Continue reading if blank line found.
             while (line != null && string.IsNullOrEmpty(line))
@@ -331,9 +331,9 @@ namespace Bio.Util
         /// <returns>IEnumerable of DeltaAlignments.</returns>
         private IEnumerable<DeltaAlignment> ParseFrom(StreamReader streamReader)
         {
-            this.parsingReaders.Add(streamReader);
+            parsingReaders.Add(streamReader);
 
-            string lastReadQuerySequenceId = string.Empty;
+            var lastReadQuerySequenceId = string.Empty;
             ISequence sequence = null;
 
             if (streamReader.EndOfStream)
@@ -341,7 +341,7 @@ namespace Bio.Util
                 throw new Exception(Properties.Resource.INVALID_INPUT_FILE);
             }
 
-            string line = ReadNextLine(streamReader);
+            var line = ReadNextLine(streamReader);
             do
             {
                 if (line == null || !line.StartsWith("@", StringComparison.OrdinalIgnoreCase))
@@ -349,7 +349,7 @@ namespace Bio.Util
                     throw new Exception(Properties.Resource.INVALID_INPUT_FILE);
                 }
 
-                long deltaPosition = long.Parse(line.Substring(1));
+                var deltaPosition = long.Parse(line.Substring(1));
                 line = ReadNextLine(streamReader);
                 if (line == null || !line.StartsWith(">", StringComparison.OrdinalIgnoreCase))
                 {
@@ -359,13 +359,13 @@ namespace Bio.Util
                 DeltaAlignment deltaAlignment = null;
 
                 // First line - reference id
-                string referenceId = line.Substring(1);
+                var referenceId = line.Substring(1);
 
                 // Read next line.
                 line = ReadNextLine(streamReader);
 
                 // Second line - Query sequence id
-                string queryId = line;
+                var queryId = line;
 
                 // fetch the query sequence from the query file
                 if (!string.IsNullOrEmpty(queryId))
@@ -374,17 +374,17 @@ namespace Bio.Util
                     {
                         // Get the id and remove any alphas - this can happen because the delta might
                         // have "Reverse" appended to it when it's a reversed sequence.
-                        string id = queryId.Substring(queryId.LastIndexOf('@') + 1);
-                        int idx = Array.FindIndex(id.ToCharArray(), c => !Char.IsDigit(c));
+                        var id = queryId.Substring(queryId.LastIndexOf('@') + 1);
+                        var idx = Array.FindIndex(id.ToCharArray(), c => !Char.IsDigit(c));
                         if (idx > 0)
                             id = id.Substring(0, idx);
                         
-                        long seqPosition = long.Parse(id, CultureInfo.InvariantCulture);
-                        sequence = this.QueryParser.GetSequenceAt(seqPosition);
+                        var seqPosition = long.Parse(id, CultureInfo.InvariantCulture);
+                        sequence = QueryParser.GetSequenceAt(seqPosition);
                         lastReadQuerySequenceId = queryId;
                     }
 
-                    Sequence refEmpty = new Sequence(sequence.Alphabet, "A", false) {ID = referenceId};
+                    var refEmpty = new Sequence(sequence.Alphabet, "A", false) {ID = referenceId};
                     deltaAlignment = new DeltaAlignment(refEmpty, sequence);
                 }
 
@@ -393,7 +393,7 @@ namespace Bio.Util
                 // Read next line.
                 line = ReadNextLine(streamReader);
 
-                string[] deltaAlignmentProperties = line.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                var deltaAlignmentProperties = line.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                 if (deltaAlignmentProperties != null && deltaAlignmentProperties.Length == 7)
                 {
                     long temp;

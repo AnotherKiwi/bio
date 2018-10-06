@@ -62,21 +62,21 @@ namespace Bio.Algorithms.MUMmer
             // defaults are reasonable for many cases.
 
             // Default is set to 20
-            this.LengthOfMUM = 20;
+            LengthOfMUM = 20;
 
             SimilarityMatrix = null;
 
-            this.GapOpenCost = -13; // 5, -4 diagonal matrix for Dna
+            GapOpenCost = -13; // 5, -4 diagonal matrix for Dna
 
             // default affine gap is -1
-            this.GapExtensionCost = -8;
+            GapExtensionCost = -8;
 
             // Set the default alignment algorithm to NeedlemanWunsch
-            this.PairWiseAlgorithm = new NeedlemanWunschAligner();
+            PairWiseAlgorithm = new NeedlemanWunschAligner();
 
-            this.MaximumMatchEnabled = false;
+            MaximumMatchEnabled = false;
 
-            this.AmbigiousMatchesAllowed = false;
+            AmbigiousMatchesAllowed = false;
         }
 
         #endregion
@@ -150,8 +150,8 @@ namespace Bio.Algorithms.MUMmer
         /// </summary>
         public bool StoreMUMs
         {
-            get { return this.storeMUMs; }
-            set { this.storeMUMs = value; }
+            get { return storeMUMs; }
+            set { storeMUMs = value; }
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace Bio.Algorithms.MUMmer
         /// </summary>
         public IDictionary<ISequence, IEnumerable<Match>> MUMs
         {
-            get { return this.mums; }
+            get { return mums; }
         }
 
         /// <summary>
@@ -196,7 +196,7 @@ namespace Bio.Algorithms.MUMmer
         /// <returns>A list of sequence alignments.</returns>
         IList<ISequenceAlignment> ISequenceAligner.AlignSimple(IEnumerable<ISequence> inputSequences)
         {
-            return this.AlignSimple(inputSequences).Cast<ISequenceAlignment>().ToList();
+            return AlignSimple(inputSequences).Cast<ISequenceAlignment>().ToList();
         }
 
         /// <summary>
@@ -206,8 +206,8 @@ namespace Bio.Algorithms.MUMmer
         /// <returns>A list of sequence alignments.</returns>
         public IList<IPairwiseSequenceAlignment> AlignSimple(IEnumerable<ISequence> inputSequences)
         {
-            this.UseGapExtensionCost = false;
-            return this.AlignSimple(inputSequences.First(), inputSequences);
+            UseGapExtensionCost = false;
+            return AlignSimple(inputSequences.First(), inputSequences);
         }
 
         /// <summary>
@@ -220,8 +220,8 @@ namespace Bio.Algorithms.MUMmer
                ISequence referenceSequence,
                IEnumerable<ISequence> querySequenceList)
         {
-            this.UseGapExtensionCost = false;
-            return this.Alignment(referenceSequence, querySequenceList);
+            UseGapExtensionCost = false;
+            return Alignment(referenceSequence, querySequenceList);
         }
 
         /// <summary>
@@ -233,7 +233,7 @@ namespace Bio.Algorithms.MUMmer
         /// <returns>A list of sequence alignments.</returns>
         IList<ISequenceAlignment> ISequenceAligner.Align(IEnumerable<ISequence> inputSequences)
         {
-            return this.Align(inputSequences).Cast<ISequenceAlignment>().ToList();
+            return Align(inputSequences).Cast<ISequenceAlignment>().ToList();
         }
 
         /// <summary>
@@ -245,8 +245,8 @@ namespace Bio.Algorithms.MUMmer
         /// <returns>A list of sequence alignments.</returns>
         public IList<IPairwiseSequenceAlignment> Align(IEnumerable<ISequence> inputSequences)
         {
-            this.UseGapExtensionCost = true;
-            return this.Align(inputSequences.First(), inputSequences);
+            UseGapExtensionCost = true;
+            return Align(inputSequences.First(), inputSequences);
         }
 
         /// <summary>
@@ -261,8 +261,8 @@ namespace Bio.Algorithms.MUMmer
                 ISequence referenceSequence,
                 IEnumerable<ISequence> querySequenceList)
         {
-            this.UseGapExtensionCost = true;
-            return this.Alignment(referenceSequence, querySequenceList);
+            UseGapExtensionCost = true;
+            return Alignment(referenceSequence, querySequenceList);
         }
 
         #endregion -- Public Method(s) --
@@ -277,30 +277,30 @@ namespace Bio.Algorithms.MUMmer
                 ISequence referenceSequence,
                 IEnumerable<ISequence> querySequenceList)
         {
-            bool isValidLength = false;
+            var isValidLength = false;
 
             if (null == referenceSequence)
             {
-                string message = Properties.Resource.ReferenceSequenceCannotBeNull;
+                var message = Properties.Resource.ReferenceSequenceCannotBeNull;
                 Debug.WriteLine(message);
-                throw new ArgumentNullException("referenceSequence");
+                throw new ArgumentNullException(nameof(referenceSequence));
             }
 
             if (null == querySequenceList)
             {
-                string message = Properties.Resource.QueryListCannotBeNull;
+                var message = Properties.Resource.QueryListCannotBeNull;
                 Debug.WriteLine(message);
-                throw new ArgumentNullException("querySequenceList");
+                throw new ArgumentNullException(nameof(querySequenceList));
             }
 
             if ((referenceSequence.Alphabet != Alphabets.DNA) && (referenceSequence.Alphabet != Alphabets.RNA))
             {
-                string message = string.Format(
+                var message = string.Format(
                     CultureInfo.CurrentCulture,
                     Properties.Resource.OnlyDNAOrRNAInput,
                     "MUMmer");
                 Debug.WriteLine(message);
-                throw new ArgumentException(message, "referenceSequence");
+                throw new ArgumentException(message, nameof(referenceSequence));
             }
 
             // setting default similarity matrix based on DNA or RNA
@@ -318,45 +318,45 @@ namespace Bio.Algorithms.MUMmer
 
             if (!SimilarityMatrix.ValidateSequence(referenceSequence))
             {
-                string message = Properties.Resource.FirstInputSequenceMismatchSimilarityMatrix;
+                var message = Properties.Resource.FirstInputSequenceMismatchSimilarityMatrix;
                 Debug.WriteLine(message);
-                throw new ArgumentException(message, "referenceSequence");
+                throw new ArgumentException(message, nameof(referenceSequence));
             }
 
-            if (referenceSequence.Count < this.LengthOfMUM)
+            if (referenceSequence.Count < LengthOfMUM)
             {
-                string message = String.Format(
+                var message = String.Format(
                         CultureInfo.CurrentCulture,
                         Properties.Resource.InputSequenceMustBeGreaterThanMUM,
-                        this.LengthOfMUM);
+                        LengthOfMUM);
                 Debug.WriteLine(message);
-                throw new ArgumentException(message, "referenceSequence");
+                throw new ArgumentException(message, nameof(referenceSequence));
             }
 
-            foreach (ISequence querySequence in querySequenceList)
+            foreach (var querySequence in querySequenceList)
             {
                 if (null == querySequence)
                 {
-                    string message = Properties.Resource.QuerySequenceCannotBeNull;
+                    var message = Properties.Resource.QuerySequenceCannotBeNull;
                     Debug.WriteLine(message);
-                    throw new ArgumentNullException("querySequenceList", message);
+                    throw new ArgumentNullException(nameof(querySequenceList), message);
                 }
 
                 if (referenceSequence.Alphabet != querySequence.Alphabet)
                 {
-                    string message = Properties.Resource.InputAlphabetsMismatch;
+                    var message = Properties.Resource.InputAlphabetsMismatch;
                     Debug.WriteLine(message);
                     throw new ArgumentException(message);
                 }
 
                 if (!SimilarityMatrix.ValidateSequence(querySequence))
                 {
-                    string message = Properties.Resource.SecondInputSequenceMismatchSimilarityMatrix;
+                    var message = Properties.Resource.SecondInputSequenceMismatchSimilarityMatrix;
                     Debug.WriteLine(message);
-                    throw new ArgumentException(message, "querySequenceList");
+                    throw new ArgumentException(message, nameof(querySequenceList));
                 }
 
-                if (querySequence.Count >= this.LengthOfMUM)
+                if (querySequence.Count >= LengthOfMUM)
                 {
                     isValidLength = true;
                 }
@@ -364,17 +364,17 @@ namespace Bio.Algorithms.MUMmer
 
             if (!isValidLength)
             {
-                string message = String.Format(
+                var message = String.Format(
                         CultureInfo.CurrentCulture,
                         Properties.Resource.InputSequenceMustBeGreaterThanMUM,
-                        this.LengthOfMUM);
+                        LengthOfMUM);
                 Debug.WriteLine(message);
-                throw new ArgumentException(message, "querySequenceList");
+                throw new ArgumentException(message, nameof(querySequenceList));
             }
 
-            if (1 > this.LengthOfMUM)
+            if (1 > LengthOfMUM)
             {
-                string message = Properties.Resource.MUMLengthTooSmall;
+                var message = Properties.Resource.MUMLengthTooSmall;
                 Debug.WriteLine(message);
                 throw new ArgumentException(message);
             }
@@ -402,7 +402,7 @@ namespace Bio.Algorithms.MUMmer
         /// <returns>Hyphen padded sequence.</returns>
         private static byte[] CreateDefaultGap(long length)
         {
-            byte[] gap = new byte[length];
+            var gap = new byte[length];
             for (long index = 0; index < length; index++)
             {
                 gap[index] = AlignmentChar;
@@ -424,22 +424,22 @@ namespace Bio.Algorithms.MUMmer
                 IEnumerable<ISequence> querySequenceList)
         {
             // Initializations
-            if (this.ConsensusResolver == null)
+            if (ConsensusResolver == null)
             {
-                this.ConsensusResolver = new SimpleConsensusResolver(referenceSequence.Alphabet);
+                ConsensusResolver = new SimpleConsensusResolver(referenceSequence.Alphabet);
             }
             else
             {
-                this.ConsensusResolver.SequenceAlphabet = referenceSequence.Alphabet;
+                ConsensusResolver.SequenceAlphabet = referenceSequence.Alphabet;
             }
 
-            if (this.StoreMUMs)
+            if (StoreMUMs)
             {
-                return this.AlignmentWithAccumulatedMUMs(referenceSequence, querySequenceList);
+                return AlignmentWithAccumulatedMUMs(referenceSequence, querySequenceList);
             }
             else
             {
-                return this.AlignmentWithoutAccumulatedMUMs(referenceSequence, querySequenceList);
+                return AlignmentWithoutAccumulatedMUMs(referenceSequence, querySequenceList);
             }
         }
 
@@ -459,7 +459,7 @@ namespace Bio.Algorithms.MUMmer
             IList<IPairwiseSequenceAlignment> results = new List<IPairwiseSequenceAlignment>();
             IPairwiseSequenceAlignment alignment = null;
             IEnumerable<Match> mum;
-            if (this.Validate(referenceSequence, querySequenceList))
+            if (Validate(referenceSequence, querySequenceList))
             {
                 // Safety check for public methods to ensure that null 
                 // inputs are handled.
@@ -468,16 +468,16 @@ namespace Bio.Algorithms.MUMmer
                     return null;
                 }
 
-                Sequence seq = referenceSequence as Sequence;
+                var seq = referenceSequence as Sequence;
                 if (seq == null)
                 {
                     throw new ArgumentException(Properties.Resource.OnlySequenceClassSupported);
                 }
 
-                MUMmer mummer = new MUMmer(seq);
-                mummer.LengthOfMUM = this.LengthOfMUM;
-                mummer.NoAmbiguity = this.AmbigiousMatchesAllowed;
-                foreach (ISequence sequence in querySequenceList)
+                var mummer = new MUMmer(seq);
+                mummer.LengthOfMUM = LengthOfMUM;
+                mummer.NoAmbiguity = AmbigiousMatchesAllowed;
+                foreach (var sequence in querySequenceList)
                 {
                     if (sequence.Equals(referenceSequence))
                     {
@@ -487,7 +487,7 @@ namespace Bio.Algorithms.MUMmer
                     alignment = new PairwiseSequenceAlignment(referenceSequence, sequence);
 
                     // Step2 : streaming process is performed with the query sequence
-                    if (this.MaximumMatchEnabled)
+                    if (MaximumMatchEnabled)
                     {
                         mum = mummer.GetMatches(sequence);
                     }
@@ -497,26 +497,26 @@ namespace Bio.Algorithms.MUMmer
                     }
 
                     // Step3(a) : sorted mum list based on reference sequence
-                    LongestIncreasingSubsequence lis = new LongestIncreasingSubsequence();
-                    IList<Match> sortedMumList = lis.SortMum(GetMumsForLIS(mum));
+                    var lis = new LongestIncreasingSubsequence();
+                    var sortedMumList = lis.SortMum(GetMumsForLIS(mum));
 
                     if (sortedMumList.Count > 0)
                     {
                         // Step3(b) : LIS using greedy cover algorithm
-                        IList<Match> finalMumList = lis.GetLongestSequence(sortedMumList);
+                        var finalMumList = lis.GetLongestSequence(sortedMumList);
 
                         if (finalMumList.Count > 0)
                         {
                             // Step 4 : get all the gaps in each sequence and call 
                             // pairwise alignment
                             alignment.PairwiseAlignedSequences.Add(
-                                this.ProcessGaps(referenceSequence, sequence, finalMumList));
+                                ProcessGaps(referenceSequence, sequence, finalMumList));
                         }
                         results.Add(alignment);
                     }
                     else // Default to a full global alignment - very expensive for large sequences.
                     {
-                        IPairwiseSequenceAlignment pairwiseAlignment = this.RunPairWise(
+                        var pairwiseAlignment = RunPairWise(
                                 referenceSequence,
                                 sequence);
                         results.Add(pairwiseAlignment);
@@ -542,11 +542,11 @@ namespace Bio.Algorithms.MUMmer
                 IEnumerable<ISequence> querySequenceList)
         {
             // Get MUMs
-            this.mums = new Dictionary<ISequence, IEnumerable<Match>>();
+            mums = new Dictionary<ISequence, IEnumerable<Match>>();
             IList<IPairwiseSequenceAlignment> results = new List<IPairwiseSequenceAlignment>();
             IPairwiseSequenceAlignment alignment = null;
             IEnumerable<Match> mum;
-            if (this.Validate(referenceSequence, querySequenceList))
+            if (Validate(referenceSequence, querySequenceList))
             {
                 // Safety check for public methods to ensure that null 
                 // inputs are handled.
@@ -555,16 +555,16 @@ namespace Bio.Algorithms.MUMmer
                     return null;
                 }
 
-                Sequence seq = referenceSequence as Sequence;
+                var seq = referenceSequence as Sequence;
                 if (seq == null)
                 {
                     throw new ArgumentException(Properties.Resource.OnlySequenceClassSupported);
                 }
 
-                MUMmer mummer = new MUMmer(seq);
-                mummer.LengthOfMUM = this.LengthOfMUM;
-                mummer.NoAmbiguity = this.AmbigiousMatchesAllowed;
-                foreach (ISequence sequence in querySequenceList)
+                var mummer = new MUMmer(seq);
+                mummer.LengthOfMUM = LengthOfMUM;
+                mummer.NoAmbiguity = AmbigiousMatchesAllowed;
+                foreach (var sequence in querySequenceList)
                 {
                     if (sequence.Equals(referenceSequence))
                     {
@@ -574,7 +574,7 @@ namespace Bio.Algorithms.MUMmer
                     alignment = new PairwiseSequenceAlignment(referenceSequence, sequence);
 
                     // Step2 : streaming process is performed with the query sequence
-                    if (this.MaximumMatchEnabled)
+                    if (MaximumMatchEnabled)
                     {
                         mum = mummer.GetMatches(sequence);
                     }
@@ -583,25 +583,25 @@ namespace Bio.Algorithms.MUMmer
                         mum = mummer.GetMatchesUniqueInReference(sequence);
                     }
 
-                    this.mums.Add(sequence, mum);
+                    mums.Add(sequence, mum);
 
                     // Step3(a) : sorted mum list based on reference sequence
-                    LongestIncreasingSubsequence lis = new LongestIncreasingSubsequence();
-                    IList<Match> sortedMumList = lis.SortMum(GetMumsForLIS(mum));
+                    var lis = new LongestIncreasingSubsequence();
+                    var sortedMumList = lis.SortMum(GetMumsForLIS(mum));
 
                     if (sortedMumList.Count > 0) {
                         // Step3(b) : LIS using greedy cover algorithm
-                        IList<Match> finalMumList = lis.GetLongestSequence(sortedMumList);
+                        var finalMumList = lis.GetLongestSequence(sortedMumList);
 
                         if (finalMumList.Count > 0) {
                             // Step 4 : get all the gaps in each sequence and call 
                             // pairwise alignment
                             alignment.PairwiseAlignedSequences.Add (
-                                this.ProcessGaps (referenceSequence, sequence, finalMumList));
+                                ProcessGaps (referenceSequence, sequence, finalMumList));
                         }
                         results.Add (alignment);
                     } else {
-                        IPairwiseSequenceAlignment pairwiseAlignment = this.RunPairWise (
+                        var pairwiseAlignment = RunPairWise (
                                                                            referenceSequence,
                                                                            sequence);
                         results.Add (pairwiseAlignment);
@@ -621,22 +621,22 @@ namespace Bio.Algorithms.MUMmer
         {
             IPairwiseSequenceAlignment sequenceAlignment = null;
 
-            if (this.PairWiseAlgorithm == null) {
-                this.PairWiseAlgorithm = new NeedlemanWunschAligner ();
+            if (PairWiseAlgorithm == null) {
+                PairWiseAlgorithm = new NeedlemanWunschAligner ();
             } 
 
-            this.PairWiseAlgorithm.SimilarityMatrix = SimilarityMatrix;
-            this.PairWiseAlgorithm.GapOpenCost = this.GapOpenCost;
-            this.PairWiseAlgorithm.ConsensusResolver = this.ConsensusResolver;
+            PairWiseAlgorithm.SimilarityMatrix = SimilarityMatrix;
+            PairWiseAlgorithm.GapOpenCost = GapOpenCost;
+            PairWiseAlgorithm.ConsensusResolver = ConsensusResolver;
 
-            if (this.UseGapExtensionCost)
+            if (UseGapExtensionCost)
             {
-                this.PairWiseAlgorithm.GapExtensionCost = this.GapExtensionCost;
-                sequenceAlignment = this.PairWiseAlgorithm.Align(seq1, seq2).FirstOrDefault();
+                PairWiseAlgorithm.GapExtensionCost = GapExtensionCost;
+                sequenceAlignment = PairWiseAlgorithm.Align(seq1, seq2).FirstOrDefault();
             }
             else
             {
-                sequenceAlignment = this.PairWiseAlgorithm.AlignSimple(seq1, seq2).FirstOrDefault();
+                sequenceAlignment = PairWiseAlgorithm.AlignSimple(seq1, seq2).FirstOrDefault();
             }
             // NeedlemanWunsch is a global aligner that should always return exactly one alignment
             if (sequenceAlignment == null || sequenceAlignment.PairwiseAlignedSequences.Count != 1 || sequenceAlignment.PairwiseAlignedSequences[0] == null) {
@@ -670,21 +670,23 @@ namespace Bio.Algorithms.MUMmer
                 ISequence sequence,
                 IList<Match> mums)
         {
-            List<byte> sequenceResult1 = new List<byte>();
-            List<byte> sequenceResult2 = new List<byte>();
-            List<byte> consensusResult = new List<byte>();
-            PairwiseAlignedSequence alignedSequence = new PairwiseAlignedSequence();
+            var sequenceResult1 = new List<byte>();
+            var sequenceResult2 = new List<byte>();
+            var consensusResult = new List<byte>();
+            var alignedSequence = new PairwiseAlignedSequence();
             Match mum1;
             Match mum2;
 
             // Run the alignment for gap before first MUM
-            List<long> insertions = new List<long>(2);
-            insertions.Add(0);
-            insertions.Add(0);
+            var insertions = new List<long>(2)
+            {
+                0,
+                0
+            };
 
             List<long> gapInsertions;
             mum1 = mums.First();
-            alignedSequence.Score += this.AlignGap(
+            alignedSequence.Score += AlignGap(
                     referenceSequence,
                     sequence,
                     sequenceResult1,
@@ -698,11 +700,11 @@ namespace Bio.Algorithms.MUMmer
             insertions[1] += gapInsertions[1];
 
             // Run the alignment for all the gaps between MUM
-            for (int index = 1; index < mums.Count; index++)
+            for (var index = 1; index < mums.Count; index++)
             {
                 mum2 = mums[index];
 
-                alignedSequence.Score += this.AlignGap(
+                alignedSequence.Score += AlignGap(
                         referenceSequence,
                         sequence,
                         sequenceResult1,
@@ -719,7 +721,7 @@ namespace Bio.Algorithms.MUMmer
             }
 
             // Run the alignment for gap after last MUM
-            alignedSequence.Score += this.AlignGap(
+            alignedSequence.Score += AlignGap(
                     referenceSequence,
                     sequence,
                     sequenceResult1,
@@ -732,8 +734,8 @@ namespace Bio.Algorithms.MUMmer
             insertions[0] += gapInsertions[0];
             insertions[1] += gapInsertions[1];
 
-            byte[] result1 = sequenceResult1.ToArray();
-            IAlphabet alphabet = Alphabets.AutoDetectAlphabet(result1, 0, result1.GetLongLength(), referenceSequence.Alphabet);
+            var result1 = sequenceResult1.ToArray();
+            var alphabet = Alphabets.AutoDetectAlphabet(result1, 0, result1.GetLongLength(), referenceSequence.Alphabet);
             alignedSequence.FirstSequence = new Sequence(
                 alphabet,
                 result1)
@@ -743,7 +745,7 @@ namespace Bio.Algorithms.MUMmer
                     //Metadata = referenceSequence.Metadata
                 };
 
-            byte[] result2 = sequenceResult2.ToArray();
+            var result2 = sequenceResult2.ToArray();
             alphabet = Alphabets.AutoDetectAlphabet(result2, 0, result2.GetLongLength(), sequence.Alphabet);
 
             alignedSequence.SecondSequence = new Sequence(
@@ -755,7 +757,7 @@ namespace Bio.Algorithms.MUMmer
                     //Metadata = sequence.Metadata
                 };
 
-            byte[] consensus = consensusResult.ToArray();
+            var consensus = consensusResult.ToArray();
             alphabet = Alphabets.AutoDetectAlphabet(consensus, 0, consensus.GetLongLength(), referenceSequence.Alphabet);
             alignedSequence.Consensus = new Sequence(
                 alphabet,
@@ -765,8 +767,8 @@ namespace Bio.Algorithms.MUMmer
             alignedSequence.SecondOffset = alignedSequence.SecondSequence.IndexOfNonGap() - sequence.IndexOfNonGap();
                     
             
-            List<long> startOffsets = new List<long>(2);
-            List<long> endOffsets = new List<long>(2);
+            var startOffsets = new List<long>(2);
+            var endOffsets = new List<long>(2);
             startOffsets.Add(0);
             startOffsets.Add(0);
 
@@ -809,9 +811,11 @@ namespace Bio.Algorithms.MUMmer
             byte[] mum1String;
             byte[] mum2String;
 
-            insertions = new List<long>(2);
-            insertions.Add(0);
-            insertions.Add(0);
+            insertions = new List<long>(2)
+            {
+                0,
+                0
+            };
 
             long mum1ReferenceStartIndex = 0;
             long mum1QueryStartIndex = 0;
@@ -839,8 +843,8 @@ namespace Bio.Algorithms.MUMmer
                 mum2QueryStartIndex = querySequence.Count;
             }
 
-            long referenceGapStartIndex = mum1ReferenceStartIndex + mum1Length;
-            long queryGapStartIndex = mum1QueryStartIndex + mum1Length;
+            var referenceGapStartIndex = mum1ReferenceStartIndex + mum1Length;
+            var queryGapStartIndex = mum1QueryStartIndex + mum1Length;
 
             /* Stich the exact matches together according to if both sequences have data
              * in the gap (in which case use a global alignment) or if only one does 
@@ -858,7 +862,7 @@ namespace Bio.Algorithms.MUMmer
                     mum2QueryStartIndex - queryGapStartIndex);
                 
                 // Do a pairwise alignment (must be needleman wunsh)
-                var alignment = this.RunPairWiseReturnJustAlignment(sequence1, sequence2);
+                var alignment = RunPairWiseReturnJustAlignment(sequence1, sequence2);
                 sequenceResult1.AddRange(alignment.FirstSequence);
                 sequenceResult2.AddRange(alignment.SecondSequence);
                 consensusResult.AddRange(alignment.Consensus);
@@ -869,7 +873,7 @@ namespace Bio.Algorithms.MUMmer
                     // Should never happen - can remove later.
                     throw new Exception ("NeedlemanWunsch alignment did not have an insertion entry");
                 }
-                List<long> gapinsertions = alignment.Metadata ["Insertions"] as List<long>;
+                var gapinsertions = alignment.Metadata ["Insertions"] as List<long>;
                 if (gapinsertions == null || gapinsertions.Count != 2) {
                     // Should never happen - can remove later
                     throw new Exception("Alignment Insertions were not available as a size 2 list");
@@ -889,13 +893,13 @@ namespace Bio.Algorithms.MUMmer
 
                 insertions[1] += sequence1.Count;
 
-                if (this.UseGapExtensionCost)
+                if (UseGapExtensionCost)
                 {
-                    score = this.GapOpenCost + ((sequence1.Count - 1) * this.GapExtensionCost);
+                    score = GapOpenCost + ((sequence1.Count - 1) * GapExtensionCost);
                 }
                 else
                 {
-                    score = sequence1.Count * this.GapOpenCost;
+                    score = sequence1.Count * GapOpenCost;
                 }
             }
             else if (mum2QueryStartIndex > queryGapStartIndex) // Only the query has data, insert gaps for the reference
@@ -910,13 +914,13 @@ namespace Bio.Algorithms.MUMmer
 
                 insertions[0] += sequence2.Count;
 
-                if (this.UseGapExtensionCost)
+                if (UseGapExtensionCost)
                 {
-                    score = this.GapOpenCost + ((sequence2.Count - 1) * this.GapExtensionCost);
+                    score = GapOpenCost + ((sequence2.Count - 1) * GapExtensionCost);
                 }
                 else
                 {
-                    score = sequence2.Count * this.GapOpenCost;
+                    score = sequence2.Count * GapOpenCost;
                 }
             }
 
@@ -934,7 +938,7 @@ namespace Bio.Algorithms.MUMmer
                 sequenceResult2.AddRange(mum2String);
                 consensusResult.AddRange(mum1String);
 
-                foreach (byte index in mum1String)
+                foreach (var index in mum1String)
                 {
                     score += SimilarityMatrix[index, index];
                 }

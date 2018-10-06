@@ -23,14 +23,14 @@ namespace Bio.IO.GenBank
                 throw new ArgumentNullException(Properties.Resource.ParameterNameLocation);
             }
 
-            string locationString = location.Replace(" ", string.Empty);
+            var locationString = location.Replace(" ", string.Empty);
             try
             {
-                ILocation loc = BuildLocation(ref locationString);
+                var loc = BuildLocation(ref locationString);
 
                 if (!string.IsNullOrEmpty(locationString))
                 {
-                    string str = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidLocationString, locationString);
+                    var str = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidLocationString, locationString);
                     throw new ArgumentException(str);
                 }
 
@@ -38,7 +38,7 @@ namespace Bio.IO.GenBank
             }
             catch (ArgumentException ex)
             {
-                string str = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidLocationString, location);
+                var str = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidLocationString, location);
                 throw new ArgumentException(str, ex);
             }
         }
@@ -54,7 +54,7 @@ namespace Bio.IO.GenBank
                 throw new ArgumentNullException(Properties.Resource.ParameterNameLocation);
             }
 
-            StringBuilder strBuilder = new StringBuilder();
+            var strBuilder = new StringBuilder();
             if (location.Operator != LocationOperator.None)
             {
                 strBuilder.Append(location.Operator.ToString().ToLowerInvariant() + "(");
@@ -85,7 +85,7 @@ namespace Bio.IO.GenBank
                 {
                     if (location.SubLocations.Count > 0)
                     {
-                        for (int i = 0; i < location.SubLocations.Count; i++)
+                        for (var i = 0; i < location.SubLocations.Count; i++)
                         {
                             strBuilder.Append(GetLocationString(location.SubLocations[i]));
                             if (i < location.SubLocations.Count - 1)
@@ -140,7 +140,7 @@ namespace Bio.IO.GenBank
         /// <returns>A Location instance.</returns>
         private ILocation BuildLocation(ref string locationString)
         {
-            Location location = new Location {Resolver = new LocationResolver()};
+            var location = new Location {Resolver = new LocationResolver()};
 
             if (locationString.StartsWith("complement(", StringComparison.OrdinalIgnoreCase))
             {
@@ -172,8 +172,8 @@ namespace Bio.IO.GenBank
             }
             else
             {
-                int index = GetNextIndex(locationString);
-                string singleLocation = locationString;
+                var index = GetNextIndex(locationString);
+                var singleLocation = locationString;
                 if (index != -1)
                 {
                     singleLocation = locationString.Substring(0, index);
@@ -186,17 +186,17 @@ namespace Bio.IO.GenBank
 
                 if (singleLocation.Contains(":"))
                 {
-                    int firstIndex = singleLocation.IndexOf(":",StringComparison.OrdinalIgnoreCase);
+                    var firstIndex = singleLocation.IndexOf(":",StringComparison.OrdinalIgnoreCase);
                     if (firstIndex != singleLocation.LastIndexOf(":", StringComparison.OrdinalIgnoreCase))
                     {
-                        string str = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidLocationString, locationString);
+                        var str = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidLocationString, locationString);
                         throw new ArgumentException(str);
                     }
 
-                    string[] strArray = singleLocation.Split(':');
+                    var strArray = singleLocation.Split(':');
                     if (strArray.Length != 2)
                     {
-                        string str = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidLocationString, locationString);
+                        var str = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidLocationString, locationString);
                         throw new ArgumentException(str);
                     }
 
@@ -206,19 +206,19 @@ namespace Bio.IO.GenBank
 
                 if (singleLocation.Contains(".."))
                 {
-                    int firstIndex = singleLocation.IndexOf("..", StringComparison.OrdinalIgnoreCase);
+                    var firstIndex = singleLocation.IndexOf("..", StringComparison.OrdinalIgnoreCase);
                     if (firstIndex != singleLocation.LastIndexOf("..", StringComparison.OrdinalIgnoreCase))
                     {
-                        string str = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidLocationString, locationString);
+                        var str = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidLocationString, locationString);
                         throw new ArgumentException(str);
                     }
 
-                    string[] delisms = new string[1];
+                    var delisms = new string[1];
                     delisms[0] = "..";
-                    string[] strArray = singleLocation.Split(delisms, StringSplitOptions.RemoveEmptyEntries);
+                    var strArray = singleLocation.Split(delisms, StringSplitOptions.RemoveEmptyEntries);
                     if (strArray.Length != 2)
                     {
-                        string str = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidLocationString, locationString);
+                        var str = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidLocationString, locationString);
                         throw new ArgumentException(str);
                     }
 
@@ -228,17 +228,17 @@ namespace Bio.IO.GenBank
                 }
                 else if (singleLocation.Contains("."))
                 {
-                    int firstIndex = singleLocation.IndexOf(".", StringComparison.OrdinalIgnoreCase);
+                    var firstIndex = singleLocation.IndexOf(".", StringComparison.OrdinalIgnoreCase);
                     if (firstIndex != singleLocation.LastIndexOf(".", StringComparison.OrdinalIgnoreCase))
                     {
-                        string str = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidLocationString, locationString);
+                        var str = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidLocationString, locationString);
                         throw new ArgumentException(str);
                     }
 
-                    string[] strArray = singleLocation.Split(".".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                    var strArray = singleLocation.Split(".".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                     if (strArray.Length != 2)
                     {
-                        string str = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidLocationString, locationString);
+                        var str = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidLocationString, locationString);
                         throw new ArgumentException(str);
                     }
 
@@ -248,17 +248,17 @@ namespace Bio.IO.GenBank
                 }
                 else if (singleLocation.Contains("^"))
                 {
-                    int firstIndex = singleLocation.IndexOf("^", StringComparison.OrdinalIgnoreCase);
+                    var firstIndex = singleLocation.IndexOf("^", StringComparison.OrdinalIgnoreCase);
                     if (firstIndex != singleLocation.LastIndexOf("^", StringComparison.OrdinalIgnoreCase))
                     {
-                        string str = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidLocationString, locationString);
+                        var str = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidLocationString, locationString);
                         throw new ArgumentException(str);
                     }
 
-                    string[] strArray = singleLocation.Split('^');
+                    var strArray = singleLocation.Split('^');
                     if (strArray.Length != 2)
                     {
-                        string str = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidLocationString, locationString);
+                        var str = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidLocationString, locationString);
                         throw new ArgumentException(str);
                     }
 
@@ -278,7 +278,7 @@ namespace Bio.IO.GenBank
                     }
                     else
                     {
-                        string str = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidLocationString, locationString);
+                        var str = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidLocationString, locationString);
                         throw new ArgumentException(str);
                     }
                 }
@@ -293,7 +293,7 @@ namespace Bio.IO.GenBank
                     }
                     else
                     {
-                        string str = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidLocationString, locationString);
+                        var str = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidLocationString, locationString);
                         throw new ArgumentException(str);
                     }
                 }
@@ -311,7 +311,7 @@ namespace Bio.IO.GenBank
         {
             while (!string.IsNullOrEmpty(locationString))
             {
-                int index = GetNextIndex(locationString);
+                var index = GetNextIndex(locationString);
                 if (index == 0)
                 {
                     if (locationString[index] == ',')
@@ -336,8 +336,8 @@ namespace Bio.IO.GenBank
         /// <param name="location">Location string.</param>
         private static int GetNextIndex(string location)
         {
-            int locationCloseIndex = location.IndexOf(",", StringComparison.OrdinalIgnoreCase);
-            int operationCloseIndex = location.IndexOf(")", StringComparison.OrdinalIgnoreCase);
+            var locationCloseIndex = location.IndexOf(",", StringComparison.OrdinalIgnoreCase);
+            var operationCloseIndex = location.IndexOf(")", StringComparison.OrdinalIgnoreCase);
             int indexToconsider;
             if (locationCloseIndex < 0 && operationCloseIndex < 0)
             {

@@ -28,20 +28,20 @@ namespace Bio.Algorithms.MUMmer
         {
             if (referenceSequence == null)
             {
-                throw new ArgumentNullException("referenceSequence");
+                throw new ArgumentNullException(nameof(referenceSequence));
             }
 
-            this.ReferenceSequence = referenceSequence;
+            ReferenceSequence = referenceSequence;
 
             // build the suffix tree for the reference sequence.
-            this.suffixTree = new MultiWaySuffixTree(referenceSequence);
+            suffixTree = new MultiWaySuffixTree(referenceSequence);
 
             // Default Min length of Match - set to 20.
-            this.LengthOfMUM = 20;
-            this.NoAmbiguity = false;
+            LengthOfMUM = 20;
+            NoAmbiguity = false;
 
-            this.Name = Properties.Resource.MUMmerName;
-            this.Description = Properties.Resource.MUMmerDescription;
+            Name = Properties.Resource.MUMmerName;
+            Description = Properties.Resource.MUMmerDescription;
         }
 
         /// <summary>
@@ -53,17 +53,17 @@ namespace Bio.Algorithms.MUMmer
         {
             if (suffixTree == null)
             {
-                throw new ArgumentNullException("suffixTree");
+                throw new ArgumentNullException(nameof(suffixTree));
             }
 
             this.suffixTree = suffixTree;
-            this.ReferenceSequence = this.suffixTree.Sequence;
+            ReferenceSequence = this.suffixTree.Sequence;
 
             // Default Min length of Match - set to 20.
-            this.LengthOfMUM = 20;
-            this.NoAmbiguity = false;
-            this.Name = Properties.Resource.MUMmerName;
-            this.Description = Properties.Resource.MUMmerDescription;
+            LengthOfMUM = 20;
+            NoAmbiguity = false;
+            Name = Properties.Resource.MUMmerName;
+            Description = Properties.Resource.MUMmerDescription;
         }
 
         #endregion
@@ -107,11 +107,11 @@ namespace Bio.Algorithms.MUMmer
         public IEnumerable<Match> GetMatches(ISequence querySequence)
         {
             // Set the required properties of suffix tree.
-            this.suffixTree.MinLengthOfMatch = this.LengthOfMUM;
-            this.suffixTree.NoAmbiguity = this.NoAmbiguity;
+            suffixTree.MinLengthOfMatch = LengthOfMUM;
+            suffixTree.NoAmbiguity = NoAmbiguity;
 
             // Get matches from the suffix tree with out considering the uniqueness.
-            return this.suffixTree.SearchMatches(querySequence);
+            return suffixTree.SearchMatches(querySequence);
         }
 
         /// <summary>
@@ -122,11 +122,11 @@ namespace Bio.Algorithms.MUMmer
         public IEnumerable<Match> GetMatchesUniqueInReference(ISequence querySequence)
         {
             // Set the required properties of suffix tree.
-            this.suffixTree.MinLengthOfMatch = this.LengthOfMUM;
-            this.suffixTree.NoAmbiguity = this.NoAmbiguity;
+            suffixTree.MinLengthOfMatch = LengthOfMUM;
+            suffixTree.NoAmbiguity = NoAmbiguity;
 
             // Get matches that are unique in reference sequence from the suffix tree. 
-            return this.suffixTree.SearchMatchesUniqueInReference(querySequence);
+            return suffixTree.SearchMatchesUniqueInReference(querySequence);
         }
     }
 }

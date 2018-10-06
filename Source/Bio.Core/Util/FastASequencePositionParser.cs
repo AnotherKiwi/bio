@@ -43,10 +43,10 @@ namespace Bio.Util
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
 
-            this.fastaParser = new FastAParser();
+            fastaParser = new FastAParser();
             this.stream = stream;
             this.reverseReversePairedRead = reverseReversePairedRead;
         }
@@ -61,7 +61,7 @@ namespace Bio.Util
         /// </summary>
         public Stream Stream
         {
-            get { return this.stream; }
+            get { return stream; }
         }
 
         /// <summary>
@@ -72,12 +72,12 @@ namespace Bio.Util
         {
             get
             {
-                return this.fastaParser.Alphabet;
+                return fastaParser.Alphabet;
             }
 
             set
             {
-                this.fastaParser.Alphabet = value;
+                fastaParser.Alphabet = value;
             }
         }
 
@@ -87,12 +87,12 @@ namespace Bio.Util
         /// <returns>Returns ISequence arrays.</returns>
         public IEnumerable<ISequence> Parse()
         {
-            if (this.SequencesCached)
+            if (SequencesCached)
             {
-                return this.sequenceCache.GetAllSequences();
+                return sequenceCache.GetAllSequences();
             }
             
-            return this.ParseFromFile();
+            return ParseFromFile();
         }
 
         /// <summary>
@@ -101,22 +101,22 @@ namespace Bio.Util
         /// </summary>
         public void CacheSequencesForRandomAccess()
         {
-            if (this.SequencesCached)
+            if (SequencesCached)
             {
                 return;
             }
 
-            this.sequenceCache = new SequenceCache();
+            sequenceCache = new SequenceCache();
 
-            foreach (ISequence sequence in this.Parse())
+            foreach (var sequence in Parse())
             {
-                long position = long.Parse(sequence.ID.Substring(sequence.ID.LastIndexOf('@') + 1), CultureInfo.InvariantCulture);
-                this.sequenceCache.Add(position, sequence);
+                var position = long.Parse(sequence.ID.Substring(sequence.ID.LastIndexOf('@') + 1), CultureInfo.InvariantCulture);
+                sequenceCache.Add(position, sequence);
             }
 
-            if (this.sequenceCache.Count > 0)
+            if (sequenceCache.Count > 0)
             {
-                this.SequencesCached = true;
+                SequencesCached = true;
             }
         }
 
@@ -127,28 +127,28 @@ namespace Bio.Util
         /// <returns>Sequence present at the specified position.</returns>
         public ISequence GetSequenceAt(long position)
         {
-            if (this.SequencesCached)
+            if (SequencesCached)
             {
-                return this.sequenceCache.GetSequenceAt(position);
+                return sequenceCache.GetSequenceAt(position);
             }
 
-            this.stream.Position = position;
+            stream.Position = position;
 
-            ISequence sequence = this.fastaParser.ParseOne(this.stream);
+            var sequence = fastaParser.ParseOne(stream);
 
-            string delim = "@";
+            var delim = "@";
             if (sequence.ID.LastIndexOf(Helper.PairedReadDelimiter) == -1)
             {
                 delim = "!@";
             }
             
-            if (this.reverseReversePairedRead)
+            if (reverseReversePairedRead)
             {
                 string originalSequenceId;
                 bool forwardRead;
                 string pairedReadType;
                 string libraryName;
-                bool pairedRead = Helper.ValidatePairedSequenceId(sequence.ID, out originalSequenceId, out forwardRead, out pairedReadType, out libraryName);
+                var pairedRead = Helper.ValidatePairedSequenceId(sequence.ID, out originalSequenceId, out forwardRead, out pairedReadType, out libraryName);
                 if (pairedRead && !forwardRead)
                 {
                     sequence = sequence.GetReverseComplementedSequence();
@@ -165,7 +165,7 @@ namespace Bio.Util
         /// </summary>
         public void Dispose()
         {
-            this.Dispose(true);
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 
@@ -177,13 +177,13 @@ namespace Bio.Util
         {
             if (disposing)
             {
-                if (this.stream != null)
+                if (stream != null)
                 {
-                    this.stream.Dispose();
-                    this.stream = null;
+                    stream.Dispose();
+                    stream = null;
                 }
-                this.sequenceCache = null;
-                this.SequencesCached = false;
+                sequenceCache = null;
+                SequencesCached = false;
             }
         }
 
@@ -192,31 +192,31 @@ namespace Bio.Util
         /// </summary>
         private IEnumerable<ISequence> ParseFromFile()
         {
-            IEnumerable<ISequence> sequences = this.fastaParser.Parse(this.stream);
-            IEnumerator<long> positions = GetNextSequenceStartPosition(this.stream).GetEnumerator();
+            var sequences = fastaParser.Parse(stream);
+            var positions = GetNextSequenceStartPosition(stream).GetEnumerator();
 
-            foreach (ISequence sequence in sequences)
+            foreach (var sequence in sequences)
             {
-                ISequence seq = sequence;
+                var seq = sequence;
                 long position = -1;
                 if (positions.MoveNext())
                 {
                     position = positions.Current;
                 }
 
-                string delim = "@";
+                var delim = "@";
                 if (seq.ID.LastIndexOf(Helper.PairedReadDelimiter) == -1)
                 {
                     delim = "!@";
                 }
                     
-                if (this.reverseReversePairedRead)
+                if (reverseReversePairedRead)
                 {
                     string originalSequenceId;
                     bool forwardRead;
                     string pairedReadType;
                     string libraryName;
-                    bool pairedRead = Helper.ValidatePairedSequenceId(seq.ID, out originalSequenceId, out forwardRead, out pairedReadType, out libraryName);
+                    var pairedRead = Helper.ValidatePairedSequenceId(seq.ID, out originalSequenceId, out forwardRead, out pairedReadType, out libraryName);
                     if (pairedRead && !forwardRead)
                     {
                         seq = seq.GetReverseComplementedSequence();
@@ -237,10 +237,10 @@ namespace Bio.Util
         private static IEnumerable<long> GetNextSequenceStartPosition(Stream stream)
         {
             // 4k at a time.
-            byte[] readBuffer = new byte[4 * 1024];
-            int lastReadLength = 0;
-            int startIndex = 0;
-            byte startChar = (byte)'>';
+            var readBuffer = new byte[4 * 1024];
+            var lastReadLength = 0;
+            var startIndex = 0;
+            var startChar = (byte)'>';
             long position = 0;
             while (stream.Position != stream.Length)
             {
@@ -282,38 +282,38 @@ namespace Bio.Util
             /// <param name="sequence">Sequence to cache.</param>
             public void Add(long position, ISequence sequence)
             {
-                if (this.Count == 0)
+                if (Count == 0)
                 {
-                    this.sequenceLength = (int)sequence.Count;
+                    sequenceLength = (int)sequence.Count;
                 }
 
-                int index = (int)(position / (this.sequenceLength * this.bucketSize));
-                SequenceHolder newHolder = new SequenceHolder() { Position = position, Sequence = sequence };
+                var index = (int)(position / (sequenceLength * bucketSize));
+                var newHolder = new SequenceHolder() { Position = position, Sequence = sequence };
 
-                if (index >= this.buckets.Count)
+                if (index >= buckets.Count)
                 {
-                    while (index >= this.buckets.Count)
+                    while (index >= buckets.Count)
                     {
-                        this.buckets.Add(null);
+                        buckets.Add(null);
                     }
 
-                    this.buckets[index] = newHolder;
-                    this.Count++;
+                    buckets[index] = newHolder;
+                    Count++;
                     return;
                 }
 
-                SequenceHolder holder = this.buckets[index];
+                var holder = buckets[index];
                 if (holder == null)
                 {
-                    this.buckets[index] = newHolder;
-                    this.Count++;
+                    buckets[index] = newHolder;
+                    Count++;
                     return;
                 }
 
                 if (holder.Position > position)
                 {
-                    this.buckets[index] = newHolder;
-                    this.buckets[index].Next = holder;
+                    buckets[index] = newHolder;
+                    buckets[index].Next = holder;
                 }
                 else
                 {
@@ -331,7 +331,7 @@ namespace Bio.Util
                     holder.Next = newHolder;
                 }
 
-                this.Count++;
+                Count++;
             }
 
             /// <summary>
@@ -340,13 +340,13 @@ namespace Bio.Util
             /// <param name="position">Position.</param>
             public ISequence GetSequenceAt(long position)
             {
-                int index = (int)(position / (this.sequenceLength * this.bucketSize));
-                if (index >= this.buckets.Count)
+                var index = (int)(position / (sequenceLength * bucketSize));
+                if (index >= buckets.Count)
                 {
                     return null;
                 }
 
-                SequenceHolder holder = this.buckets[index];
+                var holder = buckets[index];
                 while (holder != null)
                 {
                     if (holder.Position == position)
@@ -365,9 +365,9 @@ namespace Bio.Util
             /// </summary>
             public IEnumerable<ISequence> GetAllSequences()
             {
-                for (int i = 0; i < this.buckets.Count; i++)
+                for (var i = 0; i < buckets.Count; i++)
                 {
-                    SequenceHolder holder = this.buckets[i];
+                    var holder = buckets[i];
                     while (holder != null)
                     {
                         yield return holder.Sequence;

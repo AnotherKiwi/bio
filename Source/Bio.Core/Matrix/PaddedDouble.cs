@@ -52,9 +52,9 @@ namespace Bio.Matrix
         internal static string StoreListToString(List<double> storeList, int colCount)
         {
             Helper.CheckCondition(storeList.Count == colCount, () => Properties.Resource.ExpectedOneValueForEveryColKey);
-            StringBuilder sb = new StringBuilder(colCount);
+            var sb = new StringBuilder(colCount);
             //05/18/2009 optimize: do on multiple threads?
-            foreach (double store in storeList)
+            foreach (var store in storeList)
             {
                 sb.AppendFormat(FormatString, store.ToString());
             }
@@ -129,7 +129,7 @@ namespace Bio.Matrix
         static public PaddedDouble CreateEmptyInstance(IEnumerable<string> rowKeySequence, IEnumerable<string> colKeySequence, double missingValue)
         {
             Helper.CheckCondition(missingValue.Equals(StaticMissingValue), "For PaddedDouble the missingValue must be '{0}'", StaticMissingValue); //OK to use Equals because double can't be null
-            PaddedDouble paddedDouble = new PaddedDouble();
+            var paddedDouble = new PaddedDouble();
             paddedDouble.InternalCreateEmptyInstance(rowKeySequence, colKeySequence);
             return paddedDouble;
         }
@@ -144,7 +144,7 @@ namespace Bio.Matrix
         public static bool TryGetInstanceFromSparse(string inputSparsePattern, out Matrix<string, string, double> matrix)
         {
             PaddedDouble paddedDouble;
-            bool b = TryGetInstanceFromSparse(inputSparsePattern, out paddedDouble);
+            var b = TryGetInstanceFromSparse(inputSparsePattern, out paddedDouble);
             matrix = paddedDouble;
             return b;
         }
@@ -176,7 +176,7 @@ namespace Bio.Matrix
         /// <returns>A PaddedDouble</returns>
         public static PaddedDouble GetInstanceFromSparse(string inputSparsePattern)
         {
-            PaddedDouble paddedDouble = new PaddedDouble();
+            var paddedDouble = new PaddedDouble();
             paddedDouble.GetInstanceFromSparseInternal(inputSparsePattern);
             return paddedDouble;
         }
@@ -189,7 +189,7 @@ namespace Bio.Matrix
         /// <returns>A PaddedDouble object</returns>
         public static PaddedDouble GetInstanceFromSparse(IEnumerable<RowKeyColKeyValue<string, string, double>> tripleEnumerable)
         {
-            PaddedDouble paddedDouble = new PaddedDouble();
+            var paddedDouble = new PaddedDouble();
             paddedDouble.GetInstanceFromSparseInternal(tripleEnumerable);
             return paddedDouble;
         }
@@ -229,7 +229,7 @@ namespace Bio.Matrix
         /// <returns>The created PaddedDouble</returns>
         public static PaddedDouble GetInstance(string paddedDoubleFileName, ParallelOptions parallelOptions)
         {
-            PaddedDouble paddedDouble = new PaddedDouble();
+            var paddedDouble = new PaddedDouble();
             paddedDouble.GetInstanceInternal(paddedDoubleFileName, parallelOptions);
             return paddedDouble;
         }
@@ -258,8 +258,8 @@ namespace Bio.Matrix
             {
                 throw new MatrixFormatException(string.Format("Every data string should have {0} chars per colKey.", BytesPerValue));
             }
-            List<double> storeList = new List<double>(colCount);
-            for (int i = 0; i < line.Length; i += BytesPerValue)
+            var storeList = new List<double>(colCount);
+            for (var i = 0; i < line.Length; i += BytesPerValue)
             {
                 storeList.Add(double.Parse(line.Substring(i, BytesPerValue)));
             }
@@ -341,14 +341,14 @@ namespace Bio.Matrix
         public static void WritePaddedDouble(this Matrix<string, string, double> matrix, TextWriter textWriter, ParallelOptions parallelOptions)
         {
             textWriter.WriteLine("var\t{0}", matrix.ColKeys.StringJoin("\t"));
-            foreach (string rowKey in matrix.RowKeys)
+            foreach (var rowKey in matrix.RowKeys)
             {
                 textWriter.Write(rowKey);
                 textWriter.Write("\t");
-                int rowIndex = matrix.IndexOfRowKey[rowKey];
+                var rowIndex = matrix.IndexOfRowKey[rowKey];
 
-                List<double> storeList = new List<double>(matrix.ColCount);
-                for (int colIndex = 0; colIndex < matrix.ColCount; ++colIndex)
+                var storeList = new List<double>(matrix.ColCount);
+                for (var colIndex = 0; colIndex < matrix.ColCount; ++colIndex)
                 {
                     double store;
                     if (!matrix.TryGetValue(rowIndex, colIndex, out store))
@@ -358,7 +358,7 @@ namespace Bio.Matrix
                     storeList.Add(store);
                 }
                 Helper.CheckCondition(storeList.Count == matrix.ColCount, () => Properties.Resource.ExpectedOneValueForEveryColKey);
-                string s = PaddedDouble.StoreListToString(storeList, matrix.ColCount);
+                var s = PaddedDouble.StoreListToString(storeList, matrix.ColCount);
                 textWriter.WriteLine(s);
             }
         }

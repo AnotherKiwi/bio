@@ -40,7 +40,7 @@ namespace Bio
         /// </summary>
         public BigList()
         {
-            this._items = _emptyArray;
+            _items = _emptyArray;
         }
 
         /// <summary>
@@ -51,10 +51,10 @@ namespace Bio
         {
             if (capacity < 0)
             {
-                throw new ArgumentOutOfRangeException("capacity");
+                throw new ArgumentOutOfRangeException(nameof(capacity));
             }
 
-            this._items = new BigArray<T>(capacity);
+            _items = new BigArray<T>(capacity);
         }
 
         /// <summary>
@@ -65,30 +65,30 @@ namespace Bio
         {
             if (collection == null)
             {
-                throw new ArgumentNullException("collection");
+                throw new ArgumentNullException(nameof(collection));
             }
 
-            ICollection<T> collectionObj = collection as ICollection<T>;
+            var collectionObj = collection as ICollection<T>;
             if (collectionObj != null)
             {
-                int count = collectionObj.Count;
-                this._items = new BigArray<T>(count);
-                int index = 0;
+                var count = collectionObj.Count;
+                _items = new BigArray<T>(count);
+                var index = 0;
                 foreach (var item in collectionObj)
                 {
-                    this._items[index++] = item;
+                    _items[index++] = item;
                 }
-                this._size = count;
+                _size = count;
             }
             else
             {
-                this._size = 0;
-                this._items = new BigArray<T>(BigList<T>.DefaultCapacity);
-                using (IEnumerator<T> enumerator = collection.GetEnumerator())
+                _size = 0;
+                _items = new BigArray<T>(DefaultCapacity);
+                using (var enumerator = collection.GetEnumerator())
                 {
                     while (enumerator.MoveNext())
                     {
-                        this.Add(enumerator.Current);
+                        Add(enumerator.Current);
                     }
                 }
             }
@@ -102,19 +102,19 @@ namespace Bio
         {
             if (collection == null)
             {
-                throw new ArgumentNullException("collection");
+                throw new ArgumentNullException(nameof(collection));
             }
             if (collectionCount < 0)
             {
-                throw new ArgumentException("Cannot make new big list with < 0 items","collectionCount");
+                throw new ArgumentException("Cannot make new big list with < 0 items",nameof(collectionCount));
             }
-                this._items = new BigArray<T>(collectionCount);
-                int index = 0;
+                _items = new BigArray<T>(collectionCount);
+                var index = 0;
                 foreach (var item in collection)
                 {
-                    this._items[index++] = item;
+                    _items[index++] = item;
                 }
-                this._size = collectionCount;
+                _size = collectionCount;
             
         }
         #endregion
@@ -127,30 +127,30 @@ namespace Bio
         {
             get
             {
-                return this._items.Length;
+                return _items.Length;
             }
             set
             {
-                if (value < this._size)
+                if (value < _size)
                 {
-                    throw new ArgumentOutOfRangeException("value");
+                    throw new ArgumentOutOfRangeException(nameof(value));
                 }
-                if (value != this._items.Length)
+                if (value != _items.Length)
                 {
                     if (value > 0)
                     {
-                        if (this._size == 0)
+                        if (_size == 0)
                         {
-                            this._items = new BigArray<T>(value);
+                            _items = new BigArray<T>(value);
                         }
                         else
                         {
-                            this._items.Resize(value);
+                            _items.Resize(value);
                         }
                     }
                     else
                     {
-                        this._items = BigList<T>._emptyArray;
+                        _items = _emptyArray;
                     }
                 }
             }
@@ -163,7 +163,7 @@ namespace Bio
         {
             get
             {
-                return this._size;
+                return _size;
             }
         }
         #endregion
@@ -179,7 +179,7 @@ namespace Bio
         ///     if found; otherwise, –1.</returns>
         public long IndexOf(T item)
         {
-            return this._items.IndexOf(item, 0, this._size);
+            return _items.IndexOf(item, 0, _size);
         }
 
         /// <summary>
@@ -196,7 +196,7 @@ namespace Bio
         ///     if found; otherwise, –1.</returns>
         public long IndexOf(T item, long startIndex)
         {
-            return this._items.IndexOf(item, startIndex, this._size - startIndex);
+            return _items.IndexOf(item, startIndex, _size - startIndex);
         }
 
         /// <summary>
@@ -214,12 +214,12 @@ namespace Bio
         ///     contains count number of elements, if found; otherwise, –1.</returns>
         public long IndexOf(T item, long startIndex, long count)
         {
-            if (count > this._size - startIndex)
+            if (count > _size - startIndex)
             {
-                throw new ArgumentOutOfRangeException("count");
+                throw new ArgumentOutOfRangeException(nameof(count));
             }
 
-            return this._items.IndexOf(item, startIndex, count);
+            return _items.IndexOf(item, startIndex, count);
         }
 
         /// <summary>
@@ -229,26 +229,26 @@ namespace Bio
         /// <param name="item">The object to insert. The value can be null for reference types.</param>
         public void Insert(long index, T item)
         {
-            if (index > this._size)
+            if (index > _size)
             {
-                throw new ArgumentOutOfRangeException("index");
+                throw new ArgumentOutOfRangeException(nameof(index));
             }
 
-            if (this._size == this._items.Length)
+            if (_size == _items.Length)
             {
-                this.EnsureCapacity(this._size + 1);
+                EnsureCapacity(_size + 1);
             }
 
-            if (index < this._size)
+            if (index < _size)
             {
-                for (long i = this._size; i > index; i--)
+                for (var i = _size; i > index; i--)
                 {
-                    this._items[i] = this._items[i - 1];
+                    _items[i] = _items[i - 1];
                 }
             }
 
-            this._items[index] = item;
-            this._size++;
+            _items[index] = item;
+            _size++;
         }
 
         /// <summary>
@@ -257,20 +257,20 @@ namespace Bio
         /// <param name="index">The zero-based index of the element to remove.</param>
         public void RemoveAt(long index)
         {
-            if (index >= this._size)
+            if (index >= _size)
             {
-                throw new ArgumentOutOfRangeException("index");
+                throw new ArgumentOutOfRangeException(nameof(index));
             }
-            this._size--;
-            if (index < this._size)
+            _size--;
+            if (index < _size)
             {
-                for (long i = index; i < this._size; i++)
+                for (var i = index; i < _size; i++)
                 {
-                    this._items[i] = this._items[i + 1];
+                    _items[i] = _items[i + 1];
                 }
             }
 
-            this._items[this._size] = default(T);
+            _items[_size] = default(T);
         }
 
         /// <summary>
@@ -282,20 +282,20 @@ namespace Bio
         {
             get
             {
-                if (index >= this._size)
+                if (index >= _size)
                 {
-                    throw new ArgumentOutOfRangeException("index");
+                    throw new ArgumentOutOfRangeException(nameof(index));
                 }
-                return this._items[index];
+                return _items[index];
             }
             set
             {
-                if (index >= this._size)
+                if (index >= _size)
                 {
-                    throw new ArgumentOutOfRangeException("index");
+                    throw new ArgumentOutOfRangeException(nameof(index));
                 }
 
-                this._items[index] = value;
+                _items[index] = value;
             }
         }
 
@@ -305,11 +305,11 @@ namespace Bio
         /// <param name="item">The object to be added to the end of the BigList.</param>
         public void Add(T item)
         {
-            if (this._size == this._items.Length)
+            if (_size == _items.Length)
             {
-                this.EnsureCapacity(this._size + 1);
+                EnsureCapacity(_size + 1);
             }
-            this._items[this._size++] = item;
+            _items[_size++] = item;
         }
 
         /// <summary>
@@ -317,10 +317,10 @@ namespace Bio
         /// </summary>
         public void Clear()
         {
-            if (this._size > 0)
+            if (_size > 0)
             {
-                this._items.Clear();
-                this._size = 0;
+                _items.Clear();
+                _size = 0;
             }
         }
 
@@ -331,7 +331,7 @@ namespace Bio
         /// <returns>true if item is found in the BigList, else false.</returns>
         public bool Contains(T item)
         {
-            return this._items.IndexOf(item, 0, this._size) >= 0;
+            return _items.IndexOf(item, 0, _size) >= 0;
         }
 
         /// <summary>
@@ -344,7 +344,7 @@ namespace Bio
         /// <param name="count">The number of elements to copy.</param>
         public void CopyTo(long index, T[] destinationArray, long count)
         {
-            this.CopyTo(index, destinationArray, 0, count);
+            CopyTo(index, destinationArray, 0, count);
         }
 
         /// <summary>
@@ -359,12 +359,12 @@ namespace Bio
         /// <param name="count">The number of elements to copy.</param>
         public void CopyTo(long index, T[] destinationArray, int destinationIndex, long count)
         {
-            if (count > (this.Count - index))
+            if (count > (Count - index))
             {
-                throw new ArgumentOutOfRangeException("count");
+                throw new ArgumentOutOfRangeException(nameof(count));
             }
 
-            this._items.CopyTo(index, destinationArray, destinationIndex, count);
+            _items.CopyTo(index, destinationArray, destinationIndex, count);
         }
 
         /// <summary>
@@ -375,10 +375,10 @@ namespace Bio
         ///     returns false if item was not found in the BigList.</returns>
         public bool Remove(T item)
         {
-            long index = this.IndexOf(item);
+            var index = IndexOf(item);
             if (index != -1)
             {
-                this.RemoveAt(index);
+                RemoveAt(index);
             }
 
             return index != -1;
@@ -390,10 +390,10 @@ namespace Bio
         /// </summary>
         public void TrimExcess()
         {
-            long num = (long)(this._items.Length * 0.9);
-            if (this._size < num)
+            var num = (long)(_items.Length * 0.9);
+            if (_size < num)
             {
-                this.Capacity = this._size;
+                Capacity = _size;
             }
         }
 
@@ -403,11 +403,11 @@ namespace Bio
         /// <param name="newSize">size of new array</param>
         public void TrimToSize(long newSize)
         {
-            if (newSize > this.Count || newSize<0)
+            if (newSize > Count || newSize<0)
             {
-                throw new ArgumentException("Cannot trim BigList class to value less than 0 or larger than original size","newSize");
+                throw new ArgumentException("Cannot trim BigList class to value less than 0 or larger than original size",nameof(newSize));
             }
-            this._items.Resize(newSize);
+            _items.Resize(newSize);
         }
 
         /// <summary>
@@ -418,12 +418,12 @@ namespace Bio
         {
             if (action == null)
             {
-                throw new ArgumentNullException("action");
+                throw new ArgumentNullException(nameof(action));
             }
 
-            for (int i = 0; i < this._size; i++)
+            for (var i = 0; i < _size; i++)
             {
-                action(this._items[i]);
+                action(_items[i]);
             }
         }
 
@@ -432,7 +432,7 @@ namespace Bio
         /// </summary>
         public IEnumerator<T> GetEnumerator()
         {
-            for (long i = 0; i < this._size; i++)
+            for (long i = 0; i < _size; i++)
             {
                 yield return this[i];
             }
@@ -443,33 +443,33 @@ namespace Bio
         /// </summary>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
 
         // Ensures the capacity.
         private void EnsureCapacity(long minCapacityRequired)
         {
-            if (this._items.Length < minCapacityRequired)
+            if (_items.Length < minCapacityRequired)
             {
                 long newCapacity = 0;
-                if (this._items.Length == 0)
+                if (_items.Length == 0)
                 {
-                    newCapacity = BigList<T>.DefaultCapacity;
+                    newCapacity = DefaultCapacity;
                 }
-                else if (this._items.Length * 2 < this._items.BlockSize)
+                else if (_items.Length * 2 < _items.BlockSize)
                 {
-                    newCapacity = this._items.Length * 2;
+                    newCapacity = _items.Length * 2;
                 }
                 else
                 {
-                    long rem = this._items.Length % this._items.BlockSize;
+                    var rem = _items.Length % _items.BlockSize;
                     if (rem > 0)
                     {
-                        newCapacity = this._items.Length + rem;
+                        newCapacity = _items.Length + rem;
                     }
                     else
                     {
-                        newCapacity = this._items.Length + this._items.BlockSize;
+                        newCapacity = _items.Length + _items.BlockSize;
                     }
                 }
 
@@ -478,7 +478,7 @@ namespace Bio
                     newCapacity = minCapacityRequired;
                 }
 
-                this.Capacity = newCapacity;
+                Capacity = newCapacity;
             }
         }
         #endregion

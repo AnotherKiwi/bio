@@ -89,13 +89,13 @@ namespace Bio.IO.Xsv
         {
             if (data == null)
             {
-                throw new ArgumentNullException("data");
+                throw new ArgumentNullException(nameof(data));
             }
 
             // Stream is left open at the end.
-            using (StreamWriter writer = stream.OpenWrite())
+            using (var writer = stream.OpenWrite())
             {
-                this.Write(writer, data, (long)data.Metadata[XsvSparseParser.MetadataOffsetKey]);
+                Write(writer, data, (long)data.Metadata[XsvSparseParser.MetadataOffsetKey]);
             }
 
         }
@@ -109,15 +109,15 @@ namespace Bio.IO.Xsv
         {
             if (sequences == null)
             {
-                throw new ArgumentNullException("sequences");
+                throw new ArgumentNullException(nameof(sequences));
             }
 
             // Stream is closed at the end.
-            using (StreamWriter writer = stream.OpenWrite())
+            using (var writer = stream.OpenWrite())
             {
-                foreach (ISequence sequence in sequences)
+                foreach (var sequence in sequences)
                 {
-                    this.Write(writer, sequence, (long)sequence.Metadata[XsvSparseParser.MetadataOffsetKey]);
+                    Write(writer, sequence, (long)sequence.Metadata[XsvSparseParser.MetadataOffsetKey]);
                 }
             }
         }
@@ -134,11 +134,11 @@ namespace Bio.IO.Xsv
             // Check input arguments
             if (data == null)
             {
-                throw new ArgumentNullException("data");
+                throw new ArgumentNullException(nameof(data));
             }
             if (writer == null)
             {
-                throw new ArgumentNullException("writer");
+                throw new ArgumentNullException(nameof(writer));
             }
 
             // write the sequence start line
@@ -149,7 +149,7 @@ namespace Bio.IO.Xsv
             // for sparse sequences, only write the non-null sequence items
             if (data is SparseSequence)
             {
-                foreach (IndexedItem<byte> item in
+                foreach (var item in
                     (data as SparseSequence).GetKnownSequenceItems())
                 {
                     writer.WriteLine("{0}{1}{2}{3}", (item.Index - (long)data.Metadata[XsvSparseParser.MetadataOffsetKey]), Separator, (char)item.Item, Separator);
@@ -157,7 +157,7 @@ namespace Bio.IO.Xsv
             }
             else // for non-sparse sequence, write all sequence items
             {
-                for (int i = 0; i < data.Count; i++)
+                for (var i = 0; i < data.Count; i++)
                 {
                     writer.WriteLine("{0}{1}{2}{3}", i, Separator, (char)data[i], Separator);
                 }

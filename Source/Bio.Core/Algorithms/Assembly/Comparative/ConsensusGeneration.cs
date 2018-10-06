@@ -20,20 +20,20 @@ namespace Bio.Algorithms.Assembly.Comparative
         {
             if (alignmentBetweenReferenceAndReads == null)
             {
-                throw new ArgumentNullException("alignmentBetweenReferenceAndReads");
+                throw new ArgumentNullException(nameof(alignmentBetweenReferenceAndReads));
             }
 
-            SimpleConsensusResolver resolver = new SimpleConsensusResolver(AmbiguousDnaAlphabet.Instance, 49);
+            var resolver = new SimpleConsensusResolver(AmbiguousDnaAlphabet.Instance, 49);
 
             // this dictionary will not grow more than a few hundread in worst scenario,
             // as this stores delta and its corresponding sequences 
-            Dictionary<DeltaAlignment, ISequence> deltasInCurrentContig = new Dictionary<DeltaAlignment, ISequence>();
+            var deltasInCurrentContig = new Dictionary<DeltaAlignment, ISequence>();
 
             long currentAlignmentStartOffset = 0;
             long currentIndex = 0;
 
-            List<byte> currentContig = new List<byte>();
-            List<DeltaAlignment> deltasToRemove = new List<DeltaAlignment>();
+            var currentContig = new List<byte>();
+            var deltasToRemove = new List<DeltaAlignment>();
 
             // no deltas
             if (alignmentBetweenReferenceAndReads.Count == 0)
@@ -43,7 +43,7 @@ namespace Bio.Algorithms.Assembly.Comparative
 
             long index = 0;
 
-            DeltaAlignment lastDelta = alignmentBetweenReferenceAndReads[index];
+            var lastDelta = alignmentBetweenReferenceAndReads[index];
             do
             {
                 // Starting a new contig
@@ -75,12 +75,12 @@ namespace Bio.Algorithms.Assembly.Comparative
                         }
                     }
 
-                    byte[] symbolsAtCurrentIndex = new byte[deltasInCurrentContig.Count];
-                    int symbolCounter = 0;
+                    var symbolsAtCurrentIndex = new byte[deltasInCurrentContig.Count];
+                    var symbolCounter = 0;
 
                     foreach (var delta in deltasInCurrentContig)
                     {
-                        long inDeltaIndex = currentIndex - (delta.Key.FirstSequenceStart - currentAlignmentStartOffset);
+                        var inDeltaIndex = currentIndex - (delta.Key.FirstSequenceStart - currentAlignmentStartOffset);
                         symbolsAtCurrentIndex[symbolCounter++] = delta.Value[inDeltaIndex];
 
                         if (inDeltaIndex == delta.Value.Count - 1)
@@ -91,7 +91,7 @@ namespace Bio.Algorithms.Assembly.Comparative
 
                     if (deltasToRemove.Count > 0)
                     {
-                        for (int i = 0; i < deltasToRemove.Count; i++)
+                        for (var i = 0; i < deltasToRemove.Count; i++)
                         {
                             deltasInCurrentContig.Remove(deltasToRemove[i]);
                         }
@@ -99,7 +99,7 @@ namespace Bio.Algorithms.Assembly.Comparative
                         deltasToRemove.Clear();
                     }
 
-                    byte consensusSymbol = resolver.GetConsensus(symbolsAtCurrentIndex);
+                    var consensusSymbol = resolver.GetConsensus(symbolsAtCurrentIndex);
                     currentContig.Add(consensusSymbol);
 
                     currentIndex++;
@@ -135,7 +135,7 @@ namespace Bio.Algorithms.Assembly.Comparative
         /// <param name="deltaAlignment">DeltaAlignment instance.</param>
         private static ISequence GetSequenceFromDelta(DeltaAlignment deltaAlignment)
         {
-            int indelListIndex = 0;
+            var indelListIndex = 0;
             long indelIndex = 0;
             long nextIndelPosition = 0;
             long indelCount = deltaAlignment.Deltas.Count;
@@ -149,13 +149,13 @@ namespace Bio.Algorithms.Assembly.Comparative
             nextIndelPosition += indelIndex >= 0 ? indelIndex : -indelIndex;
 
 
-            long symbolsCount = deltaAlignment.SecondSequenceEnd - deltaAlignment.SecondSequenceStart + 1 +
+            var symbolsCount = deltaAlignment.SecondSequenceEnd - deltaAlignment.SecondSequenceStart + 1 +
                 deltaAlignment.Deltas.Count(I => I > 0) - deltaAlignment.Deltas.Count(I => I < 0);
 
             long symbolIndex = 0;
-            byte[] symbols = new byte[symbolsCount];
+            var symbols = new byte[symbolsCount];
 
-            for (long index = deltaAlignment.SecondSequenceStart; index <= deltaAlignment.SecondSequenceEnd; )
+            for (var index = deltaAlignment.SecondSequenceStart; index <= deltaAlignment.SecondSequenceEnd; )
             {
                 if (indelIndex != 0 && index == nextIndelPosition)
                 {

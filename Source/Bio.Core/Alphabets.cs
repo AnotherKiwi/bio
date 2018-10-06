@@ -114,10 +114,10 @@ namespace Bio
         static Alphabets()
         {
 		    // get the registered alphabets.
-            IEnumerable<IAlphabet> registeredAlphabets = GetAlphabets();
+            var registeredAlphabets = GetAlphabets();
             if (null != registeredAlphabets)
             {
-                foreach (IAlphabet alphabet in registeredAlphabets.Where(
+                foreach (var alphabet in registeredAlphabets.Where(
                     alphabet => alphabet != null && 
                                 KnownAlphabets.All(ra => Compare(ra.Name, alphabet.Name, StringComparison.OrdinalIgnoreCase) != 0)))
                 {
@@ -233,7 +233,7 @@ namespace Bio
         /// <returns>Returns the detected alphabet type or null if detection fails.</returns>
         public static IAlphabet AutoDetectAlphabet(byte[] symbols, long offset, long length, IAlphabet identifiedAlphabetType)
         {
-            int currentPriorityIndex = 0;
+            var currentPriorityIndex = 0;
 
             if (identifiedAlphabetType == null)
             {
@@ -245,7 +245,7 @@ namespace Bio
                 // Increment priority index and validate boundary condition
                 if (++currentPriorityIndex == AlphabetPriorityList.Count)
                 {
-                    throw new ArgumentException(CouldNotRecognizeAlphabet, "identifiedAlphabetType");
+                    throw new ArgumentException(CouldNotRecognizeAlphabet, nameof(identifiedAlphabetType));
                 }
             }
 
@@ -312,7 +312,7 @@ namespace Bio
             {
                 try
                 {
-                    IAlphabet alpha = Activator.CreateInstance(impl) as IAlphabet;
+                    var alpha = Activator.CreateInstance(impl) as IAlphabet;
                     if (alpha != null)
                         registeredAlphabets.Add(alpha);
                 }

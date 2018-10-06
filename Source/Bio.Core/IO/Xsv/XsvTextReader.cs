@@ -40,17 +40,17 @@ namespace Bio.IO.Xsv
         /// </param>
         public XsvTextReader(TextReader xsvReader, char[] separators, bool ignoreWhiteSpace, bool hasHeader)
         {
-            this.Separators = separators;
-            this.TrimWhiteSpace = ignoreWhiteSpace;
-            this.HasHeader = hasHeader;
-            this.reader = xsvReader;
-            this.SkipBlankLines = true;
-            this.GoToNextLine();
+            Separators = separators;
+            TrimWhiteSpace = ignoreWhiteSpace;
+            HasHeader = hasHeader;
+            reader = xsvReader;
+            SkipBlankLines = true;
+            GoToNextLine();
 
             if (hasHeader)
             {
-                this.FieldHeaders = this.Fields;
-                this.GoToNextLine();
+                FieldHeaders = Fields;
+                GoToNextLine();
             }
         }
 
@@ -71,7 +71,7 @@ namespace Bio.IO.Xsv
         {
             get
             {
-                return this.Line != null;
+                return Line != null;
             }
         }
 
@@ -93,7 +93,7 @@ namespace Bio.IO.Xsv
         {
             get
             {
-                return this.Line;
+                return Line;
             }
         }
 
@@ -108,29 +108,29 @@ namespace Bio.IO.Xsv
         {
             get
             {
-                if (!this.SkipCommentLines && this.HasCommentLine)
+                if (!SkipCommentLines && HasCommentLine)
                 {
                     throw new ArgumentException("Comment line found. Cannot get fields.");
                 }
 
-                if (this.fields == null)
+                if (fields == null)
                 {
-                    if (!this.HasLines)
+                    if (!HasLines)
                     {
                         return null;
                     }
 
-                    this.fields = this.Line.Split(this.Separators);
-                    if (this.TrimWhiteSpace)
+                    fields = Line.Split(Separators);
+                    if (TrimWhiteSpace)
                     {
-                        for (int i = 0; i < this.fields.Length; i++)
+                        for (var i = 0; i < fields.Length; i++)
                         {
-                            this.fields[i] = this.fields[i].Trim();
+                            fields[i] = fields[i].Trim();
                         }
                     }
                 }
 
-                return this.fields;
+                return fields;
             }
         }
 
@@ -166,7 +166,7 @@ namespace Bio.IO.Xsv
         {
             get
             {
-                return this.HasCommentLine ? this.Line.Substring(1) : null;
+                return HasCommentLine ? Line.Substring(1) : null;
             }
         }
 
@@ -193,10 +193,10 @@ namespace Bio.IO.Xsv
         {
             get
             {
-                return this.CommentPrefixes != null && this.CommentPrefixes.Length > 0
+                return CommentPrefixes != null && CommentPrefixes.Length > 0
                        && // do we have valid comment prefixes?
-                       this.HasLines && !string.IsNullOrEmpty(this.Line) && // do we have a valid line?
-                       this.CommentPrefixes.Contains(this.Line[0]); // is it a valid comment line?  
+                       HasLines && !string.IsNullOrEmpty(Line) && // do we have a valid line?
+                       CommentPrefixes.Contains(Line[0]); // is it a valid comment line?  
             }
         }
 
@@ -205,7 +205,7 @@ namespace Bio.IO.Xsv
         /// </summary>
         void IDisposable.Dispose()
         {
-            this.Dispose(true);
+            Dispose(true);
         }
 
         /// <summary>
@@ -216,21 +216,21 @@ namespace Bio.IO.Xsv
         {
             do
             {
-                this.Line = this.reader.ReadLine();
+                Line = reader.ReadLine();
             }
-            while (this.SkipBlankLines && this.Line != null && string.IsNullOrEmpty(this.Line.Trim()));
+            while (SkipBlankLines && Line != null && string.IsNullOrEmpty(Line.Trim()));
 
             // skip comment lines
-            while (this.SkipCommentLines && this.HasCommentLine)
+            while (SkipCommentLines && HasCommentLine)
             {
                 do
                 {
-                    this.Line = this.reader.ReadLine();
+                    Line = reader.ReadLine();
                 }
-                while (this.SkipBlankLines && this.Line != null && string.IsNullOrEmpty(this.Line.Trim()));
+                while (SkipBlankLines && Line != null && string.IsNullOrEmpty(Line.Trim()));
             }
 
-            this.fields = null;
+            fields = null;
         }
 
         /// <summary>

@@ -132,7 +132,7 @@ namespace Bio.Algorithms.Alignment
         {
             if (aInput == null)
             {
-                throw new ArgumentNullException("aInput");
+                throw new ArgumentNullException(nameof(aInput));
             }
 
             aInput.Alphabet.TryGetDefaultGapSymbol(out gapCode);
@@ -145,8 +145,8 @@ namespace Bio.Algorithms.Alignment
             this.similarityMatrix = similarityMatrix;
 
             // Convert input strings to 0-based int arrays using similarity matrix mapping
-            this.sequenceI = aInput;
-            this.sequenceJ = bInput;
+            sequenceI = aInput;
+            sequenceJ = bInput;
 
             colHeight = sequenceI.Count + 1;
             rowWidth = sequenceJ.Count + 1;
@@ -223,34 +223,34 @@ namespace Bio.Algorithms.Alignment
             InitializeCache();
 
             // Grid
-            for (int diagonal = 0; diagonal < gridCols + gridRows - 2; diagonal++)
+            for (var diagonal = 0; diagonal < gridCols + gridRows - 2; diagonal++)
             {
-                for (int blockRow = 0; blockRow < gridRows; blockRow++)
+                for (var blockRow = 0; blockRow < gridRows; blockRow++)
                 {
-                    int blockCol = diagonal - blockRow;
+                    var blockCol = diagonal - blockRow;
 
                     if ((blockCol >= 0) && (blockCol < gridCols))
                     {
-                        int lastRow = (blockRow == gridRows - 1) ? (int)(colHeight - Helper.BigMul(blockRow, gridStride) - 1) : gridStride;
-                        int lastCol = (blockCol == gridCols - 1) ? (int)(rowWidth - Helper.BigMul(blockCol, gridStride) - 1) : gridStride;
+                        var lastRow = (blockRow == gridRows - 1) ? (int)(colHeight - Helper.BigMul(blockRow, gridStride) - 1) : gridStride;
+                        var lastCol = (blockCol == gridCols - 1) ? (int)(rowWidth - Helper.BigMul(blockCol, gridStride) - 1) : gridStride;
 
                         ComputeIntermediateBlock(blockRow, blockCol, lastRow, lastCol);
                     }
                 }
             }
 
-            sbyte[][] trace = new sbyte[gridStride + 1][];
-            for (int i = 0; i <= gridStride; i++)
+            var trace = new sbyte[gridStride + 1][];
+            for (var i = 0; i <= gridStride; i++)
             {
                 trace[i] = new sbyte[gridStride + 1];
             }
 
             // Last Block - grid calculation and Traceback combined
-            int completeTraceRow = gridRows - 1;
-            int completeTraceCol = gridCols - 1;
+            var completeTraceRow = gridRows - 1;
+            var completeTraceCol = gridCols - 1;
 
-            int completeLastRow = (int)(colHeight - Helper.BigMul(completeTraceRow, gridStride) - 1);
-            int completeLastCol = (int)(rowWidth - Helper.BigMul(completeTraceCol, gridStride) - 1);
+            var completeLastRow = (int)(colHeight - Helper.BigMul(completeTraceRow, gridStride) - 1);
+            var completeLastCol = (int)(rowWidth - Helper.BigMul(completeTraceCol, gridStride) - 1);
 
             ComputeCornerBlock(completeTraceRow, completeTraceCol, completeLastRow, completeLastCol, trace);
 
@@ -261,30 +261,30 @@ namespace Bio.Algorithms.Alignment
             }
             else
             {
-                PairwiseSequenceAlignment alignment = new PairwiseSequenceAlignment(sequenceI, sequenceJ);
+                var alignment = new PairwiseSequenceAlignment(sequenceI, sequenceJ);
 
-                for (int alignmentCount = 0; alignmentCount < optScoreCells.Count; alignmentCount++)
+                for (var alignmentCount = 0; alignmentCount < optScoreCells.Count; alignmentCount++)
                 {
-                    PairwiseAlignedSequence result = new PairwiseAlignedSequence();
+                    var result = new PairwiseAlignedSequence();
                     result.Score = optScore;
 
-                    long alignmentRow = optScoreCells[alignmentCount].Item1;
-                    long alignmentCol = optScoreCells[alignmentCount].Item2;
+                    var alignmentRow = optScoreCells[alignmentCount].Item1;
+                    var alignmentCol = optScoreCells[alignmentCount].Item2;
 
-                    int blockRow = (int)(alignmentRow / gridStride);
-                    int blockCol = (int)(alignmentCol / gridStride);
+                    var blockRow = (int)(alignmentRow / gridStride);
+                    var blockCol = (int)(alignmentCol / gridStride);
 
-                    int lastRow = (int)(alignmentRow - Helper.BigMul(blockRow, gridStride));
-                    int lastCol = (int)(alignmentCol - Helper.BigMul(blockCol, gridStride));
+                    var lastRow = (int)(alignmentRow - Helper.BigMul(blockRow, gridStride));
+                    var lastCol = (int)(alignmentCol - Helper.BigMul(blockCol, gridStride));
 
                     result.Metadata["EndOffsets"] = new List<long> { alignmentRow - 1, alignmentCol - 1 };
 
                     long alignmentLength = 0;
-                    byte[] sequence1 = new byte[colHeight + rowWidth];
-                    byte[] sequence2 = new byte[colHeight + rowWidth];
+                    var sequence1 = new byte[colHeight + rowWidth];
+                    var sequence2 = new byte[colHeight + rowWidth];
 
-                    int colGaps = 0;
-                    int rowGaps = 0;
+                    var colGaps = 0;
+                    var rowGaps = 0;
 
                     while ((blockRow >= 0) && (blockCol >= 0))
                     {
@@ -318,7 +318,7 @@ namespace Bio.Algorithms.Alignment
                                 case SourceDirection.Up:
                                     // up, gap in J
                                     sequence1[alignmentLength] = sequenceI[startPositionI + lastRow];
-                                    sequence2[alignmentLength] = this.gapCode;
+                                    sequence2[alignmentLength] = gapCode;
                                     alignmentLength++;
                                     lastRow--;
                                     colGaps++;
@@ -326,7 +326,7 @@ namespace Bio.Algorithms.Alignment
 
                                 case SourceDirection.Left:
                                     // left, gap in I
-                                    sequence1[alignmentLength] = this.gapCode;
+                                    sequence1[alignmentLength] = gapCode;
                                     sequence2[alignmentLength] = sequenceJ[startPositionJ + lastCol];
                                     alignmentLength++;
                                     lastCol--;
@@ -339,8 +339,8 @@ namespace Bio.Algorithms.Alignment
                         {
 
                             // Be nice, turn aligned solutions around so that they match the input sequences
-                            byte[] alignedA = new byte[alignmentLength];
-                            byte[] alignedB = new byte[alignmentLength];
+                            var alignedA = new byte[alignmentLength];
+                            var alignedB = new byte[alignmentLength];
                             for (long i = 0, j = alignmentLength - 1; i < alignmentLength; i++, j--)
                             {
                                 alignedA[i] = sequence1[j];
@@ -348,8 +348,8 @@ namespace Bio.Algorithms.Alignment
                             }
 
                             // If alphabet of inputA is DnaAlphabet then alphabet of alignedA may be Dna or AmbiguousDna.
-                            IAlphabet alphabet = Alphabets.AutoDetectAlphabet(alignedA, 0, alignedA.GetLongLength(), sequenceI.Alphabet);
-                            Sequence seq = new Sequence(alphabet, alignedA, false);
+                            var alphabet = Alphabets.AutoDetectAlphabet(alignedA, 0, alignedA.GetLongLength(), sequenceI.Alphabet);
+                            var seq = new Sequence(alphabet, alignedA, false);
                             seq.ID = sequenceI.ID;
                             // seq.DisplayID = aInput.DisplayID;
                             result.FirstSequence = seq;
@@ -414,7 +414,7 @@ namespace Bio.Algorithms.Alignment
         {
             // Preallocate row cache
             cachedRowsC = new int[gridRows][];
-            for (int i = 0; i < gridRows; i++)
+            for (var i = 0; i < gridRows; i++)
             {
                 cachedRowsC[i] = new int[rowWidth];
             }
@@ -430,7 +430,7 @@ namespace Bio.Algorithms.Alignment
 
             // Preallocate column cache
             cachedColsC = new int[gridCols][];
-            for (int j = 0; j < gridCols; j++)
+            for (var j = 0; j < gridCols; j++)
             {
                 cachedColsC[j] = new int[colHeight];
             }
@@ -453,26 +453,26 @@ namespace Bio.Algorithms.Alignment
         {
             // Preallocate row cache
             cachedRowsC = new int[gridRows][];
-            for (int i = 0; i < gridRows; i++)
+            for (var i = 0; i < gridRows; i++)
             {
                 cachedRowsC[i] = new int[rowWidth];
             }
 
             // Fill the first row
-            for (int j = 0; j < rowWidth; j++)
+            for (var j = 0; j < rowWidth; j++)
             {
                 cachedRowsC[0][j] = 0;
             }
 
             // Preallocate column cache
             cachedColsC = new int[gridCols][];
-            for (int j = 0; j < gridCols; j++)
+            for (var j = 0; j < gridCols; j++)
             {
                 cachedColsC[j] = new int[colHeight];
             }
 
             // Fill the first column
-            for (int i = 0; i < colHeight; i++)
+            for (var i = 0; i < colHeight; i++)
             {
                 cachedColsC[0][i] = 0;
             }
@@ -487,7 +487,7 @@ namespace Bio.Algorithms.Alignment
             cachedRowsC = new int[gridRows][];
             cachedRowsD = new int[gridRows][];
             cachedRowsI = new int[gridRows][];
-            for (int i = 0; i < gridRows; i++)
+            for (var i = 0; i < gridRows; i++)
             {
                 cachedRowsC[i] = new int[rowWidth];
                 cachedRowsD[i] = new int[rowWidth];
@@ -511,7 +511,7 @@ namespace Bio.Algorithms.Alignment
             cachedColsC = new int[gridCols][];
             cachedColsD = new int[gridCols][];
             cachedColsI = new int[gridCols][];
-            for (int j = 0; j < gridCols; j++)
+            for (var j = 0; j < gridCols; j++)
             {
                 cachedColsC[j] = new int[colHeight];
                 cachedColsD[j] = new int[colHeight];
@@ -542,7 +542,7 @@ namespace Bio.Algorithms.Alignment
             cachedRowsC = new int[gridRows][];
             cachedRowsD = new int[gridRows][];
             cachedRowsI = new int[gridRows][];
-            for (int i = 0; i < gridRows; i++)
+            for (var i = 0; i < gridRows; i++)
             {
                 cachedRowsC[i] = new int[rowWidth];
                 cachedRowsD[i] = new int[rowWidth];
@@ -550,7 +550,7 @@ namespace Bio.Algorithms.Alignment
             }
 
             // Fill the first row
-            for (int j = 0; j < rowWidth; j++)
+            for (var j = 0; j < rowWidth; j++)
             {
                 cachedRowsC[0][j] = 0;
                 cachedRowsD[0][j] = int.MinValue / 2;
@@ -561,7 +561,7 @@ namespace Bio.Algorithms.Alignment
             cachedColsC = new int[gridCols][];
             cachedColsD = new int[gridCols][];
             cachedColsI = new int[gridCols][];
-            for (int j = 0; j < gridCols; j++)
+            for (var j = 0; j < gridCols; j++)
             {
                 cachedColsC[j] = new int[colHeight];
                 cachedColsD[j] = new int[colHeight];
@@ -569,7 +569,7 @@ namespace Bio.Algorithms.Alignment
             }
 
             // Fill the first column
-            for (int i = 0; i < colHeight; i++)
+            for (var i = 0; i < colHeight; i++)
             {
                 cachedColsC[0][i] = 0;
                 cachedColsD[0][i] = int.MinValue / 2;
@@ -587,27 +587,27 @@ namespace Bio.Algorithms.Alignment
         /// <param name="lastCol">Last valid column index within the block; columns beyond this index stay uninitialized</param>
         protected void ComputeBlockSimple(WeightFunction weightFunction, int blockRow, int blockCol, int lastRow, int lastCol)
         {
-            int[] foldC = new int[2 * gridStride + 1];
+            var foldC = new int[2 * gridStride + 1];
 
             PopulateFold(cachedRowsC, cachedColsC, foldC, blockRow, blockCol, lastRow, lastCol);
 
-            long startPositionI = Helper.BigMul(blockRow, gridStride) - 1;
-            long startPositionJ = Helper.BigMul(blockCol, gridStride) - 1;
+            var startPositionI = Helper.BigMul(blockRow, gridStride) - 1;
+            var startPositionJ = Helper.BigMul(blockCol, gridStride) - 1;
 
-            for (int i = 1; i <= lastRow; i++)
+            for (var i = 1; i <= lastRow; i++)
             {
-                long globalI = startPositionI + i;
+                var globalI = startPositionI + i;
 
                 for (int j = 1, f = gridStride - i, Cij = foldC[f++]; j <= lastCol; j++, f++)
                 {
-                    long globalJ = startPositionJ + j;
+                    var globalJ = startPositionJ + j;
 
                     // I
                     //int Iij = fold[f - 1] + gapOpenCost;
-                    int Iij = Cij + gapOpenCost;
+                    var Iij = Cij + gapOpenCost;
 
                     // D
-                    int Dij = foldC[f + 1] + gapOpenCost;
+                    var Dij = foldC[f + 1] + gapOpenCost;
 
                     // C
                     Cij = foldC[f] + similarityMatrix[sequenceI[globalI], sequenceJ[globalJ]];
@@ -631,30 +631,30 @@ namespace Bio.Algorithms.Alignment
         /// <param name="lastCol">Last valid column index within the block; columns beyond this index stay uninitialized</param>
         protected void ComputeBlockAffine(WeightFunction weightFunction, int blockRow, int blockCol, int lastRow, int lastCol)
         {
-            int[] foldC = new int[2 * gridStride + 1];
-            int[] foldD = new int[2 * gridStride + 1];
-            int[] foldI = new int[2 * gridStride + 1];
+            var foldC = new int[2 * gridStride + 1];
+            var foldD = new int[2 * gridStride + 1];
+            var foldI = new int[2 * gridStride + 1];
 
             PopulateFold(cachedRowsC, cachedColsC, foldC, blockRow, blockCol, lastRow, lastCol);
             PopulateFold(cachedRowsD, cachedColsD, foldD, blockRow, blockCol, lastRow, lastCol);
             PopulateFold(cachedRowsI, cachedColsI, foldI, blockRow, blockCol, lastRow, lastCol);
 
-            long startPositionI = Helper.BigMul(blockRow, gridStride) - 1;
-            long startPositionJ = Helper.BigMul(blockCol, gridStride) - 1;
+            var startPositionI = Helper.BigMul(blockRow, gridStride) - 1;
+            var startPositionJ = Helper.BigMul(blockCol, gridStride) - 1;
 
-            for (int i = 1; i <= lastRow; i++)
+            for (var i = 1; i <= lastRow; i++)
             {
-                long globalI = startPositionI + i;
+                var globalI = startPositionI + i;
 
                 for (int j = 1, f = gridStride - i, Cij = foldC[f++]; j <= lastCol; j++, f++)
                 {
-                    long globalJ = startPositionJ + j;
+                    var globalJ = startPositionJ + j;
 
                     // I
-                    int Iij = Math.Max(foldI[f - 1] + gapExtensionCost, Cij + gapOpenCost);
+                    var Iij = Math.Max(foldI[f - 1] + gapExtensionCost, Cij + gapOpenCost);
 
                     // D
-                    int Dij = Math.Max(foldD[f + 1] + gapExtensionCost, foldC[f + 1] + gapOpenCost);
+                    var Dij = Math.Max(foldD[f + 1] + gapExtensionCost, foldC[f + 1] + gapOpenCost);
 
                     // C
                     Cij = foldC[f] + similarityMatrix[sequenceI[globalI], sequenceJ[globalJ]];
@@ -710,7 +710,7 @@ namespace Bio.Algorithms.Alignment
         protected void WritebackFold(int[][] cachedRows, int[][] cachedCols, int[] fold, int blockRow, int blockCol, int lastRow, int lastCol)
         {
             // Writeback Row
-            int bottomNeighbor = blockRow + 1;
+            var bottomNeighbor = blockRow + 1;
             if (bottomNeighbor < gridRows)
             {
                 for (long k = 0, cellIndex = Helper.BigMul(blockCol, gridStride), foldIndexx = 0; k <= lastCol; k++, cellIndex++, foldIndexx++)
@@ -720,7 +720,7 @@ namespace Bio.Algorithms.Alignment
             }
 
             // Writeback Column
-            int rightNeighbor = blockCol + 1;
+            var rightNeighbor = blockCol + 1;
             if (rightNeighbor < gridCols)
             {
                 for (long k = 0, cellIndex = Helper.BigMul(blockRow, gridStride), foldIndexx = 2 * gridStride; k <= lastRow; k++, cellIndex++, foldIndexx--)

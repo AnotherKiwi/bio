@@ -14,12 +14,14 @@ namespace Bio.Padena.Tests
         /// <returns>List of sequences</returns>
         public static List<ISequence> GetTinyReads()
         {
-            List<string> reads = new List<string>();
-            reads.Add("ATGCC");
-            reads.Add("TCCTA");
-            reads.Add("CCTATC");
-            reads.Add("TGCCTCC");
-            reads.Add("CCTCCT");
+            var reads = new List<string>
+            {
+                "ATGCC",
+                "TCCTA",
+                "CCTATC",
+                "TGCCTCC",
+                "CCTCCT"
+            };
             return new List<ISequence>(reads.Select(r => new Sequence(Alphabets.DNA, r.Select(a => (byte)a).ToArray())));
         }
 
@@ -30,16 +32,18 @@ namespace Bio.Padena.Tests
         public static List<ISequence> GetSmallReads()
         {
             // Sequence to assemble: GATGCCTCCTATCGATCGTCGATGC
-            List<string> reads = new List<string>();
-            reads.Add("GATGCCTCCTAT");
-            reads.Add("CCTCCTATCGA");
-            reads.Add("TCCTATCGATCGT");
-            reads.Add("ATCGTCGATGC");
-            reads.Add("TCCTATCGATCGTC");
-            reads.Add("TGCCTCCTATCGA");
-            reads.Add("TATCGATCGTCGA");
-            reads.Add("TCGATCGTCGATGC");
-            reads.Add("GCCTCCTATCGA");
+            var reads = new List<string>
+            {
+                "GATGCCTCCTAT",
+                "CCTCCTATCGA",
+                "TCCTATCGATCGT",
+                "ATCGTCGATGC",
+                "TCCTATCGATCGTC",
+                "TGCCTCCTATCGA",
+                "TATCGATCGTCGA",
+                "TCGATCGTCGATGC",
+                "GCCTCCTATCGA"
+            };
             return new List<ISequence>(reads.Select(r => new Sequence(Alphabets.DNA, r.Select(a => (byte)a).ToArray())));
         }
 
@@ -50,17 +54,19 @@ namespace Bio.Padena.Tests
         public static List<ISequence> GetDanglingReads()
         {
             // Sequence to assemble: ATCGCTAGCATCGAACGATCATTA
-            List<string> reads = new List<string>();
-            reads.Add("ATCGCTAGCATCG");
-            reads.Add("CTAGCATCGAAC");
-            reads.Add("CATCGAACGATCATT");
-            reads.Add("GCTAGCATCGAAC");
-            reads.Add("CGCTAGCATCGAA");
-            reads.Add("ATCGAACGATGA"); // ATCGAACGATCA: SNP introduced to create dangling link
-            reads.Add("CTAGCATCGAACGATC");
-            reads.Add("ATCGCTAGCATCGAA");
-            reads.Add("GCTAGCATCGAACGAT");
-            reads.Add("AGCATCGAACGATCAT");
+            var reads = new List<string>
+            {
+                "ATCGCTAGCATCG",
+                "CTAGCATCGAAC",
+                "CATCGAACGATCATT",
+                "GCTAGCATCGAAC",
+                "CGCTAGCATCGAA",
+                "ATCGAACGATGA", // ATCGAACGATCA: SNP introduced to create dangling link
+                "CTAGCATCGAACGATC",
+                "ATCGCTAGCATCGAA",
+                "GCTAGCATCGAACGAT",
+                "AGCATCGAACGATCAT"
+            };
             return new List<ISequence>(reads.Select(r => (ISequence)new Sequence(Alphabets.DNA, r.Select(a => (byte)a).ToArray())));
         }
 
@@ -71,20 +77,22 @@ namespace Bio.Padena.Tests
         public static List<ISequence> GetRedundantPathReads()
         {
             // Sequence to assemble: ATGCCTCCTATCTTAGCGATGCGGTGT
-            List<string> reads = new List<string>();
-            reads.Add("ATGCCTCCTAT");
-            reads.Add("CCTCCTATCTT");
-            reads.Add("TCCTATCTT");
-            reads.Add("TGCCTCCTATC");
-            reads.Add("GCCTCCTATCTT");
-            reads.Add("CTTAGCGATG");
-            reads.Add("CTATCTTAGCGAT");
-            reads.Add("CTATCTTAGC");
-            reads.Add("GCCTCGTATCT"); // GCCTCCTATCT: SNP introduced to create bubble
-            reads.Add("AGCGATGCGGTGT");
-            reads.Add("TATCTTAGCGATGC");
-            reads.Add("ATCTTAGCGATGC");
-            reads.Add("TTAGCGATGCGG");
+            var reads = new List<string>
+            {
+                "ATGCCTCCTAT",
+                "CCTCCTATCTT",
+                "TCCTATCTT",
+                "TGCCTCCTATC",
+                "GCCTCCTATCTT",
+                "CTTAGCGATG",
+                "CTATCTTAGCGAT",
+                "CTATCTTAGC",
+                "GCCTCGTATCT", // GCCTCCTATCT: SNP introduced to create bubble
+                "AGCGATGCGGTGT",
+                "TATCTTAGCGATGC",
+                "ATCTTAGCGATGC",
+                "TTAGCGATGCGG"
+            };
             return new List<ISequence>(reads.Select(r => (ISequence)new Sequence(Alphabets.DNA, r.Select(a => (byte)a).ToArray())));
         }
 
@@ -93,8 +101,8 @@ namespace Bio.Padena.Tests
         /// </summary>
         public static List<ISequence> GetReadsForScaffolds()
         {
-            List<ISequence> sequences = new List<ISequence>();
-            Sequence seq = new Sequence(Alphabets.DNA, "ATGCCTC".Select(a => (byte)a).ToArray());
+            var sequences = new List<ISequence>();
+            var seq = new Sequence(Alphabets.DNA, "ATGCCTC".Select(a => (byte)a).ToArray());
             seq.ID = ">10.x1:abc";
             sequences.Add(seq);
             seq = new Sequence(Alphabets.DNA, "CCTCCTAT".Select(a => (byte)a).ToArray());

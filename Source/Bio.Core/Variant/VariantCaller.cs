@@ -55,7 +55,7 @@ namespace Bio.Variant
             #endif
 
             // Note we have to copy unless we can guarantee the array will not be mutated.
-            byte[] refseq = seq1.ToArray ();
+            var refseq = seq1.ToArray ();
             ISequence newQuery;
             List<Variant> variants = null;
             // Call variants for a qualitative sequence
@@ -65,7 +65,7 @@ namespace Bio.Variant
                 AlignmentUtils.LeftAlignIndels (refseq, query);
                 AlignmentUtils.VerifyNoGapsOnEnds (refseq, query);
                 if (callVariants) {
-                    variants = VariantCaller.CallVariants (refseq, query, seq2.IsMarkedAsReverseComplement());
+                    variants = CallVariants (refseq, query, seq2.IsMarkedAsReverseComplement());
                 }
                 var newQueryQS = new QualitativeSequence (qs.Alphabet, 
                     qs.FormatType,
@@ -84,7 +84,7 @@ namespace Bio.Variant
                 var newQueryS = new Sequence(qs.Alphabet, query.Select(z=>z.BP).ToArray(), false);
                 newQueryS.Metadata = seq2.Metadata;
                 if (callVariants) {
-                    variants = VariantCaller.CallVariants (refseq, query, seq2.IsMarkedAsReverseComplement());
+                    variants = CallVariants (refseq, query, seq2.IsMarkedAsReverseComplement());
                 }
                 newQuery = newQueryS;
             } else {
@@ -140,17 +140,17 @@ namespace Bio.Variant
             if (originallyReverseComplemented) {
                 AlignmentUtils.ReverseQVValuesForHomopolymers (querySeq);
             }
-            List<Variant> variants = new List<Variant>();
+            var variants = new List<Variant>();
 
             // Now call variants.
             var gap = DnaAlphabet.Instance.Gap;
-            int i = 0;
-            int refPos = 0;
+            var i = 0;
+            var refPos = 0;
             while( i < refSeq.Length)
             {
                 if (refSeq[i] == gap)
                 {
-                    int len = AlignmentUtils.GetGapLength(i, refSeq);
+                    var len = AlignmentUtils.GetGapLength(i, refSeq);
                     var nextBasePos = (i + len);
                     // Should alway be true as we don't end in gaps
                     Debug.Assert (nextBasePos < refSeq.Length);
@@ -165,7 +165,7 @@ namespace Bio.Variant
                 }
                 else if (querySeq[i].BP == gap)
                 {
-                    int len = AlignmentUtils.GetGapLength(i, querySeq);
+                    var len = AlignmentUtils.GetGapLength(i, querySeq);
                     var bases = getBases(refSeq, i, len);
                     var hplenAndChar = determineHomoPolymerLength (i, refSeq);
                     var newVariant = new IndelVariant(refPos - 1, len, bases, 
@@ -222,8 +222,8 @@ namespace Bio.Variant
         /// <returns></returns>
         private static string getBases(byte[] array, int position, int length)
         {
-            char[] chars = new char[length];
-            for(int i=0; i<length; i++)
+            var chars = new char[length];
+            for(var i=0; i<length; i++)
             {
                 chars[i] = (char)array[i+position];
             }
@@ -239,8 +239,8 @@ namespace Bio.Variant
         /// <param name="length">Length.</param>
         private static string getBases(BPandQV[] array, int position, int length)
         {
-            char[] chars = new char[length];
-            for(int i=0; i<length; i++)
+            var chars = new char[length];
+            for(var i=0; i<length; i++)
             {
                 chars[i] = (char)array[i+position].BP;
             }
@@ -255,8 +255,8 @@ namespace Bio.Variant
         private static Tuple<int, char> determineHomoPolymerLength(int pos, byte[] refSeq)
         {
 
-            byte start_bp = refSeq[pos];
-            int length = 1;
+            var start_bp = refSeq[pos];
+            var length = 1;
             while ( ++pos < refSeq.Length &&
                 refSeq [pos] == start_bp) {
                 length++;

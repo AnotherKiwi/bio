@@ -45,7 +45,7 @@ namespace Bio.IO.Wiggle
         /// <returns>The collection of parsed annotations.</returns>
         public IEnumerable<WiggleAnnotation> Parse(Stream stream)
         {
-            var annotation = this.ParseOne(stream);
+            var annotation = ParseOne(stream);
             return annotation == null 
                 ? Enumerable.Empty<WiggleAnnotation>() 
                 : new[] { annotation };
@@ -60,7 +60,7 @@ namespace Bio.IO.Wiggle
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
 
             using (var reader = stream.OpenRead())
@@ -82,7 +82,7 @@ namespace Bio.IO.Wiggle
             }
 
             string line;
-            WiggleAnnotation result = ParseHeader(reader);
+            var result = ParseHeader(reader);
 
             if (result.AnnotationType == WiggleAnnotationType.FixedStep)
             {
@@ -106,7 +106,7 @@ namespace Bio.IO.Wiggle
                             continue;
                         }
 
-                        string[] keyValue = line.Split(' ', '\t');
+                        var keyValue = line.Split(' ', '\t');
                         variableStepValues.Add(new KeyValuePair<long, float>(long.Parse(keyValue[0], CultureInfo.InvariantCulture), float.Parse(keyValue[1], CultureInfo.InvariantCulture)));
                     }
                 }
@@ -128,9 +128,9 @@ namespace Bio.IO.Wiggle
         /// <returns>Wiggle annotation object initialized with data from the header.</returns>
         private static WiggleAnnotation ParseHeader(StreamReader reader)
         {
-            WiggleAnnotation result = new WiggleAnnotation();
+            var result = new WiggleAnnotation();
 
-            string line = reader.ReadLine();
+            var line = reader.ReadLine();
             
             // read comments
             while (line != null && (line.StartsWith(WiggleSchema.CommentLineStart, StringComparison.OrdinalIgnoreCase) || string.IsNullOrWhiteSpace(line)))
@@ -168,11 +168,11 @@ namespace Bio.IO.Wiggle
                 throw new FormatException(Properties.Resource.WiggleInvalidHeader);
             }
 
-            string[] tokens = line.Split(' ');
-            Dictionary<string, string> encodingDetails = new Dictionary<string, string>();
-            for (int i = 1; i < tokens.Length; i++)
+            var tokens = line.Split(' ');
+            var encodingDetails = new Dictionary<string, string>();
+            for (var i = 1; i < tokens.Length; i++)
             {
-                string[] metadataArray = tokens[i].Split('=');
+                var metadataArray = tokens[i].Split('=');
                 encodingDetails.Add(metadataArray[0], metadataArray[1]);
             }
 
@@ -206,8 +206,8 @@ namespace Bio.IO.Wiggle
         /// <returns>Track line data in key-value format.</returns>
         private static Dictionary<string, string> ExtractMetadata(string trackLine)
         {
-            List<string> tokens = trackLine.Split(' ').ToList();
-            int i = 0;
+            var tokens = trackLine.Split(' ').ToList();
+            var i = 0;
 
             // Values might be enclosed in double-quotes to support spaces in values. 
             // (space is a delimited if not inside double-quotes.)

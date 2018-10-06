@@ -20,7 +20,7 @@ namespace Bio.Tests
         public void TestDnaAlphabetTryGetComplementSymbol()
         {
             byte basicSymbols;
-            DnaAlphabet dnaAlphabet = DnaAlphabet.Instance;
+            var dnaAlphabet = DnaAlphabet.Instance;
             
             Assert.AreEqual(true, dnaAlphabet.TryGetComplementSymbol((byte)'A', out basicSymbols));            
             Assert.AreEqual('T', (char)basicSymbols);
@@ -46,7 +46,7 @@ namespace Bio.Tests
         public void TestDnaAlphabetTryGetBasicSymbols()
         {
             HashSet<byte> basicSymbols;
-            AmbiguousDnaAlphabet dnaAlphabet = AmbiguousDnaAlphabet.Instance;
+            var dnaAlphabet = AmbiguousDnaAlphabet.Instance;
             
             Assert.AreEqual(true, dnaAlphabet.TryGetBasicSymbols((byte)'M', out basicSymbols));
             Assert.IsTrue(basicSymbols.All(sy => (sy == (byte)'A' || sy == (byte) 'C')));            

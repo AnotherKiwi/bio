@@ -213,16 +213,16 @@ NC_001143.7	RefSeq	CDS	49010	49810	.	-	0	ID=NC_001143.7:ADD66:unknown_transcript
         public void TestGffWhenParsingOne()
         {
             // parse
-            GffParser parser = new GffParser();
-            ISequence seq = parser.Parse(_singleSeqGffFilename).FirstOrDefault();
+            var parser = new GffParser();
+            var seq = parser.Parse(_singleSeqGffFilename).FirstOrDefault();
 
             // test the non-metadata properties
             Assert.AreEqual(Alphabets.DNA, seq.Alphabet);
             Assert.AreEqual("NC_001133.7", seq.ID);
 
             // just test the formatting; if that's good, the parsing was good
-            GffFormatter formatter = new GffFormatter();
-            string actual = formatter.FormatString(seq);
+            var formatter = new GffFormatter();
+            var actual = formatter.FormatString(seq);
             Assert.AreEqual(Utility.CleanupWhiteSpace(_singleSeqGffFileExpectedOutput),
                             Utility.CleanupWhiteSpace(actual));
         }
@@ -240,7 +240,7 @@ NC_001143.7	RefSeq	CDS	49010	49810	.	-	0	ID=NC_001143.7:ADD66:unknown_transcript
 
             // test the file-scope metadata that is tricky to parse, and will not be tested
             // implicitly by testing the formatting
-            foreach (ISequence seq in seqList)
+            foreach (var seq in seqList)
             {
                 var item = seq.Metadata["SOURCE-VERSION"] as MetadataListItem<string>;
 
@@ -258,7 +258,7 @@ NC_001143.7	RefSeq	CDS	49010	49810	.	-	0	ID=NC_001143.7:ADD66:unknown_transcript
                 .Format(seqList, TempGFFFileName);
 
             string actual;
-            using (StreamReader reader = new StreamReader(TempGFFFileName))
+            using (var reader = new StreamReader(TempGFFFileName))
             {
                 actual = reader.ReadToEnd();
             }
@@ -277,16 +277,16 @@ NC_001143.7	RefSeq	CDS	49010	49810	.	-	0	ID=NC_001143.7:ADD66:unknown_transcript
         public void TestGffForManyFiles()
         {
             // parser and formatter will be used for all files in input dir
-            GffFormatter formatter = new GffFormatter();
+            var formatter = new GffFormatter();
 
             // iterate through the files in input dir, parsing and formatting each; write results
             // to log file
-            DirectoryInfo inputDirInfo = new DirectoryInfo(_gffDataPath);
-            foreach (FileInfo fileInfo in inputDirInfo.GetFiles("*.gff"))
+            var inputDirInfo = new DirectoryInfo(_gffDataPath);
+            foreach (var fileInfo in inputDirInfo.GetFiles("*.gff"))
             {
                 ApplicationLog.WriteLine("Parsing file {0}...{1}", fileInfo.FullName, Environment.NewLine);
                 ISequenceParser parser = new GffParser();
-                foreach (ISequence sequence in parser.Parse(fileInfo.FullName))
+                foreach (var sequence in parser.Parse(fileInfo.FullName))
                 {
                     // don't do anything with it; just make sure it doesn't crash
                     formatter.FormatString(sequence);
@@ -304,12 +304,12 @@ NC_001143.7	RefSeq	CDS	49010	49810	.	-	0	ID=NC_001143.7:ADD66:unknown_transcript
         [Category("Priority0")]
         public void GffProperties()
         {
-            GffParser parser = new GffParser();
+            var parser = new GffParser();
             Assert.AreEqual(parser.Name, Resource.GFF_NAME);
             Assert.AreEqual(parser.Description, Resource.GFFPARSER_DESCRIPTION);
             Assert.AreEqual(parser.SupportedFileTypes, Resource.GFF_FILEEXTENSION);
 
-            GffFormatter formatter = new GffFormatter();
+            var formatter = new GffFormatter();
             Assert.AreEqual(formatter.Name, Resource.GFF_NAME);
             Assert.AreEqual(formatter.Description, Resource.GFFFORMATTER_DESCRIPTION);
             Assert.AreEqual(formatter.SupportedFileTypes, Resource.GFF_FILEEXTENSION);

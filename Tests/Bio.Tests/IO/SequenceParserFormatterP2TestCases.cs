@@ -19,32 +19,32 @@ namespace Bio.Tests.IO
         [Category("Priority2")]
         public void ValidateFindFormatterByFileName()
         {
-            ISequenceFormatter formatter=SequenceFormatters.FindFormatterByFileName(Constants.InvalidFileName);
-            this.ValidateFormatterExceptions(formatter);
+            var formatter=SequenceFormatters.FindFormatterByFileName(Constants.InvalidFileName);
+            ValidateFormatterExceptions(formatter);
         }
 
         [Test]
         [Category("Priority2")]
         public void ValidateFindFormatterByName()
         {
-            ISequenceFormatter formatter = SequenceFormatters.FindFormatterByName(Constants.FastaTempFileName, Constants.InvalidFileName);
-            this.ValidateFormatterExceptions(formatter);            
+            var formatter = SequenceFormatters.FindFormatterByName(Constants.FastaTempFileName, Constants.InvalidFileName);
+            ValidateFormatterExceptions(formatter);            
         }
 
         [Test]
         [Category("Priority2")]
         public void ValidateFindParserByFileName()
         {
-            ISequenceParser parser = SequenceParsers.FindParserByFileName(Constants.InvalidFileName);
-            this.ValidateParserExceptions(parser);           
+            var parser = SequenceParsers.FindParserByFileName(Constants.InvalidFileName);
+            ValidateParserExceptions(parser);           
         }
 
         [Test]
         [Category("Priority2")]
         public void ValidateFindParserByName()
         {
-            ISequenceParser parser = SequenceParsers.FindParserByName(Constants.FastaTempFileName, Constants.InvalidFileName);
-            this.ValidateParserExceptions(parser);
+            var parser = SequenceParsers.FindParserByName(Constants.FastaTempFileName, Constants.InvalidFileName);
+            ValidateParserExceptions(parser);
         }
 
         # region Supporting Methods.

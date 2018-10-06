@@ -20,7 +20,7 @@ namespace Bio
         {
             get
             {
-                return this.validValues;
+                return validValues;
             }
         }
 
@@ -59,11 +59,11 @@ namespace Bio
         /// <param name="values"></param>
         public void AddValidValues(params string[] values)
         {
-            foreach (string value in values)
+            foreach (var value in values)
             {
-                if (!this.validValues.Contains(value))
+                if (!validValues.Contains(value))
                 {
-                    this.validValues.Add(value);
+                    validValues.Add(value);
                 }
             }
         }
@@ -75,8 +75,8 @@ namespace Bio
         /// <returns>True if the value is valid.</returns>
         public bool IsValid(object parameterValue)
         {
-            string s = parameterValue as string;
-            return s != null && this.IsValid(s);
+            var s = parameterValue as string;
+            return s != null && IsValid(s);
         }
 
         /// <summary>
@@ -88,10 +88,10 @@ namespace Bio
         {
             if (IgnoreCase)
             {
-                return this.validValues.Any(s => s.Equals(parameterValue, StringComparison.CurrentCultureIgnoreCase));
+                return validValues.Any(s => s.Equals(parameterValue, StringComparison.CurrentCultureIgnoreCase));
             }
             
-            return this.validValues.Contains(parameterValue);
+            return validValues.Contains(parameterValue);
         }
     }
 }

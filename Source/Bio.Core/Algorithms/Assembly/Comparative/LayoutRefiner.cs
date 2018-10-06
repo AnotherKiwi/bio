@@ -19,7 +19,7 @@ namespace Bio.Algorithms.Assembly.Comparative
         {
             if (orderedDeltas == null)
             {
-                throw new ArgumentNullException("orderedDeltas");
+                throw new ArgumentNullException(nameof(orderedDeltas));
             }
 
             if (orderedDeltas.Count == 0)
@@ -29,9 +29,9 @@ namespace Bio.Algorithms.Assembly.Comparative
 
             // As we dont know what is the maximum posible insert and deltes, 
             // assuming 1,000,000 deltas are sufficient for operation.
-            int windowSize = 1000;
+            var windowSize = 1000;
 
-            VirtualDeltaAlignmentCollection deltaCatche = new VirtualDeltaAlignmentCollection(orderedDeltas, windowSize);
+            var deltaCatche = new VirtualDeltaAlignmentCollection(orderedDeltas, windowSize);
 
             List<DeltaAlignment> deltasOverlappingAtCurrentIndex = null;
             List<DeltaAlignment> leftSideDeltas = null;
@@ -44,17 +44,17 @@ namespace Bio.Algorithms.Assembly.Comparative
                 rightSideDeltas = new List<DeltaAlignment>();
 
                 long currentProcessedOffset = 0;
-                DeltaAlignment alignment = deltaCatche[0];
+                var alignment = deltaCatche[0];
                 deltasOverlappingAtCurrentIndex.Add(alignment);
-                DeltaAlignment deltaWithLargestEndIndex = alignment;
+                var deltaWithLargestEndIndex = alignment;
 
-                for (int currentIndex = 0; currentIndex < deltaCatche.Count - 1; currentIndex++)
+                for (var currentIndex = 0; currentIndex < deltaCatche.Count - 1; currentIndex++)
                 {
-                    DeltaAlignment nextDelta = deltaCatche[currentIndex + 1];
+                    var nextDelta = deltaCatche[currentIndex + 1];
                     unloadedDeltas = null;
                     if (deltaCatche.TryUnload(currentIndex + 1, out unloadedDeltas))
                     {
-                        for (int i = 0; i < unloadedDeltas.Count; i++)
+                        for (var i = 0; i < unloadedDeltas.Count; i++)
                         {
                             yield return unloadedDeltas[i];
                         }
@@ -74,9 +74,9 @@ namespace Bio.Algorithms.Assembly.Comparative
                         // If next delta is adjacent there is a possible insertion in target (deletion in reference)
                         // Try to extend the deltas from both sides and make them meet
                         leftSideDeltas.Clear();
-                        for (int index = 0; index < deltasOverlappingAtCurrentIndex.Count; index++)
+                        for (var index = 0; index < deltasOverlappingAtCurrentIndex.Count; index++)
                         {
-                            DeltaAlignment delta = deltasOverlappingAtCurrentIndex[index];
+                            var delta = deltasOverlappingAtCurrentIndex[index];
                             if (delta.FirstSequenceEnd >= deltaWithLargestEndIndex.FirstSequenceEnd)
                             {
                                 leftSideDeltas.Add(delta);
@@ -87,11 +87,11 @@ namespace Bio.Algorithms.Assembly.Comparative
                         rightSideDeltas.Clear();
                         for (long index = currentIndex + 1; index < deltaCatche.Count; index++)
                         {
-                            DeltaAlignment delta = deltaCatche[index];
+                            var delta = deltaCatche[index];
                             unloadedDeltas = null;
                             if (deltaCatche.TryUnload(currentIndex + 1, out unloadedDeltas))
                             {
-                                for (int i = 0; i < unloadedDeltas.Count; i++)
+                                for (var i = 0; i < unloadedDeltas.Count; i++)
                                 {
                                     yield return unloadedDeltas[i];
                                 }
@@ -107,7 +107,7 @@ namespace Bio.Algorithms.Assembly.Comparative
                             rightSideDeltas.Add(delta);
                         }
 
-                        long offset = ExtendDeltas(leftSideDeltas, rightSideDeltas);
+                        var offset = ExtendDeltas(leftSideDeltas, rightSideDeltas);
 
                         if (offset != 0)
                         {
@@ -131,7 +131,7 @@ namespace Bio.Algorithms.Assembly.Comparative
 
                             if (deltasOverlappingAtCurrentIndex.Count > windowSize)
                             {
-                                for (int i = deltasOverlappingAtCurrentIndex.Count - 1; i >= 0; i--)
+                                for (var i = deltasOverlappingAtCurrentIndex.Count - 1; i >= 0; i--)
                                 {
                                     if (deltasOverlappingAtCurrentIndex[i].FirstSequenceEnd < deltaWithLargestEndIndex.FirstSequenceEnd)
                                     {
@@ -145,9 +145,9 @@ namespace Bio.Algorithms.Assembly.Comparative
                             // No overlap with nextDelta, so there is a gap at the end of deltaWithLargestEndIndex
                             // Try fix insertion in reference by pulling together two ends of deltas on both sides of the gap
                             leftSideDeltas.Clear();
-                            for (int index = 0; index < deltasOverlappingAtCurrentIndex.Count; index++)
+                            for (var index = 0; index < deltasOverlappingAtCurrentIndex.Count; index++)
                             {
-                                DeltaAlignment delta = deltasOverlappingAtCurrentIndex[index];
+                                var delta = deltasOverlappingAtCurrentIndex[index];
                                 if (delta.FirstSequenceEnd >= deltaWithLargestEndIndex.FirstSequenceEnd)
                                 {
                                     leftSideDeltas.Add(delta);
@@ -158,11 +158,11 @@ namespace Bio.Algorithms.Assembly.Comparative
                             rightSideDeltas.Clear();
                             for (long index = currentIndex + 1; index < deltaCatche.Count; index++)
                             {
-                                DeltaAlignment delta = deltaCatche[index];
+                                var delta = deltaCatche[index];
                                 unloadedDeltas = null;
                                 if (deltaCatche.TryUnload(currentIndex + 1, out unloadedDeltas))
                                 {
-                                    for (int i = 0; i < unloadedDeltas.Count; i++)
+                                    for (var i = 0; i < unloadedDeltas.Count; i++)
                                     {
                                         yield return unloadedDeltas[i];
                                     }
@@ -178,11 +178,11 @@ namespace Bio.Algorithms.Assembly.Comparative
                                 rightSideDeltas.Add(delta);
                             }
 
-                            int score = 0;
-                            for (int i = 0; i < leftSideDeltas.Count; i++)
+                            var score = 0;
+                            for (var i = 0; i < leftSideDeltas.Count; i++)
                             {
                                 var l = leftSideDeltas[i];
-                                int j = 0;
+                                var j = 0;
 
                                 for (; j < rightSideDeltas.Count; j++)
                                 {
@@ -206,13 +206,13 @@ namespace Bio.Algorithms.Assembly.Comparative
                             // Score > 0 means most deltas share same query sequence at both ends, so close this gap
                             if (score > 0)
                             {
-                                long gaplength = (nextDelta.FirstSequenceStart - deltaWithLargestEndIndex.FirstSequenceEnd) - 1;
+                                var gaplength = (nextDelta.FirstSequenceStart - deltaWithLargestEndIndex.FirstSequenceEnd) - 1;
                                 currentProcessedOffset -= gaplength;
 
                                 // Pull deltas on right side to close the gap
-                                for (int i = 0; i < rightSideDeltas.Count; i++)
+                                for (var i = 0; i < rightSideDeltas.Count; i++)
                                 {
-                                    DeltaAlignment delta = rightSideDeltas[i];
+                                    var delta = rightSideDeltas[i];
                                     delta.FirstSequenceStart -= gaplength;
                                     delta.FirstSequenceEnd -= gaplength;
                                     // deltaCatche.Update(delta.Id);
@@ -228,7 +228,7 @@ namespace Bio.Algorithms.Assembly.Comparative
 
                 unloadedDeltas = deltaCatche.GetCachedDeltas();
 
-                for (int i = 0; i < unloadedDeltas.Count; i++)
+                for (var i = 0; i < unloadedDeltas.Count; i++)
                 {
                     yield return unloadedDeltas[i];
                 }
@@ -271,9 +271,9 @@ namespace Bio.Algorithms.Assembly.Comparative
         private static long ExtendDeltas(List<DeltaAlignment> leftSideDeltas, List<DeltaAlignment> rightSideDeltas)
         {
             long extendedIndex = 1;
-            int[] symbolCount = new int[255];
-            List<byte> leftExtension = new List<byte>();
-            List<byte> rightExtension = new List<byte>();
+            var symbolCount = new int[255];
+            var leftExtension = new List<byte>();
+            var rightExtension = new List<byte>();
             #region left extension
 
             // Left extension
@@ -282,13 +282,13 @@ namespace Bio.Algorithms.Assembly.Comparative
                 symbolCount['A'] = symbolCount['C'] = symbolCount['G'] = symbolCount['T'] = 0;
 
                 // loop through all queries at current index and find symbol counts
-                for (int index = 0; index < leftSideDeltas.Count; index++)
+                for (var index = 0; index < leftSideDeltas.Count; index++)
                 {
-                    DeltaAlignment da = leftSideDeltas[index];
+                    var da = leftSideDeltas[index];
 
                     if (da.QuerySequence.Count > da.SecondSequenceEnd + extendedIndex)
                     {
-                        char symbol = (char)da.QuerySequence[da.SecondSequenceEnd + extendedIndex];
+                        var symbol = (char)da.QuerySequence[da.SecondSequenceEnd + extendedIndex];
                         symbolCount[char.ToUpperInvariant(symbol)]++;
                     }
                 }
@@ -325,13 +325,13 @@ namespace Bio.Algorithms.Assembly.Comparative
                 symbolCount['A'] = symbolCount['C'] = symbolCount['G'] = symbolCount['T'] = 0;
 
                 // loop through all queries at current index and find symbol counts
-                for (int index = 0; index < rightSideDeltas.Count; index++)
+                for (var index = 0; index < rightSideDeltas.Count; index++)
                 {
-                    DeltaAlignment da = rightSideDeltas[index];
+                    var da = rightSideDeltas[index];
 
                     if (da.SecondSequenceStart - extendedIndex >= 0)
                     {
-                        char symbol = (char)da.QuerySequence[da.SecondSequenceStart - extendedIndex];
+                        var symbol = (char)da.QuerySequence[da.SecondSequenceStart - extendedIndex];
                         symbolCount[char.ToUpperInvariant(symbol)]++;
                     }
                 }
@@ -365,7 +365,7 @@ namespace Bio.Algorithms.Assembly.Comparative
                 return 0;
             }
 
-            int overlapStart = FindMaxOverlap(leftExtension, rightExtension);
+            var overlapStart = FindMaxOverlap(leftExtension, rightExtension);
 
             if (overlapStart == -1)
             {
@@ -374,7 +374,7 @@ namespace Bio.Algorithms.Assembly.Comparative
             else
             {
                 // Update left side deltas
-                for (int index = 0; index < leftSideDeltas.Count; index++)
+                for (var index = 0; index < leftSideDeltas.Count; index++)
                 {
                     var d = leftSideDeltas[index];
                     d.FirstSequenceEnd += (d.QuerySequence.Count - 1) - d.SecondSequenceEnd;
@@ -382,8 +382,8 @@ namespace Bio.Algorithms.Assembly.Comparative
                 }
 
                 // Update right side deltas
-                int toRightOffset = rightExtension.Count + overlapStart;
-                for (int index = 0; index < rightSideDeltas.Count; index++)
+                var toRightOffset = rightExtension.Count + overlapStart;
+                for (var index = 0; index < rightSideDeltas.Count; index++)
                 {
                     var d = rightSideDeltas[index];
                     d.FirstSequenceStart += toRightOffset - d.SecondSequenceStart;
@@ -405,7 +405,7 @@ namespace Bio.Algorithms.Assembly.Comparative
         /// <returns>Returns Max overLap.</returns>
         private static int FindMaxOverlap(List<byte> leftExtension, List<byte> rightExtension)
         {
-            for (int left = 0; left < leftExtension.Count; left++)
+            for (var left = 0; left < leftExtension.Count; left++)
             {
                 int right;
                 for (right = 0; right < leftExtension.Count - left && right < rightExtension.Count; right++)
@@ -434,7 +434,7 @@ namespace Bio.Algorithms.Assembly.Comparative
         private static void FindLargestAndSecondLargest(int[] values, out byte indexLargest, out byte indexSecond)
         {
             indexLargest = indexSecond = 0;
-            for (int i = 0; i < values.Length; i++)
+            for (var i = 0; i < values.Length; i++)
             {
                 if (values[i] > values[indexLargest])
                 {
@@ -465,10 +465,10 @@ namespace Bio.Algorithms.Assembly.Comparative
             public VirtualDeltaAlignmentCollection(DeltaAlignmentCollection orderedDeltas, int windowSize)
             {
                 this.windowSize = windowSize;
-                this.Count = orderedDeltas.Count;
-                this.catchedDeltas = new List<DeltaAlignment>();
-                this.catchSize = windowSize * 1000;
-                this.sourceDeltas = orderedDeltas.DeltaAlignmentParser.Parse().GetEnumerator();
+                Count = orderedDeltas.Count;
+                catchedDeltas = new List<DeltaAlignment>();
+                catchSize = windowSize * 1000;
+                sourceDeltas = orderedDeltas.DeltaAlignmentParser.Parse().GetEnumerator();
             }
 
             /// <summary>
@@ -486,17 +486,17 @@ namespace Bio.Algorithms.Assembly.Comparative
                 {
                     if (index < 0)
                     {
-                        throw new ArgumentOutOfRangeException("index");
+                        throw new ArgumentOutOfRangeException(nameof(index));
                     }
 
-                    long catchIndex = index - startIndexInCatchedList;
+                    var catchIndex = index - startIndexInCatchedList;
 
                     if (catchIndex < 0)
                     {
                         throw new ArgumentException("Catch size is not enough");
                     }
 
-                    if (catchIndex >= this.catchedDeltas.Count)
+                    if (catchIndex >= catchedDeltas.Count)
                     {
                         LoadNextWindow();
 
@@ -515,12 +515,12 @@ namespace Bio.Algorithms.Assembly.Comparative
             /// <returns>Returns true if a cache window is unloaded else false.</returns>
             public bool TryUnload(long index, out List<DeltaAlignment> unloadedDeltas)
             {
-                bool result = false;
+                var result = false;
                 unloadedDeltas = null;
-                long catchIndex = index - startIndexInCatchedList;
-                if (catchIndex >= this.catchSize - windowSize)
+                var catchIndex = index - startIndexInCatchedList;
+                if (catchIndex >= catchSize - windowSize)
                 {
-                    if (orderDeltasIndex + windowSize < this.Count)
+                    if (orderDeltasIndex + windowSize < Count)
                     {
                         // unload only when there is a data to load another window.
                         unloadedDeltas = Unload();
@@ -530,7 +530,7 @@ namespace Bio.Algorithms.Assembly.Comparative
                         }
                     }
 
-                    if (orderDeltasIndex < this.Count)
+                    if (orderDeltasIndex < Count)
                     {
                         LoadNextWindow();
                     }
@@ -544,7 +544,7 @@ namespace Bio.Algorithms.Assembly.Comparative
             /// </summary>
             public List<DeltaAlignment> GetCachedDeltas()
             {
-                return this.catchedDeltas;
+                return catchedDeltas;
             }
 
             /// <summary>
@@ -553,15 +553,15 @@ namespace Bio.Algorithms.Assembly.Comparative
             /// <returns>Returns unloaded deltas.</returns>
             private List<DeltaAlignment> Unload()
             {
-                List<DeltaAlignment> unloadedDeltas = new List<DeltaAlignment>();
+                var unloadedDeltas = new List<DeltaAlignment>();
 
-                for (int i = 0; i < windowSize; i++)
+                for (var i = 0; i < windowSize; i++)
                 {
-                    DeltaAlignment delta = this.catchedDeltas[i];
+                    var delta = catchedDeltas[i];
                     unloadedDeltas.Add(delta);
                 }
 
-                this.catchedDeltas.RemoveRange(0, windowSize);
+                catchedDeltas.RemoveRange(0, windowSize);
                 startIndexInCatchedList += windowSize;
                 return unloadedDeltas;
             }
@@ -571,7 +571,7 @@ namespace Bio.Algorithms.Assembly.Comparative
             /// </summary>
             private void LoadNextWindow()
             {
-                for (long index = 1; index <= windowSize && orderDeltasIndex < this.Count; index++)
+                for (long index = 1; index <= windowSize && orderDeltasIndex < Count; index++)
                 {
                     if (sourceDeltas.MoveNext())
                     {

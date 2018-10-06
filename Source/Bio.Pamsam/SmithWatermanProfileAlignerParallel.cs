@@ -63,7 +63,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         override protected void FillCellSimple(int col, int row)
         {
             // convert int to float
-            float score = SetCellValuesSimple(col, row);
+            var score = SetCellValuesSimple(col, row);
 
             // SmithWaterman does not use negative scores, instead, if score is <0
             // set scores to 0 and stop the alignment at that point.
@@ -90,7 +90,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         override protected void FillCellAffine(int col, int row)
         {
             // convert int to float
-            float score = SetCellValuesAffine(col, row);
+            var score = SetCellValuesAffine(col, row);
 
             // SmithWaterman does not use negative scores, instead, if score is < 0
             // set score to 0 and stop the alignment at that point.
@@ -193,9 +193,9 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         override protected float Traceback(out int[] aAlignedOut, out int[] bAlignedOut)
         {
             // need an array we can extend if necessary
-            int guessLen = Math.Max(_a.Length, _b.Length);
-            List<int> aAligned = new List<int>(guessLen);
-            List<int> bAligned = new List<int>(guessLen);
+            var guessLen = Math.Max(_a.Length, _b.Length);
+            var aAligned = new List<int>(guessLen);
+            var bAligned = new List<int>(guessLen);
             // aligned array will be backwards, may be longer then original sequence due to gaps
 
             int col, row;
@@ -203,7 +203,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             // Start at the optimum element of F and work backwards
             col = _optScoreCol;
             row = _optScoreRow;
-            bool done = false;
+            var done = false;
             while (!done)
             {
                 if (_FSource[col, row] == SourceDirection.Diagonal)
@@ -243,7 +243,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             // prepare solution, copy diagnostic data, turn aligned sequences around, etc
             // Be nice, turn aligned solutions around so that they match the input sequences
             int i, j; // utility indices used to invert aligned sequences
-            int len = aAligned.Count;
+            var len = aAligned.Count;
             aAlignedOut = new int[len];
             bAlignedOut = new int[len];
             for (i = 0, j = len - 1; i < len; i++, j--)

@@ -96,9 +96,9 @@ namespace Bio.Algorithms.Translation
         public static bool TryLookup(ISequence sequence, int offset, out byte aminoAcid)
         {
             if (sequence == null)
-                throw new ArgumentNullException("sequence");
+                throw new ArgumentNullException(nameof(sequence));
             if (offset >= sequence.Count - 2)
-                throw new ArgumentException(Properties.Resource.OffsetOverflow, "offset");
+                throw new ArgumentException(Properties.Resource.OffsetOverflow, nameof(offset));
 
             return TryLookup(sequence[offset], sequence[offset + 1], sequence[offset + 2], out aminoAcid);
         }

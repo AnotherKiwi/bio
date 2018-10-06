@@ -115,10 +115,10 @@ namespace Bio.Tests.Algorithms.Alignment
         public void NeedlemanWunschThrowsExceptionWhenTooLarge()
         {
             // What size squared is too large?
-            int seq_size = (int)Math.Sqrt ((double)Int32.MaxValue) + 5;
-            byte[] seq = new byte[seq_size];
+            var seq_size = (int)Math.Sqrt ((double)Int32.MaxValue) + 5;
+            var seq = new byte[seq_size];
             // Now let's generate sequences of those size
-            for (int i = 0; i < seq.Length; i++) {
+            for (var i = 0; i < seq.Length; i++) {
                 seq [i] = (byte)'A';
             }
             var seq1 = new Sequence (DnaAlphabet.Instance, seq, false);
@@ -139,7 +139,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void NeedlemanWunschSimpleAlignTwoLowerCaseSequencesFromTextFile()
         {
-            this.ValidateNeedlemanWunschAlignment(
+            ValidateNeedlemanWunschAlignment(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerCase,
@@ -158,7 +158,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void NeedlemanWunschSimpleAlignTwoUpperCaseSequencesFromTextFile()
         {
-            this.ValidateNeedlemanWunschAlignment(
+            ValidateNeedlemanWunschAlignment(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.UpperCase,
@@ -177,7 +177,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void NeedlemanWunschSimpleAlignWith1000BP()
         {
-            this.ValidateNeedlemanWunschAlignment(
+            ValidateNeedlemanWunschAlignment(
                 Constants.NeedlemanWunschAlignAlgorithmNodeNameFor1000BP,
                 true,
                 SequenceCaseType.UpperCase,
@@ -196,7 +196,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void NeedlemanWunschSimpleAlignTwoLowerUpperCaseSequencesFromTextFile()
         {
-            this.ValidateNeedlemanWunschAlignment(
+            ValidateNeedlemanWunschAlignment(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerUpperCase,
@@ -215,7 +215,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void NeedlemanWunschSimpleAlignTwoLowerCaseSequencesFromCode()
         {
-            this.ValidateNeedlemanWunschAlignment(
+            ValidateNeedlemanWunschAlignment(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 false,
                 SequenceCaseType.LowerCase,
@@ -234,7 +234,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void NeedlemanWunschSimpleAlignTwoUpperCaseSequencesFromCode()
         {
-            this.ValidateNeedlemanWunschAlignment(
+            ValidateNeedlemanWunschAlignment(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 false,
                 SequenceCaseType.UpperCase,
@@ -253,7 +253,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void NeedlemanWunschSimpleAlignTwoLowerUpperCaseSequencesFromCode()
         {
-            this.ValidateNeedlemanWunschAlignment(
+            ValidateNeedlemanWunschAlignment(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 false,
                 SequenceCaseType.LowerUpperCase,
@@ -272,7 +272,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void NeedlemanWunschSimpleAlignListLowerCaseSequencesFromTextFile()
         {
-            this.ValidateNeedlemanWunschAlignment(
+            ValidateNeedlemanWunschAlignment(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerCase,
@@ -291,7 +291,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void NeedlemanWunschSimpleAlignListUpperCaseSequencesFromTextFile()
         {
-            this.ValidateNeedlemanWunschAlignment(
+            ValidateNeedlemanWunschAlignment(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.UpperCase,
@@ -310,7 +310,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void NeedlemanWunschSimpleAlignListLowerUpperCaseSequencesFromTextFile()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschAlignAlgorithmNodeName, true,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschAlignAlgorithmNodeName, true,
                                              SequenceCaseType.LowerUpperCase,
                                              AlignParameters.AlignList);
         }
@@ -327,7 +327,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void NeedlemanWunschSimpleAlignAllParamsLowerCaseSequencesFromTextFile()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschAlignAlgorithmNodeName, true,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschAlignAlgorithmNodeName, true,
                                              SequenceCaseType.LowerCase,
                                              AlignParameters.AllParam);
         }
@@ -344,7 +344,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void NeedlemanWunschSimpleAlignAllParamsUpperCaseSequencesFromTextFile()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschAlignAlgorithmNodeName, true,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschAlignAlgorithmNodeName, true,
                                              SequenceCaseType.UpperCase,
                                              AlignParameters.AllParam);
         }
@@ -361,7 +361,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void NeedlemanWunschSimpleAlignAllParamsLowerUpperCaseSequencesFromTextFile()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschAlignAlgorithmNodeName, true,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschAlignAlgorithmNodeName, true,
                                              SequenceCaseType.LowerUpperCase, AlignParameters.AllParam);
         }
 
@@ -375,7 +375,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignTwoSequencesWithNonMatchingSimilarityMatrix()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
+            InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName, true,
                 SimilarityMatrixInvalidTypes.NonMatchingSimilarityMatrix, AlignParameters.AlignTwo,
                 AlignmentType.SimpleAlign);
@@ -391,7 +391,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignListSequencesWithNonMatchingSimilarityMatrix()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
+            InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName, true,
                 SimilarityMatrixInvalidTypes.NonMatchingSimilarityMatrix, AlignParameters.AlignList,
                 AlignmentType.SimpleAlign);
@@ -407,7 +407,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignAllParamsSequencesWithNonMatchingSimilarityMatrix()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
+            InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName, true,
                 SimilarityMatrixInvalidTypes.NonMatchingSimilarityMatrix, AlignParameters.AllParam,
                 AlignmentType.SimpleAlign);
@@ -423,7 +423,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignTwoSequencesWithEmptySimilarityMatrix()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
+            InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName, true,
                 SimilarityMatrixInvalidTypes.EmptySimilaityMatrix, AlignParameters.AlignTwo,
                 AlignmentType.SimpleAlign);
@@ -439,7 +439,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignListSequencesWithEmptySimilarityMatrix()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
+            InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName, true,
                 SimilarityMatrixInvalidTypes.EmptySimilaityMatrix,
                 AlignParameters.AlignList,
@@ -456,7 +456,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignAllParamsSequencesWithEmptySimilarityMatrix()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
+            InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.EmptySimilaityMatrix,
@@ -474,7 +474,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignTwoSequencesWithOnlyAlphabetSimilarityMatrix()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
+            InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName, true,
                 SimilarityMatrixInvalidTypes.OnlyAlphabetSimilarityMatrix,
                 AlignParameters.AlignTwo,
@@ -491,7 +491,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignListSequencesWithOnlyAlphabetSimilarityMatrix()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
+            InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.OnlyAlphabetSimilarityMatrix,
@@ -509,7 +509,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignAllParamsSequencesWithOnlyAlphabetSimilarityMatrix()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
+            InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.OnlyAlphabetSimilarityMatrix,
@@ -527,7 +527,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignTwoSequencesWithModifiedSimilarityMatrix()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
+            InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.ModifiedSimilarityMatrix,
@@ -545,7 +545,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignListSequencesWithModifiedSimilarityMatrix()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
+            InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.ModifiedSimilarityMatrix,
@@ -563,7 +563,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignAllParamsSequencesWithModifiedSimilarityMatrix()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
+            InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.ModifiedSimilarityMatrix,
@@ -581,7 +581,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignTwoSequencesWithFewAlphabetSimilarityMatrix()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
+            InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.FewAlphabetsSimilarityMatrix,
@@ -599,7 +599,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignListSequencesWithFewAlphabetSimilarityMatrix()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
+            InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.FewAlphabetsSimilarityMatrix,
@@ -617,7 +617,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignAllParamsSequencesWithFewAlphabetSimilarityMatrix()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
+            InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.FewAlphabetsSimilarityMatrix,
@@ -635,7 +635,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignTwoSequencesFromCodeWithEmptySimilarityMatrix()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
+            InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 false,
                 SimilarityMatrixInvalidTypes.EmptySimilaityMatrix,
@@ -653,7 +653,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignListSequencesFromCodeWithEmptySimilarityMatrix()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
+            InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 false,
                 SimilarityMatrixInvalidTypes.EmptySimilaityMatrix,
@@ -671,7 +671,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignAllParamsSequencesFromCodeWithEmptySimilarityMatrix()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
+            InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 false,
                 SimilarityMatrixInvalidTypes.EmptySimilaityMatrix,
@@ -689,7 +689,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignTwoSequencesFromCodeWithOnlyAlphabetSimilarityMatrix()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
+            InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 false,
                 SimilarityMatrixInvalidTypes.OnlyAlphabetSimilarityMatrix,
@@ -707,7 +707,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignListSequencesFromCodeWithOnlyAlphabetSimilarityMatrix()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
+            InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 false,
                 SimilarityMatrixInvalidTypes.OnlyAlphabetSimilarityMatrix,
@@ -725,7 +725,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignAllParamsSequencesFromCodeWithOnlyAlphabetSimilarityMatrix()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
+            InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 false,
                 SimilarityMatrixInvalidTypes.OnlyAlphabetSimilarityMatrix,
@@ -743,7 +743,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignTwoSequencesFromCodeWithNullSimilarityMatrix()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
+            InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 false,
                 SimilarityMatrixInvalidTypes.NullSimilarityMatrix,
@@ -761,7 +761,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignListSequencesFromCodeWithNullSimilarityMatrix()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
+            InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 false,
                 SimilarityMatrixInvalidTypes.NullSimilarityMatrix,
@@ -779,7 +779,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignAllParamsSequencesFromCodeWithNullSimilarityMatrix()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
+            InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 false,
                 SimilarityMatrixInvalidTypes.NullSimilarityMatrix,
@@ -797,7 +797,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignTwoSequencesWithInvalidDiagonalSimilarityMatrix()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
+            InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
                 Constants.NeedlemanWunschDiagonalSimMatAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.NonMatchingSimilarityMatrix,
@@ -815,7 +815,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignListSequencesWithInvalidDiagonalSimilarityMatrix()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
+            InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
                 Constants.NeedlemanWunschDiagonalSimMatAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.NonMatchingSimilarityMatrix,
@@ -833,7 +833,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignAllParamsSequencesWithInvalidDiagonalSimilarityMatrix()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
+            InValidateNeedlemanWunschAlignmentWithInvalidSimilarityMatrix(
                 Constants.NeedlemanWunschDiagonalSimMatAlignAlgorithmNodeName,
                 true,
                 SimilarityMatrixInvalidTypes.NonMatchingSimilarityMatrix,
@@ -851,7 +851,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignTwoWithInvalidSequencesFromTextFile()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSequence(
+            InValidateNeedlemanWunschAlignmentWithInvalidSequence(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithSpecialChars,
@@ -870,7 +870,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignListWithInvalidSequencesFromTextFile()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSequence(
+            InValidateNeedlemanWunschAlignmentWithInvalidSequence(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithSpecialChars,
@@ -889,7 +889,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignAllParamsWithInvalidSequencesFromTextFile()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSequence(
+            InValidateNeedlemanWunschAlignmentWithInvalidSequence(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithSpecialChars,
@@ -908,7 +908,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignTwoWithEmptySequencesFromTextFile()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSequence(
+            InValidateNeedlemanWunschAlignmentWithInvalidSequence(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.EmptySequence,
@@ -927,7 +927,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignListWithEmptySequencesFromTextFile()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSequence(
+            InValidateNeedlemanWunschAlignmentWithInvalidSequence(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.EmptySequence,
@@ -946,7 +946,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignAllParamsWithEmptySequencesFromTextFile()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSequence(
+            InValidateNeedlemanWunschAlignmentWithInvalidSequence(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.EmptySequence,
@@ -965,7 +965,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignTwoWithGapSequencesFromTextFile()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSequence(
+            InValidateNeedlemanWunschAlignmentWithInvalidSequence(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithGap,
@@ -984,7 +984,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignListWithGapSequencesFromTextFile()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSequence(
+            InValidateNeedlemanWunschAlignmentWithInvalidSequence(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithGap,
@@ -1003,7 +1003,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignAllParamsWithGapSequencesFromTextFile()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSequence(
+            InValidateNeedlemanWunschAlignmentWithInvalidSequence(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithGap,
@@ -1022,7 +1022,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignTwoWithUnicodeSequencesFromTextFile()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSequence(
+            InValidateNeedlemanWunschAlignmentWithInvalidSequence(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithUnicodeChars,
@@ -1041,7 +1041,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignListWithUnicodeSequencesFromTextFile()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSequence(
+            InValidateNeedlemanWunschAlignmentWithInvalidSequence(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithUnicodeChars,
@@ -1060,7 +1060,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignAllParamsWithUnicodeSequencesFromTextFile()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSequence(
+            InValidateNeedlemanWunschAlignmentWithInvalidSequence(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithUnicodeChars,
@@ -1079,7 +1079,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignTwoSequencesWithSpacesFromTextFile()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSequence(
+            InValidateNeedlemanWunschAlignmentWithInvalidSequence(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithSpaces,
@@ -1098,7 +1098,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignListSequencesWithSpacesFromTextFile()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSequence(
+            InValidateNeedlemanWunschAlignmentWithInvalidSequence(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithSpaces,
@@ -1117,7 +1117,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void InValidateNWSimpleAlignParamsSequencesWithSpacesFromTextFile()
         {
-            this.InValidateNeedlemanWunschAlignmentWithInvalidSequence(
+            InValidateNeedlemanWunschAlignmentWithInvalidSequence(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 true,
                 InvalidSequenceType.SequenceWithSpaces,
@@ -1138,7 +1138,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void ValidateNeedlemanWunschAlignTwoDnaSequences()
         {
-            this.ValidateNeedlemanWunschAlignment(
+            ValidateNeedlemanWunschAlignment(
                 Constants.NeedlemanWunschDnaAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerCase,
@@ -1158,7 +1158,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void ValidateNeedlemanWunschAlignTwoRnaSequences()
         {
-            this.ValidateNeedlemanWunschAlignment(
+            ValidateNeedlemanWunschAlignment(
                 Constants.NeedlemanWunschRnaAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerCase,
@@ -1178,7 +1178,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void ValidateNeedlemanWunschAlignTwoProteinSequences()
         {
-            this.ValidateNeedlemanWunschAlignment(
+            ValidateNeedlemanWunschAlignment(
                 Constants.NeedlemanWunschProAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerCase,
@@ -1199,7 +1199,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void ValidateNeedlemanWunschAlignTwoSequencesGapCostMin()
         {
-            this.ValidateNeedlemanWunschAlignment(
+            ValidateNeedlemanWunschAlignment(
                 Constants.NeedlemanWunschGapCostMinAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerCase,
@@ -1219,7 +1219,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void ValidateNeedlemanWunschAlignTwoSequencesWithBlosomSimilarityMatrix()
         {
-            this.ValidateNeedlemanWunschAlignment(
+            ValidateNeedlemanWunschAlignment(
                 Constants.NeedlemanWunschBlosumAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerCase,
@@ -1239,7 +1239,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void ValidateNeedlemanWunschAlignTwoSequencesWithPamSimilarityMatrix()
         {
-            this.ValidateNeedlemanWunschAlignment(
+            ValidateNeedlemanWunschAlignment(
                 Constants.NeedlemanWunschPamAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerCase,
@@ -1383,7 +1383,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void ValidateNeedlemanWunschAlignTwoSequencesWithTextReaderSimilarityMatrix()
         {
-            this.ValidateNeedlemanWunschAlignment(
+            ValidateNeedlemanWunschAlignment(
                 Constants.NeedlemanWunschAlignAlgorithmNodeName,
                 true,
                 SequenceCaseType.LowerCase,
@@ -1404,7 +1404,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void ValidateNeedlemanWunschAlignTwoSequencesWithDiagonalSimilarityMatrix()
         {
-            this.ValidateNeedlemanWunschAlignment(
+            ValidateNeedlemanWunschAlignment(
                 Constants.NeedlemanWunschDiagonalSimMatAlignAlgorithmNodeName,
                 true, SequenceCaseType.LowerCase,
                 AlignParameters.AlignTwo,
@@ -1424,7 +1424,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("NeedlemanWunschAligner")]
         public void ValidateNeedlemanWunschAlignTwoSequencesWithEqualGapOpenAndExtensionCost()
         {
-            this.ValidateNeedlemanWunschAlignment(
+            ValidateNeedlemanWunschAlignment(
                 Constants.NeedlemanWunschEqualAlignAlgorithmNodeName,
                 true, SequenceCaseType.LowerCase,
                 AlignParameters.AlignTwo,
@@ -1446,7 +1446,7 @@ namespace Bio.Tests.Algorithms.Alignment
             var exp_ref = "-ATTGTATGGCCAACAA-";
             var refseq= new Sequence (DnaAlphabet.Instance, exp_ref.Replace("-", ""));
             var query = new Sequence (DnaAlphabet.Instance, "CATTGTATGGCCAACAAG");
-            NeedlemanWunschAligner alner = new NeedlemanWunschAligner();
+            var alner = new NeedlemanWunschAligner();
 
             var res_affine = alner.Align (refseq, query).First().PairwiseAlignedSequences.First();
             Assert.AreEqual (query.Count, res_affine.FirstSequence.Count);
@@ -1486,7 +1486,7 @@ namespace Bio.Tests.Algorithms.Alignment
                                                       bool isTextFile, SequenceCaseType caseType,
                                                       AlignParameters additionalParameter)
         {
-            this.ValidateNeedlemanWunschAlignment(nodeName, isTextFile,
+            ValidateNeedlemanWunschAlignment(nodeName, isTextFile,
                                              caseType, additionalParameter, AlignmentType.SimpleAlign);
         }
 
@@ -1502,7 +1502,7 @@ namespace Bio.Tests.Algorithms.Alignment
                                                       bool isTextFile, SequenceCaseType caseType,
                                                       AlignParameters additionalParameter, AlignmentType alignType)
         {
-            this.ValidateNeedlemanWunschAlignment(nodeName, isTextFile,
+            ValidateNeedlemanWunschAlignment(nodeName, isTextFile,
                                              caseType, additionalParameter, alignType,
                                              SimilarityMatrixParameters.Default);
         }
@@ -1523,21 +1523,21 @@ namespace Bio.Tests.Algorithms.Alignment
                                                       SimilarityMatrixParameters similarityMatrixParam)
         {
             Sequence aInput, bInput;
-            IAlphabet alphabet =
-                Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.AlphabetNameNode));
+            var alphabet =
+                Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.AlphabetNameNode));
 
             if (isTextFile)
             {
                 // Read the xml file for getting both the files for aligning.
-                string filePath1 = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode1).TestDir();
-                string filePath2 = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode2).TestDir();
+                var filePath1 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode1).TestDir();
+                var filePath2 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode2).TestDir();
 
                 // Parse the files and get the sequence.
 
                 var parseObjectForFile1 = new FastAParser { Alphabet = alphabet };
                 var parseObjectForFile2 = new FastAParser { Alphabet = alphabet };
-                ISequence originalSequence1 = parseObjectForFile1.Parse(filePath1).First();
-                ISequence originalSequence2 = parseObjectForFile2.Parse(filePath2).First();
+                var originalSequence1 = parseObjectForFile1.Parse(filePath1).First();
+                var originalSequence2 = parseObjectForFile2.Parse(filePath2).First();
 
                 // Create input sequence for sequence string in different cases.
                 GetSequenceWithCaseType(originalSequence1.ConvertToString(),
@@ -1545,8 +1545,8 @@ namespace Bio.Tests.Algorithms.Alignment
             }
             else
             {
-                string originalSequence1 = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode1);
-                string originalSequence2 = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode2);
+                var originalSequence1 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode1);
+                var originalSequence2 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode2);
 
                 // Create input sequence for sequence string in different cases.
                 GetSequenceWithCaseType(
@@ -1559,7 +1559,7 @@ namespace Bio.Tests.Algorithms.Alignment
             }
 
             // Create similarity matrix object for a given file.
-            string blosumFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.BlosumFilePathNode).TestDir();
+            var blosumFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.BlosumFilePathNode).TestDir();
 
             SimilarityMatrix sm;
             switch (similarityMatrixParam)
@@ -1569,9 +1569,9 @@ namespace Bio.Tests.Algorithms.Alignment
                         sm = new SimilarityMatrix(reader);
                     break;
                 case SimilarityMatrixParameters.DiagonalMatrix:
-                    string matchValue = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    var matchValue = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                         Constants.MatchScoreNode);
-                    string misMatchValue = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    var misMatchValue = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.MisMatchScoreNode);
                     sm = new DiagonalSimilarityMatrix(int.Parse(matchValue, null),
                                                       int.Parse(misMatchValue, null));
@@ -1581,8 +1581,8 @@ namespace Bio.Tests.Algorithms.Alignment
                     break;
             }
 
-            int gapOpenCost = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapOpenCostNode), null);
-            int gapExtensionCost = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapExtensionCostNode),
+            var gapOpenCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapOpenCostNode), null);
+            var gapExtensionCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapExtensionCostNode),
                                              null);
 
             // Create NeedlemanWunschAligner instance and set its values.
@@ -1642,48 +1642,48 @@ namespace Bio.Tests.Algorithms.Alignment
             switch (alignType)
             {
                 case AlignmentType.Align:
-                    expectedScore = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExpectedGapExtensionScoreNode);
+                    expectedScore = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExpectedGapExtensionScoreNode);
                     switch (caseType)
                     {
                         case SequenceCaseType.LowerCase:
-                            expectedSequence1 = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                            expectedSequence1 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                 Constants
                                                                                     .ExpectedGapExtensionSequence1InLower);
-                            expectedSequence2 = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                            expectedSequence2 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                 Constants
                                                                                     .ExpectedGapExtensionSequence2InLower);
                             break;
                         default:
-                            expectedSequence1 = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                            expectedSequence1 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                 Constants
                                                                                     .ExpectedGapExtensionSequence1Node);
-                            expectedSequence2 = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                            expectedSequence2 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                 Constants
                                                                                     .ExpectedGapExtensionSequence2Node);
                             break;
                     }
                     break;
                 default:
-                    expectedScore = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedScore = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                     Constants.ExpectedScoreNode);
                     switch (caseType)
                     {
                         case SequenceCaseType.LowerCase:
-                            expectedSequence1 = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                            expectedSequence1 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                 Constants.ExpectedSequence1inLowerNode);
-                            expectedSequence2 = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                            expectedSequence2 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                 Constants.ExpectedSequence2inLowerNode);
                             break;
                         case SequenceCaseType.LowerUpperCase:
-                            expectedSequence1 = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                            expectedSequence1 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                 Constants.ExpectedSequence1inLowerNode);
-                            expectedSequence2 = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                            expectedSequence2 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                 Constants.ExpectedSequenceNode2);
                             break;
                         default:
-                            expectedSequence1 = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                            expectedSequence1 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                 Constants.ExpectedSequenceNode1);
-                            expectedSequence2 = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                            expectedSequence2 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                 Constants.ExpectedSequenceNode2);
                             break;
                     }
@@ -1728,14 +1728,14 @@ namespace Bio.Tests.Algorithms.Alignment
             AlignParameters additionalParameter, AlignmentType alignType,
             InvalidSequenceType sequenceType)
         {
-            IAlphabet alphabet = Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(nodeName,Constants.AlphabetNameNode));
+            var alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName,Constants.AlphabetNameNode));
             Exception actualException = null;
             Sequence aInput = null;
 
             if (isTextFile)
             {
                 // Read the xml file for getting both the files for aligning.
-                string filepath = this.GetInputFileNameWithInvalidType(nodeName, invalidSequenceType);
+                var filepath = GetInputFileNameWithInvalidType(nodeName, invalidSequenceType);
 
                 // Create input sequence for sequence string in different cases.
                 try
@@ -1752,7 +1752,7 @@ namespace Bio.Tests.Algorithms.Alignment
             }
             else
             {
-                string originalSequence = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.InvalidSequence1);
+                var originalSequence = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.InvalidSequence1);
 
                 // Create input sequence for sequence string in different cases.
                 try
@@ -1767,14 +1767,14 @@ namespace Bio.Tests.Algorithms.Alignment
 
             if (null == actualException)
             {
-                Sequence bInput = aInput;
+                var bInput = aInput;
 
                 // Create similarity matrix object for a given file.
-                string blosumFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.BlosumFilePathNode).TestDir();
+                var blosumFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.BlosumFilePathNode).TestDir();
                 var sm = new SimilarityMatrix(new StreamReader(blosumFilePath));
 
-                int gapOpenCost = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapOpenCostNode), null);
-                int gapExtensionCost = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapExtensionCostNode), null);
+                var gapOpenCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapOpenCostNode), null);
+                var gapExtensionCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapExtensionCostNode), null);
 
                 // Create NeedlemanWunschAligner instance and set its values.
                 var needlemanWunschObj = new NeedlemanWunschAligner();
@@ -1870,7 +1870,7 @@ namespace Bio.Tests.Algorithms.Alignment
             }
 
             // Validate Error messages for Invalid Sequence types.
-            string expectedErrorMessage = this.GetExpectedErrorMeesageWithInvalidSequenceType(
+            var expectedErrorMessage = GetExpectedErrorMeesageWithInvalidSequenceType(
                 nodeName, sequenceType);
 
             Assert.AreEqual(expectedErrorMessage, actualException.Message);
@@ -1896,21 +1896,21 @@ namespace Bio.Tests.Algorithms.Alignment
             Sequence aInput = null;
             Sequence bInput = null;
 
-            IAlphabet alphabet = Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(nodeName,
+            var alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                      Constants.AlphabetNameNode));
             if (isTextFile)
             {
                 // Read the xml file for getting both the files for aligning.
-                string firstInputFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                var firstInputFilePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                             Constants.FilePathNode1).TestDir();
-                string secondInputFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                var secondInputFilePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                              Constants.FilePathNode2).TestDir();
 
                 // Parse the files and get the sequence.
                 var parseObjectForFile1 = new FastAParser();
                 var parseObjectForFile2 = new FastAParser();
-                ISequence inputSequence1 = parseObjectForFile1.Parse(firstInputFilePath).ElementAt(0);
-                ISequence inputSequence2 = parseObjectForFile2.Parse(secondInputFilePath).ElementAt(0);
+                var inputSequence1 = parseObjectForFile1.Parse(firstInputFilePath).ElementAt(0);
+                var inputSequence2 = parseObjectForFile2.Parse(secondInputFilePath).ElementAt(0);
 
                 // Create input sequence for sequence string in different cases.
                 GetSequenceWithCaseType(new string(inputSequence1.Select(a => (char) a).ToArray()),
@@ -1919,8 +1919,8 @@ namespace Bio.Tests.Algorithms.Alignment
             }
             else
             {
-                string firstInputSequence = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode1);
-                string secondInputSequence = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode2);
+                var firstInputSequence = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode1);
+                var secondInputSequence = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode2);
 
                 // Create input sequence for sequence string in different cases.
                 GetSequenceWithCaseType(firstInputSequence, secondInputSequence, alphabet,
@@ -1928,7 +1928,7 @@ namespace Bio.Tests.Algorithms.Alignment
             }
 
             // Create similarity matrix object for a invalid file.
-            string blosumFilePath = this.GetSimilarityMatrixFileWithInvalidType(nodeName, invalidType);
+            var blosumFilePath = GetSimilarityMatrixFileWithInvalidType(nodeName, invalidType);
             Exception actualExpection = null;
 
             // For invalid similarity matrix data format; exception will be thrown while instantiating
@@ -1948,10 +1948,10 @@ namespace Bio.Tests.Algorithms.Alignment
             // For non matching similarity matrix exception will be thrown while alignment
             if (actualExpection == null)
             {
-                int gapOpenCost = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapOpenCostNode),
+                var gapOpenCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapOpenCostNode),
                                             null);
 
-                int gapExtensionCost = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                var gapExtensionCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                  Constants.GapExtensionCostNode), null);
 
                 // Create NeedlemanWunschAligner instance and set its values.
@@ -2048,8 +2048,8 @@ namespace Bio.Tests.Algorithms.Alignment
             }
 
             // Validate that expected exception is thrown using error message.
-            string expectedErrorMessage =
-                this.GetExpectedErrorMeesageWithInvalidSimilarityMatrixType(nodeName, invalidType);
+            var expectedErrorMessage =
+                GetExpectedErrorMeesageWithInvalidSimilarityMatrixType(nodeName, invalidType);
             Assert.AreEqual(expectedErrorMessage, actualExpection.Message);
 
             ApplicationLog.WriteLine(string.Concat(
@@ -2066,36 +2066,36 @@ namespace Bio.Tests.Algorithms.Alignment
         private string GetExpectedErrorMeesageWithInvalidSimilarityMatrixType(string nodeName,
                                                                               SimilarityMatrixInvalidTypes invalidType)
         {
-            string expectedErrorMessage = string.Empty;
+            var expectedErrorMessage = string.Empty;
             switch (invalidType)
             {
                 case SimilarityMatrixInvalidTypes.FewAlphabetsSimilarityMatrix:
                 case SimilarityMatrixInvalidTypes.NonMatchingSimilarityMatrix:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.ExpectedErrorMessage);
                     break;
                 case SimilarityMatrixInvalidTypes.EmptySimilaityMatrix:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.EmptyMatrixErrorMessage);
                     break;
                 case SimilarityMatrixInvalidTypes.OnlyAlphabetSimilarityMatrix:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.SimilarityMatrixFewerLinesException);
                     break;
                 case SimilarityMatrixInvalidTypes.ModifiedSimilarityMatrix:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.ModifiedMatrixErrorMessage);
                     break;
                 case SimilarityMatrixInvalidTypes.NullSimilarityMatrix:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.NullErrorMessage);
                     break;
                 case SimilarityMatrixInvalidTypes.EmptySequence:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetFileTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetFileTextValue(nodeName,
                                                                                Constants.EmptySequenceErrorMessage);
                     break;
                 case SimilarityMatrixInvalidTypes.ExpectedErrorMessage:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetFileTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetFileTextValue(nodeName,
                                                                                Constants.ExpectedErrorMessage);
                     break;
                 default:
@@ -2114,31 +2114,31 @@ namespace Bio.Tests.Algorithms.Alignment
         private string GetExpectedErrorMeesageWithInvalidSequenceType(string nodeName,
                                                                       InvalidSequenceType sequenceType)
         {
-            string expectedErrorMessage = string.Empty;
+            var expectedErrorMessage = string.Empty;
             switch (sequenceType)
             {
                 case InvalidSequenceType.SequenceWithInvalidChars:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.EmptySequenceErrorMessage);
                     break;
                 case InvalidSequenceType.InvalidSequence:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.InvalidSequenceErrorMessage);
                     break;
                 case InvalidSequenceType.SequenceWithUnicodeChars:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.UnicodeSequenceErrorMessage);
                     break;
                 case InvalidSequenceType.SequenceWithSpaces:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.SequenceWithSpaceErrorMessage);
                     break;
                 case InvalidSequenceType.AlphabetMap:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.InvalidAlphabetErrorMessage);
                     break;
                 default:
-                    expectedErrorMessage = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.ExpectedErrorMessage);
                     break;
             }
@@ -2155,8 +2155,8 @@ namespace Bio.Tests.Algorithms.Alignment
         private string GetSimilarityMatrixFileWithInvalidType(string nodeName,
                                                               SimilarityMatrixInvalidTypes invalidType)
         {
-            string invalidFileNode = string.Empty;
-            string invalidFilePath = string.Empty;
+            var invalidFileNode = string.Empty;
+            var invalidFilePath = string.Empty;
             switch (invalidType)
             {
                 case SimilarityMatrixInvalidTypes.NonMatchingSimilarityMatrix:
@@ -2179,7 +2179,7 @@ namespace Bio.Tests.Algorithms.Alignment
             }
             if (1 == string.Compare(invalidFileNode, string.Empty, StringComparison.CurrentCulture))
             {
-                invalidFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, invalidFileNode);
+                invalidFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, invalidFileNode);
             }
             return invalidFilePath.TestDir();
         }
@@ -2193,26 +2193,26 @@ namespace Bio.Tests.Algorithms.Alignment
         private string GetInputFileNameWithInvalidType(string nodeName,
                                                        InvalidSequenceType invalidSequenceType)
         {
-            string invalidFilePath = string.Empty;
+            var invalidFilePath = string.Empty;
             switch (invalidSequenceType)
             {
                 case InvalidSequenceType.SequenceWithSpecialChars:
-                    invalidFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.InvalidFilePathNode1);
+                    invalidFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.InvalidFilePathNode1);
                     break;
                 case InvalidSequenceType.EmptySequence:
-                    invalidFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.EmptyFilePath1);
+                    invalidFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.EmptyFilePath1);
                     break;
                 case InvalidSequenceType.SequenceWithSpaces:
-                    invalidFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SpacesFilePath1);
+                    invalidFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SpacesFilePath1);
                     break;
                 case InvalidSequenceType.SequenceWithGap:
-                    invalidFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapFilePath1);
+                    invalidFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapFilePath1);
                     break;
                 case InvalidSequenceType.SequenceWithUnicodeChars:
-                    invalidFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.UnicodeFilePath1);
+                    invalidFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.UnicodeFilePath1);
                     break;
                 case InvalidSequenceType.SequenceWithInvalidChars:
-                    invalidFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    invalidFilePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                       Constants.EmptySequenceErrorMessage);
                     break;
                 default:

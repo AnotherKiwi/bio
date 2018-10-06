@@ -53,7 +53,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateSangerFormatTypeRnaQualitativeSequenceWithScore()
         {
-            this.GeneralQualitativeSequence(Constants.SimpleRnaSangerNode,
+            GeneralQualitativeSequence(Constants.SimpleRnaSangerNode,
                 QualitativeSequenceParameters.Score);
         }
 
@@ -68,7 +68,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateSolexaFormatTypeRnaQualitativeSequenceWithScore()
         {
-            this.GeneralQualitativeSequence(Constants.SimpleRnaSolexaNode,
+            GeneralQualitativeSequence(Constants.SimpleRnaSolexaNode,
                 QualitativeSequenceParameters.Score);
         }
 
@@ -83,7 +83,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateIlluminaFormatTypeRnaQualitativeSequenceWithScore()
         {
-            this.GeneralQualitativeSequence(Constants.SimpleRnaIlluminaNode,
+            GeneralQualitativeSequence(Constants.SimpleRnaIlluminaNode,
                 QualitativeSequenceParameters.Score);
         }
 
@@ -98,7 +98,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateSangerFormatTypeProteinQualitativeSequenceWithScore()
         {
-            this.GeneralQualitativeSequence(Constants.SimpleProteinSangerNode,
+            GeneralQualitativeSequence(Constants.SimpleProteinSangerNode,
                 QualitativeSequenceParameters.Score);
         }
 
@@ -113,7 +113,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateSolexaFormatTypeProteinQualitativeSequenceWithScore()
         {
-            this.GeneralQualitativeSequence(Constants.SimpleProteinSolexaNode,
+            GeneralQualitativeSequence(Constants.SimpleProteinSolexaNode,
                 QualitativeSequenceParameters.Score);
         }
 
@@ -128,7 +128,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateIlluminaFormatTypeProteinQualitativeSequenceWithScore()
         {
-            this.GeneralQualitativeSequence(Constants.SimpleProteinIlluminaNode,
+            GeneralQualitativeSequence(Constants.SimpleProteinIlluminaNode,
                 QualitativeSequenceParameters.Score);
         }
 
@@ -142,7 +142,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateIlluminaFormatTypeDnaQualitativeSequenceWithByteArray()
         {
-            this.GeneralQualitativeSequence(Constants.SimpleDNAIlluminaByteArrayNode,
+            GeneralQualitativeSequence(Constants.SimpleDNAIlluminaByteArrayNode,
                 QualitativeSequenceParameters.ByteArray);
         }
 
@@ -155,7 +155,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateQualitativeSeqItemIndexes()
         {
-            this.ValidateGeneralQualitativeSeqItemIndices(
+            ValidateGeneralQualitativeSeqItemIndices(
                 Constants.SimpleDnaSangerNode, QualitativeSequenceParameters.IndexOf);
         }
 
@@ -168,7 +168,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateQualitativeSeqItemIndexOfNonGapChars()
         {
-            this.ValidateGeneralQualitativeSeqItemIndices(
+            ValidateGeneralQualitativeSeqItemIndices(
                 Constants.SimpleDnaSangerNode, QualitativeSequenceParameters.IndexOfNonGap);
         }
 
@@ -182,7 +182,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateQualitativeSeqItemIndexOfNonGapCharsUsingPam()
         {
-            this.ValidateGeneralQualitativeSeqItemIndices(
+            ValidateGeneralQualitativeSeqItemIndices(
                 Constants.SimpleDnaSangerNode, QualitativeSequenceParameters.IndexOfNonGapWithParam);
         }
 
@@ -195,7 +195,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateQualitativeSeqItemLastIndexOfNonGapChars()
         {
-            this.ValidateGeneralQualitativeSeqItemIndices(
+            ValidateGeneralQualitativeSeqItemIndices(
                 Constants.SimpleDnaSangerNode, QualitativeSequenceParameters.LastIndexOf);
         }
 
@@ -209,7 +209,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateQualitativeSeqItemLastIndexOfNonGapCharsUsingPam()
         {
-            this.ValidateGeneralQualitativeSeqItemIndices(
+            ValidateGeneralQualitativeSeqItemIndices(
                 Constants.SimpleDnaSangerNode, QualitativeSequenceParameters.LastIndexOfWithPam);
         }
 
@@ -222,7 +222,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateDefaultQualScoreForDnaSolexa()
         {
-            this.ValidateFastQDefaultScores(
+            ValidateFastQDefaultScores(
                 Constants.SimpleDnaSolexaNode, QualitativeSequenceParameters.DefaultScoreWithAlphabets);
         }
 
@@ -235,7 +235,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateDefaultQualScoreForDnaSanger()
         {
-            this.ValidateFastQDefaultScores(
+            ValidateFastQDefaultScores(
                 Constants.SimpleDnaSangerNode, QualitativeSequenceParameters.DefaultScoreWithAlphabets);
         }
 
@@ -248,7 +248,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateDefaultQualScoreForProteinSanger()
         {
-            this.ValidateFastQDefaultScores(
+            ValidateFastQDefaultScores(
                 Constants.SimpleProteinSangerNode, QualitativeSequenceParameters.DefaultScoreWithAlphabets);
         }
 
@@ -261,7 +261,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateDefaultQualScoreForDnaIllumina()
         {
-            this.ValidateFastQDefaultScores(
+            ValidateFastQDefaultScores(
                 Constants.SimpleDnaIlluminaNode, QualitativeSequenceParameters.DefaultScoreWithAlphabets);
         }
 
@@ -274,7 +274,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateDefaultQualScoreForRnaIllumina()
         {
-            this.ValidateFastQDefaultScores(
+            ValidateFastQDefaultScores(
                 Constants.SimpleRnaIlluminaNode, QualitativeSequenceParameters.DefaultScoreWithAlphabets);
         }
 
@@ -287,7 +287,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateDefaultQualScoreForProteinIllumina()
         {
-            this.ValidateFastQDefaultScores(
+            ValidateFastQDefaultScores(
                 Constants.SimpleProteinIlluminaNode, QualitativeSequenceParameters.DefaultScoreWithAlphabets);
         }
 
@@ -300,7 +300,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateDefaultQualScoreForProteinSequenceSolexa()
         {
-            this.ValidateFastQDefaultScores(
+            ValidateFastQDefaultScores(
                 Constants.SimpleProteinSolexaNode, QualitativeSequenceParameters.DefaultScoreWithSequence);
         }
 
@@ -313,7 +313,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateDefaultQualScoreForDnaSequenceSolexa()
         {
-            this.ValidateFastQDefaultScores(
+            ValidateFastQDefaultScores(
                 Constants.SimpleDnaSolexaNode, QualitativeSequenceParameters.DefaultScoreWithSequence);
         }
 
@@ -326,7 +326,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateDefaultQualScoreForRnaSequenceSolexa()
         {
-            this.ValidateFastQDefaultScores(
+            ValidateFastQDefaultScores(
                 Constants.SimpleRnaSolexaNode, QualitativeSequenceParameters.DefaultScoreWithSequence);
         }
 
@@ -339,7 +339,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateMaxQualScoreForDnaSanger()
         {
-            this.ValidateFastQDefaultScores(
+            ValidateFastQDefaultScores(
                 Constants.SimpleDnaSangerNode, QualitativeSequenceParameters.MaxDefaultScore);
         }
 
@@ -352,7 +352,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateMaxQualScoreForRnaSanger()
         {
-            this.ValidateFastQDefaultScores(
+            ValidateFastQDefaultScores(
                 Constants.SimpleRnaSangerNode, QualitativeSequenceParameters.MaxDefaultScore);
         }
 
@@ -365,7 +365,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateMaxQualScoreForProteinSanger()
         {
-            this.ValidateFastQDefaultScores(
+            ValidateFastQDefaultScores(
                 Constants.SimpleProteinSangerNode, QualitativeSequenceParameters.MaxDefaultScore);
         }
 
@@ -378,7 +378,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateMaxQualScoreForDnaIllumina()
         {
-            this.ValidateFastQDefaultScores(
+            ValidateFastQDefaultScores(
                 Constants.SimpleDnaIlluminaNode, QualitativeSequenceParameters.MaxDefaultScore);
         }
 
@@ -391,7 +391,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateMaxQualScoreForRnaIllumina()
         {
-            this.ValidateFastQDefaultScores(
+            ValidateFastQDefaultScores(
                 Constants.SimpleRnaIlluminaNode, QualitativeSequenceParameters.MaxDefaultScore);
         }
 
@@ -404,7 +404,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateMaxQualScoreForProteinIllumina()
         {
-            this.ValidateFastQDefaultScores(
+            ValidateFastQDefaultScores(
                 Constants.SimpleProteinIlluminaNode, QualitativeSequenceParameters.MaxDefaultScore);
         }
 
@@ -417,7 +417,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateMaxQualScoreForDnaSolexa()
         {
-            this.ValidateFastQDefaultScores(
+            ValidateFastQDefaultScores(
                 Constants.SimpleDnaSolexaNode, QualitativeSequenceParameters.MaxDefaultScore);
         }
 
@@ -430,7 +430,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateMaxQualScoreForRnaSolexa()
         {
-            this.ValidateFastQDefaultScores(
+            ValidateFastQDefaultScores(
                 Constants.SimpleRnaSolexaNode, QualitativeSequenceParameters.MaxDefaultScore);
         }
 
@@ -443,7 +443,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateMaxQualScoreForProteinSolexa()
         {
-            this.ValidateFastQDefaultScores(
+            ValidateFastQDefaultScores(
                 Constants.SimpleProteinSolexaNode, QualitativeSequenceParameters.MaxDefaultScore);
         }
 
@@ -456,7 +456,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateMinimumQualScoreForDnaSanger()
         {
-            this.ValidateFastQDefaultScores(
+            ValidateFastQDefaultScores(
                 Constants.SimpleDnaSangerNode, QualitativeSequenceParameters.MinDefaultScore);
         }
 
@@ -469,7 +469,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateMinimumQualScoreForRnaSanger()
         {
-            this.ValidateFastQDefaultScores(
+            ValidateFastQDefaultScores(
                 Constants.SimpleRnaSangerNode, QualitativeSequenceParameters.MinDefaultScore);
         }
 
@@ -482,7 +482,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateMinimumQualScoreForProteinSanger()
         {
-            this.ValidateFastQDefaultScores(
+            ValidateFastQDefaultScores(
                 Constants.SimpleProteinSangerNode, QualitativeSequenceParameters.MinDefaultScore);
         }
 
@@ -495,7 +495,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateMinimumQualScoreForDnaIllumina()
         {
-            this.ValidateFastQDefaultScores(
+            ValidateFastQDefaultScores(
                 Constants.SimpleDnaIlluminaNode, QualitativeSequenceParameters.MinDefaultScore);
         }
 
@@ -508,7 +508,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateMinimumQualScoreForRnaIllumina()
         {
-            this.ValidateFastQDefaultScores(
+            ValidateFastQDefaultScores(
                 Constants.SimpleRnaIlluminaNode, QualitativeSequenceParameters.MinDefaultScore);
         }
 
@@ -521,7 +521,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateMinimumQualScoreForProteinIllumina()
         {
-            this.ValidateFastQDefaultScores(
+            ValidateFastQDefaultScores(
                 Constants.SimpleProteinIlluminaNode, QualitativeSequenceParameters.MinDefaultScore);
         }
 
@@ -534,7 +534,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateMinimumQualScoreForDnaSolexa()
         {
-            this.ValidateFastQDefaultScores(
+            ValidateFastQDefaultScores(
                 Constants.SimpleDnaSolexaNode, QualitativeSequenceParameters.MinDefaultScore);
         }
 
@@ -547,7 +547,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateMinimumQualScoreForRnaSolexa()
         {
-            this.ValidateFastQDefaultScores(
+            ValidateFastQDefaultScores(
                 Constants.SimpleRnaSolexaNode, QualitativeSequenceParameters.MinDefaultScore);
         }
 
@@ -560,7 +560,7 @@ namespace Bio.Tests
         [Category("Priority1")]
         public void ValidateMinimumQualScoreForProteinSolexa()
         {
-            this.ValidateFastQDefaultScores(
+            ValidateFastQDefaultScores(
                 Constants.SimpleProteinSolexaNode, QualitativeSequenceParameters.MinDefaultScore);
         }
 
@@ -577,23 +577,23 @@ namespace Bio.Tests
             string nodeName, QualitativeSequenceParameters parameters)
         {
             // Gets the actual sequence and the alphabet from the Xml
-            IAlphabet alphabet = Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(
+            var alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.AlphabetNameNode));
-            FastQFormatType expectedFormatType = Utility.GetFastQFormatType(
-                this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FastQFormatType));
+            var expectedFormatType = Utility.GetFastQFormatType(
+                utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FastQFormatType));
             QualitativeSequence createdQualitativeSequence = null;
-            string inputSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var inputSequence = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.inputSequenceNode);
-            string expectedSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSequence = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExpectedSequenceNode);
-            string expectedSequenceCount = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSequenceCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.QSequenceCount);
-            string inputScoreforIUPAC = this.utilityObj.xmlUtil.GetTextValue(
+            var inputScoreforIUPAC = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.MaxScoreNode);
-            string inputQuality = this.utilityObj.xmlUtil.GetTextValue(
+            var inputQuality = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.InputByteArrayNode);
-            byte[] byteArray = Encoding.UTF8.GetBytes(inputQuality);
-            int index = 0;
+            var byteArray = Encoding.UTF8.GetBytes(inputQuality);
+            var index = 0;
 
             // Create and validate Qualitative Sequence.
             switch (parameters)
@@ -602,7 +602,7 @@ namespace Bio.Tests
                     createdQualitativeSequence = new QualitativeSequence(alphabet, expectedFormatType,
                         inputSequence, Utility.GetDefaultEncodedQualityScores(expectedFormatType, inputSequence.Length));
                     // Validate score
-                    foreach (byte qualScore in createdQualitativeSequence.GetEncodedQualityScores())
+                    foreach (var qualScore in createdQualitativeSequence.GetEncodedQualityScores())
                     {
                         Assert.AreEqual(qualScore, Convert.ToInt32(inputScoreforIUPAC, (IFormatProvider)null));
                     }
@@ -612,7 +612,7 @@ namespace Bio.Tests
                        Encoding.UTF8.GetBytes(inputSequence), byteArray);
 
                     // Validate score
-                    foreach (byte qualScore in createdQualitativeSequence.GetEncodedQualityScores())
+                    foreach (var qualScore in createdQualitativeSequence.GetEncodedQualityScores())
                     {
                         Assert.AreEqual(qualScore, Convert.ToInt32(byteArray[index], (IFormatProvider)null));
                         index++;
@@ -641,18 +641,18 @@ namespace Bio.Tests
         void ValidateGeneralQualitativeSeqItemIndices(string nodeName, QualitativeSequenceParameters indexParam)
         {
             // Gets the actual sequence and the alphabet from the Xml
-            IAlphabet alphabet = Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(
+            var alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(
                nodeName, Constants.AlphabetNameNode));
-            FastQFormatType expectedFormatType = Utility.GetFastQFormatType(
-                this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FastQFormatType));
+            var expectedFormatType = Utility.GetFastQFormatType(
+                utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FastQFormatType));
             QualitativeSequence createdQualitativeSequence = null;
-            string inputSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var inputSequence = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.inputSequenceNode);
-            string expectedFirstItemIdex = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedFirstItemIdex = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FirstItemIndex);
-            string expectedLastItemIdex = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedLastItemIdex = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.LastItemIndex);
-            string expectedGapIndex = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedGapIndex = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.IndexOfGap);
             long lastItemIndex;
             long index;
@@ -706,22 +706,22 @@ namespace Bio.Tests
         void ValidateFastQDefaultScores(string nodeName, QualitativeSequenceParameters parameters)
         {
             // Gets the actual sequence and the alphabet from the Xml
-            IAlphabet alphabet = Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(
+            var alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.AlphabetNameNode));
-            FastQFormatType expectedFormatType = Utility.GetFastQFormatType(
-                this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FastQFormatType));
-            string inputSequence = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedFormatType = Utility.GetFastQFormatType(
+                utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FastQFormatType));
+            var inputSequence = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.inputSequenceNode);
-            string expectedMaxScore = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedMaxScore = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.DefualtMaxScore);
-            string expectedMinScore = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedMinScore = utilityObj.xmlUtil.GetTextValue(
                  nodeName, Constants.DefaultMinScore);
 
             QualitativeSequence createdQualitativeSequence = null;
-            string qualityScoresString = Utility.GetDefaultEncodedQualityScores(expectedFormatType, inputSequence.Length);
-            byte[] expectedMaxScores = Utility.GetEncodedQualityScores((byte)int.Parse(expectedMaxScore, null as IFormatProvider), inputSequence.Length);
-            byte[] expectedMinScores = Utility.GetEncodedQualityScores((byte)int.Parse(expectedMinScore, null as IFormatProvider), inputSequence.Length);
-            int i = 0;
+            var qualityScoresString = Utility.GetDefaultEncodedQualityScores(expectedFormatType, inputSequence.Length);
+            var expectedMaxScores = Utility.GetEncodedQualityScores((byte)int.Parse(expectedMaxScore, null as IFormatProvider), inputSequence.Length);
+            var expectedMinScores = Utility.GetEncodedQualityScores((byte)int.Parse(expectedMinScore, null as IFormatProvider), inputSequence.Length);
+            var i = 0;
             switch (parameters)
             {
                 case QualitativeSequenceParameters.DefaultScoreWithAlphabets:
@@ -731,7 +731,7 @@ namespace Bio.Tests
 
                     // Validate default score.
                     i = 0;
-                    foreach (byte qualitativeScore in createdQualitativeSequence.GetEncodedQualityScores())
+                    foreach (var qualitativeScore in createdQualitativeSequence.GetEncodedQualityScores())
                     {
                         Assert.AreEqual(qualitativeScore,
                             (byte)(qualityScoresString[i]));
@@ -750,7 +750,7 @@ namespace Bio.Tests
 
                     i = 0;
                     // Validate default score.
-                    foreach (byte qualitativeScore in createdQualitativeSequence.GetEncodedQualityScores())
+                    foreach (var qualitativeScore in createdQualitativeSequence.GetEncodedQualityScores())
                     {
                         Assert.AreEqual(qualitativeScore,
                             (byte)(qualityScoresString[i]));
@@ -768,7 +768,7 @@ namespace Bio.Tests
                         expectedMaxScores);
                     i = 0;
                     // Validate default maximum score.
-                    foreach (byte qualitativeScore in createdQualitativeSequence.GetEncodedQualityScores())
+                    foreach (var qualitativeScore in createdQualitativeSequence.GetEncodedQualityScores())
                     {
                         Assert.AreEqual(qualitativeScore,
                             expectedMaxScores[i]);
@@ -787,7 +787,7 @@ namespace Bio.Tests
 
                     i = 0;
                     // Validate default minimum score.
-                    foreach (byte qualitativeScore in createdQualitativeSequence.GetEncodedQualityScores())
+                    foreach (var qualitativeScore in createdQualitativeSequence.GetEncodedQualityScores())
                     {
                         Assert.AreEqual(qualitativeScore,
                             expectedMinScores[i]);

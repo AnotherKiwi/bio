@@ -20,9 +20,9 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <param name="id"></param>
         public Edge(long id)
         {
-            this.Id = id;
-            this.VertexId1 = -1;
-            this.VertexId2 = -1;
+            Id = id;
+            VertexId1 = -1;
+            VertexId2 = -1;
         }
 
         /// <summary>

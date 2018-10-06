@@ -83,12 +83,12 @@ namespace Bio.IO.SAM
                 return string.Format(CultureInfo.CurrentCulture, Properties.Resource.HeaderContainsNullValue);
             }
 
-            List<SAMRecordField> fieldsToValidate = RecordFields.Where(F => MandatoryTagsForFieldTypes.Keys.Contains(F.Typecode,
+            var fieldsToValidate = RecordFields.Where(F => MandatoryTagsForFieldTypes.Keys.Contains(F.Typecode,
                                                     StringComparer.OrdinalIgnoreCase)).ToList();
 
-            foreach (SAMRecordField field in fieldsToValidate)
+            foreach (var field in fieldsToValidate)
             {
-                foreach (string tag in MandatoryTagsForFieldTypes[field.Typecode])
+                foreach (var tag in MandatoryTagsForFieldTypes[field.Typecode])
                 {
                     if (field.Tags.FirstOrDefault(T => string.Compare(T.Tag, tag, StringComparison.OrdinalIgnoreCase) == 0) == null)
                     {
@@ -105,7 +105,7 @@ namespace Bio.IO.SAM
         /// </summary>
         public IList<SequenceRange> GetReferenceSequenceRanges()
         {
-            return this.ReferenceSequences.Select(item => new SequenceRange(item.Name, 0, item.Length)).ToList();
+            return ReferenceSequences.Select(item => new SequenceRange(item.Name, 0, item.Length)).ToList();
         }
 
         /// <summary>
@@ -113,14 +113,14 @@ namespace Bio.IO.SAM
         /// </summary>
         public IList<ReferenceSequenceInfo> GetReferenceSequencesInfoFromSQHeader()
         {
-            List<ReferenceSequenceInfo> refSequencesInfo = new List<ReferenceSequenceInfo>();
-            List<SAMRecordField> fields = RecordFields.Where(R => String.Compare(R.Typecode, "SQ", StringComparison.OrdinalIgnoreCase) == 0).ToList();
-            foreach (SAMRecordField field in fields)
+            var refSequencesInfo = new List<ReferenceSequenceInfo>();
+            var fields = RecordFields.Where(R => String.Compare(R.Typecode, "SQ", StringComparison.OrdinalIgnoreCase) == 0).ToList();
+            foreach (var field in fields)
             {
-                SAMRecordFieldTag tag = field.Tags.FirstOrDefault(F => String.Compare(F.Tag, "SN", StringComparison.OrdinalIgnoreCase) == 0);
+                var tag = field.Tags.FirstOrDefault(F => String.Compare(F.Tag, "SN", StringComparison.OrdinalIgnoreCase) == 0);
                 if (tag != null)
                 {
-                    string refName = tag.Value;
+                    var refName = tag.Value;
                     long length;
                     tag = field.Tags.FirstOrDefault(F => String.Compare(F.Tag, "LN", StringComparison.OrdinalIgnoreCase) == 0);
                     if (tag != null && long.TryParse(tag.Value, out length))

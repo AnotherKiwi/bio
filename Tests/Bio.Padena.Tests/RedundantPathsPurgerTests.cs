@@ -23,20 +23,20 @@ namespace Bio.Padena.Tests
             const int KmerLength = 5;
             const int RedundantThreshold = 10;
 
-            List<ISequence> readSeqs = TestInputs.GetRedundantPathReads();
-            this.SequenceReads.Clear();
-            this.SetSequenceReads(readSeqs);
+            var readSeqs = TestInputs.GetRedundantPathReads();
+            SequenceReads.Clear();
+            SetSequenceReads(readSeqs);
             this.KmerLength = KmerLength;
-            this.RedundantPathLengthThreshold = RedundantThreshold;
-            this.RedundantPathsPurger = new RedundantPathsPurger(RedundantThreshold);
+            RedundantPathLengthThreshold = RedundantThreshold;
+            RedundantPathsPurger = new RedundantPathsPurger(RedundantThreshold);
 
-            this.CreateGraph();
-            long graphCount = this.Graph.NodeCount;
-            long graphEdges = this.Graph.GetNodes().Select(n => n.ExtensionsCount).Sum();
+            CreateGraph();
+            var graphCount = Graph.NodeCount;
+            long graphEdges = Graph.GetNodes().Select(n => n.ExtensionsCount).Sum();
 
-            this.RemoveRedundancy();
-            long redundancyRemovedGraphCount = this.Graph.NodeCount;
-            long redundancyRemovedGraphEdge = this.Graph.GetNodes().Select(n => n.ExtensionsCount).Sum();
+            RemoveRedundancy();
+            var redundancyRemovedGraphCount = Graph.NodeCount;
+            long redundancyRemovedGraphEdge = Graph.GetNodes().Select(n => n.ExtensionsCount).Sum();
 
             // Compare the two graphs
             Assert.AreEqual(5, graphCount - redundancyRemovedGraphCount);

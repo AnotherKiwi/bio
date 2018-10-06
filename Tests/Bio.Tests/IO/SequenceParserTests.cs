@@ -23,11 +23,11 @@ namespace Bio.Tests.IO
         public void TestFastAFileExtension()
         {
             string[] extensions = {".fa", ".fas", ".fasta", ".fna", ".fsa", ".mpfa"};
-            string filepath = @"TestUtils\Simple_Fasta_DNA";
+            var filepath = @"TestUtils\Simple_Fasta_DNA";
 
             foreach (var ext in extensions)
             {
-                ISequenceParser foundParser = SequenceParsers.FindParserByFileName(filepath + ext);
+                var foundParser = SequenceParsers.FindParserByFileName(filepath + ext);
                 Assert.IsNotNull(foundParser);
                 Assert.IsInstanceOf<FastAParser>(foundParser);
             }
@@ -40,11 +40,11 @@ namespace Bio.Tests.IO
         public void TestFastQFileExtension()
         {
             string[] extensions = { ".fq", ".fastq" };
-            string filepath = @"TestUtils\SimpleDnaIllumina";
+            var filepath = @"TestUtils\SimpleDnaIllumina";
 
             foreach (var ext in extensions)
             {
-                ISequenceParser foundParser = SequenceParsers.FindParserByFileName(filepath + ext);
+                var foundParser = SequenceParsers.FindParserByFileName(filepath + ext);
                 Assert.IsNotNull(foundParser);
                 Assert.AreEqual(SequenceParsers.FastQ.Name, foundParser.Name);
             }
@@ -57,11 +57,11 @@ namespace Bio.Tests.IO
         public void TestGenBankFileExtension()
         {
             string[] extensions = { ".gbk", ".genbank" };
-            string filepath = @"TestUtils\Simple_GenBank_DNA";
+            var filepath = @"TestUtils\Simple_GenBank_DNA";
 
             foreach (var ext in extensions)
             {
-                ISequenceParser foundParser = SequenceParsers.FindParserByFileName(filepath + ext);
+                var foundParser = SequenceParsers.FindParserByFileName(filepath + ext);
                 Assert.IsNotNull(foundParser);
                 Assert.IsInstanceOf<GenBankParser>(foundParser);
             }
@@ -73,9 +73,9 @@ namespace Bio.Tests.IO
         [Test]
         public void TestGffFileExtension()
         {
-            string filepath = @"TestUtils\Simple_Gff_Dna.gff";
+            var filepath = @"TestUtils\Simple_Gff_Dna.gff";
 
-            ISequenceParser foundParser = SequenceParsers.FindParserByFileName(filepath);
+            var foundParser = SequenceParsers.FindParserByFileName(filepath);
             Assert.IsNotNull(foundParser);
             Assert.IsInstanceOf<GffParser>(foundParser);
         }
@@ -86,9 +86,9 @@ namespace Bio.Tests.IO
         [Test]
         public void TestUnknownFileExtension()
         {
-            string filepath = @"Test.ukn";
+            var filepath = @"Test.ukn";
 
-            ISequenceParser foundParser = SequenceParsers.FindParserByFileName(filepath);
+            var foundParser = SequenceParsers.FindParserByFileName(filepath);
             Assert.IsNull(foundParser);
         }
 
@@ -98,8 +98,8 @@ namespace Bio.Tests.IO
         [Test]
         public void TestMissingFile()
         {
-            string filepath = @"TestUtils\NoFileHere.fa";
-            ISequenceParser foundParser = SequenceParsers.FindParserByFileName(filepath);
+            var filepath = @"TestUtils\NoFileHere.fa";
+            var foundParser = SequenceParsers.FindParserByFileName(filepath);
             Assert.AreEqual(SequenceParsers.Fasta, foundParser);
         }
 
@@ -109,8 +109,8 @@ namespace Bio.Tests.IO
         [Test]
         public void TestMissingDirectory()
         {
-            string filepath = @"NoDirectoryHere\NoFileHere.fa";
-            ISequenceParser foundParser = SequenceParsers.FindParserByFileName(filepath);
+            var filepath = @"NoDirectoryHere\NoFileHere.fa";
+            var foundParser = SequenceParsers.FindParserByFileName(filepath);
             Assert.AreEqual(SequenceParsers.Fasta, foundParser);
         }
 
@@ -120,9 +120,9 @@ namespace Bio.Tests.IO
         [Test]
         public void TestTxtFileExtension()
         {
-            string filepath = @"TestUtils\BLOSUM50.txt";
+            var filepath = @"TestUtils\BLOSUM50.txt";
 
-            ISequenceParser foundParser = SequenceParsers.FindParserByFileName(filepath);
+            var foundParser = SequenceParsers.FindParserByFileName(filepath);
             Assert.IsNull(foundParser);
             // Should not auto-locate FieldTextParser.
         }
@@ -133,9 +133,9 @@ namespace Bio.Tests.IO
         [Test]
         public void TestSffFileExtension()
         {
-            string filepath = @"TestUtils\dummy.sff";
+            var filepath = @"TestUtils\dummy.sff";
 
-            ISequenceParser foundParser = SequenceParsers.FindParserByFileName(filepath);
+            var foundParser = SequenceParsers.FindParserByFileName(filepath);
             Assert.IsNotNull(foundParser);
             Assert.IsInstanceOf<SFFParser>(foundParser);
         }

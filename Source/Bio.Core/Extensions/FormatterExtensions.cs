@@ -61,15 +61,15 @@ namespace Bio
         {
             if (formatter == null)
             {
-                throw new ArgumentNullException("formatter");
+                throw new ArgumentNullException(nameof(formatter));
             }
             if (data == null)
             {
-                throw new ArgumentNullException("data");
+                throw new ArgumentNullException(nameof(data));
             }
             if (string.IsNullOrWhiteSpace(filename))
             {
-                throw new ArgumentNullException("filename");
+                throw new ArgumentNullException(nameof(filename));
             }
 
             using (var fs = File.Create(filename))
@@ -86,15 +86,15 @@ namespace Bio
         {
             if (formatter == null)
             {
-                throw new ArgumentNullException("formatter");
+                throw new ArgumentNullException(nameof(formatter));
             }
             if (data == null)
             {
-                throw new ArgumentNullException("data");
+                throw new ArgumentNullException(nameof(data));
             }
             if (string.IsNullOrWhiteSpace(filename))
             {
-                throw new ArgumentNullException("filename");
+                throw new ArgumentNullException(nameof(filename));
             }
 
             using (var fs = File.Create(filename))
@@ -143,7 +143,7 @@ namespace Bio
             var str = new MemoryStream(1024);
             formatter(str, data);
             str.Position = 0;
-            using (StreamReader sr = new StreamReader(str))
+            using (var sr = new StreamReader(str))
                 return sr.ReadToEnd();
         }
     }

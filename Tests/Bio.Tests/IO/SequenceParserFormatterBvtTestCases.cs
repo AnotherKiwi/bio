@@ -33,16 +33,16 @@ namespace Bio.Tests.IO
         [Category("Priority0")]
         public void ValidateSequenceParserFindParserByFileName()
         {
-            ISequenceParser fastAObj = SequenceParsers.FindParserByFileName(@"TestUtils\Small_Size.fasta");
+            var fastAObj = SequenceParsers.FindParserByFileName(@"TestUtils\Small_Size.fasta");
             Assert.AreEqual(SequenceType.FastA.ToString(), fastAObj.Name);
 
-            ISequenceParser gbkObj = SequenceParsers.FindParserByFileName(@"TestUtils\Small_Size.gbk");
+            var gbkObj = SequenceParsers.FindParserByFileName(@"TestUtils\Small_Size.gbk");
             Assert.AreEqual(SequenceType.GenBank.ToString(), gbkObj.Name);
 
-            ISequenceParser fastQObj = SequenceParsers.FindParserByFileName(@"TestUtils\Simple_Fastq_Sequence.fastq");
+            var fastQObj = SequenceParsers.FindParserByFileName(@"TestUtils\Simple_Fastq_Sequence.fastq");
             Assert.AreEqual(SequenceType.FastQ.ToString(), fastQObj.Name);
 
-            ISequenceParser gffObj = SequenceParsers.FindParserByFileName(@"TestUtils\Simple_Gff_Dna.gff");
+            var gffObj = SequenceParsers.FindParserByFileName(@"TestUtils\Simple_Gff_Dna.gff");
             Assert.AreEqual(SequenceType.GFF.ToString(), gffObj.Name);
 
             ApplicationLog.WriteLine("Sequence Formatter BVT : Successfully validated the FindParserByFileName() method");
@@ -55,7 +55,7 @@ namespace Bio.Tests.IO
         [Category("Priority0")]
         public void ValidateSequenceParserFindParserByNameForFastA()
         {
-            this.ValidateFindParserByName(SequenceType.FastA);
+            ValidateFindParserByName(SequenceType.FastA);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Bio.Tests.IO
         [Category("Priority0")]
         public void ValidateSequenceParserFindParserByNameForFastQ()
         {
-            this.ValidateFindParserByName(SequenceType.FastQ);
+            ValidateFindParserByName(SequenceType.FastQ);
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace Bio.Tests.IO
         [Category("Priority0")]
         public void ValidateSequenceParserFindParserByNameForGFF()
         {
-            this.ValidateFindParserByName(SequenceType.GFF);
+            ValidateFindParserByName(SequenceType.GFF);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Bio.Tests.IO
         [Category("Priority0")]
         public void ValidateSequenceParserFindParserByNameForGenbank()
         {
-            this.ValidateFindParserByName(SequenceType.GenBank);
+            ValidateFindParserByName(SequenceType.GenBank);
         }
 
         #endregion Test cases
@@ -122,7 +122,7 @@ namespace Bio.Tests.IO
         [Category("Priority0")]
         public void ValidateSequenceFormatterFindFormatterByNameForFastA()
         {
-            this.ValidateFindFormatterByName(SequenceType.FastA);
+            ValidateFindFormatterByName(SequenceType.FastA);
         }
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace Bio.Tests.IO
         [Category("Priority0")]
         public void ValidateSequenceFormatterFindFormatterByNameForFastQ()
         {
-            this.ValidateFindFormatterByName(SequenceType.FastQ);
+            ValidateFindFormatterByName(SequenceType.FastQ);
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace Bio.Tests.IO
         [Category("Priority0")]
         public void ValidateSequenceFormatterFindFormatterByNameForGFF()
         {
-            this.ValidateFindFormatterByName(SequenceType.GFF);
+            ValidateFindFormatterByName(SequenceType.GFF);
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace Bio.Tests.IO
         [Category("Priority0")]
         public void ValidateSequenceFormatterFindFormatterByNameForGenbank()
         {
-            this.ValidateFindFormatterByName(SequenceType.GenBank);
+            ValidateFindFormatterByName(SequenceType.GenBank);
         }               
 
       #endregion
@@ -189,8 +189,8 @@ namespace Bio.Tests.IO
                     break;
             }
 
-            ISequenceFormatter formatter = SequenceFormatters.FindFormatterByName(filename, formatterName);
-            System.Type formatterTypes = formatter.GetType();
+            var formatter = SequenceFormatters.FindFormatterByName(filename, formatterName);
+            var formatterTypes = formatter.GetType();
             Assert.AreEqual(formatterTypes.ToString(), expectedFomatter);
             ApplicationLog.WriteLine("Sequence Formatter BVT : Successfully validated the FindFormatterByName() method");
         }
@@ -220,7 +220,7 @@ namespace Bio.Tests.IO
                     break;
             }
 
-            ISequenceParser parser = SequenceParsers.FindParserByName(filename, parserName);
+            var parser = SequenceParsers.FindParserByName(filename, parserName);
             Assert.AreEqual(parserName, parser.Name);
             ApplicationLog.WriteLine("Sequence parser BVT : Successfully validated the FindParserByName() method");
         }

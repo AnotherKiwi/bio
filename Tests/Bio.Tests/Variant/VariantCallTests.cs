@@ -22,8 +22,8 @@ namespace Bio.Tests
         public static void ConvertAlignedSequenceToQualSeq(IPairwiseSequenceAlignment aln, int[] qualScores) {
             var q = aln.PairwiseAlignedSequences [0].SecondSequence as Sequence;
             var qvs = new int[q.Count];
-            int queryPos = 0;
-            for (int i = 0; i < qvs.Length; i++) {
+            var queryPos = 0;
+            for (var i = 0; i < qvs.Length; i++) {
                 if (q [i] == '-') {
                     qvs [i] = 0;
                 } else {
@@ -40,12 +40,12 @@ namespace Bio.Tests
 
         public static void Test1BPInsertionCall()
         {
-            string seq1seq = "ATA-CCCTT".Replace("-", String.Empty);
-            string seq2seq = "ATACCCCTT";
-            int[] seq2qual = new int[] { 30, 30, 30, 4, 30, 30, 30, 30, 30 };
+            var seq1seq = "ATA-CCCTT".Replace("-", String.Empty);
+            var seq2seq = "ATACCCCTT";
+            var seq2qual = new int[] { 30, 30, 30, 4, 30, 30, 30, 30, 30 };
             var refseq = new Sequence(AmbiguousDnaAlphabet.Instance, seq1seq, false);
             var query = new Sequence (AmbiguousDnaAlphabet.Instance, seq2seq, false);
-            NeedlemanWunschAligner aligner = new NeedlemanWunschAligner ();
+            var aligner = new NeedlemanWunschAligner ();
             var aln = aligner.Align (refseq, query).First();
             // Need to add in the QV Values.
             ConvertAlignedSequenceToQualSeq(aln, seq2qual);
@@ -66,12 +66,12 @@ namespace Bio.Tests
         [Test]
         public static void Test1BPDeletionCall()
         {
-            string seq1seq = "ATACCCCTT";
-            string seq2seq = "ATA-CCCTT".Replace("-", String.Empty);
-            int[] seq2qual = new int[] { 30, 30, 30, 2, 30, 30, 30, 30 };
+            var seq1seq = "ATACCCCTT";
+            var seq2seq = "ATA-CCCTT".Replace("-", String.Empty);
+            var seq2qual = new int[] { 30, 30, 30, 2, 30, 30, 30, 30 };
             var refseq = new Sequence(AmbiguousDnaAlphabet.Instance, seq1seq, false);
             var query = new Sequence (AmbiguousDnaAlphabet.Instance, seq2seq, false);
-            NeedlemanWunschAligner aligner = new NeedlemanWunschAligner ();
+            var aligner = new NeedlemanWunschAligner ();
             var aln = aligner.Align (refseq, query).First();
             // Need to add in the QV Values.
             ConvertAlignedSequenceToQualSeq(aln, seq2qual);
@@ -92,13 +92,13 @@ namespace Bio.Tests
         [Test]
         public static void TestSNPCall()
         {
-            string seq1seq = "ATCCCCCTT";
-            string seq2seq = "ATCCCTCTT";
-            int[] seq2qual = new int[] { 30, 30, 30, 30, 5, 3, 30, 30, 30 };
+            var seq1seq = "ATCCCCCTT";
+            var seq2seq = "ATCCCTCTT";
+            var seq2qual = new int[] { 30, 30, 30, 30, 5, 3, 30, 30, 30 };
             var refseq = new Sequence(DnaAlphabet.Instance, seq1seq);
             var query = new Sequence (DnaAlphabet.Instance, seq2seq);
 
-            NeedlemanWunschAligner aligner = new NeedlemanWunschAligner ();
+            var aligner = new NeedlemanWunschAligner ();
             var aln = aligner.Align (refseq, query).First();
             ConvertAlignedSequenceToQualSeq (aln, seq2qual);
             var variants = VariantCaller.CallVariants (aln);
@@ -118,13 +118,13 @@ namespace Bio.Tests
         [Test]
         public static void TestSNPCallAtEnd()
         {
-            string seq1seq = "ATCCCCCTC";
-            string seq2seq = "ATCCCCCTT";
-            int[] seq2qual = new int[] { 30, 30, 30, 30, 5, 3, 30, 30, 10 };
+            var seq1seq = "ATCCCCCTC";
+            var seq2seq = "ATCCCCCTT";
+            var seq2qual = new int[] { 30, 30, 30, 30, 5, 3, 30, 30, 10 };
             var refseq = new Sequence(DnaAlphabet.Instance, seq1seq);
             var query = new Sequence (DnaAlphabet.Instance, seq2seq);
 
-            NeedlemanWunschAligner aligner = new NeedlemanWunschAligner ();
+            var aligner = new NeedlemanWunschAligner ();
             var aln = aligner.Align (refseq, query).First();
             ConvertAlignedSequenceToQualSeq (aln, seq2qual);
             var variants = VariantCaller.CallVariants (aln);
@@ -144,13 +144,13 @@ namespace Bio.Tests
         [Test]
         public static void TestSNPCallAtStart()
         {
-            string seq1seq = "CTCCCCCTT";
-            string seq2seq = "TTCCCCCTT";
-            int[] seq2qual = new int[] { 10, 30, 30, 30, 5, 3, 30, 30, 10 };
+            var seq1seq = "CTCCCCCTT";
+            var seq2seq = "TTCCCCCTT";
+            var seq2qual = new int[] { 10, 30, 30, 30, 5, 3, 30, 30, 10 };
             var refseq = new Sequence(DnaAlphabet.Instance, seq1seq);
             var query = new Sequence (DnaAlphabet.Instance, seq2seq);
 
-            NeedlemanWunschAligner aligner = new NeedlemanWunschAligner ();
+            var aligner = new NeedlemanWunschAligner ();
             var aln = aligner.Align (refseq, query).First();
             ConvertAlignedSequenceToQualSeq (aln, seq2qual);
             var variants = VariantCaller.CallVariants (aln);
@@ -193,13 +193,13 @@ namespace Bio.Tests
             // And it's hard, so we might as well check the variants
             var variants = tpl.Item2;
             Assert.AreEqual (3, variants.Count);
-            string[] bases = new string[] { "A", "GCGC", "TA" };
-            char[] hpbases = new char[] { 'A', 'G', 'T' };
-            bool[] inHp = new bool[] { true, false, false };
-            int[] lengths = new int[] { 1, 4, 2 };
-            int[] starts = new int[] { 4, 8, 24 };
-            IndelType[] types = new IndelType[] { IndelType.Deletion, IndelType.Deletion, IndelType.Insertion };
-            for (int i = 0; i < 3; i++) {
+            var bases = new string[] { "A", "GCGC", "TA" };
+            var hpbases = new char[] { 'A', 'G', 'T' };
+            var inHp = new bool[] { true, false, false };
+            var lengths = new int[] { 1, 4, 2 };
+            var starts = new int[] { 4, 8, 24 };
+            var types = new IndelType[] { IndelType.Deletion, IndelType.Deletion, IndelType.Insertion };
+            for (var i = 0; i < 3; i++) {
                 Assert.AreEqual (VariantType.INDEL, variants [i].Type);
                 var vi = variants [i] as IndelVariant;
                 Assert.AreEqual (hpbases[i], vi.HomopolymerBase);
@@ -216,18 +216,18 @@ namespace Bio.Tests
         [Test]
         public static void TestReverseComplement1BPIndelCall() {
 
-            string seq1seq = "ATACCCCTTGCGC";
-            string seq2seq = "ATA-CCCTTGCGC".Replace("-", String.Empty);
-            int[] seq2qual = new int[] { 30, 30, 30, 2, 30, 30, 30, 30, 30, 30, 30, 30 };
+            var seq1seq = "ATACCCCTTGCGC";
+            var seq2seq = "ATA-CCCTTGCGC".Replace("-", String.Empty);
+            var seq2qual = new int[] { 30, 30, 30, 2, 30, 30, 30, 30, 30, 30, 30, 30 };
             var refseq = new Sequence(DnaAlphabet.Instance, seq1seq);
             var query = new Sequence (DnaAlphabet.Instance, seq2seq);
 
             var s1rc = refseq.GetReverseComplementedSequence ();
             var s2rc = query.GetReverseComplementedSequence ();
 
-            NeedlemanWunschAligner aligner = new NeedlemanWunschAligner ();
+            var aligner = new NeedlemanWunschAligner ();
             var aln = aligner.Align (s1rc, s2rc).First();
-            VariantCallTests.ConvertAlignedSequenceToQualSeq (aln, seq2qual.Reverse ().ToArray ());
+            ConvertAlignedSequenceToQualSeq (aln, seq2qual.Reverse ().ToArray ());
             aln.PairwiseAlignedSequences [0].Sequences [1].MarkAsReverseComplement ();
             var variants = VariantCaller.CallVariants (aln);
             Assert.AreEqual (variants.Count, 1);
@@ -251,18 +251,18 @@ namespace Bio.Tests
         public static void TestTrickyQVInversions() {
             // This will be hard because normally flip the QV value for a homopolymer, but in this case we won't. 
             // Note the whole notion of flipping is poorly defined.
-            string seq1seq = "ATTGC";
-            string seq2seq = "ATAGC";
-            int[] seq2qual = new int[] { 30, 30, 2, 30, 30 };
+            var seq1seq = "ATTGC";
+            var seq2seq = "ATAGC";
+            var seq2qual = new int[] { 30, 30, 2, 30, 30 };
             var refseq = new Sequence(DnaAlphabet.Instance, seq1seq);
             var query = new Sequence (DnaAlphabet.Instance, seq2seq);
 
             var s1rc = refseq.GetReverseComplementedSequence ();
             var s2rc = query.GetReverseComplementedSequence ();
 
-            NeedlemanWunschAligner aligner = new NeedlemanWunschAligner ();
+            var aligner = new NeedlemanWunschAligner ();
             var aln = aligner.Align (s1rc, s2rc).First();
-            VariantCallTests.ConvertAlignedSequenceToQualSeq (aln, seq2qual.Reverse ().ToArray ());
+            ConvertAlignedSequenceToQualSeq (aln, seq2qual.Reverse ().ToArray ());
             aln.PairwiseAlignedSequences [0].Sequences [1].MarkAsReverseComplement ();
             var variants = VariantCaller.CallVariants (aln);
             Assert.AreEqual (1, variants.Count);
@@ -277,12 +277,12 @@ namespace Bio.Tests
 
         [Test]
         public static void TestInsertionAtEndofHP() {
-            string seq1seq = "ATA-CCC".Replace("-", String.Empty);
-            string seq2seq = "ATACCCC";
-            int[] seq2qual = new int[] { 30, 30, 30, 4, 30, 30, 30 };
+            var seq1seq = "ATA-CCC".Replace("-", String.Empty);
+            var seq2seq = "ATACCCC";
+            var seq2qual = new int[] { 30, 30, 30, 4, 30, 30, 30 };
             var refseq = new Sequence(AmbiguousDnaAlphabet.Instance, seq1seq, false);
             var query = new Sequence (AmbiguousDnaAlphabet.Instance, seq2seq, false);
-            NeedlemanWunschAligner aligner = new NeedlemanWunschAligner ();
+            var aligner = new NeedlemanWunschAligner ();
             var aln = aligner.Align (refseq, query).First();
             // Need to add in the QV Values.
             ConvertAlignedSequenceToQualSeq(aln, seq2qual);
@@ -304,12 +304,12 @@ namespace Bio.Tests
 
         [Test]
         public static void TestDeletionAtEndofHP() {
-            string seq1seq = "ATACCCC";
-            string seq2seq = "ATA-CCC".Replace("-", String.Empty);
-            int[] seq2qual = new int[] { 30, 30, 30, 4, 30, 30 };
+            var seq1seq = "ATACCCC";
+            var seq2seq = "ATA-CCC".Replace("-", String.Empty);
+            var seq2qual = new int[] { 30, 30, 30, 4, 30, 30 };
             var refseq = new Sequence(AmbiguousDnaAlphabet.Instance, seq1seq, false);
             var query = new Sequence (AmbiguousDnaAlphabet.Instance, seq2seq, false);
-            NeedlemanWunschAligner aligner = new NeedlemanWunschAligner ();
+            var aligner = new NeedlemanWunschAligner ();
             var aln = aligner.Align (refseq, query).First();
             // Need to add in the QV Values.
             ConvertAlignedSequenceToQualSeq(aln, seq2qual);

@@ -21,7 +21,7 @@ namespace Bio.Tests.IO.Wiggle
         [Category("Priority0")]
         public void TestAnnotationObject()
         {
-            WiggleAnnotation an = CreateDummyAnnotation();
+            var an = CreateDummyAnnotation();
             VerifyDummyAnnotation(an);
         }
 
@@ -71,7 +71,7 @@ namespace Bio.Tests.IO.Wiggle
         [Category("Priority0")]
         public void TestWiggleParser()
         {
-            string filepath = Path.Combine("TestUtils", "Wiggle", "variable.wig").TestDir();
+            var filepath = Path.Combine("TestUtils", "Wiggle", "variable.wig").TestDir();
 
             TestParserVariableStep(filepath);
 
@@ -87,23 +87,23 @@ namespace Bio.Tests.IO.Wiggle
         [Category("Priority0")]
         public void TestWiggleFormatter()
         {
-            string filepathTmp = Path.GetTempFileName();
-            WiggleFormatter formatter = new WiggleFormatter();
+            var filepathTmp = Path.GetTempFileName();
+            var formatter = new WiggleFormatter();
 
             using (formatter.Open(filepathTmp))
             {
                 formatter.Format(CreateDummyAnnotation());
             }
 
-            WiggleParser parser = new WiggleParser();
+            var parser = new WiggleParser();
             VerifyDummyAnnotation(parser.Parse(filepathTmp).First());
         }
 
         // Test wiggle fixed step
         private static WiggleAnnotation TestParserFixedStep(string filename)
         {
-            WiggleParser p = new WiggleParser();
-            WiggleAnnotation an = p.Parse(filename).First();
+            var p = new WiggleParser();
+            var an = p.Parse(filename).First();
 
             Assert.IsTrue(an.Chromosome == "chr19");
             Assert.IsTrue(an.BasePosition == 59307401);
@@ -114,7 +114,7 @@ namespace Bio.Tests.IO.Wiggle
             Assert.IsTrue(an.Metadata["name"] == "ArrayExpt1");
             Assert.IsTrue(an.Metadata["description"] == "20 degrees, 2 hr");
 
-            float[] values = an.GetValueArray(0, 3);
+            var values = an.GetValueArray(0, 3);
             Assert.IsTrue(values[0] == 1000);
             Assert.IsTrue(values[1] == 900);
             Assert.IsTrue(values[2] == 800);
@@ -130,8 +130,8 @@ namespace Bio.Tests.IO.Wiggle
         // Test wiggle variable step
         private static WiggleAnnotation TestParserVariableStep(string filename)
         {
-            WiggleParser p = new WiggleParser();
-            WiggleAnnotation an = p.Parse(filename).First();
+            var p = new WiggleParser();
+            var an = p.Parse(filename).First();
 
             Assert.IsTrue(an.Chromosome == "chr19");
             Assert.IsTrue(an.Step == 0);

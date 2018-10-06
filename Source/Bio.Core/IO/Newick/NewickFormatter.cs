@@ -76,11 +76,11 @@ namespace Bio.IO.Newick
 
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
 
             var stringBuilder = new StringBuilder();
-            this.Write(tree.Root, null, ref stringBuilder);
+            Write(tree.Root, null, ref stringBuilder);
 
             // Append end char ";"
             stringBuilder.Append(";");
@@ -108,11 +108,11 @@ namespace Bio.IO.Newick
             {
                 
                 stringBuilder.Append("(");
-                bool firstNode = true;
-                foreach (KeyValuePair<Node, Edge> child in node.Children)
+                var firstNode = true;
+                foreach (var child in node.Children)
                 {
-                    Edge localEdge = child.Value;
-                    Node localNode = child.Key;
+                    var localEdge = child.Value;
+                    var localNode = child.Key;
 
                     if (localNode == node)
                     {
@@ -124,7 +124,7 @@ namespace Bio.IO.Newick
                     {
                         stringBuilder.Append(",");
                     }
-                    this.Write(localNode, localEdge, ref stringBuilder);
+                    Write(localNode, localEdge, ref stringBuilder);
                     firstNode = false;
                 }
 

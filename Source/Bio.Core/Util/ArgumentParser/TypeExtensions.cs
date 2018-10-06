@@ -25,7 +25,7 @@ namespace Bio.Util.ArgumentParser
             if (type.Name == "Int64") return "long";
             if (type.Name == "Boolean") return "bool";
 
-            StringBuilder typeString = new StringBuilder(type.Name);
+            var typeString = new StringBuilder(type.Name);
             if (type.IsGenericType)
             {
                 typeString.Remove(typeString.Length - 2, 2);
@@ -62,8 +62,8 @@ namespace Bio.Util.ArgumentParser
         public static IEnumerable<Type> GetImplementingTypes(this Type interfaceType)
         {
             if (!interfaceType.IsInterface) throw new ParseException("type {0} is not an interface", interfaceType);
-            string interfaceName = interfaceType.Name;
-            foreach (Type t in TypeFactory.GetReferencedTypes())
+            var interfaceName = interfaceType.Name;
+            foreach (var t in TypeFactory.GetReferencedTypes())
             {
                 if (t.IsPublic && t.GetInterface(interfaceName, ignoreCase: true) != null)
                     yield return t;
@@ -77,7 +77,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns>List of type.</returns>
         public static IEnumerable<Type> GetDerivedTypes(this Type classType)
         {
-            foreach (Type t in TypeFactory.GetReferencedTypes())
+            foreach (var t in TypeFactory.GetReferencedTypes())
             {
                 if (t.IsPublic && t.IsSubclassOf(classType))
                     yield return t;

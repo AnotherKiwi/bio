@@ -37,7 +37,7 @@ namespace Bio.IO.SAM
         {
             if (header == null)
             {
-                throw new ArgumentNullException("header");
+                throw new ArgumentNullException(nameof(header));
             }
 
             this.header = header;
@@ -109,7 +109,7 @@ namespace Bio.IO.SAM
         /// </summary>
         public IList<string> GetRefSequences()
         {
-            return this.header.ReferenceSequences.Select(N => N.Name).ToList();
+            return header.ReferenceSequences.Select(N => N.Name).ToList();
         }
 
         /// <summary>
@@ -138,14 +138,14 @@ namespace Bio.IO.SAM
         {
             if (string.IsNullOrEmpty(libraryName))
             {
-                throw new ArgumentNullException("libraryName");
+                throw new ArgumentNullException(nameof(libraryName));
             }
 
-            CloneLibraryInformation libraryInfo = CloneLibrary.Instance.GetLibraryInformation(libraryName);
+            var libraryInfo = CloneLibrary.Instance.GetLibraryInformation(libraryName);
 
             if (libraryInfo == null)
             {
-                throw new ArgumentOutOfRangeException("libraryName");
+                throw new ArgumentOutOfRangeException(nameof(libraryName));
             }
 
             return GetPairedReads(libraryInfo);
@@ -160,7 +160,7 @@ namespace Bio.IO.SAM
         {
             if (libraryInfo == null)
             {
-                throw new ArgumentNullException("libraryInfo");
+                throw new ArgumentNullException(nameof(libraryInfo));
             }
 
             return GetPairedReads(libraryInfo.MeanLengthOfInsert, libraryInfo.StandardDeviationOfInsert);
@@ -190,7 +190,7 @@ namespace Bio.IO.SAM
         {
             // Calculate the Mean of insert lengths. 
             // Note: In case MultipleHits, Orphan, Chimera, StructuralAnomaly we can't calculate insert length.
-            IEnumerable<PairedRead> reads = allreads.Where(R => R.PairedType == PairedReadType.Normal || R.PairedType == PairedReadType.LengthAnomaly);
+            var reads = allreads.Where(R => R.PairedType == PairedReadType.Normal || R.PairedType == PairedReadType.LengthAnomaly);
             if (!reads.Any())
                 return;
 
@@ -200,15 +200,15 @@ namespace Bio.IO.SAM
                 count = reads.Count();
             }
 
-            float mean = (float)(sum / count);
+            var mean = (float)(sum / count);
             sum = reads.Sum(pairedRead => Math.Pow((pairedRead.InsertLength - mean), 2));
 
-            float stddeviation = (float)Math.Sqrt(sum / count);
+            var stddeviation = (float)Math.Sqrt(sum / count);
             // µ + 3σ
-            float upperLimit = mean + (3 * stddeviation);
+            var upperLimit = mean + (3 * stddeviation);
             // µ - 3σ
-            float lowerLimit = mean - (3 * stddeviation);
-            foreach (PairedRead pairedRead in reads)
+            var lowerLimit = mean - (3 * stddeviation);
+            foreach (var pairedRead in reads)
             {
 
                 if (pairedRead.InsertLength > upperLimit || pairedRead.InsertLength < lowerLimit)
@@ -233,14 +233,14 @@ namespace Bio.IO.SAM
         private IList<PairedRead> GetInMemoryPairedReads(float meanLengthOfInsert, float standardDeviationOfInsert, bool calculate = false)
         {
             // Dictionary helps to get the information at one pass of alinged sequence list.
-            Dictionary<string, PairedRead> pairedReads = new Dictionary<string, PairedRead>();
+            var pairedReads = new Dictionary<string, PairedRead>();
             double sum = 0;
-            int count = 0;
+            var count = 0;
 
-            for (int i = 0; i < QuerySequences.Count; i++)
+            for (var i = 0; i < QuerySequences.Count; i++)
             {
                 PairedRead pairedRead;
-                SAMAlignedSequence read = QuerySequences[i];
+                var read = QuerySequences[i];
                 if ((read.Flag & SAMFlags.PairedRead) == SAMFlags.PairedRead)
                 {
                     if (pairedReads.TryGetValue(read.QName, out pairedRead))
@@ -299,7 +299,7 @@ namespace Bio.IO.SAM
                 }
             }
 
-            List<PairedRead> allreads = pairedReads.Values.ToList();
+            var allreads = pairedReads.Values.ToList();
             pairedReads = null;
             if (calculate && count > 0)
             {

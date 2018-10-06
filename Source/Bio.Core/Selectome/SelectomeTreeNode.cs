@@ -27,13 +27,13 @@ namespace Bio.Web.Selectome
             {
                 throw new NullReferenceException("initialNode");
             }
-            this.MetaData = initialNode.MetaData;
-            this.children = new Dictionary<SelectomeTreeNode, Edge>();
-            this.Name = initialNode.Name;
+            MetaData = initialNode.MetaData;
+            children = new Dictionary<SelectomeTreeNode, Edge>();
+            Name = initialNode.Name;
             //recursively update child nodes
             foreach (var child in initialNode.Children)
             {
-                this.children.Add(new SelectomeTreeNode(child.Key), child.Value);
+                children.Add(new SelectomeTreeNode(child.Key), child.Value);
             }
         }
 
@@ -54,7 +54,7 @@ namespace Bio.Web.Selectome
         {
             get
             {
-                return this.children;
+                return children;
             }
         }
 
@@ -70,7 +70,7 @@ namespace Bio.Web.Selectome
         {
             get
             {
-                return this.Children.Keys.Count == 0;
+                return Children.Keys.Count == 0;
             }
         }
 
@@ -82,7 +82,7 @@ namespace Bio.Web.Selectome
             get
             {
                 string val;
-                if (this.MetaData.TryGetValue("SEL", out val))
+                if (MetaData.TryGetValue("SEL", out val))
                 {
                     return val == "Y";
                 }
@@ -98,7 +98,7 @@ namespace Bio.Web.Selectome
             get
             {
                 string val;
-                if (this.MetaData.TryGetValue("ASEL", out val))
+                if (MetaData.TryGetValue("ASEL", out val))
                 {
                     return val == "Y";
                 }
@@ -114,7 +114,7 @@ namespace Bio.Web.Selectome
             get
             {
                 string val;
-                if (this.MetaData.TryGetValue("B", out val))
+                if (MetaData.TryGetValue("B", out val))
                 {
                     return Convert.ToDouble(val, CultureInfo.CurrentCulture);
                 }
@@ -130,7 +130,7 @@ namespace Bio.Web.Selectome
             get
             {
                 string val;
-                return this.MetaData.TryGetValue("T", out val) ? val : null;
+                return MetaData.TryGetValue("T", out val) ? val : null;
             }
         }
 
@@ -142,7 +142,7 @@ namespace Bio.Web.Selectome
             get
             {
                 string val;
-                return !this.MetaData.TryGetValue("PVAL", out val)
+                return !MetaData.TryGetValue("PVAL", out val)
                            ? null
                            : (val != "NA" ? (double?) double.Parse(val) : null);
             }
@@ -156,7 +156,7 @@ namespace Bio.Web.Selectome
             get
             {
                 string val;
-                return this.MetaData.TryGetValue("G", out val) ? val : null;
+                return MetaData.TryGetValue("G", out val) ? val : null;
             }
         }
 
@@ -168,7 +168,7 @@ namespace Bio.Web.Selectome
             get
             {
                 string val;
-                return this.MetaData.TryGetValue("GN", out val) ? val : null;
+                return MetaData.TryGetValue("GN", out val) ? val : null;
             }
         }
 
@@ -180,7 +180,7 @@ namespace Bio.Web.Selectome
             get
             {
                 string val;
-                return this.MetaData.TryGetValue("S", out val) ? val : null;
+                return MetaData.TryGetValue("S", out val) ? val : null;
             }
         }
 
@@ -192,7 +192,7 @@ namespace Bio.Web.Selectome
             get
             {
                 string val;
-                return this.MetaData.TryGetValue("D", out val) ? (bool?)(val == "Y") : null;
+                return MetaData.TryGetValue("D", out val) ? (bool?)(val == "Y") : null;
             }
         }
 
@@ -204,7 +204,7 @@ namespace Bio.Web.Selectome
             get
             {
                 string val;
-                return this.MetaData.TryGetValue("TR", out val) ? val : null;
+                return MetaData.TryGetValue("TR", out val) ? val : null;
             }
         }
 
@@ -216,7 +216,7 @@ namespace Bio.Web.Selectome
             get
             {
                 string val;
-                return this.MetaData.TryGetValue("PR", out val) ? val : null;
+                return MetaData.TryGetValue("PR", out val) ? val : null;
             }
         }
     }

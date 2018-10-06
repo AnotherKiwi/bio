@@ -18,8 +18,8 @@ namespace Bio.Pamsam.Tests
         public void TestProfile()
         {
             ISequence templateSequence = new Sequence(Alphabets.AmbiguousDNA, "ATGCSWRYKMBVHDN-");
-            Dictionary<byte, int> itemSet = new Dictionary<byte, int>();
-            for (int i = 0; i < templateSequence.Count; ++i)
+            var itemSet = new Dictionary<byte, int>();
+            for (var i = 0; i < templateSequence.Count; ++i)
             {
                 itemSet.Add(templateSequence[i], i);
 
@@ -31,12 +31,14 @@ namespace Bio.Pamsam.Tests
             ISequence seqA = new Sequence(Alphabets.DNA, "GGGAAAAATCAGATT");
             ISequence seqB = new Sequence(Alphabets.DNA, "GGGAATCAAAATCAG");
 
-            List<ISequence> sequences = new List<ISequence>();
-            sequences.Add(seqA);
-            sequences.Add(seqB);
+            var sequences = new List<ISequence>
+            {
+                seqA,
+                seqB
+            };
 
             // Test GenerateProfiles
-            IProfiles profileA = Profiles.GenerateProfiles(sequences[0]);
+            var profileA = Profiles.GenerateProfiles(sequences[0]);
             Assert.AreEqual(16, profileA.ColumnSize);
             Assert.AreEqual(sequences[0].Count, profileA.RowSize);
 
@@ -45,12 +47,12 @@ namespace Bio.Pamsam.Tests
             Assert.AreEqual(0, profileA.ProfilesMatrix[0][3]);
 
             // Test ProfileAlignment
-            IProfileAlignment profileAlignmentA = ProfileAlignment.GenerateProfileAlignment(sequences[0]);
+            var profileAlignmentA = ProfileAlignment.GenerateProfileAlignment(sequences[0]);
             Assert.AreEqual(1, profileAlignmentA.ProfilesMatrix[0][2]);
             Assert.AreEqual(0, profileAlignmentA.ProfilesMatrix[0][3]);
             Assert.AreEqual(1, profileAlignmentA.NumberOfSequences);
 
-            IProfileAlignment profileAlignmentB = ProfileAlignment.GenerateProfileAlignment(sequences);
+            var profileAlignmentB = ProfileAlignment.GenerateProfileAlignment(sequences);
             Assert.AreEqual(1, profileAlignmentB.ProfilesMatrix[0][2]);
             Assert.AreEqual(0, profileAlignmentB.ProfilesMatrix[0][3]);
             Assert.AreEqual(2, profileAlignmentB.NumberOfSequences);

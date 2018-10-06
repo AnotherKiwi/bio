@@ -34,7 +34,7 @@ namespace Bio.Algorithms.Assembly
         {
             if (Validate(library))
             {
-                this.Library = library;
+                Library = library;
             }
         }
 
@@ -49,24 +49,24 @@ namespace Bio.Algorithms.Assembly
         {
             if (null == forwardRead)
             {
-                throw new ArgumentNullException("forwardRead");
+                throw new ArgumentNullException(nameof(forwardRead));
             }
 
             if (null == reverseRead)
             {
-                throw new ArgumentNullException("reverseRead");
+                throw new ArgumentNullException(nameof(reverseRead));
             }
 
             if (string.IsNullOrEmpty(library))
             {
-                throw new ArgumentNullException("library");
+                throw new ArgumentNullException(nameof(library));
             }
 
             if (Validate(forwardRead, reverseRead, library))
             {
                 this.forwardRead = forwardRead.ID;
                 this.reverseRead = reverseRead.ID;
-                this.Library = library;
+                Library = library;
             }
         }
 
@@ -81,9 +81,9 @@ namespace Bio.Algorithms.Assembly
         {
             if (Validate(forwardReadID, reverseReadID, library))
             {
-                this.forwardRead = forwardReadID;
-                this.reverseRead = reverseReadID;
-                this.Library = library;
+                forwardRead = forwardReadID;
+                reverseRead = reverseReadID;
+                Library = library;
             }
         }
         #endregion
@@ -97,14 +97,14 @@ namespace Bio.Algorithms.Assembly
         {
             get
             {
-                return this.forwardRead;
+                return forwardRead;
             }
 
             set
             {
                 if (Validate(value))
                 {
-                    this.forwardRead = value;
+                    forwardRead = value;
                 }
             }
         }
@@ -116,14 +116,14 @@ namespace Bio.Algorithms.Assembly
         {
             get
             {
-                return this.reverseRead;
+                return reverseRead;
             }
 
             set
             {
                 if (Validate(value))
                 {
-                    this.reverseRead = value;
+                    reverseRead = value;
                 }
             }
         }
@@ -144,7 +144,7 @@ namespace Bio.Algorithms.Assembly
         {
             get
             {
-                return CloneLibrary.Instance.GetLibraryInformation(this.Library).MeanLengthOfInsert;
+                return CloneLibrary.Instance.GetLibraryInformation(Library).MeanLengthOfInsert;
             }
         }
 
@@ -155,7 +155,7 @@ namespace Bio.Algorithms.Assembly
         {
             get
             {
-                return CloneLibrary.Instance.GetLibraryInformation(this.Library).StandardDeviationOfInsert;
+                return CloneLibrary.Instance.GetLibraryInformation(Library).StandardDeviationOfInsert;
             }
         }
 
@@ -170,7 +170,7 @@ namespace Bio.Algorithms.Assembly
         /// <returns>Sequence of forward read.</returns>
         public ISequence GetForwardRead(IEnumerable<ISequence> sequences)
         {
-            return sequences.First(t => t.ID == this.forwardRead);
+            return sequences.First(t => t.ID == forwardRead);
         }
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace Bio.Algorithms.Assembly
         /// <returns>Sequence of reverse read.</returns>
         public ISequence GetReverseRead(IList<ISequence> sequences)
         {
-            return sequences.First(t => t.ID == this.reverseRead);
+            return sequences.First(t => t.ID == reverseRead);
         }
 
         /// <summary>
@@ -190,8 +190,8 @@ namespace Bio.Algorithms.Assembly
         public override string ToString()
         {
             return string.Format(CultureInfo.CurrentCulture, Properties.Resource.MatePairToStringFormat,
-                                 this.ForwardReadID, this.ReverseReadID, this.MeanLengthOfLibrary,
-                                 this.StandardDeviationOfLibrary);
+                                 ForwardReadID, ReverseReadID, MeanLengthOfLibrary,
+                                 StandardDeviationOfLibrary);
         }
 
         #endregion
@@ -207,7 +207,7 @@ namespace Bio.Algorithms.Assembly
         {
             if (string.IsNullOrEmpty(library))
             {
-                throw new ArgumentNullException("library");
+                throw new ArgumentNullException(nameof(library));
             }
 
             return true;
@@ -224,12 +224,12 @@ namespace Bio.Algorithms.Assembly
         {
             if (string.IsNullOrEmpty(forwardReadID))
             {
-                throw new ArgumentNullException("forwardReadID");
+                throw new ArgumentNullException(nameof(forwardReadID));
             }
 
             if (string.IsNullOrEmpty(reverseReadID))
             {
-                throw new ArgumentNullException("reverseReadID");
+                throw new ArgumentNullException(nameof(reverseReadID));
             }
 
             Validate(library);

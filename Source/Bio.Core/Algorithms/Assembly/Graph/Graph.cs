@@ -124,7 +124,7 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <param name="vertexId">Id of the vertex to be deleted.</param>
         public void DeleteVertex(long vertexId)
         {
-            this.DeleteVertex(VertexArray[vertexId]);
+            DeleteVertex(VertexArray[vertexId]);
         }
 
         /// <summary>
@@ -134,10 +134,10 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <returns>New vertex.</returns>
         public Vertex<T> AddVertex(T vertexData)
         {
-            long id = this.TotalVertexCount;
+            var id = TotalVertexCount;
 
-            Vertex<T> vertex = new Vertex<T>(id, vertexData);
-            this.VertexArray.Add(vertex);
+            var vertex = new Vertex<T>(id, vertexData);
+            VertexArray.Add(vertex);
 
             return vertex;
         }
@@ -152,7 +152,7 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <returns>New Edge.</returns>
         public Edge<U> AddEdge(U edgeData, long vertexId1, long vertexId2)
         {
-            Edge<U> newedge = new Edge<U>(EdgeArray.Count)
+            var newedge = new Edge<U>(EdgeArray.Count)
             {
                 Data = edgeData,
                 VertexId1 = vertexId1,
@@ -183,16 +183,16 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <returns>Enumerable of vertices adjacent to given vertex.</returns>
         public IEnumerable<Vertex<T>> GetAdjacentVertices(Vertex<T> vertex)
         {
-            for (int i = 0; i < vertex.OutgoingEdgeCount; i++)
+            for (var i = 0; i < vertex.OutgoingEdgeCount; i++)
             {
-                var edge = this.GetEdge(vertex.GetOutgoingEdge(i));
-                yield return this.GetVertex(edge.VertexId2);
+                var edge = GetEdge(vertex.GetOutgoingEdge(i));
+                yield return GetVertex(edge.VertexId2);
             }
 
-            for (int i = 0; i < vertex.IncomingEdgeCount; i++)
+            for (var i = 0; i < vertex.IncomingEdgeCount; i++)
             {
-                var edge = this.GetEdge(vertex.GetIncomingEdge(i));
-                yield return this.GetVertex(edge.VertexId1);
+                var edge = GetEdge(vertex.GetIncomingEdge(i));
+                yield return GetVertex(edge.VertexId1);
             }
         }
 
@@ -204,12 +204,12 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <returns>Returns true if vertices are adjacent to each other else false.</returns>
         public bool IsAdjacent(Vertex<T> vertex1, Vertex<T> vertex2)
         {
-            bool result = false;
+            var result = false;
             if (vertex1 != null && vertex2 != null)
             {
-                for (int i = 0; i < vertex1.OutgoingEdgeCount; i++)
+                for (var i = 0; i < vertex1.OutgoingEdgeCount; i++)
                 {
-                    Edge<U> edge = this.GetEdge(vertex1.GetOutgoingEdge(i));
+                    var edge = GetEdge(vertex1.GetOutgoingEdge(i));
                     if (edge.VertexId2 == vertex2.Id)
                     {
                         result = true;
@@ -246,10 +246,10 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <param name="vertexId2">Second vertex id.</param>
         public Edge<U> GetEdge(long vertexId1, long vertexId2)
         {
-            Vertex<T> vertex1 = VertexArray[vertexId1];
-            for (int i = 0; i < vertex1.OutgoingEdgeCount; i++)
+            var vertex1 = VertexArray[vertexId1];
+            for (var i = 0; i < vertex1.OutgoingEdgeCount; i++)
             {
-                Edge<U> edge = this.GetEdge(vertex1.GetOutgoingEdge(i));
+                var edge = GetEdge(vertex1.GetOutgoingEdge(i));
                 if (edge.VertexId2 == vertexId2)
                 {
                     return edge;

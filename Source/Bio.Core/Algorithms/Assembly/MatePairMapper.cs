@@ -49,14 +49,14 @@ namespace Bio.Algorithms.Assembly
         {
             if (null == reads)
             {
-                throw new ArgumentNullException("reads");
+                throw new ArgumentNullException(nameof(reads));
             }
 
-            Dictionary<string, MatePair> pairs = new Dictionary<string, MatePair>();
+            var pairs = new Dictionary<string, MatePair>();
             MatePair mate;
-            string exp = string.Empty;
+            var exp = string.Empty;
 
-            foreach (ISequence read in reads)
+            foreach (var read in reads)
             {
                 if (read == null)
                 {
@@ -76,7 +76,7 @@ namespace Bio.Algorithms.Assembly
                 }
                 else
                 {
-                    Match match = this.readExpression.Match(read.ID);
+                    var match = readExpression.Match(read.ID);
                     if (match.Success)
                     {
                         mate = new MatePair(match.Groups[3].Value);
@@ -120,23 +120,23 @@ namespace Bio.Algorithms.Assembly
         {
             if (alignment == null)
             {
-                throw new ArgumentNullException("alignment");
+                throw new ArgumentNullException(nameof(alignment));
             }
 
             if (reads == null)
             {
-                throw new ArgumentNullException("reads");
+                throw new ArgumentNullException(nameof(reads));
             }
 
             Dictionary<ISequence, IList<ReadMap>> contigs1;
             Dictionary<ISequence, IList<ReadMap>> contigs2;
-            ContigMatePairs contigMatePairs = new ContigMatePairs();
-            foreach (ISequence read in reads)
+            var contigMatePairs = new ContigMatePairs();
+            foreach (var read in reads)
             {
-                Match match = this.readExpression.Match(read.ID);
+                var match = readExpression.Match(read.ID);
                 if (match.Success)
                 {
-                    string mateDisplayID = GenerateExpression(match);
+                    var mateDisplayID = GenerateExpression(match);
                     if (alignment.TryGetValue(read.ID, out contigs1) && alignment.TryGetValue(mateDisplayID, out contigs2))
                     {
                         MatePair pair;
@@ -180,7 +180,7 @@ namespace Bio.Algorithms.Assembly
             MatePair pair,
             ContigMatePairs contigMatePairs)
         {
-            foreach (KeyValuePair<ISequence, IList<ReadMap>> forwardContigMaps in forwardContigs)
+            foreach (var forwardContigMaps in forwardContigs)
             {
                 Dictionary<ISequence, IList<ValidMatePair>> forwardContig;
                 if (!contigMatePairs.TryGetValue(forwardContigMaps.Key, out forwardContig))
@@ -189,7 +189,7 @@ namespace Bio.Algorithms.Assembly
                     contigMatePairs.Add(forwardContigMaps.Key, forwardContig);
                 }
 
-                foreach (KeyValuePair<ISequence, IList<ReadMap>> reverseContigMaps in reverseContigs)
+                foreach (var reverseContigMaps in reverseContigs)
                 {
                     IList<ValidMatePair> matePairs;
                     if (!forwardContig.TryGetValue(reverseContigMaps.Key, out matePairs))
@@ -198,11 +198,11 @@ namespace Bio.Algorithms.Assembly
                         forwardContig.Add(reverseContigMaps.Key, matePairs);
                     }
                     
-                    foreach (ReadMap forwardMap in forwardContigMaps.Value)
+                    foreach (var forwardMap in forwardContigMaps.Value)
                     {
-                        foreach (ReadMap reverseMap in reverseContigMaps.Value)
+                        foreach (var reverseMap in reverseContigMaps.Value)
                         {
-                            ValidMatePair validPairedRead = new ValidMatePair();
+                            var validPairedRead = new ValidMatePair();
                             validPairedRead.PairedRead = pair;
                             validPairedRead.ForwardReadStartPosition.Add(forwardMap.StartPositionOfContig);
                             validPairedRead.ReverseReadStartPosition.Add(
@@ -223,7 +223,7 @@ namespace Bio.Algorithms.Assembly
         /// <returns>Expression for other read.</returns>
         private static string GenerateExpression(Match match)
         {
-            string expression = string.Empty;
+            var expression = string.Empty;
             switch (match.Groups[2].Value)
             {
                 case "X1":

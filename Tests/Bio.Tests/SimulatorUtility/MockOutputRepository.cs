@@ -56,9 +56,9 @@ namespace Bio.TestUtils.SimulatorUtility
         /// <param name="testcaseId">Test case identifier.</param>
         public object GetOutput(string testcaseId)
         {
-            string mockOutputPath = GetMockOutputPath(testcaseId);
-            Stream stream = ReadStream(mockOutputPath);
-            object result = Deserialize(stream);
+            var mockOutputPath = GetMockOutputPath(testcaseId);
+            var stream = ReadStream(mockOutputPath);
+            var result = Deserialize(stream);
             Close(stream);
             return result;
         }
@@ -69,7 +69,7 @@ namespace Bio.TestUtils.SimulatorUtility
         /// <param name="testcaseId">Test case identifier.</param>
         private string GetMockOutputPath(string testcaseId)
         {
-            XmlNode node = mockOutputMap.SelectSingleNode("/TestCases/TestCase[@TestCaseID='" + testcaseId + "']");
+            var node = mockOutputMap.SelectSingleNode("/TestCases/TestCase[@TestCaseID='" + testcaseId + "']");
             return node.InnerText;
         }
 
@@ -80,9 +80,9 @@ namespace Bio.TestUtils.SimulatorUtility
         private Stream ReadStream(string filePath)
         {
             MemoryStream ms = null;
-            using (FileStream fs = new FileStream(filePath, FileMode.Open))
+            using (var fs = new FileStream(filePath, FileMode.Open))
             {
-                byte[] bytes = new byte[fs.Length];
+                var bytes = new byte[fs.Length];
                 fs.Read(bytes, 0, (int)fs.Length);
                 ms = new MemoryStream(bytes);
             }
@@ -96,7 +96,7 @@ namespace Bio.TestUtils.SimulatorUtility
         /// <param name="stream">Stream object to be deserialized.</param>
         private object Deserialize(Stream stream)
         {
-            BinaryFormatter formatter = new BinaryFormatter();
+            var formatter = new BinaryFormatter();
             return formatter.Deserialize(stream);            
         }
 

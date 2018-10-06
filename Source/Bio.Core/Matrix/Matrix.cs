@@ -340,7 +340,7 @@ namespace Bio.Matrix
         /// <returns>true if RowKeys contrains rowKey and ColKeys contains colKey; otherwise, false.</returns>
         virtual public bool ContainsRowAndColKeys(TRowKey rowKey, TColKey colKey)
         {
-            return this.ContainsRowKey(rowKey) && this.ContainsColKey(colKey);
+            return ContainsRowKey(rowKey) && ContainsColKey(colKey);
         }
 
         /// <summary>
@@ -351,7 +351,7 @@ namespace Bio.Matrix
         /// <returns>true if RowKeys contrains rowKey; otherwise, false.</returns>
         virtual public bool ContainsRowKey(TRowKey rowKey)
         {
-            bool containsRowKey = IndexOfRowKey.ContainsKey(rowKey);
+            var containsRowKey = IndexOfRowKey.ContainsKey(rowKey);
             return containsRowKey;
         }
 
@@ -426,15 +426,15 @@ namespace Bio.Matrix
         {
             get
             {
-                for (int rowIndex = 0; rowIndex < RowCount; ++rowIndex)
+                for (var rowIndex = 0; rowIndex < RowCount; ++rowIndex)
                 {
-                    TRowKey rowKey = RowKeys[rowIndex];
-                    for (int colIndex = 0; colIndex < ColCount; ++colIndex)
+                    var rowKey = RowKeys[rowIndex];
+                    for (var colIndex = 0; colIndex < ColCount; ++colIndex)
                     {
                         TValue value;
                         if (TryGetValue(rowIndex, colIndex, out value))
                         {
-                            TColKey colKey = ColKeys[colIndex];
+                            var colKey = ColKeys[colIndex];
                             yield return value;
                         }
                     }
@@ -451,15 +451,15 @@ namespace Bio.Matrix
         {
             get
             {
-                for (int rowIndex = 0; rowIndex < RowCount; ++rowIndex)
+                for (var rowIndex = 0; rowIndex < RowCount; ++rowIndex)
                 {
-                    TRowKey rowKey = RowKeys[rowIndex];
-                    for (int colIndex = 0; colIndex < ColCount; ++colIndex)
+                    var rowKey = RowKeys[rowIndex];
+                    for (var colIndex = 0; colIndex < ColCount; ++colIndex)
                     {
                         TValue value;
                         if (TryGetValue(rowIndex, colIndex, out value))
                         {
-                            TColKey colKey = ColKeys[colIndex];
+                            var colKey = ColKeys[colIndex];
                             yield return new RowKeyColKeyValue<TRowKey, TColKey, TValue>(rowKey, colKey, value);
                         }
                     }
@@ -474,7 +474,7 @@ namespace Bio.Matrix
         /// <returns>A string, containing newlines characters, representing the matrix.</returns>
         public string ToString2D()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             TextWriter textWriter = new StringWriter(sb);
             WriteDense(textWriter);
             return sb.ToString();
@@ -489,14 +489,14 @@ namespace Bio.Matrix
         virtual public void WriteDense(TextWriter textWriter)
         {
             textWriter.WriteLine("var\t{0}", ColKeys.StringJoin("\t"));
-            foreach (TRowKey rowKey in RowKeys)
+            foreach (var rowKey in RowKeys)
             {
                 textWriter.Write(rowKey);
-                foreach (TColKey colKey in ColKeys)
+                foreach (var colKey in ColKeys)
                 {
                     textWriter.Write("\t");
-                    TValue value = GetValueOrMissing(rowKey, colKey);
-                    IEnumerable asEnum = value as IEnumerable;
+                    var value = GetValueOrMissing(rowKey, colKey);
+                    var asEnum = value as IEnumerable;
                     if (!(value is string) && asEnum != null)
                     {
                         textWriter.Write(asEnum.StringJoin(","));
@@ -517,9 +517,9 @@ namespace Bio.Matrix
         /// <returns>true if the matrix contains any missing values; otherwise, false.</returns>
         virtual public bool IsMissingSome()
         {
-            for (int rowIndex = 0; rowIndex < RowCount; ++rowIndex)
+            for (var rowIndex = 0; rowIndex < RowCount; ++rowIndex)
             {
-                for (int colIndex = 0; colIndex < ColCount; ++colIndex)
+                for (var colIndex = 0; colIndex < ColCount; ++colIndex)
                 {
                     TValue ignore;
                     if (!TryGetValue(rowIndex, colIndex, out ignore))
@@ -548,7 +548,7 @@ namespace Bio.Matrix
         /// <returns>true if the matrix contains a row missing all values; otherwise, false.</returns>
         virtual public bool IsMissingAllInSomeRow()
         {
-            for (int rowIndex = 0; rowIndex < RowCount; ++rowIndex)
+            for (var rowIndex = 0; rowIndex < RowCount; ++rowIndex)
             {
                 if (IsMissingAllInRow(rowIndex))
                 {
@@ -565,7 +565,7 @@ namespace Bio.Matrix
         /// <returns>true if the matrix contains a column missing all values; otherwise, false.</returns>
         virtual public bool IsMissingAllInSomeCol()
         {
-            for (int colIndex = 0; colIndex < ColCount; ++colIndex)
+            for (var colIndex = 0; colIndex < ColCount; ++colIndex)
             {
                 if (IsMissingAllInCol(colIndex))
                 {
@@ -653,12 +653,12 @@ namespace Bio.Matrix
             }
 
 
-            for (int rIdx = 0; rIdx < RowCount; rIdx++)
+            for (var rIdx = 0; rIdx < RowCount; rIdx++)
             {
-                for (int cIdx = 0; cIdx < ColCount; cIdx++)
+                for (var cIdx = 0; cIdx < ColCount; cIdx++)
                 {
-                    TValue value1 = GetValueOrMissing(rIdx, cIdx);
-                    TValue value2 = otherMatrix.GetValueOrMissing(rIdx, cIdx);
+                    var value1 = GetValueOrMissing(rIdx, cIdx);
+                    var value2 = otherMatrix.GetValueOrMissing(rIdx, cIdx);
                     if (value1 == null)
                     {
                         if (value2 != null)
@@ -757,7 +757,7 @@ namespace Bio.Matrix
 
         IEnumerator<IList<TValue>> IEnumerable<IList<TValue>>.GetEnumerator()
         {
-            for (int rowIndex = 0; rowIndex < RowCount; ++rowIndex)
+            for (var rowIndex = 0; rowIndex < RowCount; ++rowIndex)
             {
                 yield return new MatrixRowAsIList<TRowKey, TColKey, TValue>(this, rowIndex);
             }
@@ -767,7 +767,7 @@ namespace Bio.Matrix
 
         #region IEnumerable Members
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return ((IEnumerable<IList<TValue>>)this).GetEnumerator();
             //throw new NotImplementedExceptkion();//!!Use Values() or RowKeyValueKeyValues() or IListOfILists()

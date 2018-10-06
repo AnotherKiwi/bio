@@ -91,12 +91,12 @@ namespace Bio.Distributions
         {
             if (dictionary == null)
             {
-                throw new ArgumentNullException("dictionary");
+                throw new ArgumentNullException(nameof(dictionary));
             }
 
-            Dictionary<string, BooleanStatistics> result = new Dictionary<string, BooleanStatistics>();
+            var result = new Dictionary<string, BooleanStatistics>();
 
-            foreach (KeyValuePair<string, SufficientStatistics> stringAndSuff in dictionary)
+            foreach (var stringAndSuff in dictionary)
             {
                 result.Add(stringAndSuff.Key, stringAndSuff.Value.AsBooleanStatistics());
             }
@@ -147,7 +147,7 @@ namespace Bio.Distributions
         {
             if (stats == null)
             {
-                throw new ArgumentNullException("stats");
+                throw new ArgumentNullException(nameof(stats));
             }
 
             if (stats.IsMissing())
@@ -167,7 +167,7 @@ namespace Bio.Distributions
         {
             if (stats == null)
             {
-                throw new ArgumentNullException("stats");
+                throw new ArgumentNullException(nameof(stats));
             }
 
             if (stats.IsMissing() || stats.Value < 0)
@@ -176,7 +176,7 @@ namespace Bio.Distributions
             }
             try
             {
-                Classification value = (Classification)(int)stats;
+                var value = (Classification)(int)stats;
                 return new BooleanStatistics(value);
             }
             catch
@@ -212,7 +212,7 @@ namespace Bio.Distributions
                 return null;
             }
 
-            return BooleanStatistics.GetMissingInstance;
+            return GetMissingInstance;
         }
 
         /// <summary>
@@ -222,7 +222,7 @@ namespace Bio.Distributions
         /// <returns>True if both the objects are equal.</returns>
         public override bool Equals(object obj)
         {
-            SufficientStatistics stats = obj as SufficientStatistics;
+            var stats = obj as SufficientStatistics;
             if (stats != null)
             {
                 return Equals(stats);
@@ -242,7 +242,7 @@ namespace Bio.Distributions
         {
             if (stats == null)
             {
-                throw new ArgumentNullException("stats");
+                throw new ArgumentNullException(nameof(stats));
             }
 
             if (stats.IsMissing())
@@ -286,21 +286,21 @@ namespace Bio.Distributions
         {
             if (string.IsNullOrEmpty(val))
             {
-                throw new ArgumentNullException("val");
+                throw new ArgumentNullException(nameof(val));
             }
 
             result = null;
             if (val.Equals("true", StringComparison.CurrentCultureIgnoreCase) || val == "1")
             {
-                result = BooleanStatistics.GetInstance(true);
+                result = GetInstance(true);
             }
             else if (val.Equals("false", StringComparison.CurrentCultureIgnoreCase) || val == "0")
             {
-                result = BooleanStatistics.GetInstance(false);
+                result = GetInstance(false);
             }
             else if (val.Equals("null", StringComparison.CurrentCultureIgnoreCase) || val == "-1")
             {
-                result = BooleanStatistics.GetMissingInstance;
+                result = GetMissingInstance;
             }
             return result != null;
         }

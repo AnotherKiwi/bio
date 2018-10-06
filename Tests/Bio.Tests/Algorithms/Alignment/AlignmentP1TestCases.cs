@@ -95,7 +95,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignListSequencesDna()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschDnaAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschDnaAlignAlgorithmNodeName,
                                              AlignParameters.AlignList);
         }
 
@@ -111,7 +111,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignAllParamDna()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschDnaAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschDnaAlignAlgorithmNodeName,
                                              AlignParameters.AllParam);
         }
 
@@ -127,7 +127,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignListSequencesPro()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschProAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschProAlignAlgorithmNodeName,
                                              AlignParameters.AlignList);
         }
 
@@ -143,7 +143,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignAllParamPro()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschProAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschProAlignAlgorithmNodeName,
                                              AlignParameters.AllParam);
         }
 
@@ -159,7 +159,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignListSequencesRna()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschRnaAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschRnaAlignAlgorithmNodeName,
                                              AlignParameters.AlignList);
         }
 
@@ -175,7 +175,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignAllParamRna()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschRnaAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschRnaAlignAlgorithmNodeName,
                                              AlignParameters.AllParam);
         }
 
@@ -192,7 +192,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignListSequencesGapCostMin()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschGapCostMinAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschGapCostMinAlignAlgorithmNodeName,
                                              AlignParameters.AlignList);
         }
 
@@ -208,7 +208,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignAllParamGapCostMin()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschGapCostMinAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschGapCostMinAlignAlgorithmNodeName,
                                              AlignParameters.AllParam);
         }
 
@@ -224,7 +224,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignListSequencesBlosum()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschBlosumAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschBlosumAlignAlgorithmNodeName,
                                              AlignParameters.AlignList);
         }
 
@@ -240,7 +240,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignAllParamBlosum()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschBlosumAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschBlosumAlignAlgorithmNodeName,
                                              AlignParameters.AllParam);
         }
 
@@ -256,7 +256,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignListSequencesPam()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschPamAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschPamAlignAlgorithmNodeName,
                                              AlignParameters.AlignList);
         }
 
@@ -272,7 +272,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignAllParamPam()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschPamAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschPamAlignAlgorithmNodeName,
                                              AlignParameters.AllParam);
         }
 
@@ -288,7 +288,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignListSequencesSimMatTextRead()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschProAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschProAlignAlgorithmNodeName,
                                              AlignParameters.AlignList,
                                              SimilarityMatrixParameters.TextReader);
         }
@@ -305,7 +305,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignAllParamSimMatTextRead()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschProAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschProAlignAlgorithmNodeName,
                                              AlignParameters.AllParam,
                                              SimilarityMatrixParameters.TextReader);
         }
@@ -322,7 +322,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignListSequencesDiagonalSimMat()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschDiagonalSimMatAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschDiagonalSimMatAlignAlgorithmNodeName,
                                              AlignParameters.AlignList,
                                              SimilarityMatrixParameters.DiagonalMatrix);
         }
@@ -339,7 +339,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignAllParamDiagonalSimMat()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschDiagonalSimMatAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschDiagonalSimMatAlignAlgorithmNodeName,
                                              AlignParameters.AllParam,
                                              SimilarityMatrixParameters.DiagonalMatrix);
         }
@@ -356,7 +356,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignTwoDnaSequences()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschDnaAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschDnaAlignAlgorithmNodeName,
                                              AlignParameters.AlignTwo);
         }
 
@@ -372,7 +372,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignTwoDnaSequencesFromXml()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschDnaAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschDnaAlignAlgorithmNodeName,
                                              AlignParameters.AlignTwoCode);
         }
 
@@ -388,7 +388,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignListDnaSequencesFromXml()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschDnaAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschDnaAlignAlgorithmNodeName,
                                              AlignParameters.AlignListCode);
         }
 
@@ -404,7 +404,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignAllParamDnaFromXml()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschDnaAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschDnaAlignAlgorithmNodeName,
                                              AlignParameters.AllParamCode);
         }
 
@@ -420,7 +420,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignTwoRnaSequences()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschRnaAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschRnaAlignAlgorithmNodeName,
                                              AlignParameters.AlignTwo);
         }
 
@@ -436,7 +436,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignTwoRnaSequencesFromXml()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschRnaAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschRnaAlignAlgorithmNodeName,
                                              AlignParameters.AlignTwoCode);
         }
 
@@ -452,7 +452,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignListRnaSequencesFromXml()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschRnaAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschRnaAlignAlgorithmNodeName,
                                              AlignParameters.AlignListCode);
         }
 
@@ -468,7 +468,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignAllParamRnaFromXml()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschRnaAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschRnaAlignAlgorithmNodeName,
                                              AlignParameters.AllParamCode);
         }
 
@@ -484,7 +484,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignTwoProSequences()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschProAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschProAlignAlgorithmNodeName,
                                              AlignParameters.AlignTwo);
         }
 
@@ -500,7 +500,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignTwoProSequencesFromXml()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschProAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschProAlignAlgorithmNodeName,
                                              AlignParameters.AlignTwoCode);
         }
 
@@ -516,7 +516,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignListProSequencesFromXml()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschProAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschProAlignAlgorithmNodeName,
                                              AlignParameters.AlignListCode);
         }
 
@@ -532,7 +532,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignAllParamProFromXml()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschProAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschProAlignAlgorithmNodeName,
                                              AlignParameters.AllParamCode);
         }
 
@@ -550,7 +550,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignTwoSequencesGapCostMin()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschGapCostMinAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschGapCostMinAlignAlgorithmNodeName,
                                              AlignParameters.AlignTwo);
         }
 
@@ -566,7 +566,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignTwoSequencesGapCostMinFromXml()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschGapCostMinAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschGapCostMinAlignAlgorithmNodeName,
                                              AlignParameters.AlignTwoCode);
         }
 
@@ -582,7 +582,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignSequenceListGapCostMinFromXml()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschGapCostMinAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschGapCostMinAlignAlgorithmNodeName,
                                              AlignParameters.AlignListCode);
         }
 
@@ -598,7 +598,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignAllParamGapCostMinFromXml()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschGapCostMinAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschGapCostMinAlignAlgorithmNodeName,
                                              AlignParameters.AllParamCode);
         }
 
@@ -614,7 +614,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignTwoSequencesBlosum()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschBlosumAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschBlosumAlignAlgorithmNodeName,
                                              AlignParameters.AlignTwo);
         }
 
@@ -630,7 +630,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignTwoSequencesPam()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschPamAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschPamAlignAlgorithmNodeName,
                                              AlignParameters.AlignTwo);
         }
 
@@ -646,7 +646,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignTwoSequencesSimMatTextRead()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschProAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschProAlignAlgorithmNodeName,
                                              AlignParameters.AlignTwo,
                                              SimilarityMatrixParameters.TextReader);
         }
@@ -663,7 +663,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschSimpleAlignTwoSequencesDiagonalSimMat()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschDiagonalSimMatAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschDiagonalSimMatAlignAlgorithmNodeName,
                                              AlignParameters.AlignTwo,
                                              SimilarityMatrixParameters.DiagonalMatrix);
         }
@@ -682,7 +682,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschAlignListSequencesDna()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschDnaAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschDnaAlignAlgorithmNodeName,
                                              AlignParameters.AlignList, SimilarityMatrixParameters.Default,
                                              AlignmentType.Align);
         }
@@ -699,7 +699,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschAlignAllParamDna()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschDnaAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschDnaAlignAlgorithmNodeName,
                                              AlignParameters.AllParam, SimilarityMatrixParameters.Default,
                                              AlignmentType.Align);
         }
@@ -716,7 +716,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschAlignListSequencesPro()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschProAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschProAlignAlgorithmNodeName,
                                              AlignParameters.AlignList, SimilarityMatrixParameters.Default,
                                              AlignmentType.Align);
         }
@@ -733,7 +733,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschAlignAllParamPro()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschProAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschProAlignAlgorithmNodeName,
                                              AlignParameters.AllParam, SimilarityMatrixParameters.Default,
                                              AlignmentType.Align);
         }
@@ -750,7 +750,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschAlignListSequencesRna()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschRnaAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschRnaAlignAlgorithmNodeName,
                                              AlignParameters.AlignList, SimilarityMatrixParameters.Default,
                                              AlignmentType.Align);
         }
@@ -767,7 +767,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschAlignAllParamRna()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschRnaAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschRnaAlignAlgorithmNodeName,
                                              AlignParameters.AllParam, SimilarityMatrixParameters.Default,
                                              AlignmentType.Align);
         }
@@ -787,7 +787,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschAlignListSequencesGapCostMin()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschGapCostMinAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschGapCostMinAlignAlgorithmNodeName,
                                              AlignParameters.AlignList, SimilarityMatrixParameters.Default,
                                              AlignmentType.Align);
         }
@@ -804,7 +804,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschAlignAllParamGapCostMin()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschGapCostMinAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschGapCostMinAlignAlgorithmNodeName,
                                              AlignParameters.AllParam, SimilarityMatrixParameters.Default,
                                              AlignmentType.Align);
         }
@@ -821,7 +821,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschAlignListSequencesBlosum()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschBlosumAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschBlosumAlignAlgorithmNodeName,
                                              AlignParameters.AlignList, SimilarityMatrixParameters.Default,
                                              AlignmentType.Align);
         }
@@ -838,7 +838,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschAlignAllParamBlosum()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschBlosumAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschBlosumAlignAlgorithmNodeName,
                                              AlignParameters.AllParam, SimilarityMatrixParameters.Default,
                                              AlignmentType.Align);
         }
@@ -855,7 +855,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschAlignListSequencesPam()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschPamAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschPamAlignAlgorithmNodeName,
                                              AlignParameters.AlignList, SimilarityMatrixParameters.Default,
                                              AlignmentType.Align);
         }
@@ -872,7 +872,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschAlignAllParamPam()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschPamAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschPamAlignAlgorithmNodeName,
                                              AlignParameters.AllParam, SimilarityMatrixParameters.Default,
                                              AlignmentType.Align);
         }
@@ -889,7 +889,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschAlignListSequencesSimMatTextRead()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschProAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschProAlignAlgorithmNodeName,
                                              AlignParameters.AlignList,
                                              SimilarityMatrixParameters.TextReader, AlignmentType.Align);
         }
@@ -906,7 +906,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschAlignAllParamSimMatTextRead()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschProAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschProAlignAlgorithmNodeName,
                                              AlignParameters.AllParam,
                                              SimilarityMatrixParameters.TextReader, AlignmentType.Align);
         }
@@ -923,7 +923,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschAlignListSequencesDiagonalSimMat()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschDiagonalSimMatAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschDiagonalSimMatAlignAlgorithmNodeName,
                                              AlignParameters.AlignList,
                                              SimilarityMatrixParameters.DiagonalMatrix, AlignmentType.Align);
         }
@@ -940,7 +940,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschAlignAllParamDiagonalSimMat()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschDiagonalSimMatAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschDiagonalSimMatAlignAlgorithmNodeName,
                                              AlignParameters.AllParam,
                                              SimilarityMatrixParameters.DiagonalMatrix, AlignmentType.Align);
         }
@@ -957,7 +957,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschAlignListSequencesGapCostGapExtensionEqual()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschEqualAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschEqualAlignAlgorithmNodeName,
                                              AlignParameters.AlignList,
                                              SimilarityMatrixParameters.Default, AlignmentType.Align);
         }
@@ -974,7 +974,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void NeedlemanWunschAlignAllParamGapCostGapExtensionEqual()
         {
-            this.ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschEqualAlignAlgorithmNodeName,
+            ValidateNeedlemanWunschAlignment(Constants.NeedlemanWunschEqualAlignAlgorithmNodeName,
                                              AlignParameters.AllParam,
                                              SimilarityMatrixParameters.Default, AlignmentType.Align);
         }
@@ -997,7 +997,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignListSequencesDna()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanDnaAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanDnaAlignAlgorithmNodeName,
                                            AlignParameters.AlignList);
         }
 
@@ -1013,7 +1013,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignAllParamDna()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanDnaAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanDnaAlignAlgorithmNodeName,
                                            AlignParameters.AllParam);
         }
 
@@ -1029,7 +1029,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignListSequencesPro()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanProAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanProAlignAlgorithmNodeName,
                                            AlignParameters.AlignList);
         }
 
@@ -1045,7 +1045,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignAllParamPro()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanProAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanProAlignAlgorithmNodeName,
                                            AlignParameters.AllParam);
         }
 
@@ -1061,7 +1061,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignListSequencesRna()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanRnaAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanRnaAlignAlgorithmNodeName,
                                            AlignParameters.AlignList);
         }
 
@@ -1077,7 +1077,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignAllParamRna()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanRnaAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanRnaAlignAlgorithmNodeName,
                                            AlignParameters.AllParam);
         }
 
@@ -1096,7 +1096,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignListSequencesGapCostMin()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanGapCostMinAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanGapCostMinAlignAlgorithmNodeName,
                                            AlignParameters.AlignList);
         }
 
@@ -1112,7 +1112,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignAllParamGapCostMin()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanGapCostMinAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanGapCostMinAlignAlgorithmNodeName,
                                            AlignParameters.AllParam);
         }
 
@@ -1128,7 +1128,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignListSequencesBlosum()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanBlosumAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanBlosumAlignAlgorithmNodeName,
                                            AlignParameters.AlignList);
         }
 
@@ -1144,7 +1144,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignAllParamBlosum()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanBlosumAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanBlosumAlignAlgorithmNodeName,
                                            AlignParameters.AllParam);
         }
 
@@ -1160,7 +1160,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignListSequencesPam()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanPamAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanPamAlignAlgorithmNodeName,
                                            AlignParameters.AlignList);
         }
 
@@ -1176,7 +1176,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignAllParamPam()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanPamAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanPamAlignAlgorithmNodeName,
                                            AlignParameters.AllParam);
         }
 
@@ -1192,7 +1192,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignListSequencesSimMatTextRead()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanProAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanProAlignAlgorithmNodeName,
                                            AlignParameters.AlignList,
                                            SimilarityMatrixParameters.TextReader);
         }
@@ -1209,7 +1209,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignAllParamSimMatTextRead()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanProAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanProAlignAlgorithmNodeName,
                                            AlignParameters.AllParam,
                                            SimilarityMatrixParameters.TextReader);
         }
@@ -1226,7 +1226,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignListSequencesDiagonalSimMat()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanDiagonalSimMatAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanDiagonalSimMatAlignAlgorithmNodeName,
                                            AlignParameters.AlignList,
                                            SimilarityMatrixParameters.DiagonalMatrix);
         }
@@ -1243,7 +1243,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignAllParamDiagonalSimMat()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanDiagonalSimMatAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanDiagonalSimMatAlignAlgorithmNodeName,
                                            AlignParameters.AllParam,
                                            SimilarityMatrixParameters.DiagonalMatrix);
         }
@@ -1260,7 +1260,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignTwoDnaSequences()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanDnaAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanDnaAlignAlgorithmNodeName,
                                            AlignParameters.AlignTwo);
         }
 
@@ -1276,7 +1276,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignTwoDnaSequencesFromXml()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanDnaAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanDnaAlignAlgorithmNodeName,
                                            AlignParameters.AlignTwoCode);
         }
 
@@ -1292,7 +1292,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignListDnaSequencesFromXml()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanDnaAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanDnaAlignAlgorithmNodeName,
                                            AlignParameters.AlignListCode);
         }
 
@@ -1308,7 +1308,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignAllParamDnaFromXml()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanDnaAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanDnaAlignAlgorithmNodeName,
                                            AlignParameters.AllParamCode);
         }
 
@@ -1324,7 +1324,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignTwoRnaSequences()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanRnaAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanRnaAlignAlgorithmNodeName,
                                            AlignParameters.AlignTwo);
         }
 
@@ -1340,7 +1340,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignTwoRnaSequencesFromXml()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanRnaAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanRnaAlignAlgorithmNodeName,
                                            AlignParameters.AlignTwoCode);
         }
 
@@ -1356,7 +1356,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignListRnaSequencesFromXml()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanRnaAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanRnaAlignAlgorithmNodeName,
                                            AlignParameters.AlignListCode);
         }
 
@@ -1372,7 +1372,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignAllParamRnaFromXml()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanRnaAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanRnaAlignAlgorithmNodeName,
                                            AlignParameters.AllParamCode);
         }
 
@@ -1388,7 +1388,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignTwoProSequences()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanProAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanProAlignAlgorithmNodeName,
                                            AlignParameters.AlignTwo);
         }
 
@@ -1404,7 +1404,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignTwoProSequencesFromXml()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanProAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanProAlignAlgorithmNodeName,
                                            AlignParameters.AlignTwoCode);
         }
 
@@ -1420,7 +1420,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignListProSequencesFromXml()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanProAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanProAlignAlgorithmNodeName,
                                            AlignParameters.AlignListCode);
         }
 
@@ -1436,7 +1436,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignAllParamProFromXml()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanProAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanProAlignAlgorithmNodeName,
                                            AlignParameters.AllParamCode);
         }
 
@@ -1453,7 +1453,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignTwoSequencesGapCostMin()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanGapCostMinAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanGapCostMinAlignAlgorithmNodeName,
                                            AlignParameters.AlignTwo);
         }
 
@@ -1469,7 +1469,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignTwoSequencesGapCostMinFromXml()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanGapCostMinAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanGapCostMinAlignAlgorithmNodeName,
                                            AlignParameters.AlignTwoCode);
         }
 
@@ -1485,7 +1485,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignSequenceListGapCostMinFromXml()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanGapCostMinAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanGapCostMinAlignAlgorithmNodeName,
                                            AlignParameters.AlignListCode);
         }
 
@@ -1501,7 +1501,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignAllParamGapCostMinFromXml()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanGapCostMinAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanGapCostMinAlignAlgorithmNodeName,
                                            AlignParameters.AllParamCode);
         }
 
@@ -1517,7 +1517,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignTwoSequencesBlosum()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanBlosumAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanBlosumAlignAlgorithmNodeName,
                                            AlignParameters.AlignTwo);
         }
 
@@ -1533,7 +1533,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignTwoSequencesPam()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanPamAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanPamAlignAlgorithmNodeName,
                                            AlignParameters.AlignTwo);
         }
 
@@ -1549,7 +1549,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignTwoSequencesSimMatTextRead()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanProAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanProAlignAlgorithmNodeName,
                                            AlignParameters.AlignTwo,
                                            SimilarityMatrixParameters.TextReader);
         }
@@ -1566,7 +1566,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanSimpleAlignTwoSequencesDiagonalSimMat()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanDiagonalSimMatAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanDiagonalSimMatAlignAlgorithmNodeName,
                                            AlignParameters.AlignTwo,
                                            SimilarityMatrixParameters.DiagonalMatrix);
         }
@@ -1585,7 +1585,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanAlignListSequencesDna()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanDnaAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanDnaAlignAlgorithmNodeName,
                                            AlignParameters.AlignList, SimilarityMatrixParameters.Default,
                                            AlignmentType.Align);
         }
@@ -1602,7 +1602,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanAlignAllParamDna()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanDnaAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanDnaAlignAlgorithmNodeName,
                                            AlignParameters.AllParam, SimilarityMatrixParameters.Default,
                                            AlignmentType.Align);
         }
@@ -1619,7 +1619,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanAlignListSequencesPro()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanProAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanProAlignAlgorithmNodeName,
                                            AlignParameters.AlignList, SimilarityMatrixParameters.Default,
                                            AlignmentType.Align);
         }
@@ -1636,7 +1636,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanAlignAllParamPro()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanProAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanProAlignAlgorithmNodeName,
                                            AlignParameters.AllParam, SimilarityMatrixParameters.Default,
                                            AlignmentType.Align);
         }
@@ -1653,7 +1653,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanAlignListSequencesRna()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanRnaAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanRnaAlignAlgorithmNodeName,
                                            AlignParameters.AlignList, SimilarityMatrixParameters.Default,
                                            AlignmentType.Align);
         }
@@ -1670,7 +1670,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanAlignAllParamRna()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanRnaAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanRnaAlignAlgorithmNodeName,
                                            AlignParameters.AllParam, SimilarityMatrixParameters.Default,
                                            AlignmentType.Align);
         }
@@ -1688,7 +1688,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanAlignListSequencesGapCostMin()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanGapCostMinAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanGapCostMinAlignAlgorithmNodeName,
                                            AlignParameters.AlignList, SimilarityMatrixParameters.Default,
                                            AlignmentType.Align);
         }
@@ -1705,7 +1705,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanAlignAllParamGapCostMin()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanGapCostMinAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanGapCostMinAlignAlgorithmNodeName,
                                            AlignParameters.AllParam, SimilarityMatrixParameters.Default,
                                            AlignmentType.Align);
         }
@@ -1722,7 +1722,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanAlignListSequencesBlosum()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanBlosumAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanBlosumAlignAlgorithmNodeName,
                                            AlignParameters.AlignList, SimilarityMatrixParameters.Default,
                                            AlignmentType.Align);
         }
@@ -1739,7 +1739,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanAlignAllParamBlosum()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanBlosumAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanBlosumAlignAlgorithmNodeName,
                                            AlignParameters.AllParam, SimilarityMatrixParameters.Default,
                                            AlignmentType.Align);
         }
@@ -1756,7 +1756,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanAlignListSequencesPam()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanPamAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanPamAlignAlgorithmNodeName,
                                            AlignParameters.AlignList, SimilarityMatrixParameters.Default,
                                            AlignmentType.Align);
         }
@@ -1773,7 +1773,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanAlignAllParamPam()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanPamAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanPamAlignAlgorithmNodeName,
                                            AlignParameters.AllParam, SimilarityMatrixParameters.Default,
                                            AlignmentType.Align);
         }
@@ -1790,7 +1790,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanAlignListSequencesSimMatTextRead()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanProAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanProAlignAlgorithmNodeName,
                                            AlignParameters.AlignList,
                                            SimilarityMatrixParameters.TextReader, AlignmentType.Align);
         }
@@ -1807,7 +1807,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanAlignAllParamSimMatTextRead()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanProAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanProAlignAlgorithmNodeName,
                                            AlignParameters.AllParam,
                                            SimilarityMatrixParameters.TextReader, AlignmentType.Align);
         }
@@ -1824,7 +1824,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanAlignListSequencesDiagonalSimMat()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanDiagonalSimMatAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanDiagonalSimMatAlignAlgorithmNodeName,
                                            AlignParameters.AlignList,
                                            SimilarityMatrixParameters.DiagonalMatrix, AlignmentType.Align);
         }
@@ -1841,7 +1841,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanAlignAllParamDiagonalSimMat()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanDiagonalSimMatAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanDiagonalSimMatAlignAlgorithmNodeName,
                                            AlignParameters.AllParam,
                                            SimilarityMatrixParameters.DiagonalMatrix, AlignmentType.Align);
         }
@@ -1858,7 +1858,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanAlignListSequencesGapCostGapExtensionEqual()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanEqualAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanEqualAlignAlgorithmNodeName,
                                            AlignParameters.AlignList,
                                            SimilarityMatrixParameters.Default, AlignmentType.Align);
         }
@@ -1875,7 +1875,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SmithWatermanAlignAllParamGapCostGapExtensionEqual()
         {
-            this.ValidateSmithWatermanAlignment(Constants.SmithWatermanEqualAlignAlgorithmNodeName,
+            ValidateSmithWatermanAlignment(Constants.SmithWatermanEqualAlignAlgorithmNodeName,
                                            AlignParameters.AllParam,
                                            SimilarityMatrixParameters.Default, AlignmentType.Align);
         }
@@ -1895,7 +1895,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SequenceAlignmentAddDnaSequence()
         {
-            this.ValidateGeneralSequenceAlignment(Constants.AlignDnaAlgorithmNodeName, false);
+            ValidateGeneralSequenceAlignment(Constants.AlignDnaAlgorithmNodeName, false);
         }
 
         /// <summary>
@@ -1907,7 +1907,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SequenceAlignmentAddRnaSequence()
         {
-            this.ValidateGeneralSequenceAlignment(Constants.AlignRnaAlgorithmNodeName, false);
+            ValidateGeneralSequenceAlignment(Constants.AlignRnaAlgorithmNodeName, false);
         }
 
         /// <summary>
@@ -1919,7 +1919,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SequenceAlignmentAddProteinSequence()
         {
-            this.ValidateGeneralSequenceAlignment(Constants.AlignProteinAlgorithmNodeName, false);
+            ValidateGeneralSequenceAlignment(Constants.AlignProteinAlgorithmNodeName, false);
         }
 
         /// <summary>
@@ -1931,7 +1931,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void SequenceAlignmentValidateProperties()
         {
-            this.ValidateGeneralSequenceAlignment(Constants.AlignAlgorithmNodeName, true);
+            ValidateGeneralSequenceAlignment(Constants.AlignAlgorithmNodeName, true);
         }
 
         /// <summary>
@@ -1943,14 +1943,14 @@ namespace Bio.Tests.Algorithms.Alignment
         public void ValidateSequenceAlignmentProperties()
         {
             // Read the xml file for getting both the files for aligning.
-            string origSequence1 = this.utilityObj.xmlUtil.GetTextValue(Constants.AlignDnaAlgorithmNodeName,
+            var origSequence1 = utilityObj.xmlUtil.GetTextValue(Constants.AlignDnaAlgorithmNodeName,
                                                                    Constants.SequenceNode1);
-            string origSequence2 = this.utilityObj.xmlUtil.GetTextValue(Constants.AlignDnaAlgorithmNodeName,
+            var origSequence2 = utilityObj.xmlUtil.GetTextValue(Constants.AlignDnaAlgorithmNodeName,
                                                                    Constants.SequenceNode2);
-            IAlphabet alphabet = Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(
+            var alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(
                 Constants.AlignDnaAlgorithmNodeName,
                 Constants.AlphabetNameNode));
-            string seqCount = this.utilityObj.xmlUtil.GetTextValue(
+            var seqCount = utilityObj.xmlUtil.GetTextValue(
                 Constants.AlignDnaAlgorithmNodeName,
                 Constants.SequenceCountNode);
 
@@ -1965,8 +1965,10 @@ namespace Bio.Tests.Algorithms.Alignment
 
             alignSeq.FirstSequence = aInput;
             alignSeq.SecondSequence = bInput;
-            IPairwiseSequenceAlignment seqAlignObj = new PairwiseSequenceAlignment(aInput, bInput);
-            seqAlignObj.Add(alignSeq);
+            IPairwiseSequenceAlignment seqAlignObj = new PairwiseSequenceAlignment(aInput, bInput)
+            {
+                alignSeq
+            };
             sequenceAlignmentObj.Add(seqAlignObj);
 
             // Validate all properties of sequence alignment class. 
@@ -1991,7 +1993,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void ValidateAddSequenceToSequenceAlignment()
         {
-            this.ValidateSequenceAlignmentGeneralMethods(Constants.AlignAlgorithmNodeName,
+            ValidateSequenceAlignmentGeneralMethods(Constants.AlignAlgorithmNodeName,
                                                     SeqAlignmentMethods.Add, false);
         }
 
@@ -2004,7 +2006,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void ValidateDeletingSequenceAlignment()
         {
-            this.ValidateSequenceAlignmentGeneralMethods(Constants.AlignAlgorithmNodeName,
+            ValidateSequenceAlignmentGeneralMethods(Constants.AlignAlgorithmNodeName,
                                                     SeqAlignmentMethods.Clear, false);
         }
 
@@ -2017,7 +2019,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void ValidateSequenceAlignmentContainsMethod()
         {
-            this.ValidateSequenceAlignmentGeneralMethods(Constants.AlignAlgorithmNodeName,
+            ValidateSequenceAlignmentGeneralMethods(Constants.AlignAlgorithmNodeName,
                                                     SeqAlignmentMethods.Contains, false);
         }
 
@@ -2030,7 +2032,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void ValidateCopiedSeqAlinmentItems()
         {
-            this.ValidateSequenceAlignmentGeneralMethods(Constants.AlignAlgorithmNodeName,
+            ValidateSequenceAlignmentGeneralMethods(Constants.AlignAlgorithmNodeName,
                                                     SeqAlignmentMethods.CopyTo, false);
         }
 
@@ -2043,7 +2045,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void ValidateRemoveAlignedSeqItem()
         {
-            this.ValidateSequenceAlignmentGeneralMethods(Constants.AlignAlgorithmNodeName,
+            ValidateSequenceAlignmentGeneralMethods(Constants.AlignAlgorithmNodeName,
                                                     SeqAlignmentMethods.Remove, false);
         }
 
@@ -2056,7 +2058,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void ValidateSeqAlignmentDefaultCtr()
         {
-            this.ValidateSequenceAlignmentGeneralMethods(Constants.AlignAlgorithmNodeName,
+            ValidateSequenceAlignmentGeneralMethods(Constants.AlignAlgorithmNodeName,
                                                     SeqAlignmentMethods.Remove, true);
         }
 
@@ -2069,7 +2071,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void ValidateAddSequenceToAlignedSeqList()
         {
-            this.ValidateSequenceAlignmentGeneralMethods(Constants.AlignAlgorithmNodeName,
+            ValidateSequenceAlignmentGeneralMethods(Constants.AlignAlgorithmNodeName,
                                                     SeqAlignmentMethods.AddSequence, false);
         }
 
@@ -2082,7 +2084,7 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void ValidateAlignedSeqGetEnumerator()
         {
-            this.ValidateSequenceAlignmentGeneralMethods(Constants.AlignAlgorithmNodeName,
+            ValidateSequenceAlignmentGeneralMethods(Constants.AlignAlgorithmNodeName,
                                                     SeqAlignmentMethods.GetEnumerator, false);
         }
 
@@ -2097,7 +2099,7 @@ namespace Bio.Tests.Algorithms.Alignment
         /// <param name="alignParam">parameter based on which certain validations are done.</param>
         private void ValidateNeedlemanWunschAlignment(string nodeName, AlignParameters alignParam)
         {
-            this.ValidateNeedlemanWunschAlignment(nodeName, alignParam, SimilarityMatrixParameters.Default);
+            ValidateNeedlemanWunschAlignment(nodeName, alignParam, SimilarityMatrixParameters.Default);
         }
 
         /// <summary>
@@ -2109,7 +2111,7 @@ namespace Bio.Tests.Algorithms.Alignment
         private void ValidateNeedlemanWunschAlignment(string nodeName, AlignParameters alignParam,
                                                       SimilarityMatrixParameters similarityMatrixParam)
         {
-            this.ValidateNeedlemanWunschAlignment(nodeName, alignParam, similarityMatrixParam, AlignmentType.SimpleAlign);
+            ValidateNeedlemanWunschAlignment(nodeName, alignParam, similarityMatrixParam, AlignmentType.SimpleAlign);
         }
 
         /// <summary>
@@ -2127,14 +2129,14 @@ namespace Bio.Tests.Algorithms.Alignment
         {
             ISequence aInput, bInput;
 
-            IAlphabet alphabet =
-                Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.AlphabetNameNode));
+            var alphabet =
+                Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.AlphabetNameNode));
 
             // Parse the files and get the sequence.
             if (alignParam.ToString().Contains("Code"))
             {
-                string sequence1 = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode1);
-                string sequence2 = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode2);
+                var sequence1 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode1);
+                var sequence2 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode2);
 
                 aInput = new Sequence(alphabet, sequence1);
                 bInput = new Sequence(alphabet, sequence2);
@@ -2142,20 +2144,20 @@ namespace Bio.Tests.Algorithms.Alignment
             else
             {
                 // Read the xml file for getting both the files for aligning.
-                string filePath1 = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode1).TestDir();
-                string filePath2 = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode2).TestDir();
+                var filePath1 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode1).TestDir();
+                var filePath2 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode2).TestDir();
                 var parseObjectForFile1 = new FastAParser { Alphabet = alphabet };
-                ISequence originalSequence1 = parseObjectForFile1.Parse(filePath1).FirstOrDefault();
+                var originalSequence1 = parseObjectForFile1.Parse(filePath1).FirstOrDefault();
                 Assert.IsNotNull(originalSequence1);
                 aInput = new Sequence(alphabet, originalSequence1.ConvertToString());
 
                 var parseObjectForFile2 = new FastAParser { Alphabet = alphabet };
-                ISequence originalSequence2 = parseObjectForFile2.Parse(filePath2).FirstOrDefault();
+                var originalSequence2 = parseObjectForFile2.Parse(filePath2).FirstOrDefault();
                 Assert.IsNotNull(originalSequence2);
                 bInput = new Sequence(alphabet, originalSequence2.ConvertToString());
             }
 
-            string blosumFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.BlosumFilePathNode).TestDir();
+            var blosumFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.BlosumFilePathNode).TestDir();
             SimilarityMatrix sm;
 
             switch (similarityMatrixParam)
@@ -2165,9 +2167,9 @@ namespace Bio.Tests.Algorithms.Alignment
                         sm = new SimilarityMatrix(reader);
                     break;
                 case SimilarityMatrixParameters.DiagonalMatrix:
-                    string matchValue = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    var matchValue = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                         Constants.MatchScoreNode);
-                    string misMatchValue = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    var misMatchValue = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.MisMatchScoreNode);
                     sm = new DiagonalSimilarityMatrix(int.Parse(matchValue, null),
                                                       int.Parse(misMatchValue, null));
@@ -2177,8 +2179,8 @@ namespace Bio.Tests.Algorithms.Alignment
                     break;
             }
 
-            int gapOpenCost = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapOpenCostNode), null);
-            int gapExtensionCost = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapExtensionCostNode),
+            var gapOpenCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapOpenCostNode), null);
+            var gapExtensionCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapExtensionCostNode),
                                              null);
 
             var needlemanWunschObj = new NeedlemanWunschAligner();
@@ -2243,16 +2245,16 @@ namespace Bio.Tests.Algorithms.Alignment
             switch (alignType)
             {
                 case AlignmentType.Align:
-                    expectedScore = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExpectedGapExtensionScoreNode);
-                    expectedSequence1 = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedScore = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExpectedGapExtensionScoreNode);
+                    expectedSequence1 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                         Constants.ExpectedGapExtensionSequence1Node);
-                    expectedSequence2 = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedSequence2 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                         Constants.ExpectedGapExtensionSequence2Node);
                     break;
                 default:
-                    expectedScore = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExpectedScoreNode);
-                    expectedSequence1 = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExpectedSequenceNode1);
-                    expectedSequence2 = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExpectedSequenceNode2);
+                    expectedScore = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExpectedScoreNode);
+                    expectedSequence1 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExpectedSequenceNode1);
+                    expectedSequence2 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExpectedSequenceNode2);
                     break;
             }
 
@@ -2282,7 +2284,7 @@ namespace Bio.Tests.Algorithms.Alignment
         /// <param name="alignParam">parameter based on which certain validations are done.</param>
         private void ValidateSmithWatermanAlignment(string nodeName, AlignParameters alignParam)
         {
-            this.ValidateSmithWatermanAlignment(nodeName, alignParam, SimilarityMatrixParameters.Default);
+            ValidateSmithWatermanAlignment(nodeName, alignParam, SimilarityMatrixParameters.Default);
         }
 
         /// <summary>
@@ -2294,7 +2296,7 @@ namespace Bio.Tests.Algorithms.Alignment
         private void ValidateSmithWatermanAlignment(string nodeName, AlignParameters alignParam,
                                                     SimilarityMatrixParameters similarityMatrixParam)
         {
-            this.ValidateSmithWatermanAlignment(nodeName, alignParam, similarityMatrixParam, AlignmentType.SimpleAlign);
+            ValidateSmithWatermanAlignment(nodeName, alignParam, similarityMatrixParam, AlignmentType.SimpleAlign);
         }
 
         /// <summary>
@@ -2310,14 +2312,14 @@ namespace Bio.Tests.Algorithms.Alignment
                                                     AlignmentType alignType)
         {
             ISequence aInput, bInput;
-            IAlphabet alphabet =
-                Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.AlphabetNameNode));
+            var alphabet =
+                Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.AlphabetNameNode));
 
             // Parse the files and get the sequence.
             if (alignParam.ToString().Contains("Code"))
             {
-                string sequence1 = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode1);
-                string sequence2 = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode2);
+                var sequence1 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode1);
+                var sequence2 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode2);
 
                 aInput = new Sequence(alphabet, sequence1);
                 bInput = new Sequence(alphabet, sequence2);
@@ -2325,21 +2327,21 @@ namespace Bio.Tests.Algorithms.Alignment
             else
             {
                 // Read the xml file for getting both the files for aligning.
-                string filePath1 = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode1).TestDir();
-                string filePath2 = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode2).TestDir();
+                var filePath1 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode1).TestDir();
+                var filePath2 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode2).TestDir();
 
                 var parseObjectForFile1 = new FastAParser { Alphabet = alphabet };
-                ISequence originalSequence1 = parseObjectForFile1.Parse(filePath1).FirstOrDefault();
+                var originalSequence1 = parseObjectForFile1.Parse(filePath1).FirstOrDefault();
                 Assert.IsNotNull(originalSequence1);
                 aInput = new Sequence(alphabet, originalSequence1.ConvertToString());
 
                 var parseObjectForFile2 = new FastAParser { Alphabet = alphabet };
-                ISequence originalSequence2 = parseObjectForFile2.Parse(filePath2).FirstOrDefault();
+                var originalSequence2 = parseObjectForFile2.Parse(filePath2).FirstOrDefault();
                 Assert.IsNotNull(originalSequence2);
                 bInput = new Sequence(alphabet, originalSequence2.ConvertToString());
             }
 
-            string blosumFilePath = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.BlosumFilePathNode).TestDir();
+            var blosumFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.BlosumFilePathNode).TestDir();
             SimilarityMatrix sm;
 
             switch (similarityMatrixParam)
@@ -2349,9 +2351,9 @@ namespace Bio.Tests.Algorithms.Alignment
                         sm = new SimilarityMatrix(reader);
                     break;
                 case SimilarityMatrixParameters.DiagonalMatrix:
-                    string matchValue = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    var matchValue = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                         Constants.MatchScoreNode);
-                    string misMatchValue = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    var misMatchValue = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.MisMatchScoreNode);
                     sm = new DiagonalSimilarityMatrix(int.Parse(matchValue, null),
                                                       int.Parse(misMatchValue, null));
@@ -2361,8 +2363,8 @@ namespace Bio.Tests.Algorithms.Alignment
                     break;
             }
 
-            int gapOpenCost = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapOpenCostNode), null);
-            int gapExtensionCost = int.Parse(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapExtensionCostNode),
+            var gapOpenCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapOpenCostNode), null);
+            var gapExtensionCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapExtensionCostNode),
                                              null);
 
             var smithWatermanObj = new SmithWatermanAligner();
@@ -2426,16 +2428,16 @@ namespace Bio.Tests.Algorithms.Alignment
             switch (alignType)
             {
                 case AlignmentType.Align:
-                    expectedScore = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExpectedGapExtensionScoreNode);
-                    expectedSequence1 = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedScore = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExpectedGapExtensionScoreNode);
+                    expectedSequence1 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                         Constants.ExpectedGapExtensionSequence1Node);
-                    expectedSequence2 = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+                    expectedSequence2 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                         Constants.ExpectedGapExtensionSequence2Node);
                     break;
                 default:
-                    expectedScore = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExpectedScoreNode);
-                    expectedSequence1 = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExpectedSequenceNode1);
-                    expectedSequence2 = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExpectedSequenceNode2);
+                    expectedScore = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExpectedScoreNode);
+                    expectedSequence1 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExpectedSequenceNode1);
+                    expectedSequence2 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExpectedSequenceNode2);
                     break;
             }
 
@@ -2472,10 +2474,10 @@ namespace Bio.Tests.Algorithms.Alignment
         private void ValidateGeneralSequenceAlignment(string nodeName, bool validateProperty)
         {
             // Read the xml file for getting both the files for aligning.
-            string origSequence1 = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode1);
-            string origSequence2 = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode2);
-            IAlphabet alphabet =
-                Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.AlphabetNameNode));
+            var origSequence1 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode1);
+            var origSequence2 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode2);
+            var alphabet =
+                Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.AlphabetNameNode));
 
             ApplicationLog.WriteLine(string.Format("SequenceAlignment P1 : First sequence used is '{0}'.",
                                                    origSequence1));
@@ -2490,12 +2492,14 @@ namespace Bio.Tests.Algorithms.Alignment
             IList<IPairwiseSequenceAlignment> sequenceAlignmentObj = new List<IPairwiseSequenceAlignment>();
 
             var alignSeq = new PairwiseAlignedSequence {FirstSequence = aInput, SecondSequence = bInput};
-            IPairwiseSequenceAlignment seqAlignObj = new PairwiseSequenceAlignment();
-            seqAlignObj.Add(alignSeq);
+            IPairwiseSequenceAlignment seqAlignObj = new PairwiseSequenceAlignment
+            {
+                alignSeq
+            };
             sequenceAlignmentObj.Add(seqAlignObj);
 
             // Read the output back and validate the same.
-            IList<PairwiseAlignedSequence> newAlignedSequences =
+            var newAlignedSequences =
                 sequenceAlignmentObj[0].PairwiseAlignedSequences;
 
             ApplicationLog.WriteLine(string.Format("SequenceAlignment P1 : First sequence read is '{0}'.",
@@ -2505,8 +2509,8 @@ namespace Bio.Tests.Algorithms.Alignment
 
             if (validateProperty)
             {
-                string score = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MatchScoreNode);
-                string seqCount = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceCountNode);
+                var score = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MatchScoreNode);
+                var seqCount = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceCountNode);
 
                 Assert.IsFalse(sequenceAlignmentObj.IsReadOnly);
                 Assert.AreEqual(sequenceAlignmentObj.Count.ToString((IFormatProvider) null), seqCount);
@@ -2549,15 +2553,15 @@ namespace Bio.Tests.Algorithms.Alignment
                                                              bool isSeqAlignDefCtr)
         {
             // Read the xml file for getting both the files for aligning.
-            string origSequence1 = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode1);
-            string origSequence2 = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode2);
-            IAlphabet alphabet =
-                Utility.GetAlphabet(this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.AlphabetNameNode));
-            string seqCount = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SeqCountNode);
-            string alignedSeqCountAfterAddSeq = this.utilityObj.xmlUtil.GetTextValue(nodeName,
+            var origSequence1 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode1);
+            var origSequence2 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode2);
+            var alphabet =
+                Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.AlphabetNameNode));
+            var seqCount = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SeqCountNode);
+            var alignedSeqCountAfterAddSeq = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                 Constants
                                                                                     .AlignedSeqCountAfterAddAlignedSeqNode);
-            string arrayLength = this.utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ArraySizeNode);
+            var arrayLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ArraySizeNode);
 
             var alignedSeqItems = new PairwiseAlignedSequence[int.Parse(arrayLength, null)];
             const int Index = 0;
@@ -2577,7 +2581,7 @@ namespace Bio.Tests.Algorithms.Alignment
             seqAlignObj.Add(alignSeq);
             sequenceAlignmentObj.Add(seqAlignObj);
 
-            IList<PairwiseAlignedSequence> newAlignedSequences =
+            var newAlignedSequences =
                 sequenceAlignmentObj[0].PairwiseAlignedSequences;
 
             switch (methodName)
@@ -2614,7 +2618,7 @@ namespace Bio.Tests.Algorithms.Alignment
                     Assert.AreEqual(alignedSeqCountAfterAddSeq, seqAlignObj.Count.ToString((IFormatProvider) null));
                     break;
                 case SeqAlignmentMethods.GetEnumerator:
-                    IEnumerator<PairwiseAlignedSequence> alignedSeqList = seqAlignObj.GetEnumerator();
+                    var alignedSeqList = seqAlignObj.GetEnumerator();
 
                     // Aligned Sequence list after iterating through ailgnedSeq collection.
                     Assert.IsNotNull(alignedSeqList);

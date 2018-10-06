@@ -36,7 +36,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                 throw new ArgumentException("Sequences use different Alphabets");
             }
 
-            float percentIdentity = CalculatePercentIdentity(sequenceA, sequenceB);
+            var percentIdentity = CalculatePercentIdentity(sequenceA, sequenceB);
 
             return KimuraFunction(percentIdentity);
         }
@@ -51,7 +51,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             // calculate the percent of identical ISequenceItems between the two sequences
             float sameCount = 0;
 
-            for (int i = 0; i < sequenceA.Count; ++i)
+            for (var i = 0; i < sequenceA.Count; ++i)
             {
                 // Gaps are ignored.
                 if (sequenceA.Alphabet.CheckIsGap(sequenceA[i]) || sequenceB.Alphabet.CheckIsGap(sequenceB[i]))
@@ -101,7 +101,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             else
             {
                 // Use table lookup
-                int tableIndex = (int)((p - 0.75) * 1000 + 0.5);
+                var tableIndex = (int)((p - 0.75) * 1000 + 0.5);
 
                 if (tableIndex < 0 || tableIndex >= dayhoffPams.Length)
                 {

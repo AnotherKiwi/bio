@@ -25,8 +25,8 @@
         /// </summary>
         public ReferenceSequenceInfo(string name, long length)
         {
-            this.Name = name;
-            this.Length = length;
+            Name = name;
+            Length = length;
         }
     }
 }

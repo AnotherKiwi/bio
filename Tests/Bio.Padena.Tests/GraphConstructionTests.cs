@@ -20,16 +20,16 @@ namespace Bio.Padena.Tests
         public void TestDeBruijnGraphBuilderTiny()
         {
             const int KmerLength = 3;
-            List<ISequence> reads = TestInputs.GetTinyReads();
+            var reads = TestInputs.GetTinyReads();
             this.KmerLength = KmerLength;
-            this.SequenceReads.Clear();
-            this.SetSequenceReads(reads);
+            SequenceReads.Clear();
+            SetSequenceReads(reads);
 
-            this.CreateGraph();
-            DeBruijnGraph graph = this.Graph;
+            CreateGraph();
+            var graph = Graph;
 
             Assert.AreEqual(9, graph.NodeCount);
-            HashSet<string> nodeStrings = new HashSet<string>(graph.GetNodes().Select(n => 
+            var nodeStrings = new HashSet<string>(graph.GetNodes().Select(n => 
                 new string(graph.GetNodeSequence(n).Select(a => (char)a).ToArray())));
             Assert.IsTrue(nodeStrings.Contains("ATG") || nodeStrings.Contains("CAT"));
             Assert.IsTrue(nodeStrings.Contains("TGC") || nodeStrings.Contains("GCA"));
@@ -51,18 +51,18 @@ namespace Bio.Padena.Tests
         public void TestDeBruijnGraphBuilderSmall()
         {
             const int KmerLength = 6;
-            List<ISequence> reads = TestInputs.GetSmallReads();
+            var reads = TestInputs.GetSmallReads();
             this.KmerLength = KmerLength;
-            this.SequenceReads.Clear();
-            this.SetSequenceReads(reads);
+            SequenceReads.Clear();
+            SetSequenceReads(reads);
 
-            this.CreateGraph();
-            DeBruijnGraph graph = this.Graph;
+            CreateGraph();
+            var graph = Graph;
 
             Assert.AreEqual(20, graph.NodeCount);
-            HashSet<string> nodeStrings = GetGraphNodesForSmallReads();
+            var nodeStrings = GetGraphNodesForSmallReads();
             string nodeStr, nodeStrRC;
-            foreach (DeBruijnNode node in graph.GetNodes())
+            foreach (var node in graph.GetNodes())
             {
                 nodeStr = new string(graph.GetNodeSequence(node).Select(a => (char)a).ToArray());
                 nodeStrRC = new string(graph.GetNodeSequence(node).GetReverseComplementedSequence().Select(a => (char)a).ToArray());

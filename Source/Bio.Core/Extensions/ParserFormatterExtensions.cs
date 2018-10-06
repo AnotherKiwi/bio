@@ -26,7 +26,7 @@ namespace Bio
 
             public void Dispose()
             {
-                Close(this.parser);
+                Close(parser);
             }
         }
 
@@ -40,11 +40,11 @@ namespace Bio
         {
             if (parser == null)
             {
-                throw new ArgumentNullException("parser");
+                throw new ArgumentNullException(nameof(parser));
             }
             if (string.IsNullOrWhiteSpace(filename))
             {
-                throw new ArgumentNullException("filename");
+                throw new ArgumentNullException(nameof(filename));
             }
 
             lock (fileData)
@@ -65,7 +65,7 @@ namespace Bio
         {
             if (parser == null)
             {
-                throw new ArgumentNullException("parser");
+                throw new ArgumentNullException(nameof(parser));
             }
 
             FileStream fs = null;
@@ -97,7 +97,7 @@ namespace Bio
         {
             if (parser == null)
             {
-                throw new ArgumentNullException("parser");
+                throw new ArgumentNullException(nameof(parser));
             }
 
             lock (fileData)

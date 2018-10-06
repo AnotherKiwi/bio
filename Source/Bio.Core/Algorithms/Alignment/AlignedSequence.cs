@@ -14,8 +14,8 @@ namespace Bio.Algorithms.Alignment
         /// </summary>
         public AlignedSequence()
         {
-            this.Metadata = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
-            this.Sequences = new List<ISequence>();
+            Metadata = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+            Sequences = new List<ISequence>();
         }
 
         /// <summary>
@@ -25,8 +25,8 @@ namespace Bio.Algorithms.Alignment
         /// <param name="alignedSequence">IAlignedSequence instance.</param>
         internal AlignedSequence(IAlignedSequence alignedSequence)
         {
-            this.Metadata = alignedSequence.Metadata;
-            this.Sequences = new List<ISequence>(alignedSequence.Sequences);
+            Metadata = alignedSequence.Metadata;
+            Sequences = new List<ISequence>(alignedSequence.Sequences);
         }
 
         /// <summary>
@@ -45,8 +45,8 @@ namespace Bio.Algorithms.Alignment
         /// <returns>sequenceData of all the Sequences in the list.</returns>
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder();
-            foreach (ISequence seq in Sequences)
+            var builder = new StringBuilder();
+            foreach (var seq in Sequences)
             {
                 builder.AppendLine(seq.ToString());
             }

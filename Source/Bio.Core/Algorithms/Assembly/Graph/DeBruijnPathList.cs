@@ -18,7 +18,7 @@ namespace Bio.Algorithms.Assembly.Graph
         /// </summary>
         public DeBruijnPathList()
         {
-            this.paths = new List<DeBruijnPath>();
+            paths = new List<DeBruijnPath>();
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             if (paths == null)
             {
-                throw new ArgumentNullException("paths");
+                throw new ArgumentNullException(nameof(paths));
             }
 
             this.paths = new List<DeBruijnPath>(paths);
@@ -41,7 +41,7 @@ namespace Bio.Algorithms.Assembly.Graph
         /// </summary>
         public IList<DeBruijnPath> Paths
         {
-            get { return this.paths; }
+            get { return paths; }
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <param name="pathsList">List of paths to add.</param>
         public void AddPaths(IList<DeBruijnPath> pathsList)
         {
-            this.paths.AddRange(pathsList);
+            paths.AddRange(pathsList);
         }
     }
 }

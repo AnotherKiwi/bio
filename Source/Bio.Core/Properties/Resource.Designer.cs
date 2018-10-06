@@ -396,6 +396,15 @@ namespace Bio.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to BasicProtein.
+        /// </summary>
+        internal static string BasicProteinAlphabetName {
+            get {
+                return ResourceManager.GetString("BasicProteinAlphabetName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Batch count must be greater than zero..
         /// </summary>
         internal static string BatchCountCondition {

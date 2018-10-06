@@ -55,9 +55,9 @@ namespace Bio.IO.AppliedBiosystems
             reader.BaseStream.Position = DirectoryEntryDefinition.DataOffset;
 
             var entries = new List<Ab1DirectoryEntry>();
-            for (int i = 0; i < DirectoryEntryDefinition.ElementCount; i++)
+            for (var i = 0; i < DirectoryEntryDefinition.ElementCount; i++)
             {
-                byte[] buffer = reader.ReadBytes(28);
+                var buffer = reader.ReadBytes(28);
                 entries.Add(new Ab1DirectoryEntry(buffer));
             }
             DirectoryEntries = new ReadOnlyCollection<Ab1DirectoryEntry>(entries);
@@ -89,8 +89,8 @@ namespace Bio.IO.AppliedBiosystems
         /// <param name="data"></param>
         private void ValidateFileVersion(byte[] data)
         {
-            int version = data[0] << 8 | data[1];
-            int majorVersion = version / 100;
+            var version = data[0] << 8 | data[1];
+            var majorVersion = version / 100;
             if (majorVersion != Constants.MajorVersion)
                 throw new InvalidFileVersionException(Constants.MajorVersion, majorVersion);
 
@@ -104,7 +104,7 @@ namespace Bio.IO.AppliedBiosystems
         /// <param name="data"></param>
         private void ValidateFileSignature(byte[] data)
         {
-            string value = (((char)data[0]).ToString()
+            var value = (((char)data[0]).ToString()
                             + ((char)data[1])
                             + ((char)data[2])
                             + ((char)data[3])).ToUpperInvariant();

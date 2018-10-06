@@ -73,7 +73,7 @@ namespace Bio.Util
         {
             if (!condition)
             {
-                Type t = typeof(T);
+                var t = typeof(T);
                 var constructor = t.GetTypeInfo().DeclaredConstructors.FirstOrDefault(ci => ci.GetParameters()[0].ParameterType == typeof(string));
                 if (constructor != null)
                 {

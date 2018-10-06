@@ -20,13 +20,13 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="counts">float array</param>
         public static void Normalize(float[] counts)
         {
-            float s = counts.Sum();
+            var s = counts.Sum();
             if (Math.Abs(s - 0) < EPSILON)
             {
                 //throw new Exception("The summation of the vector is 0");
                 return;
             }
-            for (int i = 0; i < counts.Length; ++i)
+            for (var i = 0; i < counts.Length; ++i)
             {
                 counts[i] /= s;
             }
@@ -41,8 +41,8 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="counts">integer array</param>
         public static float[] Normalize(int[] counts)
         {
-            int s = 0;
-            for (int i = 0; i < counts.Length; ++i)
+            var s = 0;
+            for (var i = 0; i < counts.Length; ++i)
             {
                 if (counts[i] < 0)
                 {
@@ -54,8 +54,8 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             {
                 throw new Exception("The summation of the vector is 0");
             }
-            float[] _result = new float[counts.Length];
-            for (int i = 0; i < counts.Length; ++i)
+            var _result = new float[counts.Length];
+            for (var i = 0; i < counts.Length; ++i)
             {
                 _result[i] = (float)counts[i] / s;
             }
@@ -69,11 +69,11 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="countsD">kmer dictionary</param>
         public static void Normalize(Dictionary<String, float> countsD)
         {
-            float s = countsD.Sum(pair => pair.Value);
+            var s = countsD.Sum(pair => pair.Value);
             if (Math.Abs(s - 0) < EPSILON)
                 throw new Exception("The summation of the vector is 0");
 
-            foreach (String key in new List<String>(countsD.Keys))
+            foreach (var key in new List<String>(countsD.Keys))
             {
                 countsD[key] /= s;
             }
@@ -84,15 +84,15 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="vector"></param>
-        public static int FindMaxIndex<T>(T[] vector) where T : System.IComparable<T>
+        public static int FindMaxIndex<T>(T[] vector) where T : IComparable<T>
         {
             if (vector.Length <= 0)
             {
                 throw new Exception("Unvalidated array");
             }
-            T min = vector[0];
-            int result = 0;
-            for (int i = 0; i < vector.Length; ++i)
+            var min = vector[0];
+            var result = 0;
+            for (var i = 0; i < vector.Length; ++i)
             {
                 if (vector[i].CompareTo(min) > 0)
                 {
@@ -115,7 +115,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             }
 
             float result = 0;
-            foreach (float i in vector)
+            foreach (var i in vector)
             {
                 result += i;
             }
@@ -129,10 +129,10 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="vector">a non-empty vector</param>
         public static float Variance(float[] vector)
         {
-            float mean = Mean(vector);
+            var mean = Mean(vector);
 
             float sum = 0;
-            for (int i = 0; i < vector.Length; i++)
+            for (var i = 0; i < vector.Length; i++)
             {
                 sum += (float)Math.Pow((vector[i] - mean), 2);
             }
@@ -159,14 +159,14 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             {
                 throw new Exception("Length of sources is different");
             }
-            float averageX = Mean(vectorA);
-            float standardDeviationX = StandardDeviation(vectorA);
-            float averageY = Mean(vectorB);
-            float standardDeviationY = StandardDeviation(vectorB);
-            int length = vectorA.Length;
+            var averageX = Mean(vectorA);
+            var standardDeviationX = StandardDeviation(vectorA);
+            var averageY = Mean(vectorB);
+            var standardDeviationY = StandardDeviation(vectorB);
+            var length = vectorA.Length;
 
             float correlation = 0;
-            for (int i = 0; i < length; i++)
+            for (var i = 0; i < length; i++)
             {
                 correlation += (vectorA[i] - averageX) * (vectorB[i] - averageY);
             }
@@ -188,7 +188,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             }
             float result = 0;
 
-            for (int i = 0; i < vectorA.Length; ++i)
+            for (var i = 0; i < vectorA.Length; ++i)
             {
                 if (vectorA[i] != 0 && vectorB[i] != 0)
                 {
@@ -221,9 +221,9 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             {
                 throw new Exception("Inputs are not equal in length");
             }
-            float[] average = new float[vectorA.Length];
+            var average = new float[vectorA.Length];
 
-            for (int i = 0; i < vectorA.Length; ++i)
+            for (var i = 0; i < vectorA.Length; ++i)
             {
                 average[i] = (vectorA[i] + vectorB[i]) / 2;
             }
@@ -253,13 +253,13 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             }
             float result = 0;
 
-            bool isGapA = false;
-            bool isGapB = false; // used for flagging gaps while creating gaps in alignment
+            var isGapA = false;
+            var isGapB = false; // used for flagging gaps while creating gaps in alignment
 
-            bool isSourceitemAGap = false;
-            bool isSourceitemBGap = false; // used for flagging if the source sequence item is a gap
+            var isSourceitemAGap = false;
+            var isSourceitemBGap = false; // used for flagging if the source sequence item is a gap
 
-            for (int i = 0; i < sequenceA.Count; ++i)
+            for (var i = 0; i < sequenceA.Count; ++i)
             {
                 isSourceitemAGap = sequenceA.Alphabet.CheckIsGap(sequenceA[i]);
                 isSourceitemBGap = sequenceB.Alphabet.CheckIsGap(sequenceB[i]);
@@ -320,11 +320,11 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                                                                 int gapOpenPenalty, int gapExtensionPenalty)
         {
             double result = 0;
-            object threadLock = new object();
+            var threadLock = new object();
 
             Parallel.For<double>(0, sequences.Count - 1, () => 0, (i, loop, subtotal) =>
             {
-                for (int j = i + 1; j < sequences.Count; ++j)
+                for (var j = i + 1; j < sequences.Count; ++j)
                 {
                     subtotal += PairWiseScoreFunction(sequences[i], sequences[j], similarityMatrix, gapOpenPenalty,
                         gapExtensionPenalty);
@@ -349,7 +349,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         public static ISequence UnAlign(ISequence alignedSequence)
         {
             //ISequence unalignedSequence = new Sequence(alignedSequence.Alphabet);
-            List<byte> seqBytes = new List<byte>((int)alignedSequence.Count);
+            var seqBytes = new List<byte>((int)alignedSequence.Count);
             seqBytes.AddRange(alignedSequence.Where(t => !alignedSequence.Alphabet.CheckIsGap(t)));
 
             return new Sequence(alignedSequence.Alphabet, seqBytes.ToArray())
@@ -379,7 +379,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="sequenceRef">reference sequence</param>
         public static List<int> CalculateOffset(ISequence sequence, ISequence sequenceRef)
         {
-            List<int> result = new List<int>();
+            var result = new List<int>();
             int indexA = 0, indexRef = 0;
 
             while (indexA < sequence.Count && indexRef < sequenceRef.Count)
@@ -421,22 +421,22 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                 throw new ArgumentException("Empty input sequences");
             }
 
-            List<List<int>> offsets = new List<List<int>>(sequences.Count);
-            for (int i = 0; i < sequences.Count; ++i)
+            var offsets = new List<List<int>>(sequences.Count);
+            for (var i = 0; i < sequences.Count; ++i)
             {
-                List<int> offset = CalculateOffset(sequences[i], sequencesRef[i]);
+                var offset = CalculateOffset(sequences[i], sequencesRef[i]);
                 offsets.Add(offset);
             }
 
-            int numberOfCorrectResidues = 0;
-            int sequenceLength = (int)sequences[0].Count;
-            int sequenceLengthRef = (int)sequencesRef.ElementAt(0).Count;
+            var numberOfCorrectResidues = 0;
+            var sequenceLength = (int)sequences[0].Count;
+            var sequenceLengthRef = (int)sequencesRef.ElementAt(0).Count;
 
-            for (int i = 0; i < sequences.Count - 1; ++i)
+            for (var i = 0; i < sequences.Count - 1; ++i)
             {
-                for (int j = i + 1; j < sequences.Count; ++j)
+                for (var j = i + 1; j < sequences.Count; ++j)
                 {
-                    for (int k = 0; k < sequenceLength; ++k)
+                    for (var k = 0; k < sequenceLength; ++k)
                     {
                         if (offsets[i][k] == -1 && offsets[j][k] != -1)
                         {
@@ -493,23 +493,23 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                 throw new ArgumentException("Empty input sequences");
             }
 
-            List<List<int>> offsets = new List<List<int>>(sequences.Count);
-            for (int i = 0; i < sequences.Count; ++i)
+            var offsets = new List<List<int>>(sequences.Count);
+            for (var i = 0; i < sequences.Count; ++i)
             {
-                List<int> offset = CalculateOffset(sequences[i], sequencesRef[i]);
+                var offset = CalculateOffset(sequences[i], sequencesRef[i]);
                 offsets.Add(offset);
             }
 
-            int numberOfCorrectColumns = 0;
-            int sequenceLength = (int)sequences[0].Count;
-            int sequenceLengthRef = (int)sequencesRef[0].Count;
+            var numberOfCorrectColumns = 0;
+            var sequenceLength = (int)sequences[0].Count;
+            var sequenceLengthRef = (int)sequencesRef[0].Count;
 
-            for (int k = 0; k < sequenceLength; ++k)
+            for (var k = 0; k < sequenceLength; ++k)
             {
-                bool allEqual = true;
-                for (int i = 0; i < sequences.Count - 1; ++i)
+                var allEqual = true;
+                for (var i = 0; i < sequences.Count - 1; ++i)
                 {
-                    for (int j = i + 1; j < sequences.Count; ++j)
+                    for (var j = i + 1; j < sequences.Count; ++j)
                     {
 
                         if (offsets[i][k] == -1 && offsets[j][k] != -1)
@@ -571,7 +571,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
 
             // Get sequenceItem-index mapping dictionary ready
             ISequence templateSequence = null;
-            Dictionary<byte, List<byte>> ambiguousCharacterMap = new Dictionary<byte, List<byte>>();
+            var ambiguousCharacterMap = new Dictionary<byte, List<byte>>();
             int numberOfBasicResudes;
             byte[] basics;
 
@@ -648,7 +648,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             }
 
             // Add lowercase symbols to ambiguous symbol map as well
-            Dictionary<byte, List<byte>> tmpCharacterMap = new Dictionary<byte, List<byte>>();
+            var tmpCharacterMap = new Dictionary<byte, List<byte>>();
             foreach (var item in ambiguousCharacterMap)
             {
                 tmpCharacterMap.Add((byte)char.ToLower((char)item.Key), item.Value);
@@ -658,8 +658,8 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                 ambiguousCharacterMap.Add(item.Key, item.Value);
             }
 
-            Dictionary<byte, int> itemSet = new Dictionary<byte, int>();
-            for (int i = 0; i < numberOfBasicResudes; ++i)
+            var itemSet = new Dictionary<byte, int>();
+            for (var i = 0; i < numberOfBasicResudes; ++i)
             {
                 itemSet.Add(templateSequence[i], i);
                 itemSet.Add((byte)char.ToLower((char)templateSequence[i]), i);
@@ -676,8 +676,8 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="length">The length of the array</param>
         public static int[] CreateIndexArray(int length)
         {
-            int[] result = new int[length];
-            for (int i = 0; i < length; ++i)
+            var result = new int[length];
+            for (var i = 0; i < length; ++i)
             {
                 result[i] = i;
             }
@@ -693,11 +693,11 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="end">End position</param>
         public static void QuickSortM(float[] inputArray, out int[] inputIndex, int begin, int end)
         {
-            int length = inputArray.Length;
+            var length = inputArray.Length;
             inputIndex = CreateIndexArray(length);
-            float[] inputArrayCopy = new float[length];
+            var inputArrayCopy = new float[length];
             //inputArrayCopy = inputArray;
-            for (int i = 0; i < length; ++i)
+            for (var i = 0; i < length; ++i)
             {
                 inputArrayCopy[i] = inputArray[i];
             }
@@ -715,7 +715,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         {
             if (begin < end)
             {
-                int q = Partition(inputArray, inputIndex, begin, end);
+                var q = Partition(inputArray, inputIndex, begin, end);
                 inputArray = QuickSort(inputArray, inputIndex, begin, q);
                 inputArray = QuickSort(inputArray, inputIndex, q + 1, end);
             }
@@ -730,11 +730,11 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="r">End position</param>
         private static int Partition(float[] inputArray, int[] inputIndex, int p, int r)
         {
-            float x = inputArray[p];
-            int i = p - 1;
-            int j = r + 1;
+            var x = inputArray[p];
+            var i = p - 1;
+            var j = r + 1;
             float tmp = 0;
-            int tmpi = 0;
+            var tmpi = 0;
             while (true)
             {
                 do

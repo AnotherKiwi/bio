@@ -37,8 +37,8 @@ namespace Bio.Web.Selectome
         /// <param name="gene"></param>
         public SelectomeQueryResult(QueryResult status, SelectomeGene gene = null)
         {
-            this.Result = status;
-            this.pGene = gene;
+            Result = status;
+            pGene = gene;
         }
 
         /// <summary>
@@ -53,11 +53,11 @@ namespace Bio.Web.Selectome
         {
             get
             {
-                if (this.Result != QueryResult.Success)
+                if (Result != QueryResult.Success)
                 {
                     throw new Exception("Cannot get gene from unsuccessful query result");
                 }
-                return this.pGene;
+                return pGene;
             }
         }
     }
@@ -79,8 +79,8 @@ namespace Bio.Web.Selectome
         /// <param name="selectionInferred"></param>
         public SelectomeQuerySubResult(SelectomeTaxaGroup group, bool selectionInferred) // double pval, int aminoAcids)
         {
-            this.Group = group;
-            this.SelectionInferred = selectionInferred; //pValue = pval; AminoAcidsUnderSelection = aminoAcids;
+            Group = group;
+            SelectionInferred = selectionInferred; //pValue = pval; AminoAcidsUnderSelection = aminoAcids;
         }
 
         /// <summary>
@@ -122,9 +122,9 @@ namespace Bio.Web.Selectome
         /// <param name="subtree"></param>
         public SelectomeQueryLink(SelectomeTaxaGroup group, string tree, string subtree)
         {
-            this.Group = group;
-            this.Tree = tree;
-            this.SubTree = subtree;
+            Group = group;
+            Tree = tree;
+            SubTree = subtree;
         }
     }
 }

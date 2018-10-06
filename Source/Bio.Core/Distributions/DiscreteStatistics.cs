@@ -81,7 +81,7 @@ namespace Bio.Distributions
             int valAsInt;
             if (int.TryParse(val, out valAsInt))
             {
-                result = DiscreteStatistics.GetInstance(valAsInt);
+                result = GetInstance(valAsInt);
                 return true;
             }
             else
@@ -119,7 +119,7 @@ namespace Bio.Distributions
         {
             if (stats == null)
             {
-                throw new ArgumentNullException("stats");
+                throw new ArgumentNullException(nameof(stats));
             }
 
             return stats.Value;
@@ -137,7 +137,7 @@ namespace Bio.Distributions
                 return null;
             }
 
-            return DiscreteStatistics.GetMissingInstance;
+            return GetMissingInstance;
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace Bio.Distributions
         /// <returns>Returns true if fount equals.</returns>
         public override bool Equals(object obj)
         {
-            SufficientStatistics stats = obj as SufficientStatistics;
+            var stats = obj as SufficientStatistics;
             if (stats != null)
             {
                 return Equals(stats);
@@ -176,11 +176,11 @@ namespace Bio.Distributions
             }
             else if (stats is DiscreteStatistics)
             {
-                return this.Value == stats.AsDiscreteStatistics().Value;
+                return Value == stats.AsDiscreteStatistics().Value;
             }
             else if (stats is BooleanStatistics)
             {
-                return this.Value == stats.AsDiscreteStatistics().Value;
+                return Value == stats.AsDiscreteStatistics().Value;
             }
             else
             {

@@ -17,52 +17,54 @@ namespace Bio.IO.GenBank
         /// </summary>
         static StandardFeatureMap()
         {
-            featureMap = new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase);
-            featureMap.Add(StandardFeatureKeys.Minus10Signal, typeof(Minus10Signal));
-            featureMap.Add(StandardFeatureKeys.Minus35Signal, typeof(Minus35Signal));
-            featureMap.Add(StandardFeatureKeys.ThreePrimeUtr, typeof(ThreePrimeUtr));
-            featureMap.Add(StandardFeatureKeys.FivePrimeUtr, typeof(FivePrimeUtr));
-            featureMap.Add(StandardFeatureKeys.Attenuator, typeof(Attenuator));
-            featureMap.Add(StandardFeatureKeys.CaaTSignal, typeof(CaatSignal));
-            featureMap.Add(StandardFeatureKeys.CodingSequence, typeof(CodingSequence));
-            featureMap.Add(StandardFeatureKeys.DisplacementLoop, typeof(DisplacementLoop));
-            featureMap.Add(StandardFeatureKeys.Enhancer, typeof(Enhancer));
-            featureMap.Add(StandardFeatureKeys.Exon, typeof(Exon));
-            featureMap.Add(StandardFeatureKeys.GcSingal, typeof(GcSingal));
-            featureMap.Add(StandardFeatureKeys.Gene, typeof(Gene));
-            featureMap.Add(StandardFeatureKeys.InterveningDna, typeof(InterveningDna));
-            featureMap.Add(StandardFeatureKeys.Intron, typeof(Intron));
-            featureMap.Add(StandardFeatureKeys.LongTerminalRepeat, typeof(LongTerminalRepeat));
-            featureMap.Add(StandardFeatureKeys.MaturePeptide, typeof(MaturePeptide));
-            featureMap.Add(StandardFeatureKeys.MiscBinding, typeof(MiscBinding));
-            featureMap.Add(StandardFeatureKeys.MiscDifference, typeof(MiscDifference));
-            featureMap.Add(StandardFeatureKeys.MiscFeature, typeof(MiscFeature));
-            featureMap.Add(StandardFeatureKeys.MiscRecombination, typeof(MiscRecombination));
-            featureMap.Add(StandardFeatureKeys.MiscRna, typeof(MiscRna));
-            featureMap.Add(StandardFeatureKeys.MiscSignal, typeof(MiscSignal));
-            featureMap.Add(StandardFeatureKeys.MiscStructure, typeof(MiscStructure));
-            featureMap.Add(StandardFeatureKeys.ModifiedBase, typeof(ModifiedBase));
-            featureMap.Add(StandardFeatureKeys.MessengerRna, typeof(MessengerRna));
-            featureMap.Add(StandardFeatureKeys.NonCodingRna, typeof(NonCodingRna));
-            featureMap.Add(StandardFeatureKeys.OperonRegion, typeof(OperonRegion));
-            featureMap.Add(StandardFeatureKeys.PolyASignal, typeof(PolyASignal));
-            featureMap.Add(StandardFeatureKeys.PolyASite, typeof(PolyASite));
-            featureMap.Add(StandardFeatureKeys.PrecursorRna, typeof(PrecursorRna));
-            featureMap.Add(StandardFeatureKeys.Promoter, typeof(Promoter));
-            featureMap.Add(StandardFeatureKeys.ProteinBindingSite, typeof(ProteinBindingSite));
-            featureMap.Add(StandardFeatureKeys.RibosomeBindingSite, typeof(RibosomeBindingSite));
-            featureMap.Add(StandardFeatureKeys.ReplicationOrigin, typeof(ReplicationOrigin));
-            featureMap.Add(StandardFeatureKeys.RepeatRegion, typeof(RepeatRegion));
-            featureMap.Add(StandardFeatureKeys.RibosomalRna, typeof(RibosomalRna));
-            featureMap.Add(StandardFeatureKeys.SignalPeptide, typeof(SignalPeptide));
-            featureMap.Add(StandardFeatureKeys.StemLoop, typeof(StemLoop));
-            featureMap.Add(StandardFeatureKeys.TataSignal, typeof(TataSignal));
-            featureMap.Add(StandardFeatureKeys.Terminator, typeof(Terminator));
-            featureMap.Add(StandardFeatureKeys.TransferMessengerRna, typeof(TransferMessengerRna));
-            featureMap.Add(StandardFeatureKeys.TransitPeptide, typeof(TransitPeptide));
-            featureMap.Add(StandardFeatureKeys.TransferRna, typeof(TransferRna));
-            featureMap.Add(StandardFeatureKeys.UnsureSequenceRegion, typeof(UnsureSequenceRegion));
-            featureMap.Add(StandardFeatureKeys.Variation, typeof(Variation));
+            featureMap = new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase)
+            {
+                { StandardFeatureKeys.Minus10Signal, typeof(Minus10Signal) },
+                { StandardFeatureKeys.Minus35Signal, typeof(Minus35Signal) },
+                { StandardFeatureKeys.ThreePrimeUtr, typeof(ThreePrimeUtr) },
+                { StandardFeatureKeys.FivePrimeUtr, typeof(FivePrimeUtr) },
+                { StandardFeatureKeys.Attenuator, typeof(Attenuator) },
+                { StandardFeatureKeys.CaaTSignal, typeof(CaatSignal) },
+                { StandardFeatureKeys.CodingSequence, typeof(CodingSequence) },
+                { StandardFeatureKeys.DisplacementLoop, typeof(DisplacementLoop) },
+                { StandardFeatureKeys.Enhancer, typeof(Enhancer) },
+                { StandardFeatureKeys.Exon, typeof(Exon) },
+                { StandardFeatureKeys.GcSingal, typeof(GcSingal) },
+                { StandardFeatureKeys.Gene, typeof(Gene) },
+                { StandardFeatureKeys.InterveningDna, typeof(InterveningDna) },
+                { StandardFeatureKeys.Intron, typeof(Intron) },
+                { StandardFeatureKeys.LongTerminalRepeat, typeof(LongTerminalRepeat) },
+                { StandardFeatureKeys.MaturePeptide, typeof(MaturePeptide) },
+                { StandardFeatureKeys.MiscBinding, typeof(MiscBinding) },
+                { StandardFeatureKeys.MiscDifference, typeof(MiscDifference) },
+                { StandardFeatureKeys.MiscFeature, typeof(MiscFeature) },
+                { StandardFeatureKeys.MiscRecombination, typeof(MiscRecombination) },
+                { StandardFeatureKeys.MiscRna, typeof(MiscRna) },
+                { StandardFeatureKeys.MiscSignal, typeof(MiscSignal) },
+                { StandardFeatureKeys.MiscStructure, typeof(MiscStructure) },
+                { StandardFeatureKeys.ModifiedBase, typeof(ModifiedBase) },
+                { StandardFeatureKeys.MessengerRna, typeof(MessengerRna) },
+                { StandardFeatureKeys.NonCodingRna, typeof(NonCodingRna) },
+                { StandardFeatureKeys.OperonRegion, typeof(OperonRegion) },
+                { StandardFeatureKeys.PolyASignal, typeof(PolyASignal) },
+                { StandardFeatureKeys.PolyASite, typeof(PolyASite) },
+                { StandardFeatureKeys.PrecursorRna, typeof(PrecursorRna) },
+                { StandardFeatureKeys.Promoter, typeof(Promoter) },
+                { StandardFeatureKeys.ProteinBindingSite, typeof(ProteinBindingSite) },
+                { StandardFeatureKeys.RibosomeBindingSite, typeof(RibosomeBindingSite) },
+                { StandardFeatureKeys.ReplicationOrigin, typeof(ReplicationOrigin) },
+                { StandardFeatureKeys.RepeatRegion, typeof(RepeatRegion) },
+                { StandardFeatureKeys.RibosomalRna, typeof(RibosomalRna) },
+                { StandardFeatureKeys.SignalPeptide, typeof(SignalPeptide) },
+                { StandardFeatureKeys.StemLoop, typeof(StemLoop) },
+                { StandardFeatureKeys.TataSignal, typeof(TataSignal) },
+                { StandardFeatureKeys.Terminator, typeof(Terminator) },
+                { StandardFeatureKeys.TransferMessengerRna, typeof(TransferMessengerRna) },
+                { StandardFeatureKeys.TransitPeptide, typeof(TransitPeptide) },
+                { StandardFeatureKeys.TransferRna, typeof(TransferRna) },
+                { StandardFeatureKeys.UnsureSequenceRegion, typeof(UnsureSequenceRegion) },
+                { StandardFeatureKeys.Variation, typeof(Variation) }
+            };
         }
 
         /// <summary>
@@ -79,7 +81,7 @@ namespace Bio.IO.GenBank
         {
             if (item == null)
             {
-                throw new ArgumentNullException("item");
+                throw new ArgumentNullException(nameof(item));
             }
 
             Type type = null;
@@ -90,9 +92,9 @@ namespace Bio.IO.GenBank
 
             if (type != null)
             {
-                FeatureItem newItem = (FeatureItem)Activator.CreateInstance(type, item.Location);
+                var newItem = (FeatureItem)Activator.CreateInstance(type, item.Location);
 
-                foreach (KeyValuePair<string, List<string>> kvp in item.Qualifiers)
+                foreach (var kvp in item.Qualifiers)
                 {
                     newItem.Qualifiers.Add(kvp.Key, kvp.Value);
                 }

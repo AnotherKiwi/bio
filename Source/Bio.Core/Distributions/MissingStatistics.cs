@@ -87,7 +87,7 @@ namespace Bio.Distributions
         /// <returns>Returns true if fount equals.</returns>
         public override bool Equals(object obj)
         {
-            SufficientStatistics stats = obj as SufficientStatistics;
+            var stats = obj as SufficientStatistics;
             if (stats != null)
             {
                 return (stats).IsMissing();

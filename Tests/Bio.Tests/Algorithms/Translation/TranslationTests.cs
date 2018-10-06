@@ -19,12 +19,12 @@ namespace Bio.Tests.Algorithms.Translation
         public void TestTranscription()
         {
             ISequence seq = new Sequence(Alphabets.DNA, "ATGGCG");
-            ISequence transcript = Transcription.Transcribe(seq);
+            var transcript = Transcription.Transcribe(seq);
             Assert.IsTrue(CompareSequenceToString("AUGGCG", transcript));
             
             Assert.AreEqual(Alphabets.RNA, transcript.Alphabet);
 
-            ISequence reverseTranscript = Transcription.ReverseTranscribe(transcript);
+            var reverseTranscript = Transcription.ReverseTranscribe(transcript);
             Assert.IsTrue(CompareSequenceToString("ATGGCG", reverseTranscript));
             Assert.AreEqual(Alphabets.DNA, reverseTranscript.Alphabet);
         }
@@ -37,12 +37,12 @@ namespace Bio.Tests.Algorithms.Translation
         public void TestTranscriptionSmallCase()
         {
             ISequence seq = new Sequence(Alphabets.DNA, "atggcg");
-            ISequence transcript = Transcription.Transcribe(seq);
+            var transcript = Transcription.Transcribe(seq);
             Assert.IsTrue(CompareSequenceToString("auggcg", transcript));
 
             Assert.AreEqual(Alphabets.RNA, transcript.Alphabet);
 
-            ISequence reverseTranscript = Transcription.ReverseTranscribe(transcript);
+            var reverseTranscript = Transcription.ReverseTranscribe(transcript);
             Assert.IsTrue(CompareSequenceToString("atggcg", reverseTranscript));
             Assert.AreEqual(Alphabets.DNA, reverseTranscript.Alphabet);
         }
@@ -55,12 +55,12 @@ namespace Bio.Tests.Algorithms.Translation
         public void TestTranscriptionAmbiguousData()
         {
             ISequence seq = new Sequence(Alphabets.AmbiguousDNA, "MSRWY");
-            ISequence transcript = Transcription.Transcribe(seq);
+            var transcript = Transcription.Transcribe(seq);
             Assert.IsTrue(CompareSequenceToString("MSRWY", transcript));
 
             Assert.AreEqual(Alphabets.AmbiguousRNA, transcript.Alphabet);
 
-            ISequence reverseTranscript = Transcription.ReverseTranscribe(transcript);
+            var reverseTranscript = Transcription.ReverseTranscribe(transcript);
             Assert.IsTrue(CompareSequenceToString("MSRWY", reverseTranscript));
             Assert.AreEqual(Alphabets.AmbiguousDNA, reverseTranscript.Alphabet);
         }
@@ -75,7 +75,7 @@ namespace Bio.Tests.Algorithms.Translation
             try
             {
                 ISequence seq = new Sequence(Alphabets.AmbiguousRNA, "MSRWY");
-                ISequence transcript = Transcription.Transcribe(seq);
+                var transcript = Transcription.Transcribe(seq);
                 Assert.Fail();
             }
             catch (InvalidOperationException)
@@ -85,7 +85,7 @@ namespace Bio.Tests.Algorithms.Translation
             try
             {
                 ISequence seq = new Sequence(Alphabets.RNA, "AUGGCG");
-                ISequence transcript = Transcription.Transcribe(seq);
+                var transcript = Transcription.Transcribe(seq);
                 Assert.Fail();
             }
             catch (InvalidOperationException)
@@ -95,7 +95,7 @@ namespace Bio.Tests.Algorithms.Translation
             try
             {
                 ISequence seq = new Sequence(Alphabets.DNA, "ATGGCG");
-                ISequence transcript = Transcription.ReverseTranscribe(seq);
+                var transcript = Transcription.ReverseTranscribe(seq);
                 Assert.Fail();
             }
             catch (InvalidOperationException)
@@ -105,7 +105,7 @@ namespace Bio.Tests.Algorithms.Translation
             try
             {
                 ISequence seq = new Sequence(Alphabets.AmbiguousDNA, "MSRWY");
-                ISequence transcript = Transcription.ReverseTranscribe(seq);
+                var transcript = Transcription.ReverseTranscribe(seq);
                 Assert.Fail();
             }
             catch (InvalidOperationException)
@@ -120,8 +120,8 @@ namespace Bio.Tests.Algorithms.Translation
         [Category("Priority0")]
         public void TestProteinTranslation()
         {
-            Sequence rnaSeq = new Sequence(Alphabets.RNA, "AUGCGCCCG");
-            ISequence phase1 = ProteinTranslation.Translate(rnaSeq);
+            var rnaSeq = new Sequence(Alphabets.RNA, "AUGCGCCCG");
+            var phase1 = ProteinTranslation.Translate(rnaSeq);
             Assert.IsTrue(CompareSequenceToString("MRP", phase1));
             Assert.AreEqual(Alphabets.Protein, phase1.Alphabet);
 
@@ -150,8 +150,8 @@ namespace Bio.Tests.Algorithms.Translation
         {
             try
             {
-                Sequence rnaSeq = new Sequence(Alphabets.RNA, "AUGCGCCCG");
-                ISequence phase1 = ProteinTranslation.Translate(rnaSeq, 100);
+                var rnaSeq = new Sequence(Alphabets.RNA, "AUGCGCCCG");
+                var phase1 = ProteinTranslation.Translate(rnaSeq, 100);
                 Assert.Fail();
             }
             catch(ArgumentException)
@@ -160,8 +160,8 @@ namespace Bio.Tests.Algorithms.Translation
 
             try
             {
-                Sequence dnaSeq = new Sequence(Alphabets.DNA, "ATGC");
-                ISequence phase1 = ProteinTranslation.Translate(dnaSeq);
+                var dnaSeq = new Sequence(Alphabets.DNA, "ATGC");
+                var phase1 = ProteinTranslation.Translate(dnaSeq);
                 Assert.Fail();
             }
             catch(InvalidOperationException)
@@ -177,7 +177,7 @@ namespace Bio.Tests.Algorithms.Translation
                 return false;
             }
 
-            for (int i = 0; i < sequence.Count; i++)
+            for (var i = 0; i < sequence.Count; i++)
             {
                 if (sequence[i] != reference[i])
                 {

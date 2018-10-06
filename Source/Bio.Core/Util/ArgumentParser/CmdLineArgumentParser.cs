@@ -107,12 +107,12 @@ namespace Bio.Util.ArgumentParser
         /// </summary>
         public CommandLineArguments()
         {
-            this.parsedArguments = new StringDictionary();
-            this.argumentList = new SortedDictionary<string, Argument>(StringComparer.OrdinalIgnoreCase);
-            this.enumerator = this.parsedArguments.GetEnumerator();
+            parsedArguments = new StringDictionary();
+            argumentList = new SortedDictionary<string, Argument>(StringComparer.OrdinalIgnoreCase);
+            enumerator = parsedArguments.GetEnumerator();
 
-            this.ArgumentSeparator = "-";
-            this.AllowAdditionalArguments = false;
+            ArgumentSeparator = "-";
+            AllowAdditionalArguments = false;
         }
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace Bio.Util.ArgumentParser
         {
             get
             {
-                return ((DictionaryEntry)this.enumerator.Current);
+                return ((DictionaryEntry)enumerator.Current);
             }
         }
 
@@ -143,7 +143,7 @@ namespace Bio.Util.ArgumentParser
         {
             get
             {
-                return this.enumerator.Current;
+                return enumerator.Current;
             }
         }
 
@@ -163,11 +163,11 @@ namespace Bio.Util.ArgumentParser
                 throw new Exception("For the first value (without parameter name) only type ValueType.String is accepted! ");
             }
 
-            Argument param = new Argument(parameterName, argType, argValueType, shortName, helpDesc);
-            this.argumentList.Add(param.Name, param);
+            var param = new Argument(parameterName, argType, argValueType, shortName, helpDesc);
+            argumentList.Add(param.Name, param);
             if (!string.IsNullOrEmpty(param.ShortName))
             {
-                this.paramNameAliasMap.Add(shortName, parameterName);
+                paramNameAliasMap.Add(shortName, parameterName);
             }
         }
 
@@ -180,36 +180,36 @@ namespace Bio.Util.ArgumentParser
         {
             if (arguments == null)
             {
-                throw new ArgumentNullException("arguments");
+                throw new ArgumentNullException(nameof(arguments));
             }
 
             if (destination == null)
             {
-                throw new ArgumentNullException("destination");
+                throw new ArgumentNullException(nameof(destination));
             }
 
-            this.targetObject = destination;
-            string defaultArgs = string.Empty;
-            string defaultArgValues = string.Empty;
+            targetObject = destination;
+            var defaultArgs = string.Empty;
+            var defaultArgValues = string.Empty;
             
             // get the default parameter name
-            foreach (KeyValuePair<string, Argument> arg in this.argumentList)
+            foreach (var arg in argumentList)
             {
                 if (arg.Value.AllowType == ArgumentType.DefaultArgument)
                 {
-                    defaultArgs = string.Concat(this.ArgumentSeparator, arg.Value.Name, "=");
+                    defaultArgs = string.Concat(ArgumentSeparator, arg.Value.Name, "=");
                     break;
                 }
             }
 
-            string args = string.Empty;
-            foreach (string s in arguments)
+            var args = string.Empty;
+            foreach (var s in arguments)
             {
                 string val;
-                if (s.StartsWith(this.ArgumentSeparator, StringComparison.OrdinalIgnoreCase) )
+                if (s.StartsWith(ArgumentSeparator, StringComparison.OrdinalIgnoreCase) )
                 {
-                    int endIndex = s.IndexOfAny(new char[] { ':', '=' }, 1);
-                    string parameter = s.Substring(1, endIndex == -1 ? s.Length - 1 : endIndex - 1);
+                    var endIndex = s.IndexOfAny(new char[] { ':', '=' }, 1);
+                    var parameter = s.Substring(1, endIndex == -1 ? s.Length - 1 : endIndex - 1);
                     string paramVal;
                     if (parameter.Length + 1 == s.Length)
                     {
@@ -224,8 +224,8 @@ namespace Bio.Util.ArgumentParser
                         paramVal = s.Substring(parameter.Length + 1);
                     }
 
-                    val = this.ArgumentSeparator + parameter;
-                    string encodedValue = EncodeValue(paramVal);
+                    val = ArgumentSeparator + parameter;
+                    var encodedValue = EncodeValue(paramVal);
                     if (!string.IsNullOrEmpty(encodedValue))
                     {
                         val = string.Concat(val, "=", encodedValue);
@@ -252,10 +252,10 @@ namespace Bio.Util.ArgumentParser
             }
 
             // parse the arguments
-            this.Parse(args);
+            Parse(args);
 
             // assign the parsed values to the target object properties.
-            this.AssignTargetObjectProperties();
+            AssignTargetObjectProperties();
         }
         
         /// <summary>
@@ -264,8 +264,8 @@ namespace Bio.Util.ArgumentParser
         /// <returns>Enumerator of dictionary of found parameters.</returns>
         public IEnumerator GetEnumerator()
         {
-            this.enumerator = this.parsedArguments.GetEnumerator();
-            return this.enumerator;
+            enumerator = parsedArguments.GetEnumerator();
+            return enumerator;
         }
 
         /// <summary>
@@ -274,7 +274,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns>true if there is a next found parameter, else false.</returns>
         public bool MoveNext()
         {
-            return this.enumerator.MoveNext();
+            return enumerator.MoveNext();
         }
        
         /// <summary>
@@ -282,7 +282,7 @@ namespace Bio.Util.ArgumentParser
         /// </summary>
         public void Reset()
         {
-            this.enumerator.Reset();
+            enumerator.Reset();
         }
 
         /// <summary>
@@ -294,11 +294,11 @@ namespace Bio.Util.ArgumentParser
         private static int GetMismatchPosition(string regExpr, string srchExpr)
         {
             // split the regular expression using opening parenthesis and respective closing parenthesis.
-            SortedDictionary<int, int> validateParenthesis = new SortedDictionary<int, int>();
-            Stack<int> openParenthesis = new Stack<int>();
+            var validateParenthesis = new SortedDictionary<int, int>();
+            var openParenthesis = new Stack<int>();
             try
             {
-                for (int i = 0; i < regExpr.Length; i++)
+                for (var i = 0; i < regExpr.Length; i++)
                 {
                     if (regExpr[i] == '(')
                     {
@@ -315,7 +315,7 @@ namespace Bio.Util.ArgumentParser
                         if (!((i == 1 && regExpr[i - 1] == '\\') ||
                                (i > 1 && regExpr[i - 1] == '\\' && regExpr[i - 2] != '\\')))
                         {
-                            int pop = openParenthesis.Pop();
+                            var pop = openParenthesis.Pop();
                             validateParenthesis.Add(pop, i);
                         }
                     }
@@ -335,13 +335,13 @@ namespace Bio.Util.ArgumentParser
 
             // Parenthesis contains all parenthesis matches ordered by the position of the opening parenthesis
             IEnumerator e = validateParenthesis.GetEnumerator();
-            int prevCorrectPosition = 0;
+            var prevCorrectPosition = 0;
             while (e.MoveNext())
             {
-                KeyValuePair<int, int> c = (KeyValuePair<int, int>)e.Current;
+                var c = (KeyValuePair<int, int>)e.Current;
 
                 // Get sub-regular-expression of parenthesis grouping.
-                string subRegEx = regExpr.Substring(c.Key, c.Value - c.Key + 1);
+                var subRegEx = regExpr.Substring(c.Key, c.Value - c.Key + 1);
                 Regex sub = null;
                 try
                 {
@@ -353,7 +353,7 @@ namespace Bio.Util.ArgumentParser
                     throw new Exception("Internal Exception: SubRegEx invalid: " + subRegEx.ToString());
                 }
 
-                Match m = sub.Match(srchExpr);
+                var m = sub.Match(srchExpr);
                 if (m.Success == true)
                 {
                     // If there is a match this subexpression matches the SearchStr and the mismatch must
@@ -362,7 +362,7 @@ namespace Bio.Util.ArgumentParser
                     // (warning: here the wrong match might be detected,
                     // but since its is unlikely that commandline argument contains several identical parts,
                     // this potential problem is ignored.)
-                    int newLastCorrectPosition = srchExpr.IndexOf(m.Value, StringComparison.OrdinalIgnoreCase) + m.Value.Length;
+                    var newLastCorrectPosition = srchExpr.IndexOf(m.Value, StringComparison.OrdinalIgnoreCase) + m.Value.Length;
                     if (newLastCorrectPosition > prevCorrectPosition)
                     {
                         prevCorrectPosition = newLastCorrectPosition;
@@ -380,7 +380,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns>The Encoded Value.</returns>
         private static string EncodeValue(string value)
         {
-            string encodedVal = value;
+            var encodedVal = value;
             if (string.IsNullOrEmpty(value))
             {
                 encodedVal = string.Empty;
@@ -422,7 +422,7 @@ namespace Bio.Util.ArgumentParser
                 {
                     if (type == typeof(string))
                     {
-                        string tempVal = stringData;
+                        var tempVal = stringData;
                         tempVal = (tempVal.IndexOf(">", StringComparison.OrdinalIgnoreCase) > -1) ? tempVal.Replace(">", "-") : tempVal;
                         tempVal = (tempVal.IndexOf("|", StringComparison.OrdinalIgnoreCase) > -1) ? stringData.Replace("|", " ") : tempVal;
                         value = tempVal;
@@ -463,8 +463,8 @@ namespace Bio.Util.ArgumentParser
                     }
                     else
                     {
-                        bool valid = false;
-                        foreach (string name in Enum.GetNames(type))
+                        var valid = false;
+                        foreach (var name in Enum.GetNames(type))
                         {
                             if (name == stringData)
                             {
@@ -496,18 +496,18 @@ namespace Bio.Util.ArgumentParser
         private void AssignTargetObjectProperties()
         {
             object value;
-            foreach (FieldInfo field in this.targetObject.GetType().GetFields())
+            foreach (var field in targetObject.GetType().GetFields())
             {
-                if (this.parsedArguments.ContainsKey(field.Name))
+                if (parsedArguments.ContainsKey(field.Name))
                 {
                     if (field.FieldType.IsArray)
                     {
-                        Argument arg = this.argumentList[field.Name];
-                        ArrayList valList = new ArrayList();
+                        var arg = argumentList[field.Name];
+                        var valList = new ArrayList();
 
                         // Add the data to a array list and set it to field.
-                        Regex spaceExpr = new Regex("[\\s]+");
-                        foreach (string val in spaceExpr.Split(this.parsedArguments[field.Name]))
+                        var spaceExpr = new Regex("[\\s]+");
+                        foreach (var val in spaceExpr.Split(parsedArguments[field.Name]))
                         {
                             if (ParseValue(field.FieldType.GetElementType(), val, out value))
                             {
@@ -524,13 +524,13 @@ namespace Bio.Util.ArgumentParser
                             }
                         }
 
-                        field.SetValue(this.targetObject, valList.ToArray(field.FieldType.GetElementType()));
+                        field.SetValue(targetObject, valList.ToArray(field.FieldType.GetElementType()));
                     }
                     else
                     {
-                        if (ParseValue(field.FieldType, this.parsedArguments[field.Name], out value))
+                        if (ParseValue(field.FieldType, parsedArguments[field.Name], out value))
                         {
-                            field.SetValue(this.targetObject, value);
+                            field.SetValue(targetObject, value);
                         }
                     }
                 }
@@ -545,19 +545,19 @@ namespace Bio.Util.ArgumentParser
         private void Parse(string arguments)
         {
             // regular expression to split the arguments.
-            string parserExpression = "^([\\s]*)([-](?<name>[^\\s-/:=]+)([:=]?)([\\s]*)(?<value>(\"[^\"]*\")|('[^']*')|([\\s]*[^/-][^\\s]+[\\s]*)|([^/-]+)|)?([\\s]*))*$";
+            var parserExpression = "^([\\s]*)([-](?<name>[^\\s-/:=]+)([:=]?)([\\s]*)(?<value>(\"[^\"]*\")|('[^']*')|([\\s]*[^/-][^\\s]+[\\s]*)|([^/-]+)|)?([\\s]*))*$";
 
-            RegexOptions ro = new RegexOptions();
+            var ro = new RegexOptions();
             ro = ro | RegexOptions.IgnoreCase;
             ro = ro | RegexOptions.Multiline;
-            Regex cmdLineParseExpr = new Regex(parserExpression, ro);
+            var cmdLineParseExpr = new Regex(parserExpression, ro);
 
-            Match m = cmdLineParseExpr.Match(arguments.ToString());
+            var m = cmdLineParseExpr.Match(arguments.ToString());
             if (m.Success == false)
             {
                 // Regular expression did not match arguments. 
-                int lastCorrectPosition = GetMismatchPosition(parserExpression, arguments);
-                string errorExpr = arguments.Substring(lastCorrectPosition);
+                var lastCorrectPosition = GetMismatchPosition(parserExpression, arguments);
+                var errorExpr = arguments.Substring(lastCorrectPosition);
                 throw new ArgumentSyntaxException(
                     string.Format(
                     CultureInfo.CurrentCulture,
@@ -572,22 +572,22 @@ namespace Bio.Util.ArgumentParser
             else
             {
                 // No issues with the syntax.
-                Group unknownGroupValues = m.Groups["unknownvalues"];
+                var unknownGroupValues = m.Groups["unknownvalues"];
                 if (!string.IsNullOrEmpty(unknownGroupValues.Value))
                 {
-                    string unknownParamValue = unknownGroupValues.Value.Trim();
-                    Regex quotesExpr = new Regex("^(\".*\")|('.*')$");
-                    Match e = quotesExpr.Match(unknownParamValue);
+                    var unknownParamValue = unknownGroupValues.Value.Trim();
+                    var quotesExpr = new Regex("^(\".*\")|('.*')$");
+                    var e = quotesExpr.Match(unknownParamValue);
                     if (e.Length != 0)
                     {
                         unknownParamValue = unknownParamValue.Substring(1, unknownParamValue.Length - 2);
                     }
 
-                    this.AddParsedParameter(string.Empty, unknownParamValue);
+                    AddParsedParameter(string.Empty, unknownParamValue);
                 }
 
-                Group param_grp = m.Groups["name"];
-                Group value_grp = m.Groups["value"];
+                var param_grp = m.Groups["name"];
+                var value_grp = m.Groups["value"];
                 if (param_grp == null || value_grp == null)
                 {
                     // this should never happen.
@@ -601,29 +601,29 @@ namespace Bio.Util.ArgumentParser
                 }
 
                 // add each parameter and the respective value.
-                for (int i = 0; i < param_grp.Captures.Count; i++)
+                for (var i = 0; i < param_grp.Captures.Count; i++)
                 {
                     // if there are spaces at either side of value or param, trim those.
-                    string value = value_grp.Captures[i].ToString().Trim();
-                    string param = param_grp.Captures[i].ToString().Trim();
-                    Regex quoteExpr = new Regex("^(\".*\")|('.*')$");
-                    Match e = quoteExpr.Match(value);
+                    var value = value_grp.Captures[i].ToString().Trim();
+                    var param = param_grp.Captures[i].ToString().Trim();
+                    var quoteExpr = new Regex("^(\".*\")|('.*')$");
+                    var e = quoteExpr.Match(value);
                     if (e.Length != 0)
                     {
                         value = value.Substring(1, value.Length - 2);
                     }
 
                     // if alias is passed get the actual name and add it to parsed list
-                    if (this.paramNameAliasMap.ContainsKey(param))
+                    if (paramNameAliasMap.ContainsKey(param))
                     {
-                        param = this.paramNameAliasMap[param];
+                        param = paramNameAliasMap[param];
                     }
 
-                    this.AddParsedParameter(param, value);
+                    AddParsedParameter(param, value);
                 }
             }
 
-            this.CheckRequiredParameters();
+            CheckRequiredParameters();
         }
 
         /// <summary>
@@ -635,17 +635,17 @@ namespace Bio.Util.ArgumentParser
         {
             if (paramName == null)
             {
-                throw new ArgumentNullException("paramName");
+                throw new ArgumentNullException(nameof(paramName));
             }
 
             if (paramValue == null)
             {
-                throw new ArgumentNullException("paramValue");
+                throw new ArgumentNullException(nameof(paramValue));
             }
 
-            if (string.IsNullOrEmpty(paramName) && !this.argumentList.ContainsKey(paramName) && this.AllowAdditionalArguments == false)
+            if (string.IsNullOrEmpty(paramName) && !argumentList.ContainsKey(paramName) && AllowAdditionalArguments == false)
             {
-                string message = string.Concat(
+                var message = string.Concat(
                     Properties.Resource.CmdLineParserException,
                     Properties.Resource.CmdLineParserExceptionValueWithoutParameterFound,
                     paramValue,
@@ -659,23 +659,23 @@ namespace Bio.Util.ArgumentParser
                 paramName = "help";
             }
 
-            if (!this.argumentList.ContainsKey(paramName) && this.AllowAdditionalArguments == false)
+            if (!argumentList.ContainsKey(paramName) && AllowAdditionalArguments == false)
             {
-                string message = string.Concat(
+                var message = string.Concat(
                     Properties.Resource.CmdLineParserException,
                     Properties.Resource.CmdLineParserExceptionUnknownParameterFound,
                     paramName,
                     Properties.Resource.CmdLineParserExceptionUnknownParameterFound2);
                 throw new ArgumentNotFoundException(message);
             }
-            else if (!this.argumentList.ContainsKey(paramName) && this.AllowAdditionalArguments == true)
+            else if (!argumentList.ContainsKey(paramName) && AllowAdditionalArguments == true)
             {
-                this.parsedArguments.Add(paramName, paramValue);
+                parsedArguments.Add(paramName, paramValue);
             }
-            else if (this.argumentList.ContainsKey(paramName))
+            else if (argumentList.ContainsKey(paramName))
             {
                 // the parameter is available, check for each ValueType.
-                switch (this.argumentList[paramName].ValueType)
+                switch (argumentList[paramName].ValueType)
                 {
                     // boolean parameters do not accept any value.
                     case ArgumentValueType.Bool:
@@ -693,10 +693,10 @@ namespace Bio.Util.ArgumentParser
                         }
 
                         object val;
-                        FieldInfo intField = this.targetObject.GetType().GetField(paramName);
+                        var intField = targetObject.GetType().GetField(paramName);
                         if (!ParseValue(intField.FieldType, paramValue, out val))
                         {
-                            string message = string.Concat(
+                            var message = string.Concat(
                                 Properties.Resource.CmdLineParserException,
                                 Properties.Resource.CmdLineParserExceptionInvalidValueFound,
                                 paramName,
@@ -707,14 +707,14 @@ namespace Bio.Util.ArgumentParser
                         break;
                     case ArgumentValueType.MultipleInts:
                         // split the value and add it.
-                        FieldInfo field = this.targetObject.GetType().GetField(paramName);
-                        Regex multiValueSeparator = new Regex("[\\s]+");
-                        foreach (string value in multiValueSeparator.Split(paramValue))
+                        var field = targetObject.GetType().GetField(paramName);
+                        var multiValueSeparator = new Regex("[\\s]+");
+                        foreach (var value in multiValueSeparator.Split(paramValue))
                         {
                             object fieldVal;
                             if (!ParseValue(field.FieldType.GetElementType(), value, out fieldVal))
                             {
-                                string message = string.Concat(
+                                var message = string.Concat(
                                         Properties.Resource.CmdLineParserException,
                                         Properties.Resource.CmdLineParserExceptionInvalidValueFound,
                                         paramName,
@@ -728,7 +728,7 @@ namespace Bio.Util.ArgumentParser
                     case ArgumentValueType.MultipleUniqueStrings:
                         if (string.IsNullOrEmpty(paramValue))
                         {
-                            string message = string.Concat(
+                            var message = string.Concat(
                                 Properties.Resource.CmdLineParserException,
                                 Properties.Resource.CmdLineParserExceptionInvalidValueFound,
                                 paramName,
@@ -742,9 +742,9 @@ namespace Bio.Util.ArgumentParser
                     default: throw new Exception("Internal Exception: Unmatch case in AddNewFoundParameter()!");
                 }
 
-                if (this.parsedArguments.ContainsKey(paramName))
+                if (parsedArguments.ContainsKey(paramName))
                 {
-                    string message = string.Concat(
+                    var message = string.Concat(
                         Properties.Resource.CmdLineParserException,
                         Properties.Resource.CmdLineParserExceptionRepeatedParameterFound,
                         paramName,
@@ -754,7 +754,7 @@ namespace Bio.Util.ArgumentParser
                 }
                 else
                 {
-                    this.parsedArguments.Add(paramName, paramValue);
+                    parsedArguments.Add(paramName, paramValue);
                 }
             }
         }
@@ -764,26 +764,26 @@ namespace Bio.Util.ArgumentParser
         /// </summary>
         private void CheckRequiredParameters()
         {
-            if (this.parsedArguments.ContainsKey("help"))
+            if (parsedArguments.ContainsKey("help"))
             {
                 return;
             }
 
-            foreach (KeyValuePair<string, Argument> argument in this.argumentList)
+            foreach (var argument in argumentList)
             {
                 if ((argument.Value.AllowType == ArgumentType.Required || argument.Value.AllowType == ArgumentType.DefaultArgument) 
-                    && (!this.parsedArguments.ContainsKey(argument.Key)))
+                    && (!parsedArguments.ContainsKey(argument.Key)))
                 {
                     if (string.IsNullOrEmpty(argument.Key))
                     {
-                        string message = string.Concat(
+                        var message = string.Concat(
                             Properties.Resource.CmdLineParserException,
                             Properties.Resource.CmdLineParserExceptionRequiredFirstParameterMissing);
                         throw new RequiredArgumentMissingException(message);
                     }
                     else
                     {
-                        string message = string.Concat(
+                        var message = string.Concat(
                             Properties.Resource.CmdLineParserException,
                             Properties.Resource.CmdLineParserExceptionRequiredParameterMissing,
                             argument.Key,
@@ -801,11 +801,11 @@ namespace Bio.Util.ArgumentParser
         {
             public Argument(string parameterName, ArgumentType allowType, ArgumentValueType valueType, string shortName, string parameterHelp)
             {
-                this.Name = parameterName;
-                this.AllowType = allowType;
-                this.ValueType = valueType;
-                this.Help = parameterHelp;
-                this.ShortName = shortName;
+                Name = parameterName;
+                AllowType = allowType;
+                ValueType = valueType;
+                Help = parameterHelp;
+                ShortName = shortName;
             }
 
             public string Name { get; set; }

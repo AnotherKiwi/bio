@@ -41,14 +41,14 @@ namespace Bio
         {
             if (sequence == null)
             {
-                throw new ArgumentNullException("sequence");
+                throw new ArgumentNullException(nameof(sequence));
             }
 
-            this.alphabet = sequence.Alphabet;
+            alphabet = sequence.Alphabet;
 
             // Counting with an array is way faster than using a dictionary.
-            long[] symbolCounts = new long[256];
-            foreach (byte item in sequence)
+            var symbolCounts = new long[256];
+            foreach (var item in sequence)
             {
                 if (item == 0)
                 {
@@ -70,17 +70,17 @@ namespace Bio
         {
             if (symbolCounts.Length != 256)
             {
-                throw new ArgumentOutOfRangeException("symbolCounts", "Array of symbol counts should have length of 256.");
+                throw new ArgumentOutOfRangeException(nameof(symbolCounts), "Array of symbol counts should have length of 256.");
             }
 
             countHash = new Dictionary<char, long>();
             totalCount = 0;
 
-            for (int i = 0; i < symbolCounts.Length; i++)
+            for (var i = 0; i < symbolCounts.Length; i++)
             {
                 if (symbolCounts[i] > 0)
                 {
-                    char value = char.ToUpper((char)i);
+                    var value = char.ToUpper((char)i);
                     
                     if (countHash.ContainsKey(value))
                         countHash[value] += symbolCounts[i];
@@ -159,7 +159,7 @@ namespace Bio
         {
             if (item == byte.MinValue)
             {
-                throw new ArgumentNullException("item");
+                throw new ArgumentNullException(nameof(item));
             }
 
             return GetCount((char)item);
@@ -199,8 +199,8 @@ namespace Bio
         /// <returns>Sequence chars with its count.</returns>
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder();
-            foreach (KeyValuePair<char, long> valuePair in countHash)
+            var builder = new StringBuilder();
+            foreach (var valuePair in countHash)
             {
                 builder.AppendLine(string.Format(CultureInfo.CurrentCulture, Properties.Resource.SequenceStatisticsToStringFormat, valuePair.Key, valuePair.Value));
             }

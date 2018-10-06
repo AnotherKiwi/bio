@@ -46,7 +46,7 @@ namespace Bio.Web.Blast
                     metadata.QuerySequence = value;
                     break;
                 default:
-                    string message = String.Format(
+                    var message = String.Format(
                             CultureInfo.CurrentCulture,
                             Properties.Resource.UnknownElement,
                             "DoBlast",
@@ -90,7 +90,7 @@ namespace Bio.Web.Blast
                     metadata.ParameterEntrezQuery = value;
                     break;
                 default:
-                    string message = String.Format(
+                    var message = String.Format(
                             CultureInfo.CurrentCulture,
                             Properties.Resource.UnknownElement,
                             "DoParameters",
@@ -125,7 +125,7 @@ namespace Bio.Web.Blast
                     curRecord.IterationMessage = value;
                     break;
                 default:
-                    string message = String.Format(
+                    var message = String.Format(
                             CultureInfo.CurrentCulture,
                             Properties.Resource.UnknownElement,
                             "DoIteration",
@@ -157,7 +157,7 @@ namespace Bio.Web.Blast
                     // ignore
                     break;
                 default:
-                    string message = String.Format(
+                    var message = String.Format(
                             CultureInfo.CurrentCulture,
                             Properties.Resource.UnknownElement,
                             "DoHit",
@@ -231,7 +231,7 @@ namespace Bio.Web.Blast
                     hsp.Gaps = int.Parse(value, CultureInfo.InvariantCulture);
                     break;
                 default:
-                    string message = String.Format(
+                    var message = String.Format(
                             CultureInfo.CurrentCulture,
                             Properties.Resource.UnknownElement,
                             "DoHsp",
@@ -266,7 +266,7 @@ namespace Bio.Web.Blast
                     curStats.Entropy = double.Parse(value, CultureInfo.InvariantCulture);
                     break;
                 default:
-                    string message = String.Format(
+                    var message = String.Format(
                             CultureInfo.CurrentCulture,
                             Properties.Resource.UnknownElement,
                             "DoStatistics",
@@ -282,7 +282,7 @@ namespace Bio.Web.Blast
         /// <returns>The BlastResult.</returns>
         private static BlastResult ParseXML(StringBuilder doc)
         {
-            BlastResult result = new BlastResult();
+            var result = new BlastResult();
             try
             {
                 var settings = new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore };
@@ -291,10 +291,10 @@ namespace Bio.Web.Blast
                 try
                 {
                     sr = new StringReader(doc.ToString());
-                    using (XmlReader r = XmlReader.Create(sr, settings))
+                    using (var r = XmlReader.Create(sr, settings))
                     {
-                        string curElement = string.Empty;
-                        BlastSearchRecord curRecord = new BlastSearchRecord();
+                        var curElement = string.Empty;
+                        var curRecord = new BlastSearchRecord();
                         Hit curHit = null;
                         Hsp curHsp = null;
                         BlastStatistics curStatistics = null;
@@ -398,7 +398,7 @@ namespace Bio.Web.Blast
 
             using (var reader = stream.OpenRead())
             {
-                string line = ReadNextLine(reader, false);
+                var line = ReadNextLine(reader, false);
 
                 while (!string.IsNullOrEmpty(line))
                 {
@@ -449,7 +449,7 @@ namespace Bio.Web.Blast
                 return null;
             }
 
-            string line = reader.ReadLine();
+            var line = reader.ReadLine();
             while (skipBlankLines && string.IsNullOrWhiteSpace(line) && reader.Peek() != -1)
             {
                 line = reader.ReadLine();

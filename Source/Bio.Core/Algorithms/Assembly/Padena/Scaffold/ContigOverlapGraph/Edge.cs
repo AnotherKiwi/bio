@@ -13,8 +13,8 @@
         /// <param name="isValid">Indicates if this is a valid edge.</param>
         public Edge(bool isSameOrientation, bool isValid)
         {
-            this.IsSameOrientation = isSameOrientation;
-            this.IsValid = isValid;
+            IsSameOrientation = isSameOrientation;
+            IsValid = isValid;
         }
 
         /// <summary>

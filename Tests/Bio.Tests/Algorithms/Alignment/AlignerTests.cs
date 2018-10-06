@@ -34,7 +34,7 @@ namespace Bio.Tests.Algorithms.Alignment
 
             IList<IPairwiseSequenceAlignment> expectedOutput = new List<IPairwiseSequenceAlignment>();
             IPairwiseSequenceAlignment align = new PairwiseSequenceAlignment();
-            PairwiseAlignedSequence alignedSeq = new PairwiseAlignedSequence
+            var alignedSeq = new PairwiseAlignedSequence
                 {
                     FirstSequence = new Sequence(Alphabets.Protein, "AWGHE"),
                     SecondSequence = new Sequence(Alphabets.Protein, "AW-HE"),
@@ -64,12 +64,12 @@ namespace Bio.Tests.Algorithms.Alignment
 
             ISequence sequence1 = new Sequence(Alphabets.Protein, "HEAGAWGHEE");
             ISequence sequence2 = new Sequence(Alphabets.Protein, "PAWHEAE");
-            IList<IPairwiseSequenceAlignment> result = sw.Align(sequence1, sequence2);
+            var result = sw.Align(sequence1, sequence2);
             AlignmentHelpers.LogResult(sw, result);
 
             IList<IPairwiseSequenceAlignment> expectedOutput = new List<IPairwiseSequenceAlignment>();
             IPairwiseSequenceAlignment align = new PairwiseSequenceAlignment();
-            PairwiseAlignedSequence alignedSeq = new PairwiseAlignedSequence
+            var alignedSeq = new PairwiseAlignedSequence
                 {
                     FirstSequence = new Sequence(Alphabets.Protein, "AWGHE"),
                     SecondSequence = new Sequence(Alphabets.Protein, "AW-HE"),
@@ -99,7 +99,7 @@ namespace Bio.Tests.Algorithms.Alignment
 
             ISequence sequence1 = new Sequence(Alphabets.DNA, "AAATTCCCAG");
             ISequence sequence2 = new Sequence(Alphabets.DNA, "AAAGCCC");
-            IList<IPairwiseSequenceAlignment> result = sw.AlignSimple(sequence1, sequence2);
+            var result = sw.AlignSimple(sequence1, sequence2);
             AlignmentHelpers.LogResult(sw, result);
 
             IList<IPairwiseSequenceAlignment> expectedOutput = new List<IPairwiseSequenceAlignment>();
@@ -146,7 +146,7 @@ namespace Bio.Tests.Algorithms.Alignment
 
             ISequence sequence1 = new Sequence(Alphabets.DNA, "AAAAGGGGGGCCCC");
             ISequence sequence2 = new Sequence(Alphabets.DNA, "AAAATTTTTTTCCCC");
-            IList<IPairwiseSequenceAlignment> result = sw.AlignSimple(sequence1, sequence2);
+            var result = sw.AlignSimple(sequence1, sequence2);
             AlignmentHelpers.LogResult(sw, result);
 
             IList<IPairwiseSequenceAlignment> expectedOutput = new List<IPairwiseSequenceAlignment>();
@@ -197,7 +197,7 @@ namespace Bio.Tests.Algorithms.Alignment
 
             ISequence sequence1 = new Sequence(Alphabets.Protein, "HEAGAWGHEE");
             ISequence sequence2 = new Sequence(Alphabets.Protein, "PAWHEAE");
-            IList<IPairwiseSequenceAlignment> result = nw.AlignSimple(sequence1, sequence2);
+            var result = nw.AlignSimple(sequence1, sequence2);
             AlignmentHelpers.LogResult(nw, result);
 
             IList<IPairwiseSequenceAlignment> expectedOutput = new List<IPairwiseSequenceAlignment>();
@@ -232,7 +232,7 @@ namespace Bio.Tests.Algorithms.Alignment
 
             ISequence sequence1 = new Sequence(Alphabets.Protein, "HEAGAWGHEE");
             ISequence sequence2 = new Sequence(Alphabets.Protein, "PAWHEAE");
-            IList<IPairwiseSequenceAlignment> result = nw.Align(sequence1, sequence2);
+            var result = nw.Align(sequence1, sequence2);
             AlignmentHelpers.LogResult(nw, result);
 
             IList<IPairwiseSequenceAlignment> expectedOutput = new List<IPairwiseSequenceAlignment>();
@@ -266,7 +266,7 @@ namespace Bio.Tests.Algorithms.Alignment
 
             ISequence sequence1 = new Sequence(Alphabets.DNA, "GAATTCAGTTA");
             ISequence sequence2 = new Sequence(Alphabets.DNA, "GGATCGA");
-            IList<IPairwiseSequenceAlignment> result = nw.AlignSimple(sequence1, sequence2);
+            var result = nw.AlignSimple(sequence1, sequence2);
             AlignmentHelpers.LogResult(nw, result);
 
             IList<IPairwiseSequenceAlignment> expectedOutput = new List<IPairwiseSequenceAlignment>();
@@ -298,8 +298,8 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority0")]
         public void TestNUCmer3SingleCluster()
         {
-            string reference = "AGAAAAGTTTTCA";
-            string search = "TTTTGAGATAAAATC";
+            var reference = "AGAAAAGTTTTCA";
+            var search = "TTTTGAGATAAAATC";
 
             Sequence referenceSeq = null;
             Sequence searchSeq = null;
@@ -312,13 +312,17 @@ namespace Bio.Tests.Algorithms.Alignment
             searchSeq = new Sequence(Alphabets.DNA, search);
             searchSeq.ID = "Q1";
 
-            referenceSeqs = new List<ISequence>();
-            referenceSeqs.Add(referenceSeq);
+            referenceSeqs = new List<ISequence>
+            {
+                referenceSeq
+            };
 
-            searchSeqs = new List<ISequence>();
-            searchSeqs.Add(searchSeq);
+            searchSeqs = new List<ISequence>
+            {
+                searchSeq
+            };
 
-            NucmerPairwiseAligner nucmer = new NucmerPairwiseAligner();
+            var nucmer = new NucmerPairwiseAligner();
             nucmer.FixedSeparation = 0;
             nucmer.MinimumScore = 2;
             nucmer.SeparationFactor = -1;
@@ -331,7 +335,7 @@ namespace Bio.Tests.Algorithms.Alignment
 
             IList<IPairwiseSequenceAlignment> expectedOutput = new List<IPairwiseSequenceAlignment>();
             IPairwiseSequenceAlignment align = new PairwiseSequenceAlignment();
-            PairwiseAlignedSequence alignedSeq = new PairwiseAlignedSequence();
+            var alignedSeq = new PairwiseAlignedSequence();
             alignedSeq.FirstSequence = new Sequence(Alphabets.DNA, "AG--AAAA");
             alignedSeq.SecondSequence = new Sequence(Alphabets.DNA, "AGATAAAA");
             alignedSeq.Consensus = new Sequence(Alphabets.DNA, "AGATAAAA");
@@ -359,8 +363,8 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority0")]
         public void TestNUCmer3MultipleClusters()
         {
-            string reference = "ATGCGCATCCCCTAGCT";
-            string search = "CCGCGCCCCCTCAGCT";
+            var reference = "ATGCGCATCCCCTAGCT";
+            var search = "CCGCGCCCCCTCAGCT";
 
             Sequence referenceSeq = null;
             Sequence searchSeq = null;
@@ -373,13 +377,17 @@ namespace Bio.Tests.Algorithms.Alignment
             searchSeq = new Sequence(Alphabets.DNA, search);
             searchSeq.ID = "Q1";
 
-            referenceSeqs = new List<ISequence>();
-            referenceSeqs.Add(referenceSeq);
+            referenceSeqs = new List<ISequence>
+            {
+                referenceSeq
+            };
 
-            searchSeqs = new List<ISequence>();
-            searchSeqs.Add(searchSeq);
+            searchSeqs = new List<ISequence>
+            {
+                searchSeq
+            };
 
-            NucmerPairwiseAligner nucmer = new NucmerPairwiseAligner();
+            var nucmer = new NucmerPairwiseAligner();
             nucmer.FixedSeparation = 0;
             nucmer.MinimumScore = 2;
             nucmer.SeparationFactor = -1;
@@ -392,7 +400,7 @@ namespace Bio.Tests.Algorithms.Alignment
 
             IList<IPairwiseSequenceAlignment> expectedOutput = new List<IPairwiseSequenceAlignment>();
             IPairwiseSequenceAlignment align = new PairwiseSequenceAlignment();
-            PairwiseAlignedSequence alignedSeq = new PairwiseAlignedSequence();
+            var alignedSeq = new PairwiseAlignedSequence();
             alignedSeq.FirstSequence = new Sequence(Alphabets.DNA, "GCGCATCCCCT-AGCT");
             alignedSeq.SecondSequence = new Sequence(Alphabets.DNA, "GCGC--CCCCTCAGCT");
             alignedSeq.Consensus = new Sequence(Alphabets.DNA, "GCGCATCCCCTCAGCT");
@@ -418,7 +426,7 @@ namespace Bio.Tests.Algorithms.Alignment
 
             referenceSeqs = new List<ISequence>();
 
-            string reference = "ATGCGCATCCCC";
+            var reference = "ATGCGCATCCCC";
             referenceSeq = new Sequence(Alphabets.DNA, reference);
             referenceSeq.ID = "R1";
             referenceSeqs.Add(referenceSeq);
@@ -430,12 +438,12 @@ namespace Bio.Tests.Algorithms.Alignment
 
             searchSeqs = new List<ISequence>();
 
-            string search = "CCGCGCCCCCTCAGCT";
+            var search = "CCGCGCCCCCTCAGCT";
             searchSeq = new Sequence(Alphabets.DNA, search);
             searchSeq.ID = "Q1";
             searchSeqs.Add(searchSeq);
 
-            NucmerPairwiseAligner nucmer = new NucmerPairwiseAligner();
+            var nucmer = new NucmerPairwiseAligner();
             nucmer.FixedSeparation = 0;
             nucmer.MinimumScore = 2;
             nucmer.SeparationFactor = -1;
@@ -447,7 +455,7 @@ namespace Bio.Tests.Algorithms.Alignment
             Assert.AreNotEqual(null, result);
             IList<IPairwiseSequenceAlignment> expectedOutput = new List<IPairwiseSequenceAlignment>();
             IPairwiseSequenceAlignment align = new PairwiseSequenceAlignment();
-            PairwiseAlignedSequence alignedSeq = new PairwiseAlignedSequence();
+            var alignedSeq = new PairwiseAlignedSequence();
             alignedSeq.FirstSequence = new Sequence(Alphabets.DNA, "GCGCATCCCC");
             alignedSeq.SecondSequence = new Sequence(Alphabets.DNA, "GCGC--CCCC");
             alignedSeq.Consensus = new Sequence(Alphabets.DNA, "GCGCATCCCC");
@@ -481,7 +489,7 @@ namespace Bio.Tests.Algorithms.Alignment
 
             referenceSeqs = new List<ISequence>();
 
-            string reference = "ATGCGCATCCCC";
+            var reference = "ATGCGCATCCCC";
             referenceSeq = new Sequence(Alphabets.DNA, reference);
             referenceSeq.ID = "R1";
             referenceSeqs.Add(referenceSeq);
@@ -493,7 +501,7 @@ namespace Bio.Tests.Algorithms.Alignment
 
             searchSeqs = new List<ISequence>();
 
-            string search = "CCGCGCCCCCTC";
+            var search = "CCGCGCCCCCTC";
             searchSeq = new Sequence(Alphabets.DNA, search);
             searchSeq.ID = "Q1";
             searchSeqs.Add(searchSeq);
@@ -503,7 +511,7 @@ namespace Bio.Tests.Algorithms.Alignment
             searchSeq.ID = "Q11";
             searchSeqs.Add(searchSeq);
 
-            NucmerPairwiseAligner nucmer = new NucmerPairwiseAligner();
+            var nucmer = new NucmerPairwiseAligner();
             nucmer.FixedSeparation = 0;
             nucmer.MinimumScore = 2;
             nucmer.SeparationFactor = -1;
@@ -516,7 +524,7 @@ namespace Bio.Tests.Algorithms.Alignment
 
             IList<IPairwiseSequenceAlignment> expectedOutput = new List<IPairwiseSequenceAlignment>();
             IPairwiseSequenceAlignment align = new PairwiseSequenceAlignment();
-            PairwiseAlignedSequence alignedSeq = new PairwiseAlignedSequence();
+            var alignedSeq = new PairwiseAlignedSequence();
 
             alignedSeq.FirstSequence = new Sequence(Alphabets.DNA, "GCGCATCCCC");
             alignedSeq.SecondSequence = new Sequence(Alphabets.DNA, "GCGC--CCCC");
@@ -560,7 +568,7 @@ namespace Bio.Tests.Algorithms.Alignment
                 new Sequence(Alphabets.DNA, "AAGCAAAATTAAACAGAGAAGAAATAGATGGGGTAAAGCTGGAATCAACAAGGATTTACCAGATTTTGGC") { ID = "Q3" },
             };
 
-            NucmerPairwiseAligner nucmer = new NucmerPairwiseAligner
+            var nucmer = new NucmerPairwiseAligner
             {
                 MaximumSeparation = 0,
                 MinimumScore = 2,

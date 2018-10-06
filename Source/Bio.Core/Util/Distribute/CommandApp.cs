@@ -34,7 +34,7 @@ namespace Bio.Util.Distribute
         public override void RunTasks(RangeCollection tasksToRun, long taskCount)
         {
 #if !SILVERLIGHT
-            using (Process proc = new Process())
+            using (var proc = new Process())
             {
                 proc.StartInfo.FileName = ExeName;
                 proc.StartInfo.Arguments = CommandArgs;

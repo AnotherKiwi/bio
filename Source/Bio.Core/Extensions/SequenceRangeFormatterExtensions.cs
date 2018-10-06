@@ -21,10 +21,10 @@ namespace Bio
         {
             if (string.IsNullOrEmpty(filename))
             {
-                throw new ArgumentNullException("filename");
+                throw new ArgumentNullException(nameof(filename));
             }
 
-            using (FileStream fs = File.Create(filename))
+            using (var fs = File.Create(filename))
             {
                 formatter.Format(fs, ranges);
             }
@@ -38,10 +38,10 @@ namespace Bio
         {
             if (string.IsNullOrEmpty(filename))
             {
-                throw new ArgumentNullException("filename");    
+                throw new ArgumentNullException(nameof(filename));    
             }
 
-            using (FileStream fs = File.Create(filename))
+            using (var fs = File.Create(filename))
             {
                 formatter.Format(fs, rangeGroup);
             }

@@ -86,9 +86,9 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             // Fill in values
             Parallel.For(1, sequences.Count, PAMSAMMultipleSequenceAligner.ParallelOption, row =>
             {
-                for (int col = 0; col < row; ++col)
+                for (var col = 0; col < row; ++col)
                 {
-                    float distanceScore = KimuraDistanceScoreCalculator.CalculateDistanceScore(sequences[row], sequences[col]);
+                    var distanceScore = KimuraDistanceScoreCalculator.CalculateDistanceScore(sequences[row], sequences[col]);
                     _distanceMatrix[row, col] = distanceScore;
                     _distanceMatrix[col, row] = distanceScore;
                 }

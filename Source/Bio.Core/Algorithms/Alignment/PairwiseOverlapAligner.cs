@@ -36,7 +36,7 @@
         /// <returns></returns>
         protected override DynamicProgrammingPairwiseAlignerJob CreateSimpleAlignmentJob(ISequence sequenceA, ISequence sequenceB)
         {
-            return new PairwiseOverlapSimpleAlignmentJob(this.SimilarityMatrix, this.GapOpenCost, sequenceA, sequenceB);
+            return new PairwiseOverlapSimpleAlignmentJob(SimilarityMatrix, GapOpenCost, sequenceA, sequenceB);
         }
 
         /// <summary>
@@ -47,7 +47,7 @@
         /// <returns></returns>
         protected override DynamicProgrammingPairwiseAlignerJob CreateAffineAlignmentJob(ISequence sequenceA, ISequence sequenceB)
         {
-            return new PairwiseOverlapAffineAlignmentJob(this.SimilarityMatrix, this.GapOpenCost, this.GapExtensionCost, sequenceA, sequenceB);
+            return new PairwiseOverlapAffineAlignmentJob(SimilarityMatrix, GapOpenCost, GapExtensionCost, sequenceA, sequenceB);
         }
     }
 }

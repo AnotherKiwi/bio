@@ -95,13 +95,13 @@ namespace Bio.Algorithms.Alignment
         {
             get
             {
-                return this.dataType;
+                return dataType;
             }
 
             set
             {
                 ValidateDataType(value);
-                this.dataType = value;
+                dataType = value;
             }
         }
 
@@ -125,7 +125,7 @@ namespace Bio.Algorithms.Alignment
                 && 0 != string.Compare(dataType, FloatType, StringComparison.OrdinalIgnoreCase)
                 && 0 != string.Compare(dataType, StringListType, StringComparison.OrdinalIgnoreCase))
             {
-                string message = Properties.Resource.InvalidSearchParameter;
+                var message = Properties.Resource.InvalidSearchParameter;
                 Debug.WriteLine(message);
                 throw new NotSupportedException(message);
             }

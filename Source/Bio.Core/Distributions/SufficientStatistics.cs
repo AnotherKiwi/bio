@@ -98,10 +98,10 @@ namespace Bio.Distributions
         {
             if (other == null)
             {
-                throw new ArgumentNullException("other");
+                throw new ArgumentNullException(nameof(other));
             }
 
-            return this.AsDiscreteStatistics().Value - other.AsDiscreteStatistics().Value;
+            return AsDiscreteStatistics().Value - other.AsDiscreteStatistics().Value;
         }
 
         /// <summary>

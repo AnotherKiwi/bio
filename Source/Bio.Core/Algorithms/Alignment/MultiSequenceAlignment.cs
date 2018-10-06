@@ -37,10 +37,10 @@ namespace Bio.Algorithms.Alignment
         /// </summary>
         public MultiSequenceAlignment()
         {
-            this.MsaScore = 0;
-            this.Sequences = new List<ISequence>();
-            this.NumberOfSequences = 0;
-            this.NumberOfColumns = 0;
+            MsaScore = 0;
+            Sequences = new List<ISequence>();
+            NumberOfSequences = 0;
+            NumberOfColumns = 0;
         }
 
         /// <summary>
@@ -54,15 +54,15 @@ namespace Bio.Algorithms.Alignment
             if (sequences == null || sequences.Count == 0)
                 throw new ArgumentException("Empty input sequences");
 
-            int numberOfColumns = (int) sequences[0].Count;
+            var numberOfColumns = (int) sequences[0].Count;
             if (sequences.Any(t => t.Count != numberOfColumns))
             {
                 throw new ArgumentException("Unaligned sequences");
             }
 
-            this.Sequences = sequences;
-            this.NumberOfColumns = numberOfColumns;
-            this.NumberOfSequences = sequences.Count;
+            Sequences = sequences;
+            NumberOfColumns = numberOfColumns;
+            NumberOfSequences = sequences.Count;
         }
 
         #endregion
@@ -91,10 +91,10 @@ namespace Bio.Algorithms.Alignment
             }
             float result = 0;
 
-            bool isGapA = false;
-            bool isGapB = false;
+            var isGapA = false;
+            var isGapB = false;
 
-            for (int i = 0; i < sequenceA.Count; ++i)
+            for (var i = 0; i < sequenceA.Count; ++i)
             {
                 if (sequenceA.Alphabet.CheckIsGap(sequenceA[i]) && sequenceB.Alphabet.CheckIsGap(sequenceB[i]))
                 {
@@ -154,9 +154,9 @@ namespace Bio.Algorithms.Alignment
         {
             float result = 0;
 
-            for (int i = 0; i < sequences.Count - 1; ++i)
+            for (var i = 0; i < sequences.Count - 1; ++i)
             {
-                for (int j = i + 1; j < sequences.Count; ++j)
+                for (var j = i + 1; j < sequences.Count; ++j)
                 {
                     result += PairWiseScoreFunction(sequences[i], sequences[j], similarityMatrix, gapOpenPenalty, gapExtensionPenalty);
                 }

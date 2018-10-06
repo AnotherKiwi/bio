@@ -44,7 +44,7 @@ namespace Bio.Algorithms.Assembly
         {
             get
             {
-                return this.contigs;
+                return contigs;
             }
         }
 
@@ -55,7 +55,7 @@ namespace Bio.Algorithms.Assembly
         {
             get
             {
-                return this.unmergedSequences;
+                return unmergedSequences;
             }
         }
 
@@ -64,7 +64,7 @@ namespace Bio.Algorithms.Assembly
         /// </summary>
         public IList<ISequence> AssembledSequences
         {
-            get { return (this.contigs.Select(c => c.Consensus).ToList()); }
+            get { return (contigs.Select(c => c.Consensus).ToList()); }
         }
 
         /// <summary>
@@ -81,8 +81,8 @@ namespace Bio.Algorithms.Assembly
         /// <returns>contigs data</returns>
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder();
-            foreach (Contig contig in Contigs)
+            var builder = new StringBuilder();
+            foreach (var contig in Contigs)
             {
                 builder.AppendLine(contig.ToString());
             }

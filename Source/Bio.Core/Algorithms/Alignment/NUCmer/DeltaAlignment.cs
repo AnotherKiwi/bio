@@ -36,7 +36,7 @@ namespace Bio.Algorithms.Alignment
         /// <param name="querySequence">Query Sequence</param>
         public DeltaAlignment(ISequence referenceSequence, ISequence querySequence)
         {
-            this.internalDeltas = new List<long>();
+            internalDeltas = new List<long>();
             ReferenceSequence = referenceSequence;
             QuerySequence = querySequence;
             QueryDirection = Cluster.ForwardDirection;
@@ -57,12 +57,12 @@ namespace Bio.Algorithms.Alignment
         /// </summary>
         public string QueryDirection
         {
-            get { return this.queryDirection; }
+            get { return queryDirection; }
             set
             {
                 if (value != Cluster.ForwardDirection && value != Cluster.ReverseDirection)
-                    throw new ArgumentOutOfRangeException("value", Resource.InvalidQueryDirection);
-                this.queryDirection = value;
+                    throw new ArgumentOutOfRangeException(nameof(value), Resource.InvalidQueryDirection);
+                queryDirection = value;
             }
         }
 
@@ -120,7 +120,7 @@ namespace Bio.Algorithms.Alignment
         /// </summary>
         public IList<long> Deltas
         {
-            get { return this.internalDeltas; }
+            get { return internalDeltas; }
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace Bio.Algorithms.Alignment
                 Cluster cluster,
                 MatchExtension match)
         {
-            DeltaAlignment deltaAlignment = new DeltaAlignment(referenceSequence, querySequence)
+            var deltaAlignment = new DeltaAlignment(referenceSequence, querySequence)
             {
                 FirstSequenceStart = match.ReferenceSequenceOffset,
                 SecondSequenceStart = match.QuerySequenceOffset,
@@ -166,11 +166,11 @@ namespace Bio.Algorithms.Alignment
         /// Query sequence alignment at 1st index</returns>
         public PairwiseAlignedSequence ConvertDeltaToSequences()
         {
-            PairwiseAlignedSequence alignedSequence = new PairwiseAlignedSequence();
-            int gap = 0;
-            List<long> startOffsets = new List<long>(2);
-            List<long> endOffsets = new List<long>(2);
-            List<long> insertions = new List<long>(2);
+            var alignedSequence = new PairwiseAlignedSequence();
+            var gap = 0;
+            var startOffsets = new List<long>(2);
+            var endOffsets = new List<long>(2);
+            var insertions = new List<long>(2);
 
             startOffsets.Add(FirstSequenceStart);
             startOffsets.Add(SecondSequenceStart);
@@ -181,16 +181,16 @@ namespace Bio.Algorithms.Alignment
             insertions.Add(0);
 
             // Create the new sequence object with given start and end indices
-            List<byte> referenceSequence = new List<byte>();
-            for (long index = this.FirstSequenceStart; index <= this.FirstSequenceEnd; index++)
+            var referenceSequence = new List<byte>();
+            for (var index = FirstSequenceStart; index <= FirstSequenceEnd; index++)
             {
-                referenceSequence.Add(this.ReferenceSequence[index]);
+                referenceSequence.Add(ReferenceSequence[index]);
             }
 
-            List<byte> querySequence = new List<byte>();
-            for (long index = this.SecondSequenceStart; index <= this.SecondSequenceEnd; index++)
+            var querySequence = new List<byte>();
+            for (var index = SecondSequenceStart; index <= SecondSequenceEnd; index++)
             {
-                querySequence.Add(this.QuerySequence[index]);
+                querySequence.Add(QuerySequence[index]);
             }
             // Insert the Alignment character at delta position
             // +ve delta: Insertion in reference sequence
@@ -210,15 +210,15 @@ namespace Bio.Algorithms.Alignment
                 }
             }
 
-            byte[] refSeq = referenceSequence.ToArray();
-            IAlphabet alphabet = Alphabets.AutoDetectAlphabet(refSeq, 0, refSeq.GetLongLength(), null);
+            var refSeq = referenceSequence.ToArray();
+            var alphabet = Alphabets.AutoDetectAlphabet(refSeq, 0, refSeq.GetLongLength(), null);
             alignedSequence.FirstSequence = new Sequence(alphabet, refSeq, false)
             {
                 ID = ReferenceSequence.ID,
                 Metadata = new Dictionary<string, object>(ReferenceSequence.Metadata)
             };
 
-            byte[] querySeq = querySequence.ToArray();
+            var querySeq = querySequence.ToArray();
             alphabet = Alphabets.AutoDetectAlphabet(querySeq, 0, querySeq.GetLongLength(), QuerySequence.Alphabet);
             alignedSequence.SecondSequence = new Sequence(alphabet, querySeq, false)
             {
@@ -239,9 +239,9 @@ namespace Bio.Algorithms.Alignment
         /// <returns>Ref ID, Query Id, Ref start, Ref End, Query start, Query End.</returns>
         public override string ToString()
         {
-            return string.Format(CultureInfo.CurrentCulture, Properties.Resource.DeltaAlignmentToStringFormat,
-                          this.ReferenceSequence.ID, this.QuerySequence.ID, this.FirstSequenceStart, this.FirstSequenceEnd,
-                          this.SecondSequenceStart, this.SecondSequenceEnd, this.QueryDirection);
+            return string.Format(CultureInfo.CurrentCulture, Resource.DeltaAlignmentToStringFormat,
+                          ReferenceSequence.ID, QuerySequence.ID, FirstSequenceStart, FirstSequenceEnd,
+                          SecondSequenceStart, SecondSequenceEnd, QueryDirection);
         }
     }
 }

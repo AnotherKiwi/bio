@@ -87,7 +87,7 @@ namespace Bio.TestAutomation.IO.Newick
         {
             try
             {
-                NewickParser nwParserObj = new NewickParser();
+                var nwParserObj = new NewickParser();
                 {
                     nwParserObj.Parse((Stream)null);
                 }
@@ -145,21 +145,21 @@ namespace Bio.TestAutomation.IO.Newick
         {
             try
             {
-                string filePath = _utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+                var filePath = _utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
                 switch (method)
                 {
                     case AdditionalParameters.TextReader:
                         using (var reader = File.OpenRead(filePath))
                         {
-                            NewickParser nwParserObj = new NewickParser();
+                            var nwParserObj = new NewickParser();
                             nwParserObj.Parse(reader);
                         }
                         break;
                     case AdditionalParameters.StringBuilder:
                         using (var reader = new StreamReader(filePath))
                         {
-                            NewickParser nwParserObj = new NewickParser();
-                            StringBuilder strBuilderObj = new StringBuilder(reader.ReadToEnd());
+                            var nwParserObj = new NewickParser();
+                            var strBuilderObj = new StringBuilder(reader.ReadToEnd());
                             nwParserObj.Parse(strBuilderObj);
                         }
                         break;

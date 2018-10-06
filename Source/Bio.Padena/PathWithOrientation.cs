@@ -25,16 +25,16 @@ namespace Bio.Algorithms.Assembly.Padena
         {
             if (node1 == null)
             {
-                throw new ArgumentNullException("node1");
+                throw new ArgumentNullException(nameof(node1));
             }
 
             if (node2 == null)
             {
-                throw new ArgumentNullException("node2");
+                throw new ArgumentNullException(nameof(node2));
             }
 
-            this.nodes = new List<DeBruijnNode> { node1, node2 };
-            this.IsSameOrientation = orientation;
+            nodes = new List<DeBruijnNode> { node1, node2 };
+            IsSameOrientation = orientation;
         }
 
         /// <summary>
@@ -46,11 +46,11 @@ namespace Bio.Algorithms.Assembly.Padena
         {
             if (other == null)
             {
-                throw new ArgumentNullException("other");
+                throw new ArgumentNullException(nameof(other));
             }
 
-            this.nodes = new List<DeBruijnNode>(other.Nodes);
-            this.IsSameOrientation = other.IsSameOrientation;
+            nodes = new List<DeBruijnNode>(other.Nodes);
+            IsSameOrientation = other.IsSameOrientation;
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace Bio.Algorithms.Assembly.Padena
         /// </summary>
         public IList<DeBruijnNode> Nodes
         {
-            get { return this.nodes; }
+            get { return nodes; }
         }
 
         /// <summary>

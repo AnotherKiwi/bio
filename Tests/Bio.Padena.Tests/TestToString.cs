@@ -19,14 +19,16 @@ namespace Bio.Padena.Tests
         {
             ISequence seq2 = new Sequence(Alphabets.DNA, "ACAAAAGCAAC");
             ISequence seq1 = new Sequence(Alphabets.DNA, "ATGAAGGCAATACTAGTAGT");
-            IList<ISequence> contigList = new List<ISequence>();
-            contigList.Add(seq1);
-            contigList.Add(seq2);
-            PadenaAssembly denovoAssembly = new PadenaAssembly();
+            IList<ISequence> contigList = new List<ISequence>
+            {
+                seq1,
+                seq2
+            };
+            var denovoAssembly = new PadenaAssembly();
             denovoAssembly.AddContigs(contigList);
 
-            string actualString = denovoAssembly.ToString().Replace(Environment.NewLine, "");
-            string expectedString = "ATGAAGGCAATACTAGTAGTACAAAAGCAAC";
+            var actualString = denovoAssembly.ToString().Replace(Environment.NewLine, "");
+            var expectedString = "ATGAAGGCAATACTAGTAGTACAAAAGCAAC";
             Assert.AreEqual(actualString, expectedString);
         }
     }

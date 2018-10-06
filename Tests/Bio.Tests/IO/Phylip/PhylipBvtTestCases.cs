@@ -133,7 +133,7 @@ namespace Bio.TestAutomation.IO.Phylip
         [Category("Priority0")]
         public void ValidatePhylipParserProperties()
         {
-            PhylipParser parser = new PhylipParser();
+            var parser = new PhylipParser();
             Assert.AreEqual(
                 utilityObj.xmlUtil.GetTextValue(Constants.PhylipPropertyNode,
                 Constants.PhylipDescriptionNode),
@@ -158,13 +158,13 @@ namespace Bio.TestAutomation.IO.Phylip
         void ParserGeneralTestCases(string nodeName, ParserTestAttributes addParam)
         {
             // Gets the Filename
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
 
             Assert.IsFalse(string.IsNullOrEmpty(filePath));
             ApplicationLog.WriteLine($"Phylip Parser BVT: Reading the File from location '{filePath}'");
 
             // Get the range list after parsing.
-            PhylipParser parserObj = new PhylipParser();
+            var parserObj = new PhylipParser();
 
             IEnumerable<ISequenceAlignment> sequenceAlignmentList = null;
             ISequenceAlignment sequenceAlignment = null;
@@ -198,7 +198,7 @@ namespace Bio.TestAutomation.IO.Phylip
             var expectedAlignmentList = new List<Dictionary<string, string>>();
             var expectedAlignmentObj = new Dictionary<string, string>();
 
-            XElement expectedAlignmentNodes = utilityObj.xmlUtil.GetNode(nodeName, Constants.ExpectedAlignmentNode);
+            var expectedAlignmentNodes = utilityObj.xmlUtil.GetNode(nodeName, Constants.ExpectedAlignmentNode);
             IList<XNode> nodes = expectedAlignmentNodes.Nodes().ToList();
 
             //Get all the values from the elements in the node.
@@ -237,12 +237,12 @@ namespace Bio.TestAutomation.IO.Phylip
                 return false;
             }
 
-            int alignmentIndex = 0;
+            var alignmentIndex = 0;
 
             // Validate each output alignment
-            foreach (ISequenceAlignment alignment in actualOutput)
+            foreach (var alignment in actualOutput)
             {
-                Dictionary<string, string> expectedAlignment =
+                var expectedAlignment =
                     expectedOutput[alignmentIndex];
 
                 foreach (Sequence actualSequence in alignment.AlignedSequences[0].Sequences)

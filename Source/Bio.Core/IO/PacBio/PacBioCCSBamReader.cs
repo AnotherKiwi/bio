@@ -22,9 +22,9 @@ namespace Bio.IO.PacBio
 
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
-            BAMParser bp = new BAMParser ();
+            var bp = new BAMParser ();
             var header = bp.GetHeader (stream);
             var field = header.RecordFields.ToList();
 
@@ -54,11 +54,11 @@ namespace Bio.IO.PacBio
         #region IParser implementation
         IEnumerable<ISequence> IParser<ISequence>.Parse (Stream stream)
         {
-            return PacBioCCSBamReader.Parse (stream);
+            return Parse (stream);
         }
         public ISequence ParseOne (Stream stream)
         {
-            return PacBioCCSBamReader.Parse (stream).First();
+            return Parse (stream).First();
         }
         #endregion
         #region IParserWithAlphabet implementation

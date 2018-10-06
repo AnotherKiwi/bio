@@ -16,7 +16,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void TestMultipleFindOneOutputPattern()
         {
-            byte[] b = new byte[6];
+            var b = new byte[6];
             b[0] = (byte)'C';
             b[1] = (byte)'A';
             b[2] = (byte)'A';
@@ -24,11 +24,11 @@ namespace Bio.Tests
             b[4] = (byte)'C';
             b[5] = (byte)'T';
 
-            string expectedSequence = "CAAGCT";
+            var expectedSequence = "CAAGCT";
             ISequence sequence = new Sequence(Alphabets.DNA, b);
 
-            string actual = "";
-            foreach (byte bt in sequence)
+            var actual = "";
+            foreach (var bt in sequence)
             {
                 actual += (char)bt;
             }
@@ -54,7 +54,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void TestSequenceCTor()
         {
-            byte[] b = new byte[6];
+            var b = new byte[6];
             b[0] = (byte)'C';
             b[1] = (byte)'A';
             b[2] = (byte)'A';
@@ -62,11 +62,11 @@ namespace Bio.Tests
             b[4] = (byte)'C';
             b[5] = (byte)'T';
 
-            string expectedSequence = "CAAGCT";
+            var expectedSequence = "CAAGCT";
            ISequence sequence = new Sequence(Alphabets.DNA, b);
 
-            string actual = "";
-            foreach (byte bt in sequence)
+            var actual = "";
+            foreach (var bt in sequence)
             {
                 actual += (char)bt;
             }

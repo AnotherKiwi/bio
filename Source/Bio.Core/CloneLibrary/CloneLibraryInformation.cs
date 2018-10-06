@@ -28,7 +28,7 @@
         /// <returns>Result of reference comparison.</returns>
         public static bool operator ==(CloneLibraryInformation obj1, CloneLibraryInformation obj2)
         {
-            if (System.Object.ReferenceEquals(obj1, obj2))
+            if (ReferenceEquals(obj1, obj2))
             {
                 return true;
             }
@@ -61,9 +61,9 @@
                 return false;
             }
 
-            CloneLibraryInformation info = (CloneLibraryInformation)obj;
-            return ((this.LibraryName == info.LibraryName) && (this.MeanLengthOfInsert == info.MeanLengthOfInsert)
-                && (this.StandardDeviationOfInsert == info.StandardDeviationOfInsert));
+            var info = (CloneLibraryInformation)obj;
+            return ((LibraryName == info.LibraryName) && (MeanLengthOfInsert == info.MeanLengthOfInsert)
+                && (StandardDeviationOfInsert == info.StandardDeviationOfInsert));
         }
 
         /// <summary>

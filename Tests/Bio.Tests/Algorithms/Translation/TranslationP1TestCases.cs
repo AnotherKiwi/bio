@@ -29,13 +29,13 @@ namespace Bio.Tests.Algorithms.Translation
         [Category("Priority1")]
         public void ValidateLookupWithRnaSequence()
         {
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleRnaAlphabetNode, Constants.AlphabetNameNode);
-            string expectedSeq = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSeq = utilityObj.xmlUtil.GetTextValue(
                 Constants.CodonsNode, Constants.ExpectedNormalString);
-            string expectedAminoAcid = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedAminoAcid = utilityObj.xmlUtil.GetTextValue(
                 Constants.CodonsNode, Constants.OffsetZeroTwelveCharsAminoAcidV2);
-            string expectedOffset = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedOffset = utilityObj.xmlUtil.GetTextValue(
                 Constants.CodonsNode, Constants.OffsetVaule);
             string aminoAcid = null;
 
@@ -60,18 +60,18 @@ namespace Bio.Tests.Algorithms.Translation
         [Category("Priority1")]
         public void ValidateLookupWithOffsetValueSix()
         {
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleRnaAlphabetNode, Constants.AlphabetNameNode);
-            string expectedSeq = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSeq = utilityObj.xmlUtil.GetTextValue(
                 Constants.CodonsNode, Constants.ExpectedNormalString);
-            string expectedAminoAcid = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedAminoAcid = utilityObj.xmlUtil.GetTextValue(
                 Constants.CodonsNode, Constants.OffsetZeroSixCharsAminoAcidV2);
-            string expectedOffset = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedOffset = utilityObj.xmlUtil.GetTextValue(
                 Constants.CodonsNode, Constants.OffsetVaule2);
 
             var seq = new Sequence(Utility.GetAlphabet(alphabetName), expectedSeq);
             // Validate Codons lookup method.
-            string aminoAcid = Codons.Lookup(seq, Convert.ToInt32(expectedOffset, null)).ToString();
+            var aminoAcid = Codons.Lookup(seq, Convert.ToInt32(expectedOffset, null)).ToString();
 
             // Validate amino acids for a given sequence.
             Assert.AreEqual(expectedAminoAcid, aminoAcid);
@@ -90,18 +90,18 @@ namespace Bio.Tests.Algorithms.Translation
         [Category("Priority1")]
         public void ValidateLookupWithSixChars()
         {
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleRnaAlphabetNode, Constants.AlphabetNameNode);
-            string expectedSeq = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSeq = utilityObj.xmlUtil.GetTextValue(
                 Constants.CodonsNode, Constants.SequenceWithSixChars);
-            string expectedAminoAcid = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedAminoAcid = utilityObj.xmlUtil.GetTextValue(
                 Constants.CodonsNode, Constants.OffsetZeroSixCharsAminoAcidV2);
-            string expectedOffset = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedOffset = utilityObj.xmlUtil.GetTextValue(
                 Constants.CodonsNode, Constants.OffsetVaule2);
 
             var seq = new Sequence(Utility.GetAlphabet(alphabetName), expectedSeq);
             // Validate Codons lookup method.
-            string aminoAcid = Codons.Lookup(seq, Convert.ToInt32(expectedOffset, null)).ToString();
+            var aminoAcid = Codons.Lookup(seq, Convert.ToInt32(expectedOffset, null)).ToString();
 
             // Validate amino acids for a given sequencet.
             Assert.AreEqual(expectedAminoAcid, aminoAcid);
@@ -120,21 +120,21 @@ namespace Bio.Tests.Algorithms.Translation
         [Category("Priority1")]
         public void ValidateLookupWithDnaSequence()
         {
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleDnaAlphabetNode, Constants.AlphabetNameNode);
-            string expectedSeq = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSeq = utilityObj.xmlUtil.GetTextValue(
                 Constants.TranscribeNode, Constants.DnaSequence);
-            string expectedAminoAcid = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedAminoAcid = utilityObj.xmlUtil.GetTextValue(
                 Constants.CodonsNode, Constants.DnaSeqAminoAcidV2);
-            string expectedOffset = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedOffset = utilityObj.xmlUtil.GetTextValue(
                 Constants.CodonsNode, Constants.OffsetVaule);
 
             var seq = new Sequence(Utility.GetAlphabet(alphabetName), expectedSeq);
             // Transcribe DNA to RNA.
-            ISequence transcribe = Transcription.Transcribe(seq);
+            var transcribe = Transcription.Transcribe(seq);
 
             // Validate Codons lookup method.
-            string aminoAcid = Codons.Lookup(transcribe, Convert.ToInt32(expectedOffset, null)).ToString();
+            var aminoAcid = Codons.Lookup(transcribe, Convert.ToInt32(expectedOffset, null)).ToString();
 
             // Validate amino acids for a given sequence.
             Assert.AreEqual(expectedAminoAcid, aminoAcid);
@@ -153,7 +153,7 @@ namespace Bio.Tests.Algorithms.Translation
         [Category("Priority1")]
         public void ValidateRnaCodonsTraslationWithOffset()
         {
-            this.ValidateCodonsTranslationWithOffset(Constants.RnaSequenceWithThreeChars,
+            ValidateCodonsTranslationWithOffset(Constants.RnaSequenceWithThreeChars,
                                                 Constants.OffsetVaule, Constants.AminoAcidForThreeCharsV2);
         }
 
@@ -166,7 +166,7 @@ namespace Bio.Tests.Algorithms.Translation
         [Category("Priority1")]
         public void ValidateRnaCodonsTraslationWithThreeOffset()
         {
-            this.ValidateCodonsTranslationWithOffset(Constants.RnaSequenceWithTwelveChars,
+            ValidateCodonsTranslationWithOffset(Constants.RnaSequenceWithTwelveChars,
                                                 Constants.OffsetVaule1, Constants.AminoAcidForOffsetTwelveV2);
         }
 
@@ -184,13 +184,13 @@ namespace Bio.Tests.Algorithms.Translation
         public void ValidateSingleDnaSymbolComplementation()
         {
             // Get Node values from XML.
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(Constants.SimpleDnaAlphabetNode, Constants.AlphabetNameNode);
-            string expectedSeq = this.utilityObj.xmlUtil.GetTextValue(Constants.ComplementNode, Constants.DnaSymbol);
-            string expectedComplement = this.utilityObj.xmlUtil.GetTextValue(Constants.ComplementNode, Constants.DnaSymbolComplement);
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(Constants.SimpleDnaAlphabetNode, Constants.AlphabetNameNode);
+            var expectedSeq = utilityObj.xmlUtil.GetTextValue(Constants.ComplementNode, Constants.DnaSymbol);
+            var expectedComplement = utilityObj.xmlUtil.GetTextValue(Constants.ComplementNode, Constants.DnaSymbolComplement);
 
             // Complement DNA Sequence.
             ISequence seq = new Sequence(Utility.GetAlphabet(alphabetName), expectedSeq);
-            ISequence complement = seq.GetComplementedSequence();
+            var complement = seq.GetComplementedSequence();
 
             // Validate Single DNA Symbol Complement.
             Assert.AreEqual(expectedComplement, complement.ConvertToString());
@@ -211,11 +211,11 @@ namespace Bio.Tests.Algorithms.Translation
         public void ValidateMoreThanTwelveCharsDnaComplementation()
         {
             // Get Node values from XML.
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleDnaAlphabetNode, Constants.AlphabetNameNode);
-            string expectedSeq = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSeq = utilityObj.xmlUtil.GetTextValue(
                 Constants.ComplementNode, Constants.DnaSymbol);
-            string expectedComplement = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedComplement = utilityObj.xmlUtil.GetTextValue(
                 Constants.ComplementNode, Constants.DnaSymbolComplement);
             ISequence complement = null;
 
@@ -241,11 +241,11 @@ namespace Bio.Tests.Algorithms.Translation
         public void ValidateSingleSymbolDnaRevComplementation()
         {
             // Get Node values from XML.
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleDnaAlphabetNode, Constants.AlphabetNameNode);
-            string expectedSeq = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSeq = utilityObj.xmlUtil.GetTextValue(
                 Constants.ComplementNode, Constants.DnaSymbol);
-            string expectedRevComplement = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedRevComplement = utilityObj.xmlUtil.GetTextValue(
                 Constants.ComplementNode, Constants.DnaSymbolRevComplement);
             ISequence revComplement = null;
 
@@ -272,11 +272,11 @@ namespace Bio.Tests.Algorithms.Translation
         public void ValidateMoreThanTwelveCharsDnaRevComplementation()
         {
             // Get Node values from XML.
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleDnaAlphabetNode, Constants.AlphabetNameNode);
-            string expectedSeq = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSeq = utilityObj.xmlUtil.GetTextValue(
                 Constants.ComplementNode, Constants.DnaSequenceWithMoreThanTwelveChars);
-            string expectedComplement = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedComplement = utilityObj.xmlUtil.GetTextValue(
                 Constants.ComplementNode, Constants.DnaRevComplementForMoreThanTwelveChars);
             ISequence revComplement = null;
 
@@ -302,11 +302,11 @@ namespace Bio.Tests.Algorithms.Translation
         public void ValidateDnaComplementationWithTweleveChars()
         {
             // Get Node values from XML.
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleDnaAlphabetNode, Constants.AlphabetNameNode);
-            string expectedSeq = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSeq = utilityObj.xmlUtil.GetTextValue(
                 Constants.ComplementNode, Constants.DnaSequence);
-            string expectedComplement = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedComplement = utilityObj.xmlUtil.GetTextValue(
                 Constants.ComplementNode, Constants.DnaComplement);
             ISequence complement = null;
 
@@ -332,11 +332,11 @@ namespace Bio.Tests.Algorithms.Translation
         public void ValidateDnaReverseComplementationWithTweleveChars()
         {
             // Get Node values from XML.
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleDnaAlphabetNode, Constants.AlphabetNameNode);
-            string expectedSeq = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSeq = utilityObj.xmlUtil.GetTextValue(
                 Constants.ComplementNode, Constants.DnaSequence);
-            string expectedRevComplement = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedRevComplement = utilityObj.xmlUtil.GetTextValue(
                 Constants.ComplementNode, Constants.DnaRevComplement);
             ISequence revComplement = null;
 
@@ -366,11 +366,11 @@ namespace Bio.Tests.Algorithms.Translation
         public void ValidateSingleSymbolTranscribe()
         {
             // Get Node values from XML.
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleDnaAlphabetNode, Constants.AlphabetNameNode);
-            string expectedSeq = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSeq = utilityObj.xmlUtil.GetTextValue(
                 Constants.TranscribeNode, Constants.DnaSymbol);
-            string expectedTranscribe = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedTranscribe = utilityObj.xmlUtil.GetTextValue(
                 Constants.TranscribeNode, Constants.DnaSymbolTranscribeV2);
             ISequence transcribe = null;
 
@@ -397,11 +397,11 @@ namespace Bio.Tests.Algorithms.Translation
         public void ValidateMoreThanTwelveCharsDnaTranscribe()
         {
             // Get Node values from XML.
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleDnaAlphabetNode, Constants.AlphabetNameNode);
-            string expectedSeq = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSeq = utilityObj.xmlUtil.GetTextValue(
                 Constants.ComplementNode, Constants.DnaSequenceWithMoreThanTwelveChars);
-            string expectedTranscribe = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedTranscribe = utilityObj.xmlUtil.GetTextValue(
                 Constants.TranscribeNode, Constants.DnaTranscribeForMoreThanTwelveCharsV2);
             ISequence transcribe = null;
 
@@ -427,11 +427,11 @@ namespace Bio.Tests.Algorithms.Translation
         public void ValidateSingleSymbolDnaReverseTranscribe()
         {
             // Get Node values from XML.
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleDnaAlphabetNode, Constants.AlphabetNameNode);
-            string expectedSeq = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSeq = utilityObj.xmlUtil.GetTextValue(
                 Constants.TranscribeNode, Constants.DnaSymbol);
-            string expectedTranscribe = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedTranscribe = utilityObj.xmlUtil.GetTextValue(
                 Constants.TranscribeNode, Constants.DnaSymbolRevTranscribe);
             ISequence transcribe = null;
 
@@ -439,7 +439,7 @@ namespace Bio.Tests.Algorithms.Translation
             // Reverse Transcribe DNA Symbol.
             transcribe = Transcription.Transcribe(seq);
 
-            ISequence revTranscribe = Transcription.ReverseTranscribe(transcribe);
+            var revTranscribe = Transcription.ReverseTranscribe(transcribe);
 
             // Validate Single DNA Symbol Reverse transcribe.
             Assert.AreEqual(new string(revTranscribe.Select(a => (char) a).ToArray()), expectedTranscribe);
@@ -459,18 +459,18 @@ namespace Bio.Tests.Algorithms.Translation
         public void ValidateMoreThanTwelveCharsDnaReverseTranscribe()
         {
             // Get Node values from XML.
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleDnaAlphabetNode, Constants.AlphabetNameNode);
-            string expectedSeq = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSeq = utilityObj.xmlUtil.GetTextValue(
                 Constants.ComplementNode, Constants.DnaSequenceWithMoreThanTwelveChars);
-            string expectedTranscribe = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedTranscribe = utilityObj.xmlUtil.GetTextValue(
                 Constants.TranscribeNode, Constants.DnaRevTranscribeForMoreThanTwelveChars);
             ISequence transcribe = null;
 
             var seq = new Sequence(Utility.GetAlphabet(alphabetName), expectedSeq);
             // Reverse Transcribe DNA Sequence.
             transcribe = Transcription.Transcribe(seq);
-            ISequence revTranscribe = Transcription.ReverseTranscribe(transcribe);
+            var revTranscribe = Transcription.ReverseTranscribe(transcribe);
 
             // Validate reverse transcribe.for a given sequence.
             Assert.AreEqual(new string(revTranscribe.Select(a => (char) a).ToArray()), expectedTranscribe);
@@ -489,7 +489,7 @@ namespace Bio.Tests.Algorithms.Translation
         [Category("Priority1")]
         public void ValidateDnaToRnaTranscribeWithThreeChars()
         {
-            this.ValidateDnaToRnaTranscribe(Constants.DnaSequenceWithThreeChars,
+            ValidateDnaToRnaTranscribe(Constants.DnaSequenceWithThreeChars,
                                        Constants.TranscribeForThreeCharsV2);
         }
 
@@ -502,7 +502,7 @@ namespace Bio.Tests.Algorithms.Translation
         [Category("Priority1")]
         public void ValidateDnaToRnaTranscribeWithTwelveChars()
         {
-            this.ValidateDnaToRnaTranscribe(Constants.DnaSequenceWithTweleveChars,
+            ValidateDnaToRnaTranscribe(Constants.DnaSequenceWithTweleveChars,
                                        Constants.TranscribeForTweleveCharsV2);
         }
 
@@ -515,7 +515,7 @@ namespace Bio.Tests.Algorithms.Translation
         [Category("Priority1")]
         public void ValidateRnaToDnaReverseTranscribeWithThreeChars()
         {
-            this.ValidateRnaToDnaReverseTranscribe(Constants.TranscribeForThreeChars,
+            ValidateRnaToDnaReverseTranscribe(Constants.TranscribeForThreeChars,
                                               Constants.DnaSequenceWithThreeCharsV2);
         }
 
@@ -528,7 +528,7 @@ namespace Bio.Tests.Algorithms.Translation
         [Category("Priority1")]
         public void ValidateRnaToDnaReverseTranscribeWithTwelveChars()
         {
-            this.ValidateRnaToDnaReverseTranscribe(Constants.TranscribeForTweleveChars,
+            ValidateRnaToDnaReverseTranscribe(Constants.TranscribeForTweleveChars,
                                               Constants.DnaSequenceWithTweleveCharsV2);
         }
 
@@ -546,9 +546,9 @@ namespace Bio.Tests.Algorithms.Translation
         public void ValidateTwelveCharsProteinTranslation()
         {
             // Get Node values from XML.
-            string expectedSeq = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSeq = utilityObj.xmlUtil.GetTextValue(
                 Constants.TranslationNode, Constants.RnaSequenceWithTwelveChars);
-            string expectedProtein = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedProtein = utilityObj.xmlUtil.GetTextValue(
                 Constants.TranslationNode, Constants.AminoAcidForTwelveChars);
             ISequence protein = null;
 
@@ -572,7 +572,7 @@ namespace Bio.Tests.Algorithms.Translation
         public void ValidateSingleSymbolTranslation()
         {
             // Get Node values from XML.
-            string expectedSeq = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSeq = utilityObj.xmlUtil.GetTextValue(
                 Constants.TranscribeNode, Constants.DnaSymbol);
             ISequence protein = null;
 
@@ -597,9 +597,9 @@ namespace Bio.Tests.Algorithms.Translation
         public void ValidateMoreThanTwelveCharsProteinTranslation()
         {
             // Get Node values from XML.
-            string expectedSeq = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSeq = utilityObj.xmlUtil.GetTextValue(
                 Constants.TranslationNode, Constants.RnaSequenceWithMoreThanTwelveChars);
-            string expectedProtein = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedProtein = utilityObj.xmlUtil.GetTextValue(
                 Constants.TranslationNode, Constants.AminoAcidForMoreThanTwelveChars);
             ISequence protein = null;
 
@@ -623,11 +623,11 @@ namespace Bio.Tests.Algorithms.Translation
         public void ValidateSixCharsProteinTranslation()
         {
             // Get Node values from XML.
-            string expectedSeq = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSeq = utilityObj.xmlUtil.GetTextValue(
                 Constants.TranslationNode, Constants.RnaSequence);
-            string expectedProtein = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedProtein = utilityObj.xmlUtil.GetTextValue(
                 Constants.TranslationNode, Constants.AminoAcidForSixChars);
-            string expectedOffset = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedOffset = utilityObj.xmlUtil.GetTextValue(
                 Constants.CodonsNode, Constants.OffsetVaule);
             ISequence protein = null;
 
@@ -653,9 +653,9 @@ namespace Bio.Tests.Algorithms.Translation
         public void ValidateProteinTranslationForAmbiguousRna()
         {
             // Get Node values from XML.
-            string expectedSeq = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSeq = utilityObj.xmlUtil.GetTextValue(
                 Constants.TranslationNode, Constants.AmbiguousRnaSequence);
-            string expectedProtein = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedProtein = utilityObj.xmlUtil.GetTextValue(
                 Constants.TranslationNode, Constants.AmbiguousProteinSequence);
             ISequence protein = null;
 
@@ -679,11 +679,11 @@ namespace Bio.Tests.Algorithms.Translation
         public void ValidateTwelveCharsProteinTranslationWithOffset()
         {
             // Get Node values from XML.
-            string expectedSeq = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSeq = utilityObj.xmlUtil.GetTextValue(
                 Constants.TranslationNode, Constants.RnaSequenceWithTwelveChars);
-            string expectedProtein = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedProtein = utilityObj.xmlUtil.GetTextValue(
                 Constants.TranslationNode, Constants.AminoAcidForMoreOffsetThree);
-            string expectedOffset = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedOffset = utilityObj.xmlUtil.GetTextValue(
                 Constants.CodonsNode, Constants.OffsetVaule1);
             ISequence protein = null;
 
@@ -708,11 +708,11 @@ namespace Bio.Tests.Algorithms.Translation
         public void ValidateDnaProteinTranslation()
         {
             // Get Node values from XML.
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleDnaAlphabetNode, Constants.AlphabetNameNode);
-            string expectedSeq = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSeq = utilityObj.xmlUtil.GetTextValue(
                 Constants.TranscribeNode, Constants.DnaSequence);
-            string expectedProtein = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedProtein = utilityObj.xmlUtil.GetTextValue(
                 Constants.TranslationNode, Constants.AminoAcidForSixCharsV2);
             ISequence transcribe = null;
 
@@ -723,7 +723,7 @@ namespace Bio.Tests.Algorithms.Translation
             // Protein Translation.
             ISequence proteinTranslation = new Sequence(Alphabets.RNA,
                                                         new string(transcribe.Select(a => (char) a).ToArray()));
-            ISequence protein = ProteinTranslation.Translate(proteinTranslation);
+            var protein = ProteinTranslation.Translate(proteinTranslation);
 
             // Validate Protein Translation.
             Assert.AreEqual(expectedProtein, new string(protein.Select(a => (char) a).ToArray()));
@@ -741,11 +741,11 @@ namespace Bio.Tests.Algorithms.Translation
         public void ValidateTwelveCharsProteinTranslationWithOffsetSix()
         {
             // Get Node values from XML.
-            string expectedSeq = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSeq = utilityObj.xmlUtil.GetTextValue(
                 Constants.TranslationNode, Constants.RnaSequenceWithTwelveChars);
-            string expectedProtein = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedProtein = utilityObj.xmlUtil.GetTextValue(
                 Constants.TranslationNode, Constants.AminoAcidForOffsetSix);
-            string expectedOffset = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedOffset = utilityObj.xmlUtil.GetTextValue(
                 Constants.CodonsNode, Constants.OffsetVaule2);
             ISequence protein = null;
 
@@ -770,9 +770,9 @@ namespace Bio.Tests.Algorithms.Translation
         public void ValidateTwelveCharsProteinTranslationWithOffsetTwelve()
         {
             // Get Node values from XML.
-            string expectedSeq = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSeq = utilityObj.xmlUtil.GetTextValue(
                 Constants.TranslationNode, Constants.RnaSequenceWithTwelveChars);
-            string expectedOffset = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedOffset = utilityObj.xmlUtil.GetTextValue(
                 Constants.CodonsNode, Constants.OffsetVaule3);
             ISequence protein = null;
 
@@ -797,11 +797,11 @@ namespace Bio.Tests.Algorithms.Translation
         public void ValidateMoreThanTwelveCharsProteinTranslationWithOffsetTwelve()
         {
             // Get Node values from XML.
-            string expectedSeq = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedSeq = utilityObj.xmlUtil.GetTextValue(
                 Constants.TranslationNode, Constants.RnaSequenceWithMoreThanTwelveChars);
-            string expectedProtein = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedProtein = utilityObj.xmlUtil.GetTextValue(
                 Constants.TranslationNode, Constants.AminoAcidForOffsetTwelve);
-            string expectedOffset = this.utilityObj.xmlUtil.GetTextValue(
+            var expectedOffset = utilityObj.xmlUtil.GetTextValue(
                 Constants.CodonsNode, Constants.OffsetVaule3);
             ISequence protein = null;
 
@@ -826,13 +826,13 @@ namespace Bio.Tests.Algorithms.Translation
         public void ValidateDnaProteinTranslationWithOffset()
         {
             // Get Node values from XML.
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(Constants.SimpleDnaAlphabetNode,
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(Constants.SimpleDnaAlphabetNode,
                                                                   Constants.AlphabetNameNode);
-            string expectedSeq = this.utilityObj.xmlUtil.GetTextValue(Constants.TranscribeNode,
+            var expectedSeq = utilityObj.xmlUtil.GetTextValue(Constants.TranscribeNode,
                                                                  Constants.DnaSequence);
-            string expectedProtein = this.utilityObj.xmlUtil.GetTextValue(Constants.TranslationNode,
+            var expectedProtein = utilityObj.xmlUtil.GetTextValue(Constants.TranslationNode,
                                                                      Constants.AminoAcidForOffsetTwelveDna);
-            string expectedOffset = this.utilityObj.xmlUtil.GetTextValue(Constants.CodonsNode,
+            var expectedOffset = utilityObj.xmlUtil.GetTextValue(Constants.CodonsNode,
                                                                     Constants.OffsetVaule1);
             ISequence transcribe = null;
 
@@ -843,7 +843,7 @@ namespace Bio.Tests.Algorithms.Translation
             // Protein Translation by passing offset value.
             ISequence proteinTranslation = new Sequence(Alphabets.RNA,
                                                         new string(transcribe.Select(a => (char) a).ToArray()));
-            ISequence protein = ProteinTranslation.Translate(proteinTranslation,
+            var protein = ProteinTranslation.Translate(proteinTranslation,
                                                              Convert.ToInt32(expectedOffset, null));
 
             // Validate Protein Translation.
@@ -862,11 +862,11 @@ namespace Bio.Tests.Algorithms.Translation
         public void ValidateRnaProteinTranslationWithThreeOffset()
         {
             // Get Node values from XML.
-            string expectedSeq = this.utilityObj.xmlUtil.GetTextValue(Constants.TranslationNode,
+            var expectedSeq = utilityObj.xmlUtil.GetTextValue(Constants.TranslationNode,
                                                                  Constants.RnaSequenceWithTwelveChars);
-            string expectedProtein = this.utilityObj.xmlUtil.GetTextValue(Constants.TranslationNode,
+            var expectedProtein = utilityObj.xmlUtil.GetTextValue(Constants.TranslationNode,
                                                                      Constants.AminoAcidForMoreOffsetThree);
-            string expectedOffset = this.utilityObj.xmlUtil.GetTextValue(Constants.CodonsNode,
+            var expectedOffset = utilityObj.xmlUtil.GetTextValue(Constants.CodonsNode,
                                                                     Constants.OffsetVaule1);
             ISequence protein = null;
 
@@ -896,11 +896,11 @@ namespace Bio.Tests.Algorithms.Translation
                                                          string offsetNode, string aminoAcidNode)
         {
             // Get Node values from XML.
-            string expectedSeq = this.utilityObj.xmlUtil.GetTextValue(Constants.TranslationNode,
+            var expectedSeq = utilityObj.xmlUtil.GetTextValue(Constants.TranslationNode,
                                                                  sequenceNode);
-            string expectedAminoAcid = this.utilityObj.xmlUtil.GetTextValue(Constants.TranslationNode,
+            var expectedAminoAcid = utilityObj.xmlUtil.GetTextValue(Constants.TranslationNode,
                                                                        aminoAcidNode);
-            string expectedOffset = this.utilityObj.xmlUtil.GetTextValue(Constants.CodonsNode, offsetNode);
+            var expectedOffset = utilityObj.xmlUtil.GetTextValue(Constants.CodonsNode, offsetNode);
             string aminoAcid = null;
 
             // Translate Rna to corresponding amino acid.
@@ -921,11 +921,11 @@ namespace Bio.Tests.Algorithms.Translation
         private void ValidateDnaToRnaTranscribe(string sequenceNode, string transcribeNode)
         {
             // Get Node values from XML.
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(Constants.SimpleDnaAlphabetNode,
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(Constants.SimpleDnaAlphabetNode,
                                                                   Constants.AlphabetNameNode);
-            string expectedSeq = this.utilityObj.xmlUtil.GetTextValue(Constants.TranscribeNode,
+            var expectedSeq = utilityObj.xmlUtil.GetTextValue(Constants.TranscribeNode,
                                                                  sequenceNode);
-            string expectedTranscribe = this.utilityObj.xmlUtil.GetTextValue(Constants.TranscribeNode,
+            var expectedTranscribe = utilityObj.xmlUtil.GetTextValue(Constants.TranscribeNode,
                                                                         transcribeNode);
             ISequence transcribe = null;
 
@@ -949,11 +949,11 @@ namespace Bio.Tests.Algorithms.Translation
         private void ValidateRnaToDnaReverseTranscribe(string sequenceNode, string revTranscribeNode)
         {
             // Get Node values from XML.
-            string alphabetName = this.utilityObj.xmlUtil.GetTextValue(Constants.SimpleRnaAlphabetNode,
+            var alphabetName = utilityObj.xmlUtil.GetTextValue(Constants.SimpleRnaAlphabetNode,
                                                                   Constants.AlphabetNameNode);
-            string expectedRnaSeq = this.utilityObj.xmlUtil.GetTextValue(Constants.TranscribeNode,
+            var expectedRnaSeq = utilityObj.xmlUtil.GetTextValue(Constants.TranscribeNode,
                                                                     sequenceNode);
-            string expectedReverseTranscribe = this.utilityObj.xmlUtil.GetTextValue(Constants.TranscribeNode,
+            var expectedReverseTranscribe = utilityObj.xmlUtil.GetTextValue(Constants.TranscribeNode,
                                                                                revTranscribeNode);
             ISequence revTranscribe = null;
 

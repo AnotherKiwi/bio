@@ -50,7 +50,7 @@ namespace Bio.Util.ArgumentParser
         {
             get
             {
-                for (int i = 0; i < _argList.Count - 1; i++)
+                for (var i = 0; i < _argList.Count - 1; i++)
                 {
                     if (IsFlag(_argList[i]))
                     {
@@ -207,7 +207,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns>The type of default value.</returns>
         protected T ExtractOptionalInternal<T>(string flag, T defaultValue, bool removeFlagAndValue, string defaultParseArgsOrNull)
         {
-            int argIndex = FindFlag(flag);
+            var argIndex = FindFlag(flag);
 
             if (argIndex == -1)
             {
@@ -254,8 +254,8 @@ namespace Bio.Util.ArgumentParser
             if (!string.IsNullOrWhiteSpace(defaultParseArgsOrNull)) // we know we're parsing via ConstructorArguments. 
             {
                 if (!defaultParseArgsOrNull.StartsWith("(")) defaultParseArgsOrNull = "(" + defaultParseArgsOrNull + ")";
-                ConstructorArguments defaultArgs = new ConstructorArguments(defaultParseArgsOrNull);
-                ConstructorArguments baseArgs = new ConstructorArguments(_argList[argPosition]);
+                var defaultArgs = new ConstructorArguments(defaultParseArgsOrNull);
+                var baseArgs = new ConstructorArguments(_argList[argPosition]);
                 t = baseArgs.Construct<T>(defaultArgsOrNull: defaultArgs, checkComplete: true);
             }
             else
@@ -285,7 +285,7 @@ namespace Bio.Util.ArgumentParser
         /// <param name="parseObjectTypeOrNull">Parse Object Type Or Null.</param>
         public void CheckNoMoreOptions(int? numberOfRequiredArgumentsOrNull, string parseObjectTypeOrNull)
         {
-            foreach (string arg in _argList)
+            foreach (var arg in _argList)
             {
                 if (IsFlag(arg)) throw new ParseException(string.Format(CultureInfo.CurrentCulture, Properties.Resource.UnknownOption,  arg,
                    string.IsNullOrEmpty(parseObjectTypeOrNull) ? string.Empty : string.Format(CultureInfo.CurrentCulture, Properties.Resource.ParsingError, parseObjectTypeOrNull)));
@@ -305,8 +305,8 @@ namespace Bio.Util.ArgumentParser
         /// <param name="optionalFlag">Optional Flag.</param>
         public void ForceOptionalFlag(string optionalFlag)
         {
-            this.ExtractOptionalFlag(optionalFlag);
-            this.AddOptionalFlag(optionalFlag);
+            ExtractOptionalFlag(optionalFlag);
+            AddOptionalFlag(optionalFlag);
         }
 
         /// <summary>
@@ -317,8 +317,8 @@ namespace Bio.Util.ArgumentParser
         /// <param name="argumentValue">Argument Value.</param>
         public void ForceOptional<T>(string argumentName, T argumentValue)
         {
-            this.ExtractOptional<T>(argumentName, argumentValue);
-            this.AddOptional(argumentName, argumentValue);
+            ExtractOptional<T>(argumentName, argumentValue);
+            AddOptional(argumentName, argumentValue);
         }
 
         /// <summary>
@@ -350,8 +350,8 @@ namespace Bio.Util.ArgumentParser
         /// <returns>True if flag found.</returns>
         public int FindFlag(string flag)
         {
-            int idx = -1;
-            for (int i = 0; i < _argList.Count; i++)
+            var idx = -1;
+            for (var i = 0; i < _argList.Count; i++)
             {
                 if (MatchesFlag(_argList[i], flag))
                 {
@@ -413,7 +413,7 @@ namespace Bio.Util.ArgumentParser
             if (this == null || obj == null)
                 return false;
 
-            return obj.GetType().Equals(this.GetType()) && _argList.SequenceEqual(((ArgumentCollection)obj)._argList);
+            return obj.GetType().Equals(GetType()) && _argList.SequenceEqual(((ArgumentCollection)obj)._argList);
         }
 
         /// <summary>
@@ -433,7 +433,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns>Clone of object.</returns>
         public object Clone()
         {
-            ArgumentCollection result = (ArgumentCollection)MemberwiseClone();
+            var result = (ArgumentCollection)MemberwiseClone();
             result._argList = new List<string>(_argList);
             return result;
         }
@@ -459,9 +459,9 @@ namespace Bio.Util.ArgumentParser
         /// Gets enumerator.
         /// </summary>
         /// <returns>Enumerable Argument list.</returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
 
         #endregion
@@ -491,7 +491,7 @@ namespace Bio.Util.ArgumentParser
             {
                 try
                 {
-                    T runnable = Construct<T>();
+                    var runnable = Construct<T>();
                     runnable.Run();
                 }
                 catch (Exception e)
@@ -541,7 +541,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns>Instance of type T from this ArgumentCollection.</returns>
         public T Construct<T>(bool checkComplete = true, ArgumentCollection defaultArgsOrNull = null)
         {
-            Type tType = typeof(T);
+            var tType = typeof(T);
 
             object result = CreateInstance<T>();
             if (result == null)
@@ -566,12 +566,12 @@ namespace Bio.Util.ArgumentParser
         public void ParseInto<T>(T parseResult, bool checkComplete = true, ArgumentCollection defaultArgsOrNull = null)
         {
             object result = parseResult;
-            Type tType = result.GetType();   // update type in case we constructed a derived type
+            var tType = result.GetType();   // update type in case we constructed a derived type
             tType.IsConstructable().Enforce("Type {0} does not have a public default constructor and so cannot be parsed.", tType);
 
             if (HelpIsRequested())
             {
-                HelpException helpMsg = CreateHelpMessage(result, includeDateStamp: true);
+                var helpMsg = CreateHelpMessage(result, includeDateStamp: true);
                 throw helpMsg;
             }
 
@@ -582,7 +582,7 @@ namespace Bio.Util.ArgumentParser
             GetParsableMembers(tType, out optionals, out requireds, out constructingStrings, out requiredParams);
 
             // if the user wants to know the exact string used to construct this object, set these fields.
-            string constString = this.ToString();
+            var constString = ToString();
             constructingStrings.ForEach(member => SetFieldOrPropertyValue(ref result, member, constString));
 
             LoadOptionalArguments(ref result, optionals);
@@ -609,7 +609,7 @@ namespace Bio.Util.ArgumentParser
 
             foreach (var flagAndValue in defaultArgsOrNull.FlagValuePairs)
             {
-                if (!this.ContainsOptionalFlag(flagAndValue.Key))
+                if (!ContainsOptionalFlag(flagAndValue.Key))
                 {
                     if (flagAndValue.Value == null) // is a flag from a CommandArguments
                         AddOptionalFlag(flagAndValue.Key);
@@ -645,8 +645,8 @@ namespace Bio.Util.ArgumentParser
         private T CreateInstance<T>()
         {
             CheckForHelp<T>(SubtypeName);
-            Type t = typeof(T);
-            string subtypeName = SubtypeName;
+            var t = typeof(T);
+            var subtypeName = SubtypeName;
 
             // first, see if subtypeName is simply refering to T
             if (subtypeName != null && subtypeName.Equals(t.ToTypeString(), StringComparison.CurrentCultureIgnoreCase))
@@ -663,11 +663,11 @@ namespace Bio.Util.ArgumentParser
             Type subtype;
             if (subtypeName != null)
             {
-                List<string> subtypeNamesToTry = new List<string> { subtypeName };
+                var subtypeNamesToTry = new List<string> { subtypeName };
                 if (t.IsGenericType && !SubtypeName.Contains('<'))
                     subtypeNamesToTry.Add(subtypeName + "<" + t.GetGenericArguments().Select(arg => arg.Name).StringJoin(",") + ">");
 
-                foreach (string subtypeNameToTry in subtypeNamesToTry)
+                foreach (var subtypeNameToTry in subtypeNamesToTry)
                 {
                     if (TypeFactory.TryGetType(subtypeNameToTry, t, out subtype) && subtype.HasPublicDefaultConstructor())
                         return (T)Activator.CreateInstance(subtype);
@@ -695,14 +695,14 @@ namespace Bio.Util.ArgumentParser
             //Helper.CheckCondition<ParseException>(_argList.Count > 0, "Expected at least one remaining argument for the params argument {0}", requiredParamsArg.Name);
             if (_argList.Count == 1 || _argList.Count == 2 && IsFlag(_argList[0]))
             {
-                this.LoadArgument(ref result, requiredParamsArg, isOptional: _argList.Count == 2);
+                LoadArgument(ref result, requiredParamsArg, isOptional: _argList.Count == 2);
             }
             else
             {
-                string remainingArgsAsList = string.Format("({0})", _argList.StringJoin(ConstructorArguments.ArgumentDelimiter.ToString()));
+                var remainingArgsAsList = string.Format("({0})", _argList.StringJoin(ConstructorArguments.ArgumentDelimiter.ToString()));
                 _argList.Clear();
                 _argList.Add(remainingArgsAsList);
-                this.LoadArgument(ref result, requiredParamsArg, isOptional: false);
+                LoadArgument(ref result, requiredParamsArg, isOptional: false);
             }
         }
 
@@ -717,7 +717,7 @@ namespace Bio.Util.ArgumentParser
         /// <param name="checkComplete">Check Complete.</param>
         private void LoadRequiredArguments(ref object result, ref MemberInfo requiredParams, IEnumerable<MemberInfo> requireds, bool checkComplete)
         {
-            List<MemberInfo> unparsedRequireds = new List<MemberInfo>();
+            var unparsedRequireds = new List<MemberInfo>();
             foreach (var member in requireds)
             {
                 if (!LoadArgument(ref result, member, true))    // try to load it as an optional arg first.
@@ -743,9 +743,9 @@ namespace Bio.Util.ArgumentParser
         /// <param name="optionals">List of optional parameters.</param>
         private void LoadOptionalArguments(ref object result, IEnumerable<MemberInfo> optionals)
         {
-            foreach (MemberInfo member in optionals)
+            foreach (var member in optionals)
             {
-                string flag = member.Name;
+                var flag = member.Name;
                 if (TreatOptionAsFlag(result, member))  // load as a flag if and only if it's a boolean and the default is false.
                 {
                     LoadFlag(ref result, member);
@@ -765,7 +765,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns></returns>
         private static bool TreatOptionAsFlag(object defaultObject, MemberInfo member)
         {
-            Type memberType = GetActualParsingFieldOrPropertyType(member);
+            var memberType = GetActualParsingFieldOrPropertyType(member);
             return memberType.Equals(typeof(bool)) && !(bool)GetFieldOrPropertyValue(defaultObject, member);
         }
 
@@ -777,7 +777,7 @@ namespace Bio.Util.ArgumentParser
         /// <param name="member">The member.</param>
         private void LoadFlag(ref object result, MemberInfo member)
         {
-            bool value = ExtractOptionalFlag(member.Name);
+            var value = ExtractOptionalFlag(member.Name);
 
             SetFieldOrPropertyValue(ref result, member, value);
         }
@@ -790,19 +790,19 @@ namespace Bio.Util.ArgumentParser
         /// <param name="value">Object Value.</param>
         private static void SetFieldOrPropertyValue(ref object obj, MemberInfo member, object value)
         {
-            Type declaredType = GetFieldOrPropertyType(member);
+            var declaredType = GetFieldOrPropertyType(member);
             value = ImplicitlyCastValueToType(value, declaredType);
 
             try
             {
-                FieldInfo field = member as FieldInfo;
+                var field = member as FieldInfo;
                 if (field != null)
                 {
                     field.SetValue(obj, value);
                 }
                 else
                 {
-                    PropertyInfo property = member as PropertyInfo;
+                    var property = member as PropertyInfo;
                     Helper.CheckCondition<ParseException>(property != null, "Invalid member type {0}", member.MemberType);
                     property.SetValue(obj, value, null);
                 }
@@ -848,14 +848,14 @@ namespace Bio.Util.ArgumentParser
                 return true;
             }
 
-            Type sourceType = value.GetType();
+            var sourceType = value.GetType();
 
             if (sourceType.Equals(destinationTypeOrNull) || sourceType.IsSubclassOfOrImplements(destinationTypeOrNull))
             {
                 result = value;
                 return true;
             }
-            MethodInfo castMethod = destinationTypeOrNull.GetMethods(BindingFlags.Public | BindingFlags.Static).Append(sourceType.GetMethods(BindingFlags.Public | BindingFlags.Static))
+            var castMethod = destinationTypeOrNull.GetMethods(BindingFlags.Public | BindingFlags.Static).Append(sourceType.GetMethods(BindingFlags.Public | BindingFlags.Static))
                 .FirstOrDefault(method =>
                     {
                         if ((method.Name == "op_Implicit" || method.Name == "op_Explicit") && method.ReturnType.IsInstanceOf(destinationTypeOrNull))
@@ -875,12 +875,12 @@ namespace Bio.Util.ArgumentParser
             }
             else if (value is ICollection && destinationTypeOrNull.Implements(typeof(ICollection)))
             {
-                Type nestedDestinationType = destinationTypeOrNull.GetGenericArguments()[0];
+                var nestedDestinationType = destinationTypeOrNull.GetGenericArguments()[0];
                 result = Activator.CreateInstance(destinationTypeOrNull);
                 var addMethod = result.GetType().GetMethod("Add", new Type[] { nestedDestinationType });
-                foreach (object obj in ((ICollection)value))
+                foreach (var obj in ((ICollection)value))
                 {
-                    object destinationObject = ImplicitlyCastValueToType(obj, nestedDestinationType);
+                    var destinationObject = ImplicitlyCastValueToType(obj, nestedDestinationType);
                     addMethod.Invoke(result, new object[] { destinationObject });
                 }
                 return true;
@@ -900,7 +900,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns>Object that contains field or property value.</returns>
         private static object GetFieldOrPropertyValue(object obj, MemberInfo member)
         {
-            FieldInfo field = member as FieldInfo;
+            var field = member as FieldInfo;
             object value;
             if (field != null)
             {
@@ -908,7 +908,7 @@ namespace Bio.Util.ArgumentParser
             }
             else
             {
-                PropertyInfo property = member as PropertyInfo;
+                var property = member as PropertyInfo;
                 Helper.CheckCondition<ParseException>(property != null, "Invalid member type {0}", member.MemberType);
                 value = property.GetValue(obj, null);
             }
@@ -934,14 +934,14 @@ namespace Bio.Util.ArgumentParser
         /// <returns>Type of field or property.</returns>
         private static Type GetFieldOrPropertyType(MemberInfo memberInfo)
         {
-            FieldInfo field = memberInfo as FieldInfo;
+            var field = memberInfo as FieldInfo;
             if (field != null)
             {
                 return field.FieldType;
             }
             else
             {
-                PropertyInfo property = memberInfo as PropertyInfo;
+                var property = memberInfo as PropertyInfo;
                 Helper.CheckCondition<ParseException>(property != null, "Invalid member type {0}", memberInfo.MemberType);
                 return property.PropertyType;
             }
@@ -957,20 +957,20 @@ namespace Bio.Util.ArgumentParser
         /// <returns>True if the value was loaded from the ArgumentCollection. False otherwise (only can be false if isOption is true)</returns>
         private bool LoadArgument(ref object result, MemberInfo member, bool isOptional)
         {
-            bool isField = member.MemberType == MemberTypes.Field;
-            object defaultValue = GetFieldOrPropertyValue(result, member);
-            Type parseTypeOrNull = member.GetParseTypeOrNull();
+            var isField = member.MemberType == MemberTypes.Field;
+            var defaultValue = GetFieldOrPropertyValue(result, member);
+            var parseTypeOrNull = member.GetParseTypeOrNull();
 
             defaultValue = ImplicitlyCastValueToType(defaultValue, parseTypeOrNull);
 
-            MethodInfo argCollectionExtractOption = this.GetType().GetMethod(isOptional ? "ExtractOptionalInternal" : "ExtractAtInternal", BindingFlags.NonPublic | BindingFlags.Instance);
-            MethodInfo genericExtractOption = argCollectionExtractOption.MakeGenericMethod(GetActualParsingFieldOrPropertyType(member));
+            var argCollectionExtractOption = GetType().GetMethod(isOptional ? "ExtractOptionalInternal" : "ExtractAtInternal", BindingFlags.NonPublic | BindingFlags.Instance);
+            var genericExtractOption = argCollectionExtractOption.MakeGenericMethod(GetActualParsingFieldOrPropertyType(member));
 
-            object[] args = isOptional ?
+            var args = isOptional ?
                 new object[] { member.Name, defaultValue, true /*remove flag and value*/, member.GetDefaultParametersOrNull() } :
                 new object[] { member.Name, 0 /* remove the next item*/, member.GetDefaultParametersOrNull(), true /* remove value */ };
 
-            bool flagIsPresent = FindFlag(member.Name) >= 0;
+            var flagIsPresent = FindFlag(member.Name) >= 0;
 
             object newValue = null;
             try
@@ -1008,11 +1008,11 @@ namespace Bio.Util.ArgumentParser
             requireds = new List<MemberInfo>();
             constructingStrings = new List<MemberInfo>();
             requiredParams = null;
-            Type[] typeInheritanceHierarchy = tType.GetInheritanceHierarchy();
+            var typeInheritanceHierarchy = tType.GetInheritanceHierarchy();
 
-            foreach (MemberInfo memInfo in tType.GetMembers(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance))
+            foreach (var memInfo in tType.GetMembers(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance))
             {
-                ParseAttribute parseAttribute = memInfo.GetParseAttribute(typeInheritanceHierarchy);
+                var parseAttribute = memInfo.GetParseAttribute(typeInheritanceHierarchy);
 
                 switch (parseAttribute.Action)
                 {
@@ -1046,9 +1046,9 @@ namespace Bio.Util.ArgumentParser
         protected void PopulateFromParsableObject(object obj, bool suppressDefaults = true)
         {
             if (obj == null)
-                throw new ArgumentNullException("obj");
+                throw new ArgumentNullException(nameof(obj));
 
-            Type type = obj.GetType();
+            var type = obj.GetType();
             type.IsConstructable().Enforce("object of type {0} is not parsable. Missing public default constructor.", type);
 
             List<MemberInfo> optionals, requireds, constructingStrings;
@@ -1065,7 +1065,7 @@ namespace Bio.Util.ArgumentParser
             {
 
                 object defaultObj = null;
-                int paramCount = optionals.Count + requireds.Count;
+                var paramCount = optionals.Count + requireds.Count;
                 foreach (var member in optionals)
                 {
                     AddMemberToCollection(ref defaultObj, obj, member, isOptional: true, suppressDefaults: suppressDefaults, labelRequireds: paramCount > 1);
@@ -1105,13 +1105,13 @@ namespace Bio.Util.ArgumentParser
         {
             if (value != null)
             {
-                Type valueType = value.GetType();
+                var valueType = value.GetType();
                 if ((parseTypeOrNull ?? baseType).ParseAsCollection())// || (parseTypeOrNull == null && valueType.FindInterfaces(Module.FilterTypeNameIgnoreCase, "ICollection*").Length > 0))
                 {
-                    List<string> memberStrings = new List<string>();
-                    foreach (object o in (IEnumerable)value)
+                    var memberStrings = new List<string>();
+                    foreach (var o in (IEnumerable)value)
                     {
-                        string s = o.GetType().IsConstructable() ? ConstructorArguments.ToString(o, suppressDefaults) : o.ToString();
+                        var s = o.GetType().IsConstructable() ? ConstructorArguments.ToString(o, suppressDefaults) : o.ToString();
                         memberStrings.Add(s);
                     }
                     value = string.Format("{0}({1})", baseType.Equals(valueType) ? "" : value.GetType().ToTypeString(), memberStrings.StringJoin(","));
@@ -1129,20 +1129,20 @@ namespace Bio.Util.ArgumentParser
         /// <param name="suppressDefaults">Suppresses Defaults.</param>
         private void AddRequiredParamsToCollection(object obj, MemberInfo requiredParams, bool suppressDefaults = true)
         {
-            object paramList = GetFieldOrPropertyValue(obj, requiredParams);
+            var paramList = GetFieldOrPropertyValue(obj, requiredParams);
             if (paramList == null)  // e.g. constructing Help
                 return;
-            Type listType = paramList.GetType();
+            var listType = paramList.GetType();
             Helper.CheckCondition<ParseException>(listType.ToTypeString().StartsWith("List<"), "The required params attribute must be placed on a member of type List<T>", listType.ToTypeString());
-            Type genericType = listType.GetGenericArguments().Single();
+            var genericType = listType.GetGenericArguments().Single();
 
-            foreach (object item in (IEnumerable)paramList)
+            foreach (var item in (IEnumerable)paramList)
             {
-                object valueToAdd = item;
+                var valueToAdd = item;
                 if (!genericType.HasParseMethod() && !TryValueAsCollectionString(ref valueToAdd, genericType, null, suppressDefaults) && genericType.IsConstructable())
                 {
-                    object valueAsParseType = ImplicitlyCastValueToType(valueToAdd, genericType);
-                    ConstructorArguments constructor = ConstructorArguments.FromParsable(valueAsParseType, parseTypeOrNull: genericType, suppressDefaults: suppressDefaults);
+                    var valueAsParseType = ImplicitlyCastValueToType(valueToAdd, genericType);
+                    var constructor = ConstructorArguments.FromParsable(valueAsParseType, parseTypeOrNull: genericType, suppressDefaults: suppressDefaults);
                     valueToAdd = constructor.ToString();
                 }
                 Add(valueToAdd);
@@ -1160,21 +1160,21 @@ namespace Bio.Util.ArgumentParser
         /// <param name="labelRequireds">Required params Label.</param>
         private void AddMemberToCollection(ref object defaultObjOrNull, object obj, MemberInfo member, bool isOptional, bool suppressDefaults = true, bool labelRequireds = true)
         {
-            string name = member.Name;
-            object value = GetFieldOrPropertyValue(obj, member);
-            Type parseType = GetActualParsingFieldOrPropertyType(member);
+            var name = member.Name;
+            var value = GetFieldOrPropertyValue(obj, member);
+            var parseType = GetActualParsingFieldOrPropertyType(member);
 
             if (defaultObjOrNull == null && isOptional && (value is bool || suppressDefaults))
                 defaultObjOrNull = Activator.CreateInstance(obj.GetType());
 
-            object defaultValue = defaultObjOrNull == null ? null : GetFieldOrPropertyValue(defaultObjOrNull, member);
-            bool valueIsDefault = value == defaultValue || value != null && value.Equals(defaultValue) || defaultValue != null && defaultValue.Equals(value);
-            bool needToWriteValue = !suppressDefaults || !isOptional || !valueIsDefault;
+            var defaultValue = defaultObjOrNull == null ? null : GetFieldOrPropertyValue(defaultObjOrNull, member);
+            var valueIsDefault = value == defaultValue || value != null && value.Equals(defaultValue) || defaultValue != null && defaultValue.Equals(value);
+            var needToWriteValue = !suppressDefaults || !isOptional || !valueIsDefault;
 
             if (needToWriteValue && !parseType.HasParseMethod() && !TryValueAsCollectionString(ref value, member, suppressDefaults) && value != null && parseType.IsConstructable() && value.GetType().IsConstructable())
             {
-                object valueAsParseType = ImplicitlyCastValueToType(value, member.GetParseTypeOrNull());
-                ConstructorArguments constructor = ConstructorArguments.FromParsable(valueAsParseType, parseTypeOrNull: parseType, suppressDefaults: suppressDefaults);
+                var valueAsParseType = ImplicitlyCastValueToType(value, member.GetParseTypeOrNull());
+                var constructor = ConstructorArguments.FromParsable(valueAsParseType, parseTypeOrNull: parseType, suppressDefaults: suppressDefaults);
                 if (string.IsNullOrEmpty(constructor.SubtypeName))
                     constructor.SubtypeName = parseType.ToTypeString();
                 value = constructor.ToString();
@@ -1209,10 +1209,10 @@ namespace Bio.Util.ArgumentParser
         public static HelpException CreateHelpMessage(Type t, bool includeDateStamp = true)
         {
             if (t == null)
-                throw new ArgumentNullException("t");
+                throw new ArgumentNullException(nameof(t));
 
-            object defaultInstance = Activator.CreateInstance(t);
-            ConstructorArguments args = new ConstructorArguments();
+            var defaultInstance = Activator.CreateInstance(t);
+            var args = new ConstructorArguments();
             return args.CreateHelpMessage(defaultInstance, includeDateStamp);
         }
 
@@ -1224,7 +1224,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns>Created Help exception.</returns>
         public HelpException CreateHelpMessage<T>(bool includeDateStamp = true)
         {
-            T result = CreateInstance<T>();
+            var result = CreateInstance<T>();
             return CreateHelpMessage(result, includeDateStamp);
         }
 
@@ -1242,14 +1242,14 @@ namespace Bio.Util.ArgumentParser
             _argList.Clear();
             PopulateFromParsableObject(defaultInstance, suppressDefaults: false);
 
-            Type type = defaultInstance.GetType();
+            var type = defaultInstance.GetType();
 
             List<MemberInfo> optionals, requireds, constructingStrings;
             MemberInfo requiredParams;
             GetParsableMembers(type, out optionals, out requireds, out constructingStrings, out requiredParams);
-            XDocument docFile = LoadXmlCodeDocumentationFile(type);
+            var docFile = LoadXmlCodeDocumentationFile(type);
 
-            StringBuilder helpMsg = new StringBuilder("Help for parsing type " + defaultInstance.GetType().ToTypeString());
+            var helpMsg = new StringBuilder("Help for parsing type " + defaultInstance.GetType().ToTypeString());
             helpMsg.AppendFormat("<br><br>USAGE: " + CreateUsageString(requireds, requiredParams, type));
             helpMsg.Append("<br>Use help as the value for complex options for more info. Required arguments can be named like optionals.");
             helpMsg.Append("<br><br>" + GetXmlDocumentation(type, docFile));
@@ -1261,7 +1261,7 @@ namespace Bio.Util.ArgumentParser
                 helpMsg.Append(" [NONE]");
             }
             helpMsg.Append("<indent>");
-            foreach (MemberInfo requirement in requireds)
+            foreach (var requirement in requireds)
             {
                 helpMsg.Append("<br>" + CreateHelpMessage(defaultInstance, requirement, false));
                 helpMsg.Append("<br><indent>" + GetXmlDocumentation(requirement, docFile) + "</indent><br>");
@@ -1279,7 +1279,7 @@ namespace Bio.Util.ArgumentParser
                 helpMsg.Append(" [NONE]");
             }
             helpMsg.Append("<indent>");
-            foreach (MemberInfo option in optionals)
+            foreach (var option in optionals)
             {
                 helpMsg.Append("<br>" + CreateHelpMessage(defaultInstance, option, true));
                 helpMsg.Append("<br><indent>" + GetXmlDocumentation(option, docFile) + "</indent><br>");
@@ -1300,7 +1300,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns></returns>
         private static string GetXmlDocumentation(Type type, XDocument xmlDoc)
         {
-            string xmlTagName = "T:" + type.FullName;
+            var xmlTagName = "T:" + type.FullName;
             return GetXmlDocumentation(xmlTagName, xmlDoc);
         }
 
@@ -1312,10 +1312,10 @@ namespace Bio.Util.ArgumentParser
         /// <returns>Xml Documentation.</returns>
         private static string GetXmlDocumentation(MemberInfo member, XDocument xmlDoc)
         {
-            FieldInfo field = member as FieldInfo;
-            PropertyInfo property = member as PropertyInfo;
+            var field = member as FieldInfo;
+            var property = member as PropertyInfo;
 
-            string xmlTagName = field != null ?
+            var xmlTagName = field != null ?
                 "F:" + field.DeclaringType.FullName + "." + field.Name :
                 "P:" + property.DeclaringType.FullName + "." + property.Name;
 
@@ -1344,11 +1344,11 @@ namespace Bio.Util.ArgumentParser
             if (xmlElements.Count > 0)
             {
                 Helper.CheckCondition<ParseException>(xmlElements.Count == 1, "Problem with xml documentation file: there are {0} entries for type {1}", xmlElements.Count, xmlTagName);
-                XElement summaryElement = xmlElements[0].Element("summary");
+                var summaryElement = xmlElements[0].Element("summary");
 
                 if (null != summaryElement)
                 {
-                    string docText = summaryElement.Value.Trim();
+                    var docText = summaryElement.Value.Trim();
 
                     docText = _doubleNewLineRegEx.Replace(docText, "<br><br>");
                     return docText;
@@ -1369,9 +1369,9 @@ namespace Bio.Util.ArgumentParser
         /// <returns>Xml document.</returns>
         private static XDocument LoadXmlCodeDocumentationFile(Type type)
         {
-            XDocument xmlDoc = xmlDocumentCache.GetOrAdd(type, (t) =>
+            var xmlDoc = xmlDocumentCache.GetOrAdd(type, (t) =>
             {
-                string xmlFile = Path.ChangeExtension(t.Assembly.Location, "xml");
+                var xmlFile = Path.ChangeExtension(t.Assembly.Location, "xml");
                 if (!File.Exists(xmlFile))
                     return null;
 
@@ -1391,16 +1391,16 @@ namespace Bio.Util.ArgumentParser
         /// <returns>Created Help Message.</returns>
         private string CreateHelpMessage(object defaultInstance, MemberInfo member, bool isOption)
         {
-            string flag = CreateFlagString(member.Name);//isOption ? CreateFlagString(member.Name) : member.Name;
-            object value = GetFieldOrPropertyValue(defaultInstance, member);
-            Type memberType = GetActualParsingFieldOrPropertyType(member);
-            string memberTypeString = memberType.ToTypeString();
+            var flag = CreateFlagString(member.Name);//isOption ? CreateFlagString(member.Name) : member.Name;
+            var value = GetFieldOrPropertyValue(defaultInstance, member);
+            var memberType = GetActualParsingFieldOrPropertyType(member);
+            var memberTypeString = memberType.ToTypeString();
 
 
             if (!TryValueAsCollectionString(ref value, member, suppressDefaults: true) && value != null)
                 value = value.ToParseString(memberType, suppressDefaults: true);
 
-            string helpMsg = isOption ?
+            var helpMsg = isOption ?
                 (this is CommandArguments && value is bool && !(bool)value ?    // is this a boolean flag for CommandArguments?
                     string.Format("{0} <BooleanFlag> [false if absent]", flag) :
                     string.Format("{0} <{1}> default: {2}", flag, memberTypeString, value == null ? "null" : value.ToString())) :
@@ -1418,9 +1418,9 @@ namespace Bio.Util.ArgumentParser
         {
             if (value != null && (value.Equals("help", StringComparison.CurrentCultureIgnoreCase) || value.Equals("help!", StringComparison.CurrentCultureIgnoreCase)))
             {
-                Type type = typeof(T);
+                var type = typeof(T);
 
-                HelpException help = GetHelpOnKnownSubtypes(type);
+                var help = GetHelpOnKnownSubtypes(type);
                 throw help;
             }
         }
@@ -1438,19 +1438,19 @@ namespace Bio.Util.ArgumentParser
             throw new NotImplementedException("Silverlight doesn't have XDocument, so we don't support help.");
 #else
             if (type == null)
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
-            XDocument xmlDoc = LoadXmlCodeDocumentationFile(type);
-            string typeDocumentation = GetXmlDocumentation(type, xmlDoc).Replace(NO_DOCUMENTATION_STRING, "");
+            var xmlDoc = LoadXmlCodeDocumentationFile(type);
+            var typeDocumentation = GetXmlDocumentation(type, xmlDoc).Replace(NO_DOCUMENTATION_STRING, "");
             if (type.IsEnum)
             {
                 sb.AppendFormat("Enum type {0}: {1}", type.ToTypeString(), typeDocumentation);
                 sb.Append("<br>OPTIONS:<br><indent>");
                 foreach (var member in type.GetFields().Where(f => f.IsStatic))
                 {
-                    string docstring = GetXmlDocumentation(member, xmlDoc);
+                    var docstring = GetXmlDocumentation(member, xmlDoc);
                     sb.Append(member.Name + "<br>");
                     if (docstring != NO_DOCUMENTATION_STRING)
                         sb.AppendFormat("<indent>{0}</indent><br>", docstring);
@@ -1488,7 +1488,7 @@ namespace Bio.Util.ArgumentParser
                 sb.Append("<indent>");
                 foreach (var implementingType in implementingTypes.OrderBy(t => t.ToTypeString()))
                 {
-                    string docstring = GetXmlDocumentation(implementingType, LoadXmlCodeDocumentationFile(implementingType));
+                    var docstring = GetXmlDocumentation(implementingType, LoadXmlCodeDocumentationFile(implementingType));
                     sb.Append(implementingType.ToTypeString() + "<br>");
                     if (docstring != NO_DOCUMENTATION_STRING)
                         sb.AppendFormat("<indent>{0}</indent><br>", docstring);
@@ -1521,7 +1521,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns>List of types.</returns>
         private static IEnumerable<T> EnumerateValuesOfTypeFromParsable<T>(object values, Type parseTypeOfObj)
         {
-            Type targetType = typeof(T);
+            var targetType = typeof(T);
             if (targetType.IsInstanceOfType(values))
             {
                 yield return (T)values;
@@ -1529,21 +1529,21 @@ namespace Bio.Util.ArgumentParser
 
             parseTypeOfObj.IsConstructable().Enforce("object of type {0} is not parsable.", parseTypeOfObj);
 
-            Type[] typeInheritanceHierarchy = parseTypeOfObj.GetInheritanceHierarchy();
+            var typeInheritanceHierarchy = parseTypeOfObj.GetInheritanceHierarchy();
 
             var fields = parseTypeOfObj.GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance).Cast<MemberInfo>();
             var properties = parseTypeOfObj.GetProperties(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance).Where(prop => prop.GetIndexParameters().Length == 0).Cast<MemberInfo>();
 
-            foreach (MemberInfo member in fields.Append(properties))
+            foreach (var member in fields.Append(properties))
             {
                 var parseAction = member.GetParseAttribute(typeInheritanceHierarchy).Action;
-                Type parseType = GetActualParsingFieldOrPropertyType(member);
+                var parseType = GetActualParsingFieldOrPropertyType(member);
                 if (parseAction == ParseAction.Ignore && !parseType.IsInstanceOf(targetType) && !parseType.IsCollection<T>())
                 {
                     continue;
                 }
 
-                object value = GetFieldOrPropertyValue(values, member);
+                var value = GetFieldOrPropertyValue(values, member);
                 if (value == null) continue;
 
                 object valueAsParseType;
@@ -1551,7 +1551,7 @@ namespace Bio.Util.ArgumentParser
 
                 if (parseType.IsCollection<T>())
                 {
-                    foreach (T enumerableResult in (IEnumerable<T>)valueAsParseType)
+                    foreach (var enumerableResult in (IEnumerable<T>)valueAsParseType)
                     {
                         yield return enumerableResult;
                     }
@@ -1562,7 +1562,7 @@ namespace Bio.Util.ArgumentParser
                 // only recurse on parsable members.
                 if (parseAction != ParseAction.Ignore && parseType.IsConstructable() && !parseType.HasParseMethod())
                 {
-                    foreach (T nestedResult in EnumerateValuesOfTypeFromParsable<T>(valueAsParseType))
+                    foreach (var nestedResult in EnumerateValuesOfTypeFromParsable<T>(valueAsParseType))
                         yield return nestedResult;
                 }
                 else if (targetType.IsInstanceOfType(valueAsParseType)) // the recursive call will enumerate it. Only enumerate if we don't go into the recursive call.

@@ -41,21 +41,21 @@ namespace Bio.Util.ArgumentParser
         /// <returns>Formatted Message.</returns>
         private static string FormatMessage(string message, bool includeDateStamp)
         {
-            int windowWidth =
+            var windowWidth =
 #if !SILVERLIGHT
                 Console.BufferWidth;
 #else
                 80;
 #endif
-            int indentWidth = 5;
-            string indentString = Enumerable.Repeat(' ', 5).StringJoin("");
+            var indentWidth = 5;
+            var indentString = Enumerable.Repeat(' ', 5).StringJoin("");
 
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
 
-            StringBuilder line = new StringBuilder(windowWidth);
-            int indents = 0;
+            var line = new StringBuilder(windowWidth);
+            var indents = 0;
 
-            foreach (string word in Tokens(message))
+            foreach (var word in Tokens(message))
             {
                 switch (word)
                 {
@@ -97,7 +97,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns>DateCompiledString.</returns>
         private static string GetDateCompiledString()
         {
-            DateTime compileDate = SpecialFunctions.DateProgramWasCompiled();
+            var compileDate = SpecialFunctions.DateProgramWasCompiled();
             if (compileDate.Ticks > 0)
                 return "Program last modified " + compileDate;
             else
@@ -123,10 +123,10 @@ namespace Bio.Util.ArgumentParser
         private static IEnumerable<string> Tokens(string str)
         {
             str = str.Replace("\n\n", "<br><br>");
-            string wordBeforeTag = "";
-            StringBuilder word = new StringBuilder();
+            var wordBeforeTag = "";
+            var word = new StringBuilder();
 
-            int tagDepth = 0;
+            var tagDepth = 0;
             foreach (var c in str)
             {
                 if (c == '<')
@@ -147,7 +147,7 @@ namespace Bio.Util.ArgumentParser
                         tagDepth--;
                         if (tagDepth == 0)
                         {
-                            string tag = word.ToString();
+                            var tag = word.ToString();
                             if (KnownTag(tag))
                             {
                                 if (wordBeforeTag.Length > 0)

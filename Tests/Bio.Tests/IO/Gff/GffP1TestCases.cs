@@ -562,7 +562,7 @@ using NUnit.Framework;
             bool isFilePath, ParserParameters parseParam)
         {
             // Gets the expected sequence from the Xml
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName,
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.FilePathNode).TestDir();
 
             Assert.IsTrue(File.Exists(filePath));
@@ -573,7 +573,7 @@ using NUnit.Framework;
                 filePath));
 
             IList<ISequence> seqs = null;
-            GffParser parserObj = new GffParser();
+            var parserObj = new GffParser();
 
             switch (parseParam)
             {
@@ -595,32 +595,32 @@ using NUnit.Framework;
             }
 
             Assert.IsNotNull(seqs);
-            int expectedCount = 1;
+            var expectedCount = 1;
             Assert.AreEqual(expectedCount, seqs.Count);
             ApplicationLog.WriteLine(string.Format("Gff Parser P1 : Number of Sequences found are '{0}'.",
                 seqs.Count.ToString((IFormatProvider)null)));
 
-            bool valFeat = ValidateFeatures(seqs[0], nodeName);
+            var valFeat = ValidateFeatures(seqs[0], nodeName);
 
             Assert.IsTrue(valFeat);
             ApplicationLog.WriteLine(
                 "Gff Parser P1 : Successfully validated all the Features for a give Sequence in GFF File.");
 
-            string expectedSequence = utilityObj.xmlUtil.GetTextValue(nodeName,
+            var expectedSequence = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.ExpectedSequenceNode);
 
-            Sequence seq = (Sequence)seqs[0];
+            var seq = (Sequence)seqs[0];
             Assert.IsNotNull(seq);                   
-            string sequenceInString = new string(seq.Select(x => (char)x).ToArray());
+            var sequenceInString = new string(seq.Select(x => (char)x).ToArray());
 
             Assert.AreEqual(expectedSequence, sequenceInString);
             ApplicationLog.WriteLine(string.Format((IFormatProvider)null,   
                 "Gff Parser P1: The Gff sequence '{0}' validation after Parse() is found to be as expected.",
                 sequenceInString));
 
-            byte[] TempSeqData1 = new byte[seq.Count];
+            var TempSeqData1 = new byte[seq.Count];
 
-            for (int i = 0; i < seq.Count; i++)
+            for (var i = 0; i < seq.Count; i++)
             {
                 TempSeqData1[i] = seq[i];
             }
@@ -630,7 +630,7 @@ using NUnit.Framework;
                 "Gff Parser P1: The Gff Length sequence '{0}' is as expected.",
                 expectedSequence.Length));
 
-            string expectedAlphabet = utilityObj.xmlUtil.GetTextValue(nodeName,
+            var expectedAlphabet = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.AlphabetNameNode).ToLower(CultureInfo.CurrentCulture);
 
             Assert.IsNotNull(seq.Alphabet);
@@ -640,7 +640,7 @@ using NUnit.Framework;
                 "Gff Parser P1: The Sequence Alphabet is '{0}' and is as expected.",
                 seq.Alphabet.Name));
 
-            string expectedSequenceId = utilityObj.xmlUtil.GetTextValue(nodeName,
+            var expectedSequenceId = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.SequenceIdNode);
             Assert.AreEqual(expectedSequenceId, seq.ID);
             ApplicationLog.WriteLine(string.Format((IFormatProvider)null,
@@ -658,7 +658,7 @@ using NUnit.Framework;
             bool isFilePath)
         {
             // Gets the expected sequence from the Xml
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName,
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.FilePathNode).TestDir();
 
             Assert.IsTrue(File.Exists(filePath));
@@ -668,7 +668,7 @@ using NUnit.Framework;
                 "Gff Parser P1 : File Exists in the Path '{0}'.", filePath));
 
             IList<ISequence> seqs = null;
-            GffParser parserObj = new GffParser();
+            var parserObj = new GffParser();
 
             if (isFilePath)
             {
@@ -682,7 +682,7 @@ using NUnit.Framework;
                 }
             }
 
-            int expectedNoOfSeqs = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
+            var expectedNoOfSeqs = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.NumberOfSequencesNode), null);
             Assert.IsNotNull(seqs);
             Assert.AreEqual(expectedNoOfSeqs, seqs.Count);
@@ -690,24 +690,24 @@ using NUnit.Framework;
                 "Gff Parser P1 : Number of Sequences found are '{0}'.",
                 seqs.Count.ToString((IFormatProvider)null)));
 
-            string[] expectedSequences = utilityObj.xmlUtil.GetTextValues(nodeName,
+            var expectedSequences = utilityObj.xmlUtil.GetTextValues(nodeName,
                 Constants.ExpectedSequenesNode);
-            string[] alphabets = utilityObj.xmlUtil.GetTextValues(nodeName,
+            var alphabets = utilityObj.xmlUtil.GetTextValues(nodeName,
                 Constants.AlphabetsNode);
-            string[] seqIds = utilityObj.xmlUtil.GetTextValues(nodeName,
+            var seqIds = utilityObj.xmlUtil.GetTextValues(nodeName,
                 Constants.SequenceIdsNode);
 
-            for (int i = 0; i < expectedNoOfSeqs; i++)
+            for (var i = 0; i < expectedNoOfSeqs; i++)
             {
-                bool valFeat = ValidateMultiSequenceFeatures(seqs[i], i + 1, nodeName);
+                var valFeat = ValidateMultiSequenceFeatures(seqs[i], i + 1, nodeName);
 
                 Assert.IsTrue(valFeat);
                 ApplicationLog.WriteLine(
                     "Gff Parser P1 : Successfully validated all the Features for a give Sequence in GFF File.");
 
-                Sequence seq = (Sequence)seqs[i];
+                var seq = (Sequence)seqs[i];
                 Assert.IsNotNull(seq);                
-                string sequenceInString1 = new string(seq.Select(x => (char)x).ToArray());
+                var sequenceInString1 = new string(seq.Select(x => (char)x).ToArray());
 
                 if (string.Compare(sequenceInString1, sequenceInString1.ToUpper(CultureInfo.CurrentCulture)) == 0)
                 {
@@ -750,41 +750,41 @@ using NUnit.Framework;
         bool ValidateFeatures(ISequence seq, string nodeName)
         {
             // Gets all the Features from the Sequence for Validation
-            List<MetadataListItem<List<string>>> featureList =
+            var featureList =
                 (List<MetadataListItem<List<string>>>)seq.Metadata[Constants.Features];
 
             // Gets all the xml values for validation
-            string[] sequenceNames = utilityObj.xmlUtil.GetTextValues(nodeName,
+            var sequenceNames = utilityObj.xmlUtil.GetTextValues(nodeName,
                 Constants.SequenceNameNodeName);
-            string[] sources = utilityObj.xmlUtil.GetTextValues(nodeName,
+            var sources = utilityObj.xmlUtil.GetTextValues(nodeName,
                 Constants.SourceNodeName);
-            string[] featureNames = utilityObj.xmlUtil.GetTextValues(nodeName,
+            var featureNames = utilityObj.xmlUtil.GetTextValues(nodeName,
                 Constants.FeatureNameNodeName);
-            string[] startValues = utilityObj.xmlUtil.GetTextValues(nodeName,
+            var startValues = utilityObj.xmlUtil.GetTextValues(nodeName,
                 Constants.StartNodeName);
-            string[] endValues = utilityObj.xmlUtil.GetTextValues(nodeName,
+            var endValues = utilityObj.xmlUtil.GetTextValues(nodeName,
                 Constants.EndNodeName);
-            string[] scoreValues = utilityObj.xmlUtil.GetTextValues(nodeName,
+            var scoreValues = utilityObj.xmlUtil.GetTextValues(nodeName,
                 Constants.ScoreNodeName);
-            string[] strandValues = utilityObj.xmlUtil.GetTextValues(nodeName,
+            var strandValues = utilityObj.xmlUtil.GetTextValues(nodeName,
                 Constants.StrandNodeName);
-            string[] frameValues = utilityObj.xmlUtil.GetTextValues(nodeName,
+            var frameValues = utilityObj.xmlUtil.GetTextValues(nodeName,
                 Constants.FrameNodeName);
-            string[] attributeValues = utilityObj.xmlUtil.GetTextValues(nodeName,
+            var attributeValues = utilityObj.xmlUtil.GetTextValues(nodeName,
                 Constants.AttributesNodeName);
-            int i = 0;
+            var i = 0;
 
             // Loop through each and every feature and validate the same.
-            foreach (MetadataListItem<List<string>> feature in featureList)
+            foreach (var feature in featureList)
             {
-                Dictionary<string, List<string>> itemList = feature.SubItems;
+                var itemList = feature.SubItems;
 
                 // Read specific feature Item and validate
                 // Validate Start
                 try
                 {
-                    List<string> st = itemList[Constants.FeatureStart];
-                    foreach (string sin in st)
+                    var st = itemList[Constants.FeatureStart];
+                    foreach (var sin in st)
                     {
                         if (0 != string.Compare(startValues[i], sin,
                             CultureInfo.CurrentCulture, CompareOptions.IgnoreCase))
@@ -796,8 +796,8 @@ using NUnit.Framework;
                 // Validate Score
                 try
                 {
-                    List<string> st = itemList[Constants.FeatureScore];
-                    foreach (string sin in st)
+                    var st = itemList[Constants.FeatureScore];
+                    foreach (var sin in st)
                     {
                         if (0 != string.Compare(scoreValues[i], sin,
                             CultureInfo.CurrentCulture, CompareOptions.IgnoreCase))
@@ -809,8 +809,8 @@ using NUnit.Framework;
                 // Validate Strand
                 try
                 {
-                    List<string> st = itemList[Constants.FeatureStrand];
-                    foreach (string sin in st)
+                    var st = itemList[Constants.FeatureStrand];
+                    foreach (var sin in st)
                     {
                         if (0 != string.Compare(strandValues[i], sin,
                             CultureInfo.CurrentCulture, CompareOptions.IgnoreCase))
@@ -822,8 +822,8 @@ using NUnit.Framework;
                 // Validate Source
                 try
                 {
-                    List<string> st = itemList[Constants.FeatureSource];
-                    foreach (string sin in st)
+                    var st = itemList[Constants.FeatureSource];
+                    foreach (var sin in st)
                     {
                         if (0 != string.Compare(sources[i], sin,
                             CultureInfo.CurrentCulture, CompareOptions.IgnoreCase))
@@ -835,8 +835,8 @@ using NUnit.Framework;
                 // Validate End
                 try
                 {
-                    List<string> st = itemList[Constants.FeatureEnd];
-                    foreach (string sin in st)
+                    var st = itemList[Constants.FeatureEnd];
+                    foreach (var sin in st)
                     {
                         if (0 != string.Compare(endValues[i], sin,
                              CultureInfo.CurrentCulture, CompareOptions.IgnoreCase))
@@ -848,8 +848,8 @@ using NUnit.Framework;
                 // Validate Frame
                 try
                 {
-                    List<string> st = itemList[Constants.FeatureFrame];
-                    foreach (string sin in st)
+                    var st = itemList[Constants.FeatureFrame];
+                    foreach (var sin in st)
                     {
                         if (0 != string.Compare(frameValues[i], sin,
                              CultureInfo.CurrentCulture,CompareOptions.IgnoreCase))
@@ -888,7 +888,7 @@ using NUnit.Framework;
             int seqNumber, string nodeName)
         {
             // Gets all the Features from the Sequence for Validation
-            List<MetadataListItem<List<string>>> featureList =
+            var featureList =
                 (List<MetadataListItem<List<string>>>)seq.Metadata[Constants.Features];
 
             // Gets all the xml values for validation
@@ -988,19 +988,19 @@ using NUnit.Framework;
                     break;
             }
 
-            int i = 0;
+            var i = 0;
 
             // Loop through each and every feature and validate the same.
-            foreach (MetadataListItem<List<string>> feature in featureList)
+            foreach (var feature in featureList)
             {
-                Dictionary<string, List<string>> itemList = feature.SubItems;
+                var itemList = feature.SubItems;
 
                 // Read specific feature Item and validate
                 // Validate Start
                 try
                 {
-                    List<string> st = itemList[Constants.FeatureStart];
-                    foreach (string sin in st)
+                    var st = itemList[Constants.FeatureStart];
+                    foreach (var sin in st)
                     {
                         if (0 != string.Compare(startValues[i],
                             sin, CultureInfo.CurrentCulture,CompareOptions.IgnoreCase))
@@ -1012,8 +1012,8 @@ using NUnit.Framework;
                 // Validate Score
                 try
                 {
-                    List<string> st = itemList[Constants.FeatureScore];
-                    foreach (string sin in st)
+                    var st = itemList[Constants.FeatureScore];
+                    foreach (var sin in st)
                     {
                         if (0 != string.Compare(scoreValues[i],
                             sin, CultureInfo.CurrentCulture, CompareOptions.IgnoreCase))
@@ -1025,8 +1025,8 @@ using NUnit.Framework;
                 // Validate Strand
                 try
                 {
-                    List<string> st = itemList[Constants.FeatureStrand];
-                    foreach (string sin in st)
+                    var st = itemList[Constants.FeatureStrand];
+                    foreach (var sin in st)
                     {
                         if (0 != string.Compare(strandValues[i], sin,
                             CultureInfo.CurrentCulture, CompareOptions.IgnoreCase))
@@ -1038,8 +1038,8 @@ using NUnit.Framework;
                 // Validate Source
                 try
                 {
-                    List<string> st = itemList[Constants.FeatureSource];
-                    foreach (string sin in st)
+                    var st = itemList[Constants.FeatureSource];
+                    foreach (var sin in st)
                     {
                         if (0 != string.Compare(sources[i], sin,
                             CultureInfo.CurrentCulture, CompareOptions.IgnoreCase))
@@ -1051,8 +1051,8 @@ using NUnit.Framework;
                 // Validate End
                 try
                 {
-                    List<string> st = itemList[Constants.FeatureEnd];
-                    foreach (string sin in st)
+                    var st = itemList[Constants.FeatureEnd];
+                    foreach (var sin in st)
                     {
                         if (0 != string.Compare(endValues[i], sin,
                             CultureInfo.CurrentCulture, CompareOptions.IgnoreCase))
@@ -1064,8 +1064,8 @@ using NUnit.Framework;
                 // Validate Frame
                 try
                 {
-                    List<string> st = itemList[Constants.FeatureFrame];
-                    foreach (string sin in st)
+                    var st = itemList[Constants.FeatureFrame];
+                    foreach (var sin in st)
                     {
                         if (0 != string.Compare(frameValues[i], sin,
                             CultureInfo.CurrentCulture, CompareOptions.IgnoreCase))
@@ -1101,17 +1101,17 @@ using NUnit.Framework;
         void ValidateFormatGeneralTestCases(string nodeName, bool isFilePath, bool isSequenceList)
         {
             // Gets the expected sequence from the Xml
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
 
             Assert.IsTrue(File.Exists(filePath));
-            GffParser parserObj = new GffParser();
+            var parserObj = new GffParser();
             IList<ISequence> seqs = parserObj.Parse(filePath).ToList();
             var originalSequence = seqs[0];
 
             // Use the formatter to write the original sequences to a temp file            
             ApplicationLog.WriteLine($"Gff Formatter P1: Creating the Temp file '{Constants.GffTempFileName}'.");
 
-            GffFormatter formatter = new GffFormatter { ShouldWriteSequenceData = true };
+            var formatter = new GffFormatter { ShouldWriteSequenceData = true };
             if (isFilePath)
             {
                 formatter.Format(isSequenceList ? seqs : new[] {originalSequence}, Constants.GffTempFileName);
@@ -1125,26 +1125,26 @@ using NUnit.Framework;
             }
 
             // Read the new file, then compare the sequences
-            GffParser newParser = new GffParser(); 
+            var newParser = new GffParser(); 
             IList<ISequence> seqsNew = newParser.Parse(Constants.GffTempFileName).ToList();
 
-            ISequence seqTemp = seqsNew.First();
-            string sequenceInString = seqTemp.ConvertToString();
+            var seqTemp = seqsNew.First();
+            var sequenceInString = seqTemp.ConvertToString();
 
             Assert.IsNotNull(seqTemp);
             ApplicationLog.WriteLine(string.Format("Gff Formatter P1: New Sequence is '{0}'.", sequenceInString));
 
-            bool val = ValidateFeatures(seqTemp, nodeName);
+            var val = ValidateFeatures(seqTemp, nodeName);
             Assert.IsTrue(val);
             ApplicationLog.WriteLine("GFF Formatter P1 : All the features validated successfully.");
 
             // Now compare the sequences.
-            int countNew = seqsNew.Count();
+            var countNew = seqsNew.Count();
             Assert.AreEqual(1, countNew);
             ApplicationLog.WriteLine("The Number of sequences are matching.");
             Assert.AreEqual(originalSequence.ID, seqTemp.ID);           
-            string orgSeq = new string(originalSequence.Select(x => (char)x).ToArray());           
-            string newSeq = new string(seqTemp.Select(x => (char)x).ToArray());
+            var orgSeq = new string(originalSequence.Select(x => (char)x).ToArray());           
+            var newSeq = new string(seqTemp.Select(x => (char)x).ToArray());
 
             Assert.AreEqual(orgSeq, newSeq);
             ApplicationLog.WriteLine(string.Format("Gff Formatter P1: The Gff sequences '{0}' are matching with Format() method.", newSeq));
@@ -1163,23 +1163,23 @@ using NUnit.Framework;
         void ValidateFormatStringTestCases(string nodeName)
         {
             // Gets the expected sequence from the Xml
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName,
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.FilePathNode).TestDir();
 
             Assert.IsTrue(File.Exists(filePath));
             IList<ISequence> seqs = null;
-            GffParser parserObj = new GffParser();
+            var parserObj = new GffParser();
             seqs = parserObj.Parse(filePath).ToList();
-            Sequence originalSequence = (Sequence)seqs[0];
+            var originalSequence = (Sequence)seqs[0];
 
             // Use the formatter to write the original sequences to a temp file            
             ApplicationLog.WriteLine(string.Format("Gff Formatter P1: Creating the Temp file '{0}'.",
                 Constants.GffTempFileName));
 
-            GffFormatter formatter = new GffFormatter { ShouldWriteSequenceData = true };
-            string formatString = formatter.FormatString(originalSequence);
+            var formatter = new GffFormatter { ShouldWriteSequenceData = true };
+            var formatString = formatter.FormatString(originalSequence);
 
-            string expectedString = utilityObj.xmlUtil.GetTextValue(nodeName,
+            var expectedString = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.FormatStringNode);
 
             expectedString =
@@ -1187,7 +1187,7 @@ using NUnit.Framework;
                 DateTime.Today.ToString("yyyy-MM-dd", null));
             expectedString =
                 expectedString.Replace("\r", "").Replace("\n", "").Replace(" ", "").Replace("\t", "");
-            string modifedformatString =
+            var modifedformatString =
                 formatString.Replace("\r", "").Replace("\n", "").Replace(" ", "").Replace("\t", "");
 
             Assert.AreEqual(expectedString.ToLower(CultureInfo.CurrentCulture),
@@ -1210,12 +1210,12 @@ using NUnit.Framework;
         void ValidateFormatMultiSequencesTestCases(string nodeName)
         {
             // Gets the expected sequence from the Xml
-            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName,
+            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.FilePathNode).TestDir();
 
             Assert.IsTrue(File.Exists(filePath));
             IList<ISequence> seqs = null;
-            GffParser parserObj = new GffParser();
+            var parserObj = new GffParser();
             seqs = parserObj.Parse(filePath).ToList();
 
             // Use the formatter to write the original sequences to a temp file            
@@ -1223,35 +1223,35 @@ using NUnit.Framework;
                 "Gff Formatter P1: Creating the Temp file '{0}'.",
                 Constants.GffTempFileName));
 
-            GffFormatter formatter = new GffFormatter { ShouldWriteSequenceData = true };
+            var formatter = new GffFormatter { ShouldWriteSequenceData = true };
             formatter.Format(seqs, Constants.GffTempFileName);
 
-            int noOfSeqs = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
+            var noOfSeqs = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.NumberOfSequencesNode), null);
             Assert.IsNotNull(seqs);
             Assert.AreEqual(noOfSeqs, seqs.Count);
             ApplicationLog.WriteLine(string.Format("Gff Formatter P1 : Number of Sequences found are '{0}'.",
                 seqs.Count.ToString((IFormatProvider)null)));
 
-            string[] expectedSequences = utilityObj.xmlUtil.GetTextValues(nodeName,
+            var expectedSequences = utilityObj.xmlUtil.GetTextValues(nodeName,
                 Constants.ExpectedSequenesNode);
-            string[] alphabets = utilityObj.xmlUtil.GetTextValues(nodeName,
+            var alphabets = utilityObj.xmlUtil.GetTextValues(nodeName,
                 Constants.AlphabetsNode);
-            string[] seqIds = utilityObj.xmlUtil.GetTextValues(nodeName,
+            var seqIds = utilityObj.xmlUtil.GetTextValues(nodeName,
                 Constants.SequenceIdsNode);
 
-            for (int i = 0; i < noOfSeqs; i++)
+            for (var i = 0; i < noOfSeqs; i++)
             {
-                bool valFeat = ValidateMultiSequenceFeatures(seqs[i], i + 1, nodeName);
+                var valFeat = ValidateMultiSequenceFeatures(seqs[i], i + 1, nodeName);
 
                 Assert.IsTrue(valFeat);
                 ApplicationLog.WriteLine(
                     "Gff Formatter P1 : Successfully validated all the Features for a give Sequence in GFF File.");
 
-                Sequence seq = (Sequence)seqs[i];
+                var seq = (Sequence)seqs[i];
                 Assert.IsNotNull(seq);
 
-                string newSeq = new string(seq.Select(x => (char)x).ToArray());
+                var newSeq = new string(seq.Select(x => (char)x).ToArray());
 
                 if (string.Compare(newSeq, newSeq.ToUpper(CultureInfo.CurrentCulture)) == 0)
                 {
@@ -1266,8 +1266,8 @@ using NUnit.Framework;
                     "Gff Formatter P1: The Gff sequence '{0}' validation after Parse() is found to be as expected.",
                     newSeq));
 
-                byte[] TempSeqData = new byte[seq.Count];
-                for (int j = 0; j < seq.Count; j++)
+                var TempSeqData = new byte[seq.Count];
+                for (var j = 0; j < seq.Count; j++)
                 {
                     TempSeqData[j] = seq[j];
                 }

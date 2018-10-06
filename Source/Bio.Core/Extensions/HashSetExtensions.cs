@@ -21,15 +21,15 @@ namespace Bio.Util
         {
             if (hashSet == null)
             {
-                throw new ArgumentNullException("hashSet");
+                throw new ArgumentNullException(nameof(hashSet));
             }
 
             if (sequence == null)
             {
-                throw new ArgumentNullException("sequence");
+                throw new ArgumentNullException(nameof(sequence));
             }
 
-            foreach (T t in sequence)
+            foreach (var t in sequence)
             {
                 hashSet.Add(t);
             }

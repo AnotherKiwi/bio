@@ -23,9 +23,9 @@ namespace Bio.Padena.Tests
             const int DangleThreshold = 3;
             const int RedundantThreshold = 10;
 
-            List<ISequence> readSeqs = TestInputs.GetDanglingReads();
-            this.SequenceReads.Clear();
-            this.SetSequenceReads(readSeqs);
+            var readSeqs = TestInputs.GetDanglingReads();
+            SequenceReads.Clear();
+            SetSequenceReads(readSeqs);
             this.KmerLength = KmerLength;
             DanglingLinksThreshold = DangleThreshold;
             DanglingLinksPurger = new DanglingLinksPurger(DangleThreshold);
@@ -36,23 +36,23 @@ namespace Bio.Padena.Tests
             CreateGraph();
             UnDangleGraph();
             RemoveRedundancy();
-            long graphCount = Graph.NodeCount;
+            var graphCount = Graph.NodeCount;
             long graphEdges = Graph.GetNodes().Select(n => n.ExtensionsCount).Sum();
 
-            IEnumerable<ISequence> contigs = BuildContigs();
-            long contigsBuiltGraphCount = this.Graph.NodeCount;
+            var contigs = BuildContigs();
+            var contigsBuiltGraphCount = Graph.NodeCount;
             long contigsBuilt = Graph.GetNodes().Select(n => n.ExtensionsCount).Sum();
 
             // Compare the two graphs
             Assert.AreEqual(1, contigs.Count());
-            HashSet<string> expectedContigs = new HashSet<string>() 
+            var expectedContigs = new HashSet<string>() 
             { 
                 "ATCGCTAGCATCGAACGATCATT" 
             };
 
-            foreach (ISequence contig in contigs)
+            foreach (var contig in contigs)
             {
-                string s = new string(contig.Select(a => (char)a).ToArray());
+                var s = new string(contig.Select(a => (char)a).ToArray());
                 Assert.IsTrue(expectedContigs.Contains(s));
             }
 
@@ -69,9 +69,9 @@ namespace Bio.Padena.Tests
             const int KmerLength = 6;
             const int RedundantThreshold = 10;
 
-            List<ISequence> readSeqs = TestInputs.GetRedundantPathReads();
+            var readSeqs = TestInputs.GetRedundantPathReads();
             SequenceReads.Clear();
-            this.SetSequenceReads(readSeqs);
+            SetSequenceReads(readSeqs);
             this.KmerLength = KmerLength;
             RedundantPathLengthThreshold = RedundantThreshold;
             RedundantPathsPurger = new RedundantPathsPurger(RedundantThreshold);
@@ -79,16 +79,16 @@ namespace Bio.Padena.Tests
 
             CreateGraph();
             RemoveRedundancy();
-            long graphCount = Graph.NodeCount;
+            var graphCount = Graph.NodeCount;
             long graphEdges = Graph.GetNodes().Select(n => n.ExtensionsCount).Sum();
 
-            IEnumerable<ISequence> contigs = BuildContigs();
-            long contigsBuiltGraphCount = Graph.NodeCount;
+            var contigs = BuildContigs();
+            var contigsBuiltGraphCount = Graph.NodeCount;
             long contigsBuilt = Graph.GetNodes().Select(n => n.ExtensionsCount).Sum();
 
             // Compare the two graphs
             Assert.AreEqual(1, contigs.Count());
-            string s = new string(contigs.ElementAt(0).Select(a => (char)a).ToArray());
+            var s = new string(contigs.ElementAt(0).Select(a => (char)a).ToArray());
             Assert.AreEqual("ATGCCTCCTATCTTAGCGATGCGGTGT", s);
             Assert.AreEqual(graphCount, contigsBuiltGraphCount);
             Assert.AreEqual(graphEdges, contigsBuilt);

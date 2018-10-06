@@ -73,7 +73,7 @@ namespace Bio.Algorithms.Alignment
         {
             if (suffixTree == null)
             {
-                throw new ArgumentNullException("suffixTree");
+                throw new ArgumentNullException(nameof(suffixTree));
             }
 
             // Mummer with the reference sequence.
@@ -90,7 +90,7 @@ namespace Bio.Algorithms.Alignment
         {
             if (referenceSequence == null)
             {
-                throw new ArgumentNullException("referenceSequence");
+                throw new ArgumentNullException(nameof(referenceSequence));
             }
 
             // Mummer with the reference sequence.
@@ -236,7 +236,7 @@ namespace Bio.Algorithms.Alignment
         /// <returns>List of enumerable of delta alignments.</returns>
         public IEnumerable<DeltaAlignment> GetDeltaAlignments(ISequence querySequence, bool isUniqueInReference = true, bool isReversed = false)
         {
-            IList<Cluster> internalClusterList = GetClusters(querySequence, isUniqueInReference, isReversed);
+            var internalClusterList = GetClusters(querySequence, isUniqueInReference, isReversed);
             return internalClusterList.Count > 0
                 ? ProcessCluster(internalClusterList)
                 : Enumerable.Empty<DeltaAlignment>();
@@ -252,7 +252,7 @@ namespace Bio.Algorithms.Alignment
         /// <returns>List of clusters</returns>
         public IList<Cluster> GetClusters(List<MatchExtension> matchExtensionList, bool sortedMatches)
         {
-            ClusterBuilder clusterBuilder = new ClusterBuilder();
+            var clusterBuilder = new ClusterBuilder();
 
             if (-1 < FixedSeparation)
             {
@@ -291,7 +291,7 @@ namespace Bio.Algorithms.Alignment
         {
             if (clusters == null)
             {
-                throw new ArgumentNullException("clusters");
+                throw new ArgumentNullException(nameof(clusters));
             }
 
             if (clusters.Count == 0)
@@ -299,9 +299,9 @@ namespace Bio.Algorithms.Alignment
                 return Enumerable.Empty<DeltaAlignment>();
             }
 
-            bool isReverse = clusters.Any(c => c.IsReverseQueryDirection);
+            var isReverse = clusters.Any(c => c.IsReverseQueryDirection);
             ISequence currentReference = null;
-            List<Synteny> syntenies = new List<Synteny>();
+            var syntenies = new List<Synteny>();
             Synteny currentSynteny = null;
             ISequence querySequence = null;
             ISequence referenceSequence = null;
@@ -309,9 +309,9 @@ namespace Bio.Algorithms.Alignment
             _nucmerAligner.SimilarityMatrix = SimilarityMatrix;
             _nucmerAligner.BreakLength = BreakLength;
 
-            long referenceSequenceLength = _internalReferenceSequence.Count;
+            var referenceSequenceLength = _internalReferenceSequence.Count;
 
-            foreach (Cluster clusterIterator in clusters)
+            foreach (var clusterIterator in clusters)
             {
                 List<MatchExtension> clusterMatches;
                 if (null != currentSynteny)
@@ -328,9 +328,9 @@ namespace Bio.Algorithms.Alignment
                     currentSynteny.Clusters.Add(new Cluster(clusterMatches, isReverse));
                 }
 
-                foreach (MatchExtension matchIterator in clusterIterator.Matches)
+                foreach (var matchIterator in clusterIterator.Matches)
                 {
-                    ISequence currentQuery = matchIterator.Query;
+                    var currentQuery = matchIterator.Query;
 
                     if (matchIterator.ReferenceSequenceOffset < referenceSequenceLength)
                     {
@@ -346,14 +346,14 @@ namespace Bio.Algorithms.Alignment
                         || (string.Compare(referenceSequence.ID, currentReference.ID, StringComparison.OrdinalIgnoreCase) != 0)
                         || string.Compare(querySequence.ID, currentQuery.ID, StringComparison.OrdinalIgnoreCase) != 0)
                     {
-                        bool found = false;
+                        var found = false;
 
                         if ((null != querySequence)
                             && (string.Compare(querySequence.ID, currentQuery.ID, StringComparison.OrdinalIgnoreCase) == 0))
                         {
                             // Check if Synteny already exists
                             // If found, mark the synteny and break
-                            foreach (Synteny syntenyIterator in syntenies)
+                            foreach (var syntenyIterator in syntenies)
                             {
                                 if ((String.Compare(
                                         syntenyIterator.ReferenceSequence.ID,
@@ -424,7 +424,7 @@ namespace Bio.Algorithms.Alignment
         {
             if (1 > LengthOfMUM)
             {
-                string message = Properties.Resource.MUMLengthTooSmall;
+                var message = Properties.Resource.MUMLengthTooSmall;
                 throw new ArgumentException(message);
             }
 
@@ -432,7 +432,7 @@ namespace Bio.Algorithms.Alignment
             _internalMummer.NoAmbiguity = true;
 
             // streaming process is performed with the query sequence
-            IEnumerable<Match> matches = isUniqueInReference
+            var matches = isUniqueInReference
                 ? _internalMummer.GetMatchesUniqueInReference(querySequence)
                 : _internalMummer.GetMatches(querySequence);
 
@@ -487,11 +487,11 @@ namespace Bio.Algorithms.Alignment
         {
             DeltaAlignment alignment;
 
-            long firstSequenceStart = currentCluster.Matches.First().ReferenceSequenceOffset;
-            long firstSequenceEnd = currentCluster.Matches.Last().ReferenceSequenceOffset
+            var firstSequenceStart = currentCluster.Matches.First().ReferenceSequenceOffset;
+            var firstSequenceEnd = currentCluster.Matches.Last().ReferenceSequenceOffset
                     + currentCluster.Matches.Last().Length - 1;
-            long secondSequenceStart = currentCluster.Matches.First().QuerySequenceOffset;
-            long secondSequenceEnd = currentCluster.Matches.Last().QuerySequenceOffset
+            var secondSequenceStart = currentCluster.Matches.First().QuerySequenceOffset;
+            var secondSequenceEnd = currentCluster.Matches.Last().QuerySequenceOffset
                     + currentCluster.Matches.Last().Length - 1;
 
             if (0 < alignments.Count)
@@ -528,8 +528,8 @@ namespace Bio.Algorithms.Alignment
         /// <returns>List of delta alignments</returns>
         private List<DeltaAlignment> ProcessSynteny(List<Synteny> syntenies)
         {
-            List<DeltaAlignment> deltaAlignments = new List<DeltaAlignment>();
-            foreach (Synteny synteny in syntenies)
+            var deltaAlignments = new List<DeltaAlignment>();
+            foreach (var synteny in syntenies)
             {
                 deltaAlignments.AddRange(ExtendClusters(synteny));
             }
@@ -545,20 +545,20 @@ namespace Bio.Algorithms.Alignment
         private List<DeltaAlignment> ExtendClusters(Synteny synteny)
         {
 
-            bool isClusterExtended = false;
-            List<DeltaAlignment> deltaAlignments = new List<DeltaAlignment>();
+            var isClusterExtended = false;
+            var deltaAlignments = new List<DeltaAlignment>();
             DeltaAlignment deltaAlignment = null;
             Cluster currentCluster;
-            Cluster targetCluster = synteny.Clusters.Last();
+            var targetCluster = synteny.Clusters.Last();
 
-            IList<Cluster> clusters = synteny.Clusters;
+            var clusters = synteny.Clusters;
 
             // Sort the cluster by first sequence start
             clusters = SortCluster(clusters, FirstSequenceStart);
 
-            IEnumerator<Cluster> previousCluster = clusters.GetEnumerator();
+            var previousCluster = clusters.GetEnumerator();
             previousCluster.MoveNext();
-            IEnumerator<Cluster> cluster = clusters.GetEnumerator();
+            var cluster = clusters.GetEnumerator();
 
             while (cluster.MoveNext())
             {
@@ -575,7 +575,7 @@ namespace Bio.Algorithms.Alignment
                 }
 
                 // Extend the match
-                foreach (MatchExtension match in currentCluster.Matches)
+                foreach (var match in currentCluster.Matches)
                 {
                     if (isClusterExtended)
                     {
@@ -599,7 +599,7 @@ namespace Bio.Algorithms.Alignment
                         deltaAlignments.Add(deltaAlignment);
 
                         // Find the MUM which is a good candidate for extension in reverse direction
-                        DeltaAlignment targetAlignment = GetPreviousAlignment(deltaAlignments, deltaAlignment);
+                        var targetAlignment = GetPreviousAlignment(deltaAlignments, deltaAlignment);
 
                         if (ExtendToPreviousSequence(
                                 synteny.ReferenceSequence,
@@ -612,14 +612,14 @@ namespace Bio.Algorithms.Alignment
                         }
                     }
 
-                    int methodName = ModifiedSmithWaterman.ForwardAlignFlag;
+                    var methodName = ModifiedSmithWaterman.ForwardAlignFlag;
 
                     long targetReference;
                     long targetQuery;
                     if (currentCluster.Matches.IndexOf(match) < currentCluster.Matches.Count - 1)
                     {
                         // extend till the match in the current cluster
-                        MatchExtension nextMatch =
+                        var nextMatch =
                             currentCluster.Matches[currentCluster.Matches.IndexOf(match) + 1];
                         targetReference = nextMatch.ReferenceSequenceOffset;
                         targetQuery = nextMatch.QuerySequenceOffset;
@@ -696,10 +696,10 @@ namespace Bio.Algorithms.Alignment
                 DeltaAlignment currentAlignment,
                 DeltaAlignment targetAlignment)
         {
-            bool isOverflow = false;
+            var isOverflow = false;
             long targetReference;
             long targetQuery;
-            int methodName = ModifiedSmithWaterman.BackwardAlignFlag;
+            var methodName = ModifiedSmithWaterman.BackwardAlignFlag;
 
             if (alignments.Last() != targetAlignment)
             {
@@ -738,7 +738,7 @@ namespace Bio.Algorithms.Alignment
             }
 
             // Extend the sequence to previous sequence (aligned/extended sequence)
-            bool isClusterExtended = _nucmerAligner.ExtendSequence(
+            var isClusterExtended = _nucmerAligner.ExtendSequence(
                 referenceSequence,
                 currentAlignment.FirstSequenceStart,
                 ref targetReference,
@@ -770,8 +770,8 @@ namespace Bio.Algorithms.Alignment
             }
             else
             {
-                long startReference = currentAlignment.FirstSequenceStart;
-                long startQuery = currentAlignment.SecondSequenceStart;
+                var startReference = currentAlignment.FirstSequenceStart;
+                var startQuery = currentAlignment.SecondSequenceStart;
                 _nucmerAligner.ExtendSequence(
                     referenceSequence,
                     targetReference,
@@ -816,13 +816,13 @@ namespace Bio.Algorithms.Alignment
                 long targetQuery,
                 int methodName)
         {
-            bool isOverflow = false;
-            bool isDouble = false;
+            var isOverflow = false;
+            var isDouble = false;
 
-            int diagonal = currentAlignment.Deltas.Count;
+            var diagonal = currentAlignment.Deltas.Count;
 
-            long referenceDistance = targetReference - currentAlignment.FirstSequenceEnd + 1;
-            long queryDistance = targetQuery - currentAlignment.SecondSequenceEnd + 1;
+            var referenceDistance = targetReference - currentAlignment.FirstSequenceEnd + 1;
+            var queryDistance = targetQuery - currentAlignment.SecondSequenceEnd + 1;
 
             // If the length in first sequence exceeds maximum length then extend 
             // till score is optimized irrespective of length.
@@ -856,7 +856,7 @@ namespace Bio.Algorithms.Alignment
             }
 
             // Extend the sequence to next sequence (aligned/extended sequence)
-            bool isClusterExtended = _nucmerAligner.ExtendSequence(
+            var isClusterExtended = _nucmerAligner.ExtendSequence(
                 referenceSequence,
                 currentAlignment.FirstSequenceEnd,
                 ref targetReference,
@@ -881,9 +881,9 @@ namespace Bio.Algorithms.Alignment
                     : -referenceDistance;
 
                 // Adjust the delta reference position
-                for (int index = diagonal; index < currentAlignment.Deltas.Count;index++ )
+                for (var index = diagonal; index < currentAlignment.Deltas.Count;index++ )
                 {
-                    int deltaPosition = (int)currentAlignment.Deltas[index];
+                    var deltaPosition = (int)currentAlignment.Deltas[index];
                     currentAlignment.DeltaReferencePosition +=
                         (deltaPosition > 0)
                         ? deltaPosition
@@ -907,19 +907,19 @@ namespace Bio.Algorithms.Alignment
                 IEnumerable<DeltaAlignment> alignments,
                 DeltaAlignment currentAlignment)
         {
-            long alignmentFirstStart = currentAlignment.FirstSequenceStart;
-            long alignmentSecondStart = currentAlignment.SecondSequenceStart;
-            long distance = (alignmentFirstStart < alignmentSecondStart)
+            var alignmentFirstStart = currentAlignment.FirstSequenceStart;
+            var alignmentSecondStart = currentAlignment.SecondSequenceStart;
+            var distance = (alignmentFirstStart < alignmentSecondStart)
                     ? alignmentFirstStart
                     : alignmentSecondStart;
 
-            DeltaAlignment deltaAlignment = alignments.Last();
-            foreach (DeltaAlignment alignment in alignments)
+            var deltaAlignment = alignments.Last();
+            foreach (var alignment in alignments)
             {
                 if (currentAlignment.QueryDirection == alignment.QueryDirection)
                 {
-                    long alignmentFirstEnd = alignment.FirstSequenceEnd;
-                    long alignmentSecondEnd = alignment.SecondSequenceEnd;
+                    var alignmentFirstEnd = alignment.FirstSequenceEnd;
+                    var alignmentSecondEnd = alignment.SecondSequenceEnd;
 
                     if (alignmentFirstEnd <= alignmentFirstStart
                         && alignmentSecondEnd <= alignmentSecondStart)
@@ -972,18 +972,18 @@ namespace Bio.Algorithms.Alignment
                 ref long targetReference,
                 ref long targetQuery)
         {
-            long firstSequenceStart = currentCluster.Matches.Last().ReferenceSequenceOffset
+            var firstSequenceStart = currentCluster.Matches.Last().ReferenceSequenceOffset
                 + currentCluster.Matches.Last().Length - 1;
-            long secondSequenceStart = currentCluster.Matches.Last().QuerySequenceOffset
+            var secondSequenceStart = currentCluster.Matches.Last().QuerySequenceOffset
                 + currentCluster.Matches.Last().Length - 1;
 
-            long distance = (targetReference - firstSequenceStart < targetQuery - secondSequenceStart)
+            var distance = (targetReference - firstSequenceStart < targetQuery - secondSequenceStart)
                     ? targetReference - firstSequenceStart
                     : targetQuery - secondSequenceStart;
 
             Cluster clusterIterator;
             Cluster cluster = null;
-            for (int clusterIndex = clusters.IndexOf(currentCluster) + 1;
+            for (var clusterIndex = clusters.IndexOf(currentCluster) + 1;
                     clusterIndex < clusters.Count;
                     clusterIndex++)
             {
@@ -991,14 +991,14 @@ namespace Bio.Algorithms.Alignment
 
                 if (currentCluster.QueryDirection == clusterIterator.QueryDirection)
                 {
-                    long firstSequenceEnd = clusterIterator.Matches.First().ReferenceSequenceOffset;
-                    long secondSequenceEnd = clusterIterator.Matches.First().QuerySequenceOffset;
+                    var firstSequenceEnd = clusterIterator.Matches.First().ReferenceSequenceOffset;
+                    var secondSequenceEnd = clusterIterator.Matches.First().QuerySequenceOffset;
 
                     if ((firstSequenceEnd < firstSequenceStart)
                             && (clusterIterator.Matches.Last().ReferenceSequenceOffset >= firstSequenceStart)
                             && (clusterIterator.Matches.Last().QuerySequenceOffset >= secondSequenceStart))
                     {
-                        foreach (MatchExtension match in clusterIterator.Matches)
+                        foreach (var match in clusterIterator.Matches)
                         {
                             if ((firstSequenceEnd < firstSequenceStart)
                                     || (secondSequenceEnd < secondSequenceStart))
@@ -1061,11 +1061,11 @@ namespace Bio.Algorithms.Alignment
                 IAlphabet alphabetSet,
                 string sequenceType)
         {
-            bool isValidLength = false;
+            var isValidLength = false;
 
             if (null == sequence)
             {
-                string message = sequenceType == ReferenceSequence
+                var message = sequenceType == ReferenceSequence
                     ? Properties.Resource.ReferenceSequenceCannotBeNull
                     : Properties.Resource.QuerySequenceCannotBeNull;
                 throw new ArgumentException(message);
@@ -1073,7 +1073,7 @@ namespace Bio.Algorithms.Alignment
 
             if (sequence.Alphabet != alphabetSet)
             {
-                string message = Properties.Resource.InputAlphabetsMismatch;
+                var message = Properties.Resource.InputAlphabetsMismatch;
                 throw new ArgumentException(message);
             }
 
@@ -1084,7 +1084,7 @@ namespace Bio.Algorithms.Alignment
 
             if (!isValidLength)
             {
-                string message = String.Format(
+                var message = String.Format(
                         CultureInfo.CurrentCulture,
                         Properties.Resource.InputSequenceMustBeGreaterThanMUM,
                         LengthOfMUM);

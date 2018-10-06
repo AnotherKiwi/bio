@@ -117,7 +117,7 @@ namespace Bio.Variant
         {
             var res = obj as Variant;
             if (res != null)
-                return this.Equals (res);
+                return Equals (res);
             return false;
         }
         #region IComparable implementation
@@ -153,7 +153,7 @@ namespace Bio.Variant
         {
             var otherComp = CompareTo (other);
             if (otherComp == 0) {
-                return this.StartPosition == other.StartPosition && this.Type == other.Type && this.EndPosition == other.EndPosition;
+                return StartPosition == other.StartPosition && Type == other.Type && EndPosition == other.EndPosition;
             }
             return false;
         }

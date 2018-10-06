@@ -97,7 +97,7 @@ namespace Bio.IO.BAM
                 // close all file pointers here.
                 if (readers != null)
                 {
-                    for (int index = 0; index < readers.Count; index++)
+                    for (var index = 0; index < readers.Count; index++)
                     {
                         readers[index].Close();
                         readers[index].Dispose();
@@ -107,7 +107,7 @@ namespace Bio.IO.BAM
 
                 if (sortedFilenames != null)
                 {
-                    foreach (string filename in sortedFilenames)
+                    foreach (var filename in sortedFilenames)
                     {
                         if (File.Exists(filename))
                         {
@@ -153,17 +153,17 @@ namespace Bio.IO.BAM
 
                 readers = new List<StreamReader>();
                 data = new List<Tuple<string, int>>();
-                foreach (string filename in sortedFilenames)
+                foreach (var filename in sortedFilenames)
                 {
-                    StreamReader reader = new StreamReader(filename);
-                    string[] fileData = reader.ReadLine().Split(',');
+                    var reader = new StreamReader(filename);
+                    var fileData = reader.ReadLine().Split(',');
                     readers.Add(reader);
                     data.Add(new Tuple<string, int>(fileData[0], int.Parse(fileData[1], CultureInfo.InvariantCulture)));
                 }
             }
 
-            int smallestIndex = -1;
-            for(int index = 0; index < data.Count; index++)
+            var smallestIndex = -1;
+            for(var index = 0; index < data.Count; index++)
             {
                 if (data[index] != null)
                 {
@@ -203,7 +203,7 @@ namespace Bio.IO.BAM
 
                 if (!readers[smallestIndex].EndOfStream)
                 {
-                    string[] fileData = readers[smallestIndex].ReadLine().Split(',');
+                    var fileData = readers[smallestIndex].ReadLine().Split(',');
                     dataObject = new Tuple<string, int>(fileData[0], int.Parse(fileData[1], CultureInfo.InvariantCulture));
                 }
 
@@ -226,7 +226,7 @@ namespace Bio.IO.BAM
             // code here to reset this object to initial state.
             data = null;
 
-            foreach (StreamReader reader in readers)
+            foreach (var reader in readers)
             {
                 reader.Close();
             }
