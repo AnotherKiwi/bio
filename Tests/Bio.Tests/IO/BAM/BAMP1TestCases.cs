@@ -56,22 +56,22 @@ namespace Bio.Tests.IO.BAM
         public void ValidateBAMRangeQuery()
         {
              // Get input and output values from xml node.
-            var BAMStoragePath = utilityObj.xmlUtil.GetTextValue(
+            string BAMStoragePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.BAMHumanLargeNode, Constants.FilePathNode).TestDir();
             
-           var bp=new BAMParser();
-           var m = bp.ParseRange(BAMStoragePath, "MT");
-           var names = m.QuerySequences.Select(x => x.RName).Distinct().ToList();
-           var all = m.QuerySequences.Select(x => x).Distinct().ToList();
-           var tot = m.QuerySequences.Select(x => x.QName).Distinct().ToList();
-           var toTest = new[] {new RangeQuery("MT",1,100,48),
+           BAMParser bp=new BAMParser();
+           SequenceAlignmentMap m = bp.ParseRange(BAMStoragePath, "MT");
+           List<string> names = m.QuerySequences.Select(x => x.RName).Distinct().ToList();
+           List<SAMAlignedSequence> all = m.QuerySequences.Select(x => x).Distinct().ToList();
+           List<string> tot = m.QuerySequences.Select(x => x.QName).Distinct().ToList();
+           RangeQuery[] toTest = new[] {new RangeQuery("MT",1,100,48),
                                new RangeQuery("1",0,Int32.MaxValue,45),
                                new RangeQuery("11",0,Int32.MaxValue,2),
                                new RangeQuery("MT",0,Int32.MaxValue,4335),
                                new RangeQuery("MT",16300,16500,92) };//Last one is on a 2^14 boundary
-           foreach (var r in toTest)
+           foreach (RangeQuery r in toTest)
            {
-               var res = bp.ParseRange(BAMStoragePath, r.RName, r.start, r.End);
+               SequenceAlignmentMap res = bp.ParseRange(BAMStoragePath, r.RName, r.start, r.End);
                Assert.AreEqual(r.ExpectedReturns, res.QuerySequences.Count);
            }
         }
@@ -95,11 +95,11 @@ namespace Bio.Tests.IO.BAM
         public void ValidateBAMIndexMatchesExpectation()
         {
             // Get input and output values from xml node.
-            var BAMStoragePath = utilityObj.xmlUtil.GetTextValue(
+            string BAMStoragePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.BAMHumanLargeNode, Constants.FilePathNode).TestDir();
-            var expectedIndexPath= utilityObj.xmlUtil.GetTextValue(
+            string expectedIndexPath= utilityObj.xmlUtil.GetTextValue(
                 Constants.BAMHumanLargeNode, Constants.BAMIndexFileNode).TestDir();
-            var bp = new BAMParser();
+            BAMParser bp = new BAMParser();
             //get observed index file
             BAMIndex bi;
             using (Stream bamStream = new FileStream(BAMStoragePath, FileMode.Open, FileAccess.Read))
@@ -107,36 +107,36 @@ namespace Bio.Tests.IO.BAM
                bi = bp.GetIndexFromBAMStorage(bamStream);
             }
             //get expected
-            var bi2 = new BAMIndexStorage(File.OpenRead(expectedIndexPath)).Read();
+            BAMIndex bi2 = new BAMIndexStorage(File.OpenRead(expectedIndexPath)).Read();
             //now verify
             Assert.AreEqual(bi2.RefIndexes.Count, bi.RefIndexes.Count);
-            for (var i = 0; i < bi.RefIndexes.Count; i++)
+            for (int i = 0; i < bi.RefIndexes.Count; i++)
             {
-                var obs = bi.RefIndexes[i];
-                var exp = bi2.RefIndexes[i];
+                BAMReferenceIndexes obs = bi.RefIndexes[i];
+                BAMReferenceIndexes exp = bi2.RefIndexes[i];
                 Assert.AreEqual(obs.Bins.Count, exp.Bins.Count);
                 Assert.AreEqual(obs.LinearIndex.Count, exp.LinearIndex.Count);
                 Assert.AreEqual(obs.MappedReadsCount, exp.MappedReadsCount);
                 Assert.AreEqual(obs.UnMappedReadsCount, exp.UnMappedReadsCount);
-                var ob = obs.Bins.ToList();
-                var eb = exp.Bins.ToList();
+                List<Bin> ob = obs.Bins.ToList();
+                List<Bin> eb = exp.Bins.ToList();
                 ob.Sort((x, y) => x.BinNumber.CompareTo(y.BinNumber));
                 eb.Sort((x, y) => x.BinNumber.CompareTo(y.BinNumber));
-                for (var j = 0; j < ob.Count; j++)
+                for (int j = 0; j < ob.Count; j++)
                 {
-                    var obb=ob[0];
-                    var ebb=eb[0];
+                    Bin obb=ob[0];
+                    Bin ebb=eb[0];
                     Assert.AreEqual(obb.BinNumber, ebb.BinNumber);
                     Assert.AreEqual(obb.Chunks.Count, ebb.Chunks.Count);
-                    var c1 = obb.Chunks.ToList();
-                    var c2 = ebb.Chunks.ToList();
+                    List<Chunk> c1 = obb.Chunks.ToList();
+                    List<Chunk> c2 = ebb.Chunks.ToList();
                     c1.Sort((x, y) => x.ChunkStart.CompareTo(y.ChunkStart));
                     c2.Sort((x, y) => x.ChunkStart.CompareTo(y.ChunkStart));
 
-                    for (var k = 0; k < c1.Count; k++)
+                    for (int k = 0; k < c1.Count; k++)
                     {
-                        var co = c1[k];
-                        var eo = c2[k];
+                        Chunk co = c1[k];
+                        Chunk eo = c2[k];
                         Assert.AreEqual(eo.ChunkStart, co.ChunkStart);
                         Assert.AreEqual(eo.ChunkEnd, co.ChunkEnd);
 
@@ -289,35 +289,35 @@ namespace Bio.Tests.IO.BAM
         public void ValidateAlignedSeqProperties()
         {
             // Get input and output values from xml node.
-            var BAMStoragePath = utilityObj.xmlUtil.GetTextValue(
+            string BAMStoragePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.BAMAlignedSeqPropertiesNode, Constants.FilePathNode).TestDir();
-            var expectedFlagValue = utilityObj.xmlUtil.GetTextValue(
+            string expectedFlagValue = utilityObj.xmlUtil.GetTextValue(
                 Constants.BAMAlignedSeqPropertiesNode, Constants.FlagValueNode);
-            var expectedISize = utilityObj.xmlUtil.GetTextValue(
+            string expectedISize = utilityObj.xmlUtil.GetTextValue(
                 Constants.BAMAlignedSeqPropertiesNode, Constants.Isize);
-            var expectedMapQ = utilityObj.xmlUtil.GetTextValue(
+            string expectedMapQ = utilityObj.xmlUtil.GetTextValue(
                 Constants.BAMAlignedSeqPropertiesNode, Constants.MapQValue);
-            var expectedMetadataCount = utilityObj.xmlUtil.GetTextValue(
+            string expectedMetadataCount = utilityObj.xmlUtil.GetTextValue(
                 Constants.BAMAlignedSeqPropertiesNode, Constants.Metadata);
-            var expectedMPos = utilityObj.xmlUtil.GetTextValue(
+            string expectedMPos = utilityObj.xmlUtil.GetTextValue(
                 Constants.BAMAlignedSeqPropertiesNode, Constants.MPos);
-            var expectedOptionalFields = utilityObj.xmlUtil.GetTextValue(
+            string expectedOptionalFields = utilityObj.xmlUtil.GetTextValue(
                 Constants.BAMAlignedSeqPropertiesNode, Constants.OptionalFieldsNode);
-            var expectedPos = utilityObj.xmlUtil.GetTextValue(
+            string expectedPos = utilityObj.xmlUtil.GetTextValue(
                 Constants.BAMAlignedSeqPropertiesNode, Constants.Pos);
-            var expectedQueryLength = utilityObj.xmlUtil.GetTextValue(
+            string expectedQueryLength = utilityObj.xmlUtil.GetTextValue(
                 Constants.BAMAlignedSeqPropertiesNode, Constants.QueryLength);
-            var expectedRName = utilityObj.xmlUtil.GetTextValue(
+            string expectedRName = utilityObj.xmlUtil.GetTextValue(
                 Constants.BAMAlignedSeqPropertiesNode, Constants.RName);
 
             // Parse a BAM file.
-            using (var bamParseObj = new BAMParser())
+            using (BAMParser bamParseObj = new BAMParser())
             {
-                var bamFormatterObj = new BAMFormatter();
-                var seqAlignment = bamParseObj.ParseOne<SequenceAlignmentMap>(BAMStoragePath);
+                BAMFormatter bamFormatterObj = new BAMFormatter();
+                SequenceAlignmentMap seqAlignment = bamParseObj.ParseOne<SequenceAlignmentMap>(BAMStoragePath);
 
                 // Get Aligned sequences.
-                var alignedSeqs = seqAlignment.QuerySequences;
+                IList<SAMAlignedSequence> alignedSeqs = seqAlignment.QuerySequences;
 
                 // Validate BAM Formatter Properties.
                 Assert.AreEqual(Constants.BAMFileName, bamFormatterObj.Name);
@@ -584,9 +584,9 @@ namespace Bio.Tests.IO.BAM
             BAMParserParameters BAMParserPam)
         {
             // Get input and output values from xml node.
-            var BAMStoragePath = utilityObj.xmlUtil.GetTextValue(nodeName,
+            string BAMStoragePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.FilePathNode).TestDir();
-            var expectedAlignedSeqFilePath = utilityObj.xmlUtil.GetTextValue(
+            string expectedAlignedSeqFilePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExpectedSequence).TestDir();
 
             IEnumerable<ISequenceAlignment> seqAlignmentList = null;
@@ -612,11 +612,11 @@ namespace Bio.Tests.IO.BAM
             }
 
             // Get expected sequences
-            var parserObj = new FastAParser();
-            var expectedSequences = parserObj.Parse(expectedAlignedSeqFilePath);
+            FastAParser parserObj = new FastAParser();
+            IEnumerable<ISequence> expectedSequences = parserObj.Parse(expectedAlignedSeqFilePath);
             IList<ISequence> expectedSequencesList = expectedSequences.ToList();
             // Validate aligned sequences from BAM file.
-            for (var index = 0; index < alignedSeqs.Count; index++)
+            for (int index = 0; index < alignedSeqs.Count; index++)
             {
                 Assert.AreEqual(new string(expectedSequencesList[index].Select(a => (char)a).ToArray()),
                     new string(alignedSeqs[index].Sequences[0].Select(a => (char)a).ToArray()));
@@ -639,24 +639,24 @@ namespace Bio.Tests.IO.BAM
             bool IsReferenceIndex)
         {
             // Get input and output values from xml node.
-            var BAMStoragePath = utilityObj.xmlUtil.GetTextValue(nodeName,
+            string BAMStoragePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.FilePathNode).TestDir();
-            var expectedAlignedSeqFilePath = utilityObj.xmlUtil.GetTextValue(
+            string expectedAlignedSeqFilePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExpectedSequence).TestDir();
-            var refIndexValue = utilityObj.xmlUtil.GetTextValue(
+            string refIndexValue = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.RefIndexNode);
-            var startIndexValue = utilityObj.xmlUtil.GetTextValue(
+            string startIndexValue = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.StartIndexNode);
-            var endIndexValue = utilityObj.xmlUtil.GetTextValue(
+            string endIndexValue = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.EndIndexNode);
-            var alignedSeqCount = utilityObj.xmlUtil.GetTextValue(
+            string alignedSeqCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.AlignedSeqCountNode);
-            var expectedChromosome = utilityObj.xmlUtil.GetTextValue(
+            string expectedChromosome = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ChromosomeNameNode);
 
             SequenceAlignmentMap seqAlignment = null;
 
-            var bamParser = new BAMParser();
+            BAMParser bamParser = new BAMParser();
 
             // Parse a BAM file with different parameters.
             switch (BAMParserPam)
@@ -702,16 +702,16 @@ namespace Bio.Tests.IO.BAM
                 ValidateBAMHeaderRecords(nodeName, seqAlignment);
             }
 
-            var alignedSeqs = seqAlignment.QuerySequences;
+            IList<SAMAlignedSequence> alignedSeqs = seqAlignment.QuerySequences;
 
             Assert.AreEqual(alignedSeqCount, alignedSeqs.Count.ToString((IFormatProvider)null));
 
             // Get expected sequences
-            var parserObj = new FastAParser();
-            var expectedSequences = parserObj.Parse(expectedAlignedSeqFilePath);
+            FastAParser parserObj = new FastAParser();
+            IEnumerable<ISequence> expectedSequences = parserObj.Parse(expectedAlignedSeqFilePath);
             IList<ISequence> expectedSequencesList = expectedSequences.ToList();
             // Validate aligned sequences from BAM file.
-            for (var index = 0; index < alignedSeqs.Count; index++)
+            for (int index = 0; index < alignedSeqs.Count; index++)
             {
                 Assert.AreEqual(new string(expectedSequencesList[index].Select(a => (char)a).ToArray()),
                     new string(alignedSeqs[index].QuerySequence.Select(a => (char)a).ToArray()));
@@ -732,15 +732,15 @@ namespace Bio.Tests.IO.BAM
             BAMParserParameters BAMParserPam)
         {
             // Get input and output values from xml node.
-            var BAMStoragePath = utilityObj.xmlUtil.GetTextValue(nodeName,
+            string BAMStoragePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.FilePathNode).TestDir();
-            var expectedQualitySeqFilePath = utilityObj.xmlUtil.GetTextValue(
+            string expectedQualitySeqFilePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExpectedSequence).TestDir();
-            var alignedSeqCount = utilityObj.xmlUtil.GetTextValue(
+            string alignedSeqCount = utilityObj.xmlUtil.GetTextValue(
                  nodeName, Constants.AlignedSeqCountNode);
 
             SequenceAlignmentMap seqAlignment = null;
-            var bamParser = new BAMParser();
+            BAMParser bamParser = new BAMParser();
 
             // Parse a BAM file with different parameters.
             switch (BAMParserPam)
@@ -762,16 +762,16 @@ namespace Bio.Tests.IO.BAM
             // Validate Aligned sequence CIGAR,QName and Bin index values.
             ValidateAlignedSeqValues(nodeName, seqAlignment);
 
-            var alignedSeqs = seqAlignment.QuerySequences;
+            IList<SAMAlignedSequence> alignedSeqs = seqAlignment.QuerySequences;
 
             Assert.AreEqual(alignedSeqCount, alignedSeqs.Count.ToString((IFormatProvider)null));
 
             // Get expected quality sequences
-            var parserObj = new FastAParser();
-            var expectedQualitySequences = parserObj.Parse(expectedQualitySeqFilePath);
+            FastAParser parserObj = new FastAParser();
+            IEnumerable<ISequence> expectedQualitySequences = parserObj.Parse(expectedQualitySeqFilePath);
             IList<ISequence> expectedSequencesList = expectedQualitySequences.ToList();
             // Validate quality sequences from BAM file.
-            for (var index = 0; index < alignedSeqs.Count; index++)
+            for (int index = 0; index < alignedSeqs.Count; index++)
             {
                 Assert.AreEqual(new string(expectedSequencesList[index].Select(a => (char)a).ToArray()),
                     new string(alignedSeqs[index].QuerySequence.Select(a => (char)a).ToArray()));
@@ -791,19 +791,19 @@ namespace Bio.Tests.IO.BAM
         void ValidateBAMToSAMConversion(string nodeName)
         {
             // Get values from xml config file.
-            var expectedSamFilePath = utilityObj.xmlUtil.GetTextValue(nodeName,
+            string expectedSamFilePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                Constants.FilePathNode1).TestDir();
-            var BAMStoragePath = utilityObj.xmlUtil.GetTextValue(nodeName,
+            string BAMStoragePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.FilePathNode).TestDir();
 
-            var bamParserObj = new BAMParser();
-            var samParserObj = new SAMParser();
-            var samFormatterObj = new SAMFormatter();
+            BAMParser bamParserObj = new BAMParser();
+            SAMParser samParserObj = new SAMParser();
+            SAMFormatter samFormatterObj = new SAMFormatter();
             SequenceAlignmentMap samSeqAlignment = null;
             SequenceAlignmentMap bamSeqAlignment = null;
 
             // Parse expected SAM file.
-            var expectedSamAlignmentObj = samParserObj.ParseOne<SequenceAlignmentMap>(expectedSamFilePath);
+            SequenceAlignmentMap expectedSamAlignmentObj = samParserObj.ParseOne<SequenceAlignmentMap>(expectedSamFilePath);
 
             // Parse a BAM file.
             bamSeqAlignment = bamParserObj.ParseOne<SequenceAlignmentMap>(BAMStoragePath);
@@ -843,19 +843,19 @@ namespace Bio.Tests.IO.BAM
         void ValidateSAMToBAMConversion(string nodeName)
         {
             // Get values from xml config file.
-            var expectedBAMStoragePath = utilityObj.xmlUtil.GetTextValue(nodeName,
+            string expectedBAMStoragePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.FilePathNode).TestDir();
-            var samFilePath = utilityObj.xmlUtil.GetTextValue(nodeName,
+            string samFilePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.FilePathNode1).TestDir();
 
-            var bamParserObj = new BAMParser();
-            var samParserObj = new SAMParser();
-            var bamFormatterObj = new BAMFormatter { CreateSortedBAMFile = true, CreateIndexFile = true };
+            BAMParser bamParserObj = new BAMParser();
+            SAMParser samParserObj = new SAMParser();
+            BAMFormatter bamFormatterObj = new BAMFormatter { CreateSortedBAMFile = true, CreateIndexFile = true };
             SequenceAlignmentMap samSeqAlignment = null;
             SequenceAlignmentMap bamSeqAlignment = null;
 
             // Parse expected BAM file.
-            var expextedBamAlignmentObj = bamParserObj.ParseOne<SequenceAlignmentMap>(expectedBAMStoragePath);
+            SequenceAlignmentMap expextedBamAlignmentObj = bamParserObj.ParseOne<SequenceAlignmentMap>(expectedBAMStoragePath);
 
             // Parse a SAM file.
             samSeqAlignment = samParserObj.ParseOne<SequenceAlignmentMap>(samFilePath);
@@ -897,25 +897,25 @@ namespace Bio.Tests.IO.BAM
              BAMParserParameters BAMParserPam)
         {
             // Get input and output values from xml node.
-            var BAMStoragePath = utilityObj.xmlUtil.GetTextValue(nodeName,
+            string BAMStoragePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.FilePathNode).TestDir();
-            var expectedAlignedSeqFilePath = utilityObj.xmlUtil.GetTextValue(
+            string expectedAlignedSeqFilePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExpectedSequence).TestDir();
-            var alignedSeqCount = utilityObj.xmlUtil.GetTextValue(
+            string alignedSeqCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.AlignedSeqCountNode);
 
             SequenceAlignmentMap seqAlignment = null;
 
             try {
-            using (var BAMIndexStorageObj = new BAMIndexStorage(
+            using (BAMIndexStorage BAMIndexStorageObj = new BAMIndexStorage(
                 File.Create(Constants.BAMTempIndexFileForIndexData)))
                 {
                     // Parse a BAM file.
-                    var bamParserObj = new BAMParser();
+                    BAMParser bamParserObj = new BAMParser();
                     seqAlignment = bamParserObj.ParseOne<SequenceAlignmentMap>(BAMStoragePath);
 
                     // Create a BAM formatter object.
-                    var formatterObj = new BAMFormatter();
+                    BAMFormatter formatterObj = new BAMFormatter();
 
                     // Write/Format aligned sequences to BAM file.
                     switch (BAMParserPam)
@@ -932,23 +932,23 @@ namespace Bio.Tests.IO.BAM
                     }
 
                     // Parse formatted BAM file and validate aligned sequences.
-                    var expectedSeqAlignmentMap = bamParserObj.ParseOne<SequenceAlignmentMap>(
+                    SequenceAlignmentMap expectedSeqAlignmentMap = bamParserObj.ParseOne<SequenceAlignmentMap>(
                         Constants.BAMTempFileName);
 
                     // Validate Parsed BAM file Header record fields.
                     ValidateBAMHeaderRecords(nodeName, expectedSeqAlignmentMap);
 
-                    var alignedSeqs = expectedSeqAlignmentMap.QuerySequences;
+                    IList<SAMAlignedSequence> alignedSeqs = expectedSeqAlignmentMap.QuerySequences;
 
                     Assert.AreEqual(alignedSeqCount, alignedSeqs.Count.ToString((IFormatProvider)null));
 
                     // Get expected sequences
-                    var parserObj = new FastAParser();
-                    var expectedSequences = parserObj.Parse(expectedAlignedSeqFilePath);
+                    FastAParser parserObj = new FastAParser();
+                    IEnumerable<ISequence> expectedSequences = parserObj.Parse(expectedAlignedSeqFilePath);
                     IList<ISequence> expectedSequencesList = expectedSequences.ToList();
 
                     // Validate aligned sequences from BAM file.
-                    for (var index = 0; index < alignedSeqs.Count; index++)
+                    for (int index = 0; index < alignedSeqs.Count; index++)
                     {
                         Assert.AreEqual(new string(expectedSequencesList[index].Select(a => (char)a).ToArray()),
                             new string(alignedSeqs[index].QuerySequence.Select(a => (char)a).ToArray()));
@@ -981,20 +981,20 @@ namespace Bio.Tests.IO.BAM
             bool IsNotSupportedMethods)
         {
             // Get input and output values from xml node.
-            var BAMStoragePath = utilityObj.xmlUtil.GetTextValue(nodeName,
+            string BAMStoragePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.FilePathNode).TestDir();
-            var expectedAlignedSeqFilePath = utilityObj.xmlUtil.GetTextValue(
+            string expectedAlignedSeqFilePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExpectedSequence).TestDir();
-            var alignedSeqCount = utilityObj.xmlUtil.GetTextValue(
+            string alignedSeqCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.AlignedSeqCountNode);
 
             BAMIndexStorage BAMIndexStorageObj = null;
             ISequenceAlignmentParser bamParserObj = new BAMParser();
             try
             {
-                using (var bamSeqMapParserObj = new BAMParser())
+                using (BAMParser bamSeqMapParserObj = new BAMParser())
                 {
-                    var seqList = bamParserObj.Parse(BAMStoragePath);
+                    IEnumerable<ISequenceAlignment> seqList = bamParserObj.Parse(BAMStoragePath);
 
                     try
                     {
@@ -1006,7 +1006,7 @@ namespace Bio.Tests.IO.BAM
                         }
 
                         // Create a BAM formatter object.
-                        var formatterObj = new BAMFormatter
+                        BAMFormatter formatterObj = new BAMFormatter
                                                     {
                                                         CreateSortedBAMFile = true,
                                                         CreateIndexFile = true
@@ -1017,9 +1017,9 @@ namespace Bio.Tests.IO.BAM
                             case BAMParserParameters.StreamWriter:
                                 try
                                 {
-                                    using (var writer = File.Create(Constants.BAMTempFileName))
+                                    using (FileStream writer = File.Create(Constants.BAMTempFileName))
                                     {
-                                        foreach (var seq in seqList)
+                                        foreach (ISequenceAlignment seq in seqList)
                                         {
                                             formatterObj.Format(writer, seq);
                                             Assert.Fail();
@@ -1028,7 +1028,7 @@ namespace Bio.Tests.IO.BAM
                                 }
                                 catch (NotSupportedException ex)
                                 {
-                                    var message = ex.Message;
+                                    string message = ex.Message;
                                     ApplicationLog.WriteLine(string.Format((IFormatProvider)null,
                                         "BAM Formatter P1 : Validated the exception {0} successfully"
                                         , message));
@@ -1039,7 +1039,7 @@ namespace Bio.Tests.IO.BAM
                                      FileStream(Constants.BAMTempFileName,
                                      FileMode.OpenOrCreate, FileAccess.ReadWrite))
                                 {
-                                    foreach (var seq in seqList)
+                                    foreach (ISequenceAlignment seq in seqList)
                                     {
                                         formatterObj.Format(stream, seq);
                                     }
@@ -1047,7 +1047,7 @@ namespace Bio.Tests.IO.BAM
                                 File.Exists(Constants.BAMTempFileName);
                                 break;
                             case BAMParserParameters.FileName:
-                                foreach (var seq in seqList)
+                                foreach (ISequenceAlignment seq in seqList)
                                 {
                                     formatterObj.Format(seq, Constants.BAMTempFileName);
                                 }
@@ -1058,7 +1058,7 @@ namespace Bio.Tests.IO.BAM
                                      FileStream(Constants.BAMTempFileName,
                                      FileMode.Create, FileAccess.ReadWrite))
                                 {
-                                    foreach (var seq in seqList)
+                                    foreach (ISequenceAlignment seq in seqList)
                                     {
                                         formatterObj.Format(stream, BAMIndexStorageObj, seq);
                                     }
@@ -1066,7 +1066,7 @@ namespace Bio.Tests.IO.BAM
                                 File.Exists(Constants.BAMTempFileName);
                                 break;
                             case BAMParserParameters.IndexFile:
-                                foreach (var seq in seqList)
+                                foreach (ISequenceAlignment seq in seqList)
                                 {
                                     formatterObj.Format(seq, Constants.BAMTempFileName,
                                         Constants.BAMTempIndexFile);
@@ -1080,19 +1080,19 @@ namespace Bio.Tests.IO.BAM
                         if (!IsNotSupportedMethods)
                         {
                             // Parse formatted BAM file and validate aligned sequences.
-                            var expectedSeqAlignmentMap = bamSeqMapParserObj.ParseOne<SequenceAlignmentMap>(
+                            SequenceAlignmentMap expectedSeqAlignmentMap = bamSeqMapParserObj.ParseOne<SequenceAlignmentMap>(
                                 Constants.BAMTempFileName);
 
-                            var alignedSeqs = expectedSeqAlignmentMap.QuerySequences;
+                            IList<SAMAlignedSequence> alignedSeqs = expectedSeqAlignmentMap.QuerySequences;
 
                             Assert.AreEqual(alignedSeqCount, alignedSeqs.Count.ToString((IFormatProvider)null));
 
                             // Get expected sequences
-                            var parserObj = new FastAParser();
-                            var expectedSequences = parserObj.Parse(expectedAlignedSeqFilePath);
+                            FastAParser parserObj = new FastAParser();
+                            IEnumerable<ISequence> expectedSequences = parserObj.Parse(expectedAlignedSeqFilePath);
                             IList<ISequence> expectedSequencesList = expectedSequences.ToList();
                             // Validate aligned sequences from BAM file.
-                            for (var index = 0; index < alignedSeqs.Count; index++)
+                            for (int index = 0; index < alignedSeqs.Count; index++)
                             {
                                 Assert.AreEqual(new string(expectedSequencesList[index].Select(a => (char)a).ToArray()),
                                         new string(alignedSeqs[index].QuerySequence.Select(a => (char)a).ToArray()));
@@ -1127,26 +1127,26 @@ namespace Bio.Tests.IO.BAM
         void ValidateBAMHeaderRecords(string nodeName,
             SequenceAlignmentMap seqAlignment)
         {
-            var expectedHeaderTagValues = utilityObj.xmlUtil.GetTextValue(
+            string expectedHeaderTagValues = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.RecordTagValuesNode);
-            var expectedHeaderTagKeys = utilityObj.xmlUtil.GetTextValue(
+            string expectedHeaderTagKeys = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.RecordTagKeysNode);
-            var expectedHeaderTypes = utilityObj.xmlUtil.GetTextValue(
+            string expectedHeaderTypes = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.HeaderTyepsNodes);
-            var expectedHeaderTagsValues = expectedHeaderTagValues.Split(',');
-            var expectedHeaderKeys = expectedHeaderTagKeys.Split(',');
-            var expectedHeaders = expectedHeaderTypes.Split(',');
+            string[] expectedHeaderTagsValues = expectedHeaderTagValues.Split(',');
+            string[] expectedHeaderKeys = expectedHeaderTagKeys.Split(',');
+            string[] expectedHeaders = expectedHeaderTypes.Split(',');
 
-            var header = seqAlignment.Header;
-            var recordFields = header.RecordFields;
-            var tagKeysCount = 0;
-            var tagValuesCount = 0;
+            SAMAlignmentHeader header = seqAlignment.Header;
+            IList<SAMRecordField> recordFields = header.RecordFields;
+            int tagKeysCount = 0;
+            int tagValuesCount = 0;
 
-            for (var index = 0; index < recordFields.Count; index++)
+            for (int index = 0; index < recordFields.Count; index++)
             {
                 Assert.AreEqual(expectedHeaders[index].Replace("/", ""),
                     recordFields[index].Typecode.ToString((IFormatProvider)null).Replace("/", ""));
-                for (var tags = 0; tags < recordFields[index].Tags.Count; tags++)
+                for (int tags = 0; tags < recordFields[index].Tags.Count; tags++)
                 {
                     Assert.AreEqual(expectedHeaderKeys[tagKeysCount].Replace("/", ""),
                         recordFields[index].Tags[tags].Tag.ToString((IFormatProvider)null).Replace("/", ""));
@@ -1166,17 +1166,17 @@ namespace Bio.Tests.IO.BAM
         void ValidateAlignedSeqValues(string nodeName,
             SequenceAlignmentMap seqAlignment)
         {
-            var expectedCigars = utilityObj.xmlUtil.GetTextValue(
+            string expectedCigars = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.CigarsNode);
-            var expectedQNames = utilityObj.xmlUtil.GetTextValue(
+            string expectedQNames = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.QNamesNode);
-            var expectedBinValues = utilityObj.xmlUtil.GetTextValue(
+            string expectedBinValues = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.BinsNode);
-            var expectedCigarValues = expectedCigars.Split(',');
-            var expectedQNameValues = expectedQNames.Split(',');
-            var expectedBin = expectedBinValues.Split(',');
+            string[] expectedCigarValues = expectedCigars.Split(',');
+            string[] expectedQNameValues = expectedQNames.Split(',');
+            string[] expectedBin = expectedBinValues.Split(',');
 
-            for (var i = 0; i < seqAlignment.AlignedSequences.Count; i++)
+            for (int i = 0; i < seqAlignment.AlignedSequences.Count; i++)
             {
                 Assert.AreEqual(expectedCigarValues[i],
                     seqAlignment.QuerySequences[i].CIGAR.ToString((IFormatProvider)null));
@@ -1196,21 +1196,21 @@ namespace Bio.Tests.IO.BAM
         private static bool CompareSequencedAlignmentHeader(SequenceAlignmentMap actualAlignment,
              SequenceAlignmentMap expectedAlignment)
         {
-            var aheader = actualAlignment.Header;
-            var arecordFields = aheader.RecordFields;
-            var expectedheader = expectedAlignment.Header;
-            var expectedrecordFields = expectedheader.RecordFields;
-            var tagKeysCount = 0;
-            var tagValuesCount = 0;
+            SAMAlignmentHeader aheader = actualAlignment.Header;
+            IList<SAMRecordField> arecordFields = aheader.RecordFields;
+            SAMAlignmentHeader expectedheader = expectedAlignment.Header;
+            IList<SAMRecordField> expectedrecordFields = expectedheader.RecordFields;
+            int tagKeysCount = 0;
+            int tagValuesCount = 0;
 
-            for (var index = 0; index < expectedrecordFields.Count; index++)
+            for (int index = 0; index < expectedrecordFields.Count; index++)
             {
                 if (0 != string.Compare(expectedrecordFields[index].Typecode.ToString((IFormatProvider)null),
                     arecordFields[index].Typecode.ToString((IFormatProvider)null), StringComparison.CurrentCulture))
                 {
                     return false;
                 }
-                for (var tags = 0; tags < expectedrecordFields[index].Tags.Count; tags++)
+                for (int tags = 0; tags < expectedrecordFields[index].Tags.Count; tags++)
                 {
                     if ((0 != string.Compare(expectedrecordFields[index].Tags[tags].Tag.ToString((IFormatProvider)null),
                         arecordFields[index].Tags[tags].Tag.ToString((IFormatProvider)null), StringComparison.CurrentCulture))
@@ -1238,10 +1238,10 @@ namespace Bio.Tests.IO.BAM
         private static bool CompareAlignedSequences(SequenceAlignmentMap expectedAlignment,
              SequenceAlignmentMap actualAlignment)
         {
-            var actualAlignedSeqs = actualAlignment.QuerySequences;
-            var expectedAlignedSeqs = expectedAlignment.QuerySequences;
+            IList<SAMAlignedSequence> actualAlignedSeqs = actualAlignment.QuerySequences;
+            IList<SAMAlignedSequence> expectedAlignedSeqs = expectedAlignment.QuerySequences;
 
-            for (var i = 0; i < expectedAlignedSeqs.Count; i++)
+            for (int i = 0; i < expectedAlignedSeqs.Count; i++)
             {
                 if (0 != string.Compare(new string(expectedAlignedSeqs[i].QuerySequence.Select(a => (char)a).ToArray()),
                    new string(actualAlignedSeqs[i].QuerySequence.Select(a => (char)a).ToArray()), StringComparison.CurrentCulture))

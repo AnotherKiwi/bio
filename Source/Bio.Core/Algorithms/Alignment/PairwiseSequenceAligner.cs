@@ -177,10 +177,10 @@ namespace Bio.Algorithms.Alignment
             if (inputSequences == null)
                 throw new ArgumentNullException(nameof(inputSequences));
 
-            var listOfSequences = inputSequences.ToList();
+            List<ISequence> listOfSequences = inputSequences.ToList();
             if (listOfSequences.Count != 2)
             {
-                var message = String.Format(
+                string message = String.Format(
                         CultureInfo.CurrentCulture,
                         Properties.Resource.PairwiseAlignerWrongArgumentCount,
                         listOfSequences.Count);
@@ -213,10 +213,10 @@ namespace Bio.Algorithms.Alignment
             if (inputSequences == null)
                 throw new ArgumentNullException(nameof(inputSequences));
 
-            var listOfSequences = inputSequences.ToList();
+            List<ISequence> listOfSequences = inputSequences.ToList();
             if (listOfSequences.Count != 2)
             {
-                var message = String.Format(
+                string message = String.Format(
                         CultureInfo.CurrentCulture,
                         Properties.Resource.PairwiseAlignerWrongArgumentCount,
                         inputSequences.Count());
@@ -355,7 +355,7 @@ namespace Bio.Algorithms.Alignment
             QuerySequence = GetByteArrayFromSequence(_sequence2);
 
             // Assign consensus resolver if it was not assigned already.
-            var alphabet = sequence1.Alphabet;
+            IAlphabet alphabet = sequence1.Alphabet;
             if (ConsensusResolver == null)
                 ConsensusResolver = new SimpleConsensusResolver(alphabet.HasAmbiguity ? alphabet : Alphabets.AmbiguousAlphabetMap[sequence1.Alphabet]);
             else
@@ -371,7 +371,7 @@ namespace Bio.Algorithms.Alignment
         /// <returns></returns>
         private static byte[] GetByteArrayFromSequence(ISequence sequence)
         {
-            var realSequence = sequence as Sequence;
+            Sequence realSequence = sequence as Sequence;
             return realSequence != null 
                 // Very fast grab internal array
                 ? realSequence.GetInternalArray()
@@ -393,7 +393,7 @@ namespace Bio.Algorithms.Alignment
             Initialize();
 
             // Step 2: Matrix fill (scoring)
-            var scores = CreateTracebackTable();
+            IEnumerable<OptScoreMatrixCell> scores = CreateTracebackTable();
 
             // Step 3: Traceback (alignment)
             return CreateAlignment(scores);
@@ -420,7 +420,7 @@ namespace Bio.Algorithms.Alignment
             // array here, but it limits the size dramatically so see if we can actually hold it.
             if (IncludeScoreTable || usingAffineGapModel)
             {
-                var maxIndex = checked((long) Rows * (long)Cols);
+                long maxIndex = checked((long) Rows * (long)Cols);
                 if (maxIndex > Int32.MaxValue)
                 {
                     if (usingAffineGapModel) {
@@ -460,8 +460,8 @@ namespace Bio.Algorithms.Alignment
         private PairwiseSequenceAlignment CreateAlignment(IEnumerable<OptScoreMatrixCell> startingCells)
         {
             // Generate each alignment.
-            var alignment = new PairwiseSequenceAlignment(_sequence1, _sequence2);
-            foreach (var startingCell in startingCells)
+            PairwiseSequenceAlignment alignment = new PairwiseSequenceAlignment(_sequence1, _sequence2);
+            foreach (OptScoreMatrixCell startingCell in startingCells)
                 alignment.PairwiseAlignedSequences.Add(CreateAlignmentFromCell(startingCell));
 
             // Include the scoring table if requested.
@@ -479,30 +479,30 @@ namespace Bio.Algorithms.Alignment
         /// <returns>Pairwise alignment</returns>
         protected PairwiseAlignedSequence CreateAlignmentFromCell(OptScoreMatrixCell startingCell)
         {
-            var gapStride = Cols + 1;
+            int gapStride = Cols + 1;
             //Using list to avoid allocation issues
-            var estimatedLength = (int)( 1.1*Math.Max(ReferenceSequence.Length,QuerySequence.Length));
-            var firstAlignment = new List<byte>(estimatedLength);
-            var secondAlignment = new List<byte>(estimatedLength);
+            int estimatedLength = (int)( 1.1*Math.Max(ReferenceSequence.Length,QuerySequence.Length));
+            List<byte> firstAlignment = new List<byte>(estimatedLength);
+            List<byte> secondAlignment = new List<byte>(estimatedLength);
 
             // Get the starting cell position and record the optimal score found there.
-            var i = startingCell.Row;
-            var j = startingCell.Col;
-            var finalScore = startingCell.Score;
+            int i = startingCell.Row;
+            int j = startingCell.Col;
+            int finalScore = startingCell.Score;
 
             long rowGaps = 0, colGaps = 0, identicalCount = 0, similarityCount = 0;
 
             // Walk the traceback matrix and build the alignments.
             while (!TracebackIsComplete(i, j))
             {
-                var tracebackDirection = Traceback[i][j];
+                sbyte tracebackDirection = Traceback[i][j];
                 // Walk backwards through the trace back
                 int gapLength;
                 switch (tracebackDirection)
                 {
                     case SourceDirection.Diagonal:
-                        var n1 = ReferenceSequence[j - 1];
-                        var n2 = QuerySequence[i - 1];
+                        byte n1 = ReferenceSequence[j - 1];
+                        byte n2 = QuerySequence[i - 1];
                         firstAlignment.Add(n1);
                         secondAlignment.Add(n2);
                         i--;
@@ -521,7 +521,7 @@ namespace Bio.Algorithms.Alignment
                         if (usingAffineGapModel)
                         {
                             gapLength = h_Gap_Length[i * gapStride + j];
-                            for (var k = 0; k < gapLength; k++)
+                            for (int k = 0; k < gapLength; k++)
                             {
                                 firstAlignment.Add(ReferenceSequence[--j]);
                                 secondAlignment.Add(_gap);
@@ -540,7 +540,7 @@ namespace Bio.Algorithms.Alignment
                         if (usingAffineGapModel)
                         {
                             gapLength = v_Gap_Length[i * gapStride + j];
-                            for (var k = 0; k < gapLength; k++)
+                            for (int k = 0; k < gapLength; k++)
                             {
                                 firstAlignment.Add(_gap);
                                 colGaps++;
@@ -566,14 +566,14 @@ namespace Bio.Algorithms.Alignment
             firstAlignment.Reverse();
             secondAlignment.Reverse();
             // Create the Consensus sequence
-            var consensus = new byte[Math.Min(firstAlignment.Count, secondAlignment.Count)];
-            for (var n = 0; n < consensus.Length; n++)
+            byte[] consensus = new byte[Math.Min(firstAlignment.Count, secondAlignment.Count)];
+            for (int n = 0; n < consensus.Length; n++)
             {
                 consensus[n] = ConsensusResolver.GetConsensus(new[] { firstAlignment[n], secondAlignment[n] });
             }
 
             // Create the result alignment
-            var pairwiseAlignedSequence = new PairwiseAlignedSequence
+            PairwiseAlignedSequence pairwiseAlignedSequence = new PairwiseAlignedSequence
             {
                 Score = finalScore,
                 FirstSequence = new Sequence(_sequence1.Alphabet, firstAlignment.ToArray()) { ID = _sequence1.ID },
@@ -631,10 +631,10 @@ namespace Bio.Algorithms.Alignment
             if (ScoreTable == null)
                 return string.Empty;
 
-            var sb = new StringBuilder();
-            for (var i = 0; i < QuerySequence.Length + 2; i++)
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < QuerySequence.Length + 2; i++)
             {
-                for (var j = 0; j < ReferenceSequence.Length + 2; j++)
+                for (int j = 0; j < ReferenceSequence.Length + 2; j++)
                 {
                     if (i == 0)
                     {

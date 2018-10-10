@@ -75,13 +75,13 @@ namespace Bio.TestAutomation.Util
         /// <returns>Array of Random numbers</returns>
         public static int[] RandomNumberGenerator(int maxRange, int count)
         {
-            var randomNumbers = new int[count];
+            int[] randomNumbers = new int[count];
 
-            var index = 0;
+            int index = 0;
             while (index < randomNumbers.Length)
             {
-                var rndNumberGenerator = new Random();
-                var rndNumber = rndNumberGenerator.Next(maxRange);
+                Random rndNumberGenerator = new Random();
+                int rndNumber = rndNumberGenerator.Next(maxRange);
 
                 // Add the unique number to the list
                 if (!randomNumbers.Contains(rndNumber))
@@ -102,12 +102,12 @@ namespace Bio.TestAutomation.Util
         public static string GetFileContent(string filePath)
         {
             filePath = filePath.TestDir();
-            var fileContent = string.Empty;
+            string fileContent = string.Empty;
 
             // Check if the File path exists, if not throw exception.
             if (File.Exists(filePath))
             {
-                using (var textFile = new StreamReader(filePath))
+                using (StreamReader textFile = new StreamReader(filePath))
                 {
                     fileContent = textFile.ReadToEnd();
                 }
@@ -127,7 +127,7 @@ namespace Bio.TestAutomation.Util
         /// <returns>FastQFormat</returns>
         public static FastQFormatType GetFastQFormatType(string formatType)
         {
-            var format = FastQFormatType.Illumina_v1_3;
+            FastQFormatType format = FastQFormatType.Illumina_v1_3;
 
             switch (formatType)
             {
@@ -154,8 +154,8 @@ namespace Bio.TestAutomation.Util
         /// <param name="length">No of quality scores required.</param>
         public static byte[] GetEncodedQualityScores(byte encodedQualityScore, int length)
         {
-            var encodedQualityScores = new byte[length];
-            for (var i = 0; i < length; i++)
+            byte[] encodedQualityScores = new byte[length];
+            for (int i = 0; i < length; i++)
             {
                 encodedQualityScores[i] = encodedQualityScore;
             }
@@ -170,8 +170,8 @@ namespace Bio.TestAutomation.Util
         /// <param name="length">No of quality scores required.</param>
         public static string GetDefaultEncodedQualityScores(FastQFormatType formatType, int length)
         {
-            var encodedQualityScores = new char[length];
-            for (var i = 0; i < length; i++)
+            char[] encodedQualityScores = new char[length];
+            for (int i = 0; i < length; i++)
             {
                 encodedQualityScores[i] = (char)QualitativeSequence.GetDefaultQualScore(formatType);
             }
@@ -188,7 +188,7 @@ namespace Bio.TestAutomation.Util
 		public static string CleanupWhiteSpace(string str)
 		{
 			str = str.Replace(" ", "");
-			var index = str.IndexOf('\n');
+			int index = str.IndexOf('\n');
 			if (index > 0 && str[index - 1] == '\r')
 			{
 				str = str.Replace("\r\n", "\n");
@@ -207,8 +207,8 @@ namespace Bio.TestAutomation.Util
 		public static bool CompareFiles(string observed, string expected)
 		{
 
-			var bytesO = File.ReadAllBytes(observed);
-			var bytesE = File.ReadAllBytes(expected);
+			byte[] bytesO = File.ReadAllBytes(observed);
+			byte[] bytesE = File.ReadAllBytes(expected);
 			if (bytesO.Length == bytesE.Length)
 			{
 				return bytesO.SequenceEqual(bytesE);
@@ -216,7 +216,7 @@ namespace Bio.TestAutomation.Util
 			else
 			{
 				// Assume the larger array is only larger because of \r\n endings
-				var maxLength = Math.Max(bytesO.Length, bytesE.Length);
+				int maxLength = Math.Max(bytesO.Length, bytesE.Length);
 				byte[] big, small;
 				if (bytesE.Length > bytesO.Length)
 				{
@@ -228,8 +228,8 @@ namespace Bio.TestAutomation.Util
 					big = bytesO;
 					small = bytesE;
 				}
-				var b = 0;
-				var s = 0;
+				int b = 0;
+				int s = 0;
 				while (b < big.Length)
 				{
 					if (s == small.Length)

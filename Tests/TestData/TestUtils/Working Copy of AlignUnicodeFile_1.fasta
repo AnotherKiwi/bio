@@ -1,0 +1,5 @@
+>gi|160797|gb|AAA29796.1| hemoglobin
+KRIPKSQNLRSIHSIFPFLEDU+00C1
+
+
+should fail in InValidatePOSimpleAlignAllParamsWithUnicodeSequencesFromTextFile

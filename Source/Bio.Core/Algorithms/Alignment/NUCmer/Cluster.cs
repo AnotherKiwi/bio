@@ -96,8 +96,8 @@ namespace Bio.Algorithms.Alignment
         /// <returns>RefStart, QueryStart, Length, Score, WrapScore, IsGood for each cluster.</returns>
         public override string ToString()
         {
-            var stringBuilder = new StringBuilder();
-            foreach (var matchExtension in Matches)
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach (MatchExtension matchExtension in Matches)
             {
                 stringBuilder.AppendLine(
                     string.Format(CultureInfo.CurrentCulture, Resource.ClusterToStringFormat,

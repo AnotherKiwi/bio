@@ -96,7 +96,7 @@ namespace Bio
         /// <returns>Returns true if value is added successfully, else returns false.</returns>
         public bool Add(T value)
         {
-            var result = false;
+            bool result = false;
             if (root == NullNode)
             {
                 root = new AATreeNode(value, NullNode);
@@ -105,11 +105,11 @@ namespace Bio
 
             if (!result)
             {
-                var node = root;
-                var parentNodes = new Stack<AATreeNode>();
+                AATreeNode node = root;
+                Stack<AATreeNode> parentNodes = new Stack<AATreeNode>();
                 while (true)
                 {
-                    var keyCompResult = Comparer.Compare(value, node.Value);
+                    int keyCompResult = Comparer.Compare(value, node.Value);
                     if (keyCompResult == 0)
                     {
                         // key already exists.
@@ -179,12 +179,12 @@ namespace Bio
             //        (use LeftmostRight or RightmostLeft node)
             //Step4. balance the tree.
 
-            var result = false;
-            var parentNodes = new Stack<AATreeNode>();
-            var node = root;
+            bool result = false;
+            Stack<AATreeNode> parentNodes = new Stack<AATreeNode>();
+            AATreeNode node = root;
             while (node != NullNode)
             {
-                var keyCompResult = Comparer.Compare(value, node.Value);
+                int keyCompResult = Comparer.Compare(value, node.Value);
                 if (keyCompResult == 0)
                 {
                     result = true;
@@ -209,7 +209,7 @@ namespace Bio
                 return result;
             }
 
-            var nodeToDelete = node;
+            AATreeNode nodeToDelete = node;
             if (nodeToDelete.Left != NullNode && nodeToDelete.Right != NullNode)
             {
                 parentNodes.Push(node);
@@ -221,7 +221,7 @@ namespace Bio
                     node = node.Right;
                 }
 
-                var tval = nodeToDelete.Value;
+                T tval = nodeToDelete.Value;
                 nodeToDelete.Value = node.Value;
                 node.Value = tval;
                 nodeToDelete = node;
@@ -230,7 +230,7 @@ namespace Bio
             AATreeNode parentNode = null;
             if (nodeToDelete.Left == NullNode || nodeToDelete.Right == NullNode)
             {
-                var childNode = nodeToDelete.Left == NullNode ? nodeToDelete.Right : nodeToDelete.Left;
+                AATreeNode childNode = nodeToDelete.Left == NullNode ? nodeToDelete.Right : nodeToDelete.Left;
 
                 if (parentNodes.Count > 0)
                 {
@@ -272,7 +272,7 @@ namespace Bio
         public bool Contains(T value)
         {
             T actualValue;
-            var result = TrySearch(value, out actualValue);
+            bool result = TrySearch(value, out actualValue);
             return result;
         }
 
@@ -287,7 +287,7 @@ namespace Bio
         {
             actualValue = DefaultValue;
             AATreeNode node;
-            var result = TrySearch(value, out node);
+            bool result = TrySearch(value, out node);
             if (result)
             {
                 actualValue = node.Value;
@@ -329,13 +329,13 @@ namespace Bio
         /// <returns>Returns true if the value is found, else returns false.</returns>
         internal bool TrySearch(T value, out AATreeNode node)
         {
-            var result = false;
+            bool result = false;
             node = NullNode;
 
-            var currentNode = root;
+            AATreeNode currentNode = root;
             while (currentNode != NullNode)
             {
-                var compResult = Comparer.Compare(value, currentNode.Value);
+                int compResult = Comparer.Compare(value, currentNode.Value);
                 if (compResult == 0)
                 {
                     node = currentNode;
@@ -366,8 +366,8 @@ namespace Bio
                 yield break;
             }
 
-            var nodes = new Stack<AATreeNode>();
-            var currentNode = node;
+            Stack<AATreeNode> nodes = new Stack<AATreeNode>();
+            AATreeNode currentNode = node;
             while (nodes.Count > 0 || currentNode != NullNode)
             {
                 if (currentNode != NullNode)
@@ -392,9 +392,9 @@ namespace Bio
                 yield break;
             }
 
-            var stack = new Stack<AATreeNode>();
+            Stack<AATreeNode> stack = new Stack<AATreeNode>();
             stack.Push(node);
-            var currentNode = NullNode;
+            AATreeNode currentNode = NullNode;
             while (stack.Count > 0)
             {
                 currentNode = stack.Pop();
@@ -420,8 +420,8 @@ namespace Bio
                 yield break;
             }
 
-            var nodes = new Stack<AATreeNode>();
-            var currentNode = node;
+            Stack<AATreeNode> nodes = new Stack<AATreeNode>();
+            AATreeNode currentNode = node;
             while (true)
             {
                 if (currentNode != NullNode)
@@ -463,7 +463,7 @@ namespace Bio
             AATreeNode parentNode = null;
             while (parentNodes.Count > 0)
             {
-               var node = parentNodes.Pop();
+               AATreeNode node = parentNodes.Pop();
                 if (parentNodes.Count > 0)
                 {
                     parentNode = parentNodes.Peek();
@@ -478,7 +478,7 @@ namespace Bio
                 // 2. if a node, its right child and right node's right child have same level then rotate left.
                 if (parentNode != null)
                 {
-                    var isLeftNode = parentNode.Left == node;
+                    bool isLeftNode = parentNode.Left == node;
                     RotateRight(parentNode, isLeftNode ? parentNode.Left : parentNode.Right);
                     RotateLeft(parentNode, isLeftNode ? parentNode.Left : parentNode.Right);
                 }
@@ -498,7 +498,7 @@ namespace Bio
             // balance the tree.
             while (parentNodes.Count > 0)
             {
-               var node = parentNodes.Pop();
+               AATreeNode node = parentNodes.Pop();
                 if ((node.Level - node.Left.Level) > 1 || (node.Level - node.Right.Level) > 1)
                 {
                     node.Level--;
@@ -518,7 +518,7 @@ namespace Bio
 
                     if (parentNode != null)
                     {
-                        var isLeftNode = parentNode.Left == node;
+                        bool isLeftNode = parentNode.Left == node;
 
                         if (RotateRight(parentNode, node))
                         {
@@ -557,7 +557,7 @@ namespace Bio
         /// <returns></returns>
         private bool RotateLeft(AATreeNode parentNode, AATreeNode node)
         {
-            var result = false;
+            bool result = false;
             if (node == NullNode)
             {
                 return result;
@@ -566,7 +566,7 @@ namespace Bio
             if (node.Level == node.Right.Level && node.Right.Level == node.Right.Right.Level)
             {
                 // rotate left.
-                var nodeToMoveUp = node.Right;
+                AATreeNode nodeToMoveUp = node.Right;
                 node.Right = nodeToMoveUp.Left;
                 nodeToMoveUp.Left = node;
                 if (parentNode != null)
@@ -602,7 +602,7 @@ namespace Bio
         /// <returns></returns>
         private bool RotateRight(AATreeNode parentNode, AATreeNode node)
         {
-            var result = false;
+            bool result = false;
             if (node == NullNode)
             {
                 return result;
@@ -611,7 +611,7 @@ namespace Bio
             if (node.Level == node.Left.Level)
             {
                 // rotate right.
-                var nodeToMoveUp = node.Left;
+                AATreeNode nodeToMoveUp = node.Left;
                 node.Left = nodeToMoveUp.Right;
                 nodeToMoveUp.Right = node;
                 if (parentNode != null)
@@ -744,7 +744,7 @@ namespace Bio
         {
             get
             {
-                var value = DefaultValue;
+                TValue value = DefaultValue;
                 KeyValuePair<TKey, TValue> keyValuePair;
                 if (internalTree.TrySearch(new KeyValuePair<TKey, TValue>(key, DefaultValue), out keyValuePair))
                 {
@@ -790,7 +790,7 @@ namespace Bio
         {
             value = DefaultValue;
             KeyValuePair<TKey, TValue> keyValuePair;
-            var result = internalTree.TrySearch(new KeyValuePair<TKey, TValue>(key, DefaultValue), out keyValuePair);
+            bool result = internalTree.TrySearch(new KeyValuePair<TKey, TValue>(key, DefaultValue), out keyValuePair);
 
             if (result)
             {

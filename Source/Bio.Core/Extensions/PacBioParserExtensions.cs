@@ -29,9 +29,9 @@ namespace Bio.IO.PacBio
                 throw new ArgumentNullException(nameof(filename));
             }
 
-            using (var fs = File.OpenRead(filename))
+            using (FileStream fs = File.OpenRead(filename))
             {
-                foreach (var item in PacBioCCSBamReader.Parse(fs))
+                foreach (PacBioCCSRead item in PacBioCCSBamReader.Parse(fs))
                     yield return item;
             }
         }

@@ -62,7 +62,7 @@ namespace Bio.IO.BAM
         public override bool Equals(object obj)
         {
             if (!(obj is FileOffset)) { return false; }
-            var other = (FileOffset) obj;
+            FileOffset other = (FileOffset) obj;
             return BothDataElements == other.BothDataElements ;
         }
 

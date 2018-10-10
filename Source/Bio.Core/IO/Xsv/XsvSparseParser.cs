@@ -98,7 +98,7 @@ namespace Bio.IO.Xsv
             if (stream == null)
                 throw new ArgumentNullException(nameof(stream));
 
-            using (var reader = stream.OpenRead())
+            using (StreamReader reader = stream.OpenRead())
             {
                 return Parse(reader);
             }
@@ -111,8 +111,8 @@ namespace Bio.IO.Xsv
         /// <returns>A list of sparse sequences that were present in the file.</returns>
         public IEnumerable<ISequence> Parse(StreamReader reader)
         {
-            var sparseReader = new XsvSparseReader(reader, separator, sequenceIdPrefix);
-            var sequenceList = new List<ISequence>();
+            XsvSparseReader sparseReader = new XsvSparseReader(reader, separator, sequenceIdPrefix);
+            List<ISequence> sequenceList = new List<ISequence>();
             while (sparseReader.HasLines)
                 sequenceList.Add(ParseOne(sparseReader));
 
@@ -155,7 +155,7 @@ namespace Bio.IO.Xsv
                 throw new InvalidDataException(Properties.Resource.XsvOffsetNotFound);
 
             // create a new sparse sequence
-            var sequence = new SparseSequence(Alphabet) { ID = sparseReader.GetSequenceId() };
+            SparseSequence sequence = new SparseSequence(Alphabet) { ID = sparseReader.GetSequenceId() };
 
             // read the sequence ID, count and offset
             long offset = sparseReader.GetSequenceOffset();
@@ -168,8 +168,8 @@ namespace Bio.IO.Xsv
             while (sparseReader.HasLines && !sparseReader.HasCommentLine)
             {
                 // add offset to position
-                var position = long.Parse(sparseReader.Fields[0], CultureInfo.InvariantCulture) + offset;
-                var symbol = sparseReader.Fields[1][0];
+                long position = long.Parse(sparseReader.Fields[0], CultureInfo.InvariantCulture) + offset;
+                char symbol = sparseReader.Fields[1][0];
                 if (sequence.Count <= position)
                     sequence.Count = position + 1; 
                 sequence[position] = (byte)symbol;

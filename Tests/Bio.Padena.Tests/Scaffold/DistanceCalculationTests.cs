@@ -45,21 +45,21 @@ namespace Bio.Padena.Tests.Scaffold
                 new Sequence(Alphabets.DNA, "TTTTTGATGGCA")
             };
 
-            var mapper = new ReadContigMapper();
-            var maps = mapper.Map(contigs, sequences, KmerLength);
-            var mapPairedReads = new MatePairMapper();
-            var pairs = mapPairedReads.MapContigToMatePairs(sequences, maps);
+            ReadContigMapper mapper = new ReadContigMapper();
+            ReadContigMap maps = mapper.Map(contigs, sequences, KmerLength);
+            MatePairMapper mapPairedReads = new MatePairMapper();
+            ContigMatePairs pairs = mapPairedReads.MapContigToMatePairs(sequences, maps);
 
-            var filter = new OrientationBasedMatePairFilter();
-            var contigpairedReads = filter.FilterPairedReads(pairs);
-            var calc = new DistanceCalculator(contigpairedReads);
+            OrientationBasedMatePairFilter filter = new OrientationBasedMatePairFilter();
+            ContigMatePairs contigpairedReads = filter.FilterPairedReads(pairs);
+            DistanceCalculator calc = new DistanceCalculator(contigpairedReads);
             contigpairedReads = calc.CalculateDistance();
             Assert.AreEqual(contigpairedReads.Values.Count, 1);
             Assert.IsTrue(contigpairedReads.ContainsKey(contigs[0]));
 
-            var map = contigpairedReads[contigs[0]];
+            Dictionary<ISequence, IList<ValidMatePair>> map = contigpairedReads[contigs[0]];
             Assert.IsTrue(map.ContainsKey(contigs[1]));
-            var valid = map[contigs[1]];
+            IList<ValidMatePair> valid = map[contigs[1]];
 
             Assert.AreEqual(valid.First().DistanceBetweenContigs[0], (float)478.000031);
             Assert.AreEqual(valid.First().DistanceBetweenContigs[1], (float)477.0);
@@ -76,8 +76,8 @@ namespace Bio.Padena.Tests.Scaffold
         public void DistanceCalculationWithTwoContigsReverseComplement()
         {
             const int KmerLength = 6;
-            var sequences = new List<ISequence>();
-            var seq = new Sequence(Alphabets.DNA, "GATCTGATAA");
+            List<ISequence> sequences = new List<ISequence>();
+            Sequence seq = new Sequence(Alphabets.DNA, "GATCTGATAA");
             seq.ID = ">gi|263191773|ref|NG_015830.1| Homo sapiens insulin receptor"
             + "substrate 1 (IRS1) on chromosome 2.X1:0.5K";
             sequences.Add(seq);
@@ -105,21 +105,21 @@ namespace Bio.Padena.Tests.Scaffold
                 new Sequence(Alphabets.DNA, "GATCTGATAAGG"), 
                 new Sequence(Alphabets.DNA, "TGCCATCAAAAA") };
 
-            var mapper = new ReadContigMapper();
-            var maps = mapper.Map(contigs, sequences, KmerLength);
-            var mapPairedReads = new MatePairMapper();
-            var pairedReads = mapPairedReads.MapContigToMatePairs(sequences, maps);
-            var filter = new OrientationBasedMatePairFilter();
-            var contigpairedReads = filter.FilterPairedReads(pairedReads);
-            var calc = new DistanceCalculator(contigpairedReads);
+            ReadContigMapper mapper = new ReadContigMapper();
+            ReadContigMap maps = mapper.Map(contigs, sequences, KmerLength);
+            MatePairMapper mapPairedReads = new MatePairMapper();
+            ContigMatePairs pairedReads = mapPairedReads.MapContigToMatePairs(sequences, maps);
+            OrientationBasedMatePairFilter filter = new OrientationBasedMatePairFilter();
+            ContigMatePairs contigpairedReads = filter.FilterPairedReads(pairedReads);
+            DistanceCalculator calc = new DistanceCalculator(contigpairedReads);
             contigpairedReads = calc.CalculateDistance();
 
             Assert.AreEqual(contigpairedReads.Values.Count, 1);
             Assert.IsTrue(contigpairedReads.ContainsKey(contigs[0]));
-            var map = contigpairedReads[contigs[0]];
+            Dictionary<ISequence, IList<ValidMatePair>> map = contigpairedReads[contigs[0]];
             Assert.IsTrue(map.ContainsKey(contigs[1]));
 
-            var valid = map[contigs[1]];
+            IList<ValidMatePair> valid = map[contigs[1]];
 
             Assert.AreEqual(valid.First().DistanceBetweenContigs[1], (float)478.000031);
             Assert.AreEqual(valid.First().DistanceBetweenContigs[0], (float)477.0);
@@ -136,8 +136,8 @@ namespace Bio.Padena.Tests.Scaffold
         public void DistanceCalculationwithTwoContigsWeightedMean()
         {
             const int KmerLength = 6;
-            var sequences = new List<ISequence>();
-            var seq = new Sequence(Alphabets.DNA, "GATCTGATAA");
+            List<ISequence> sequences = new List<ISequence>();
+            Sequence seq = new Sequence(Alphabets.DNA, "GATCTGATAA");
             seq.ID = ">gi|263191773|ref|NG_015830.1| Homo sapiens insulin receptor"
             + "substrate 1 (IRS1) on chromosome 2.x1:2K";
             sequences.Add(seq);
@@ -165,21 +165,21 @@ namespace Bio.Padena.Tests.Scaffold
                 new Sequence(Alphabets.DNA, "GATCTGATAAGG"), 
                 new Sequence(Alphabets.DNA, "TTTTTGATGGCA") };
 
-            var mapper = new ReadContigMapper();
-            var maps = mapper.Map(contigs, sequences, KmerLength);
+            ReadContigMapper mapper = new ReadContigMapper();
+            ReadContigMap maps = mapper.Map(contigs, sequences, KmerLength);
 
-            var mapPairedReads = new MatePairMapper();
-            var pairedReads = mapPairedReads.MapContigToMatePairs(sequences, maps);
-            var filter = new OrientationBasedMatePairFilter();
-            var contigpairedReads = filter.FilterPairedReads(pairedReads);
-            var calc = new DistanceCalculator(contigpairedReads);
+            MatePairMapper mapPairedReads = new MatePairMapper();
+            ContigMatePairs pairedReads = mapPairedReads.MapContigToMatePairs(sequences, maps);
+            OrientationBasedMatePairFilter filter = new OrientationBasedMatePairFilter();
+            ContigMatePairs contigpairedReads = filter.FilterPairedReads(pairedReads);
+            DistanceCalculator calc = new DistanceCalculator(contigpairedReads);
             contigpairedReads = calc.CalculateDistance();
             Assert.AreEqual(contigpairedReads.Values.Count, 1);
             Assert.IsTrue(contigpairedReads.ContainsKey(contigs[0]));
 
-            var map = contigpairedReads[contigs[0]];
+            Dictionary<ISequence, IList<ValidMatePair>> map = contigpairedReads[contigs[0]];
             Assert.IsTrue(map.ContainsKey(contigs[1]));
-            var valid = map[contigs[1]];
+            IList<ValidMatePair> valid = map[contigs[1]];
 
             Assert.AreEqual(valid.First().DistanceBetweenContigs[0], (float)1228.0);
             Assert.AreEqual(valid.First().DistanceBetweenContigs[1], (float)1227.0);

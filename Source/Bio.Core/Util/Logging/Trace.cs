@@ -72,8 +72,8 @@ namespace Bio.Util.Logging
         /// <param name="data">Pertinent data such as argument values.</param>
         public static void Report(string context, string message, string data)
         {
-            var when = DateTime.Now;
-            var m = new TraceMessage(context, message, data, when);
+            DateTime when = DateTime.Now;
+            TraceMessage m = new TraceMessage(context, message, data, when);
             Report(m);
         }
 
@@ -133,7 +133,7 @@ namespace Bio.Util.Logging
         /// </summary>
         private static void TrimToSize()
         {
-            var ct = Messages.Count;
+            int ct = Messages.Count;
             if (ct > maxMessages)
             {
                 Messages.RemoveRange(maxMessages, ct - maxMessages);

@@ -41,12 +41,12 @@ namespace Bio.Matrix
             _missingValue = matrices[0].MissingValue;
 
             IEnumerable<TRowKey> rowKeys = matrices[0].RowKeys;
-            var colKeys = matrices[0].ColKeys.ToList();
+            List<TColKey> colKeys = matrices[0].ColKeys.ToList();
 
             _colKeyToMatrix = new Dictionary<TColKey, Matrix<TRowKey, TColKey, TValue>>();
             matrices[0].ColKeys.ForEach(colKey => _colKeyToMatrix.Add(colKey, matrices[0]));
 
-            for (var i = 1; i < matrices.Length; i++)
+            for (int i = 1; i < matrices.Length; i++)
             {
                 if (rowsMustMatch)
                 {
@@ -77,8 +77,8 @@ namespace Bio.Matrix
             m = null;
             mappedColIndex = mappedRowIndex = -1;
 
-            var rowKey = _rowKeys[rowIndex];
-            var colKey = _colKeys[colIndex];
+            TRowKey rowKey = _rowKeys[rowIndex];
+            TColKey colKey = _colKeys[colIndex];
 
             m = _colKeyToMatrix[colKey];
 

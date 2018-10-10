@@ -54,10 +54,10 @@ namespace Bio.Tests
         public void InvalidateQualSequenceWithNullValue()
         {
             // Get values from xml.
-            var expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(
+            string expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleDnaSangerNode, Constants.AlphabetNullExceptionNode);
-            var actualError = string.Empty;
-            var updatedActualError = string.Empty;
+            string actualError = string.Empty;
+            string updatedActualError = string.Empty;
             QualitativeSequence qualSeq = null;
 
             //create Qualitative sequence by passing null value.
@@ -93,7 +93,7 @@ namespace Bio.Tests
         [Category("Priority2")]
         public void InvalidateQualSequenceWithEmptySequence()
         {
-            var qualSeq = new QualitativeSequence(
+            QualitativeSequence qualSeq = new QualitativeSequence(
                 Alphabets.DNA, FastQFormatType.Sanger, "", "");
 
             Assert.IsNotNull(qualSeq);
@@ -199,10 +199,10 @@ namespace Bio.Tests
         public void InvalidateQualSequenceWithInvalidChars()
         {
             // Get values from xml.
-            var expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(
+            string expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleDnaSangerNode, Constants.InvalidAlphabetErrorMessage);
-            var actualError = string.Empty;
-            var updatedActualError = string.Empty;
+            string actualError = string.Empty;
+            string updatedActualError = string.Empty;
             QualitativeSequence qualSeq = null;
 
             //Try creating Qualitative sequence by passing invalid seq chars.
@@ -239,15 +239,15 @@ namespace Bio.Tests
         public void ValidateReverseOfDnaQualSeq()
         {
             // Get Values from xml node.
-            var reversedSeq = utilityObj.xmlUtil.GetTextValue(
+            string reversedSeq = utilityObj.xmlUtil.GetTextValue(
                Constants.SimpleDnaSangerNode, Constants.ReverseQualSeq);
 
             // Create a Dna Sanger Qualitative Sequence.
-            var createdQualSeq =
+            QualitativeSequence createdQualSeq =
                 CreateQualitativeSequence(Constants.SimpleDnaSangerNode);
 
             // Validate an Reverse of Qual Sequence.
-            var reverseQual = createdQualSeq.GetReversedSequence();
+            ISequence reverseQual = createdQualSeq.GetReversedSequence();
             Assert.AreEqual(reversedSeq, new string(reverseQual.Select(a => (char)a).ToArray()));
 
             // Log to VSTest GUI.
@@ -266,15 +266,15 @@ namespace Bio.Tests
         public void ValidateReverseOfRnaQualSeq()
         {
             // Get Values from xml node.
-            var reversedSeq = utilityObj.xmlUtil.GetTextValue(
+            string reversedSeq = utilityObj.xmlUtil.GetTextValue(
                Constants.SimpleRnaSangerNode, Constants.ReverseQualSeq);
 
             // Create a Dna Sanger Qualitative Sequence.
-            var createdQualSeq =
+            QualitativeSequence createdQualSeq =
                 CreateQualitativeSequence(Constants.SimpleRnaSangerNode);
 
             // Validate an Reverse of Qual Sequence.
-            var reverseQual = createdQualSeq.GetReversedSequence();
+            ISequence reverseQual = createdQualSeq.GetReversedSequence();
             Assert.AreEqual(reversedSeq, new string(reverseQual.Select(a => (char)a).ToArray()));
 
             // Log to VSTest GUI.
@@ -293,15 +293,15 @@ namespace Bio.Tests
         public void ValidateReverseOfProteinQualSeq()
         {
             // Get Values from xml node.
-            var reversedSeq = utilityObj.xmlUtil.GetTextValue(
+            string reversedSeq = utilityObj.xmlUtil.GetTextValue(
                Constants.SimpleProteinSangerNode, Constants.ReverseQualSeq);
 
             // Create a Dna Sanger Qualitative Sequence.
-            var createdQualSeq =
+            QualitativeSequence createdQualSeq =
                 CreateQualitativeSequence(Constants.SimpleProteinSangerNode);
 
             // Validate an Reverse of Protein Qual Sequence.
-            var reverseQual = createdQualSeq.GetReversedSequence();
+            ISequence reverseQual = createdQualSeq.GetReversedSequence();
             Assert.AreEqual(reversedSeq, new string(reverseQual.Select(a => (char)a).ToArray()));
 
             // Log to VSTest GUI.
@@ -320,15 +320,15 @@ namespace Bio.Tests
         public void ValidateComplementOfDnaQualSeq()
         {
             // Get Values from xml node.
-            var complementSeq = utilityObj.xmlUtil.GetTextValue(
+            string complementSeq = utilityObj.xmlUtil.GetTextValue(
                Constants.SimpleDnaSangerNode, Constants.ComplementQualSeqNode);
 
             // Create a Dna Sanger Qualitative Sequence.
-            var createdQualSeq =
+            QualitativeSequence createdQualSeq =
                 CreateQualitativeSequence(Constants.SimpleDnaSangerNode);
 
             // Validate Reverse of Qual Sequence.
-            var complementQual = createdQualSeq.GetComplementedSequence();
+            ISequence complementQual = createdQualSeq.GetComplementedSequence();
             Assert.AreEqual(complementSeq, new string(complementQual.Select(a => (char)a).ToArray()));
 
             // Log to VSTest GUI.
@@ -347,15 +347,15 @@ namespace Bio.Tests
         public void ValidateComplementOfRnaQualSeq()
         {
             // Get Values from xml node.
-            var complementSeq = utilityObj.xmlUtil.GetTextValue(
+            string complementSeq = utilityObj.xmlUtil.GetTextValue(
                Constants.SimpleRnaSangerNode, Constants.ComplementQualSeqNode);
 
             // Create a Dna Sanger Qualitative Sequence.
-            var createdQualSeq =
+            QualitativeSequence createdQualSeq =
                 CreateQualitativeSequence(Constants.SimpleRnaSangerNode);
 
             // Validate complement of Qual Sequence.
-            var complementQual = createdQualSeq.GetComplementedSequence();
+            ISequence complementQual = createdQualSeq.GetComplementedSequence();
             Assert.AreEqual(complementSeq, new string(complementQual.Select(a => (char)a).ToArray()));
 
             // Log to VSTest GUI.
@@ -374,13 +374,13 @@ namespace Bio.Tests
         public void InValidateComplementOfProteinQualSeq()
         {
             // Get values from xml.
-            var expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(
+            string expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleProteinSangerNode, Constants.ComplementException);
-            var actualError = string.Empty;
+            string actualError = string.Empty;
             ISequence seq = null;
 
             // Create a Dna Sanger Qualitative Sequence.
-            var createdQualSeq = CreateQualitativeSequence(
+            QualitativeSequence createdQualSeq = CreateQualitativeSequence(
                 Constants.SimpleProteinSangerNode);
 
             // Try getting commplement of Protein sequences.
@@ -627,10 +627,10 @@ namespace Bio.Tests
         public void InvalidateQualitativeSeqCtor()
         {
             // Get Input values from xml config file.
-            var inputSequence = utilityObj.xmlUtil.GetTextValue(
+            string inputSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.QualitativeSequenceInsertSeqItemNode,
                 Constants.inputSequenceNode);
-            var QualScoreError = utilityObj.xmlUtil.GetTextValue(
+            string QualScoreError = utilityObj.xmlUtil.GetTextValue(
                 Constants.QualitativeSequenceInsertSeqItemNode,
                 Constants.NullExceptionError);
 
@@ -674,14 +674,14 @@ namespace Bio.Tests
             QualitativeSequenceParameters qualPam)
         {
             // Get values from xml.
-            var expectedFormatType = Utility.GetFastQFormatType(
+            FastQFormatType expectedFormatType = Utility.GetFastQFormatType(
                 utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FastQFormatType));
-            var expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(
+            string expectedErrorMessage = utilityObj.xmlUtil.GetTextValue(
                 nodeName, errorMessage).Replace("FORMATTYPE", expectedFormatType.ToString());
-            var inputSequence = utilityObj.xmlUtil.GetTextValue(
+            string inputSequence = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.inputSequenceNode);
-            var actualError = string.Empty;
-            var updatedActualError = string.Empty;
+            string actualError = string.Empty;
+            string updatedActualError = string.Empty;
             QualitativeSequence qualSeq = null;
             byte[] scoreArray = { 65, 64, 66, 68, 69, 67, 65, 65, 65, 65, 65,
                                    200, 3, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 65, 4 };
@@ -739,16 +739,16 @@ namespace Bio.Tests
         private QualitativeSequence CreateQualitativeSequence(string nodeName)
         {
             // Gets the actual sequence and the alphabet from the Xml
-            var alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(
+            IAlphabet alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.AlphabetNameNode));
-            var expectedFormatType = Utility.GetFastQFormatType(
+            FastQFormatType expectedFormatType = Utility.GetFastQFormatType(
                 utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FastQFormatType));
             QualitativeSequence createdQualitativeSequence = null;
-            var inputSequence = utilityObj.xmlUtil.GetTextValue(
+            string inputSequence = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.inputSequenceNode);
-            var inputQuality = utilityObj.xmlUtil.GetTextValue(
+            string inputQuality = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.InputByteArrayNode);
-            var byteArray = Encoding.UTF8.GetBytes(inputQuality);
+            byte[] byteArray = Encoding.UTF8.GetBytes(inputQuality);
 
             // Create a Qualitative Sequence.
             createdQualitativeSequence = new QualitativeSequence(
@@ -766,21 +766,21 @@ namespace Bio.Tests
             string nodeName, QualitativeSequenceParameters parameters)
         {
             // Gets the actual sequence and the alphabet from the Xml
-            var alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(
+            IAlphabet alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.AlphabetNameNode));
-            var expectedFormatType = Utility.GetFastQFormatType(
+            FastQFormatType expectedFormatType = Utility.GetFastQFormatType(
                 utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FastQFormatType));
             QualitativeSequence createdQualitativeSequence = null;
-            var inputSequence = utilityObj.xmlUtil.GetTextValue(
+            string inputSequence = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.inputSequenceNode);
-            var expectedSequence = utilityObj.xmlUtil.GetTextValue(
+            string expectedSequence = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExpectedSequenceNode);
-            var expectedSequenceCount = utilityObj.xmlUtil.GetTextValue(
+            string expectedSequenceCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.QSequenceCount);
-            var inputQuality = utilityObj.xmlUtil.GetTextValue(
+            string inputQuality = utilityObj.xmlUtil.GetTextValue(
                  nodeName, Constants.InputByteArrayNode);
-            var byteArray = Encoding.UTF8.GetBytes(inputQuality);
-            var index = 0;
+            byte[] byteArray = Encoding.UTF8.GetBytes(inputQuality);
+            int index = 0;
 
             // Create and validate Qualitative Sequence.
             switch (parameters)
@@ -790,7 +790,7 @@ namespace Bio.Tests
                       Encoding.UTF8.GetBytes(inputSequence), byteArray);
 
                     // Validate score
-                    foreach (var qualScore in createdQualitativeSequence.GetEncodedQualityScores())
+                    foreach (byte qualScore in createdQualitativeSequence.GetEncodedQualityScores())
                     {
                         Assert.AreEqual(qualScore, Convert.ToInt32(byteArray[index], (IFormatProvider)null));
                         index++;
@@ -859,7 +859,7 @@ namespace Bio.Tests
         void ConvertTypeToType(FastQFormatType type1, FastQFormatType type2)
         {
             int[] scoreArray = { -12, 24 };
-            var qualScore = -12;
+            int qualScore = -12;
             Assert.Throws<ArgumentNullException> ( () =>
                 QualitativeSequence.ConvertEncodedQualityScore(type1, type2, null));
          

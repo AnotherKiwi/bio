@@ -45,7 +45,7 @@ namespace Bio.IO.Wiggle
         /// <returns>The collection of parsed annotations.</returns>
         public IEnumerable<WiggleAnnotation> Parse(Stream stream)
         {
-            var annotation = ParseOne(stream);
+            WiggleAnnotation annotation = ParseOne(stream);
             return annotation == null 
                 ? Enumerable.Empty<WiggleAnnotation>() 
                 : new[] { annotation };
@@ -63,7 +63,7 @@ namespace Bio.IO.Wiggle
                 throw new ArgumentNullException(nameof(stream));
             }
 
-            using (var reader = stream.OpenRead())
+            using (StreamReader reader = stream.OpenRead())
             {
                 return Parse(reader);
             }
@@ -82,11 +82,11 @@ namespace Bio.IO.Wiggle
             }
 
             string line;
-            var result = ParseHeader(reader);
+            WiggleAnnotation result = ParseHeader(reader);
 
             if (result.AnnotationType == WiggleAnnotationType.FixedStep)
             {
-                var fixedStepValues = new List<float>();
+                List<float> fixedStepValues = new List<float>();
                 while ((line = reader.ReadLine()) != null)
                 {
                     fixedStepValues.Add(float.Parse(line.Trim(), CultureInfo.InvariantCulture));
@@ -96,7 +96,7 @@ namespace Bio.IO.Wiggle
             }
             else
             {
-                var variableStepValues = new List<KeyValuePair<long, float>>();
+                List<KeyValuePair<long, float>> variableStepValues = new List<KeyValuePair<long, float>>();
                 try
                 {
                     while ((line = reader.ReadLine()) != null)
@@ -106,7 +106,7 @@ namespace Bio.IO.Wiggle
                             continue;
                         }
 
-                        var keyValue = line.Split(' ', '\t');
+                        string[] keyValue = line.Split(' ', '\t');
                         variableStepValues.Add(new KeyValuePair<long, float>(long.Parse(keyValue[0], CultureInfo.InvariantCulture), float.Parse(keyValue[1], CultureInfo.InvariantCulture)));
                     }
                 }
@@ -128,9 +128,9 @@ namespace Bio.IO.Wiggle
         /// <returns>Wiggle annotation object initialized with data from the header.</returns>
         private static WiggleAnnotation ParseHeader(StreamReader reader)
         {
-            var result = new WiggleAnnotation();
+            WiggleAnnotation result = new WiggleAnnotation();
 
-            var line = reader.ReadLine();
+            string line = reader.ReadLine();
             
             // read comments
             while (line != null && (line.StartsWith(WiggleSchema.CommentLineStart, StringComparison.OrdinalIgnoreCase) || string.IsNullOrWhiteSpace(line)))
@@ -168,11 +168,11 @@ namespace Bio.IO.Wiggle
                 throw new FormatException(Properties.Resource.WiggleInvalidHeader);
             }
 
-            var tokens = line.Split(' ');
-            var encodingDetails = new Dictionary<string, string>();
-            for (var i = 1; i < tokens.Length; i++)
+            string[] tokens = line.Split(' ');
+            Dictionary<string, string> encodingDetails = new Dictionary<string, string>();
+            for (int i = 1; i < tokens.Length; i++)
             {
-                var metadataArray = tokens[i].Split('=');
+                string[] metadataArray = tokens[i].Split('=');
                 encodingDetails.Add(metadataArray[0], metadataArray[1]);
             }
 
@@ -206,8 +206,8 @@ namespace Bio.IO.Wiggle
         /// <returns>Track line data in key-value format.</returns>
         private static Dictionary<string, string> ExtractMetadata(string trackLine)
         {
-            var tokens = trackLine.Split(' ').ToList();
-            var i = 0;
+            List<string> tokens = trackLine.Split(' ').ToList();
+            int i = 0;
 
             // Values might be enclosed in double-quotes to support spaces in values. 
             // (space is a delimited if not inside double-quotes.)

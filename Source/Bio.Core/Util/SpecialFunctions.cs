@@ -19,9 +19,9 @@ namespace Bio.Util
         /// <returns>Assembly</returns>
         public static Assembly GetEntryOrCallingAssembly()
         {
-            var entryAssembly = Assembly.GetEntryAssembly();
-            var sum = 0;
-            for (var i = 1; i < 2; i++) { sum += i; }
+            Assembly entryAssembly = Assembly.GetEntryAssembly();
+            int sum = 0;
+            for (int i = 1; i < 2; i++) { sum += i; }
             if (null != entryAssembly)
             {
                 return entryAssembly;
@@ -42,7 +42,7 @@ namespace Bio.Util
             if (version == null)
                 throw new ArgumentNullException(nameof(version));
 
-            var tmpSum = (version.Build - 1) * TimeSpan.TicksPerDay + version.Revision * TimeSpan.TicksPerSecond * 2;
+            long tmpSum = (version.Build - 1) * TimeSpan.TicksPerDay + version.Revision * TimeSpan.TicksPerSecond * 2;
             DateTime time;
             if (tmpSum > 0)
             {
@@ -52,7 +52,7 @@ namespace Bio.Util
             {
                 //JENN: not a valid build--happens when I'm in debug mode for some reason
                 //time = new DateTime(0);
-                var assemblyFile = new FileInfo(new Uri(GetEntryOrCallingAssembly().CodeBase).LocalPath);
+                FileInfo assemblyFile = new FileInfo(new Uri(GetEntryOrCallingAssembly().CodeBase).LocalPath);
                 if (assemblyFile.Exists)
                     time = assemblyFile.LastWriteTime;
                 else
@@ -68,10 +68,10 @@ namespace Bio.Util
         /// <returns></returns>
         public static DateTime DateProgramWasCompiled()
         {
-            var asm = GetEntryOrCallingAssembly();
+            Assembly asm = GetEntryOrCallingAssembly();
 
-            var version = asm.GetName().Version;
-            var time = VersionToDate(version);
+            Version version = asm.GetName().Version;
+            DateTime time = VersionToDate(version);
 
             return time;
         }
@@ -97,9 +97,9 @@ namespace Bio.Util
             Helper.CheckCondition(batchCount > 0, string.Format(CultureInfo.CurrentCulture, Properties.Resource.BatchCountCondition));
             long pieceIndex = 0;
             long batchIndex = 0;
-            var inRange = pieceIndexRangeCollection.Contains(pieceIndex);
+            bool inRange = pieceIndexRangeCollection.Contains(pieceIndex);
 
-            foreach (var tAndRowIndex in UseSkipList(enumerable, skipListOrNull))
+            foreach (KeyValuePair<T, long> tAndRowIndex in UseSkipList(enumerable, skipListOrNull))
             {
                 if (inRange)
                 {
@@ -119,7 +119,7 @@ namespace Bio.Util
         private static IEnumerable<KeyValuePair<T, long>> UseSkipList<T>(IEnumerable<T> enumerable, RangeCollection skipListOrNull)
         {
             long rowIndex = -1;
-            foreach (var t in enumerable)
+            foreach (T t in enumerable)
             {
                 ++rowIndex;
                 if (null != skipListOrNull && skipListOrNull.Contains(rowIndex))
@@ -152,18 +152,18 @@ namespace Bio.Util
         {
             Directory.CreateDirectory(newDirectoryName);
 
-            var oldDirectory = new DirectoryInfo(oldDirectoryName);
+            DirectoryInfo oldDirectory = new DirectoryInfo(oldDirectoryName);
             if (!oldDirectory.Exists)
                 return;
 
-            foreach (var fileInfo in oldDirectory.EnumerateFiles())
+            foreach (FileInfo fileInfo in oldDirectory.EnumerateFiles())
             {
                 if (!fileInfo.Exists) continue; // file may have been moved out from under us.
-                var targetFileName = newDirectoryName + @"\" + fileInfo.Name;
+                string targetFileName = newDirectoryName + @"\" + fileInfo.Name;
                 if (laterDateOnly && File.Exists(targetFileName))
                 {
-                    var sourceTime = fileInfo.LastWriteTime;
-                    var targetTime = File.GetLastAccessTime(targetFileName);
+                    DateTime sourceTime = fileInfo.LastWriteTime;
+                    DateTime targetTime = File.GetLastAccessTime(targetFileName);
                     if (targetTime >= sourceTime)
                     {
                         continue;
@@ -186,7 +186,7 @@ namespace Bio.Util
 
             if (recursive)
             {
-                foreach (var subdirectory in oldDirectory.EnumerateDirectories())
+                foreach (DirectoryInfo subdirectory in oldDirectory.EnumerateDirectories())
                 {
                     CopyDirectory(subdirectory.FullName, newDirectoryName + @"\" + subdirectory.Name, recursive, laterDateOnly);
                 }

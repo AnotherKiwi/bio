@@ -20,7 +20,7 @@ namespace Bio.Matrix
         protected override byte[] ValueOrMissingToByteArray(char value)
 #pragma warning restore 1591
         {
-            var byteArray = new byte[] { (byte)value };
+            byte[] byteArray = new byte[] { (byte)value };
             return byteArray;
         }
 
@@ -57,7 +57,7 @@ namespace Bio.Matrix
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope"), SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
         public static RowKeysAnsi GetInstanceFromDenseAnsi(string denseAnsiFileName, ParallelOptions parallelOptions, FileAccess fileAccess = FileAccess.Read, FileShare fileShare = FileShare.Read)
         {
-            var rowKeysAnsi = new RowKeysAnsi();
+            RowKeysAnsi rowKeysAnsi = new RowKeysAnsi();
             rowKeysAnsi.GetInstanceFromDenseStructFileNameInternal(denseAnsiFileName, parallelOptions, fileAccess, fileShare);
             return rowKeysAnsi;
         }
@@ -76,7 +76,7 @@ namespace Bio.Matrix
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope"), SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
         public static RowKeysAnsi GetInstanceFromRowKeysAnsi(string rowKeysAnsiFileName, ParallelOptions parallelOptions, FileAccess fileAccess = FileAccess.Read, FileShare fileShare = FileShare.Read, bool verbose = true)
         {
-            var rowKeysAnsi = new RowKeysAnsi();
+            RowKeysAnsi rowKeysAnsi = new RowKeysAnsi();
             rowKeysAnsi.GetInstanceFromRowKeysStructFileNameInternal(rowKeysAnsiFileName, parallelOptions, fileAccess, fileShare, verbose);
             return rowKeysAnsi;
         }

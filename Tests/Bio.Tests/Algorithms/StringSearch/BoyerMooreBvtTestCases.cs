@@ -29,16 +29,16 @@ namespace Bio.Tests.Algorithms.StringSearch
         [Category("Priority0")]
         public void BoyerMooreAlignDnaSequenceWith1000BP()
         {
-            var boyerMoore = new BoyerMoore();
-            var boyerMooreSequence =
+            BoyerMoore boyerMoore = new BoyerMoore();
+            string boyerMooreSequence =
                 utilityObj.xmlUtil.GetTextValue(Constants.BoyerMooreSequence, Constants.SequenceNode);
-            var referenceSequence =
+            string referenceSequence =
                 utilityObj.xmlUtil.GetTextValue(Constants.BoyerMooreSequence, Constants.SearchSequenceNode);
-            var expectedMatch =
+            string expectedMatch =
                 utilityObj.xmlUtil.GetTextValue(Constants.BoyerMooreSequence, Constants.ExpectedMatch);
             ISequence boyerMooreSeq = new Sequence(Alphabets.DNA, boyerMooreSequence);
 
-            var indexList = boyerMoore.FindMatch(boyerMooreSeq,
+            IList<int> indexList = boyerMoore.FindMatch(boyerMooreSeq,
                                                         referenceSequence);
 
             Assert.AreEqual(expectedMatch, indexList[0].ToString((IFormatProvider) null));
@@ -54,18 +54,18 @@ namespace Bio.Tests.Algorithms.StringSearch
         [Category("Priority0")]
         public void BoyerMooreAlignDnaSequenceListWith1000BP()
         {
-            var boyerMoore = new BoyerMoore();
-            var boyerMooreSequence =
+            BoyerMoore boyerMoore = new BoyerMoore();
+            string boyerMooreSequence =
                 utilityObj.xmlUtil.GetTextValue(Constants.BoyerMooreSequence, Constants.SequenceNode);
-            var referenceSequence =
+            string referenceSequence =
                 utilityObj.xmlUtil.GetTextValue(Constants.BoyerMooreSequence, Constants.SearchSequenceNode);
-            var expectedMatch =
+            string expectedMatch =
                 utilityObj.xmlUtil.GetTextValue(Constants.BoyerMooreSequence, Constants.ExpectedMatch);
             ISequence boyerMooreSeq = new Sequence(Alphabets.DNA, boyerMooreSequence);
 
             IList<string> referenceSeqs = new List<string> {referenceSequence};
 
-            var indexList = boyerMoore.FindMatch(boyerMooreSeq, referenceSeqs);
+            IDictionary<string, IList<int>> indexList = boyerMoore.FindMatch(boyerMooreSeq, referenceSeqs);
 
             Assert.AreEqual(expectedMatch, indexList[referenceSequence][0].ToString((IFormatProvider) null));
         }

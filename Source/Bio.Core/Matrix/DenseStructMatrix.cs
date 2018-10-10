@@ -74,8 +74,8 @@ namespace Bio.Matrix
                 if (TryGetValue(rowKey, colKey, out oldValue)) //Is there a (non-missing) value?
                 {
                     //Yes, there is
-                    var storeList = RowKeyToStoreList[rowKey];
-                    var colIndex = ColSerialNumbers.GetOld(colKey);
+                    List<TStore> storeList = RowKeyToStoreList[rowKey];
+                    int colIndex = ColSerialNumbers.GetOld(colKey);
 
                     lock (storeList) //To be thread-safe, we have to lock the whole row for writes
                     {
@@ -88,8 +88,8 @@ namespace Bio.Matrix
             }
             else
             {
-                var storeList = RowKeyToStoreList[rowKey];
-                var colIndex = ColSerialNumbers.GetOld(colKey);
+                List<TStore> storeList = RowKeyToStoreList[rowKey];
+                int colIndex = ColSerialNumbers.GetOld(colKey);
 
                 lock (storeList) //To be thread-safe, we have to lock the whole row for writes
                 {
@@ -151,8 +151,8 @@ namespace Bio.Matrix
         override public bool TryGetValue(string rowKey, string colKey, out TValue value)
 #pragma warning restore 1591
         {
-            var colIndexToVal = RowKeyToStoreList[rowKey];
-            var colIndex = ColSerialNumbers.GetOld(colKey);
+            List<TStore> colIndexToVal = RowKeyToStoreList[rowKey];
+            int colIndex = ColSerialNumbers.GetOld(colKey);
             if (colIndex < colIndexToVal.Count)
             {
                 value = StoreToValue(colIndexToVal[colIndex]);
@@ -178,15 +178,15 @@ namespace Bio.Matrix
         {
             get
             {
-                foreach (var rowKeyAndColIndexToVal in RowKeyToStoreList)
+                foreach (KeyValuePair<string, List<TStore>> rowKeyAndColIndexToVal in RowKeyToStoreList)
                 {
-                    var rowKey = rowKeyAndColIndexToVal.Key;
-                    var structArray = rowKeyAndColIndexToVal.Value;
+                    string rowKey = rowKeyAndColIndexToVal.Key;
+                    List<TStore> structArray = rowKeyAndColIndexToVal.Value;
 
-                    for (var colIndex = 0; colIndex < structArray.Count; ++colIndex)
+                    for (int colIndex = 0; colIndex < structArray.Count; ++colIndex)
                     {
-                        var colKey = ColSerialNumbers.ItemList[colIndex];
-                        var val = StoreToValue(structArray[colIndex]);
+                        string colKey = ColSerialNumbers.ItemList[colIndex];
+                        TValue val = StoreToValue(structArray[colIndex]);
                         if (!IsMissing(val))
                         {
                             yield return new RowKeyColKeyValue<string, string, TValue>(rowKey, colKey, val);
@@ -202,11 +202,11 @@ namespace Bio.Matrix
         {
             get
             {
-                foreach (var structArray in RowKeyToStoreList.Values)
+                foreach (List<TStore> structArray in RowKeyToStoreList.Values)
                 {
-                    for (var cidIndex = 0; cidIndex < structArray.Count; ++cidIndex)
+                    for (int cidIndex = 0; cidIndex < structArray.Count; ++cidIndex)
                     {
-                        var val = StoreToValue(structArray[cidIndex]);
+                        TValue val = StoreToValue(structArray[cidIndex]);
                         if (!MissingValue.Equals(val))
                         {
                             yield return val;
@@ -247,14 +247,14 @@ namespace Bio.Matrix
         {
             textWriter.WriteLine(Helper.CreateTabString("var", ColSerialNumbers.ItemList.StringJoin("\t")));
 
-            var valueStringQuery =
+            ParallelQuery<string> valueStringQuery =
                 from rowKey in RowKeys.AsParallel().AsOrdered().WithDegreeOfParallelism(parallelOptions.MaxDegreeOfParallelism)
                 let colIndexToVal = FullLengthStoreList(rowKey)
                 let valString = StoreListToString(colIndexToVal)
                 select rowKey + "\t" + valString;
 
-            var counterWithMessages = new CounterWithMessages("Writing denseStructMatrix {0} of {1}", 1000, RowCount);
-            foreach (var rowKeyAndValString in valueStringQuery)
+            CounterWithMessages counterWithMessages = new CounterWithMessages("Writing denseStructMatrix {0} of {1}", 1000, RowCount);
+            foreach (string rowKeyAndValString in valueStringQuery)
             {
                 counterWithMessages.Increment();
                 textWriter.WriteLine(rowKeyAndValString);
@@ -263,7 +263,7 @@ namespace Bio.Matrix
 
         private List<TStore> FullLengthStoreList(string rowKey)
         {
-            var colIndexToVal = RowKeyToStoreList[rowKey];
+            List<TStore> colIndexToVal = RowKeyToStoreList[rowKey];
             //Fill out the line with values for colKeys's that were seen after this variable was read
             colIndexToVal.AddRange(Enumerable.Repeat(StoreMissingValue, ColCount - colIndexToVal.Count));
             return colIndexToVal;
@@ -274,10 +274,10 @@ namespace Bio.Matrix
             using (TextReader textReader = FileUtils.OpenTextStripComments(denseStructFileName))
             {
                 //!!!similar code in mergedense method
-                var header = textReader.ReadLine();
+                string header = textReader.ReadLine();
                 ColSerialNumbers = ColSerialNumbersFromHeader(header, denseStructFileName);
 
-                var counterWithMessages = new CounterWithMessages("Reading " + denseStructFileName + " {0}", 1000, null, true);
+                CounterWithMessages counterWithMessages = new CounterWithMessages("Reading " + denseStructFileName + " {0}", 1000, null, true);
 
                 //We use ReadEachIndexedLine so that we can process the lines out of order (which is fastest) put still recover the original order of the rowKeys
                 var indexRowKeyStructListQuery =
@@ -313,9 +313,9 @@ namespace Bio.Matrix
         {
             counterWithMessages.Increment();
             string valueString;
-            var rowKey = SplitVarLine(line, denseStructFileName, colCount, out valueString);
+            string rowKey = SplitVarLine(line, denseStructFileName, colCount, out valueString);
 
-            var structList = stringToStoreListDelegate(valueString, colCount);
+            List<TStore> structList = stringToStoreListDelegate(valueString, colCount);
             if (structList.Count != colCount) throw new MatrixFormatException("Every data string should have a value per col. " + rowKey);
             return new KeyValuePair<string, List<TStore>>(rowKey, structList);
         }
@@ -330,17 +330,17 @@ namespace Bio.Matrix
         {
             using (TextReader textReader = FileUtils.OpenTextStripComments(denseStructFileName))
             {
-                var header = textReader.ReadLine();
+                string header = textReader.ReadLine();
                 Helper.CheckCondition(null != header, () => string.Format(CultureInfo.InvariantCulture, Properties.Resource.ExpectedFileToHaveHeader, denseStructFileName));
-                var columns = header.Split(new char[] { '\t' }, 2);
+                string[] columns = header.Split(new char[] { '\t' }, 2);
                 Helper.CheckCondition(columns.Length > 0 && columns[0] == "var", () => string.Format(CultureInfo.InvariantCulture, Properties.Resource.ExpectedFileToHaveHeader, denseStructFileName));
 
                 string line;
                 while (null != (line = textReader.ReadLine()))
                 {
-                    var fields = line.Split('\t');
+                    string[] fields = line.Split('\t');
                     Helper.CheckCondition(fields.Length == 2, () => string.Format(CultureInfo.InvariantCulture, Properties.Resource.ExpectedEveryVarLineToHaveOneTab, denseStructFileName, fields.Length));
-                    var rowKey = fields[0];
+                    string rowKey = fields[0];
                     yield return rowKey;
                 }
             }
@@ -356,9 +356,9 @@ namespace Bio.Matrix
         {
             using (TextReader textReader = FileUtils.OpenTextStripComments(denseStructFileName))
             {
-                var header = textReader.ReadLine();
+                string header = textReader.ReadLine();
                 Helper.CheckCondition(null != header, Properties.Resource.ExpectedHeaderAsFirstLineOfFile, denseStructFileName);
-                var columns = header.Split(new char[] { '\t' }, 2);
+                string[] columns = header.Split(new char[] { '\t' }, 2);
                 Helper.CheckCondition(columns.Length > 0 && columns[0] == "var", () => string.Format(CultureInfo.InvariantCulture, Properties.Resource.Expected_var_AsFirstColumnOfHeader, columns[0], denseStructFileName));
 
                 return columns[1].Split('\t');
@@ -371,7 +371,7 @@ namespace Bio.Matrix
             Converter<TStore, string> StoreToSparseValueDelegate,
             bool zeroIsOK, string fileMessageOrNull, TStore storeMissingValue, CounterWithMessages counterWithMessages)
         {
-            foreach (var fileName in FileUtils.GetFiles(filePattern, zeroIsOK))
+            foreach (string fileName in FileUtils.GetFiles(filePattern, zeroIsOK))
             {
                 if (null != fileMessageOrNull)
                 {
@@ -380,22 +380,22 @@ namespace Bio.Matrix
 
                 using (TextReader textReader = FileUtils.OpenTextStripComments(fileName))
                 {
-                    var header = textReader.ReadLine();
-                    var colSerialNumberCollection = ColSerialNumbersFromHeader(header, fileName);
+                    string header = textReader.ReadLine();
+                    SerialNumbers<string> colSerialNumberCollection = ColSerialNumbersFromHeader(header, fileName);
 
                     string line;
                     while (null != (line = textReader.ReadLine()))
                     {
-                        var rowKeyAndStructList = CreateRowKeyAndStructList(line, filePattern, colSerialNumberCollection.Count, staticStringiToStoreListDelegate, counterWithMessages);
-                        var rowKey = rowKeyAndStructList.Key;
-                        var structList = rowKeyAndStructList.Value;
-                        for (var colIndex = 0; colIndex < colSerialNumberCollection.Count; ++colIndex)
+                        KeyValuePair<string, List<TStore>> rowKeyAndStructList = CreateRowKeyAndStructList(line, filePattern, colSerialNumberCollection.Count, staticStringiToStoreListDelegate, counterWithMessages);
+                        string rowKey = rowKeyAndStructList.Key;
+                        List<TStore> structList = rowKeyAndStructList.Value;
+                        for (int colIndex = 0; colIndex < colSerialNumberCollection.Count; ++colIndex)
                         {
-                            var store = structList[colIndex];
+                            TStore store = structList[colIndex];
                             if (!store.Equals(storeMissingValue)) //OK to use Equals because TStore can't be null
                             {
-                                var val = StoreToSparseValueDelegate(store);
-                                var stringArray = new string[] { rowKey, colSerialNumberCollection.GetItem(colIndex), val };
+                                string val = StoreToSparseValueDelegate(store);
+                                string[] stringArray = new string[] { rowKey, colSerialNumberCollection.GetItem(colIndex), val };
                                 yield return stringArray;
                             }
                         }
@@ -406,24 +406,24 @@ namespace Bio.Matrix
 
         internal static SerialNumbers<string> ColKeysInFilePattern(string denseStructFilePattern)
         {
-            var cidQuery =
+            IEnumerable<string> cidQuery =
                 from fileName in FileUtils.GetFiles(denseStructFilePattern, /*zeroIsOK*/ false)
                 from colKey in ColKeysInFile(fileName)
                 orderby colKey
                 select colKey;
 
-            var colSerialNumbers = new SerialNumbers<string>(cidQuery);
+            SerialNumbers<string> colSerialNumbers = new SerialNumbers<string>(cidQuery);
             return colSerialNumbers;
         }
 
         internal static List<string> RowKeysInFilePattern(string denseStructFilePattern)
         {
-            var rowKeyQuery =
+            IEnumerable<string> rowKeyQuery =
                 from fileName in FileUtils.GetFiles(denseStructFilePattern, /*zeroIsOK*/ false)
                 from rowKey in RowKeysInFile(fileName)
                 select rowKey;
 
-            var rowKeyList = rowKeyQuery.Distinct().ToList();
+            List<string> rowKeyList = rowKeyQuery.Distinct().ToList();
             return rowKeyList;
         }
 
@@ -483,12 +483,12 @@ namespace Bio.Matrix
 
         private static string SplitVarLine(string line, string denseFileNameForErrorMessage, int colCount, out string valueString)
         {
-            var fields = line.Split('\t');
+            string[] fields = line.Split('\t');
             if (fields.Length != 2)
             {
                 throw new MatrixFormatException("Every var line should have exactly one tab. " + denseFileNameForErrorMessage);
             }
-            var rowKey = fields[0];
+            string rowKey = fields[0];
             valueString = fields[1];
 
             return rowKey;
@@ -498,10 +498,10 @@ namespace Bio.Matrix
         {
             //Helper.CheckCondition(null != headerOrNull, "input file must contain a first line. " + denseFileNameForErrorMessage);
             MatrixFormatException.CheckCondition(null != headerOrNull, "input file must contain a first line. " + denseFileNameForErrorMessage);
-            var columns = headerOrNull.Split('\t');
+            string[] columns = headerOrNull.Split('\t');
             //Helper.CheckCondition(columns.Length > 0 && columns[0] == "var", "The first column in the file should be 'var'. " + denseFileNameForErrorMessage);
             MatrixFormatException.CheckCondition(columns.Length > 0 && (columns[0] == "var" || columns[0] == "row"), "The first column in the file should be 'var'. " + denseFileNameForErrorMessage);
-            var inputSerialNumbers = new SerialNumbers<string>(columns.Skip(1));
+            SerialNumbers<string> inputSerialNumbers = new SerialNumbers<string>(columns.Skip(1));
             return inputSerialNumbers;
         }
         //!!!matrix: when combining Matrix's be sure the missing values are compatible
@@ -517,7 +517,7 @@ namespace Bio.Matrix
         {
             RowKeyToStoreList = new Dictionary<string, List<TStore>>();
 
-            foreach (var rowKey in RowKeys)
+            foreach (string rowKey in RowKeys)
             {
                 RowKeyToStoreList.Add(rowKey, new List<TStore>());
             }
@@ -529,22 +529,22 @@ namespace Bio.Matrix
             RowKeyToStoreList = new Dictionary<string, List<TStore>>();
 
             //!!!05/18/2009 optimize could be made faster with plinq using an index read to keep the order of the rowKeys (aka vars)
-            foreach (var linesWithSameRowKey in SparseGroupedByVar(inputSparsePattern, /*zeroIsOK*/ false, "File {0}"))
+            foreach (List<string[]> linesWithSameRowKey in SparseGroupedByVar(inputSparsePattern, /*zeroIsOK*/ false, "File {0}"))
             {
                 Debug.Assert(linesWithSameRowKey.Count > 0); // real assert
-                var rowKey = linesWithSameRowKey[0][0];
+                string rowKey = linesWithSameRowKey[0][0];
 
-                var storeList = Enumerable.Repeat(StoreMissingValue, ColSerialNumbers.Count).ToList();
+                List<TStore> storeList = Enumerable.Repeat(StoreMissingValue, ColSerialNumbers.Count).ToList();
                 RowKeyToStoreList.Add(rowKey, storeList);
 
-                foreach (var rowKeyColKeyVal in linesWithSameRowKey)
+                foreach (string[] rowKeyColKeyVal in linesWithSameRowKey)
                 {
-                    var colKey = rowKeyColKeyVal[1];
-                    var valAsString = rowKeyColKeyVal[2];
-                    var store = SparseValToStore(valAsString);
+                    string colKey = rowKeyColKeyVal[1];
+                    string valAsString = rowKeyColKeyVal[2];
+                    TStore store = SparseValToStore(valAsString);
                     Helper.CheckCondition(!store.Equals(StoreMissingValue), () => string.Format(CultureInfo.InvariantCulture, Properties.Resource.ErrorConvertingValGaveMissingValue, valAsString, StoreMissingValue)); //OK to use Equals because TScore can't be null
 
-                    var colIndex = ColSerialNumbers.GetNewOrOld(colKey);
+                    int colIndex = ColSerialNumbers.GetNewOrOld(colKey);
                     if (colIndex < storeList.Count)
                     {
                         Helper.CheckCondition(storeList[colIndex].Equals(StoreMissingValue), () => string.Format(CultureInfo.InvariantCulture, "Each pair of keys, i,e,.<{0},{1}>, should only be seen once", rowKey, colKey));
@@ -574,9 +574,9 @@ namespace Bio.Matrix
             ColSerialNumbers = new SerialNumbers<string>();
             RowKeyToStoreList = new Dictionary<string, List<TStore>>();
 
-            foreach (var triple in tripleEnumerable)
+            foreach (RowKeyColKeyValue<string, string, TValue> triple in tripleEnumerable)
             {
-                var rowKey = triple.RowKey;
+                string rowKey = triple.RowKey;
                 List<TStore> storeList;
                 if (!RowKeyToStoreList.TryGetValue(rowKey, out storeList))
                 {
@@ -584,12 +584,12 @@ namespace Bio.Matrix
                     RowKeyToStoreList[rowKey] = storeList;
                 }
 
-                var colKey = triple.ColKey;
-                var value = triple.Value;
-                var store = ValueToStore(value);
+                string colKey = triple.ColKey;
+                TValue value = triple.Value;
+                TStore store = ValueToStore(value);
                 Helper.CheckCondition(!store.Equals(StoreMissingValue), () => string.Format(CultureInfo.InvariantCulture, Properties.Resource.ErrorConvertingValGaveMissingValue, value, StoreMissingValue));
 
-                var colIndex = ColSerialNumbers.GetNewOrOld(colKey);
+                int colIndex = ColSerialNumbers.GetNewOrOld(colKey);
                 if (colIndex < storeList.Count)
                 {
                     Helper.CheckCondition(storeList[colIndex].Equals(StoreMissingValue), () => string.Format(CultureInfo.InvariantCulture, "Each pair of keys, i,e,.<{0},{1}>, should only be seen once", rowKey, colKey));
@@ -607,7 +607,7 @@ namespace Bio.Matrix
                 }
             }
 
-            foreach (var storeList in RowKeyToStoreList.Values)
+            foreach (List<TStore> storeList in RowKeyToStoreList.Values)
             {
                 storeList.TrimExcess();
             }
@@ -618,15 +618,15 @@ namespace Bio.Matrix
 
         internal void InternalGetInstance(Matrix<string, string, TValue> inputMatrix, ParallelOptions parallelOptions)
         {
-            var selectRowsAndColsView = inputMatrix as SelectRowsAndColsView<string, string, TValue>;
+            SelectRowsAndColsView<string, string, TValue> selectRowsAndColsView = inputMatrix as SelectRowsAndColsView<string, string, TValue>;
             if (null != selectRowsAndColsView && selectRowsAndColsView.ParentMatrix is DenseStructMatrix<TStore, TValue>) //We optimize this case
             {
-                var parentMatrix = (DenseStructMatrix<TStore, TValue>)selectRowsAndColsView.ParentMatrix;
+                DenseStructMatrix<TStore, TValue> parentMatrix = (DenseStructMatrix<TStore, TValue>)selectRowsAndColsView.ParentMatrix;
                 Parallel.ForEach(RowKeys, parallelOptions, rowKey =>
                 {
-                    var oldStoreList = parentMatrix.RowKeyToStoreList[rowKey];
-                    var newStoreList = RowKeyToStoreList[rowKey];
-                    foreach (var oldColIndex in selectRowsAndColsView.IndexOfParentColKey)
+                    List<TStore> oldStoreList = parentMatrix.RowKeyToStoreList[rowKey];
+                    List<TStore> newStoreList = RowKeyToStoreList[rowKey];
+                    foreach (int oldColIndex in selectRowsAndColsView.IndexOfParentColKey)
                     {
                         newStoreList.Add(oldStoreList[oldColIndex]);
                     }
@@ -634,11 +634,11 @@ namespace Bio.Matrix
             }
             else
             {
-                var counterWithMessages = new CounterWithMessages("Creating new DenseStructMatrix, working on row #{0} of {1}", 1000, RowCount);
+                CounterWithMessages counterWithMessages = new CounterWithMessages("Creating new DenseStructMatrix, working on row #{0} of {1}", 1000, RowCount);
                 Parallel.ForEach(RowKeys, parallelOptions, rowKey =>
                 {
                     counterWithMessages.Increment();
-                    foreach (var colKey in ColKeys)
+                    foreach (string colKey in ColKeys)
                     {
                         TValue value;
                         if (inputMatrix.TryGetValue(rowKey, colKey, out value))
@@ -673,7 +673,7 @@ namespace Bio.Matrix
         //!!!This seems too specific. Better would be one that returns RowKeyColKeyValue from a file and then that could be changed to string[] outside this class.
         private static IEnumerable<string[]> EachSparseLine(string filePattern, bool zeroIsOK, string fileMessageOrNull)
         {
-            foreach (var fileName in FileUtils.GetFiles(filePattern, zeroIsOK))
+            foreach (string fileName in FileUtils.GetFiles(filePattern, zeroIsOK))
             {
                 if (null != fileMessageOrNull)
                 {
@@ -681,13 +681,13 @@ namespace Bio.Matrix
                 }
                 using (TextReader textReader = FileUtils.OpenTextStripComments(fileName))
                 {
-                    var header = textReader.ReadLine();
+                    string header = textReader.ReadLine();
                     Helper.CheckCondition(header != null, () => string.Format(CultureInfo.InvariantCulture, Properties.Resource.ExpectedFileToHaveHeader, fileName));
                     Helper.CheckCondition(header.Equals("var\tcid\tval", StringComparison.InvariantCultureIgnoreCase), () => string.Format(CultureInfo.InvariantCulture, Properties.Resource.ExpectedHeaderToBe_var_cid_val, header));
                     string line;
                     while (null != (line = textReader.ReadLine()))
                     {
-                        var fields = line.Split('\t');
+                        string[] fields = line.Split('\t');
                         Helper.CheckCondition(fields.Length == 3, () => string.Format(CultureInfo.InvariantCulture, Properties.Resource.ExpectedThreeFields, fields.Length, line));
                         yield return fields;
                     }
@@ -701,9 +701,9 @@ namespace Bio.Matrix
         {
             List<string[]> group = null;
             string currentRowKey = null;
-            foreach (var varCidVal in EachSparseLine(filePattern, zeroIsOK, fileMessageOrNull))
+            foreach (string[] varCidVal in EachSparseLine(filePattern, zeroIsOK, fileMessageOrNull))
             {
-                var rowKey = varCidVal[0];
+                string rowKey = varCidVal[0];
                 if (currentRowKey != rowKey)
                 {
                     if (currentRowKey != null)
@@ -723,9 +723,9 @@ namespace Bio.Matrix
 
         internal string ColKeyToString(string colKey, StoreListToStringDelegate storeListToStringDelegate)
         {
-            var colIndex = ColSerialNumbers.GetOld(colKey);
-            var storeByColKey = new List<TStore>(ColCount);
-            foreach (var sequenceByVar in RowKeyToStoreList.Values)
+            int colIndex = ColSerialNumbers.GetOld(colKey);
+            List<TStore> storeByColKey = new List<TStore>(ColCount);
+            foreach (List<TStore> sequenceByVar in RowKeyToStoreList.Values)
             {
                 storeByColKey.Add(sequenceByVar[colIndex]);
             }

@@ -28,15 +28,15 @@ namespace Bio.Tests.Assembly
             Trace.Set(Trace.AssemblyDetails);   // turn on log dump
 
             // test parameters
-            var matchScore = 1;
-            var mismatchScore = -8;
-            var gapCost = -8;
+            int matchScore = 1;
+            int mismatchScore = -8;
+            int gapCost = -8;
             double mergeThreshold = 4;
             double consensusThreshold = 66;
 
-            var seq1 = new Sequence(Alphabets.DNA, "GCCAAAATTTAGGC");
-            var seq2 = new Sequence(Alphabets.DNA, "TTATGGCGCCCACGGA");
-            var seq3 = new Sequence(Alphabets.DNA, "TATAAAGCGCCAA");
+            Sequence seq1 = new Sequence(Alphabets.DNA, "GCCAAAATTTAGGC");
+            Sequence seq2 = new Sequence(Alphabets.DNA, "TTATGGCGCCCACGGA");
+            Sequence seq3 = new Sequence(Alphabets.DNA, "TATAAAGCGCCAA");
 
             // here is how the above sequences should align:
             // TATAAAGCGCCAA
@@ -44,7 +44,7 @@ namespace Bio.Tests.Assembly
             //                   AGGCACCCGCGGTATT   <= reversed
             // 
             // TATAAAGCGCCAAAATTTAGGCACCCGCGGTATT
-            var assembler = new OverlapDeNovoAssembler();
+            OverlapDeNovoAssembler assembler = new OverlapDeNovoAssembler();
             assembler.MergeThreshold = mergeThreshold;
             assembler.OverlapAlgorithm = new PairwiseOverlapAligner();
             ((IPairwiseSequenceAligner)assembler.OverlapAlgorithm).SimilarityMatrix = new DiagonalSimilarityMatrix(matchScore, mismatchScore);
@@ -52,18 +52,18 @@ namespace Bio.Tests.Assembly
             assembler.ConsensusResolver = new SimpleConsensusResolver(consensusThreshold);
             assembler.AssumeStandardOrientation = false;
 
-            var inputs = new List<ISequence>
+            List<ISequence> inputs = new List<ISequence>
             {
                 seq1,
                 seq2,
                 seq3
             };
 
-            var seqAssembly = (IOverlapDeNovoAssembly)assembler.Assemble(inputs);
+            IOverlapDeNovoAssembly seqAssembly = (IOverlapDeNovoAssembly)assembler.Assemble(inputs);
 
             Assert.AreEqual(0, seqAssembly.UnmergedSequences.Count);
             Assert.AreEqual(1, seqAssembly.Contigs.Count);
-            var contig0 = seqAssembly.Contigs[0];
+            Contig contig0 = seqAssembly.Contigs[0];
             Assert.AreEqual("TATAAAGCGCCAAAATTTAGGCACCCGCGGTATT", contig0.Consensus.ConvertToString());
             Assert.AreEqual(3, contig0.Sequences.Count);
         }
@@ -86,7 +86,7 @@ namespace Bio.Tests.Assembly
             ISequence seq2 = new Sequence(Alphabets.DNA, "ACAAAAGCAACAAAAATGAAGGCAATACTAGTAGTTCTGCTATATACATTTGCAACCGCAAATGCAGACACATTATGTATAGGTTATCATGCGAACAATTCAACAGACACTGTAGACACAGTACTAGAAAAGAATGTAACAGTAACACACTCTGTTAACCTTCTAGAAGACAAGCATAACGGGAAACTATGCAAACTAAGAGGAGTAGCCCCATTGCATTTGGGTAAATGTAACATTGCTGGCTGGATCCTGGGAAATCCAGAGTGTGAATCACTCTCCACAGCAAGCTCATGGTCCTACATTGTGGAAACATCTAGTTCAGACAATGGAACGTGTTACCCAGGAGATTTCATCGATTATGAGGAGCTAAGAGAGCAATTGAGCTCAGTGTCATCATTTGAAAGGTTTGAGATATTCCCCAAGACAAGTTCATGGCCCAATCATGACTCGAACAAAGGTGTAACGGCAGCATGTCCTCATGCTGGAGCAAAAAGCTTCTACAAAAATTTAATATGGCTAGTTAAAAAAGGAAATTCATACCCAAAGCTCAGCAAATCCTACATTAATGATAAAGGGAAAGAAGTCCTCGTGCTATGGGGCATTCACCATCCATCTACTAGTGCTGACCAACAAAGTCTCTATCAGAATGCAGATGCATATGTTTTTGTGGGGTCATCAAGATATAGCAAGAAGTTCAAGCCGGAAATAGCAATAAGACCCAAAGTGAGGGATCAAGAAGGGAGAATGAACTATTACTGGACACTAGTAGAGCCGGGAGACAAAATAACATTCGAAGCAACTGGAAATCTAGTGGTACCGAGATATGCATTCGCAATGGAAAGAAATGCTGGATCTGGTATTATCATTTCAGATACACCAGTCCACGATTGCAATACAACTTGTCAGACACCCAAGGGTGCTATAAACACCAGCCTCCCATTTCAGAATATACATCCGATCACAATTGGAAAATGTCCAAAATATGTAAAAAGCACAAAATTGAGACTGGCCACAGGATTGAGGAATGTCCCGTCTATTCAATCTAGAGGCCTATTTGGGGCCATTGCCGGTTTCATTGAAGGGGGGTGGACAGGGATGGTAGATGGATGGTACGGTTATCACCATCAAAATGAGCAGGGGTCAGGATATGCAGCCGACCTGAAGAGCACACAGAATGCCATTGACGAGATTACTAACAAAGTAAATTCTGTTATTGAAAAGATGAATATACAGTTCACAGCAGTAGGTAAAGAGTTCAACCACCTGGAAAAAAGAATAGAGAATTTAAATAAAAAAGTTGATGATGGTTTCCTGGACATTTGGACTTACAATGCCGAACTGTTGGTTCTATTGGAAAATGAAAGAACTTTGGACTACCACGATTCGAATGTGAAGAACTTATATGAAAAGGTAAGAAGCCAGCTAAAAAACAATGCCAAGGAAATTGGAAACGGCTGCTTTGAATTTTACCACAAATGCGATAACACGTGCATGGAAAGTGTCAAAAATGGGACTTATGACTACCCAAAATACTCAGAGGAAGCAAAATTAAACAGAGAAGAAATAGATGGGGTAAAGCTGGAATCAACAAGGATTTACCAGATTTTGGCGATCTATTCAACTGTCGCCAGTTCATTGGTACTGGTAGTCTCCCTGGGGGCAATCAGTTTCTGGATGTGCTCTAATGGGTCTCTACAGTGTAGAATATGTATTTAACATTAGGATTTCAGAAGCATGAGAAA");
             ISequence seq1 = new Sequence(Alphabets.DNA, "ATGAAGGCAATACTAGTAGTTCTGCTATATACATTTGCAACCGCAAATGCAGACACATTATGTATAGGTTATCATGCGAACAATTCAACAGACACTGTAGACACAGTACTAGAAAAGAATGTAACAGTAACACACTCTGTTAACCTTCTAGAAGACAAGCATAACGGGAAACTATGCAAACTAAGAGGGGTAGCCCCATTGCATTTGGGTAAATGTAACATTGCTGGCTGGATCCTGGGAAATCCAGAGTGTGAATCACTCTCCACAGCAAGCTCATGGTCCTACATTGTGGAAACATCTAGTTCAGACAATGGAACGTGTTACCCAGGAGATTTCATCGATTATGAGGAGCTAAGAGAGCAATTGAGCTCAGTGTCATCATTTGAAAGGTTTGAGATATTCCCCAAGACAAGTTCATGGCCCAATCATGACTCGAACAAAGGTGTAACGGCAGCATGTCCTCATGCTGGAGCAAAAAGCTTCTACAAAAATTTAATATGGCTAGTTAAAAAAGGAAATTCATACCCAAAGCTCAGCAAATCCTACATTAATGATAAAGGGAAAGAAGTCCTCGTGCTATGGGGCATTCACCATCCATCTACTAGTGCTGACCAACAAAGTCTCTATCAGAATGCAGATGCATATGTTTTTGTGGGGACATCAAGATACAGCAAGAAGTTCAAGCCGGAAATAGCAATAAGACCCAAAGTGAGGGATCAAGAAGGGAGAATGAACTATTACTGGACACTAGTAGAGCCGGGAGACAAAATAACATTCGAAGCAACTGGAAATCTAGTGGTACCGAGATATGCATTCGCAATGGAAAGAAATGCTGGATCTGGTATTATCATTTCAGATACACCAGTCCACGATTGCAATACAACTTGTCAGACACCCAAGGGTGCTATAAACACCAGCCTCCCATTTCAGAATATACATCCGATCACAATTGGAAAATGTCCAAAATATGTAAAAAGCACAAAATTGAGACTGGCCACAGGATTGAGGAATGTCCCGTCTATTCAATCTAGAGGCCTATTTGGGGCCATTGCCGGTTTCATTGAAGGGGGGTGGACAGGGATGGTAGATGGATGGTACGGTTATCACCATCAAAATGAGCAGGGGTCAGGATATGCAGCCGACCTGAAGAGCACACAGAATGCCATTGACGAGATTACTAACAAAGTAAATTCTGTTATTGAAAAGATGAATACACAGTTCACAGCAGTAGGTAAAGAGTTCAACCACCTGGAAAAAAGAATAGAGAATTTAAATAAAAAAATTGATGATGGTTTCCTGGACATTTGGACTTACAATGCCGAACTGTTGGTTCTATTGGAAAATGAAAGAACTTTGGACTACCACGATTCAAATGTGAAGAACTTATATGAAAAGGTAAGAAGCCAGTTAAAAAACAATGCCAAGGAAATTGGAAACGGCTGCTTTGAATTTTACCACAAATGCGATAACACGTGCATGGAAAGTGTCAAAAATGGGACTTATGACTACCCAAAATACTCAGAGGAAGCAAAATTAAACAGAGAAGAAATAGATGGGGTAAAGCTGGAATCAACAAGGATTTACCAGATTTTGGCGATCTATTCAACTGTCGCCAGTTCATTGGTACTGGTAGTCTCCCTGGGGGCAATCAGTTTCTGGATGTGCTCTAATGGGTCTCTACAGTGTAGAATATGTATTTAA");
 
-            var assembler = new OverlapDeNovoAssembler
+            OverlapDeNovoAssembler assembler = new OverlapDeNovoAssembler
             {
                 MergeThreshold = mergeThreshold,
                 OverlapAlgorithm = new NeedlemanWunschAligner
@@ -98,13 +98,13 @@ namespace Bio.Tests.Assembly
                 AssumeStandardOrientation = false
             };
 
-            var inputs = new List<ISequence> {seq1, seq2};
-            var seqAssembly = (IOverlapDeNovoAssembly)assembler.Assemble(inputs);
+            List<ISequence> inputs = new List<ISequence> {seq1, seq2};
+            IOverlapDeNovoAssembly seqAssembly = (IOverlapDeNovoAssembly)assembler.Assemble(inputs);
 
             Assert.AreEqual(0, seqAssembly.UnmergedSequences.Count);
             Assert.AreEqual(1, seqAssembly.Contigs.Count);
-            var contig0 = seqAssembly.Contigs[0];
-            var expected = "AYRAARGCAAYAMWARTRRWKSYRMTAYWWRYAKTTSYRMYMKMWAMWKYWGMMACMKYAWRTRYAGRYWMWYWWKSKAWMRRTTMWMMWGMSAMYRWWKMMACAGWMMYWGWARASAMWGTAMYAGWAAMRMAYKYWRYWRWMMYWCWMKMWGWYAASCWTMWMGRRRAMMWRYRYAAMSKRARASKRKKMRMMCYAWKRSRWKTRGSYMMATKKMAYWTKGSTRRMTGKAWCMTKGSWRRYYSRRWSYKKGRAWMWCYMKMSWSWGMAWSMYYMTSSWCMKMMAKYKYRKRRWCMTMYAKTKYRGAMAMWKSWASKTSWKACMMWGGARMKTKYWWCSMWKRWGAKKWSMTMRRWKAKSARKWGMKMWSAGWGYMATYRWKYKMARKGTYWKMRWTWKWMMSSWWKRMRAKWTYMYSSMMSAMWMRTKMMTSGMMCAAWSRTGWMWCGRMMRMAKGTSYWMMKGCWGSAKSWMMWMRYKYYKRMRMAAAWWKMWTMTRSMWARWTWWAAWAKGRMWWKYWWAMMMARRRMWYWSMWAMYCMWASMTYARYRAWWMMKRSAWWRAWGWYMWMGKGMWAKRRGKCMTYSWSCWWYSRKSYAYTMRYSMTSMMYMWMMWAGTSYYKAYCARMAWRSWSWYKMWYAKRWTKYWGWKGSRWMWKYWWKWKWSRGSWMRWMRWKMWAKMSSRARAWRKYMAWRMSRSMMAWAGYRAKRRRWCMMRAAGKGAGRRWKMAMKAWKRSWGRAYRMWMKWWKASYSGRSASWMRWARWRMCRKKMGAMRMAAYWRSAWWYSWAGYRRYWSSRARWYWWGYRKTMSCRAKRKAWRSAWWYGCWRKRKMWRGWAWTRYYRKWTCWGRTAYWMYMRTYYMMGATWSMMMWRYMMMYKRTYRSAMWMCMAMKKGTSMKAYAMMCAMSRGYSYYMYAWWYMMSARYMTMCMWYYKMWSAMWATWSRWMMRWKYMCAAWWKRWRWAWRWMSMAMAWAWKTRARAMKSRCMAMAKKRWKRMKGRMYRYMSSRTYKAKKMAWKYYMSRKSYMTWYWWKSKRSMRKYSYMKKTKKSRYYRWWGSSGGKTKSAYWGRRRKGGKRKRKRSAKGGWWSGKWKATSRMYRKYAMRRTKAKCASSRKYMARRWKAKSMRGSSKMMSKRWAKRSMRCMSASMWKRMSAKYRMMSAGAWTRCYAWYRAMGWRAWTWCTRWYAWWGWAAAKWYKRWTAYWSARWWSAYRRMWRTASRKWWMRMRKYMRWMSRYMWRGARWWMARMMWMSWGRAWWWAARWAWARARAWTKWWRATRRWWWMSTKGAYRWTKGKWYYYWSRAYRYYKRRMYKTWSRWTSYMKWRSWRWWKGWWMKAWYKKWRRAYKAMMRMRMTTYRRAYKWSMASRAYTYRWATGWRAAGRWMWKAWRYSARWWRRWAARMARYSMSMWRRAAAWYRRWRMCRRSKRMWTTGRAWWYKRCYRCWWWKRMKWTWACMMSWRMWKSGAWARYRYSWRMAWKGRRASTKWYRAMWAYSSRAMWTAYKMMKASSMARMAWAMTYARASRRAGMARAAWTARAYRGRGWARARMTRGAWKSRRYAARGMTKKAMYMRAYWWKGRYKWWCYAKWYWWYKGYSRYCWRTTCAWYKGTMSYSRKWKYMTYSSTRSKGGYARTCWSYYTSKGGRYRWKCWSTWWYKGGWYKYKMYMKWRTRGRWYWYKWMWKTRWAGAATATGTATTTAACATTAGGATTTCAGAAGCATGAGAAA";
+            Contig contig0 = seqAssembly.Contigs[0];
+            string expected = "AYRAARGCAAYAMWARTRRWKSYRMTAYWWRYAKTTSYRMYMKMWAMWKYWGMMACMKYAWRTRYAGRYWMWYWWKSKAWMRRTTMWMMWGMSAMYRWWKMMACAGWMMYWGWARASAMWGTAMYAGWAAMRMAYKYWRYWRWMMYWCWMKMWGWYAASCWTMWMGRRRAMMWRYRYAAMSKRARASKRKKMRMMCYAWKRSRWKTRGSYMMATKKMAYWTKGSTRRMTGKAWCMTKGSWRRYYSRRWSYKKGRAWMWCYMKMSWSWGMAWSMYYMTSSWCMKMMAKYKYRKRRWCMTMYAKTKYRGAMAMWKSWASKTSWKACMMWGGARMKTKYWWCSMWKRWGAKKWSMTMRRWKAKSARKWGMKMWSAGWGYMATYRWKYKMARKGTYWKMRWTWKWMMSSWWKRMRAKWTYMYSSMMSAMWMRTKMMTSGMMCAAWSRTGWMWCGRMMRMAKGTSYWMMKGCWGSAKSWMMWMRYKYYKRMRMAAAWWKMWTMTRSMWARWTWWAAWAKGRMWWKYWWAMMMARRRMWYWSMWAMYCMWASMTYARYRAWWMMKRSAWWRAWGWYMWMGKGMWAKRRGKCMTYSWSCWWYSRKSYAYTMRYSMTSMMYMWMMWAGTSYYKAYCARMAWRSWSWYKMWYAKRWTKYWGWKGSRWMWKYWWKWKWSRGSWMRWMRWKMWAKMSSRARAWRKYMAWRMSRSMMAWAGYRAKRRRWCMMRAAGKGAGRRWKMAMKAWKRSWGRAYRMWMKWWKASYSGRSASWMRWARWRMCRKKMGAMRMAAYWRSAWWYSWAGYRRYWSSRARWYWWGYRKTMSCRAKRKAWRSAWWYGCWRKRKMWRGWAWTRYYRKWTCWGRTAYWMYMRTYYMMGATWSMMMWRYMMMYKRTYRSAMWMCMAMKKGTSMKAYAMMCAMSRGYSYYMYAWWYMMSARYMTMCMWYYKMWSAMWATWSRWMMRWKYMCAAWWKRWRWAWRWMSMAMAWAWKTRARAMKSRCMAMAKKRWKRMKGRMYRYMSSRTYKAKKMAWKYYMSRKSYMTWYWWKSKRSMRKYSYMKKTKKSRYYRWWGSSGGKTKSAYWGRRRKGGKRKRKRSAKGGWWSGKWKATSRMYRKYAMRRTKAKCASSRKYMARRWKAKSMRGSSKMMSKRWAKRSMRCMSASMWKRMSAKYRMMSAGAWTRCYAWYRAMGWRAWTWCTRWYAWWGWAAAKWYKRWTAYWSARWWSAYRRMWRTASRKWWMRMRKYMRWMSRYMWRGARWWMARMMWMSWGRAWWWAARWAWARARAWTKWWRATRRWWWMSTKGAYRWTKGKWYYYWSRAYRYYKRRMYKTWSRWTSYMKWRSWRWWKGWWMKAWYKKWRRAYKAMMRMRMTTYRRAYKWSMASRAYTYRWATGWRAAGRWMWKAWRYSARWWRRWAARMARYSMSMWRRAAAWYRRWRMCRRSKRMWTTGRAWWYKRCYRCWWWKRMKWTWACMMSWRMWKSGAWARYRYSWRMAWKGRRASTKWYRAMWAYSSRAMWTAYKMMKASSMARMAWAMTYARASRRAGMARAAWTARAYRGRGWARARMTRGAWKSRRYAARGMTKKAMYMRAYWWKGRYKWWCYAKWYWWYKGYSRYCWRTTCAWYKGTMSYSRKWKYMTYSSTRSKGGYARTCWSYYTSKGGRYRWKCWSTWWYKGGWYKYKMYMKWRTRGRWYWYKWMWKTRWAGAATATGTATTTAACATTAGGATTTCAGAAGCATGAGAAA";
             Assert.AreEqual(expected, contig0.Consensus.ConvertToString(), "NeedlemanWunschAligner");
             Assert.AreEqual(2, contig0.Sequences.Count);
 
@@ -150,9 +150,9 @@ namespace Bio.Tests.Assembly
         public void TestSimpleSequenceAssemblerWithSemiRandomSequence()
         {
             // test parameters
-            var matchScore = 1;
-            var mismatchScore = -8;
-            var gapCost = -8;
+            int matchScore = 1;
+            int mismatchScore = -8;
+            int gapCost = -8;
             double mergeThreshold = 4;
             double consensusThreshold = 66;
             const int MasterLength = 30;
@@ -168,12 +168,12 @@ namespace Bio.Tests.Assembly
             // (use seed for repeatability, or omit seed for 
             // different test each time)
             // Random randGen = new Random();
-            var randGen = new Random(654321);
+            Random randGen = new Random(654321);
 
-            var randSeq = new StringBuilder();
-            for (var i = 0; i < MasterLength; ++i)
+            StringBuilder randSeq = new StringBuilder();
+            for (int i = 0; i < MasterLength; ++i)
             {
-                var randm = randGen.Next(8);
+                int randm = randGen.Next(8);
                 if (randm < 2)
                 {
                     randSeq.Append('A');
@@ -192,25 +192,25 @@ namespace Bio.Tests.Assembly
                 }
             }
 
-            var master = new Sequence(Alphabets.DNA, randSeq.ToString());
+            Sequence master = new Sequence(Alphabets.DNA, randSeq.ToString());
 
             // create the reads
-            var inputs = new List<ISequence>();
-            for (var i = 0; i < NumReads; ++i)
+            List<ISequence> inputs = new List<ISequence>();
+            for (int i = 0; i < NumReads; ++i)
             {
-                var pos = 5 * i;
-                var data = master.ConvertToString().Substring(pos, ReadLength);
-                var revcomp = randGen.Next(2) > 0;
-                var reverse = randGen.Next(2) > 0 && !AssumeOrientedReads;
+                int pos = 5 * i;
+                string data = master.ConvertToString().Substring(pos, ReadLength);
+                bool revcomp = randGen.Next(2) > 0;
+                bool reverse = randGen.Next(2) > 0 && !AssumeOrientedReads;
                 ISequence read;
                 if (reverse && revcomp)
                 {
-                    var tmp = new Sequence(Alphabets.DNA, data);
+                    Sequence tmp = new Sequence(Alphabets.DNA, data);
                     read = new Sequence(Alphabets.DNA, tmp.GetReversedSequence().ConvertToString());
                 }
                 else if (revcomp)
                 {
-                    var tmp = new Sequence(Alphabets.DNA, data);
+                    Sequence tmp = new Sequence(Alphabets.DNA, data);
                     read = new Sequence(Alphabets.DNA, tmp.GetReverseComplementedSequence().ConvertToString());
                 }
                 else
@@ -221,7 +221,7 @@ namespace Bio.Tests.Assembly
                 inputs.Add(read);
             }
 
-            var assembler = new OverlapDeNovoAssembler();
+            OverlapDeNovoAssembler assembler = new OverlapDeNovoAssembler();
             assembler.MergeThreshold = mergeThreshold;
             assembler.OverlapAlgorithm = new PairwiseOverlapAligner();
             ((IPairwiseSequenceAligner)assembler.OverlapAlgorithm).SimilarityMatrix = new DiagonalSimilarityMatrix(matchScore, mismatchScore);
@@ -229,11 +229,11 @@ namespace Bio.Tests.Assembly
             assembler.ConsensusResolver = new SimpleConsensusResolver(consensusThreshold);
             assembler.AssumeStandardOrientation = AssumeOrientedReads;
 
-            var seqAssembly = (IOverlapDeNovoAssembly)assembler.Assemble(inputs);
+            IOverlapDeNovoAssembly seqAssembly = (IOverlapDeNovoAssembly)assembler.Assemble(inputs);
 
             Assert.AreEqual(0, seqAssembly.UnmergedSequences.Count);
             Assert.AreEqual(1, seqAssembly.Contigs.Count);
-            var contig0 = seqAssembly.Contigs[0];
+            Contig contig0 = seqAssembly.Contigs[0];
             ApplicationLog.WriteLine("master sequence and contig 0 consensus:");
             ApplicationLog.WriteLine(master.ConvertToString());
             ApplicationLog.WriteLine(contig0.Consensus.ConvertToString());
@@ -265,9 +265,9 @@ namespace Bio.Tests.Assembly
             //  of the master sequence.
             // 4. Too low a merge threshold could cause incorrect merges, which
             //  the algorithm will not repair.
-            var matchScore = 1;
-            var mismatchScore = -8;
-            var gapCost = -8;
+            int matchScore = 1;
+            int mismatchScore = -8;
+            int gapCost = -8;
             double mergeThreshold = 3;
             double consensusThreshold = 99;
             const int MasterLength = 100;
@@ -284,12 +284,12 @@ namespace Bio.Tests.Assembly
             // (use seed for repeatability, or omit seed for 
             // different test each time)
             // Random randGen = new Random();
-            var randGen = new Random(654321);
+            Random randGen = new Random(654321);
 
-            var randSeq = new StringBuilder();
-            for (var i = 0; i < MasterLength; ++i)
+            StringBuilder randSeq = new StringBuilder();
+            for (int i = 0; i < MasterLength; ++i)
             {
-                var randm = randGen.Next(8);
+                int randm = randGen.Next(8);
                 if (randm < 2)
                 {
                     randSeq.Append('A');
@@ -308,27 +308,27 @@ namespace Bio.Tests.Assembly
                 }
             }
 
-            var master = new Sequence(Alphabets.AmbiguousDNA, randSeq.ToString());
+            Sequence master = new Sequence(Alphabets.AmbiguousDNA, randSeq.ToString());
 
             // create the reads
-            var inputs = new List<ISequence>();
-            for (var i = 0; i < NumReads; ++i)
+            List<ISequence> inputs = new List<ISequence>();
+            for (int i = 0; i < NumReads; ++i)
             {
                 // try for uniform coverage clear to the ends (this can lead to short reads, though)
-                var rndPos = Math.Max(0, randGen.Next(-MinReadLength, MasterLength - 1));
-                var rndLen = Math.Min(MasterLength - rndPos, randGen.Next(MinReadLength, MaxReadLength + 1));
-                var data = master.ConvertToString().Substring(Math.Max(0, rndPos), rndLen);
-                var revcomp = randGen.Next(2) > 0;
-                var reverse = randGen.Next(2) > 0 && !AssumeOrientedReads;
+                int rndPos = Math.Max(0, randGen.Next(-MinReadLength, MasterLength - 1));
+                int rndLen = Math.Min(MasterLength - rndPos, randGen.Next(MinReadLength, MaxReadLength + 1));
+                string data = master.ConvertToString().Substring(Math.Max(0, rndPos), rndLen);
+                bool revcomp = randGen.Next(2) > 0;
+                bool reverse = randGen.Next(2) > 0 && !AssumeOrientedReads;
                 ISequence read;
                 if (reverse && revcomp)
                 {
-                    var tmp = new Sequence(Alphabets.DNA, data);
+                    Sequence tmp = new Sequence(Alphabets.DNA, data);
                     read = new Sequence(Alphabets.DNA, tmp.GetReversedSequence().ConvertToString());
                 }
                 else if (revcomp)
                 {
-                    var tmp = new Sequence(Alphabets.DNA, data);
+                    Sequence tmp = new Sequence(Alphabets.DNA, data);
                     read = new Sequence(Alphabets.DNA, tmp.GetReverseComplementedSequence().ConvertToString());
                 }
                 else
@@ -340,7 +340,7 @@ namespace Bio.Tests.Assembly
                 inputs.Add(read);
             }
 
-            var assembler = new OverlapDeNovoAssembler();
+            OverlapDeNovoAssembler assembler = new OverlapDeNovoAssembler();
             assembler.MergeThreshold = mergeThreshold;
             assembler.OverlapAlgorithm = new PairwiseOverlapAligner();
             ((IPairwiseSequenceAligner)assembler.OverlapAlgorithm).SimilarityMatrix = new DiagonalSimilarityMatrix(matchScore, mismatchScore);
@@ -348,13 +348,13 @@ namespace Bio.Tests.Assembly
             assembler.ConsensusResolver = new SimpleConsensusResolver(consensusThreshold);
             assembler.AssumeStandardOrientation = AssumeOrientedReads;
 
-            var seqAssembly = (IOverlapDeNovoAssembly)assembler.Assemble(inputs);
+            IOverlapDeNovoAssembly seqAssembly = (IOverlapDeNovoAssembly)assembler.Assemble(inputs);
 
             ApplicationLog.WriteLine(
                 "Assembly finished. Contigs: {0}. Unmerged sequences: {1}.",
                 seqAssembly.Contigs.Count,
                 seqAssembly.UnmergedSequences.Count);
-            var contig0 = seqAssembly.Contigs[0];
+            Contig contig0 = seqAssembly.Contigs[0];
             ApplicationLog.WriteLine("master sequence and contig 0 consensus:");
             ApplicationLog.WriteLine(master.ConvertToString());
             ApplicationLog.WriteLine(contig0.Consensus.ConvertToString());

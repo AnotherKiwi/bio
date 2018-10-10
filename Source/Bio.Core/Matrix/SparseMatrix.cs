@@ -69,18 +69,18 @@ namespace Bio.Matrix
 
         internal void InitializeIndexMaps()
         {
-            var rowKeys = new Dictionary<TRowKey, int>(_rowKeys.Count);
-            var colKeys = new Dictionary<TColKey, int>(_colKeys.Count);
+            Dictionary<TRowKey, int> rowKeys = new Dictionary<TRowKey, int>(_rowKeys.Count);
+            Dictionary<TColKey, int> colKeys = new Dictionary<TColKey, int>(_colKeys.Count);
 
-            var rowIdx = 0;
-            foreach (var rowKey in RowKeys)
+            int rowIdx = 0;
+            foreach (TRowKey rowKey in RowKeys)
             {
                 rowKeys.Add(rowKey, rowIdx);
                 rowIdx++;
             }
 
-            var colIdx = 0;
-            foreach (var colKey in ColKeys)
+            int colIdx = 0;
+            foreach (TColKey colKey in ColKeys)
             {
                 colKeys.Add(colKey, colIdx);
                 colIdx++;
@@ -115,7 +115,7 @@ namespace Bio.Matrix
             {
                 if (_rowToColToVal.ContainsKey(rowKey))
                 {
-                    var row = _rowToColToVal[rowKey];
+                    Dictionary<TColKey, TValue> row = _rowToColToVal[rowKey];
                     row.Remove(colKey);
                     if (row.Count == 0)
                     {
@@ -139,7 +139,7 @@ namespace Bio.Matrix
         public static SparseMatrix<TRowKey, TColKey, TValue> CreateEmptyInstance(
             IEnumerable<TRowKey> rowKeySequence, IEnumerable<TColKey> colKeySequence, TValue missingValue)
         {
-            var newSparse = new SparseMatrix<TRowKey, TColKey, TValue>();
+            SparseMatrix<TRowKey, TColKey, TValue> newSparse = new SparseMatrix<TRowKey, TColKey, TValue>();
             newSparse._missingValue = missingValue;
             newSparse._rowKeys = new ReadOnlyCollection<TRowKey>(new List<TRowKey>(rowKeySequence));
             newSparse._colKeys = new ReadOnlyCollection<TColKey>(new List<TColKey>(colKeySequence));
@@ -177,12 +177,12 @@ namespace Bio.Matrix
         public static bool TryParseSparseFile(TextReader textReader, TValue missingValue,ParallelOptions parallelOptions, out Matrix<TRowKey, TColKey, TValue> matrix)
         {
             matrix = null;
-            var variableToCaseIdToNonMissingValue = new Dictionary<TRowKey, Dictionary<TColKey, TValue>>();
-            var colKeys = new HashSet<TColKey>();
+            Dictionary<TRowKey, Dictionary<TColKey, TValue>> variableToCaseIdToNonMissingValue = new Dictionary<TRowKey, Dictionary<TColKey, TValue>>();
+            HashSet<TColKey> colKeys = new HashSet<TColKey>();
 
-            var header = "var\tcid\tval";
-            var isFirst = true;
-            foreach (var line in FileUtils.ReadEachLine(textReader))
+            string header = "var\tcid\tval";
+            bool isFirst = true;
+            foreach (string line in FileUtils.ReadEachLine(textReader))
             {
                 if (isFirst)
                 {
@@ -195,13 +195,13 @@ namespace Bio.Matrix
                 }
                 else
                 {
-                    var fields = line.Split('\t');
+                    string[] fields = line.Split('\t');
                     try
                     {
                         //!!! Use TryParse instead!!
-                        var rowKey = Parser.Parse<TRowKey>(fields[0]);
-                        var colKey = Parser.Parse<TColKey>(fields[1]);
-                        var value = Parser.Parse<TValue>(fields[2]);
+                        TRowKey rowKey = Parser.Parse<TRowKey>(fields[0]);
+                        TColKey colKey = Parser.Parse<TColKey>(fields[1]);
+                        TValue value = Parser.Parse<TValue>(fields[2]);
 
                         variableToCaseIdToNonMissingValue.GetValueOrDefault(rowKey)[colKey] = value;
                         colKeys.Add(colKey);
@@ -214,7 +214,7 @@ namespace Bio.Matrix
                 }
             }
 
-            var sparseMatrix = new SparseMatrix<TRowKey, TColKey, TValue>();
+            SparseMatrix<TRowKey, TColKey, TValue> sparseMatrix = new SparseMatrix<TRowKey, TColKey, TValue>();
             sparseMatrix._missingValue = missingValue;
             sparseMatrix._rowToColToVal = variableToCaseIdToNonMissingValue;
             sparseMatrix._rowKeys = new ReadOnlyCollection<TRowKey>(new List<TRowKey>(variableToCaseIdToNonMissingValue.Keys));
@@ -304,8 +304,8 @@ namespace Bio.Matrix
         public static SparseMatrix<TRowKey, TColKey, TValue> ToSparseMatrix<TRowKey, TColKey, TValue>(this Matrix<TRowKey, TColKey, TValue> matrix)
         {
 
-            var sparseMatrix = SparseMatrix<TRowKey, TColKey, TValue>.CreateEmptyInstance(matrix.RowKeys, matrix.ColKeys, matrix.MissingValue);
-            foreach (var triple in matrix.RowKeyColKeyValues)
+            SparseMatrix<TRowKey, TColKey, TValue> sparseMatrix = SparseMatrix<TRowKey, TColKey, TValue>.CreateEmptyInstance(matrix.RowKeys, matrix.ColKeys, matrix.MissingValue);
+            foreach (RowKeyColKeyValue<TRowKey, TColKey, TValue> triple in matrix.RowKeyColKeyValues)
             {
                 sparseMatrix[triple.RowKey, triple.ColKey] = matrix[triple.RowKey, triple.ColKey];
             }

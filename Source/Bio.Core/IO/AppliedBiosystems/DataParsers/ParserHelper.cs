@@ -19,9 +19,9 @@ namespace Bio.IO.AppliedBiosystems.DataParsers
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
             if (parse == null) throw new ArgumentNullException(nameof(parse));
-            var values = value.Split(' ');
-            var result = new T[values.Length];
-            for (var i = 0; i < values.Length; i++)
+            string[] values = value.Split(' ');
+            T[] result = new T[values.Length];
+            for (int i = 0; i < values.Length; i++)
             {
                 result[i] = parse(values[i]);
             }
@@ -43,14 +43,14 @@ namespace Bio.IO.AppliedBiosystems.DataParsers
             if (values.Length % count != 0)
                 throw new ArgumentException(Resource.SegmentByteArrayInvalidCount, nameof(count));
 
-            var result = new T[values.Length / count][];
+            T[][] result = new T[values.Length / count][];
 
-            var index = 0;
-            for (var i = 0; i < result.Length; i++)
+            int index = 0;
+            for (int i = 0; i < result.Length; i++)
             {
                 result[i] = new T[count];
 
-                for (var j = 0; j < count; j++)
+                for (int j = 0; j < count; j++)
                 {
                     if (flip)
                     {
@@ -80,9 +80,9 @@ namespace Bio.IO.AppliedBiosystems.DataParsers
         {
             if (segments == null) throw new ArgumentNullException(nameof(segments));
             if (convert == null) throw new ArgumentNullException(nameof(convert));
-            var result = new TOut[segments.Length];
+            TOut[] result = new TOut[segments.Length];
 
-            for (var i = 0; i < segments.Length; i++)
+            for (int i = 0; i < segments.Length; i++)
             {
                 result[i] = convert(segments[i]);
             }

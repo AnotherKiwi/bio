@@ -41,12 +41,12 @@ namespace Bio.Matrix
             _missingValue = matrices[0].MissingValue;
 
             IEnumerable<TColKey> colKeys = matrices[0].ColKeys;
-            var rowKeys = matrices[0].RowKeys.ToList();
+            List<TRowKey> rowKeys = matrices[0].RowKeys.ToList();
 
             _rowKeyToMatrix = new Dictionary<TRowKey, Matrix<TRowKey, TColKey, TValue>>();
             matrices[0].RowKeys.ForEach(rowKey => _rowKeyToMatrix.Add(rowKey, matrices[0]));
 
-            for (var i = 1; i < matrices.Length; i++)
+            for (int i = 1; i < matrices.Length; i++)
             {
                 if (colsMustMatch)
                 {
@@ -58,11 +58,11 @@ namespace Bio.Matrix
                 }
 
                 //rowKeys.AddRange(matrices[i].RowKeys);
-                foreach (var rowKey in matrices[i].RowKeys)
+                foreach (TRowKey rowKey in matrices[i].RowKeys)
                 {
                     if (_rowKeyToMatrix.ContainsKey(rowKey))
                     {
-                        var prevMatrix = _rowKeyToMatrix[rowKey];
+                        Matrix<TRowKey, TColKey, TValue> prevMatrix = _rowKeyToMatrix[rowKey];
                         // check that all the values are identical. not that GetValueOrMissing().Equals is not safe because missing value may be null.
                         Helper.CheckCondition<ArgumentException>(colKeys.All(colKey =>
                             prevMatrix.IsMissing(rowKey, colKey) ?
@@ -94,8 +94,8 @@ namespace Bio.Matrix
             m = null;
             mappedColIndex = mappedRowIndex = -1;
 
-            var rowKey = _rowKeys[rowIndex];
-            var colKey = _colKeys[colIndex];
+            TRowKey rowKey = _rowKeys[rowIndex];
+            TColKey colKey = _colKeys[colIndex];
 
             m = _rowKeyToMatrix[rowKey];
 
@@ -110,7 +110,7 @@ namespace Bio.Matrix
             mappedColKey = colKey;
             mappedRowKey = rowKey;
 
-            var isOK = _rowKeyToMatrix.TryGetValue(rowKey, out m);
+            bool isOK = _rowKeyToMatrix.TryGetValue(rowKey, out m);
             Helper.CheckCondition<KeyNotFoundException>(isOK, "RowKey '{0}' not found", rowKey);
             //m = _rowKeyToMatrix[rowKey];
         }

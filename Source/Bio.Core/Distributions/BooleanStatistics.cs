@@ -94,9 +94,9 @@ namespace Bio.Distributions
                 throw new ArgumentNullException(nameof(dictionary));
             }
 
-            var result = new Dictionary<string, BooleanStatistics>();
+            Dictionary<string, BooleanStatistics> result = new Dictionary<string, BooleanStatistics>();
 
-            foreach (var stringAndSuff in dictionary)
+            foreach (KeyValuePair<string, SufficientStatistics> stringAndSuff in dictionary)
             {
                 result.Add(stringAndSuff.Key, stringAndSuff.Value.AsBooleanStatistics());
             }
@@ -176,7 +176,7 @@ namespace Bio.Distributions
             }
             try
             {
-                var value = (Classification)(int)stats;
+                Classification value = (Classification)(int)stats;
                 return new BooleanStatistics(value);
             }
             catch
@@ -222,7 +222,7 @@ namespace Bio.Distributions
         /// <returns>True if both the objects are equal.</returns>
         public override bool Equals(object obj)
         {
-            var stats = obj as SufficientStatistics;
+            SufficientStatistics stats = obj as SufficientStatistics;
             if (stats != null)
             {
                 return Equals(stats);

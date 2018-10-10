@@ -73,8 +73,8 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
             // parse            
             ISequenceParser parserObj = new GenBankParser();
             {
-                var seqList = parserObj.Parse(FilePath);
-                var seq = seqList.ElementAt(0);
+                IEnumerable<ISequence> seqList = parserObj.Parse(FilePath);
+                ISequence seq = seqList.ElementAt(0);
                 Assert.AreEqual(Utility.GetAlphabet(AlphabetName), seq.Alphabet);
                 Assert.AreEqual(SeqId, seq.ID);
                 ApplicationLog.WriteLine(
@@ -82,7 +82,7 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
 
                 // test the metadata that is tricky to parse, and will not be tested implicitly by
                 // testing the formatting
-                var metadata = (GenBankMetadata) seq.Metadata["GenBank"];
+                GenBankMetadata metadata = (GenBankMetadata) seq.Metadata["GenBank"];
                 if (metadata.Locus.Strand != SequenceStrandType.None)
                 {
                     Assert.AreEqual(StrandType,
@@ -124,7 +124,7 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
             // Parse the Stream.           
             ISequenceParser parserObj = new GenBankParser();
             {
-                using (var reader = File.OpenRead(FilePath))
+                using (FileStream reader = File.OpenRead(FilePath))
                 {
                     seqList = parserObj.Parse(reader);
                     seq = seqList.ToList();
@@ -137,7 +137,7 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
 
                 // test the metadata that is tricky to parse, and will not be tested implicitly by
                 // testing the formatting
-                var metadata = (GenBankMetadata) seq[0].Metadata["GenBank"];
+                GenBankMetadata metadata = (GenBankMetadata) seq[0].Metadata["GenBank"];
                 if (metadata.Locus.Strand != SequenceStrandType.None)
                 {
                     Assert.AreEqual(StrandType,
@@ -211,7 +211,7 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
             ISequenceParser parserObj = new GenBankParser();
             {
                 parserObj.Alphabet = Alphabets.Protein;
-                var seq = parserObj.Parse(FilePath);
+                IEnumerable<ISequence> seq = parserObj.Parse(FilePath);
 
                 Assert.AreEqual(Utility.GetAlphabet(AlphabetName),
                                 seq.ElementAt(0).Alphabet);
@@ -221,7 +221,7 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
 
                 // test the metadata that is tricky to parse, and will not be tested implicitly by
                 // testing the formatting
-                var metadata = (GenBankMetadata) seq.ElementAt(0).Metadata["GenBank"];
+                GenBankMetadata metadata = (GenBankMetadata) seq.ElementAt(0).Metadata["GenBank"];
                 if (metadata.Locus.Strand != SequenceStrandType.None)
                 {
                     Assert.AreEqual(StrandType,
@@ -268,12 +268,12 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
             // parse and update the properties instead of parsing entire file.            
             ISequenceParser parser1 = new GenBankParser();
             {
-                var seqList1 = parser1.Parse(FilePath);
-                var tempFileName = Path.GetTempFileName();
+                IEnumerable<ISequence> seqList1 = parser1.Parse(FilePath);
+                string tempFileName = Path.GetTempFileName();
 
-                var expectedUpdatedSequence =
+                string expectedUpdatedSequence =
                     ExpectedSequence.Replace("\r", "").Replace("\n", "").Replace(" ", "");
-                var orgSeq =
+                Sequence orgSeq =
                     new Sequence(Utility.GetAlphabet(AlphabetName), expectedUpdatedSequence);
                 orgSeq.Metadata.Add("GenBank",
                                     seqList1.ElementAt(0).Metadata["GenBank"]);
@@ -285,10 +285,10 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
                     formatter.Close();
 
                     // parse            
-                    var parserObj = new GenBankParser();
+                    GenBankParser parserObj = new GenBankParser();
 
-                    var seqList = parserObj.Parse(tempFileName);
-                    var seq = seqList.ElementAt(0);
+                    IEnumerable<ISequence> seqList = parserObj.Parse(tempFileName);
+                    ISequence seq = seqList.ElementAt(0);
                     Assert.AreEqual(Utility.GetAlphabet(AlphabetName), seq.Alphabet);
                     Assert.AreEqual(SeqId, seq.ID);
                     ApplicationLog.WriteLine(
@@ -296,7 +296,7 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
 
                     // test the metadata that is tricky to parse, and will not be tested implicitly by
                     // testing the formatting 
-                    var metadata = (GenBankMetadata) seq.Metadata["GenBank"];
+                    GenBankMetadata metadata = (GenBankMetadata) seq.Metadata["GenBank"];
                     if (metadata.Locus.Strand != SequenceStrandType.None)
                     {
                         Assert.AreEqual(StrandType, metadata.Locus.Strand.ToString());
@@ -334,11 +334,11 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
             InitializeXmlVariables();
             ISequenceParser parserObj = new GenBankParser();
             {
-                var seqList1 = parserObj.Parse(FilePath);
-                var tempFileName = Path.GetTempFileName();
-                var expectedUpdatedSequence =
+                IEnumerable<ISequence> seqList1 = parserObj.Parse(FilePath);
+                string tempFileName = Path.GetTempFileName();
+                string expectedUpdatedSequence =
                     ExpectedSequence.Replace("\r", "").Replace("\n", "").Replace(" ", "");
-                var orgSeq = new Sequence(Utility.GetAlphabet(AlphabetName), expectedUpdatedSequence)
+                Sequence orgSeq = new Sequence(Utility.GetAlphabet(AlphabetName), expectedUpdatedSequence)
                 {
                     ID = seqList1.ElementAt(0).ID
                 };
@@ -349,15 +349,15 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
 
                     // parse
                     ISequenceParser parserObjFromFile = new GenBankParser();
-                    var seqList = parserObjFromFile.Parse(tempFileName);
-                    var seq = seqList.ElementAt(0);
+                    IEnumerable<ISequence> seqList = parserObjFromFile.Parse(tempFileName);
+                    ISequence seq = seqList.ElementAt(0);
                     Assert.AreEqual(Utility.GetAlphabet(AlphabetName), seq.Alphabet);
                     Assert.AreEqual(SeqId, seq.ID);
                     ApplicationLog.WriteLine("GenBank Formatter BVT: Successfully validated the Alphabet, Molecular type, Sequence ID and Display ID");
 
                     // test the metadata that is tricky to parse, and will not be tested implicitly by
                     // testing the formatting
-                    var metadata =
+                    GenBankMetadata metadata =
                         (GenBankMetadata) orgSeq.Metadata["GenBank"];
                     if (metadata.Locus.Strand != SequenceStrandType.None)
                     {
@@ -399,9 +399,9 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
             // parse
             ISequenceParser parserObj = new GenBankParser();
 
-            var seqList = parserObj.Parse(FilePath);
-            var tempFileName = Path.GetTempFileName();
-            var seq = seqList.ElementAt(0);
+            IEnumerable<ISequence> seqList = parserObj.Parse(FilePath);
+            string tempFileName = Path.GetTempFileName();
+            ISequence seq = seqList.ElementAt(0);
 
             ISequenceFormatter formatter = new GenBankFormatter();
             {
@@ -418,7 +418,7 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
 
                 // test the metadata that is tricky to parse, and will not be tested implicitly by
                 // testing the formatting
-                var metadata = (GenBankMetadata) seq.Metadata["GenBank"];
+                GenBankMetadata metadata = (GenBankMetadata) seq.Metadata["GenBank"];
                 if (metadata.Locus.Strand != SequenceStrandType.None)
                 {
                     Assert.AreEqual(StrandType,
@@ -459,9 +459,9 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
             // parse
             ISequenceParser parserObj = new GenBankParser();
             {
-                var seqList = parserObj.Parse(FilePath);
-                var seq = seqList.ElementAt(0);
-                var tempFileName = Path.GetTempFileName();
+                IEnumerable<ISequence> seqList = parserObj.Parse(FilePath);
+                ISequence seq = seqList.ElementAt(0);
+                string tempFileName = Path.GetTempFileName();
                 ISequenceFormatter formatter = new GenBankFormatter();
                 {
                     formatter.Format(seq, tempFileName);
@@ -477,7 +477,7 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
 
                     // test the metadata that is tricky to parse, and will not be tested implicitly by
                     // testing the formatting
-                    var metadata =
+                    GenBankMetadata metadata =
                         (GenBankMetadata) seq.Metadata["GenBank"];
                     if (metadata.Locus.Strand != SequenceStrandType.None)
                     {
@@ -523,13 +523,13 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
             // Parse and update the properties instead of parsing entire file.            
             ISequenceParser parser1 = new GenBankParser();
             {
-                var seqList1 = parser1.Parse(FilePath);
-                var tempFileName = Path.GetTempFileName();
+                IEnumerable<ISequence> seqList1 = parser1.Parse(FilePath);
+                string tempFileName = Path.GetTempFileName();
                 GenBankMetadata metadata = null;
                 ISequence seq = null;
-                var expectedUpdatedSequence =
+                string expectedUpdatedSequence =
                     ExpectedSequence.Replace("\r", "").Replace("\n", "").Replace(" ", "");
-                var orgSeq =
+                Sequence orgSeq =
                     new Sequence(Utility.GetAlphabet(AlphabetName), expectedUpdatedSequence);
                 orgSeq.Metadata.Add("GenBank",
                                     seqList1.ElementAt(0).Metadata["GenBank"]);
@@ -543,9 +543,9 @@ namespace Bio.Silverlight.TestAutomation.IO.GenBank
                     }
                 }
 
-                var parserObj = new GenBankParser();
+                GenBankParser parserObj = new GenBankParser();
                 {
-                    var seqList = parserObj.Parse(tempFileName);
+                    IEnumerable<ISequence> seqList = parserObj.Parse(tempFileName);
                     seq = seqList.ElementAt(0);
                     Assert.AreEqual(Utility.GetAlphabet(AlphabetName), seq.Alphabet);
                     Assert.AreEqual(SeqId, seq.ID);

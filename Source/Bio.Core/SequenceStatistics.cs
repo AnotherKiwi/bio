@@ -47,8 +47,8 @@ namespace Bio
             alphabet = sequence.Alphabet;
 
             // Counting with an array is way faster than using a dictionary.
-            var symbolCounts = new long[256];
-            foreach (var item in sequence)
+            long[] symbolCounts = new long[256];
+            foreach (byte item in sequence)
             {
                 if (item == 0)
                 {
@@ -76,11 +76,11 @@ namespace Bio
             countHash = new Dictionary<char, long>();
             totalCount = 0;
 
-            for (var i = 0; i < symbolCounts.Length; i++)
+            for (int i = 0; i < symbolCounts.Length; i++)
             {
                 if (symbolCounts[i] > 0)
                 {
-                    var value = char.ToUpper((char)i);
+                    char value = char.ToUpper((char)i);
                     
                     if (countHash.ContainsKey(value))
                         countHash[value] += symbolCounts[i];
@@ -199,8 +199,8 @@ namespace Bio
         /// <returns>Sequence chars with its count.</returns>
         public override string ToString()
         {
-            var builder = new StringBuilder();
-            foreach (var valuePair in countHash)
+            StringBuilder builder = new StringBuilder();
+            foreach (KeyValuePair<char, long> valuePair in countHash)
             {
                 builder.AppendLine(string.Format(CultureInfo.CurrentCulture, Properties.Resource.SequenceStatisticsToStringFormat, valuePair.Key, valuePair.Value));
             }

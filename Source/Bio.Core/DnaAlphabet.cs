@@ -72,7 +72,9 @@ namespace Bio
             HasGaps = true;
             HasAmbiguity = false;
             HasTerminations = false;
+            IsCaseSensitive = false;
             IsComplementSupported = true;
+
             A = (byte)'A';
             C = (byte)'C';
             G = (byte)'G';
@@ -137,6 +139,12 @@ namespace Bio
         ///     This alphabet does NOT have termination symbols.
         /// </remarks>
         public bool HasTerminations { get; protected set; }
+
+        /// <inheritdoc />
+        /// <remarks>
+        ///     This alphabet is NOT case sensitive.
+        /// </remarks>
+        public bool IsCaseSensitive { get; protected set; }
 
         /// <inheritdoc />
         /// <remarks>
@@ -205,7 +213,7 @@ namespace Bio
                 return false;
             }
 
-            var length = symbols.GetLongLength();
+            long length = symbols.GetLongLength();
             complementSymbols = new byte[length];
             for (long index = 0; index < length; index++)
             {
@@ -331,7 +339,7 @@ namespace Bio
                 throw new ArgumentOutOfRangeException(nameof(length));
             }
 
-            for (var i = offset; i < (length + offset); i++)
+            for (long i = offset; i < (length + offset); i++)
             {
                 if (!nucleotideValueMap.ContainsKey(symbols[i]))
                 {
@@ -363,9 +371,9 @@ namespace Bio
         /// <inheritdoc />
         public byte[] GetSymbolValueMap()
         {
-            var symbolMap = new byte[256];
+            byte[] symbolMap = new byte[256];
 
-            foreach (var mapping in nucleotideValueMap)
+            foreach (KeyValuePair<byte, byte> mapping in nucleotideValueMap)
             {
                 symbolMap[mapping.Key] = mapping.Value;
             }
@@ -419,7 +427,7 @@ namespace Bio
             }
 
             nucleotideValueMap.Add(nucleotideValue, nucleotideValue);
-            foreach (var value in otherPossibleValues)
+            foreach (byte value in otherPossibleValues)
             {
                 nucleotideValueMap.Add(value, nucleotideValue);
             }
@@ -444,11 +452,11 @@ namespace Bio
                 throw new ArgumentException(Resource.CouldNotRecognizeSymbol, nameof(ambiguousNucleotide));
             }
 
-            var mappingValues = new byte[nucleotidesToMap.Length];
-            var i = 0;
+            byte[] mappingValues = new byte[nucleotidesToMap.Length];
+            int i = 0;
             byte validatedValueToMap;
 
-            foreach (var valueToMap in nucleotidesToMap)
+            foreach (byte valueToMap in nucleotidesToMap)
             {
                 if (!nucleotideValueMap.TryGetValue(valueToMap, out validatedValueToMap))
                 {
@@ -458,7 +466,7 @@ namespace Bio
                 mappingValues[i++] = validatedValueToMap;
             }
 
-            var basicSymbols = new HashSet<byte>(mappingValues);
+            HashSet<byte> basicSymbols = new HashSet<byte>(mappingValues);
             ambiguousSyToBasicSymbolsMap.Add(ambiguousSymbol, basicSymbols);
             basicSymbolsToAmbiguousSymbolMap.Add(basicSymbols, ambiguousSymbol);
         }

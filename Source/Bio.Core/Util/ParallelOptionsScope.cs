@@ -40,7 +40,7 @@ namespace Bio.Util
             if (options == null)
                 throw new ArgumentNullException(nameof(options));
 
-            var stack = Scope.Value;
+            StackNode stack = Scope.Value;
             stack = new StackNode { Options = options, Next = stack };
             Scope.Value = stack;
         }
@@ -52,7 +52,7 @@ namespace Bio.Util
         {
             get
             {
-                var stack = Scope.Value;
+                StackNode stack = Scope.Value;
                 return (stack != null);
             }
         }
@@ -64,7 +64,7 @@ namespace Bio.Util
         {
             get
             {
-                var stack = Scope.Value;
+                StackNode stack = Scope.Value;
                 if (stack == null)
                 {
                     throw new InvalidOperationException(
@@ -82,7 +82,7 @@ namespace Bio.Util
             if (!disposed)
             {
                 disposed = true;
-                var stack = Scope.Value;
+                StackNode stack = Scope.Value;
                 if (stack != null)
                 {
                     Scope.Value = stack.Next;
@@ -163,7 +163,7 @@ namespace Bio.Util
 
             private static StackNode SuspendParallelOptionsScope()
             {
-                var stack = Scope.Value;
+                StackNode stack = Scope.Value;
                 if (stack != null)
                 {
                     Scope.Value = null;

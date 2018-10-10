@@ -99,8 +99,8 @@ namespace Bio.Util
         {
             if (array.Length + arrayIndex < data.Count)
                 throw new ArgumentException("Not enough space in array.");
-            var pos = arrayIndex;
-            foreach (var item in data)
+            int pos = arrayIndex;
+            foreach (KeyValuePair<TKey, TValue> item in data)
             {
                 array[pos++] = item;
             }
@@ -168,7 +168,7 @@ namespace Bio.Util
         {
             get
             {
-                var keys = data.Keys.ToArray();
+                TKey[] keys = data.Keys.ToArray();
                 Array.Sort(keys, comparer);
                 return keys;
             }
@@ -184,7 +184,7 @@ namespace Bio.Util
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            var keys = data.Keys.ToArray();
+            TKey[] keys = data.Keys.ToArray();
             Array.Sort(keys, comparer);
             return keys.Select(k => new KeyValuePair<TKey, TValue>(k, data[k])).GetEnumerator();
         }

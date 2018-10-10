@@ -157,7 +157,7 @@ namespace Bio.Algorithms.Assembly.Comparative
             try
             {
                 // Converting to list to avoid multiple parse of the reference file if its a yield return
-                var refSequences = referenceSequence.ToList();
+                List<ISequence> refSequences = referenceSequence.ToList();
 
                 // CacheSequencesForRandomAccess will ignore the call if called more than once.
                 queryParser.CacheSequencesForRandomAccess();
@@ -166,7 +166,7 @@ namespace Bio.Algorithms.Assembly.Comparative
                 // Comparative Assembly Steps
                 // 1) Read Alignment (Calling NUCmer for aligning reads to reference sequence)
                 StatusEventStart(Properties.Resource.ReadAlignmentStarted);
-                var alignmentBetweenReferenceAndReads = ReadAlignment(refSequences, 
+                IEnumerable<DeltaAlignment> alignmentBetweenReferenceAndReads = ReadAlignment(refSequences, 
                             reads.Where(a => a.Count >= LengthOfMum));
 
                 readAlignmentOutputStream = PlatformManager.Services.CreateTempStream();
@@ -178,9 +178,9 @@ namespace Bio.Algorithms.Assembly.Comparative
                 DeltaAlignmentSorter sorter;
 
                 unsortedRepeatResolutionOutputStream = PlatformManager.Services.CreateTempStream();
-                using (var deltaAlignmentFromReadAlignment = new DeltaAlignmentCollection(readAlignmentOutputStream, queryParser))
+                using (DeltaAlignmentCollection deltaAlignmentFromReadAlignment = new DeltaAlignmentCollection(readAlignmentOutputStream, queryParser))
                 {
-                    var repeatResolvedDeltas = RepeatResolution(deltaAlignmentFromReadAlignment);
+                    IEnumerable<DeltaAlignment> repeatResolvedDeltas = RepeatResolution(deltaAlignmentFromReadAlignment);
                     sorter = new DeltaAlignmentSorter(refSequences[0].Count);
                     WriteUnsortedDelta(repeatResolvedDeltas, sorter, unsortedRepeatResolutionOutputStream);
                 }
@@ -196,10 +196,10 @@ namespace Bio.Algorithms.Assembly.Comparative
                 StatusEventStart(Properties.Resource.LayoutRefinementStarted);
 
                 layoutRefinmentOutputStream = PlatformManager.Services.CreateTempStream();
-                using (var unsortedDeltaCollectionForLayoutRefinment = new DeltaAlignmentCollection(repeatResolutionOutputStream, queryParser))
+                using (DeltaAlignmentCollection unsortedDeltaCollectionForLayoutRefinment = new DeltaAlignmentCollection(repeatResolutionOutputStream, queryParser))
                 {
                     unsortedLayoutRefinmentOutputStream = PlatformManager.Services.CreateTempStream();
-                    var layoutRefinedDeltas = LayoutRefinment(unsortedDeltaCollectionForLayoutRefinment);
+                    IEnumerable<DeltaAlignment> layoutRefinedDeltas = LayoutRefinment(unsortedDeltaCollectionForLayoutRefinment);
                     sorter = new DeltaAlignmentSorter(refSequences[0].Count);
                     WriteUnsortedDelta(layoutRefinedDeltas, sorter, unsortedLayoutRefinmentOutputStream);
                     WriteSortedDelta(sorter, unsortedLayoutRefinmentOutputStream, queryParser, layoutRefinmentOutputStream);
@@ -210,7 +210,7 @@ namespace Bio.Algorithms.Assembly.Comparative
                 // 4) Consensus Generation
                 StatusEventStart(Properties.Resource.ConsensusGenerationStarted);
                 IList<ISequence> contigs;
-                using (var delta = new DeltaAlignmentCollection(layoutRefinmentOutputStream, queryParser))
+                using (DeltaAlignmentCollection delta = new DeltaAlignmentCollection(layoutRefinmentOutputStream, queryParser))
                 {
                     contigs = ConsensusGenerator(delta).ToList();
                 }
@@ -220,7 +220,7 @@ namespace Bio.Algorithms.Assembly.Comparative
                 {
                     // 5) Scaffold Generation
                     StatusEventStart(Properties.Resource.ScaffoldGenerationStarted);
-                    var scaffolds = ScaffoldsGenerator(contigs, reads);
+                    IEnumerable<ISequence> scaffolds = ScaffoldsGenerator(contigs, reads);
                     StatusEventEnd(Properties.Resource.ScaffoldGenerationEnded);
                     return scaffolds;
                 }
@@ -247,14 +247,14 @@ namespace Bio.Algorithms.Assembly.Comparative
         /// <param name="outputStream">Temp stream to write to.</param>
         public static void WriteDelta(IEnumerable<DeltaAlignment> deltaAlignments, Stream outputStream)
         {
-            using (var writer = new StreamWriter(outputStream))
+            using (StreamWriter writer = new StreamWriter(outputStream))
             {
                 long deltaPositionInFile = 0;
 
-                foreach (var deltaAlignment in deltaAlignments)
+                foreach (DeltaAlignment deltaAlignment in deltaAlignments)
                 {
                     deltaAlignment.Id = deltaPositionInFile;
-                    var deltaString = Helper.GetString(deltaAlignment);
+                    string deltaString = Helper.GetString(deltaAlignment);
                     deltaPositionInFile += deltaString.Length;
                     writer.Write(deltaString);
                 }
@@ -271,13 +271,13 @@ namespace Bio.Algorithms.Assembly.Comparative
         /// <param name="outputStream">Output file name.</param>
         public static void WriteUnsortedDelta(IEnumerable<DeltaAlignment> delta, DeltaAlignmentSorter sorter, Stream outputStream)
         {
-            using (var writer = new StreamWriter(outputStream))
+            using (StreamWriter writer = new StreamWriter(outputStream))
             {
                 long deltaPositionInFile = 0;
-                foreach (var deltaAlignment in delta)
+                foreach (DeltaAlignment deltaAlignment in delta)
                 {
                     deltaAlignment.Id = deltaPositionInFile;
-                    var deltaString = Helper.GetString(deltaAlignment);
+                    string deltaString = Helper.GetString(deltaAlignment);
                     deltaPositionInFile += deltaString.Length;
                     writer.Write(deltaString);
                     sorter.Add(deltaAlignment.Id, deltaAlignment.FirstSequenceStart);
@@ -301,16 +301,16 @@ namespace Bio.Algorithms.Assembly.Comparative
                 throw new ArgumentNullException(nameof(sorter));
             }
 
-            using (var unsortedDeltaParser = new DeltaAlignmentParser(unsortedDeltaStream, queryParser))
+            using (DeltaAlignmentParser unsortedDeltaParser = new DeltaAlignmentParser(unsortedDeltaStream, queryParser))
             {
-                using (var writer = new StreamWriter(outputStream))
+                using (StreamWriter writer = new StreamWriter(outputStream))
                 {
                     long deltaPositionInFile = 0;
-                    foreach (var id in sorter.GetSortedIds())
+                    foreach (long id in sorter.GetSortedIds())
                     {
-                        var deltaAlignment = unsortedDeltaParser.GetDeltaAlignmentAt(id);
+                        DeltaAlignment deltaAlignment = unsortedDeltaParser.GetDeltaAlignmentAt(id);
                         deltaAlignment.Id = deltaPositionInFile;
-                        var deltaString = Helper.GetString(deltaAlignment);
+                        string deltaString = Helper.GetString(deltaAlignment);
                         deltaPositionInFile += deltaString.Length;
                         writer.Write(deltaString);
                     }
@@ -348,7 +348,7 @@ namespace Bio.Algorithms.Assembly.Comparative
         /// <returns>List of scaffold sequences.</returns>
         private IEnumerable<ISequence> ScaffoldsGenerator(IEnumerable<ISequence> contigs, IEnumerable<ISequence> reads)
         {
-            using (var scaffoldBuilder = new GraphScaffoldBuilder())
+            using (GraphScaffoldBuilder scaffoldBuilder = new GraphScaffoldBuilder())
             {
                 return scaffoldBuilder.BuildScaffold(reads, contigs.ToList(), KmerLength, Depth, ScaffoldRedundancy);
             }
@@ -400,7 +400,7 @@ namespace Bio.Algorithms.Assembly.Comparative
         /// </summary>
         private void StatusEventStart(string message)
         {
-            var statusMessage = string.Format(CultureInfo.CurrentCulture, message, DateTime.Now);
+            string statusMessage = string.Format(CultureInfo.CurrentCulture, message, DateTime.Now);
             RaiseStatusEvent(statusMessage);
         }
 
@@ -409,7 +409,7 @@ namespace Bio.Algorithms.Assembly.Comparative
         /// </summary>
         private void StatusEventEnd(string message)
         {
-            var statusMessage = string.Format(CultureInfo.CurrentCulture, message, DateTime.Now);
+            string statusMessage = string.Format(CultureInfo.CurrentCulture, message, DateTime.Now);
             RaiseStatusEvent(statusMessage);
         }
     }

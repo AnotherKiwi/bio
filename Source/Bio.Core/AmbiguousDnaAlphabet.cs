@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Bio.Properties;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-
-using Bio.Properties;
 
 namespace Bio
 {
@@ -88,34 +87,34 @@ namespace Bio
         public byte AC { get; private set; }
 
         /// <inheritdoc />
-        public byte GA { get; private set; }
+        public byte ACT { get; private set; }
 
         /// <inheritdoc />
-        public byte GC { get; private set; }
+        public byte Any { get; private set; }
 
         /// <inheritdoc />
         public byte AT { get; private set; }
 
         /// <inheritdoc />
-        public byte TC { get; private set; }
-
-        /// <inheritdoc />
-        public byte GT { get; private set; }
-
-        /// <inheritdoc />
-        public byte GCA { get; private set; }
-
-        /// <inheritdoc />
-        public byte ACT { get; private set; }
+        public byte GA { get; private set; }
 
         /// <inheritdoc />
         public byte GAT { get; private set; }
 
         /// <inheritdoc />
+        public byte GC { get; private set; }
+
+        /// <inheritdoc />
+        public byte GCA { get; private set; }
+
+        /// <inheritdoc />
+        public byte GT { get; private set; }
+
+        /// <inheritdoc />
         public byte GTC { get; private set; }
 
         /// <inheritdoc />
-        public byte Any { get; private set; }
+        public byte TC { get; private set; }
 
         /// <inheritdoc />
         public override byte GetConsensusSymbol(HashSet<byte> symbols)
@@ -130,12 +129,12 @@ namespace Bio
                 throw new ArgumentException(Resource.SymbolCountZero);
             }
 
-            var symbolsInUpperCase = new HashSet<byte>();
+            HashSet<byte> symbolsInUpperCase = new HashSet<byte>();
             
             // Validate that all are valid DNA symbols
-            var validValues = GetValidSymbols();
+            HashSet<byte> validValues = GetValidSymbols();
 
-            foreach (var symbol in symbols)
+            foreach (byte symbol in symbols)
             {
                 if (!validValues.Contains(symbol))
                 {
@@ -143,7 +142,7 @@ namespace Bio
                         CultureInfo.CurrentCulture, Resource.INVALID_SYMBOL, (char)symbol, Name));
                 }
 
-                var upperCaseSymbol = symbol;
+                byte upperCaseSymbol = symbol;
                 if (symbol >= 97 && symbol <= 122)
                 {
                     upperCaseSymbol = (byte)(symbol - 32);
@@ -172,10 +171,10 @@ namespace Bio
             }
             else
             {
-                var baseSet = new HashSet<byte>();
+                HashSet<byte> baseSet = new HashSet<byte>();
                 HashSet<byte> ambiguousSymbols;
 
-                foreach (var n in symbolsInUpperCase)
+                foreach (byte n in symbolsInUpperCase)
                 {
                     ambiguousSymbols = null;
                     if (TryGetBasicSymbols(n, out ambiguousSymbols))

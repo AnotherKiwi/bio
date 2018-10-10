@@ -320,7 +320,7 @@ namespace Bio.IO.SAM
         /// </summary>
         public byte[] GetEncodedQualityScores()
         {
-            var seq = QuerySequence as QualitativeSequence;
+            QualitativeSequence seq = QuerySequence as QualitativeSequence;
             return seq != null ? seq.GetEncodedQualityScores() : new byte[0];
         }
 
@@ -329,7 +329,7 @@ namespace Bio.IO.SAM
         /// </summary>
         public int[] GetQualityScores()
         {
-            var seq = QuerySequence as QualitativeSequence;
+            QualitativeSequence seq = QuerySequence as QualitativeSequence;
             return seq != null ? seq.GetPhredQualityScores() : new int[0];
         }
     }

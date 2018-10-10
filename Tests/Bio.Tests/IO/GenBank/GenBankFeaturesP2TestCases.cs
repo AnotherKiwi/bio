@@ -50,13 +50,13 @@ using Bio;
         public void InValidateSubSequenceWithComplimentOperator()
         {
             // Get Values from XML node.
-            var sequence = utilityObj.xmlUtil.GetTextValue(
+            string sequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.InvalidLocationWithComplementOperatorNode,
                 Constants.ExpectedSequence);
-            var location = utilityObj.xmlUtil.GetTextValue(
+            string location = utilityObj.xmlUtil.GetTextValue(
                 Constants.InvalidLocationWithComplementOperatorNode,
                 Constants.Location);
-            var alphabet = utilityObj.xmlUtil.GetTextValue(
+            string alphabet = utilityObj.xmlUtil.GetTextValue(
                 Constants.InvalidLocationWithComplementOperatorNode,
                 Constants.AlphabetNameNode);
 
@@ -66,8 +66,8 @@ using Bio;
 
             // Build a location.
             ILocationBuilder locBuilder = new LocationBuilder();
-            var loc = locBuilder.GetLocation(location);
-            var locResolver = new LocationResolver();
+            ILocation loc = locBuilder.GetLocation(location);
+            LocationResolver locResolver = new LocationResolver();
 
             // Get sequence using location of the sequence with operator.
             try
@@ -149,13 +149,13 @@ using Bio;
         public void InValidateSubSequenceWithInvalidAccessionID()
         {
             // Get Values from XML node.
-            var sequence = utilityObj.xmlUtil.GetTextValue(
+            string sequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.LocationWithDotOperatorNode,
                 Constants.ExpectedSequence);
-            var location = utilityObj.xmlUtil.GetTextValue(
+            string location = utilityObj.xmlUtil.GetTextValue(
                 Constants.LocationWithDotOperatorNode,
                 Constants.Location);
-            var alphabet = utilityObj.xmlUtil.GetTextValue(
+            string alphabet = utilityObj.xmlUtil.GetTextValue(
                 Constants.LocationWithDotOperatorNode,
                 Constants.AlphabetNameNode);
 
@@ -165,7 +165,7 @@ using Bio;
 
             // Build a location.
             ILocationBuilder locBuilder = new LocationBuilder();
-            var loc = locBuilder.GetLocation(location);
+            ILocation loc = locBuilder.GetLocation(location);
             loc.Accession = "Invalid";
 
             // Get sequence using location of the sequence with operator.
@@ -206,11 +206,11 @@ using Bio;
         public void InValidateGenBankLocationEndData()
         {
             // Get Values from XML node.
-            var position = utilityObj.xmlUtil.GetTextValue(
+            string position = utilityObj.xmlUtil.GetTextValue(
                 Constants.LocationWithEndDataNode, Constants.Position);
 
             // Build a location.
-            var locResolver = new LocationResolver();
+            LocationResolver locResolver = new LocationResolver();
 
             // Validate whether mentioned end data is present in the location
             // or not.
@@ -259,7 +259,7 @@ using Bio;
         public void InValidateGenBankLocationGetStart()
         {
             // Build a location.
-            var locResolver = new LocationResolver();
+            LocationResolver locResolver = new LocationResolver();
 
             // Validate GetStart method exception.
             try
@@ -293,7 +293,7 @@ using Bio;
         [Category("Priority2")]
         public void InValidateGenBankLocationIsInStart()
         {
-            var startData = ".";
+            string startData = ".";
             InValidateLocationStartData(startData);
 
             // Set Invalid start data Validate GetStart method exception.
@@ -335,7 +335,7 @@ using Bio;
         public void InValidateGenBankLocationEndDataWithInvalidValues()
         {
             // Invalidate location with end data ".";
-            var endData = ".";
+            string endData = ".";
             InValidateLocationEndData(endData);
 
             // Set Invalid end data Validate GetStart method exception.
@@ -414,18 +414,18 @@ using Bio;
         public void InValidateGenBankLocationPositions()
         {
             // Get Values from XML node.
-            var location = utilityObj.xmlUtil.GetTextValue(
+            string location = utilityObj.xmlUtil.GetTextValue(
                 Constants.LocationWithEndDataUsingOperatorNode, Constants.Location);
-            var expectedEndData = utilityObj.xmlUtil.GetTextValue(
+            string expectedEndData = utilityObj.xmlUtil.GetTextValue(
                 Constants.LocationWithEndDataUsingOperatorNode, Constants.EndData);
-            var expectedStartData = utilityObj.xmlUtil.GetTextValue(
+            string expectedStartData = utilityObj.xmlUtil.GetTextValue(
                 Constants.LocationWithEndDataUsingOperatorNode, Constants.StartData);
-            var position = utilityObj.xmlUtil.GetTextValue(
+            string position = utilityObj.xmlUtil.GetTextValue(
                 Constants.LocationWithEndDataUsingOperatorNode, Constants.Position);
 
             // Build a location.
             ILocationBuilder locBuilder = new LocationBuilder();
-            var loc = (Location)locBuilder.GetLocation(location);
+            Location loc = (Location)locBuilder.GetLocation(location);
             loc.Resolver = null;
             loc.EndData = expectedEndData;
             loc.StartData = expectedStartData;
@@ -491,10 +491,10 @@ using Bio;
         private static void InValidateLocationEndData(string endData)
         {
             // Build a location.
-            var locResolver = new LocationResolver();
-            var location = "123.125";
+            LocationResolver locResolver = new LocationResolver();
+            string location = "123.125";
             ILocationBuilder locBuilder = new LocationBuilder();
-            var loc = locBuilder.GetLocation(location);
+            ILocation loc = locBuilder.GetLocation(location);
 
             // Set Invalid end data Validate GetStart method exception.
             loc.EndData = endData;
@@ -520,10 +520,10 @@ using Bio;
         private static void InValidateLocationStartData(string startData)
         {
             // Build a location.
-            var locResolver = new LocationResolver();
-            var location = "123.125";
+            LocationResolver locResolver = new LocationResolver();
+            string location = "123.125";
             ILocationBuilder locBuilder = new LocationBuilder();
-            var loc = locBuilder.GetLocation(location);
+            ILocation loc = locBuilder.GetLocation(location);
 
             // Set Invalid end data Validate GetStart method exception.
             loc.StartData = startData;

@@ -84,7 +84,7 @@ namespace Bio
 
             Alphabet = alphabet;
             ID = string.Empty;
-            var values = Encoding.UTF8.GetBytes(sequence);
+            byte[] values = Encoding.UTF8.GetBytes(sequence);
 
             if (validate)
             {
@@ -164,7 +164,7 @@ namespace Bio
             Count = newSequence.Count;
             _metadata = new Dictionary<string, object>(newSequence.Metadata);
 
-            var realSequence = newSequence as Sequence;
+            Sequence realSequence = newSequence as Sequence;
             if (realSequence != null)
             {
                 _sequenceData = new byte[newSequence.Count];
@@ -250,12 +250,12 @@ namespace Bio
         /// </summary>
         public ISequence GetReversedSequence()
         {
-            var values = new byte[Count];
+            byte[] values = new byte[Count];
 
             Helper.Copy(_sequenceData, values, _sequenceData.GetLongLength());
 
             Array.Reverse(values);
-            var seq = new Sequence { _sequenceData = values, Alphabet = Alphabet, ID = ID, Count = Count };
+            Sequence seq = new Sequence { _sequenceData = values, Alphabet = Alphabet, ID = ID, Count = Count };
             if (_metadata != null)
                 seq._metadata = new Dictionary<string, object>(_metadata);
 
@@ -272,10 +272,10 @@ namespace Bio
                 throw new InvalidOperationException(ComplementNotFound);
             }
 
-            var complemented = new byte[Count];
+            byte[] complemented = new byte[Count];
             Alphabet.TryGetComplementSymbol(_sequenceData, out complemented);
 
-            var seq = new Sequence { _sequenceData = complemented, Alphabet = Alphabet, ID = ID, Count = Count };
+            Sequence seq = new Sequence { _sequenceData = complemented, Alphabet = Alphabet, ID = ID, Count = Count };
             if (_metadata != null)
                 seq._metadata = new Dictionary<string, object>(_metadata);
 
@@ -292,10 +292,10 @@ namespace Bio
                 throw new InvalidOperationException(ComplementNotFound);
             }
 
-            var reverseComplemented = new byte[Count];
+            byte[] reverseComplemented = new byte[Count];
             Alphabet.TryGetComplementSymbol(_sequenceData, out reverseComplemented);
             Array.Reverse(reverseComplemented);
-            var seq = new Sequence { _sequenceData = reverseComplemented, Alphabet = Alphabet, ID = ID, Count = Count };
+            Sequence seq = new Sequence { _sequenceData = reverseComplemented, Alphabet = Alphabet, ID = ID, Count = Count };
             if (_metadata != null)
                 seq._metadata = new Dictionary<string, object>(_metadata);
 
@@ -320,13 +320,13 @@ namespace Bio
                 throw new ArgumentOutOfRangeException(nameof(length));
             }
 
-            var subSequence = new byte[length];
+            byte[] subSequence = new byte[length];
             for (long index = 0; index < length; index++)
             {
                 subSequence[index] = _sequenceData[start + index];
             }
 
-            var seq = new Sequence { _sequenceData = subSequence, Alphabet = Alphabet, ID = ID, Count = subSequence.Length };
+            Sequence seq = new Sequence { _sequenceData = subSequence, Alphabet = Alphabet, ID = ID, Count = subSequence.Length };
             if (_metadata != null)
                 seq._metadata = new Dictionary<string, object>(_metadata);
             return seq;
@@ -360,11 +360,11 @@ namespace Bio
                 return startPos;
             }
 
-            var aliasSymbolsMap = Alphabet.GetSymbolValueMap();
+            byte[] aliasSymbolsMap = Alphabet.GetSymbolValueMap();
 
-            for (var index = startPos; index < Count; index++)
+            for (long index = startPos; index < Count; index++)
             {
-                var symbol = aliasSymbolsMap[_sequenceData[index]];
+                byte symbol = aliasSymbolsMap[_sequenceData[index]];
                 if (!gapSymbols.Contains(symbol))
                 {
                     return index;
@@ -397,10 +397,10 @@ namespace Bio
                 return endPos;
             }
 
-            var aliasSymbolsMap = Alphabet.GetSymbolValueMap();
-            for (var index = endPos; index >= 0; index--)
+            byte[] aliasSymbolsMap = Alphabet.GetSymbolValueMap();
+            for (long index = endPos; index >= 0; index--)
             {
-                var symbol = aliasSymbolsMap[_sequenceData[index]];
+                byte symbol = aliasSymbolsMap[_sequenceData[index]];
                 if (!gapSymbols.Contains(symbol))
                 {
                     return index;
@@ -468,10 +468,10 @@ namespace Bio
                 throw new ArgumentOutOfRangeException(nameof(length), LengthPlusStartCannotExceedCount);
             }
 
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             try
             {
-                for (var index = startIndex; index < startIndex + length; index++)
+                for (long index = startIndex; index < startIndex + length; index++)
                 {
                     sb.Append((char)_sequenceData[index]);
                 }
@@ -521,7 +521,7 @@ namespace Bio
                 throw new ArgumentOutOfRangeException(nameof(length), LengthPlusStartCannotExceedCount);
             }
 
-            var rawData = new byte[length - startIndex];
+            byte[] rawData = new byte[length - startIndex];
             CopyTo(rawData, startIndex, length);
             return rawData;
         }

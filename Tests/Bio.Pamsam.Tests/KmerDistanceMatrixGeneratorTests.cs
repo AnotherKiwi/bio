@@ -19,7 +19,7 @@ namespace Bio.Pamsam.Tests
         [Test]
         public void TestKimuraDistanceMatrixGenerator()
         {
-            var sequences = new List<ISequence>
+            List<ISequence> sequences = new List<ISequence>
             {
                 new Sequence(Alphabets.DNA, "ACGTAA"),
                 new Sequence(Alphabets.DNA, "GGGAATCAATCAG"),
@@ -27,18 +27,18 @@ namespace Bio.Pamsam.Tests
                 new Sequence(Alphabets.DNA, "GGGACAAAATCAG")
             };
 
-            var kmerLength = 3;
+            int kmerLength = 3;
 
             // test kmer counting
-            var kmerDistanceScoreCalculator =
+            KmerDistanceScoreCalculator kmerDistanceScoreCalculator =
                 new KmerDistanceScoreCalculator(kmerLength, Alphabets.AmbiguousDNA);
 
-            var countDictionaryA =
+            Dictionary<string, float> countDictionaryA =
                 KmerDistanceScoreCalculator.CalculateKmerCounting(sequences[0], kmerLength);
-            var countDictionaryB =
+            Dictionary<string, float> countDictionaryB =
                 KmerDistanceScoreCalculator.CalculateKmerCounting(sequences[1], kmerLength);
 
-            var expectedCountDictionaryA = new Dictionary<String, float>
+            Dictionary<string, float> expectedCountDictionaryA = new Dictionary<String, float>
             {
                 { "ACG", 1 },
                 { "CGT", 1 },
@@ -51,7 +51,7 @@ namespace Bio.Pamsam.Tests
             Assert.AreEqual(countDictionaryA["GTA"], expectedCountDictionaryA["GTA"]);
             Assert.AreEqual(countDictionaryA["TAA"], expectedCountDictionaryA["TAA"]);
 
-            var expectedCountDictionaryB = new Dictionary<String, float>
+            Dictionary<string, float> expectedCountDictionaryB = new Dictionary<String, float>
             {
                 { "GGG", 1 },
                 { "GGA", 1 },
@@ -72,32 +72,32 @@ namespace Bio.Pamsam.Tests
             Assert.AreEqual(countDictionaryB["CAA"], expectedCountDictionaryB["CAA"]);
             Assert.AreEqual(countDictionaryB["CAG"], expectedCountDictionaryB["CAG"]);
 
-            foreach (var pair in countDictionaryA)
+            foreach (KeyValuePair<string, float> pair in countDictionaryA)
             {
-                foreach (var s in pair.Key)
+                foreach (char s in pair.Key)
                 {
                     Console.Write(s + " ");
                 }
                 Console.WriteLine(pair.Value);
             }
-            foreach (var pair in countDictionaryB)
+            foreach (KeyValuePair<string, float> pair in countDictionaryB)
             {
-                foreach (var s in pair.Key)
+                foreach (char s in pair.Key)
                 {
                     Console.Write(s + " ");
                 }
                 Console.WriteLine(pair.Value);
             }
 
-            var distanceScore = kmerDistanceScoreCalculator.CalculateDistanceScore(countDictionaryA, countDictionaryB);
+            float distanceScore = kmerDistanceScoreCalculator.CalculateDistanceScore(countDictionaryA, countDictionaryB);
             Console.WriteLine(distanceScore);
 
             PAMSAMMultipleSequenceAligner.ParallelOption = new ParallelOptions { MaxDegreeOfParallelism = 2 };
-            var kmerDistanceMatrixGenerator = new KmerDistanceMatrixGenerator(sequences, kmerLength, Alphabets.AmbiguousDNA);
+            KmerDistanceMatrixGenerator kmerDistanceMatrixGenerator = new KmerDistanceMatrixGenerator(sequences, kmerLength, Alphabets.AmbiguousDNA);
 
-            for (var i = 0; i < sequences.Count - 1; ++i)
+            for (int i = 0; i < sequences.Count - 1; ++i)
             {
-                for (var j = i + 1; j < sequences.Count; ++j)
+                for (int j = i + 1; j < sequences.Count; ++j)
                 {
                     Console.WriteLine("Kmer Distance of sequence {0}, and {1} is: {2}", i, j, kmerDistanceMatrixGenerator.DistanceMatrix[i, j]);
                 }
@@ -105,7 +105,7 @@ namespace Bio.Pamsam.Tests
 
 
             // test kmer counting CoVariance
-            var kmerDistanceScoreCalculatorB = new KmerDistanceScoreCalculator(kmerLength, Alphabets.AmbiguousDNA, DistanceFunctionTypes.CoVariance);
+            KmerDistanceScoreCalculator kmerDistanceScoreCalculatorB = new KmerDistanceScoreCalculator(kmerLength, Alphabets.AmbiguousDNA, DistanceFunctionTypes.CoVariance);
 
             countDictionaryA = KmerDistanceScoreCalculator.CalculateKmerCounting(sequences[0], kmerLength);
             countDictionaryB = KmerDistanceScoreCalculator.CalculateKmerCounting(sequences[1], kmerLength);
@@ -113,11 +113,11 @@ namespace Bio.Pamsam.Tests
             distanceScore = kmerDistanceScoreCalculatorB.CalculateDistanceScore(countDictionaryA, countDictionaryB);
             Console.WriteLine(distanceScore);
 
-            var kmerDistanceMatrixGeneratorB = new KmerDistanceMatrixGenerator(sequences, kmerLength, Alphabets.AmbiguousDNA, DistanceFunctionTypes.CoVariance);
+            KmerDistanceMatrixGenerator kmerDistanceMatrixGeneratorB = new KmerDistanceMatrixGenerator(sequences, kmerLength, Alphabets.AmbiguousDNA, DistanceFunctionTypes.CoVariance);
 
-            for (var i = 0; i < sequences.Count - 1; ++i)
+            for (int i = 0; i < sequences.Count - 1; ++i)
             {
-                for (var j = i + 1; j < sequences.Count; ++j)
+                for (int j = i + 1; j < sequences.Count; ++j)
                 {
                     Console.WriteLine("Kmer Distance of sequence {0}, and {1} is: {2}", i, j, kmerDistanceMatrixGeneratorB.DistanceMatrix[i, j]);
                 }
@@ -125,7 +125,7 @@ namespace Bio.Pamsam.Tests
 
 
             // test kmer counting ModifiedMUSCLE
-            var kmerDistanceScoreCalculatorC = new KmerDistanceScoreCalculator(kmerLength, Alphabets.AmbiguousDNA, DistanceFunctionTypes.ModifiedMUSCLE);
+            KmerDistanceScoreCalculator kmerDistanceScoreCalculatorC = new KmerDistanceScoreCalculator(kmerLength, Alphabets.AmbiguousDNA, DistanceFunctionTypes.ModifiedMUSCLE);
 
             countDictionaryA = KmerDistanceScoreCalculator.CalculateKmerCounting(sequences[0], kmerLength);
             countDictionaryB = KmerDistanceScoreCalculator.CalculateKmerCounting(sequences[1], kmerLength);
@@ -133,18 +133,18 @@ namespace Bio.Pamsam.Tests
             distanceScore = kmerDistanceScoreCalculatorC.CalculateDistanceScore(countDictionaryA, countDictionaryB);
             Console.WriteLine(distanceScore);
 
-            var kmerDistanceMatrixGeneratorC = new KmerDistanceMatrixGenerator(sequences, kmerLength, Alphabets.AmbiguousDNA, DistanceFunctionTypes.ModifiedMUSCLE);
+            KmerDistanceMatrixGenerator kmerDistanceMatrixGeneratorC = new KmerDistanceMatrixGenerator(sequences, kmerLength, Alphabets.AmbiguousDNA, DistanceFunctionTypes.ModifiedMUSCLE);
 
-            for (var i = 0; i < sequences.Count - 1; ++i)
+            for (int i = 0; i < sequences.Count - 1; ++i)
             {
-                for (var j = i + 1; j < sequences.Count; ++j)
+                for (int j = i + 1; j < sequences.Count; ++j)
                 {
                     Console.WriteLine("Kmer Distance of sequence {0}, and {1} is: {2}", i, j, kmerDistanceMatrixGeneratorC.DistanceMatrix[i, j]);
                 }
             }
 
             // test kmer counting PearsonCorrelation
-            var kmerDistanceScoreCalculatorD = new KmerDistanceScoreCalculator(kmerLength, Alphabets.AmbiguousDNA, DistanceFunctionTypes.PearsonCorrelation);
+            KmerDistanceScoreCalculator kmerDistanceScoreCalculatorD = new KmerDistanceScoreCalculator(kmerLength, Alphabets.AmbiguousDNA, DistanceFunctionTypes.PearsonCorrelation);
 
             countDictionaryA = KmerDistanceScoreCalculator.CalculateKmerCounting(sequences[0], kmerLength);
             countDictionaryB = KmerDistanceScoreCalculator.CalculateKmerCounting(sequences[1], kmerLength);
@@ -152,11 +152,11 @@ namespace Bio.Pamsam.Tests
             distanceScore = kmerDistanceScoreCalculatorD.CalculateDistanceScore(countDictionaryA, countDictionaryB);
             Console.WriteLine(distanceScore);
 
-            var kmerDistanceMatrixGeneratorD = new KmerDistanceMatrixGenerator(sequences, kmerLength, Alphabets.AmbiguousDNA, DistanceFunctionTypes.PearsonCorrelation);
+            KmerDistanceMatrixGenerator kmerDistanceMatrixGeneratorD = new KmerDistanceMatrixGenerator(sequences, kmerLength, Alphabets.AmbiguousDNA, DistanceFunctionTypes.PearsonCorrelation);
 
-            for (var i = 0; i < sequences.Count - 1; ++i)
+            for (int i = 0; i < sequences.Count - 1; ++i)
             {
-                for (var j = i + 1; j < sequences.Count; ++j)
+                for (int j = i + 1; j < sequences.Count; ++j)
                 {
                     Console.WriteLine("Kmer Distance of sequence {0}, and {1} is: {2}", i, j, kmerDistanceMatrixGeneratorD.DistanceMatrix[i, j]);
                 }
@@ -174,17 +174,17 @@ namespace Bio.Pamsam.Tests
             countDictionaryA = KmerDistanceScoreCalculator.CalculateKmerCounting(sequences[0], kmerLength);
             countDictionaryB = KmerDistanceScoreCalculator.CalculateKmerCounting(sequences[1], kmerLength);
 
-            foreach (var pair in countDictionaryA)
+            foreach (KeyValuePair<string, float> pair in countDictionaryA)
             {
-                foreach (var s in pair.Key)
+                foreach (char s in pair.Key)
                 {
                     Console.Write(s + " ");
                 }
                 Console.WriteLine(pair.Value);
             }
-            foreach (var pair in countDictionaryB)
+            foreach (KeyValuePair<string, float> pair in countDictionaryB)
             {
-                foreach (var s in pair.Key)
+                foreach (char s in pair.Key)
                 {
                     Console.Write(s + " ");
                 }
@@ -196,9 +196,9 @@ namespace Bio.Pamsam.Tests
 
             kmerDistanceMatrixGenerator = new KmerDistanceMatrixGenerator(sequences, kmerLength, Alphabets.AmbiguousDNA);
 
-            for (var i = 0; i < sequences.Count - 1; ++i)
+            for (int i = 0; i < sequences.Count - 1; ++i)
             {
-                for (var j = i + 1; j < sequences.Count; ++j)
+                for (int j = i + 1; j < sequences.Count; ++j)
                 {
                     Console.WriteLine("Kmer Distance of sequence {0}, and {1} is: {2}", i, j, kmerDistanceMatrixGenerator.DistanceMatrix[i, j]);
                 }
@@ -224,15 +224,15 @@ namespace Bio.Pamsam.Tests
                 new KmerDistanceMatrixGenerator(sequences, kmerLength, Alphabets.AmbiguousDNA, DistanceFunctionTypes.EuclideanDistance);
 
             kmerDistanceScoreCalculator = new KmerDistanceScoreCalculator(kmerLength, Alphabets.AmbiguousDNA, DistanceFunctionTypes.EuclideanDistance);
-            for (var i = 0; i < kmerDistanceMatrixGenerator.DistanceMatrix.Dimension - 1; ++i)
+            for (int i = 0; i < kmerDistanceMatrixGenerator.DistanceMatrix.Dimension - 1; ++i)
             {
-                for (var j = i + 1; j < kmerDistanceMatrixGenerator.DistanceMatrix.Dimension; ++j)
+                for (int j = i + 1; j < kmerDistanceMatrixGenerator.DistanceMatrix.Dimension; ++j)
                 {
                     countDictionaryA = KmerDistanceScoreCalculator.CalculateKmerCounting(sequences[i], kmerLength);
                     countDictionaryB = KmerDistanceScoreCalculator.CalculateKmerCounting(sequences[j], kmerLength);
                     MsaUtils.Normalize(countDictionaryA);
                     MsaUtils.Normalize(countDictionaryB);
-                    var score = kmerDistanceScoreCalculator.CalculateDistanceScore(countDictionaryA, countDictionaryB);
+                    float score = kmerDistanceScoreCalculator.CalculateDistanceScore(countDictionaryA, countDictionaryB);
                     Console.WriteLine("{0}-{1}: {2}", i, j, score);
                     Console.WriteLine("{0}-{1}: {2}", i, j, kmerDistanceMatrixGenerator.DistanceMatrix[i, j]);
                     // Assert.AreEqual(score, kmerDistanceMatrixGenerator.DistanceMatrix[i, j]);

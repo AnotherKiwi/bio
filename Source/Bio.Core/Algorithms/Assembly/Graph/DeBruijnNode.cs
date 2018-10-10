@@ -195,7 +195,7 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             get
             {
-                var count = (_nodeOperations & NodeOperationMaskRightExtension);
+                int count = (_nodeOperations & NodeOperationMaskRightExtension);
                 if (ValidExtensionsRequried)
                 {
                     if (InvalidRightExtension0) 
@@ -241,7 +241,7 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             get
             {
-                var count = ((_nodeOperations & NodeOperationMaskLeftExtension) >> 3);
+                int count = ((_nodeOperations & NodeOperationMaskLeftExtension) >> 3);
                 if (ValidExtensionsRequried)
                 {
                     if (InvalidLeftExtension0) 
@@ -964,7 +964,7 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             lock (this)
             {
-                var extensions = new Dictionary<DeBruijnNode, bool>();
+                Dictionary<DeBruijnNode, bool> extensions = new Dictionary<DeBruijnNode, bool>();
 
                 if (ValidExtensionsRequried)
                 {
@@ -1047,7 +1047,7 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             lock (this)
             {
-                var extentions = new Dictionary<DeBruijnNode, bool>();
+                Dictionary<DeBruijnNode, bool> extentions = new Dictionary<DeBruijnNode, bool>();
 
                 if (ValidExtensionsRequried)
                 {

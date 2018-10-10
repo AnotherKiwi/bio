@@ -89,7 +89,7 @@ namespace Bio.Distributions
         private StatisticsList(IEnumerable<SufficientStatistics> stats)
             : this()
         {
-            foreach (var stat in stats)
+            foreach (SufficientStatistics stat in stats)
             {
                 Add(stat);
             }
@@ -141,7 +141,7 @@ namespace Bio.Distributions
                 return false;
             }
                         
-            var fields = val.Split(Separator);
+            string[] fields = val.Split(Separator);
             if (fields.Length < 2)
                 return false;
 
@@ -162,7 +162,7 @@ namespace Bio.Distributions
             isMissing = (Count == 0 ? statsToAdd.IsMissing() : isMissing || statsToAdd.IsMissing());
             hashCode = null;
 
-            var asList = statsToAdd as StatisticsList;
+            StatisticsList asList = statsToAdd as StatisticsList;
             if (asList != null)
             {
                 stats.AddRange(asList.stats);
@@ -181,7 +181,7 @@ namespace Bio.Distributions
         /// <returns>Returns the Addition of all.</returns>
         public static StatisticsList Add(SufficientStatistics stats1, SufficientStatistics stats2)
         {
-            var newList = GetInstance(stats1);
+            StatisticsList newList = GetInstance(stats1);
             newList.Add(stats2);
             return newList;
         }
@@ -217,7 +217,7 @@ namespace Bio.Distributions
         /// <returns>Returns true if fount equals.</returns>
         public override bool Equals(object obj)
         {
-            var stats = obj as SufficientStatistics;
+            SufficientStatistics stats = obj as SufficientStatistics;
             if (stats != null)
             {
                 return Equals(stats);
@@ -245,7 +245,7 @@ namespace Bio.Distributions
                 return true;
             }
 
-            var other = stats.AsStatisticsList();
+            StatisticsList other = stats.AsStatisticsList();
             if (other.stats.Count != this.stats.Count || GetHashCode() != other.GetHashCode())
             {
                 return false;
@@ -267,7 +267,7 @@ namespace Bio.Distributions
                     hashCode = MissingStatistics.GetInstance.GetHashCode();
                 }
                 hashCode = 0;
-                foreach (var stat in stats)
+                foreach (SufficientStatistics stat in stats)
                 {
                     hashCode ^= stat.GetHashCode();
                 }
@@ -287,9 +287,9 @@ namespace Bio.Distributions
             }
 
             // may still be missing, but enumerate all anyways. one will be missing, but we'll be able to recover the full set.
-            var sb = new StringBuilder();
-            var isFirst = true;
-            foreach (var stat in stats)
+            StringBuilder sb = new StringBuilder();
+            bool isFirst = true;
+            foreach (SufficientStatistics stat in stats)
             {
                 if (!isFirst)
                 {
@@ -378,7 +378,7 @@ namespace Bio.Distributions
         /// <returns>Returns clone of Statistics List.</returns>
         public object Clone()
         {
-            var result = new StatisticsList(stats);
+            StatisticsList result = new StatisticsList(stats);
             return result;
         }
 
@@ -389,7 +389,7 @@ namespace Bio.Distributions
         /// <returns>Returns Sufficient Statistics.</returns>
         public SufficientStatistics Remove(int i)
         {
-            var stat = stats[i];
+            SufficientStatistics stat = stats[i];
             stats.RemoveAt(i);
             if (stat.IsMissing())  // check to see if this was the reason we're missing
             {
@@ -405,7 +405,7 @@ namespace Bio.Distributions
         private void ResetIsMissing()
         {
             isMissing = false;
-            foreach (var ss in stats)
+            foreach (SufficientStatistics ss in stats)
             {
                 isMissing |= ss.IsMissing();
             }

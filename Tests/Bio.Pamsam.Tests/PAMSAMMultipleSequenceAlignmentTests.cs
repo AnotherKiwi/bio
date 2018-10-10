@@ -19,7 +19,7 @@ namespace Bio.Pamsam.Tests
         [Test]
         public void TestName()
         {
-            var aligner = new PAMSAMMultipleSequenceAligner();
+            PAMSAMMultipleSequenceAligner aligner = new PAMSAMMultipleSequenceAligner();
             Assert.AreEqual("PAMSAM (MUSCLE)", aligner.Name);
         }
 
@@ -30,45 +30,45 @@ namespace Bio.Pamsam.Tests
         public void TestMuscleMultipleSequenceAlignment()
         {
 
-            var similarityMatrix = new SimilarityMatrix(SimilarityMatrix.StandardSimilarityMatrix.AmbiguousDna);
-            var gapOpenPenalty = -4;
-            var gapExtendPenalty = -1;
-            var kmerLength = 3;
+            SimilarityMatrix similarityMatrix = new SimilarityMatrix(SimilarityMatrix.StandardSimilarityMatrix.AmbiguousDna);
+            int gapOpenPenalty = -4;
+            int gapExtendPenalty = -1;
+            int kmerLength = 3;
 
             ISequence seqA = new Sequence(Alphabets.DNA, "GGGAAAAATCAGATT");
             ISequence seqB = new Sequence(Alphabets.DNA, "GGGAATCAAAATCAG");
             ISequence seqC = new Sequence(Alphabets.DNA, "GGGACAAAATCAG");
-            var sequences = new List<ISequence>
+            List<ISequence> sequences = new List<ISequence>
             {
                 seqA,
                 seqB,
                 seqC
             };
 
-            var distanceFunctionName = DistanceFunctionTypes.EuclideanDistance;
-            var hierarchicalClusteringMethodName = UpdateDistanceMethodsTypes.Average;
-            var profileAlignerName = ProfileAlignerNames.NeedlemanWunschProfileAligner;
-            var profileProfileFunctionName = ProfileScoreFunctionNames.WeightedInnerProduct;
+            DistanceFunctionTypes distanceFunctionName = DistanceFunctionTypes.EuclideanDistance;
+            UpdateDistanceMethodsTypes hierarchicalClusteringMethodName = UpdateDistanceMethodsTypes.Average;
+            ProfileAlignerNames profileAlignerName = ProfileAlignerNames.NeedlemanWunschProfileAligner;
+            ProfileScoreFunctionNames profileProfileFunctionName = ProfileScoreFunctionNames.WeightedInnerProduct;
 
-            var msa = new PAMSAMMultipleSequenceAligner
+            PAMSAMMultipleSequenceAligner msa = new PAMSAMMultipleSequenceAligner
                 (sequences, kmerLength, distanceFunctionName, hierarchicalClusteringMethodName,
                 profileAlignerName, profileProfileFunctionName, similarityMatrix, gapOpenPenalty, gapExtendPenalty,
                 Environment.ProcessorCount * 2, Environment.ProcessorCount);
 
             Console.WriteLine("Aligned sequences in stage 1: {0}", msa.AlignmentScoreA);
-            for (var i = 0; i < msa.AlignedSequencesA.Count; ++i)
+            for (int i = 0; i < msa.AlignedSequencesA.Count; ++i)
             {
                 Console.WriteLine(new string(msa.AlignedSequencesA[i].Select(a => (char)a).ToArray()));
             }
             
             Console.WriteLine("Aligned sequences in stage 3: {0}", msa.AlignmentScoreC);
-            for (var i = 0; i < msa.AlignedSequencesC.Count; ++i)
+            for (int i = 0; i < msa.AlignedSequencesC.Count; ++i)
             {
                 Console.WriteLine(new string(msa.AlignedSequencesC[i].Select(a => (char)a).ToArray()));
             }
             Console.WriteLine("Aligned sequences final: {0}", msa.AlignmentScore);
 
-            for (var i = 0; i < msa.AlignedSequences.Count; ++i)
+            for (int i = 0; i < msa.AlignedSequences.Count; ++i)
             {
                 Console.WriteLine(new string(msa.AlignedSequences[i].Select(a => (char)a).ToArray()));
             }
@@ -96,18 +96,18 @@ namespace Bio.Pamsam.Tests
                 Environment.ProcessorCount * 2, Environment.ProcessorCount);
 
             Console.WriteLine("Aligned sequences in stage 1: {0}", msa.AlignmentScoreA);
-            for (var i = 0; i < msa.AlignedSequencesA.Count; ++i)
+            for (int i = 0; i < msa.AlignedSequencesA.Count; ++i)
             {
                 Console.WriteLine(new string(msa.AlignedSequencesA[i].Select(a => (char)a).ToArray()));
             }
             
             Console.WriteLine("Aligned sequences in stage 3: {0}", msa.AlignmentScoreC);
-            for (var i = 0; i < msa.AlignedSequencesC.Count; ++i)
+            for (int i = 0; i < msa.AlignedSequencesC.Count; ++i)
             {
                 Console.WriteLine(new string(msa.AlignedSequencesC[i].Select(a => (char)a).ToArray()));
             }
             Console.WriteLine("Aligned sequences final: {0}", msa.AlignmentScore);
-            for (var i = 0; i < msa.AlignedSequences.Count; ++i)
+            for (int i = 0; i < msa.AlignedSequences.Count; ++i)
             {
                 Console.WriteLine(new string(msa.AlignedSequences[i].Select(a => (char)a).ToArray()));
             }
@@ -132,18 +132,18 @@ namespace Bio.Pamsam.Tests
                 Environment.ProcessorCount * 2, Environment.ProcessorCount);
 
             Console.WriteLine("Aligned sequences in stage 1: {0}", msa.AlignmentScoreA);
-            for (var i = 0; i < msa.AlignedSequencesA.Count; ++i)
+            for (int i = 0; i < msa.AlignedSequencesA.Count; ++i)
             {
                 Console.WriteLine(new string(msa.AlignedSequencesA[i].Select(a => (char)a).ToArray()));
             }
             
             Console.WriteLine("Aligned sequences in stage 3: {0}", msa.AlignmentScoreC);
-            for (var i = 0; i < msa.AlignedSequencesC.Count; ++i)
+            for (int i = 0; i < msa.AlignedSequencesC.Count; ++i)
             {
                 Console.WriteLine(new string(msa.AlignedSequencesC[i].Select(a => (char)a).ToArray()));
             }
             Console.WriteLine("Aligned sequences final: {0}", msa.AlignmentScore);
-            for (var i = 0; i < msa.AlignedSequences.Count; ++i)
+            for (int i = 0; i < msa.AlignedSequences.Count; ++i)
             {
                 Console.WriteLine(new string(msa.AlignedSequences[i].Select(a => (char)a).ToArray()));
             }
@@ -156,28 +156,28 @@ namespace Bio.Pamsam.Tests
         [Test]
         public void TestMuscleMultipleSequenceAlignmentRunningTime()
         {
-            var filepath = @"TestUtils\Fasta\RunningTime\BOX246.xml.afa".TestDir();
+            string filepath = @"TestUtils\Fasta\RunningTime\BOX246.xml.afa".TestDir();
 
             // Test on DNA benchmark dataset
-            var parser = new FastAParser();
+            FastAParser parser = new FastAParser();
 
             IList<ISequence> orgSequences = parser.Parse(filepath).ToList();
 
-            var sequences = MsaUtils.UnAlign(orgSequences);
+            List<ISequence> sequences = MsaUtils.UnAlign(orgSequences);
 
             //filepath = @"TestUtils\Fasta\RunningTime\12_raw.afa";
             //List<ISequence> sequences = parser.Parse(filepath);
 
-            var numberOfSequences = orgSequences.Count;
+            int numberOfSequences = orgSequences.Count;
 
             Console.WriteLine("Original sequences are:");
-            for (var i = 0; i < numberOfSequences; ++i)
+            for (int i = 0; i < numberOfSequences; ++i)
             {
                 Console.WriteLine(new string(sequences[i].Select(a => (char)a).ToArray()));
             }
 
             Console.WriteLine("Benchmark sequences are:");
-            for (var i = 0; i < numberOfSequences; ++i)
+            for (int i = 0; i < numberOfSequences; ++i)
             {
                 Console.WriteLine(new string(orgSequences[i].Select(a => (char)a).ToArray()));
             }
@@ -187,22 +187,22 @@ namespace Bio.Pamsam.Tests
             PAMSAMMultipleSequenceAligner.UseStageB = false;
             PAMSAMMultipleSequenceAligner.NumberOfCores = 2;
 
-            var gapOpenPenalty = -13;
-            var gapExtendPenalty = -5;
-            var kmerLength = 2;
+            int gapOpenPenalty = -13;
+            int gapExtendPenalty = -5;
+            int kmerLength = 2;
 
-            var numberOfDegrees = 2;//Environment.ProcessorCount;
-            var numberOfPartitions = 16;// Environment.ProcessorCount * 2;
+            int numberOfDegrees = 2;//Environment.ProcessorCount;
+            int numberOfPartitions = 16;// Environment.ProcessorCount * 2;
 
 
-            var distanceFunctionName = DistanceFunctionTypes.EuclideanDistance;
-            var hierarchicalClusteringMethodName = UpdateDistanceMethodsTypes.Average;
-            var profileAlignerName = ProfileAlignerNames.NeedlemanWunschProfileAligner;
-            var profileProfileFunctionName = ProfileScoreFunctionNames.InnerProductFast;
+            DistanceFunctionTypes distanceFunctionName = DistanceFunctionTypes.EuclideanDistance;
+            UpdateDistanceMethodsTypes hierarchicalClusteringMethodName = UpdateDistanceMethodsTypes.Average;
+            ProfileAlignerNames profileAlignerName = ProfileAlignerNames.NeedlemanWunschProfileAligner;
+            ProfileScoreFunctionNames profileProfileFunctionName = ProfileScoreFunctionNames.InnerProductFast;
 
-            var similarityMatrix = new SimilarityMatrix(SimilarityMatrix.StandardSimilarityMatrix.Blosum62);
+            SimilarityMatrix similarityMatrix = new SimilarityMatrix(SimilarityMatrix.StandardSimilarityMatrix.Blosum62);
 
-            var msa = new PAMSAMMultipleSequenceAligner
+            PAMSAMMultipleSequenceAligner msa = new PAMSAMMultipleSequenceAligner
                (sequences, kmerLength, distanceFunctionName, hierarchicalClusteringMethodName,
                profileAlignerName, profileProfileFunctionName, similarityMatrix, gapOpenPenalty, gapExtendPenalty,
                numberOfPartitions, numberOfDegrees);
@@ -215,28 +215,28 @@ namespace Bio.Pamsam.Tests
 
             Console.WriteLine("Benchmark SPS score is: {0}", MsaUtils.MultipleAlignmentScoreFunction(orgSequences, similarityMatrix, gapOpenPenalty, gapExtendPenalty));
             Console.WriteLine("Aligned sequences in stage 1: {0}", msa.AlignmentScoreA);
-            for (var i = 0; i < msa.AlignedSequencesA.Count; ++i)
+            for (int i = 0; i < msa.AlignedSequencesA.Count; ++i)
             {
                 Console.WriteLine(new string(msa.AlignedSequencesA[i].Select(a => (char)a).ToArray()));
             }
             Console.WriteLine("Alignment score Q is: {0}", MsaUtils.CalculateAlignmentScoreQ(msa.AlignedSequencesA, orgSequences));
             Console.WriteLine("Alignment score TC is: {0}", MsaUtils.CalculateAlignmentScoreTC(msa.AlignedSequencesA, orgSequences));
             Console.WriteLine("Aligned sequences in stage 2: {0}", msa.AlignmentScoreB);
-            for (var i = 0; i < msa.AlignedSequencesB.Count; ++i)
+            for (int i = 0; i < msa.AlignedSequencesB.Count; ++i)
             {
                 Console.WriteLine(new string(msa.AlignedSequencesB[i].Select(a => (char)a).ToArray()));
             }
             Console.WriteLine("Alignment score Q is: {0}", MsaUtils.CalculateAlignmentScoreQ(msa.AlignedSequencesB, orgSequences));
             Console.WriteLine("Alignment score TC is: {0}", MsaUtils.CalculateAlignmentScoreTC(msa.AlignedSequencesB, orgSequences));
             Console.WriteLine("Aligned sequences in stage 3: {0}", msa.AlignmentScoreC);
-            for (var i = 0; i < msa.AlignedSequencesC.Count; ++i)
+            for (int i = 0; i < msa.AlignedSequencesC.Count; ++i)
             {
                 Console.WriteLine(new string(msa.AlignedSequencesC[i].Select(a => (char)a).ToArray()));
             }
             Console.WriteLine("Alignment score Q is: {0}", MsaUtils.CalculateAlignmentScoreQ(msa.AlignedSequencesC, orgSequences));
             Console.WriteLine("Alignment score TC is: {0}", MsaUtils.CalculateAlignmentScoreTC(msa.AlignedSequencesC, orgSequences));
             Console.WriteLine("Aligned sequences final: {0}", msa.AlignmentScore);
-            for (var i = 0; i < msa.AlignedSequences.Count; ++i)
+            for (int i = 0; i < msa.AlignedSequences.Count; ++i)
             {
                 Console.WriteLine(new string(msa.AlignedSequences[i].Select(a => (char)a).ToArray()));
             }
@@ -258,7 +258,7 @@ namespace Bio.Pamsam.Tests
             ISequence seq6 = new Sequence(Alphabets.Protein, "MTAMEESQSDISLELPLSQETFSGLWKLLPPEDILPSPHCMDDLLLPQDVEEFFEGPSEALRVSGAPAAQDPVTETPGPVAPAPATPWPLSSFVPSQKTYQGNYGFHLGFLQ");
             ISequence seq7 = new Sequence(Alphabets.Protein, "FRLGFLHSGTAKSVTWTYSPLLNKLFCQLAKTCPVQLWVSSPPPPNTCVRAMAIYKKSEFVTEVVRRCPHHERCSDSSDGLAPPQHLIRVEGNLRAKYLDDRNTFRHSVV");
 
-            var sequences = new List<ISequence>
+            List<ISequence> sequences = new List<ISequence>
             {
                 seq1,
                 seq2,
@@ -269,7 +269,7 @@ namespace Bio.Pamsam.Tests
                 seq7
             };
 
-            var msa = new PAMSAMMultipleSequenceAligner(sequences,
+            PAMSAMMultipleSequenceAligner msa = new PAMSAMMultipleSequenceAligner(sequences,
                 2, DistanceFunctionTypes.EuclideanDistance, 
                 UpdateDistanceMethodsTypes.Average, 
                 ProfileAlignerNames.NeedlemanWunschProfileAligner,
@@ -287,32 +287,32 @@ namespace Bio.Pamsam.Tests
         public void testBug2()
         {
             //Test on DNA benchmark dataset
-            var filepath = @"TestUtils\122_raw.afa".TestDir();
-            var parser = new FastAParser();
+            string filepath = @"TestUtils\122_raw.afa".TestDir();
+            FastAParser parser = new FastAParser();
 
             IList<ISequence> orgSequences = parser.Parse(filepath).ToList();
 
-            var sequences = MsaUtils.UnAlign(orgSequences);
+            List<ISequence> sequences = MsaUtils.UnAlign(orgSequences);
 
             PAMSAMMultipleSequenceAligner.FasterVersion = false;
             PAMSAMMultipleSequenceAligner.UseWeights = false;
             PAMSAMMultipleSequenceAligner.UseStageB = false;
             PAMSAMMultipleSequenceAligner.NumberOfCores = 2;
 
-            var gapOpenPenalty = -13;
-            var gapExtendPenalty = -5;
-            var kmerLength = 2;
-            var numberOfDegrees = 2;//Environment.ProcessorCount;
-            var numberOfPartitions = 16;// Environment.ProcessorCount * 2;
+            int gapOpenPenalty = -13;
+            int gapExtendPenalty = -5;
+            int kmerLength = 2;
+            int numberOfDegrees = 2;//Environment.ProcessorCount;
+            int numberOfPartitions = 16;// Environment.ProcessorCount * 2;
 
-            var distanceFunctionName = DistanceFunctionTypes.EuclideanDistance;
-            var hierarchicalClusteringMethodName = UpdateDistanceMethodsTypes.Average;
-            var profileAlignerName = ProfileAlignerNames.NeedlemanWunschProfileAligner;
-            var profileProfileFunctionName = ProfileScoreFunctionNames.InnerProductFast;
+            DistanceFunctionTypes distanceFunctionName = DistanceFunctionTypes.EuclideanDistance;
+            UpdateDistanceMethodsTypes hierarchicalClusteringMethodName = UpdateDistanceMethodsTypes.Average;
+            ProfileAlignerNames profileAlignerName = ProfileAlignerNames.NeedlemanWunschProfileAligner;
+            ProfileScoreFunctionNames profileProfileFunctionName = ProfileScoreFunctionNames.InnerProductFast;
 
-            var similarityMatrix =  new SimilarityMatrix(SimilarityMatrix.StandardSimilarityMatrix.AmbiguousDna);
+            SimilarityMatrix similarityMatrix =  new SimilarityMatrix(SimilarityMatrix.StandardSimilarityMatrix.AmbiguousDna);
 
-            var msa = new PAMSAMMultipleSequenceAligner
+            PAMSAMMultipleSequenceAligner msa = new PAMSAMMultipleSequenceAligner
                (sequences, kmerLength, distanceFunctionName, hierarchicalClusteringMethodName,
                profileAlignerName, profileProfileFunctionName, similarityMatrix, gapOpenPenalty, gapExtendPenalty,
                numberOfPartitions, numberOfDegrees);
@@ -327,35 +327,35 @@ namespace Bio.Pamsam.Tests
         public void testBug3()
         {
             //Test on DNA benchmark dataset
-            var filepath = @"TestUtils\122_raw.afa".TestDir();
-            var parser = new FastAParser();
+            string filepath = @"TestUtils\122_raw.afa".TestDir();
+            FastAParser parser = new FastAParser();
 
             IList<ISequence> orgSequences = parser.Parse(filepath).ToList();
 
-            var sequences = MsaUtils.UnAlign(orgSequences);
+            List<ISequence> sequences = MsaUtils.UnAlign(orgSequences);
 
             PAMSAMMultipleSequenceAligner.FasterVersion = false;
             PAMSAMMultipleSequenceAligner.UseWeights = false;
             PAMSAMMultipleSequenceAligner.UseStageB = false;
             PAMSAMMultipleSequenceAligner.NumberOfCores = 2;
 
-            var gapOpenPenalty = -13;
-            var gapExtendPenalty = -5;
-            var kmerLength = 2;
+            int gapOpenPenalty = -13;
+            int gapExtendPenalty = -5;
+            int kmerLength = 2;
 
-            var numberOfDegrees = 2;//Environment.ProcessorCount;
-            var numberOfPartitions = 16;// Environment.ProcessorCount * 2;
+            int numberOfDegrees = 2;//Environment.ProcessorCount;
+            int numberOfPartitions = 16;// Environment.ProcessorCount * 2;
 
 
-            var distanceFunctionName = DistanceFunctionTypes.EuclideanDistance;
-            var hierarchicalClusteringMethodName = UpdateDistanceMethodsTypes.Average;
-            var profileAlignerName = ProfileAlignerNames.NeedlemanWunschProfileAligner;
-            var profileProfileFunctionName = ProfileScoreFunctionNames.InnerProductFast;
+            DistanceFunctionTypes distanceFunctionName = DistanceFunctionTypes.EuclideanDistance;
+            UpdateDistanceMethodsTypes hierarchicalClusteringMethodName = UpdateDistanceMethodsTypes.Average;
+            ProfileAlignerNames profileAlignerName = ProfileAlignerNames.NeedlemanWunschProfileAligner;
+            ProfileScoreFunctionNames profileProfileFunctionName = ProfileScoreFunctionNames.InnerProductFast;
 
-            var similarityMatrix = new SimilarityMatrix(SimilarityMatrix.StandardSimilarityMatrix.AmbiguousDna);
+            SimilarityMatrix similarityMatrix = new SimilarityMatrix(SimilarityMatrix.StandardSimilarityMatrix.AmbiguousDna);
                   
             //DateTime startTime = DateTime.Now;
-            var msa = new PAMSAMMultipleSequenceAligner
+            PAMSAMMultipleSequenceAligner msa = new PAMSAMMultipleSequenceAligner
                (sequences, kmerLength, distanceFunctionName, hierarchicalClusteringMethodName,
                profileAlignerName, profileProfileFunctionName, similarityMatrix, gapOpenPenalty, gapExtendPenalty,
                numberOfPartitions, numberOfDegrees);

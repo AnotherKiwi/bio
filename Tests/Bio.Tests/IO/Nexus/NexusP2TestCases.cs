@@ -160,10 +160,10 @@ namespace Bio.TestAutomation.IO.Nexus
         {
             try
             {
-                var filePath = utilityObj.xmlUtil.GetTextValue(
+                string filePath = utilityObj.xmlUtil.GetTextValue(
                     nodeName,
                     Constants.FilePathNode);
-                var parser = new NexusParser();
+                NexusParser parser = new NexusParser();
 
                 switch (method)
                 {

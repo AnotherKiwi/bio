@@ -577,23 +577,23 @@ namespace Bio.Tests
             string nodeName, QualitativeSequenceParameters parameters)
         {
             // Gets the actual sequence and the alphabet from the Xml
-            var alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(
+            IAlphabet alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.AlphabetNameNode));
-            var expectedFormatType = Utility.GetFastQFormatType(
+            FastQFormatType expectedFormatType = Utility.GetFastQFormatType(
                 utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FastQFormatType));
             QualitativeSequence createdQualitativeSequence = null;
-            var inputSequence = utilityObj.xmlUtil.GetTextValue(
+            string inputSequence = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.inputSequenceNode);
-            var expectedSequence = utilityObj.xmlUtil.GetTextValue(
+            string expectedSequence = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExpectedSequenceNode);
-            var expectedSequenceCount = utilityObj.xmlUtil.GetTextValue(
+            string expectedSequenceCount = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.QSequenceCount);
-            var inputScoreforIUPAC = utilityObj.xmlUtil.GetTextValue(
+            string inputScoreforIUPAC = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.MaxScoreNode);
-            var inputQuality = utilityObj.xmlUtil.GetTextValue(
+            string inputQuality = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.InputByteArrayNode);
-            var byteArray = Encoding.UTF8.GetBytes(inputQuality);
-            var index = 0;
+            byte[] byteArray = Encoding.UTF8.GetBytes(inputQuality);
+            int index = 0;
 
             // Create and validate Qualitative Sequence.
             switch (parameters)
@@ -602,7 +602,7 @@ namespace Bio.Tests
                     createdQualitativeSequence = new QualitativeSequence(alphabet, expectedFormatType,
                         inputSequence, Utility.GetDefaultEncodedQualityScores(expectedFormatType, inputSequence.Length));
                     // Validate score
-                    foreach (var qualScore in createdQualitativeSequence.GetEncodedQualityScores())
+                    foreach (byte qualScore in createdQualitativeSequence.GetEncodedQualityScores())
                     {
                         Assert.AreEqual(qualScore, Convert.ToInt32(inputScoreforIUPAC, (IFormatProvider)null));
                     }
@@ -612,7 +612,7 @@ namespace Bio.Tests
                        Encoding.UTF8.GetBytes(inputSequence), byteArray);
 
                     // Validate score
-                    foreach (var qualScore in createdQualitativeSequence.GetEncodedQualityScores())
+                    foreach (byte qualScore in createdQualitativeSequence.GetEncodedQualityScores())
                     {
                         Assert.AreEqual(qualScore, Convert.ToInt32(byteArray[index], (IFormatProvider)null));
                         index++;
@@ -641,18 +641,18 @@ namespace Bio.Tests
         void ValidateGeneralQualitativeSeqItemIndices(string nodeName, QualitativeSequenceParameters indexParam)
         {
             // Gets the actual sequence and the alphabet from the Xml
-            var alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(
+            IAlphabet alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(
                nodeName, Constants.AlphabetNameNode));
-            var expectedFormatType = Utility.GetFastQFormatType(
+            FastQFormatType expectedFormatType = Utility.GetFastQFormatType(
                 utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FastQFormatType));
             QualitativeSequence createdQualitativeSequence = null;
-            var inputSequence = utilityObj.xmlUtil.GetTextValue(
+            string inputSequence = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.inputSequenceNode);
-            var expectedFirstItemIdex = utilityObj.xmlUtil.GetTextValue(
+            string expectedFirstItemIdex = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FirstItemIndex);
-            var expectedLastItemIdex = utilityObj.xmlUtil.GetTextValue(
+            string expectedLastItemIdex = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.LastItemIndex);
-            var expectedGapIndex = utilityObj.xmlUtil.GetTextValue(
+            string expectedGapIndex = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.IndexOfGap);
             long lastItemIndex;
             long index;
@@ -706,22 +706,22 @@ namespace Bio.Tests
         void ValidateFastQDefaultScores(string nodeName, QualitativeSequenceParameters parameters)
         {
             // Gets the actual sequence and the alphabet from the Xml
-            var alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(
+            IAlphabet alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.AlphabetNameNode));
-            var expectedFormatType = Utility.GetFastQFormatType(
+            FastQFormatType expectedFormatType = Utility.GetFastQFormatType(
                 utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FastQFormatType));
-            var inputSequence = utilityObj.xmlUtil.GetTextValue(
+            string inputSequence = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.inputSequenceNode);
-            var expectedMaxScore = utilityObj.xmlUtil.GetTextValue(
+            string expectedMaxScore = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.DefualtMaxScore);
-            var expectedMinScore = utilityObj.xmlUtil.GetTextValue(
+            string expectedMinScore = utilityObj.xmlUtil.GetTextValue(
                  nodeName, Constants.DefaultMinScore);
 
             QualitativeSequence createdQualitativeSequence = null;
-            var qualityScoresString = Utility.GetDefaultEncodedQualityScores(expectedFormatType, inputSequence.Length);
-            var expectedMaxScores = Utility.GetEncodedQualityScores((byte)int.Parse(expectedMaxScore, null as IFormatProvider), inputSequence.Length);
-            var expectedMinScores = Utility.GetEncodedQualityScores((byte)int.Parse(expectedMinScore, null as IFormatProvider), inputSequence.Length);
-            var i = 0;
+            string qualityScoresString = Utility.GetDefaultEncodedQualityScores(expectedFormatType, inputSequence.Length);
+            byte[] expectedMaxScores = Utility.GetEncodedQualityScores((byte)int.Parse(expectedMaxScore, null as IFormatProvider), inputSequence.Length);
+            byte[] expectedMinScores = Utility.GetEncodedQualityScores((byte)int.Parse(expectedMinScore, null as IFormatProvider), inputSequence.Length);
+            int i = 0;
             switch (parameters)
             {
                 case QualitativeSequenceParameters.DefaultScoreWithAlphabets:
@@ -731,7 +731,7 @@ namespace Bio.Tests
 
                     // Validate default score.
                     i = 0;
-                    foreach (var qualitativeScore in createdQualitativeSequence.GetEncodedQualityScores())
+                    foreach (byte qualitativeScore in createdQualitativeSequence.GetEncodedQualityScores())
                     {
                         Assert.AreEqual(qualitativeScore,
                             (byte)(qualityScoresString[i]));
@@ -750,7 +750,7 @@ namespace Bio.Tests
 
                     i = 0;
                     // Validate default score.
-                    foreach (var qualitativeScore in createdQualitativeSequence.GetEncodedQualityScores())
+                    foreach (byte qualitativeScore in createdQualitativeSequence.GetEncodedQualityScores())
                     {
                         Assert.AreEqual(qualitativeScore,
                             (byte)(qualityScoresString[i]));
@@ -768,7 +768,7 @@ namespace Bio.Tests
                         expectedMaxScores);
                     i = 0;
                     // Validate default maximum score.
-                    foreach (var qualitativeScore in createdQualitativeSequence.GetEncodedQualityScores())
+                    foreach (byte qualitativeScore in createdQualitativeSequence.GetEncodedQualityScores())
                     {
                         Assert.AreEqual(qualitativeScore,
                             expectedMaxScores[i]);
@@ -787,7 +787,7 @@ namespace Bio.Tests
 
                     i = 0;
                     // Validate default minimum score.
-                    foreach (var qualitativeScore in createdQualitativeSequence.GetEncodedQualityScores())
+                    foreach (byte qualitativeScore in createdQualitativeSequence.GetEncodedQualityScores())
                     {
                         Assert.AreEqual(qualitativeScore,
                             expectedMinScores[i]);

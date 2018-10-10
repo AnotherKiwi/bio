@@ -15,13 +15,13 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
     {
         private static void ValidateDataItems(AB_Root xmlData, IParserContext rawData)
         {
-            var validator = new Ab1DataValidator(xmlData.Items.OfType<AB_RootData>().First().Tag);
+            Ab1DataValidator validator = new Ab1DataValidator(xmlData.Items.OfType<AB_RootData>().First().Tag);
             rawData.DataItems.ForEach(item => item.Accept(validator));
         }
 
         private static void ValidateHeader(AB_Root xmlData, IParserContext rawData)
         {
-            var xmlHeader = xmlData.Items.OfType<AB_RootHeader>().First();
+            AB_RootHeader xmlHeader = xmlData.Items.OfType<AB_RootHeader>().First();
 
             Assert.AreEqual(xmlHeader.Version, rawData.Header.Version.ToString(CultureInfo.InvariantCulture));
             Assert.AreEqual(int.Parse(xmlHeader.Directory_Elements, CultureInfo.InvariantCulture), rawData.Header.DirectoryEntries.Count);
@@ -53,8 +53,8 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
         [Category("Priority0")]
         public void ValidateBinaryParserVsXml()
         {
-            var rawData = Ab1Examples.GetRawData(Ab1Examples.Ab1SampleBinaryFileName.TestDir());
-            var xmlData = Ab1Examples.GetXmlData(Ab1Examples.Ab1SampleXmlFileName.TestDir());
+            IParserContext rawData = Ab1Examples.GetRawData(Ab1Examples.Ab1SampleBinaryFileName.TestDir());
+            AB_Root xmlData = Ab1Examples.GetXmlData(Ab1Examples.Ab1SampleXmlFileName.TestDir());
 
             ValidateHeader(xmlData, rawData);
             ValidateDataItems(xmlData, rawData);
@@ -67,10 +67,10 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
         [Category("Priority0")]
         public void TestAb1ToSequence()
         {
-            var parser = new Ab1Parser();
+            Ab1Parser parser = new Ab1Parser();
             using (parser.Open(Ab1Examples.Ab1SampleBinaryFileName.TestDir()))
             {
-                var sequence = parser.Parse().First();
+                ISequence sequence = parser.Parse().First();
                 Trace.WriteLine(sequence);
             }
         }

@@ -104,9 +104,9 @@ namespace Bio.IO.FastA
                 throw new ArgumentNullException(nameof(sequences));
             }
 
-            using (var writer = stream.OpenWrite())
+            using (StreamWriter writer = stream.OpenWrite())
             {
-                foreach (var sequence in sequences)
+                foreach (ISequence sequence in sequences)
                 {
                     Write(writer, sequence);
                 }
@@ -132,7 +132,7 @@ namespace Bio.IO.FastA
                 throw new ArgumentNullException(nameof(data));
             }
 
-            using (var writer = stream.OpenWrite())
+            using (StreamWriter writer = stream.OpenWrite())
             {
                 Write(writer, data);    
             }
@@ -158,7 +158,7 @@ namespace Bio.IO.FastA
                 throw new ArgumentNullException(nameof(data));
             }
 
-            var maxLineSize = MaxSymbolsAllowedPerLine;
+            int maxLineSize = MaxSymbolsAllowedPerLine;
             if (buffer == null)
             {
                 buffer = new byte[maxLineSize];
@@ -180,7 +180,7 @@ namespace Bio.IO.FastA
                     buffer[bufferIndex] = data[index + bufferIndex];
                 }
 
-                var line = Encoding.UTF8.GetString(buffer, 0, bufferIndex);
+                string line = Encoding.UTF8.GetString(buffer, 0, bufferIndex);
                 writer.WriteLine(line);
             }
 

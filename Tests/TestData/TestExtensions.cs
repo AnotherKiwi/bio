@@ -15,7 +15,7 @@ namespace Bio.Tests
             // Fix up for non-Windows.
             path = path.Replace('\\', Path.DirectorySeparatorChar);
 
-            var testPath = path;
+            string testPath = path;
 
             // Try local first.
             if (File.Exists(testPath) || Directory.Exists(testPath))
@@ -30,7 +30,7 @@ namespace Bio.Tests
             }
 
             // Begin walking backwards from current folder to find this file/folder.
-            var cdir = Directory.GetCurrentDirectory();
+            string cdir = Directory.GetCurrentDirectory();
             path = Path.Combine(ProjectName, path);
             testPath = Path.Combine(cdir, path);
             do

@@ -123,7 +123,7 @@ namespace Bio.IO.Xsv
                     fields = Line.Split(Separators);
                     if (TrimWhiteSpace)
                     {
-                        for (var i = 0; i < fields.Length; i++)
+                        for (int i = 0; i < fields.Length; i++)
                         {
                             fields[i] = fields[i].Trim();
                         }

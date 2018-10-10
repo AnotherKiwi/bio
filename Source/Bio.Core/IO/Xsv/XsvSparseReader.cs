@@ -62,8 +62,8 @@ namespace Bio.IO.Xsv
         /// <returns>The sequence ID string for this sparse sequence</returns>
         public string GetSequenceId() 
         {
-            var comment = CommentLine;
-            var commaIndex = comment.IndexOfAny(Separators);
+            string comment = CommentLine;
+            int commaIndex = comment.IndexOfAny(Separators);
             if (commaIndex < 1)
                 throw new FormatException(Properties.Resource.Parser_InvalidFileFormat);
             
@@ -82,8 +82,8 @@ namespace Bio.IO.Xsv
         /// <returns>The sequence offset integer for this sparse sequence</returns>
         public int GetSequenceOffset() 
         {
-            var comment = CommentLine;
-            var splits = comment.Split(Separators);
+            string comment = CommentLine;
+            string[] splits = comment.Split(Separators);
             if (splits.Length < 3)
                 throw new FormatException(Properties.Resource.Parser_InvalidFileFormat);
             return int.Parse(splits[0], CultureInfo.InvariantCulture);
@@ -97,8 +97,8 @@ namespace Bio.IO.Xsv
         /// <returns>The sequence count integer for this sparse sequence</returns>
         public int GetSequenceCount () 
         {
-            var comment = CommentLine;
-            var splits = comment.Split(Separators);
+            string comment = CommentLine;
+            string[] splits = comment.Split(Separators);
             if (splits.Length < 3)
                 throw new FormatException(Properties.Resource.Parser_InvalidFileFormat);
             return int.Parse(splits[1], CultureInfo.InvariantCulture);

@@ -103,7 +103,7 @@ namespace Bio.TestAutomation.IO.BAM
         public void InvalidateGetIndexFromBAMFile()
         {
             // Create BAM Parser object
-            using (var bamParserObj = new BAMParser())
+            using (BAMParser bamParserObj = new BAMParser())
             {
                 try
                 {
@@ -112,7 +112,7 @@ namespace Bio.TestAutomation.IO.BAM
                 }
                 catch (ArgumentNullException ex)
                 {
-                    var exceptionMessage = ex.Message;
+                    string exceptionMessage = ex.Message;
                     ApplicationLog.WriteLine(string.Format("BAM Parser P2 : Validated Exception {0} successfully",
                                                            exceptionMessage));
                 }
@@ -130,7 +130,7 @@ namespace Bio.TestAutomation.IO.BAM
         public void InvalidateGetIndexFromBAMFileUsingStream()
         {
             // Create BAM Parser object
-            using (var bamParserObj = new BAMParser())
+            using (BAMParser bamParserObj = new BAMParser())
             {
                 try
                 {
@@ -139,7 +139,7 @@ namespace Bio.TestAutomation.IO.BAM
                 }
                 catch (ArgumentNullException ex)
                 {
-                    var exceptionMessage = ex.Message;
+                    string exceptionMessage = ex.Message;
                     ApplicationLog.WriteLine(string.Format(null,
                                                            "BAM Parser P2 : Validated Exception {0} successfully",
                                                            exceptionMessage));
@@ -197,7 +197,7 @@ namespace Bio.TestAutomation.IO.BAM
         public void InvalidateSetAlphabet()
         {
             // Create BAM Parser object
-            using (var bamParserObj = new BAMParser())
+            using (BAMParser bamParserObj = new BAMParser())
             {
                 // TO cover code coverage.
                 try
@@ -207,7 +207,7 @@ namespace Bio.TestAutomation.IO.BAM
                 }
                 catch (NotSupportedException ex)
                 {
-                    var exceptionMessage = ex.Message;
+                    string exceptionMessage = ex.Message;
                     ApplicationLog.WriteLine(string.Format(null,
                                                            "BAM Parser P2 : Validated Exception {0} successfully",
                                                            exceptionMessage));
@@ -254,7 +254,7 @@ namespace Bio.TestAutomation.IO.BAM
             //pass null value for stream
             try
             {
-                var formatter = new BAMFormatter();
+                BAMFormatter formatter = new BAMFormatter();
                 formatter.WriteHeader(new SAMAlignmentHeader(), null);
                 Assert.Fail();
             }
@@ -266,9 +266,9 @@ namespace Bio.TestAutomation.IO.BAM
             //pass null for SAMAlignmentHeader
             try
             {
-                var formatter = new BAMFormatter();
-                var tmpFileName = Path.GetTempFileName();
-                using (var stream = new FileStream(tmpFileName, FileMode.Create))
+                BAMFormatter formatter = new BAMFormatter();
+                string tmpFileName = Path.GetTempFileName();
+                using (FileStream stream = new FileStream(tmpFileName, FileMode.Create))
                 {
                     formatter.WriteHeader(null, stream);
                     Assert.Fail();
@@ -291,9 +291,9 @@ namespace Bio.TestAutomation.IO.BAM
             //pass nul for SAMAlignmentHeader
             try
             {
-                var tmpFileName = Path.GetTempFileName();
-                var formatter = new BAMFormatter();
-                using (var stream = new FileStream(tmpFileName, FileMode.Create))
+                string tmpFileName = Path.GetTempFileName();
+                BAMFormatter formatter = new BAMFormatter();
+                using (FileStream stream = new FileStream(tmpFileName, FileMode.Create))
                 {
                     formatter.WriteAlignedSequence(null, new SAMAlignedSequence(), stream);
                     Assert.Fail();
@@ -308,9 +308,9 @@ namespace Bio.TestAutomation.IO.BAM
             //pass null for SAMAlignedSequence
             try
             {
-                var tmpFileName = Path.GetTempFileName();
-                var formatter = new BAMFormatter();
-                using (var stream = new FileStream(tmpFileName, FileMode.Create))
+                string tmpFileName = Path.GetTempFileName();
+                BAMFormatter formatter = new BAMFormatter();
+                using (FileStream stream = new FileStream(tmpFileName, FileMode.Create))
                 {
                     formatter.WriteAlignedSequence(new SAMAlignmentHeader(), null, stream);
                     Assert.Fail();
@@ -325,7 +325,7 @@ namespace Bio.TestAutomation.IO.BAM
             //pass null for stream
             try
             {
-                var formatter = new BAMFormatter();
+                BAMFormatter formatter = new BAMFormatter();
                 formatter.WriteAlignedSequence(new SAMAlignmentHeader(), new SAMAlignedSequence(), null);
                 Assert.Fail();
             }
@@ -345,9 +345,9 @@ namespace Bio.TestAutomation.IO.BAM
             //pass null for stream
             try
             {
-                var tmpFileName = Path.GetTempFileName();
-                var formatter = new BAMFormatter();
-                using (var stream = new FileStream(tmpFileName, FileMode.Create))
+                string tmpFileName = Path.GetTempFileName();
+                BAMFormatter formatter = new BAMFormatter();
+                using (FileStream stream = new FileStream(tmpFileName, FileMode.Create))
                 {
                     formatter.CompressBAMFile(null, stream);
                     Assert.Fail();
@@ -362,9 +362,9 @@ namespace Bio.TestAutomation.IO.BAM
             //pass null for stream
             try
             {
-                var tmpFileName = Path.GetTempFileName();
-                var formatter = new BAMFormatter();
-                using (var stream = new FileStream(tmpFileName, FileMode.Create))
+                string tmpFileName = Path.GetTempFileName();
+                BAMFormatter formatter = new BAMFormatter();
+                using (FileStream stream = new FileStream(tmpFileName, FileMode.Create))
                 {
                     formatter.CompressBAMFile(stream, null);
                     Assert.Fail();
@@ -391,7 +391,7 @@ namespace Bio.TestAutomation.IO.BAM
             //set source stream as null            
             try
             {
-                var biFile = new BAMIndexStorage(null);
+                BAMIndexStorage biFile = new BAMIndexStorage(null);
                 Assert.Fail();
             }
             catch (ArgumentNullException ex)
@@ -402,7 +402,7 @@ namespace Bio.TestAutomation.IO.BAM
             try
             {
                 string temp = null;
-                using (var biFile = new BAMIndexStorage(File.Create(temp)))
+                using (BAMIndexStorage biFile = new BAMIndexStorage(File.Create(temp)))
                 {
                     Assert.Fail();
                 }
@@ -427,9 +427,9 @@ namespace Bio.TestAutomation.IO.BAM
                                                            BAMParserParameters BAMParserPam)
         {
             // Get input and output values from xml node.
-            var bamFilePath = _utilityObj.xmlUtil.GetTextValue(nodeName,
+            string bamFilePath = _utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                   Constants.FilePathNode);
-            var exception = string.Empty;
+            string exception = string.Empty;
 
             ISequenceAlignmentParser bamParser = null;
             bamParser = new BAMParser();
@@ -442,7 +442,7 @@ namespace Bio.TestAutomation.IO.BAM
                     case BAMParserParameters.Stream:
                         try
                         {
-                            using (var reader = File.OpenRead(bamFilePath))
+                            using (FileStream reader = File.OpenRead(bamFilePath))
                             {
                                 bamParser.Parse(reader);
                                 Assert.Fail();
@@ -456,7 +456,7 @@ namespace Bio.TestAutomation.IO.BAM
                     case BAMParserParameters.ParseOneStream:
                         try
                         {
-                            using (var reader = File.OpenRead(bamFilePath))
+                            using (FileStream reader = File.OpenRead(bamFilePath))
                             {
                                 bamParser.ParseOne(reader);
                                 Assert.Fail();
@@ -492,10 +492,10 @@ namespace Bio.TestAutomation.IO.BAM
                                                         BAMParserParameters BAMParserPam)
         {
             // Get input and output values from xml node.
-            var bamFilePath = _utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
-            var exception = string.Empty;
+            string bamFilePath = _utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            string exception = string.Empty;
 
-            using (var bamParser = new BAMParser())
+            using (BAMParser bamParser = new BAMParser())
             {
                 // Parse a BAM file with different parameters.
                 switch (BAMParserPam)
@@ -593,17 +593,17 @@ namespace Bio.TestAutomation.IO.BAM
         private void InValidateBAMFormatter(string nodeName)
         {
             // Get input and output values from xml node.
-            var bamFilePath = _utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            string bamFilePath = _utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
 
-            using (var bamParserObj = new BAMParser())
+            using (BAMParser bamParserObj = new BAMParser())
             {
-                using (var storage = new BAMIndexStorage(File.Create(Constants.BAMTempIndexFileForIndexData)))
+                using (BAMIndexStorage storage = new BAMIndexStorage(File.Create(Constants.BAMTempIndexFileForIndexData)))
                 {
                     // Parse a BAM file.
-                    var seqAlignment = bamParserObj.ParseOne <SequenceAlignmentMap>(bamFilePath);
+                    SequenceAlignmentMap seqAlignment = bamParserObj.ParseOne <SequenceAlignmentMap>(bamFilePath);
 
                     // Create a BAM formatter object.
-                    var formatterObj = new BAMFormatter();
+                    BAMFormatter formatterObj = new BAMFormatter();
 
                     // Null filename
                     try
@@ -735,16 +735,16 @@ namespace Bio.TestAutomation.IO.BAM
         private void InValidateBAMFormatterWithSequenceAlignment(string nodeName)
         {
             // Get input and output values from xml node.
-            var bamFilePath = _utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            string bamFilePath = _utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
 
             ISequenceAlignmentParser bamParserObj = new BAMParser();
             IList<ISequenceAlignment> seqList = bamParserObj.Parse(bamFilePath).ToList();
             try
             {
-                using (var BAMIndexStorageObj = new BAMIndexStorage(File.Create(Constants.BAMTempIndexFileForInvalidData)))
+                using (BAMIndexStorage BAMIndexStorageObj = new BAMIndexStorage(File.Create(Constants.BAMTempIndexFileForInvalidData)))
                 {
                     // Create a BAM formatter object.
-                    var formatterObj = new BAMFormatter();
+                    BAMFormatter formatterObj = new BAMFormatter();
                     InvalidateBAmFormatter(formatterObj, seqList);
                     InvalidateBAmFormatterWithWithInvalidValues(formatterObj,seqList, bamFilePath, BAMIndexStorageObj);
                     InvalidateBAmFormatterWithWithNullValues(formatterObj,seqList);
@@ -779,7 +779,7 @@ namespace Bio.TestAutomation.IO.BAM
 
             try
             {
-                foreach (var seq in seqList)
+                foreach (ISequenceAlignment seq in seqList)
                 {
                     formatterObj.Format(seq, null as string);
                 }
@@ -792,7 +792,7 @@ namespace Bio.TestAutomation.IO.BAM
             // Invalidate Format(IseqAlignment, BAMFile, IndexFile)
             try
             {
-                foreach (var seq in seqList)
+                foreach (ISequenceAlignment seq in seqList)
                 {
                     formatterObj.Format(seq, null,
                                         Constants.BAMTempIndexFileForIndexData);
@@ -805,7 +805,7 @@ namespace Bio.TestAutomation.IO.BAM
 
             try
             {
-                foreach (var seq in seqList)
+                foreach (ISequenceAlignment seq in seqList)
                 {
                     formatterObj.Format(seq, Constants.BAMTempFileName,
                                         Constants.BAMTempFileName);
@@ -839,7 +839,7 @@ namespace Bio.TestAutomation.IO.BAM
 
             try
             {
-                foreach (var seq in seqList)
+                foreach (ISequenceAlignment seq in seqList)
                 {
                     formatterObj.Format(seq, bamFilePath, null);
                 }
@@ -853,7 +853,7 @@ namespace Bio.TestAutomation.IO.BAM
             // Invalidate Format(IseqAlignment, StreamWriter, IndexFile)
             try
             {
-                foreach (var seq in seqList)
+                foreach (ISequenceAlignment seq in seqList)
                 {
                     formatterObj.Format(null, BAMIndexStorageObj, seq);
                 }
@@ -894,7 +894,7 @@ namespace Bio.TestAutomation.IO.BAM
                     FileStream(Constants.BAMTempFileName,
                                FileMode.OpenOrCreate, FileAccess.ReadWrite))
                 {
-                    foreach (var seq in seqList)
+                    foreach (ISequenceAlignment seq in seqList)
                     {
                         formatterObj.Format(stream, null, seq);
                     }
@@ -910,7 +910,7 @@ namespace Bio.TestAutomation.IO.BAM
             // Invalidate Format(IseqAlignment, StreamWriter)
             try
             {
-                foreach (var seq in seqList)
+                foreach (ISequenceAlignment seq in seqList)
                 {
                     formatterObj.Format(null as Stream, seq);
                 }

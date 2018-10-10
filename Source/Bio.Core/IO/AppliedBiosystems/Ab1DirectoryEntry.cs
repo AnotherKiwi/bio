@@ -111,14 +111,14 @@ namespace Bio.IO.AppliedBiosystems
         {
             if (directoryBuffer == null) throw new ArgumentNullException(nameof(directoryBuffer));
             Buffer = directoryBuffer;
-            using (var stream = new MemoryStream(directoryBuffer.Length))
+            using (MemoryStream stream = new MemoryStream(directoryBuffer.Length))
             {
-                var writer = new BinaryWriter(stream);
+                BinaryWriter writer = new BinaryWriter(stream);
                 writer.Write(directoryBuffer);
                 writer.Flush();
                 stream.Position = 0;
 
-                var reader = new BinaryReader(stream);
+                BinaryReader reader = new BinaryReader(stream);
 
                 TagName = new string(reader.ReadChars(4));
                 TagNumber = (reader.ReadByte() << 24 | reader.ReadByte() << 16 | reader.ReadByte() << 8 |

@@ -77,7 +77,7 @@ namespace Bio.IO.ClustalW
                 throw new InvalidDataException(Properties.Resource.IONoTextToParse);
             }
 
-            using (var reader = stream.OpenRead())
+            using (StreamReader reader = stream.OpenRead())
             {
                 while (!reader.EndOfStream)
                 {
@@ -104,7 +104,7 @@ namespace Bio.IO.ClustalW
                 throw new ArgumentNullException(nameof(stream));
             }
 
-            using (var reader = stream.OpenRead())
+            using (StreamReader reader = stream.OpenRead())
             {
                 return ParseOne(reader);
             }
@@ -135,11 +135,11 @@ namespace Bio.IO.ClustalW
             // Now that we're at the first block, one or more blank lines are the block separators, which we'll need.
             skipBlankLines = false;
 
-            var mapIdToSequence = new Dictionary<string, Tuple<ISequence, List<byte>>>();
+            Dictionary<string, Tuple<ISequence, List<byte>>> mapIdToSequence = new Dictionary<string, Tuple<ISequence, List<byte>>>();
             IAlphabet alignmentAlphabet = null;
-            var isFirstBlock = true;
-            var inBlock = false;
-            var endOfBlockSymbols = new HashSet<char> { '*', ' ', '.', '+', ':' };
+            bool isFirstBlock = true;
+            bool inBlock = false;
+            HashSet<char> endOfBlockSymbols = new HashSet<char> { '*', ' ', '.', '+', ':' };
 
             while (reader.Peek() != -1)
             {
@@ -157,12 +157,12 @@ namespace Bio.IO.ClustalW
                 {
                     // It's a data line in a block.
                     // Lines begin with sequence id, then the sequence segment, and optionally a number, which we will ignore
-                    var tokens = line.Split((char[])null, StringSplitOptions.RemoveEmptyEntries); // (char[])null uses whitespace delimiters
-                    var id = tokens[0];
-                    var data = tokens[1].ToUpperInvariant();
-                    var byteData = Encoding.UTF8.GetBytes(data);
+                    string[] tokens = line.Split((char[])null, StringSplitOptions.RemoveEmptyEntries); // (char[])null uses whitespace delimiters
+                    string id = tokens[0];
+                    string data = tokens[1].ToUpperInvariant();
+                    byte[] byteData = Encoding.UTF8.GetBytes(data);
                     Tuple<ISequence, List<byte>> sequenceTuple;
-                    var alphabet = Alphabet;
+                    IAlphabet alphabet = Alphabet;
 
                     inBlock = true;
                     if (isFirstBlock)
@@ -216,10 +216,10 @@ namespace Bio.IO.ClustalW
                 ReadNextLine(reader);
             }
 
-            var sequenceAlignment = new SequenceAlignment();
-            var alignedSequence = new AlignedSequence();
+            SequenceAlignment sequenceAlignment = new SequenceAlignment();
+            AlignedSequence alignedSequence = new AlignedSequence();
             sequenceAlignment.AlignedSequences.Add(alignedSequence);
-            foreach (var alignmentSequenceTuple in mapIdToSequence.Values)
+            foreach (Tuple<ISequence, List<byte>> alignmentSequenceTuple in mapIdToSequence.Values)
             {
                 alignedSequence.Sequences.Add(
                     new Sequence(alignmentSequenceTuple.Item1.Alphabet, alignmentSequenceTuple.Item2.ToArray()) 

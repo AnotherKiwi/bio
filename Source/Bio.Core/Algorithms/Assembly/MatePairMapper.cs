@@ -52,11 +52,11 @@ namespace Bio.Algorithms.Assembly
                 throw new ArgumentNullException(nameof(reads));
             }
 
-            var pairs = new Dictionary<string, MatePair>();
+            Dictionary<string, MatePair> pairs = new Dictionary<string, MatePair>();
             MatePair mate;
-            var exp = string.Empty;
+            string exp = string.Empty;
 
-            foreach (var read in reads)
+            foreach (ISequence read in reads)
             {
                 if (read == null)
                 {
@@ -76,7 +76,7 @@ namespace Bio.Algorithms.Assembly
                 }
                 else
                 {
-                    var match = readExpression.Match(read.ID);
+                    Match match = readExpression.Match(read.ID);
                     if (match.Success)
                     {
                         mate = new MatePair(match.Groups[3].Value);
@@ -130,13 +130,13 @@ namespace Bio.Algorithms.Assembly
 
             Dictionary<ISequence, IList<ReadMap>> contigs1;
             Dictionary<ISequence, IList<ReadMap>> contigs2;
-            var contigMatePairs = new ContigMatePairs();
-            foreach (var read in reads)
+            ContigMatePairs contigMatePairs = new ContigMatePairs();
+            foreach (ISequence read in reads)
             {
-                var match = readExpression.Match(read.ID);
+                Match match = readExpression.Match(read.ID);
                 if (match.Success)
                 {
-                    var mateDisplayID = GenerateExpression(match);
+                    string mateDisplayID = GenerateExpression(match);
                     if (alignment.TryGetValue(read.ID, out contigs1) && alignment.TryGetValue(mateDisplayID, out contigs2))
                     {
                         MatePair pair;
@@ -180,7 +180,7 @@ namespace Bio.Algorithms.Assembly
             MatePair pair,
             ContigMatePairs contigMatePairs)
         {
-            foreach (var forwardContigMaps in forwardContigs)
+            foreach (KeyValuePair<ISequence, IList<ReadMap>> forwardContigMaps in forwardContigs)
             {
                 Dictionary<ISequence, IList<ValidMatePair>> forwardContig;
                 if (!contigMatePairs.TryGetValue(forwardContigMaps.Key, out forwardContig))
@@ -189,7 +189,7 @@ namespace Bio.Algorithms.Assembly
                     contigMatePairs.Add(forwardContigMaps.Key, forwardContig);
                 }
 
-                foreach (var reverseContigMaps in reverseContigs)
+                foreach (KeyValuePair<ISequence, IList<ReadMap>> reverseContigMaps in reverseContigs)
                 {
                     IList<ValidMatePair> matePairs;
                     if (!forwardContig.TryGetValue(reverseContigMaps.Key, out matePairs))
@@ -198,11 +198,11 @@ namespace Bio.Algorithms.Assembly
                         forwardContig.Add(reverseContigMaps.Key, matePairs);
                     }
                     
-                    foreach (var forwardMap in forwardContigMaps.Value)
+                    foreach (ReadMap forwardMap in forwardContigMaps.Value)
                     {
-                        foreach (var reverseMap in reverseContigMaps.Value)
+                        foreach (ReadMap reverseMap in reverseContigMaps.Value)
                         {
-                            var validPairedRead = new ValidMatePair();
+                            ValidMatePair validPairedRead = new ValidMatePair();
                             validPairedRead.PairedRead = pair;
                             validPairedRead.ForwardReadStartPosition.Add(forwardMap.StartPositionOfContig);
                             validPairedRead.ReverseReadStartPosition.Add(
@@ -223,7 +223,7 @@ namespace Bio.Algorithms.Assembly
         /// <returns>Expression for other read.</returns>
         private static string GenerateExpression(Match match)
         {
-            var expression = string.Empty;
+            string expression = string.Empty;
             switch (match.Groups[2].Value)
             {
                 case "X1":

@@ -114,19 +114,19 @@ namespace Bio
                 throw new ArgumentException(Properties.Resource.LIST_EMPTY);
             }
 
-            var symbolFrequency = new Dictionary<byte, double>();
-            var symbolsCount = 0;
+            Dictionary<byte, double> symbolFrequency = new Dictionary<byte, double>();
+            int symbolsCount = 0;
 
             HashSet<byte> gapSymbols = null;
             SequenceAlphabet.TryGetGapSymbols(out gapSymbols);
 
-            var ambiguousSymbols = SequenceAlphabet.GetAmbiguousSymbols();
+            HashSet<byte> ambiguousSymbols = SequenceAlphabet.GetAmbiguousSymbols();
             HashSet<byte> basicSymbols = null;
 
             byte defaultGap;
             SequenceAlphabet.TryGetDefaultGapSymbol(out defaultGap);
 
-            foreach (var item in items)
+            foreach (byte item in items)
             {
                 if (gapSymbols.Contains(item))
                 {
@@ -140,8 +140,8 @@ namespace Bio
                 {
                     SequenceAlphabet.TryGetBasicSymbols(item, out basicSymbols);
 
-                    var baseProbability = 1 / (double)basicSymbols.Count;
-                    foreach (var s in basicSymbols)
+                    double baseProbability = 1 / (double)basicSymbols.Count;
+                    foreach (byte s in basicSymbols)
                     {
                         symbolFrequency[s] =
                             (symbolFrequency.ContainsKey(s) ? symbolFrequency[s] : 0) + baseProbability;
@@ -161,11 +161,11 @@ namespace Bio
             }
 
             // Check which characters are above threshold
-            var aboveThresholdSymbols = new HashSet<byte>();
+            HashSet<byte> aboveThresholdSymbols = new HashSet<byte>();
 
-            foreach (var item in symbolFrequency)
+            foreach (KeyValuePair<byte, double> item in symbolFrequency)
             {
-                var frequency = (item.Value * 100) / symbolsCount;
+                double frequency = (item.Value * 100) / symbolsCount;
                 if (frequency > Threshold)
                 {
                     aboveThresholdSymbols.Add(item.Key);

@@ -31,7 +31,7 @@ namespace Bio.Web.Selectome
             children = new Dictionary<SelectomeTreeNode, Edge>();
             Name = initialNode.Name;
             //recursively update child nodes
-            foreach (var child in initialNode.Children)
+            foreach (KeyValuePair<Node, Edge> child in initialNode.Children)
             {
                 children.Add(new SelectomeTreeNode(child.Key), child.Value);
             }

@@ -74,7 +74,7 @@ namespace Bio.IO.Nexus
                 throw new ArgumentNullException(nameof(stream));
             }
 
-            using (var reader = stream.OpenRead())
+            using (StreamReader reader = stream.OpenRead())
             {
                 // no empty files allowed
                 if (reader.EndOfStream)
@@ -102,7 +102,7 @@ namespace Bio.IO.Nexus
                 throw new ArgumentNullException(nameof(stream));
             }
 
-            using (var reader = stream.OpenRead())
+            using (StreamReader reader = stream.OpenRead())
             {
                 return ParseOne(reader);
             }
@@ -123,9 +123,9 @@ namespace Bio.IO.Nexus
 
             ParseHeader(reader);
 
-            var alignedSequence = new AlignedSequence();
+            AlignedSequence alignedSequence = new AlignedSequence();
             IList<string> ids = null;
-            var isInBlock = true;
+            bool isInBlock = true;
 
             if (line.StartsWith("begin", StringComparison.OrdinalIgnoreCase))
             {
@@ -137,7 +137,7 @@ namespace Bio.IO.Nexus
                         continue;
                     }
 
-                    var blockName = GetTokens(line)[1];
+                    string blockName = GetTokens(line)[1];
 
                     switch (blockName.ToUpperInvariant())
                     {
@@ -150,17 +150,17 @@ namespace Bio.IO.Nexus
                         case "CHARACTERS":
                         case "CHARACTERS;":
                             // Block contains sequences
-                            var dataSet = ParseCharacterBlock(reader, ids);
+                            Dictionary<string, string> dataSet = ParseCharacterBlock(reader, ids);
                             IAlphabet alignmentAlphabet = null;
 
-                            foreach (var id in ids)
+                            foreach (string id in ids)
                             {
-                                var alphabet = Alphabet;
-                                var data = dataSet[id];
+                                IAlphabet alphabet = Alphabet;
+                                string data = dataSet[id];
 
                                 if (null == alphabet)
                                 {
-                                    var dataArray = data.ToByteArray();
+                                    byte[] dataArray = data.ToByteArray();
                                     alphabet = Alphabets.AutoDetectAlphabet(dataArray, 0, dataArray.Length, null);
 
                                     if (null == alphabet)
@@ -254,7 +254,7 @@ namespace Bio.IO.Nexus
         /// <param name="reader">A reader for a biological sequence text.</param>
         private void ParseHeader(TextReader reader)
         {
-            var message = string.Empty;
+            string message = string.Empty;
 
             if (!line.StartsWith("#NEXUS", StringComparison.OrdinalIgnoreCase))
             {
@@ -290,15 +290,15 @@ namespace Bio.IO.Nexus
         /// <returns>List of sequence IDs</returns>
         private IList<string> ParseTaxaBlock(TextReader reader)
         {
-            var isInTaxaBlock = true;
-            var data = string.Empty;
-            var sequenceCount = 0;
+            bool isInTaxaBlock = true;
+            string data = string.Empty;
+            int sequenceCount = 0;
             IList<string> IDs = new List<string>();
 
             while (line != null && isInTaxaBlock)
             {
                 ReadNextLine(reader);
-                var tokens = GetTokens(line);
+                IList<string> tokens = GetTokens(line);
                 switch (tokens[0].ToUpperInvariant())
                 {
                     case "DIMENSIONS":
@@ -308,7 +308,7 @@ namespace Bio.IO.Nexus
                         // 1. Read count of sequence
                         do
                         {
-                            foreach (var token in tokens)
+                            foreach (string token in tokens)
                             {
                                 data = token.Trim(new char[] { ';' });
 
@@ -342,7 +342,7 @@ namespace Bio.IO.Nexus
                         // 1. Read IDs of sequence
                         do
                         {
-                            foreach (var token in tokens)
+                            foreach (string token in tokens)
                             {
                                 data = token.Trim(new char[] { ';' });
 
@@ -396,15 +396,15 @@ namespace Bio.IO.Nexus
         /// <returns>parse sequence in alignment</returns>
         private Dictionary<string, string> ParseCharacterBlock(TextReader reader, IList<string> IDs)
         {
-            var isInCharactersBlock = true;
-            var data = string.Empty;
-            var sequenceLength = 0;
-            var dataSet = new Dictionary<string, string>();
+            bool isInCharactersBlock = true;
+            string data = string.Empty;
+            int sequenceLength = 0;
+            Dictionary<string, string> dataSet = new Dictionary<string, string>();
 
             while (line != null && isInCharactersBlock)
             {
                 ReadNextLine(reader);
-                var tokens = GetTokens(line);
+                IList<string> tokens = GetTokens(line);
 
                 if (0 == string.Compare("DIMENSIONS", tokens[0], StringComparison.OrdinalIgnoreCase))
                 {
@@ -414,7 +414,7 @@ namespace Bio.IO.Nexus
                     // 1. Length of sequence
                     do
                     {
-                        foreach (var token in tokens)
+                        foreach (string token in tokens)
                         {
                             data = token.Trim(new char[] { ';' });
 

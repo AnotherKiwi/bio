@@ -70,7 +70,7 @@ namespace Bio.IO.Phylip
             if (stream == null)
                 throw new ArgumentNullException(nameof(stream));
 
-            using (var reader = stream.OpenRead()) 
+            using (StreamReader reader = stream.OpenRead()) 
             {
                 // no empty files allowed
                 if (reader.EndOfStream)
@@ -101,7 +101,7 @@ namespace Bio.IO.Phylip
                 throw new ArgumentNullException(nameof(stream));
             }
 
-            using (var reader = stream.OpenRead())
+            using (StreamReader reader = stream.OpenRead())
             {
                 // no empty files allowed
                 if (reader.EndOfStream)
@@ -136,7 +136,7 @@ namespace Bio.IO.Phylip
                         Properties.Resource.INVALID_INPUT_FILE, Name));
             }
 
-            var isFirstBlock = true;
+            bool isFirstBlock = true;
             int sequenceCount;
             int sequenceLength;
             IList<Tuple<Sequence, List<byte>>> data = new List<Tuple<Sequence, List<byte>>>();
@@ -158,7 +158,7 @@ namespace Bio.IO.Phylip
                     continue;
                 }
 
-                for (var index = 0; index < sequenceCount; index++)
+                for (int index = 0; index < sequenceCount; index++)
                 {
                     if (isFirstBlock)
                     {
@@ -170,11 +170,11 @@ namespace Bio.IO.Phylip
                                 CultureInfo.CurrentCulture, 
                                 Properties.Resource.INVALID_INPUT_FILE, Name));
                         }
-                        var id = line.Substring(0, 10).Trim();
-                        var sequenceString = line.Substring(10).Replace(" ","");
-                        var sequenceBytes = Encoding.UTF8.GetBytes(sequenceString);
+                        string id = line.Substring(0, 10).Trim();
+                        string sequenceString = line.Substring(10).Replace(" ","");
+                        byte[] sequenceBytes = Encoding.UTF8.GetBytes(sequenceString);
 
-                        var alphabet = Alphabet;
+                        IAlphabet alphabet = Alphabet;
                         if (null == alphabet)
                         {
                             alphabet = Alphabets.AutoDetectAlphabet(sequenceBytes, 0, sequenceBytes.Length, alphabet);
@@ -200,7 +200,7 @@ namespace Bio.IO.Phylip
                             }
                         }
 
-                        var sequenceStore = new Tuple<Sequence, List<byte>>(
+                        Tuple<Sequence, List<byte>> sequenceStore = new Tuple<Sequence, List<byte>>(
                             new Sequence(alphabet, string.Empty){ ID = id }, 
                             new List<byte>());
 
@@ -209,8 +209,8 @@ namespace Bio.IO.Phylip
                     }
                     else
                     {
-                        var sequence = data[index];
-                        var sequenceBytes = Encoding.UTF8.GetBytes(line.Replace(" ",""));
+                        Tuple<Sequence, List<byte>> sequence = data[index];
+                        byte[] sequenceBytes = Encoding.UTF8.GetBytes(line.Replace(" ",""));
                         sequence.Item2.AddRange(sequenceBytes);
                     }
 
@@ -227,10 +227,10 @@ namespace Bio.IO.Phylip
                 throw new InvalidDataException(Properties.Resource.SequenceCountMismatch);
             }
 
-            var sequenceAlignment = new SequenceAlignment();
+            SequenceAlignment sequenceAlignment = new SequenceAlignment();
             sequenceAlignment.AlignedSequences.Add(new AlignedSequence());
 
-            foreach (var dataSequence in data)
+            foreach (Tuple<Sequence, List<byte>> dataSequence in data)
             {
                 // Validate for the count of sequence
                 if (sequenceLength != dataSequence.Item2.Count)

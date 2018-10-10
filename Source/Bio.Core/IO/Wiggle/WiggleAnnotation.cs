@@ -200,7 +200,7 @@ namespace Bio.IO.Wiggle
         /// <returns>Annotation items enumerator.</returns>
         public IEnumerator<KeyValuePair<long, float>> GetEnumerator()
         {
-            for (var i = 0; i < Count; i++)
+            for (int i = 0; i < Count; i++)
             {
                 yield return this[i];
             }
@@ -234,7 +234,7 @@ namespace Bio.IO.Wiggle
                 throw new NotSupportedException(Resource.WiggleNotSupportedOnVariableStep);
             }
 
-            var result = new float[length];
+            float[] result = new float[length];
             Helper.Copy(fixedStepValues, startIndex, result, 0, length);
 
             return result;

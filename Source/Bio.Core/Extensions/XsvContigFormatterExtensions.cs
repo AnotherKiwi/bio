@@ -30,7 +30,7 @@ namespace Bio.IO.Xsv
                 throw new ArgumentNullException(nameof(filename));
             }
 
-            using (var fs = File.Create(filename))
+            using (FileStream fs = File.Create(filename))
             {
                 formatter.Write(fs, contig);
             }
@@ -51,7 +51,7 @@ namespace Bio.IO.Xsv
             {
                 throw new ArgumentNullException(nameof(contig));
             }
-            var fs = ParserFormatterExtensions<ISequenceFormatter>.GetOpenStream(formatter, true);
+            Stream fs = ParserFormatterExtensions<ISequenceFormatter>.GetOpenStream(formatter, true);
             if (fs != null)
                 formatter.Write(fs, contig);
             else

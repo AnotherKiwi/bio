@@ -34,7 +34,7 @@ namespace Bio
                 throw new ArgumentNullException(nameof(ranges));
             }
 
-            foreach (var range in ranges)
+            foreach (ISequenceRange range in ranges)
             {
                 Add(range);
             }
@@ -66,8 +66,8 @@ namespace Bio
         /// <returns>Sequence range from all the groups.</returns>
         public override string ToString()
         {
-            var builder = new StringBuilder();
-            foreach (var range in GroupRanges)
+            StringBuilder builder = new StringBuilder();
+            foreach (ISequenceRange range in GroupRanges)
             {
                 builder.AppendLine(range.ToString());
             }
@@ -94,7 +94,7 @@ namespace Bio
             }
             else
             {
-                var list = new List<ISequenceRange>
+                List<ISequenceRange> list = new List<ISequenceRange>
                 {
                     range
                 };
@@ -126,11 +126,11 @@ namespace Bio
         /// <returns>The flattened list of sequence ranges.</returns>
         public List<ISequenceRange> Flatten()
         {
-            var result = new List<ISequenceRange>();
+            List<ISequenceRange> result = new List<ISequenceRange>();
 
-            foreach (var ranges in groups.Values)
+            foreach (List<ISequenceRange> ranges in groups.Values)
             {
-                foreach (var range in ranges)
+                foreach (ISequenceRange range in ranges)
                 {
                     result.Add(range);
                 }
@@ -172,9 +172,9 @@ namespace Bio
         /// <returns>The overlapped sequence range grouping.</returns>
         public SequenceRangeGrouping MergeOverlaps(long minOverlap = 0, bool isParentSeqRangesRequired = false)
         {
-            var seqRangeGroup = new SequenceRangeGrouping();
-            var sortedRanges = new List<ISequenceRange>();
-            foreach (var rangeList in groups.Values)
+            SequenceRangeGrouping seqRangeGroup = new SequenceRangeGrouping();
+            List<ISequenceRange> sortedRanges = new List<ISequenceRange>();
+            foreach (List<ISequenceRange> rangeList in groups.Values)
             {
                 sortedRanges.AddRange(rangeList);
                 sortedRanges.Sort();
@@ -241,9 +241,9 @@ namespace Bio
                 throw new ArgumentNullException(Properties.Resource.ParameterNameQuery);
             }
 
-            var ranges = new List<ISequenceRange>(Flatten());
+            List<ISequenceRange> ranges = new List<ISequenceRange>(Flatten());
             ranges.AddRange(query.Flatten());
-            var seqReangeGroup = new SequenceRangeGrouping(ranges);
+            SequenceRangeGrouping seqReangeGroup = new SequenceRangeGrouping(ranges);
 
             return seqReangeGroup.MergeOverlaps(minOverlap, isParentSeqRangesRequired);
         }
@@ -301,9 +301,9 @@ namespace Bio
                 throw new ArgumentNullException(nameof(query));
             }
 
-            var result = new SequenceRangeGrouping();
-            var refSeqRanges = new List<ISequenceRange>();
-            var querySeqRanges = new List<ISequenceRange>();
+            SequenceRangeGrouping result = new SequenceRangeGrouping();
+            List<ISequenceRange> refSeqRanges = new List<ISequenceRange>();
+            List<ISequenceRange> querySeqRanges = new List<ISequenceRange>();
             SequenceRange range = null;
 
             // merge the query sequence ranges.
@@ -315,7 +315,7 @@ namespace Bio
 
             query = query.MergeOverlaps(0, isParentSeqRangesRequired);
 
-            foreach (var id in groups.Keys)
+            foreach (string id in groups.Keys)
             {
                 refSeqRanges.Clear();
                 querySeqRanges.Clear();
@@ -330,7 +330,7 @@ namespace Bio
 
                 if (querySeqRanges.Count > 0)
                 {
-                    foreach (var refRange in refSeqRanges)
+                    foreach (ISequenceRange refRange in refSeqRanges)
                     {
                         IList<ISequenceRange> overlappingQueryRanges = GetOverlappingRenges(refRange, querySeqRanges, minOverlap);
 
@@ -355,7 +355,7 @@ namespace Bio
                         }
 
                         ISequenceRange previousOverlappingRange = null;
-                        foreach (var queryRange in overlappingQueryRanges)
+                        foreach (ISequenceRange queryRange in overlappingQueryRanges)
                         {
                             if (outputType == IntersectOutputType.OverlappingPiecesOfIntervals)
                             {
@@ -483,10 +483,10 @@ namespace Bio
                 throw new ArgumentNullException(nameof(query));
             }
 
-            var result = new SequenceRangeGrouping();
-            var refSeqRanges = new List<ISequenceRange>();
-            var querySeqRanges = new List<ISequenceRange>();
-            var previousSeqRanges = new List<ISequenceRange>();
+            SequenceRangeGrouping result = new SequenceRangeGrouping();
+            List<ISequenceRange> refSeqRanges = new List<ISequenceRange>();
+            List<ISequenceRange> querySeqRanges = new List<ISequenceRange>();
+            List<ISequenceRange> previousSeqRanges = new List<ISequenceRange>();
             SequenceRange range = null;
 
             // merge the query sequence ranges.
@@ -498,7 +498,7 @@ namespace Bio
 
             query = query.MergeOverlaps(0, isParentSeqRangesRequired);
 
-            foreach (var id in groups.Keys)
+            foreach (string id in groups.Keys)
             {
                 refSeqRanges.Clear();
                 querySeqRanges.Clear();
@@ -513,7 +513,7 @@ namespace Bio
 
                 if (querySeqRanges.Count > 0)
                 {
-                    foreach (var refRange in refSeqRanges)
+                    foreach (ISequenceRange refRange in refSeqRanges)
                     {
                         previousSeqRanges.Clear();
                         IList<ISequenceRange> overlappingQueryRanges = GetOverlappingRenges(refRange,
@@ -545,7 +545,7 @@ namespace Bio
                         }
 
                         ISequenceRange previousOverlappingRange = null;
-                        foreach (var queryRange in overlappingQueryRanges)
+                        foreach (ISequenceRange queryRange in overlappingQueryRanges)
                         {
                             // in case of non overlapping pieces of intervals get the non overlapping 
                             // ranges from reference sequence range.
@@ -556,7 +556,7 @@ namespace Bio
                                     // if the previous overlapping range's start and end are equal then no need to change the metadataSeqRanges.
                                     if (previousOverlappingRange == null || previousOverlappingRange.Start != queryRange.Start && previousOverlappingRange.End != queryRange.End)
                                     {
-                                        for (var i = previousSeqRanges.Count - 1; i >= 0; i--)
+                                        for (int i = previousSeqRanges.Count - 1; i >= 0; i--)
                                         {
                                             if (previousSeqRanges[i].End > queryRange.Start)
                                             {
@@ -691,8 +691,8 @@ namespace Bio
                 minimalOverlap = 1;
             }
 
-            var result = new List<ISequenceRange>();
-            foreach (var queryRange in querySeqRanges)
+            List<ISequenceRange> result = new List<ISequenceRange>();
+            foreach (ISequenceRange queryRange in querySeqRanges)
             {
                 if (queryRange.Start <= refSeqRange.End && queryRange.End >= refSeqRange.Start)
                 {
@@ -731,7 +731,7 @@ namespace Bio
         /// <param name="parentRanges">Parent ranges of the specified range.</param>
         private static void AddParent(ISequenceRange range, IEnumerable<ISequenceRange> parentRanges)
         {
-            foreach (var parentRange in parentRanges)
+            foreach (ISequenceRange parentRange in parentRanges)
             {
                 AddParent(range, parentRange);
             }
@@ -747,9 +747,9 @@ namespace Bio
             toRange.Metadata.Clear();
             if (fromRange.Metadata.Count > 0)
             {
-                foreach (var key in fromRange.Metadata.Keys)
+                foreach (string key in fromRange.Metadata.Keys)
                 {
-                    var metadataItem = fromRange.Metadata[key];
+                    object metadataItem = fromRange.Metadata[key];
                     toRange.Metadata[key] = metadataItem;
                 }
             }

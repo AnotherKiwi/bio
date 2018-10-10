@@ -36,10 +36,10 @@ namespace Bio.IO.Bed
             // TODO: Need support for tracks and for optional metadata columns
 
             // Open the output stream - we leave the underlying stream open.
-            using (var writer = stream.OpenWrite())
+            using (StreamWriter writer = stream.OpenWrite())
             {
-                var lineCount = 0;
-                foreach (var range in ranges)
+                int lineCount = 0;
+                foreach (ISequenceRange range in ranges)
                 {
                     writer.Write(range.ID);
                     writer.Write('\t');

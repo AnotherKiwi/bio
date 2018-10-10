@@ -24,11 +24,11 @@ namespace Bio.Padena.Tests
                 seq1,
                 seq2
             };
-            var denovoAssembly = new PadenaAssembly();
+            PadenaAssembly denovoAssembly = new PadenaAssembly();
             denovoAssembly.AddContigs(contigList);
 
-            var actualString = denovoAssembly.ToString().Replace(Environment.NewLine, "");
-            var expectedString = "ATGAAGGCAATACTAGTAGTACAAAAGCAAC";
+            string actualString = denovoAssembly.ToString().Replace(Environment.NewLine, "");
+            string expectedString = "ATGAAGGCAATACTAGTAGTACAAAAGCAAC";
             Assert.AreEqual(actualString, expectedString);
         }
     }

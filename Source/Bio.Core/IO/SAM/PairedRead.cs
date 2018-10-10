@@ -78,7 +78,7 @@ namespace Bio.IO.SAM
                 {
                     if (value != null)
                     {
-                        var count = Reads.Count;
+                        int count = Reads.Count;
                         if (count == 0)
                         {
                             Reads.Add(null);
@@ -131,7 +131,7 @@ namespace Bio.IO.SAM
                 throw new ArgumentNullException(nameof(libraryName));
             }
 
-            var libraryInfo = CloneLibrary.Instance.GetLibraryInformation(libraryName);
+            CloneLibraryInformation libraryInfo = CloneLibrary.Instance.GetLibraryInformation(libraryName);
 
             if (libraryInfo == null)
             {
@@ -213,15 +213,15 @@ namespace Bio.IO.SAM
             }
             else
             {
-                var type = GetPairedReadType(pairedRead.Read1, pairedRead.Read2, meanLengthOfInsert, standardDeviationOfInsert);
+                PairedReadType type = GetPairedReadType(pairedRead.Read1, pairedRead.Read2, meanLengthOfInsert, standardDeviationOfInsert);
 
                 if (type == PairedReadType.Normal || type == PairedReadType.LengthAnomaly)
                 {
-                    var insertLength = pairedRead.InsertLength;
+                    int insertLength = pairedRead.InsertLength;
                     // µ + 3σ
-                    var upperLimit = meanLengthOfInsert + (3*standardDeviationOfInsert);
+                    float upperLimit = meanLengthOfInsert + (3*standardDeviationOfInsert);
                     // µ - 3σ
-                    var lowerLimit = meanLengthOfInsert - (3*standardDeviationOfInsert);
+                    float lowerLimit = meanLengthOfInsert - (3*standardDeviationOfInsert);
                     if (insertLength > upperLimit || insertLength < lowerLimit)
                     {
                         type = PairedReadType.LengthAnomaly;
@@ -249,7 +249,7 @@ namespace Bio.IO.SAM
                 throw new ArgumentNullException(nameof(libraryName));
             }
 
-            var libraryInfo = CloneLibrary.Instance.GetLibraryInformation(libraryName);
+            CloneLibraryInformation libraryInfo = CloneLibrary.Instance.GetLibraryInformation(libraryName);
 
             if (libraryInfo == null)
             {
@@ -284,7 +284,7 @@ namespace Bio.IO.SAM
         /// <param name="standardDeviationOfInsert">Standard deviation of insertion length.</param>
         public static PairedReadType GetPairedReadType(SAMAlignedSequence read1, SAMAlignedSequence read2, float meanLengthOfInsert, float standardDeviationOfInsert)
         {
-            var type = PairedReadType.Normal;
+            PairedReadType type = PairedReadType.Normal;
             if (read1 == null)
             {
                 throw new ArgumentNullException(nameof(read1));
@@ -307,8 +307,8 @@ namespace Bio.IO.SAM
             }
             else
             {
-                var isBothforwardReads = IsForwardRead(read1) && IsForwardRead(read2);
-                var isBothReverseReads = IsReverseRead(read1) && IsReverseRead(read2);
+                bool isBothforwardReads = IsForwardRead(read1) && IsForwardRead(read2);
+                bool isBothReverseReads = IsReverseRead(read1) && IsReverseRead(read2);
 
                 if (isBothforwardReads || isBothReverseReads)
                 {
@@ -316,8 +316,8 @@ namespace Bio.IO.SAM
                 }
                 else
                 {
-                    var forwardReadStartPos = 0;
-                    var reverseReadStartPos = 0;
+                    int forwardReadStartPos = 0;
+                    int reverseReadStartPos = 0;
 
                     if (IsForwardRead(read1))
                     {
@@ -337,12 +337,12 @@ namespace Bio.IO.SAM
                     else
                     {
 
-                        var insertLength = GetInsertLength(read1, read2);
+                        int insertLength = GetInsertLength(read1, read2);
 
                         // µ + 3σ
-                        var upperLimit = meanLengthOfInsert + (3*standardDeviationOfInsert);
+                        float upperLimit = meanLengthOfInsert + (3*standardDeviationOfInsert);
                         // µ - 3σ
-                        var lowerLimit = meanLengthOfInsert - (3*standardDeviationOfInsert);
+                        float lowerLimit = meanLengthOfInsert - (3*standardDeviationOfInsert);
                         if (insertLength > upperLimit || insertLength < lowerLimit)
                         {
                             type = PairedReadType.LengthAnomaly;
@@ -397,7 +397,7 @@ namespace Bio.IO.SAM
 
             if (validate)
             {
-                var type = GetPairedReadType(read1, read2, 0, 0);
+                PairedReadType type = GetPairedReadType(read1, read2, 0, 0);
                 if (type != PairedReadType.Normal && type != PairedReadType.LengthAnomaly)
                 {
                     return 0;

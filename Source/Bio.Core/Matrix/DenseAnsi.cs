@@ -50,9 +50,9 @@ namespace Bio.Matrix
         internal static string StoreListToString(List<byte> storeList, int colCount)
         {
             Helper.CheckCondition(storeList.Count == colCount, () => string.Format(CultureInfo.InvariantCulture, Properties.Resource.ExpectedStoreListCountToEqualColCount, storeList.Count, colCount));
-            var sb = new StringBuilder(colCount);
+            StringBuilder sb = new StringBuilder(colCount);
             //05/18/2009 optimize: do on multiple threads?
-            foreach (var store in storeList)
+            foreach (byte store in storeList)
             {
                 sb.Append((char)store);
             }
@@ -122,8 +122,8 @@ namespace Bio.Matrix
             {
                 throw new MatrixFormatException("Every data string should have one char per colKey.");
             }
-            var storeList = new List<byte>(colCount);
-            for (var i = 0; i < line.Length; ++i)
+            List<byte> storeList = new List<byte>(colCount);
+            for (int i = 0; i < line.Length; ++i)
             {
                 storeList.Add((byte)line[i]);
             }
@@ -146,7 +146,7 @@ namespace Bio.Matrix
         static public DenseAnsi CreateEmptyInstance(IEnumerable<string> rowKeySequence, IEnumerable<string> colKeySequence, char missingValue)
         {
             Helper.CheckCondition(missingValue.Equals(StaticMissingValue), "For DenseAnsi the missingValue must be '{0}'", StaticMissingValue); //OK to use Equals because char can't be null
-            var denseAnsi = new DenseAnsi();
+            DenseAnsi denseAnsi = new DenseAnsi();
             denseAnsi.InternalCreateEmptyInstance(rowKeySequence, colKeySequence);
             return denseAnsi;
         }
@@ -162,7 +162,7 @@ namespace Bio.Matrix
         public static bool TryGetInstanceFromSparse(string inputSparsePattern, out Matrix<string, string, char> matrix)
         {
             DenseAnsi denseAnsi;
-            var b = TryGetInstanceFromSparse(inputSparsePattern, out denseAnsi);
+            bool b = TryGetInstanceFromSparse(inputSparsePattern, out denseAnsi);
             matrix = denseAnsi;
             return b;
         }
@@ -233,7 +233,7 @@ namespace Bio.Matrix
         /// <returns>The new DenseAnsi.</returns>
         public static DenseAnsi GetInstanceFromSparse(string inputSparsePattern)
         {
-            var denseAnsi = new DenseAnsi();
+            DenseAnsi denseAnsi = new DenseAnsi();
             denseAnsi.GetInstanceFromSparseInternal(inputSparsePattern);
             return denseAnsi;
         }
@@ -314,7 +314,7 @@ namespace Bio.Matrix
         /// <returns>the DenseAnsi object</returns>
         public static DenseAnsi GetInstance(string denseAnsiFileName, ParallelOptions parallelOptions)
         {
-            var denseAnsi = new DenseAnsi();
+            DenseAnsi denseAnsi = new DenseAnsi();
             denseAnsi.GetInstanceInternal(denseAnsiFileName, parallelOptions);
             return denseAnsi;
         }
@@ -327,7 +327,7 @@ namespace Bio.Matrix
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public static DenseAnsi GetInstanceFromSparse(IEnumerable<RowKeyColKeyValue<string, string, char>> tripleEnumerable)
         {
-            var denseAnsi = new DenseAnsi();
+            DenseAnsi denseAnsi = new DenseAnsi();
             denseAnsi.GetInstanceFromSparseInternal(tripleEnumerable);
             return denseAnsi;
         }
@@ -387,7 +387,7 @@ namespace Bio.Matrix
         /// <returns>A denseAnsi version of the matrix</returns>
         public static DenseAnsi ToDenseAnsi(this Matrix<string, string, char> matrix, ParallelOptions parallelOptions)
         {
-            var denseAnsi = DenseAnsi.CreateEmptyInstance(matrix.RowKeys, matrix.ColKeys, DenseAnsi.StaticMissingValue);
+            DenseAnsi denseAnsi = DenseAnsi.CreateEmptyInstance(matrix.RowKeys, matrix.ColKeys, DenseAnsi.StaticMissingValue);
 
             //Console.WriteLine("Convert no more than {0} values", matrix.RowCount * matrix.ColCount);
             //CounterWithMessages counterWithMessages = new CounterWithMessages("adding value #{0}", 100000, null);
@@ -419,7 +419,7 @@ namespace Bio.Matrix
         /// <returns>A denseAnsi version of the matrix</returns>
         public static DenseAnsi ToDenseAnsi<T>(this Matrix<string, string, T> matrix, ParallelOptions parallelOptions)
         {
-            var matrix2 = matrix.ConvertValueView(new CharToGenericConverter<T>().Inverted, '?');
+            Matrix<string, string, char> matrix2 = matrix.ConvertValueView(new CharToGenericConverter<T>().Inverted, '?');
             return matrix2.ToDenseAnsi(parallelOptions);
         }
 
@@ -451,7 +451,7 @@ namespace Bio.Matrix
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
         public static void WriteDenseAnsi<T>(this Matrix<string, string, T> matrix, TextWriter textWriter, ParallelOptions parallelOptions, bool verbose = false)
         {
-            var matrixInternal = matrix.ConvertValueView(ValueConverter.GetCharToGeneric<T>().Inverted, DenseAnsi.StaticMissingValue);
+            Matrix<string, string, char> matrixInternal = matrix.ConvertValueView(ValueConverter.GetCharToGeneric<T>().Inverted, DenseAnsi.StaticMissingValue);
             matrixInternal.WriteDenseAnsi(textWriter, parallelOptions, verbose);
         }
 
@@ -467,14 +467,14 @@ namespace Bio.Matrix
         {
 
             textWriter.WriteLine("var\t{0}", matrix.ColKeys.StringJoin("\t"));
-            foreach (var rowKey in matrix.RowKeys)
+            foreach (string rowKey in matrix.RowKeys)
             {
                 textWriter.Write(rowKey);
                 textWriter.Write("\t");
-                var rowIndex = matrix.IndexOfRowKey[rowKey];
+                int rowIndex = matrix.IndexOfRowKey[rowKey];
 
-                var storeList = new List<byte>(matrix.ColCount);
-                for (var colIndex = 0; colIndex < matrix.ColCount; ++colIndex)
+                List<byte> storeList = new List<byte>(matrix.ColCount);
+                for (int colIndex = 0; colIndex < matrix.ColCount; ++colIndex)
                 {
                     char value;
                     byte store;
@@ -490,7 +490,7 @@ namespace Bio.Matrix
                 }
 
                 Helper.CheckCondition(storeList.Count == matrix.ColCount, () => string.Format(CultureInfo.InvariantCulture, Properties.Resource.ExpectedStoreListCountToEqualColCount, storeList.Count, matrix.ColCount));
-                var s = DenseAnsi.StoreListToString(storeList, matrix.ColCount);
+                string s = DenseAnsi.StoreListToString(storeList, matrix.ColCount);
                 textWriter.WriteLine(s);
             }
         }

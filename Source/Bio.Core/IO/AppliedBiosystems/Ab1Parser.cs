@@ -61,7 +61,7 @@ namespace Bio.IO.AppliedBiosystems
         /// <returns></returns>
         public IEnumerable<ISequence> Parse(Stream stream)
         {
-            using (var binaryReader = new BinaryReader(stream))
+            using (BinaryReader binaryReader = new BinaryReader(stream))
             {
                 yield return Ab1ContextToSequenceConverter.Convert(Parse(binaryReader, Alphabet));
             }
@@ -107,9 +107,9 @@ namespace Bio.IO.AppliedBiosystems
                 alphabet = Alphabets.DNA;
             }
 
-            var rawData = new Ab1Header(reader);
-            var dataParser = DataParserFactory.GetParser(rawData.MajorVersion);
-            var context = new ParserContext { Header = rawData, Reader = reader, Alphabet = alphabet, };
+            Ab1Header rawData = new Ab1Header(reader);
+            IVersionedDataParser dataParser = DataParserFactory.GetParser(rawData.MajorVersion);
+            ParserContext context = new ParserContext { Header = rawData, Reader = reader, Alphabet = alphabet, };
             dataParser.ParseData(context);
 
             return context;

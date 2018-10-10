@@ -99,11 +99,11 @@ namespace Bio.TestAutomation.IO.Newick
         [Category("Priority1")]
         public void PhylogeneticTreeP1ParserValidateAllProperties()
         {
-            var parser = new NewickParser();
+            NewickParser parser = new NewickParser();
             {
-                var name = parser.Name;
-                var fileTypes = parser.SupportedFileTypes;
-                var description = parser.Description;
+                string name = parser.Name;
+                string fileTypes = parser.SupportedFileTypes;
+                string description = parser.Description;
                 Assert.AreEqual(Constants.ParserName, name);
                 Assert.AreEqual(Constants.ParserFileTypes, fileTypes);
                 Assert.AreEqual(Constants.ParserDescription, description.Replace("\r\n", "\n"));
@@ -154,11 +154,11 @@ namespace Bio.TestAutomation.IO.Newick
         [Category("Priority1")]
         public void PhylogeneticTreeP1FormatterValidateAllProperties()
         {
-            var formatter = new NewickFormatter();
+            NewickFormatter formatter = new NewickFormatter();
 
-            var name = formatter.Name;
-            var fileTypes = formatter.SupportedFileTypes;
-            var description = formatter.Description;
+            string name = formatter.Name;
+            string fileTypes = formatter.SupportedFileTypes;
+            string description = formatter.Description;
             Assert.AreEqual(Constants.ParserName, name);
             Assert.AreEqual(Constants.ParserFileTypes, fileTypes);
             Assert.AreEqual(Constants.FormatDescription, description.Replace("\r\n", "\n"));
@@ -303,7 +303,7 @@ namespace Bio.TestAutomation.IO.Newick
             AdditionalParameters addParam)
         {
             // Gets the expected sequence from the Xml
-            var filePath = _utilityObj.xmlUtil.GetTextValue(nodeName,
+            string filePath = _utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.FilePathNode).TestDir();
 
             Assert.IsTrue(File.Exists(filePath));
@@ -312,22 +312,22 @@ namespace Bio.TestAutomation.IO.Newick
             ApplicationLog.WriteLine(string.Format((IFormatProvider)null,
                 "Phylogenetic Tree Parser P1: File Exists in the Path '{0}'.", filePath));
 
-            var parser = new NewickParser();
+            NewickParser parser = new NewickParser();
             {
                 Tree rootTree = null;
 
                 switch (addParam)
                 {
                     case AdditionalParameters.Stream:
-                        using (var reader = File.OpenRead(filePath))
+                        using (FileStream reader = File.OpenRead(filePath))
                         {
                             rootTree = parser.Parse(reader);
                         }
                         break;
                     case AdditionalParameters.StringBuilder:
-                        using (var reader = File.OpenText(filePath))
+                        using (StreamReader reader = File.OpenText(filePath))
                         {
-                            var strBuilderObj = new StringBuilder(
+                            StringBuilder strBuilderObj = new StringBuilder(
                                 reader.ReadToEnd());
                             rootTree = parser.Parse(strBuilderObj);
                         }
@@ -337,9 +337,9 @@ namespace Bio.TestAutomation.IO.Newick
                         break;
                 }
 
-                var rootNode = rootTree.Root;
+                Node rootNode = rootTree.Root;
 
-                var rootBranchCount = _utilityObj.xmlUtil.GetTextValue(nodeName,
+                string rootBranchCount = _utilityObj.xmlUtil.GetTextValue(nodeName,
                     Constants.RootBranchCountNode);
 
                 // Validate the root branch count
@@ -349,24 +349,24 @@ namespace Bio.TestAutomation.IO.Newick
                 ApplicationLog.WriteLine(string.Format("Phylogenetic Tree Parser P1: Number of Root Branches found are '{0}'.",
                     rootNode.Children.Count.ToString((IFormatProvider)null)));
 
-                var leavesName = new List<string>();
-                var leavesDistance = new List<double>();
+                List<string> leavesName = new List<string>();
+                List<double> leavesDistance = new List<double>();
 
                 // Gets all the leaves in the root node list
                 GetAllNodesAndEdges(rootNode, ref leavesName, ref leavesDistance);
 
-                var expectedLeavesName = _utilityObj.xmlUtil.GetTextValue(nodeName,
+                string[] expectedLeavesName = _utilityObj.xmlUtil.GetTextValue(nodeName,
                    Constants.NodeNamesNode).Split(',');
 
-                var expectedLeavesDistance = _utilityObj.xmlUtil.GetTextValue(nodeName,
+                string[] expectedLeavesDistance = _utilityObj.xmlUtil.GetTextValue(nodeName,
                    Constants.EdgeDistancesNode).Split(',');
 
-                for (var i = 0; i < expectedLeavesName.Length; i++)
+                for (int i = 0; i < expectedLeavesName.Length; i++)
                 {
                     Assert.AreEqual(expectedLeavesName[i], leavesName[i]);
                 }
 
-                for (var i = 0; i < expectedLeavesDistance.Length; i++)
+                for (int i = 0; i < expectedLeavesDistance.Length; i++)
                 {
                     Assert.AreEqual(expectedLeavesDistance[i],
                         leavesDistance[i].ToString((IFormatProvider)null));
@@ -386,9 +386,9 @@ namespace Bio.TestAutomation.IO.Newick
             FormatterParameters formatParam)
         {
             // Gets the expected sequence from the Xml
-            var filePath = string.Empty;
+            string filePath = string.Empty;
 
-            var parser = new NewickParser();
+            NewickParser parser = new NewickParser();
             {
                 Tree rootTree = null;
 
@@ -409,7 +409,7 @@ namespace Bio.TestAutomation.IO.Newick
                         ApplicationLog.WriteLine(string.Format((IFormatProvider)null,
                             "Phylogenetic Tree Formatter P1: File Exists in the Path '{0}'.",
                             filePath));
-                        using (var reader = File.OpenRead(filePath))
+                        using (FileStream reader = File.OpenRead(filePath))
                         {
                             rootTree = parser.Parse(reader);
                         }
@@ -424,9 +424,9 @@ namespace Bio.TestAutomation.IO.Newick
                             "Phylogenetic Tree Formatter P1: File Exists in the Path '{0}'.",
                             filePath));
 
-                        using (var reader = File.OpenText(filePath))
+                        using (StreamReader reader = File.OpenText(filePath))
                         {
-                            var strBuilderObj =
+                            StringBuilder strBuilderObj =
                                 new StringBuilder(reader.ReadToEnd());
                             rootTree = parser.Parse(strBuilderObj);
                         }
@@ -445,23 +445,23 @@ namespace Bio.TestAutomation.IO.Newick
                         break;
                 }
 
-                var outputFilepath = _utilityObj.xmlUtil.GetTextValue(nodeName,
+                string outputFilepath = _utilityObj.xmlUtil.GetTextValue(nodeName,
                     Constants.OutputFilePathNode);
 
-                var format = new NewickFormatter();
+                NewickFormatter format = new NewickFormatter();
                 switch (formatParam)
                 {
                     case FormatterParameters.Stream:
-                        using (var writer = File.Create(outputFilepath))
+                        using (FileStream writer = File.Create(outputFilepath))
                         {
                             format.Format(writer, rootTree);
                         }
                         break;
                     case FormatterParameters.FormatString:
                         // Validate format String
-                        var formatString = format.FormatString(rootTree);
+                        string formatString = format.FormatString(rootTree);
 
-                        var expectedFormatString = _utilityObj.xmlUtil.GetTextValue(nodeName,
+                        string expectedFormatString = _utilityObj.xmlUtil.GetTextValue(nodeName,
                             Constants.FormatStringNode);
 
                         Assert.AreEqual(expectedFormatString, formatString);
@@ -479,7 +479,7 @@ namespace Bio.TestAutomation.IO.Newick
                 if (FormatterParameters.FormatString != formatParam)
                 {
                     // Re-parse the created file and validate the tree.
-                    var newparserObj = new NewickParser();
+                    NewickParser newparserObj = new NewickParser();
                     {
                         Tree newrootTreeObj = null;
 
@@ -492,9 +492,9 @@ namespace Bio.TestAutomation.IO.Newick
 
                         newrootTreeObj = newparserObj.Parse(outputFilepath);
 
-                        var rootNode = newrootTreeObj.Root;
+                        Node rootNode = newrootTreeObj.Root;
 
-                        var rootBranchCount = _utilityObj.xmlUtil.GetTextValue(nodeName,
+                        string rootBranchCount = _utilityObj.xmlUtil.GetTextValue(nodeName,
                             Constants.RootBranchCountNode);
 
                         // Validate the root branch count
@@ -505,25 +505,25 @@ namespace Bio.TestAutomation.IO.Newick
                             "Phylogenetic Tree Formatter P1: Number of Root Branches found are '{0}'.",
                             rootNode.Children.Count.ToString((IFormatProvider)null)));
 
-                        var leavesName = new List<string>();
-                        var leavesDistance = new List<double>();
+                        List<string> leavesName = new List<string>();
+                        List<double> leavesDistance = new List<double>();
 
                         // Gets all the leaves in the root node list
                         GetAllNodesAndEdges(rootNode, ref leavesName,
                             ref leavesDistance);
 
-                        var expectedLeavesName = _utilityObj.xmlUtil.GetTextValue(nodeName,
+                        string[] expectedLeavesName = _utilityObj.xmlUtil.GetTextValue(nodeName,
                             Constants.NodeNamesNode).Split(',');
 
-                        var expectedLeavesDistance = _utilityObj.xmlUtil.GetTextValue(nodeName,
+                        string[] expectedLeavesDistance = _utilityObj.xmlUtil.GetTextValue(nodeName,
                             Constants.EdgeDistancesNode).Split(',');
 
-                        for (var i = 0; i < expectedLeavesName.Length; i++)
+                        for (int i = 0; i < expectedLeavesName.Length; i++)
                         {
                             Assert.AreEqual(expectedLeavesName[i], leavesName[i]);
                         }
 
-                        for (var i = 0; i < expectedLeavesDistance.Length; i++)
+                        for (int i = 0; i < expectedLeavesDistance.Length; i++)
                         {
                             Assert.AreEqual(expectedLeavesDistance[i], leavesDistance[i].ToString((IFormatProvider)null));
                         }
@@ -547,23 +547,23 @@ namespace Bio.TestAutomation.IO.Newick
         void GetAllNodesAndEdges(Node rootNode,
               ref List<string> nodeName, ref List<double> distance)
         {
-            var edges = rootNode.Edges;
+            IList<Edge> edges = rootNode.Edges;
 
             if (null != edges)
             {
                 // Get all the edges distances
-                foreach (var ed in edges)
+                foreach (Edge ed in edges)
                 {
                     distance.Add(ed.Distance);
                 }
             }
 
             // Gets all the nodes
-            var nodes = rootNode.Nodes;
+            IList<Node> nodes = rootNode.Nodes;
 
             if (null != nodes)
             {
-                foreach (var nd in nodes)
+                foreach (Node nd in nodes)
                 {
                     if (nd.IsLeaf)
                     {
@@ -586,44 +586,44 @@ namespace Bio.TestAutomation.IO.Newick
         /// <returns>Formatter tree.</returns>
         private static Tree GetFormattedObject(bool isSingleNode)
         {
-            var baseTree = new Tree();
+            Tree baseTree = new Tree();
 
             // Tree with three nodes are created
-            var nd1 = new Node();
+            Node nd1 = new Node();
             nd1.Name = "a";
-            var ed1 = new Edge();
+            Edge ed1 = new Edge();
             ed1.Distance = 0.1;
 
             if (isSingleNode)
             {
-                var singleNode = new Node();
+                Node singleNode = new Node();
                 singleNode.Children.Add(nd1, ed1);
                 baseTree.Root = singleNode;
             }
             else
             {
-                var nd2 = new Node();
+                Node nd2 = new Node();
                 nd2.Name = "b";
-                var ed2 = new Edge();
+                Edge ed2 = new Edge();
                 ed2.Distance = 0.2;
 
-                var nd3 = new Node();
+                Node nd3 = new Node();
                 nd3.Name = "c";
-                var ed3 = new Edge();
+                Edge ed3 = new Edge();
                 ed3.Distance = 0.3;
 
-                var nd4 = new Node();
+                Node nd4 = new Node();
                 nd4.Children.Add(nd1, ed1);
-                var ed4 = new Edge();
+                Edge ed4 = new Edge();
                 ed4.Distance = 0.4;
 
-                var nd5 = new Node();
+                Node nd5 = new Node();
                 nd5.Children.Add(nd2, ed2);
                 nd5.Children.Add(nd3, ed3);
-                var ed5 = new Edge();
+                Edge ed5 = new Edge();
                 ed5.Distance = 0.5;
 
-                var ndRoot = new Node();
+                Node ndRoot = new Node();
                 ndRoot.Children.Add(nd4, ed4);
                 ndRoot.Children.Add(nd5, ed5);
 

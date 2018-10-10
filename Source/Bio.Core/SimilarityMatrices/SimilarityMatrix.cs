@@ -84,7 +84,7 @@ namespace Bio.SimilarityMatrices
                     break;
             }
 
-            var stream = typeof(SimilarityMatrix).GetTypeInfo().Assembly.GetManifestResourceStream(matrixText);
+            Stream stream = typeof(SimilarityMatrix).GetTypeInfo().Assembly.GetManifestResourceStream(matrixText);
             if (stream == null)
                 throw new Exception("Could not locate SimilarityMatrix " + matrixText + " in resources.");
 
@@ -283,21 +283,21 @@ namespace Bio.SimilarityMatrices
             Name = reader.ReadLine();
             if (String.IsNullOrEmpty(Name))
             {
-                var message = Properties.Resource.SimilarityMatrix_NameMissing;
+                string message = Properties.Resource.SimilarityMatrix_NameMissing;
                 Debug.WriteLine(message);
                 throw new InvalidDataException(message);
             }
 
-            var line = reader.ReadLine();
+            string line = reader.ReadLine();
             if (String.IsNullOrEmpty(line))
             {
-                var message = Properties.Resource.SimilarityMatrix_SecondLineMissing;
+                string message = Properties.Resource.SimilarityMatrix_SecondLineMissing;
                 Debug.WriteLine(message);
                 throw new InvalidDataException(message);
             }
 
             // If the second line is Protein, DNA or RNA, we can set molecule type here and will have to read the alphabet from the third line.
-            var secondLine = line.ToUpper().Trim();
+            string secondLine = line.ToUpper().Trim();
             string alphabetLine;
 
             if (moleculeType != null)
@@ -309,7 +309,7 @@ namespace Bio.SimilarityMatrices
                 // Find molecule type from second line
                 if (!(secondLine == "DNA" || secondLine == "RNA" || secondLine == "PROTEIN"))
                 {
-                    var message = String.Format(
+                    string message = String.Format(
                             CultureInfo.CurrentCulture,
                             Properties.Resource.SimilarityMatrix_InvalidMoleculeType,
                             secondLine);
@@ -322,13 +322,13 @@ namespace Bio.SimilarityMatrices
             }
 
             // We have read the two or three line header, including the alphabet if required.
-            var symbolCount = 0;  // Number of symbols in alphabet map.
+            int symbolCount = 0;  // Number of symbols in alphabet map.
 
             // We need to parse the alphabet line.
-            var alphabetsParsed = alphabetLine.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
-            var uppercaseByteValues = new byte[alphabetsParsed.Length];
-            var lowercaseByteValues = new byte[alphabetsParsed.Length];
-            foreach (var s in alphabetsParsed)
+            string[] alphabetsParsed = alphabetLine.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
+            byte[] uppercaseByteValues = new byte[alphabetsParsed.Length];
+            byte[] lowercaseByteValues = new byte[alphabetsParsed.Length];
+            foreach (string s in alphabetsParsed)
             {
                 uppercaseByteValues[symbolCount] = (byte)s[0];
                 lowercaseByteValues[symbolCount] = (byte)s.ToLowerInvariant()[0];
@@ -342,8 +342,8 @@ namespace Bio.SimilarityMatrices
             int rowCount = byte.MaxValue;
             int columnCount = byte.MaxValue;
 
-            var localSimilarityMatrix = new int[rowCount][];
-            for (var x = 0; x < rowCount; x++)
+            int[][] localSimilarityMatrix = new int[rowCount][];
+            for (int x = 0; x < rowCount; x++)
             {
                 localSimilarityMatrix[x] = new int[columnCount];
             }
@@ -354,12 +354,12 @@ namespace Bio.SimilarityMatrices
                 line = reader.ReadLine();
                 if (line == null || string.IsNullOrWhiteSpace(line))
                 {
-                    var message = Properties.Resource.SimilarityMatrix_FewerMatrixLines;
+                    string message = Properties.Resource.SimilarityMatrix_FewerMatrixLines;
                     Debug.WriteLine(message);
                     throw new InvalidDataException(message);
                 }
 
-                var rowValues = line.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
+                string[] rowValues = line.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
                 int col; // column indices.
                 for (col = 0; col < symbolCount; col++)
                 {
@@ -380,7 +380,7 @@ namespace Bio.SimilarityMatrices
                     }
                     catch (FormatException e)
                     {
-                        var message = String.Format(
+                        string message = String.Format(
                                 CultureInfo.CurrentCulture,
                                 Properties.Resource.SimilarityMatrix_BadOrMissingValue,
                                 line,

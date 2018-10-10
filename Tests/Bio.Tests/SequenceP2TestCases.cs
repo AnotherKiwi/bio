@@ -25,16 +25,16 @@ namespace Bio.Tests
         public void InvalidateCopyTo()
         {
             // Get input and expected values from xml
-            var expectedSequence = utilityObj.xmlUtil.GetTextValue(Constants.RnaDerivedSequenceNode,
+            string expectedSequence = utilityObj.xmlUtil.GetTextValue(Constants.RnaDerivedSequenceNode,
                                                                       Constants.ExpectedSequence);
-            var alphabetName = utilityObj.xmlUtil.GetTextValue(Constants.RnaDerivedSequenceNode,
+            string alphabetName = utilityObj.xmlUtil.GetTextValue(Constants.RnaDerivedSequenceNode,
                                                                   Constants.AlphabetNameNode);
-            var alphabet = Utility.GetAlphabet(alphabetName);
+            IAlphabet alphabet = Utility.GetAlphabet(alphabetName);
 
             // Create a Sequence object.
             ISequence iseqObj =
                 new Sequence(alphabet, expectedSequence);
-            var seqObj = new Sequence(iseqObj);
+            Sequence seqObj = new Sequence(iseqObj);
             //check with null array
             byte[] array = null;
             try

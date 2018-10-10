@@ -44,16 +44,20 @@ namespace Bio
             Z = (byte)'Z';
 
             // Add to ambiguous symbols
-            _ambiguousSymbols.Add(B); _ambiguousSymbols.Add((byte)char.ToLower((char)B));
-            _ambiguousSymbols.Add(J); _ambiguousSymbols.Add((byte)char.ToLower((char)J));
-            _ambiguousSymbols.Add(X); _ambiguousSymbols.Add((byte)char.ToLower((char)X));
-            _ambiguousSymbols.Add(Z); _ambiguousSymbols.Add((byte)char.ToLower((char)Z));
+            _ambiguousSymbols.Add(B);
+            _ambiguousSymbols.Add((byte)char.ToLower((char)B));
+            _ambiguousSymbols.Add(J);
+            _ambiguousSymbols.Add((byte)char.ToLower((char)J));
+            _ambiguousSymbols.Add(X);
+            _ambiguousSymbols.Add((byte)char.ToLower((char)X));
+            _ambiguousSymbols.Add(Z);
+            _ambiguousSymbols.Add((byte)char.ToLower((char)Z));
             _ambiguousSymbols.Add(Ter);
 
-            AddAminoAcid(X, "Xaa", "Undetermined or atypical", (byte)'x');
-            AddAminoAcid(Z, "Glx", "Glutamic Acid or Glutamine", (byte)'z');
-            AddAminoAcid(B, "Asx", "Aspartic Acid or Asparagine", (byte)'b');
-            AddAminoAcid(J, "Xle", "Leucine or Isoleucine", (byte)'j');
+            AddAminoAcid(X, "Xaa", "Undetermined or atypical", false, (byte)'x');
+            AddAminoAcid(Z, "Glx", "Glutamic Acid or Glutamine", false, (byte)'z');
+            AddAminoAcid(B, "Asx", "Aspartic Acid or Asparagine", false, (byte)'b');
+            AddAminoAcid(J, "Xle", "Leucine or Isoleucine", false, (byte)'j');
 
             // Map ambiguous symbols.
             MapAmbiguousAminoAcid(B, new byte[] { D, N });
@@ -96,10 +100,10 @@ namespace Bio
             }
 
             // Validate that all are valid protein symbols
-            var validValues = GetValidSymbols();
-            var symbolsInUpperCase = new HashSet<byte>();
+            HashSet<byte> validValues = GetValidSymbols();
+            HashSet<byte> symbolsInUpperCase = new HashSet<byte>();
 
-            foreach (var symbol in symbols)
+            foreach (byte symbol in symbols)
             {
                 if (!validValues.Contains(symbol))
                 {
@@ -107,7 +111,7 @@ namespace Bio
                         CultureInfo.CurrentCulture, Resource.INVALID_SYMBOL, symbol, Name));
                 }
 
-                var upperCaseSymbol = symbol;
+                byte upperCaseSymbol = symbol;
                 if (symbol >= 97 && symbol <= 122)
                 {
                     upperCaseSymbol = (byte)(symbol - 32);
@@ -122,9 +126,9 @@ namespace Bio
             }
 
             // Remove all gap symbols
-            TryGetGapSymbols(out var gapItems);
+            TryGetGapSymbols(out HashSet<byte> gapItems);
 
-            TryGetDefaultGapSymbol(out var defaultGap);
+            TryGetDefaultGapSymbol(out byte defaultGap);
 
             symbolsInUpperCase.ExceptWith(gapItems);
 
@@ -137,11 +141,11 @@ namespace Bio
                     return symbols.First();
                 default:
                 {
-                    var baseSet = new HashSet<byte>();
+                    HashSet<byte> baseSet = new HashSet<byte>();
 
-                    foreach (var n in symbolsInUpperCase)
+                    foreach (byte n in symbolsInUpperCase)
                     {
-                        if (TryGetBasicSymbols(n, out var ambiguousSymbols))
+                        if (TryGetBasicSymbols(n, out HashSet<byte> ambiguousSymbols))
                         {
                             baseSet.UnionWith(ambiguousSymbols);
                         }
@@ -152,7 +156,7 @@ namespace Bio
                         }
                     }
 
-                    return TryGetAmbiguousSymbol(baseSet, out var returnValue) ? returnValue : X;
+                    return TryGetAmbiguousSymbol(baseSet, out byte returnValue) ? returnValue : X;
                 }
             }
         }

@@ -93,7 +93,7 @@ namespace Bio.IO.Xsv
             }
 
             // Stream is left open at the end.
-            using (var writer = stream.OpenWrite())
+            using (StreamWriter writer = stream.OpenWrite())
             {
                 Write(writer, data, (long)data.Metadata[XsvSparseParser.MetadataOffsetKey]);
             }
@@ -113,9 +113,9 @@ namespace Bio.IO.Xsv
             }
 
             // Stream is closed at the end.
-            using (var writer = stream.OpenWrite())
+            using (StreamWriter writer = stream.OpenWrite())
             {
-                foreach (var sequence in sequences)
+                foreach (ISequence sequence in sequences)
                 {
                     Write(writer, sequence, (long)sequence.Metadata[XsvSparseParser.MetadataOffsetKey]);
                 }
@@ -149,7 +149,7 @@ namespace Bio.IO.Xsv
             // for sparse sequences, only write the non-null sequence items
             if (data is SparseSequence)
             {
-                foreach (var item in
+                foreach (IndexedItem<byte> item in
                     (data as SparseSequence).GetKnownSequenceItems())
                 {
                     writer.WriteLine("{0}{1}{2}{3}", (item.Index - (long)data.Metadata[XsvSparseParser.MetadataOffsetKey]), Separator, (char)item.Item, Separator);
@@ -157,7 +157,7 @@ namespace Bio.IO.Xsv
             }
             else // for non-sparse sequence, write all sequence items
             {
-                for (var i = 0; i < data.Count; i++)
+                for (int i = 0; i < data.Count; i++)
                 {
                     writer.WriteLine("{0}{1}{2}{3}", i, Separator, (char)data[i], Separator);
                 }

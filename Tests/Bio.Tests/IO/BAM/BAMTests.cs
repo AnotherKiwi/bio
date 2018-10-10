@@ -22,12 +22,12 @@ namespace Bio.Tests.IO.BAM
         [Category("Priority0"), Category("BAM")]
         public void TestParser()
         {
-            var FilePath = @"TestUtils\BAM\SeqAlignment.bam".TestDir();
+            string FilePath = @"TestUtils\BAM\SeqAlignment.bam".TestDir();
             BAMParser parser = null;
             try
             {
                 parser = new BAMParser();
-                var alignmentMap = parser.ParseOne<SequenceAlignmentMap>(FilePath);
+                SequenceAlignmentMap alignmentMap = parser.ParseOne<SequenceAlignmentMap>(FilePath);
                 Assert.IsTrue(alignmentMap != null);
                 Assert.AreEqual(alignmentMap.Header.GetReferenceSequencesInfoFromSQHeader().Count, 1);
                 Assert.AreEqual(alignmentMap.QuerySequences.Count, 2);
@@ -46,11 +46,11 @@ namespace Bio.Tests.IO.BAM
         [Category("Priority0"),Category("BAM")]
         public void TestFormatter()
         {
-            var filePath = @"TestUtils\BAM\SeqAlignment.bam".TestDir();
+            string filePath = @"TestUtils\BAM\SeqAlignment.bam".TestDir();
             const string outputfilePath = "BAMTests123.bam";
-            var outputIndexFile = outputfilePath + ".bai";
-            var parser = new BAMParser();
-            var alignmentMap = parser.ParseOne<SequenceAlignmentMap>(filePath);
+            string outputIndexFile = outputfilePath + ".bai";
+            BAMParser parser = new BAMParser();
+            SequenceAlignmentMap alignmentMap = parser.ParseOne<SequenceAlignmentMap>(filePath);
 
             Assert.IsNotNull(alignmentMap);
             Assert.IsNotNull(alignmentMap.Header);
@@ -59,7 +59,7 @@ namespace Bio.Tests.IO.BAM
             Assert.IsNotNull(alignmentMap.QuerySequences);
             Assert.AreEqual(alignmentMap.QuerySequences.Count, 2);
 
-            var formatter = new BAMFormatter();
+            BAMFormatter formatter = new BAMFormatter();
             formatter.Format(alignmentMap, outputfilePath);
 
             formatter.CreateSortedBAMFile = true;
@@ -100,14 +100,14 @@ namespace Bio.Tests.IO.BAM
         [Category("Priority0"), Category("BAM")]
         public void BAMProperties()
         {
-            using (var parser = new BAMParser())
+            using (BAMParser parser = new BAMParser())
             {
                 Assert.AreEqual(parser.Name, Properties.Resource.BAM_NAME);
                 Assert.AreEqual(parser.Description, Properties.Resource.BAMPARSER_DESCRIPTION);
                 Assert.AreEqual(parser.SupportedFileTypes, Properties.Resource.BAM_FILEEXTENSION);
             }
 
-            var formatter = new BAMFormatter();
+            BAMFormatter formatter = new BAMFormatter();
             Assert.AreEqual(formatter.Name, Properties.Resource.BAM_NAME);
             Assert.AreEqual(formatter.Description, Properties.Resource.BAMFORMATTER_DESCRIPTION);
             Assert.AreEqual(formatter.SupportedFileTypes, Properties.Resource.BAM_FILEEXTENSION);
@@ -121,15 +121,15 @@ namespace Bio.Tests.IO.BAM
         [Category("Priority0"), Category("BAM")]
         public void TestFormatterWithSort()
         {
-            var inputFilePath = @"TestUtils\BAM\SeqAlignment.bam".TestDir();
-            var outputFilePath1 = "output1.bam";
-            var outputFilePath2 = "output2.bam";
+            string inputFilePath = @"TestUtils\BAM\SeqAlignment.bam".TestDir();
+            string outputFilePath1 = "output1.bam";
+            string outputFilePath2 = "output2.bam";
             BAMParser parser = null;
             try
             {
                 parser = new BAMParser();
-                var formatter = new BAMFormatter();
-                var alignmentMap = parser.ParseOne<SequenceAlignmentMap>(inputFilePath);
+                BAMFormatter formatter = new BAMFormatter();
+                SequenceAlignmentMap alignmentMap = parser.ParseOne<SequenceAlignmentMap>(inputFilePath);
 
                 Assert.IsTrue(alignmentMap != null);
                 Assert.AreEqual(alignmentMap.Header.GetReferenceSequencesInfoFromSQHeader().Count, 1);
@@ -174,8 +174,8 @@ namespace Bio.Tests.IO.BAM
             }
 
             // Open the two files.
-            var fs1 = new FileStream(file1, FileMode.Open);
-            var fs2 = new FileStream(file2, FileMode.Open);
+            FileStream fs1 = new FileStream(file1, FileMode.Open);
+            FileStream fs2 = new FileStream(file2, FileMode.Open);
 
             // Check the file sizes. If they are not the same, the files 
             // are not the same.

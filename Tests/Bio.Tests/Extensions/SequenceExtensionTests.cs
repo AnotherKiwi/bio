@@ -57,7 +57,7 @@ namespace Bio.Tests.Extensions
         public void TryToGetDefaultValidSequence()
         {
             ISequence sequence = new Sequence(DnaAlphabet.Instance, SmallSequence);
-            var theString = sequence.ConvertToString();
+            string theString = sequence.ConvertToString();
             Assert.AreEqual(SmallSequence, theString);
         }
 
@@ -69,7 +69,7 @@ namespace Bio.Tests.Extensions
         public void TryToGetSubstringValidSequence()
         {
             ISequence sequence = new Sequence(DnaAlphabet.Instance, SmallSequence);
-            var theString = sequence.ConvertToString(2,4);
+            string theString = sequence.ConvertToString(2,4);
             Assert.AreEqual(SmallSequence.Substring(2,4), theString);
         }
 
@@ -81,7 +81,7 @@ namespace Bio.Tests.Extensions
         public void TryToGetEndValidSequence()
         {
             ISequence sequence = new Sequence(DnaAlphabet.Instance, SmallSequence);
-            var theString = sequence.ConvertToString(5);
+            string theString = sequence.ConvertToString(5);
             Assert.AreEqual(SmallSequence.Substring(5), theString);
         }
 

@@ -23,12 +23,12 @@ namespace Bio.Tests.IO.Nexus
         [Category("Priority0")]
         public void NexusParse()
         {
-            var filepath = @"TestUtils\Nexus\primate-mtDNA-interleaved.nex".TestDir();
+            string filepath = @"TestUtils\Nexus\primate-mtDNA-interleaved.nex".TestDir();
             Assert.IsTrue(File.Exists(filepath));
 
             IList<Dictionary<string, string>> expectedOutput = new List<Dictionary<string, string>>();
 
-            var expectedAlignment = new Dictionary<string, string>
+            Dictionary<string, string> expectedAlignment = new Dictionary<string, string>
             {
                 ["Lemur_catta"] = "AAGCTTCATAGGAGCAACCATTCTAATAATCGCACATGGCCTTACATCATCCATATTATT"
                     + "CTGTCTAGCCAACTCTAACTACGAACGAATCCATAGCCGTACAATACTACTAGCACGAGG"
@@ -243,12 +243,12 @@ namespace Bio.Tests.IO.Nexus
         [Category("Priority0")]
         public void NexusParseOne()
         {
-            var filepath = @"TestUtils\Nexus\primate-mtDNA-interleaved.nex".TestDir();
+            string filepath = @"TestUtils\Nexus\primate-mtDNA-interleaved.nex".TestDir();
             Assert.IsTrue(File.Exists(filepath));
 
             IList<Dictionary<string, string>> expectedOutput = new List<Dictionary<string, string>>();
 
-            var expectedAlignment = new Dictionary<string, string>
+            Dictionary<string, string> expectedAlignment = new Dictionary<string, string>
             {
                 ["Lemur_catta"] = "AAGCTTCATAGGAGCAACCATTCTAATAATCGCACATGGCCTTACATCATCCATATTATT"
                     + "CTGTCTAGCCAACTCTAACTACGAACGAATCCATAGCCGTACAATACTACTAGCACGAGG"
@@ -445,7 +445,7 @@ namespace Bio.Tests.IO.Nexus
 
             expectedOutput.Add(expectedAlignment);
 
-            var actualOutput = new List<ISequenceAlignment>();
+            List<ISequenceAlignment> actualOutput = new List<ISequenceAlignment>();
             ISequenceAlignment actualAlignment = null;
             ISequenceAlignmentParser parser = new NexusParser();
 
@@ -472,10 +472,10 @@ namespace Bio.Tests.IO.Nexus
                 return false;
             }
 
-            var alignmentIndex = 0;
-            foreach (var alignment in actualOutput)
+            int alignmentIndex = 0;
+            foreach (ISequenceAlignment alignment in actualOutput)
             {
-                var expcetedAlignment = expectedOutput[alignmentIndex];
+                Dictionary<string, string> expcetedAlignment = expectedOutput[alignmentIndex];
 
                 foreach (Sequence actualSequence in alignment.AlignedSequences[0].Sequences)
                 {

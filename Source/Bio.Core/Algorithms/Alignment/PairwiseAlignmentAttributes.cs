@@ -37,7 +37,7 @@ namespace Bio.Algorithms.Alignment
         {
             attributes = new Dictionary<string, AlignmentInfo>();
 
-            var similarityMatrixList = new StringListValidator(
+            StringListValidator similarityMatrixList = new StringListValidator(
                 Properties.Resource.SimilarityMatrix_DiagonalSM,
                 SM.StandardSimilarityMatrix.AmbiguousDna.ToString(),
                 SM.StandardSimilarityMatrix.AmbiguousRna.ToString(),
@@ -51,7 +51,7 @@ namespace Bio.Algorithms.Alignment
                 SM.StandardSimilarityMatrix.Pam30.ToString(),
                 SM.StandardSimilarityMatrix.Pam70.ToString());
 
-            var alignmentAttribute = new AlignmentInfo(
+            AlignmentInfo alignmentAttribute = new AlignmentInfo(
                 Properties.Resource.SIMILARITY_MATRIX_NAME,
                 Properties.Resource.SIMILARITY_MATRIX_DESCRIPTION,
                 true,

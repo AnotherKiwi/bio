@@ -33,7 +33,7 @@ using Bio.Util.Logging;
         [Category("Priority0")]
         public void FastAFormatterInvalidateClose()
         {
-            var formatter = new FastAFormatter();
+            FastAFormatter formatter = new FastAFormatter();
             formatter.Close();
         }
 

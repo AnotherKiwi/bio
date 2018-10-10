@@ -21,7 +21,7 @@ namespace Bio
                 throw new ArgumentNullException(nameof(filename));
             }
 
-            using (var fs = new FileStream(filename, FileMode.Open))
+            using (FileStream fs = new FileStream(filename, FileMode.Open))
             {
                 return parser.ParseRange(fs);
             }
@@ -38,7 +38,7 @@ namespace Bio
                 throw new ArgumentNullException(nameof(filename));
             }
 
-            using (var fs = new FileStream(filename, FileMode.Open))
+            using (FileStream fs = new FileStream(filename, FileMode.Open))
             {
                 return parser.ParseRangeGrouping(fs);
             }

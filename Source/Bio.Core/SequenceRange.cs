@@ -139,7 +139,7 @@ namespace Bio
             if (obj == null)
                 return 0;
 
-            var sequenceRange = obj as SequenceRange;
+            SequenceRange sequenceRange = obj as SequenceRange;
             if (obj == null)
                 return 0;
 
@@ -167,7 +167,7 @@ namespace Bio
                 return -1;
             }
 
-            var compare = Start.CompareTo(other.Start);
+            int compare = Start.CompareTo(other.Start);
 
             if (compare == 0)
                 compare = End.CompareTo(other.End);
@@ -181,7 +181,7 @@ namespace Bio
 
                 if (compare == 0)
                 {
-                    for (var index = 0; index < ParentSeqRanges.Count; index++)
+                    for (int index = 0; index < ParentSeqRanges.Count; index++)
                     {
                         compare = ParentSeqRanges[index].CompareTo(other.ParentSeqRanges[index]);
                         if (compare != 0)

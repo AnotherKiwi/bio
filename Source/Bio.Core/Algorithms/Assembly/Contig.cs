@@ -56,7 +56,7 @@ namespace Bio.Algorithms.Assembly
             {
                 if (Consensus == null)
                 {
-                    var message = Properties.Resource.ContigLength;
+                    string message = Properties.Resource.ContigLength;
                     Trace.Report(message);
                     throw new ArgumentNullException(message);
                 }

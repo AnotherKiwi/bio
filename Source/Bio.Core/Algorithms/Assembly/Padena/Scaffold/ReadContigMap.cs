@@ -36,7 +36,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
                 throw new ArgumentNullException(nameof(reads));
             }
 
-            foreach (var read in reads)
+            foreach (ISequence read in reads)
             {
                 Add(read.ID, new Dictionary<ISequence, IList<ReadMap>>());
             }

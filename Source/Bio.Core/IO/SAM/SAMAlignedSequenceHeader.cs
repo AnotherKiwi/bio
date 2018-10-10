@@ -171,7 +171,7 @@ namespace Bio.IO.SAM
             }
             set
             {
-                var message = IsValidQName(value);
+                string message = IsValidQName(value);
                 if (!string.IsNullOrEmpty(message))
                 {
                     throw new ArgumentException(message);
@@ -198,7 +198,7 @@ namespace Bio.IO.SAM
             }
             set
             {
-                var message = IsValidRName(value);
+                string message = IsValidRName(value);
                 if (!string.IsNullOrEmpty(message))
                 {
                     throw new ArgumentException(message);
@@ -228,7 +228,7 @@ namespace Bio.IO.SAM
             }
             set
             {
-                var message = IsValidPos(value);
+                string message = IsValidPos(value);
 
                 if (!string.IsNullOrEmpty(message))
                 {
@@ -252,7 +252,7 @@ namespace Bio.IO.SAM
             }
             set
             {
-                var message = IsValidMapQ(value);
+                string message = IsValidMapQ(value);
 
                 if (!string.IsNullOrEmpty(message))
                 {
@@ -274,7 +274,7 @@ namespace Bio.IO.SAM
             }
             set
             {
-                var message = IsValidCIGAR(value);
+                string message = IsValidCIGAR(value);
                 if (!string.IsNullOrEmpty(message))
                 {
                     throw new ArgumentException(message);
@@ -307,7 +307,7 @@ namespace Bio.IO.SAM
             }
             set
             {
-                var message = IsValidMRNM(value);
+                string message = IsValidMRNM(value);
                 if (!string.IsNullOrEmpty(message))
                 {
                     throw new ArgumentException(message);
@@ -336,7 +336,7 @@ namespace Bio.IO.SAM
             }
             set
             {
-                var message = IsValidMPos(value);
+                string message = IsValidMPos(value);
 
                 if (!string.IsNullOrEmpty(message))
                 {
@@ -358,7 +358,7 @@ namespace Bio.IO.SAM
             }
             set
             {
-                var message = IsValidISize(value);
+                string message = IsValidISize(value);
 
                 if (!string.IsNullOrEmpty(message))
                 {
@@ -460,7 +460,7 @@ namespace Bio.IO.SAM
             {
                 return Properties.Resource.InvalidQNameLength;
             }
-            var badName = Helper.StringContainsIllegalCharacters(qname,QNameIllegalCharacters);
+            bool badName = Helper.StringContainsIllegalCharacters(qname,QNameIllegalCharacters);
             return !badName ? String.Empty : "Query name: " + qname + " contains illegal characters";
         }
 
@@ -543,7 +543,7 @@ namespace Bio.IO.SAM
         private int GetBin()
         {
             // As SAM stores 1 based position and to calculate BAM Bin, zero based positions are required.
-            var start = Pos - 1;
+            int start = Pos - 1;
 
             //This is strange, but do not seem to be getting a match with picard/samtools with the -1
             //int end = start + alignmentLength - 1;
@@ -571,25 +571,25 @@ namespace Bio.IO.SAM
                 return DefaultReadLength;
             }
 
-            var charsAndPositions = new List<KeyValuePair<char,int>>();
-            for (var i = 0; i < CIGAR.Length; i++)
+            List<KeyValuePair<char, int>> charsAndPositions = new List<KeyValuePair<char,int>>();
+            for (int i = 0; i < CIGAR.Length; i++)
             {
-                var ch = CIGAR[i];
+                char ch = CIGAR[i];
                 if (Char.IsDigit(ch))
                 {
                     continue;
                 }
                 charsAndPositions.Add(new KeyValuePair<char,int>(ch,i));
             }
-            var len = 0;
+            int len = 0;
             
-            for (var i = 0; i < charsAndPositions.Count; i++)
+            for (int i = 0; i < charsAndPositions.Count; i++)
             {
-                var ch = charsAndPositions[i].Key;
+                char ch = charsAndPositions[i].Key;
                 if (CIGARforClen.Contains(ch))
                 {
-                    var start = i == 0 ? 0 : charsAndPositions[i - 1].Value + 1;
-                    var end = charsAndPositions[i].Value - start;
+                    int start = i == 0 ? 0 : charsAndPositions[i - 1].Value + 1;
+                    int end = charsAndPositions[i].Value - start;
                     len += int.Parse(CIGAR.Substring(start, end), CultureInfo.InvariantCulture);
                 }
             }

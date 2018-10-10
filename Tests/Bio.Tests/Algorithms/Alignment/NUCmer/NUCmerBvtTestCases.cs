@@ -153,26 +153,26 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         public void NUCmerAlignSmallSizeAlignSequence()
         {
             // Gets the reference sequence from the FastA file
-            var filePath = utilityObj.xmlUtil.GetTextValue(Constants.SmallSizeSequenceNodeName,
+            string filePath = utilityObj.xmlUtil.GetTextValue(Constants.SmallSizeSequenceNodeName,
                 Constants.FilePathNode).TestDir();
 
             Assert.IsNotNull(filePath);
 
-            var parser = new FastAParser();
-            var refSeqList = parser.Parse(filePath);
+            FastAParser parser = new FastAParser();
+            IEnumerable<ISequence> refSeqList = parser.Parse(filePath);
 
             // Gets the query sequence from the FastA file
-            var queryFilePath = utilityObj.xmlUtil.GetTextValue(Constants.SmallSizeSequenceNodeName,
+            string queryFilePath = utilityObj.xmlUtil.GetTextValue(Constants.SmallSizeSequenceNodeName,
                 Constants.SearchSequenceFilePathNode).TestDir();
 
             Assert.IsNotNull(queryFilePath);
 
-            var queryParser = new FastAParser();
-            var searchSeqList = queryParser.Parse(queryFilePath);
+            FastAParser queryParser = new FastAParser();
+            IEnumerable<ISequence> searchSeqList = queryParser.Parse(queryFilePath);
 
-            var mumLength = utilityObj.xmlUtil.GetTextValue(Constants.SmallSizeSequenceNodeName, Constants.MUMAlignLengthNode);
+            string mumLength = utilityObj.xmlUtil.GetTextValue(Constants.SmallSizeSequenceNodeName, Constants.MUMAlignLengthNode);
 
-            var nucmerObj = new NucmerPairwiseAligner
+            NucmerPairwiseAligner nucmerObj = new NucmerPairwiseAligner
                 {
                     MaximumSeparation = 0,
                     MinimumScore = 2,
@@ -181,19 +181,19 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
                     LengthOfMUM = long.Parse(mumLength, null)
                 };
 
-            var align = nucmerObj.Align(refSeqList.ElementAt(0), searchSeqList);
+            IList<ISequenceAlignment> align = nucmerObj.Align(refSeqList.ElementAt(0), searchSeqList);
 
-            var expectedSequences = utilityObj.xmlUtil.GetFileTextValue(Constants.SmallSizeSequenceNodeName,
+            string expectedSequences = utilityObj.xmlUtil.GetFileTextValue(Constants.SmallSizeSequenceNodeName,
                 Constants.ExpectedSequencesNode);
 
-            var expSeqArray = expectedSequences.Split(',');
+            string[] expSeqArray = expectedSequences.Split(',');
 
-            var j = 0;
+            int j = 0;
 
             // Gets all the aligned sequences in comma separated format
             foreach (IPairwiseSequenceAlignment seqAlignment in align)
             {
-                foreach (var alignedSeq in seqAlignment)
+                foreach (PairwiseAlignedSequence alignedSeq in seqAlignment)
                 {
                     Assert.AreEqual(expSeqArray[j], alignedSeq.FirstSequence.ConvertToString());
                     ++j;
@@ -225,7 +225,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         [Category("Priority0")]
         public void NUCmerAlignerProperties()
         {
-            var nucmerObj = new NucmerPairwiseAligner();
+            NucmerPairwiseAligner nucmerObj = new NucmerPairwiseAligner();
             Assert.AreEqual(Constants.NUCLength, nucmerObj.LengthOfMUM.ToString((IFormatProvider)null));
             Assert.AreEqual(200, nucmerObj.BreakLength);
             Assert.AreEqual(-8, nucmerObj.GapExtensionCost);
@@ -246,22 +246,22 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
             // NOTE: Nigel ran this test with the same data through mmummer and mgaps and got the same result.
 
             // Gets the reference sequence from the FastA file
-            var filePath = utilityObj.xmlUtil.GetTextValue(Constants.MediumSizeSequenceNodeName,
+            string filePath = utilityObj.xmlUtil.GetTextValue(Constants.MediumSizeSequenceNodeName,
                 Constants.FilePathNode).TestDir();
 
             // Gets the query sequence from the FastA file
-            var queryFilePath = utilityObj.xmlUtil.GetTextValue(Constants.MediumSizeSequenceNodeName,
+            string queryFilePath = utilityObj.xmlUtil.GetTextValue(Constants.MediumSizeSequenceNodeName,
                 Constants.SearchSequenceFilePathNode).TestDir();
 
-            var parser = new FastAParser();
-            var seqs1 = parser.Parse(filePath);
-            var seqs2 = parser.Parse(queryFilePath);
-            var nuc = new Bio.Algorithms.Alignment.NUCmer(seqs1.First()) {
+            FastAParser parser = new FastAParser();
+            IEnumerable<ISequence> seqs1 = parser.Parse(filePath);
+            IEnumerable<ISequence> seqs2 = parser.Parse(queryFilePath);
+            Bio.Algorithms.Alignment.NUCmer nuc = new Bio.Algorithms.Alignment.NUCmer(seqs1.First()) {
                 LengthOfMUM = 5,
                 MinimumScore = 0,
             };
-            var clusts = nuc.GetClusters(seqs2.First());
-            var clustCount1 = utilityObj.xmlUtil.GetTextValue(
+            IList<Cluster> clusts = nuc.GetClusters(seqs2.First());
+            string clustCount1 = utilityObj.xmlUtil.GetTextValue(
                 Constants.MediumSizeSequenceNodeName, Constants.ClustCount1Node);
 
             Assert.AreEqual(clustCount1, clusts.Count.ToString(CultureInfo.InvariantCulture));
@@ -311,20 +311,20 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
             AdditionalParameters additionalParam)
         {
             ISequence referenceSeqs;
-            var searchSeqList = new List<ISequence>();
+            List<ISequence> searchSeqList = new List<ISequence>();
 
             if (isFilePath)
             {
                 // Gets the reference sequence from the FastA file
-                var filePath = utilityObj.xmlUtil.GetTextValue(nodeName,
+                string filePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                     Constants.FilePathNode).TestDir();
 
                 Assert.IsNotNull(filePath);
                 
-                var parser = new FastAParser();
-                var referenceSeqList = parser.Parse(filePath);
-                var byteList = new List<Byte>();
-                foreach (var seq in referenceSeqList)
+                FastAParser parser = new FastAParser();
+                IEnumerable<ISequence> referenceSeqList = parser.Parse(filePath);
+                List<byte> byteList = new List<Byte>();
+                foreach (ISequence seq in referenceSeqList)
                 {
                     byteList.AddRange(seq);
                     byteList.Add((byte)'+');
@@ -332,29 +332,29 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
                 referenceSeqs = new Sequence(referenceSeqList.First().Alphabet.GetMummerAlphabet(), byteList.ToArray());
 
                 // Gets the query sequence from the FastA file
-                var queryFilePath = utilityObj.xmlUtil.GetTextValue(nodeName,
+                string queryFilePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                     Constants.SearchSequenceFilePathNode).TestDir();
 
                 Assert.IsNotNull(queryFilePath);
 
-                var querySeqList = parser.Parse(queryFilePath);
+                IEnumerable<ISequence> querySeqList = parser.Parse(queryFilePath);
                 searchSeqList.AddRange(querySeqList);
             }
             else
             {
                 // Gets the reference & search sequences from the configuration file
-                var referenceSequences = utilityObj.xmlUtil.GetTextValues(nodeName,
+                string[] referenceSequences = utilityObj.xmlUtil.GetTextValues(nodeName,
                     Constants.ReferenceSequencesNode);
-                var searchSequences = utilityObj.xmlUtil.GetTextValues(nodeName,
+                string[] searchSequences = utilityObj.xmlUtil.GetTextValues(nodeName,
                     Constants.SearchSequencesNode);
 
-                var seqAlphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName,
+                IAlphabet seqAlphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName,
                        Constants.AlphabetNameNode));
 
-                var refSeqList = referenceSequences.Select(t => new Sequence(seqAlphabet, encodingObj.GetBytes(t))).Cast<ISequence>().ToList();
+                List<ISequence> refSeqList = referenceSequences.Select(t => new Sequence(seqAlphabet, encodingObj.GetBytes(t))).Cast<ISequence>().ToList();
 
-                var byteListQuery = new List<Byte>();
-                foreach (var seq in refSeqList)
+                List<byte> byteListQuery = new List<Byte>();
+                foreach (ISequence seq in refSeqList)
                 {
                     byteListQuery.AddRange(seq);
                     byteListQuery.Add((byte)'+');
@@ -365,23 +365,23 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
                 searchSeqList.AddRange(searchSequences.Select(t => new Sequence(seqAlphabet, encodingObj.GetBytes(t))).Cast<ISequence>());
             }
 
-            var mumLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMLengthNode);
+            string mumLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMLengthNode);
 
             // Builds the suffix for the reference sequence passed.           
-            var suffixTreeBuilder = new MultiWaySuffixTree(referenceSeqs as Sequence)
+            MultiWaySuffixTree suffixTreeBuilder = new MultiWaySuffixTree(referenceSeqs as Sequence)
                 {
                     MinLengthOfMatch = long.Parse(mumLength, null)
                 };
 
-            var matches = new Dictionary<ISequence, IEnumerable<Match>>();
-            foreach (var sequence in searchSeqList)
+            Dictionary<ISequence, IEnumerable<Match>> matches = new Dictionary<ISequence, IEnumerable<Match>>();
+            foreach (ISequence sequence in searchSeqList)
             {
                 matches.Add(sequence,
                     suffixTreeBuilder.SearchMatchesUniqueInReference(sequence));
             }
 
-            var mums = new List<Match>();
-            foreach (var a in matches.Values)
+            List<Match> mums = new List<Match>();
+            foreach (IEnumerable<Match> a in matches.Values)
             {
                 mums.AddRange(a);
             }
@@ -413,16 +413,16 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
             if (isFilePath)
             {
                 // Gets the reference sequence from the FastA file
-                var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+                string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
                 Assert.IsNotNull(filePath);
                 Assert.IsTrue(File.Exists(filePath));
                 ApplicationLog.WriteLine(string.Format(null, "NUCmer BVT : Successfully validated the File Path '{0}'.", filePath));
 
-                var parser = new FastAParser();
+                FastAParser parser = new FastAParser();
                 refSeqList = parser.Parse(filePath).ToList();
 
                 // Gets the query sequence from the FastA file
-                var queryFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SearchSequenceFilePathNode).TestDir();
+                string queryFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SearchSequenceFilePathNode).TestDir();
                 Assert.IsNotNull(queryFilePath);
                 Assert.IsTrue(File.Exists(queryFilePath));
                 ApplicationLog.WriteLine(string.Format(null, "NUCmer BVT : Successfully validated the File Path '{0}'.", queryFilePath));
@@ -432,16 +432,16 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
             else
             {
                 // Gets the reference & search sequences from the configuration file
-                var seqAlphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.AlphabetNameNode));
+                IAlphabet seqAlphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.AlphabetNameNode));
 
-                var sequences = utilityObj.xmlUtil.GetTextValues(nodeName, Constants.ReferenceSequencesNode);
+                string[] sequences = utilityObj.xmlUtil.GetTextValues(nodeName, Constants.ReferenceSequencesNode);
                 refSeqList = sequences.Select((t, i) => new Sequence(seqAlphabet, encodingObj.GetBytes(t)) {ID = "ref " + i}).Cast<ISequence>().ToList();
 
                 sequences = utilityObj.xmlUtil.GetTextValues(nodeName, Constants.SearchSequencesNode);
                 searchSeqList = sequences.Select((t, i) => new Sequence(seqAlphabet, encodingObj.GetBytes(t)) { ID = "qry " + i }).Cast<ISequence>().ToList();
             }
 
-            var aligner = new NucmerPairwiseAligner
+            NucmerPairwiseAligner aligner = new NucmerPairwiseAligner
             {
                 MaximumSeparation = 0,
                 MinimumScore = 2,
@@ -450,20 +450,20 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
                 LengthOfMUM = long.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMAlignLengthNode), null)
             };
 
-            var align = aligner.Align(refSeqList, searchSeqList);
+            IList<ISequenceAlignment> align = aligner.Align(refSeqList, searchSeqList);
 
-            var expectedSequences = isFilePath
+            string expectedSequences = isFilePath
                     ? utilityObj.xmlUtil.GetFileTextValue(nodeName, Constants.ExpectedSequencesNode)
                     : utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ExpectedSequencesNode);
 
-            var expSeqArray = expectedSequences.Split(',');
+            string[] expSeqArray = expectedSequences.Split(',');
 
             // Gets all the aligned sequences in comma separated format
             foreach (IPairwiseSequenceAlignment seqAlignment in align)
             {
-                foreach (var alignedSeq in seqAlignment)
+                foreach (PairwiseAlignedSequence alignedSeq in seqAlignment)
                 {
-                    var actualStr = alignedSeq.FirstSequence.ConvertToString();
+                    string actualStr = alignedSeq.FirstSequence.ConvertToString();
                     Assert.IsTrue(expSeqArray.Contains(actualStr));
 
                     actualStr = alignedSeq.SecondSequence.ConvertToString();
@@ -487,34 +487,34 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
             {
                 case AdditionalParameters.PerformClusterBuilder:
                     // Validates the Cluster builder MUMs
-                    var firstSeqOrderExpected =
+                    string firstSeqOrderExpected =
                         utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ClustFirstSequenceStartNode);
-                    var lengthExpected =
+                    string lengthExpected =
                         utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ClustLengthNode);
-                    var secondSeqOrderExpected =
+                    string secondSeqOrderExpected =
                         utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ClustSecondSequenceStartNode);
 
-                    var firstSeqOrderActual = new StringBuilder();
-                    var lengthActual = new StringBuilder();
-                    var secondSeqOrderActual = new StringBuilder();
+                    StringBuilder firstSeqOrderActual = new StringBuilder();
+                    StringBuilder lengthActual = new StringBuilder();
+                    StringBuilder secondSeqOrderActual = new StringBuilder();
 
-                    var cb = new ClusterBuilder { MinimumScore = 0 };
+                    ClusterBuilder cb = new ClusterBuilder { MinimumScore = 0 };
 
-                    var meObj = matches.Select(m => new MatchExtension(m)).ToList();
+                    List<MatchExtension> meObj = matches.Select(m => new MatchExtension(m)).ToList();
 
                     // Order the mum list with query sequence order and
                     // Assign query sequence to the MUM's
-                    for (var index = 0; index < meObj.Count(); index++)
+                    for (int index = 0; index < meObj.Count(); index++)
                     {
                         meObj.ElementAt(index).ReferenceSequenceMumOrder = index + 1;
                         meObj.ElementAt(index).QuerySequenceMumOrder = index + 1;
                     }
 
-                    var clusts = cb.BuildClusters(meObj);
+                    List<Cluster> clusts = cb.BuildClusters(meObj);
 
-                    foreach (var clust in clusts)
+                    foreach (Cluster clust in clusts)
                     {
-                        foreach (var maxMatchExtension in clust.Matches)
+                        foreach (MatchExtension maxMatchExtension in clust.Matches)
                         {
                             firstSeqOrderActual.Append(maxMatchExtension.ReferenceSequenceMumOrder);
                             secondSeqOrderActual.Append(maxMatchExtension.QuerySequenceMumOrder);
@@ -558,20 +558,20 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
                             Constants.SecondSequenceMumOrderNode).Split(',');
                     }
 
-                    var i = 0;
+                    int i = 0;
 
                     IList<MatchExtension> meNewObj = matches.Select(m => new MatchExtension(m)).ToList();
 
                     // Order the mum list with query sequence order and
                     // Assign query sequence to the MUM's
-                    for (var index = 0; index < meNewObj.Count(); index++)
+                    for (int index = 0; index < meNewObj.Count(); index++)
                     {
                         meNewObj.ElementAt(index).ReferenceSequenceMumOrder = index + 1;
                         meNewObj.ElementAt(index).QuerySequenceMumOrder = index + 1;
                     }
 
                     // Loops through all the matches and validates the same.
-                    foreach (var match in meNewObj)
+                    foreach (MatchExtension match in meNewObj)
                     {
                         if ((0 != string.Compare(firstSeqOrder[i],
                             match.ReferenceSequenceMumOrder.ToString((IFormatProvider)null), true,
@@ -606,8 +606,8 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
         {
             string[] referenceSequences = null;
             string[] searchSequences = null;
-            var refSeqList = new List<ISequence>();
-            var searchSeqList = new List<ISequence>();
+            List<ISequence> refSeqList = new List<ISequence>();
+            List<ISequence> searchSeqList = new List<ISequence>();
 
             // Gets the reference & search sequences from the configurtion file
             referenceSequences = utilityObj.xmlUtil.GetTextValues(nodeName,
@@ -615,18 +615,18 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
             searchSequences = utilityObj.xmlUtil.GetTextValues(nodeName,
               Constants.SearchSequencesNode);
 
-            var seqAlphabet = Utility.GetAlphabet(
+            IAlphabet seqAlphabet = Utility.GetAlphabet(
                 utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.AlphabetNameNode));
 
-            for (var i = 0; i < referenceSequences.Length; i++)
+            for (int i = 0; i < referenceSequences.Length; i++)
             {
                 ISequence referSeq = new Sequence(seqAlphabet,
                     encodingObj.GetBytes(referenceSequences[i]));
                 refSeqList.Add(referSeq);
             }
 
-            for (var i = 0; i < searchSequences.Length; i++)
+            for (int i = 0; i < searchSequences.Length; i++)
             {
                 ISequence searchSeq = new Sequence(seqAlphabet,
                     encodingObj.GetBytes(searchSequences[i]));
@@ -634,10 +634,10 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
             }
 
             // Gets the mum length from the xml
-            var mumLength = utilityObj.xmlUtil.GetTextValue(nodeName,
+            string mumLength = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.MUMAlignLengthNode);
 
-            var nucmerObj = new NucmerPairwiseAligner();
+            NucmerPairwiseAligner nucmerObj = new NucmerPairwiseAligner();
 
             // Update other values for NUCmer object
             nucmerObj.MaximumSeparation = int.Parse
@@ -654,7 +654,7 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
 
             if (isAlignList)
             {
-                var listOfSeq = new List<ISequence>
+                List<ISequence> listOfSeq = new List<ISequence>
                 {
                     refSeqList[0],
                     searchSeqList[0]
@@ -662,18 +662,18 @@ namespace Bio.Tests.Algorithms.Alignment.NUCmer
                 alignSimple = nucmerObj.AlignSimple(listOfSeq);
             }
 
-            var expectedSequences = string.Empty;
+            string expectedSequences = string.Empty;
             expectedSequences = utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.ExpectedSequencesNode);
 
-            var expSeqArray = expectedSequences.Split(',');
+            string[] expSeqArray = expectedSequences.Split(',');
 
-            var j = 0;
+            int j = 0;
 
             // Gets all the aligned sequences in comma seperated format
             foreach (IPairwiseSequenceAlignment seqAlignment in alignSimple)
             {
-                foreach (var alignedSeq in seqAlignment)
+                foreach (PairwiseAlignedSequence alignedSeq in seqAlignment)
                 {
                     Assert.AreEqual(expSeqArray[j], new string(alignedSeq.FirstSequence.Select(a => (char)a).ToArray()));
                     ++j;

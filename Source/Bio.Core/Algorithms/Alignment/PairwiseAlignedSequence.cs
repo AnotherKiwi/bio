@@ -214,7 +214,7 @@ namespace Bio.Algorithms.Alignment
         /// <returns>Consensus, First and Second sequences.</returns>
         public override string ToString()
         {
-            var builder = new StringBuilder();
+            StringBuilder builder = new StringBuilder();
             builder.AppendLine(Consensus.ToString());
             builder.AppendLine(FirstSequence.ToString());
             builder.AppendLine(SecondSequence.ToString());

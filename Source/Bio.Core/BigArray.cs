@@ -107,12 +107,12 @@ namespace Bio
                 throw new ArgumentOutOfRangeException(nameof(count));
             }
 
-            var blockIndex = startIndex / _blockSize;
-            var start = (int)(startIndex % _blockSize);
+            long blockIndex = startIndex / _blockSize;
+            int start = (int)(startIndex % _blockSize);
             count += startIndex;
-            for (var i = startIndex; i < count && blockIndex < _data.Length; blockIndex++)
+            for (long i = startIndex; i < count && blockIndex < _data.Length; blockIndex++)
             {
-                var len = _data[blockIndex].Length;
+                int len = _data[blockIndex].Length;
 
                 if (i + len > count)
                 {
@@ -160,12 +160,12 @@ namespace Bio
                 throw new ArgumentOutOfRangeException(nameof(count));
             }
 
-            var blockIndex = startIndex / _blockSize;
-            var start = (int)(startIndex % _blockSize);
+            long blockIndex = startIndex / _blockSize;
+            int start = (int)(startIndex % _blockSize);
             count += startIndex;
-            for (var i = startIndex; i <count && blockIndex < _data.Length; blockIndex++)
+            for (long i = startIndex; i <count && blockIndex < _data.Length; blockIndex++)
             {
-                var len = _data[blockIndex].Length;
+                int len = _data[blockIndex].Length;
                 if (i + len > count)
                 {
                     len = (int)(count - i);
@@ -186,14 +186,14 @@ namespace Bio
             if (newSize == Length)
                 return;
 
-            var blockCount = (int)(newSize / _blockSize);
+            int blockCount = (int)(newSize / _blockSize);
             if (newSize > (blockCount * _blockSize))
                 blockCount++;
 
-            var previousBlockCount = _data.Length;
+            int previousBlockCount = _data.Length;
 
-            var lastBlockSize = (int)(newSize - ((blockCount - 1) * _blockSize));
-            var previousLastBlockSize = (int)(Length - ((blockCount - 1) * _blockSize));
+            int lastBlockSize = (int)(newSize - ((blockCount - 1) * _blockSize));
+            int previousLastBlockSize = (int)(Length - ((blockCount - 1) * _blockSize));
 
             if (previousBlockCount != blockCount)
             {
@@ -205,7 +205,7 @@ namespace Bio
                     }
 
                     Array.Resize<T[]>(ref _data, blockCount);
-                    for (var i = previousBlockCount; i < blockCount - 1; i++)
+                    for (int i = previousBlockCount; i < blockCount - 1; i++)
                     {
                         _data[previousBlockCount] = new T[_blockSize];
                     }
@@ -268,8 +268,8 @@ namespace Bio
                 throw new ArgumentOutOfRangeException(nameof(count));
             }
 
-            var destIndex = destinationIndex;
-            for (var i = index; i < index + count; i++)
+            int destIndex = destinationIndex;
+            for (long i = index; i < index + count; i++)
                 destinationArray[destIndex++] = this[i];
         }
 
@@ -321,18 +321,18 @@ namespace Bio
             //NOTE: _blockSize is optimized for 64bit process.
             if (typeof(T).GetTypeInfo().IsValueType)
             {
-                var itemSize = Marshal.SizeOf(typeof(T));
+                int itemSize = Marshal.SizeOf(typeof(T));
                 _blockSize = (int.MaxValue - 56) / itemSize;
             }
             else
             {
                 // 8 bytes are required to store reference.
-                var itemSize = PlatformManager.Services.Is64BitProcessType ? 8 : 4;
+                int itemSize = PlatformManager.Services.Is64BitProcessType ? 8 : 4;
                 _blockSize = ((int.MaxValue - 56) / itemSize) - 1;
             }
 
             // Get the number of array elements we need
-            var blockCount = (int)(length / _blockSize);
+            int blockCount = (int)(length / _blockSize);
             if (length > (blockCount * _blockSize))
                 blockCount++;
 
@@ -340,7 +340,7 @@ namespace Bio
             _data = new T[blockCount][];
 
             // Allocate full blocks.
-            for (var i = 0; i < blockCount - 1; i++)
+            for (int i = 0; i < blockCount - 1; i++)
                 _data[i] = new T[_blockSize];
 
             // Allocate the final array element with exactly the space required.

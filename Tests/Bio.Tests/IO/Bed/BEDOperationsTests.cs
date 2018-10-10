@@ -21,15 +21,15 @@ namespace Bio.Tests.IO.Bed
         [Category("Priority0")]
         public void MergeOperationTest()
         {
-            var direc = Path.Combine ("TestUtils", "BED", "Merge");
-            var filepath = Path.Combine(direc, "Merge_single.BED").TestDir();
-            var resultfilepath = "tmp_mergeresult.bed";
-            var expectedresultpath = Path.Combine(direc, "Result_Merge_Single_MinLength0.BED").TestDir();
-            var parser = new BedParser();
-            var formatter = new BedFormatter();
+            string direc = Path.Combine ("TestUtils", "BED", "Merge");
+            string filepath = Path.Combine(direc, "Merge_single.BED").TestDir();
+            string resultfilepath = "tmp_mergeresult.bed";
+            string expectedresultpath = Path.Combine(direc, "Result_Merge_Single_MinLength0.BED").TestDir();
+            BedParser parser = new BedParser();
+            BedFormatter formatter = new BedFormatter();
             SequenceRangeGrouping seqGrouping = null;
             SequenceRangeGrouping result = null;
-            var resultvalue = false;
+            bool resultvalue = false;
             resultfilepath = "tmp_mergeresult.bed";
             expectedresultpath = Path.Combine(direc, "Result_Merge_Single_MinLength0.BED").TestDir();
             seqGrouping = parser.ParseRangeGrouping(filepath);
@@ -107,10 +107,10 @@ namespace Bio.Tests.IO.Bed
             resultvalue = ValidateParentSeqRange(result, seqGrouping, null, false);
             Assert.IsTrue(resultvalue);
 
-            var firstFile = Path.Combine(direc, "Merge_twofiles_1.BED").TestDir();
-            var secondFile = Path.Combine(direc, "Merge_twofiles_2.BED").TestDir();
-            var refSeqRange = parser.ParseRangeGrouping(firstFile);
-            var querySeqRange = parser.ParseRangeGrouping(secondFile);
+            string firstFile = Path.Combine(direc, "Merge_twofiles_1.BED").TestDir();
+            string secondFile = Path.Combine(direc, "Merge_twofiles_2.BED").TestDir();
+            SequenceRangeGrouping refSeqRange = parser.ParseRangeGrouping(firstFile);
+            SequenceRangeGrouping querySeqRange = parser.ParseRangeGrouping(secondFile);
 
             expectedresultpath = Path.Combine(direc, "Result_Merge_Two_MinLength0.BED").TestDir();
             result = refSeqRange.MergeOverlaps(querySeqRange);
@@ -204,20 +204,20 @@ namespace Bio.Tests.IO.Bed
         [Category("Priority0")]
         public void IntersectOperationTest()
         {
-            var resultfilepath = "tmp_mergeresult.bed";
-            var expectedresultpath = string.Empty;
-            var parser = new BedParser();
-            var formatter = new BedFormatter();
+            string resultfilepath = "tmp_mergeresult.bed";
+            string expectedresultpath = string.Empty;
+            BedParser parser = new BedParser();
+            BedFormatter formatter = new BedFormatter();
 
             SequenceRangeGrouping result = null;
-            var resultvalue = false;
+            bool resultvalue = false;
             resultfilepath = "tmp_mergeresult.bed";
-            var direc = Path.Combine("TestUtils", "BED", "Intersect");
+            string direc = Path.Combine("TestUtils", "BED", "Intersect");
 
-            var reffile =  Path.Combine(direc, "Intersect_ref.BED").TestDir();
-            var queryFile = Path.Combine(direc, "Intersect_query.BED").TestDir();
-            var refSeqRange = parser.ParseRangeGrouping(reffile);
-            var querySeqRange = parser.ParseRangeGrouping(queryFile);
+            string reffile =  Path.Combine(direc, "Intersect_ref.BED").TestDir();
+            string queryFile = Path.Combine(direc, "Intersect_query.BED").TestDir();
+            SequenceRangeGrouping refSeqRange = parser.ParseRangeGrouping(reffile);
+            SequenceRangeGrouping querySeqRange = parser.ParseRangeGrouping(queryFile);
 
             expectedresultpath = Path.Combine(direc, "Result_Intersect_MinOverlap1_OverLappingBases.BED").TestDir();
             result = refSeqRange.Intersect(querySeqRange, 1, IntersectOutputType.OverlappingPiecesOfIntervals);
@@ -293,20 +293,20 @@ namespace Bio.Tests.IO.Bed
         [Category("Priority0")]
         public void SubtractTest()
         {
-            var direc = Path.Combine ("TestUtils", "BED", "Subtract");
-            var refSeqRangefile = Path.Combine (direc, "Subtract_ref.BED").TestDir();
-            var querySeqRangefile = Path.Combine (direc, "Subtract_query.BED").TestDir();
-            var resultfilepath = "tmp_mergeresult.bed";
-            var parser = new BedParser();
-            var formatter = new BedFormatter();
+            string direc = Path.Combine ("TestUtils", "BED", "Subtract");
+            string refSeqRangefile = Path.Combine (direc, "Subtract_ref.BED").TestDir();
+            string querySeqRangefile = Path.Combine (direc, "Subtract_query.BED").TestDir();
+            string resultfilepath = "tmp_mergeresult.bed";
+            BedParser parser = new BedParser();
+            BedFormatter formatter = new BedFormatter();
             SequenceRangeGrouping result = null;
-            var resultvalue = false;
+            bool resultvalue = false;
 
-            var refSeqRange = parser.ParseRangeGrouping(refSeqRangefile);
-            var querySeqRange = parser.ParseRangeGrouping(querySeqRangefile);
+            SequenceRangeGrouping refSeqRange = parser.ParseRangeGrouping(refSeqRangefile);
+            SequenceRangeGrouping querySeqRange = parser.ParseRangeGrouping(querySeqRangefile);
 
             const string MinOverlap1 = "Result_Subtract_minoverlap1.bed";
-            var expectedresultpath = Path.Combine (direc, MinOverlap1).TestDir();
+            string expectedresultpath = Path.Combine (direc, MinOverlap1).TestDir();
             result = refSeqRange.Subtract(querySeqRange, 1, SubtractOutputType.IntervalsWithNoOverlap);
             formatter.Format(result, resultfilepath);
             resultvalue = CompareBEDOutput(resultfilepath, expectedresultpath);
@@ -400,7 +400,7 @@ namespace Bio.Tests.IO.Bed
             IList<ISequenceRange> refSeqRangeList = new List<ISequenceRange>();
             IList<ISequenceRange> querySeqRangeList = new List<ISequenceRange>();
 
-            foreach (var groupid in resultSeqRange.GroupIDs)
+            foreach (string groupid in resultSeqRange.GroupIDs)
             {
                 if (refSeqRange != null)
                 {
@@ -413,7 +413,7 @@ namespace Bio.Tests.IO.Bed
                 }
 
 
-                foreach (var resultRange in resultSeqRange.GetGroup(groupid))
+                foreach (ISequenceRange resultRange in resultSeqRange.GetGroup(groupid))
                 {
                     if (!isParentSeqRangeRequired)
                     {
@@ -425,8 +425,8 @@ namespace Bio.Tests.IO.Bed
                     else
                     {
 
-                        var refCount = refSeqRangeList.Where(R => resultRange.ParentSeqRanges.Contains(R)).Count();
-                        var queryCount = querySeqRangeList.Where(R => resultRange.ParentSeqRanges.Contains(R)).Count();
+                        int refCount = refSeqRangeList.Where(R => resultRange.ParentSeqRanges.Contains(R)).Count();
+                        int queryCount = querySeqRangeList.Where(R => resultRange.ParentSeqRanges.Contains(R)).Count();
 
 
                         if (refCount + queryCount != resultRange.ParentSeqRanges.Count)

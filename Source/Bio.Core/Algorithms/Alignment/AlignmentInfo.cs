@@ -125,7 +125,7 @@ namespace Bio.Algorithms.Alignment
                 && 0 != string.Compare(dataType, FloatType, StringComparison.OrdinalIgnoreCase)
                 && 0 != string.Compare(dataType, StringListType, StringComparison.OrdinalIgnoreCase))
             {
-                var message = Properties.Resource.InvalidSearchParameter;
+                string message = Properties.Resource.InvalidSearchParameter;
                 Debug.WriteLine(message);
                 throw new NotSupportedException(message);
             }

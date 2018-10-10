@@ -24,7 +24,7 @@ namespace Bio.Padena.Tests
             const int KmerLength = 11;
             const int DangleThreshold = 3;
 
-            var readSeqs = TestInputs.GetDanglingReads();
+            List<ISequence> readSeqs = TestInputs.GetDanglingReads();
             SequenceReads.Clear();
             SetSequenceReads(readSeqs);
             this.KmerLength = KmerLength;
@@ -32,24 +32,24 @@ namespace Bio.Padena.Tests
             DanglingLinksPurger = new DanglingLinksPurger(DangleThreshold);
 
             CreateGraph();
-            var graphCount = Graph.NodeCount;
+            long graphCount = Graph.NodeCount;
 
             long graphEdges = Graph.GetNodes().Select(n => n.ExtensionsCount).Sum();
-            var graphNodes = Graph.GetNodes().Select(n => Graph.GetNodeSequence(n)).ToList();
+            List<ISequence> graphNodes = Graph.GetNodes().Select(n => Graph.GetNodeSequence(n)).ToList();
 
             DanglingLinksThreshold = DangleThreshold;
             UnDangleGraph();
 
-            var dangleRemovedGraphCount = Graph.NodeCount;
+            long dangleRemovedGraphCount = Graph.NodeCount;
             long dangleRemovedGraphEdge = Graph.GetNodes().Select(n => n.ExtensionsCount).Sum();
-            var dangleRemovedGraphNodes = Graph.GetNodes().Select(n => Graph.GetNodeSequence(n)).ToList();
+            List<ISequence> dangleRemovedGraphNodes = Graph.GetNodes().Select(n => Graph.GetNodeSequence(n)).ToList();
 
             // Compare the two graphs
             Assert.AreEqual(2, graphCount - dangleRemovedGraphCount);
             Assert.AreEqual(4, graphEdges - dangleRemovedGraphEdge);
-            var checkList = graphNodes.Except(dangleRemovedGraphNodes, new SequenceEqualityComparer());
+            IEnumerable<ISequence> checkList = graphNodes.Except(dangleRemovedGraphNodes, new SequenceEqualityComparer());
 
-            var expected = new HashSet<string> { "ATCGAACGATG","TCGAACGATGA" };
+            HashSet<string> expected = new HashSet<string> { "ATCGAACGATG","TCGAACGATGA" };
             AlignmentHelpers.CompareSequenceLists(expected, checkList);
         }
     }

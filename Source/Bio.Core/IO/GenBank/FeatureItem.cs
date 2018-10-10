@@ -47,7 +47,7 @@ namespace Bio.IO.GenBank
             Key = other.Key;
             Location = other.Location.Clone();
             Qualifiers = new Dictionary<string, List<string>>();
-            foreach (var kvp in other.Qualifiers)
+            foreach (KeyValuePair<string, List<string>> kvp in other.Qualifiers)
             {
                 if (kvp.Value != null)
                 {
@@ -109,15 +109,15 @@ namespace Bio.IO.GenBank
         /// <param name="sequenceFeatures">SequenceFeatures instance.</param>
         public List<FeatureItem> GetSubFeatures(SequenceFeatures sequenceFeatures)
         {
-            var subFeatures = new List<FeatureItem>();
+            List<FeatureItem> subFeatures = new List<FeatureItem>();
             if (sequenceFeatures != null)
             {
-                var start = Location.LocationStart;
-                var end = Location.LocationEnd;
-                foreach (var item in sequenceFeatures.All)
+                int start = Location.LocationStart;
+                int end = Location.LocationEnd;
+                foreach (FeatureItem item in sequenceFeatures.All)
                 {
-                    var subItemStart = item.Location.LocationStart;
-                    var subItemEnd = item.Location.LocationEnd;
+                    int subItemStart = item.Location.LocationStart;
+                    int subItemEnd = item.Location.LocationEnd;
                     if (subItemStart >= start && subItemEnd <= end && string.IsNullOrEmpty(item.Location.Accession))
                     {
                         // do not add items with the same start and end positions.
@@ -199,7 +199,7 @@ namespace Bio.IO.GenBank
         /// <returns>Qualifier value.</returns>
         protected string GetSingleTextQualifier(string qualifierName)
         {
-            var list = GetQualifier(qualifierName);
+            List<string> list = GetQualifier(qualifierName);
             if (list.Count > 0)
             {
                 return list[0];
@@ -219,7 +219,7 @@ namespace Bio.IO.GenBank
         /// <param name="value">Value to set.</param>
         protected void SetSingleTextQualifier(string qualifierName, string value)
         {
-            var list = GetQualifier(qualifierName);
+            List<string> list = GetQualifier(qualifierName);
             if (string.IsNullOrEmpty(value))
             {
                 list.Clear();
@@ -252,7 +252,7 @@ namespace Bio.IO.GenBank
         {
             if (GetSingleBooleanQualifier(qualifierName) != value)
             {
-                var list = GetQualifier(qualifierName);
+                List<string> list = GetQualifier(qualifierName);
                 list.Clear();
 
                 if (value)

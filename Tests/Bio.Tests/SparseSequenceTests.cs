@@ -32,10 +32,10 @@
         [Category("Priority0")]
         public void TestSparseSequenceEnumerator()
         {
-            var i = 0;
+            int i = 0;
             ISequence seq = new Sequence(Alphabets.DNA, "ATGC");
-            var sparseSeq = new SparseSequence(Alphabets.DNA, 0, seq);
-            foreach (var item in sparseSeq)
+            SparseSequence sparseSeq = new SparseSequence(Alphabets.DNA, 0, seq);
+            foreach (byte item in sparseSeq)
             {
                 Assert.AreEqual(sparseSeq[i++], item);
             }
@@ -52,7 +52,7 @@
             try
             {
                 sparseSeq = new SparseSequence(Alphabets.DNA, 0, Alphabets.DNA.A);
-                var sequence = sparseSeq[-1];
+                byte sequence = sparseSeq[-1];
                 Assert.Fail();
             }
             catch (ArgumentOutOfRangeException)
@@ -127,9 +127,9 @@
         public void TestSparseSequenceGetKnownSequenceItems()
         {
             ISequence seq = new Sequence(Alphabets.DNA, "ATGC");
-            var sparseSeq = new SparseSequence(Alphabets.DNA, 0, seq);
+            SparseSequence sparseSeq = new SparseSequence(Alphabets.DNA, 0, seq);
 
-            var knownItems = sparseSeq.GetKnownSequenceItems();
+            IReadOnlyList<IndexedItem<byte>> knownItems = sparseSeq.GetKnownSequenceItems();
             Assert.AreEqual(knownItems.Count, 4);
             Assert.AreEqual(0, knownItems[0].Index);
             Assert.AreEqual(Alphabets.DNA.A, knownItems[0].Item);
@@ -149,9 +149,9 @@
         public void TestSparseSequenceComplementMethods()
         {
             ISequence seq = new Sequence(Alphabets.DNA, "ATGC");
-            var sparseSeq = new SparseSequence(Alphabets.DNA, 1, seq);
+            SparseSequence sparseSeq = new SparseSequence(Alphabets.DNA, 1, seq);
 
-            var compSeq = sparseSeq.GetComplementedSequence();
+            ISequence compSeq = sparseSeq.GetComplementedSequence();
 
             Assert.AreEqual(5, compSeq.Count);
             Assert.AreEqual(0, compSeq[0]);
@@ -184,7 +184,7 @@
         [Category("Priority0")]
         public void TestSparseSequenceIndexOfNonGap()
         {
-            var byteList = new List<byte>
+            List<byte> byteList = new List<byte>
             {
                 Alphabets.DNA.Gap,
                 Alphabets.DNA.G,
@@ -196,9 +196,9 @@
                 Alphabets.DNA.Gap
             };
 
-            var sparseSeq = new SparseSequence(Alphabets.DNA, 0, byteList);
+            SparseSequence sparseSeq = new SparseSequence(Alphabets.DNA, 0, byteList);
 
-            var result = sparseSeq.IndexOfNonGap();
+            long result = sparseSeq.IndexOfNonGap();
             Assert.AreEqual(1, result);
 
             result = sparseSeq.IndexOfNonGap(1);
@@ -220,7 +220,7 @@
             Assert.AreEqual(-1, result);
 
             // Alphabet with no gaps.
-            var tempSeq = new SparseSequence(NoGapAlphabet.Instance, 0, byteList);
+            SparseSequence tempSeq = new SparseSequence(NoGapAlphabet.Instance, 0, byteList);
             result = tempSeq.IndexOfNonGap(3);
             Assert.AreEqual(3, result);
 
@@ -231,9 +231,9 @@
             Assert.AreEqual(4, result);
 
             // Zero length sequences
-            var sparseSeqZeroLen = new SparseSequence(Alphabets.DNA);
+            SparseSequence sparseSeqZeroLen = new SparseSequence(Alphabets.DNA);
 
-            var zeroResult = sparseSeqZeroLen.IndexOfNonGap();
+            long zeroResult = sparseSeqZeroLen.IndexOfNonGap();
             Assert.AreEqual(-1, zeroResult);
 
             zeroResult = sparseSeqZeroLen.LastIndexOfNonGap();
@@ -288,7 +288,7 @@
         [Category("Priority0")]
         public void TestSparseSequenceGetSubsequence()
         {
-            var byteList = new List<byte>
+            List<byte> byteList = new List<byte>
             {
                 Alphabets.DNA.Gap,
                 Alphabets.DNA.G,
@@ -300,9 +300,9 @@
                 Alphabets.DNA.Gap
             };
 
-            var sparseSeq = new SparseSequence(Alphabets.DNA, 0, byteList);
+            SparseSequence sparseSeq = new SparseSequence(Alphabets.DNA, 0, byteList);
 
-            var result = sparseSeq.GetSubSequence(0, 3);
+            ISequence result = sparseSeq.GetSubSequence(0, 3);
             Assert.AreEqual(3, result.Count);
             Assert.AreEqual(Alphabets.DNA.Gap, result[0]);
             Assert.AreEqual(Alphabets.DNA.G, result[1]);

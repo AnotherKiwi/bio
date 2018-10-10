@@ -69,7 +69,7 @@ namespace Bio.Util.ArgumentParser
         /// <param name="constructorString">Constructor arguments</param>
         public static void ConstructAndRun<T>(string constructorString) where T : IRunnable
         {
-            var command = new ConstructorArguments(constructorString);
+            ConstructorArguments command = new ConstructorArguments(constructorString);
             command.ConstructAndRun<T>();
         }
 
@@ -82,7 +82,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns>The fully instantiated object</returns>
         public static T Construct<T>(string commandString)
         {
-            var command = new ConstructorArguments(commandString);
+            ConstructorArguments command = new ConstructorArguments(commandString);
             return command.Construct<T>();
         }
 
@@ -99,7 +99,7 @@ namespace Bio.Util.ArgumentParser
             if (obj == null)
                 throw new ArgumentNullException(nameof(obj));
 
-            var constructor = new ConstructorArguments();
+            ConstructorArguments constructor = new ConstructorArguments();
             constructor.SubtypeName = parseTypeOrNull == null || !parseTypeOrNull.Equals(obj.GetType()) ? obj.GetType().ToTypeString() : null;
             constructor.PopulateFromParsableObject(obj, suppressDefaults);
             return constructor;
@@ -125,11 +125,11 @@ namespace Bio.Util.ArgumentParser
         /// <returns>Created Usage String.</returns>
         protected override string CreateUsageString(IEnumerable<System.Reflection.MemberInfo> requireds, System.Reflection.MemberInfo requiredParamsOrNull, Type constructingType)
         {
-            var typeName = SubtypeName ?? constructingType.ToTypeString();
-            var baseString = string.Format("{0}([OPTIONS],{1})\n{2}", typeName, requireds.Select(member => member.Name).StringJoin(","), "\nOptions are specifed using command-delimited name:value pairs.");
+            string typeName = SubtypeName ?? constructingType.ToTypeString();
+            string baseString = string.Format("{0}([OPTIONS],{1})\n{2}", typeName, requireds.Select(member => member.Name).StringJoin(","), "\nOptions are specifed using command-delimited name:value pairs.");
             if (null != requiredParamsOrNull)
             {
-                var opName = requiredParamsOrNull.Name.EndsWith("s", StringComparison.CurrentCultureIgnoreCase) ?
+                string opName = requiredParamsOrNull.Name.EndsWith("s", StringComparison.CurrentCultureIgnoreCase) ?
                     requiredParamsOrNull.Name.Substring(0, requiredParamsOrNull.Name.Length - 1) :
                     requiredParamsOrNull.Name;
 
@@ -147,18 +147,18 @@ namespace Bio.Util.ArgumentParser
         {
             if (lineToParse.EndsWith(")") && !lineToParse.StartsWith("("))
             {
-                var idx = lineToParse.IndexOf('(');
+                int idx = lineToParse.IndexOf('(');
                 Helper.CheckCondition<ParseException>(idx >= 0, string.Format(CultureInfo.CurrentCulture, Properties.Resource.UnbalancedParanthesis));
                 if (idx > 0)
                 {
-                    var result = lineToParse.Substring(0, idx);
+                    string result = lineToParse.Substring(0, idx);
                     lineToParse = lineToParse.Substring(idx);
                     return result;
                 }
             }
             else if (!lineToParse.Contains('('))
             {
-                var result = lineToParse;
+                string result = lineToParse;
                 lineToParse = string.Empty;
                 return result;
             }
@@ -172,7 +172,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns>Created Argument List.</returns>
         protected override IEnumerable<string> CreateArgList(string constructorArgsAsString)
         {
-            var argList = new List<string>();
+            List<string> argList = new List<string>();
             if (string.IsNullOrEmpty(constructorArgsAsString))
                 return argList;
 
@@ -180,11 +180,11 @@ namespace Bio.Util.ArgumentParser
                 constructorArgsAsString = constructorArgsAsString.Substring(1, constructorArgsAsString.Length - 2);
             //Split on ',' that are not inside '('...')'.
 //            var argList = new List<string>();
-            var depth = 0;
-            var sb = new StringBuilder();
-            for (var index = 0; index < constructorArgsAsString.Length; ++index)
+            int depth = 0;
+            StringBuilder sb = new StringBuilder();
+            for (int index = 0; index < constructorArgsAsString.Length; ++index)
             {
-                var c = constructorArgsAsString[index];
+                char c = constructorArgsAsString[index];
                 switch (c)
                 {
                     case '(':
@@ -289,20 +289,20 @@ namespace Bio.Util.ArgumentParser
         /// <returns>String form of Argument list.</returns>
         public override string ToString()
         {
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
 
-            var args = GetUnderlyingArray();
-            for (var i = 0; i < args.Length; i++)
+            string[] args = GetUnderlyingArray();
+            for (int i = 0; i < args.Length; i++)
             {
                 sb.Append(args[i]);
                 if (!IsFlag(args[i]) && i < args.Length - 1)
                     sb.Append(',');
             }
-            var hasMultArgs = args.Length > 1;//sb.ToString().Contains(',');
-            var hasSubtypeName = !string.IsNullOrEmpty(SubtypeName) ;
-            var includeParens = hasMultArgs ||hasSubtypeName && sb.Length>0;
+            bool hasMultArgs = args.Length > 1;//sb.ToString().Contains(',');
+            bool hasSubtypeName = !string.IsNullOrEmpty(SubtypeName) ;
+            bool includeParens = hasMultArgs ||hasSubtypeName && sb.Length>0;
 
-            var result = string.Format("{0}{1}{2}{3}", SubtypeName ?? "", includeParens ? "(" : "", sb.ToString(), includeParens ? ")" : "");
+            string result = string.Format("{0}{1}{2}{3}", SubtypeName ?? "", includeParens ? "(" : "", sb.ToString(), includeParens ? ")" : "");
             return string.IsNullOrEmpty(result) ? "()" : result;
         }
     }

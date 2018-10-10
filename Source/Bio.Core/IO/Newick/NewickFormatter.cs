@@ -79,13 +79,13 @@ namespace Bio.IO.Newick
                 throw new ArgumentNullException(nameof(stream));
             }
 
-            var stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder();
             Write(tree.Root, null, ref stringBuilder);
 
             // Append end char ";"
             stringBuilder.Append(";");
 
-            using (var writer = stream.OpenWrite())
+            using (StreamWriter writer = stream.OpenWrite())
             {
                 writer.Write(stringBuilder.ToString());
                 writer.Flush();
@@ -108,11 +108,11 @@ namespace Bio.IO.Newick
             {
                 
                 stringBuilder.Append("(");
-                var firstNode = true;
-                foreach (var child in node.Children)
+                bool firstNode = true;
+                foreach (KeyValuePair<Node, Edge> child in node.Children)
                 {
-                    var localEdge = child.Value;
-                    var localNode = child.Key;
+                    Edge localEdge = child.Value;
+                    Node localNode = child.Key;
 
                     if (localNode == node)
                     {

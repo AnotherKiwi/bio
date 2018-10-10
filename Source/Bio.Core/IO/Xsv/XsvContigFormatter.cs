@@ -61,9 +61,9 @@ namespace Bio.IO.Xsv
             Format(stream, contig.Consensus);
 
             // Write out the contigs.
-            using (var writer = stream.OpenWrite(leaveOpen: true))
+            using (StreamWriter writer = stream.OpenWrite(leaveOpen: true))
             {
-                foreach (var aSeq in contig.Sequences)
+                foreach (Contig.AssembledSequence aSeq in contig.Sequences)
                 {
                     Write(writer, aSeq.Sequence, (long)aSeq.Sequence.Metadata[XsvSparseParser.MetadataOffsetKey]);
                 }

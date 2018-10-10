@@ -29,7 +29,7 @@ namespace Bio
         /// <returns>Set of parsed sequences.</returns>
         public static Tree Parse(this IPhylogeneticTreeParser parser)
         {
-            var fs = ParserFormatterExtensions<IPhylogeneticTreeParser>.GetOpenStream(parser, false);
+            Stream fs = ParserFormatterExtensions<IPhylogeneticTreeParser>.GetOpenStream(parser, false);
             if (fs == null)
                 throw new Exception("You must open a parser before calling Parse.");
 
@@ -44,7 +44,7 @@ namespace Bio
         /// <returns>Set of parsed sequences.</returns>
         public static Tree Parse(this IPhylogeneticTreeParser parser, string filename)
         {
-            using (var fs = File.OpenRead(filename))
+            using (FileStream fs = File.OpenRead(filename))
             {
                 return parser.Parse(fs);
             }

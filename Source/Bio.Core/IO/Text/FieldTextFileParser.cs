@@ -100,9 +100,9 @@ namespace Bio.IO.Text
         /// <returns>Returns ISequence arrays.</returns>
         public IEnumerable<ISequence> Parse(Stream stream)
         {
-            using (var sr = stream.OpenRead())
+            using (StreamReader sr = stream.OpenRead())
             {
-                var fileLine = sr.ReadLine();
+                string fileLine = sr.ReadLine();
 
                 if (ContainsHeader)
                 {
@@ -124,14 +124,14 @@ namespace Bio.IO.Text
         /// <returns></returns>
         private ISequence ParseLine(string line)
         {
-            var splitLine = line.Split(Delimiter);
+            string[] splitLine = line.Split(Delimiter);
             if (splitLine.Length != 2)
                 throw new Exception(string.Format(CultureInfo.InvariantCulture, Resource.INVALID_INPUT_FILE, line));
 
-            var alphabet = Alphabet;
+            IAlphabet alphabet = Alphabet;
             if (alphabet == null)
             {
-                var byteArray = Encoding.UTF8.GetBytes(splitLine[1]);
+                byte[] byteArray = Encoding.UTF8.GetBytes(splitLine[1]);
                 alphabet = Alphabets.AutoDetectAlphabet(byteArray, 0, byteArray.Length, null);
                 if (alphabet == null)
                     throw new Exception(string.Format(CultureInfo.InvariantCulture, Resource.InvalidSymbolInString, splitLine[1]));

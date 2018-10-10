@@ -71,7 +71,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="cell">cell number</param>
         protected override void FillCellSimple(int col, int row, int cell)
         {
-            var score = SetCellValuesSimple(col, row, cell);
+            float score = SetCellValuesSimple(col, row, cell);
 
             // SmithWaterman does not use negative scores, instead, if score is <0
             // set scores to 0 and stop the alignment at that point.
@@ -101,7 +101,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="cell">cell number</param>
         protected override void FillCellAffine(int col, int row, int cell)
         {
-            var score = SetCellValuesAffine(col, row, cell);
+            float score = SetCellValuesAffine(col, row, cell);
 
             // SmithWaterman does not use negative scores, instead, if score is < 0
             // set score to 0 and stop the alignment at that point.
@@ -129,7 +129,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// </summary>
         protected override void SetRowBoundaryConditionSimple()
         {
-            for (var row = 0; row < _nRows; row++)
+            for (int row = 0; row < _nRows; row++)
             {
                 _FScore[row] = 0;
                 _FSource[row] = SourceDirection.Stop; // no source for cells with 0
@@ -162,7 +162,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// </summary>
         protected override void SetRowBoundaryConditionAffine()
         {
-            for (var row = 0; row < _nRows; row++)
+            for (int row = 0; row < _nRows; row++)
             {
                 _IxGapScore[row] = float.MinValue / 2;
                 _MaxScore[row] = 0;
@@ -224,9 +224,9 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         {
             // need an array we can extend if necessary
             // aligned array will be backwards, may be longer than original sequence due to gaps
-            var guessLen = Math.Max(_a.Length, _b.Length);
-            var aAlignedList = new List<int>(guessLen);
-            var bAlignedList = new List<int>(guessLen);
+            int guessLen = Math.Max(_a.Length, _b.Length);
+            List<int> aAlignedList = new List<int>(guessLen);
+            List<int> bAlignedList = new List<int>(guessLen);
 
             int col, row, cell;
 
@@ -235,7 +235,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             row = _optScoreRow;
             cell = _optScoreCell;
 
-            var done = false;
+            bool done = false;
             while (!done)
             {
                 // if next cell has score 0, we're done
@@ -281,7 +281,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                     default:
                         {
                             // error condition, should never see this
-                            var message = "SmithWaterman Traceback error.";
+                            string message = "SmithWaterman Traceback error.";
                             Trace.Report(message);
                             throw new Exception(message);
                         }
@@ -291,7 +291,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             // prepare solution, copy diagnostic data, turn aligned sequences around, etc
             // Be nice, turn aligned solutions around so that they match the input sequences
             int i, j; // utility indices used to invert aligned sequences
-            var len = aAlignedList.Count;
+            int len = aAlignedList.Count;
             aAligned = new int[len];
             bAligned = new int[len];
             for (i = 0, j = len - 1; i < len; i++, j--)

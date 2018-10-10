@@ -22,10 +22,10 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
                 throw new ArgumentNullException(nameof(graph));
             }
 
-            var startNode = this[0].Key;
-            var isForwardDirection = this[0].Value.IsSameOrientation;
+            Node startNode = this[0].Key;
+            bool isForwardDirection = this[0].Value.IsSameOrientation;
             startNode.MarkNode();
-            var scaffoldSequence = new List<byte>();
+            List<byte> scaffoldSequence = new List<byte>();
             scaffoldSequence.InsertRange(0, graph.GetNodeSequence(startNode));
             RemoveAt(0);
 
@@ -35,9 +35,9 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
                 kmerLength--;
             }
 
-            var sameOrientation = true;
+            bool sameOrientation = true;
             ISequence nextNodeSequence = null;
-            foreach (var extensions in this)
+            foreach (KeyValuePair<Node, Edge> extensions in this)
             {
                 sameOrientation = !(sameOrientation ^ extensions.Value.IsSameOrientation);
                 nextNodeSequence = sameOrientation ? graph.GetNodeSequence(extensions.Key) :

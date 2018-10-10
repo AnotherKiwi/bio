@@ -1,11 +1,10 @@
-﻿using System;
+﻿using Bio.Algorithms.MUMmer;
+using Bio.Registration;
+using static Bio.Properties.Resource;
+using static System.String;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Bio.Algorithms.MUMmer;
-using Bio.Registration;
-using static System.String;
-using static Bio.Properties.Resource;
 
 namespace Bio
 {
@@ -15,47 +14,108 @@ namespace Bio
     public static class Alphabets
     {
         /// <summary>
-        /// The DNA alphabet.
+        ///     List of alphabet instances according to their priority in auto detection.
+        ///     Auto detection starts from top of the list.
         /// </summary>
-        public static readonly DnaAlphabet DNA = DnaAlphabet.Instance;
+        /// <remarks>
+        ///     Only includes the six original Bio alphabets, to prevent breaking
+        ///     existing functionality.
+        /// </remarks>
+        private static readonly List<IAlphabet> AlphabetPriorityList = 
+            new List<IAlphabet>
+            {
+                DnaAlphabet.Instance,
+                AmbiguousDnaAlphabet.Instance,
+                RnaAlphabet.Instance,
+                AmbiguousRnaAlphabet.Instance,
+                ProteinAlphabet.Instance,
+                AmbiguousProteinAlphabet.Instance,
+            };
 
         /// <summary>
-        /// The RNA alphabet.
+        ///     List of protein alphabet instances according to their priority in auto detection.
+        ///     Auto detection starts from top of the list, and proceeds in order of strictness.
         /// </summary>
-        public static readonly RnaAlphabet RNA = RnaAlphabet.Instance;
+        /// <remarks>
+        ///     Includes the two original Bio protein alphabets, plus the new alphabets
+        ///     that extend the framework's functionality for use with peptides and proteins.
+        /// </remarks>
+        private static readonly List<IStrictProteinAlphabet> ProteinAlphabetPriorityList =
+            new List<IStrictProteinAlphabet>
+            {
+                ProteinFragmentAlphabet.Instance,
+                ProteinScapePeptideAlphabet.Instance,
+                PeaksPeptideAlphabet.Instance,
+                StrictProteinAlphabet.Instance,
+                ProteinAlphabet.Instance,
+                AmbiguousProteinAlphabet.Instance
+            };
 
         /// <summary>
-        /// The protein alphabet consisting of amino acids.
-        /// </summary>
-        public static readonly ProteinAlphabet Protein = ProteinAlphabet.Instance;
-
-        /// <summary>
-        /// The Ambiguous DNA alphabet.
-        /// </summary>
-        public static readonly AmbiguousDnaAlphabet AmbiguousDNA = AmbiguousDnaAlphabet.Instance;
-
-        /// <summary>
-        /// The Ambiguous RNA alphabet.
-        /// </summary>
-        public static readonly AmbiguousRnaAlphabet AmbiguousRNA = AmbiguousRnaAlphabet.Instance;
-
-        /// <summary>
-        /// The Ambiguous protein alphabet consisting of amino acids.
-        /// </summary>
-        public static readonly AmbiguousProteinAlphabet AmbiguousProtein = AmbiguousProteinAlphabet.Instance;
-
-        /// <summary>
-        /// Mapping between an alphabet type and its corresponding base alphabet type.
+        ///     Mapping between an alphabet type and its corresponding base alphabet type.
         /// </summary>
         public static readonly Dictionary<IAlphabet, IAlphabet> AlphabetToBaseAlphabetMap;
 
         /// <summary>
-        /// Mapping between an alphabet type and its corresponding ambiguous alphabet type.
+        ///     Mapping between an alphabet type and its corresponding ambiguous alphabet type.
         /// </summary>
         public static readonly Dictionary<IAlphabet, IAlphabet> AmbiguousAlphabetMap;
 
         /// <summary>
-        /// List of all supported alphabets.
+        ///     The DNA alphabet including symbols for ambiguous nucleotides.
+        /// </summary>
+        public static readonly AmbiguousDnaAlphabet AmbiguousDNA = AmbiguousDnaAlphabet.Instance;
+
+        /// <summary>
+        ///     The Protein alphabet including symbols for ambiguous amino acids, gaps and terminations.
+        /// </summary>
+        public static readonly AmbiguousProteinAlphabet AmbiguousProtein = AmbiguousProteinAlphabet.Instance;
+
+        /// <summary>
+        ///     The RNA alphabet including symbols for ambiguous nucleotides.
+        /// </summary>
+        public static readonly AmbiguousRnaAlphabet AmbiguousRNA = AmbiguousRnaAlphabet.Instance;
+
+        /// <summary>
+        ///     The DNA alphabet.
+        /// </summary>
+        public static readonly DnaAlphabet DNA = DnaAlphabet.Instance;
+
+        /// <summary>
+        ///     The Protein alphabet excluding ambiguous amino acids, but including gap and termination symbols.
+        /// </summary>
+        public static readonly ProteinAlphabet Protein = ProteinAlphabet.Instance;
+
+        /// <summary>
+        ///     The RNA alphabet.
+        /// </summary>
+        public static readonly RnaAlphabet RNA = RnaAlphabet.Instance;
+
+        /// <summary>
+        ///     The Protein Fragment (i.e. Peptide) alphabet containing only unambiguous amino acids, without gap
+        ///     or termination symbols, but including a separator symbol that delimits the beginning and end of the
+        ///     peptide sequence.
+        /// </summary>
+        public static readonly ProteinFragmentAlphabet ProteinFragment = ProteinFragmentAlphabet.Instance;
+
+        /// <summary>
+        ///     The strict Protein alphabet containing only unambiguous amino acids, without gap
+        ///     or termination symbols.
+        /// </summary>
+        public static readonly StrictProteinAlphabet StrictProtein = StrictProteinAlphabet.Instance;
+
+        /// <summary>
+        ///     The Protein Fragment alphabet containing symbols used in peptides exported by PEAKS.
+        /// </summary>
+        public static readonly PeaksPeptideAlphabet PeaksPeptide = PeaksPeptideAlphabet.Instance;
+
+        /// <summary>
+        ///     The Protein Fragment alphabet containing symbols used in peptides exported by ProteinScape.
+        /// </summary>
+        public static readonly ProteinScapePeptideAlphabet ProteinScapePeptide = ProteinScapePeptideAlphabet.Instance;
+
+        /// <summary>
+        ///     List of all supported alphabets.
         /// </summary>
         private static readonly List<IAlphabet> KnownAlphabets = new List<IAlphabet> 
         {
@@ -63,83 +123,83 @@ namespace Bio
             AmbiguousDNA,
             RNA,
             AmbiguousRNA,
+            StrictProtein,
             Protein,
-            AmbiguousProtein
+            AmbiguousProtein,
+            ProteinFragment,
+            PeaksPeptide,
+            ProteinScapePeptide
         };
 
         /// <summary>
-        /// List of all supported DNA alphabets.
+        ///     List of all supported DNA alphabets.
         /// </summary>
-        private static readonly List<IAlphabet> KnownDnaAlphabets = new List<IAlphabet>
+        private static readonly List<IDnaAlphabet> KnownDnaAlphabets = new List<IDnaAlphabet>
         {
             DNA,
             AmbiguousDNA,
         };
 
         /// <summary>
-        /// List of all supported protein alphabets.
+        ///     List of all supported Protein alphabets.
         /// </summary>
-        private static readonly List<IAlphabet> KnownProteinAlphabets = new List<IAlphabet>
+        private static readonly List<IStrictProteinAlphabet> KnownProteinAlphabets = new List<IStrictProteinAlphabet>
         {
+            ProteinFragment,
+            ProteinScapePeptide,
+            PeaksPeptide,
+            StrictProtein,
             Protein,
             AmbiguousProtein
         };
 
         /// <summary>
-        /// List of all supported RNA alphabets.
+        ///     List of all supported RNA alphabets.
         /// </summary>
-        private static readonly List<IAlphabet> KnownRnaAlphabets = new List<IAlphabet>
+        private static readonly List<IRnaAlphabet> KnownRnaAlphabets = new List<IRnaAlphabet>
         {
             RNA,
             AmbiguousRNA,
         };
 
         /// <summary>
-        /// List of alphabet instances according to their priority in auto detection
-        /// Auto detection starts from top of the list.
-        /// </summary>
-        private static readonly List<IAlphabet> AlphabetPriorityList = new List<IAlphabet>
-        {
-            DnaAlphabet.Instance,
-            AmbiguousDnaAlphabet.Instance,
-            RnaAlphabet.Instance,
-            AmbiguousRnaAlphabet.Instance,
-            ProteinAlphabet.Instance,
-            AmbiguousProteinAlphabet.Instance,
-        };
-
-        /// <summary>
-        /// Initializes static members of the Alphabets class.
+        ///     Initializes static members of the Alphabets class.
         /// </summary>
         static Alphabets()
         {
 		    // get the registered alphabets.
-            var registeredAlphabets = GetAlphabets();
+            IEnumerable<IAlphabet> registeredAlphabets = GetAlphabets();
             if (null != registeredAlphabets)
             {
-                foreach (var alphabet in registeredAlphabets.Where(
+                foreach (IAlphabet alphabet in registeredAlphabets.Where(
                     alphabet => alphabet != null && 
                                 KnownAlphabets.All(ra => Compare(ra.Name, alphabet.Name, StringComparison.OrdinalIgnoreCase) != 0)))
                 {
                     KnownAlphabets.Add(alphabet);
                     if (alphabet.IsDna)
-                        KnownDnaAlphabets.Add(alphabet);
+                        KnownDnaAlphabets.Add(alphabet as IDnaAlphabet);
                     else if (alphabet.IsProtein)
-                        KnownProteinAlphabets.Add(alphabet);
+                        KnownProteinAlphabets.Add(alphabet as IStrictProteinAlphabet);
                     else if (alphabet.IsRna)
-                        KnownRnaAlphabets.Add(alphabet);
+                        KnownRnaAlphabets.Add(alphabet as IRnaAlphabet);
                     else
                         throw new NotSupportedException(UnsupportedAlphabetType);
                 }
             }
 
+            // Don't map peptide alphabets.
             AmbiguousAlphabetMap = new Dictionary<IAlphabet, IAlphabet>();
             MapAlphabetToAmbiguousAlphabet(DnaAlphabet.Instance, AmbiguousDnaAlphabet.Instance);
             MapAlphabetToAmbiguousAlphabet(RnaAlphabet.Instance, AmbiguousRnaAlphabet.Instance);
+            MapAlphabetToAmbiguousAlphabet(StrictProteinAlphabet.Instance, AmbiguousProteinAlphabet.Instance);
             MapAlphabetToAmbiguousAlphabet(ProteinAlphabet.Instance, AmbiguousProteinAlphabet.Instance);
             MapAlphabetToAmbiguousAlphabet(AmbiguousDnaAlphabet.Instance, AmbiguousDnaAlphabet.Instance);
             MapAlphabetToAmbiguousAlphabet(AmbiguousRnaAlphabet.Instance, AmbiguousRnaAlphabet.Instance);
+            MapAlphabetToAmbiguousAlphabet(AmbiguousProteinAlphabet.Instance, AmbiguousProteinAlphabet.Instance);
 
+            // Maintain original mappings of ambiguous alphabets to base alphabets, even though
+            // StrictProteinAlphabet has been added as the base class for ProteinAlphabet, to
+            // prevent breaking any existing functionality of the framework.
             AlphabetToBaseAlphabetMap = new Dictionary<IAlphabet, IAlphabet>();
             MapAlphabetToBaseAlphabet(AmbiguousDnaAlphabet.Instance, DnaAlphabet.Instance);
             MapAlphabetToBaseAlphabet(AmbiguousRnaAlphabet.Instance, RnaAlphabet.Instance);
@@ -161,15 +221,15 @@ namespace Bio
         /// <summary>
         ///  Gets the list of all DNA Alphabets which are supported by the framework.
         /// </summary>
-        public static IReadOnlyList<IAlphabet> AllDna
+        public static IReadOnlyList<IDnaAlphabet> AllDna
         {
             get { return KnownDnaAlphabets; }
         }
 
         /// <summary>
-        ///  Gets the list of all DNA Alphabets which are supported by the framework.
+        ///  Gets the list of all Protein Alphabets which are supported by the framework.
         /// </summary>
-        public static IReadOnlyList<IAlphabet> AllProtein
+        public static IReadOnlyList<IStrictProteinAlphabet> AllProtein
         {
             get { return KnownProteinAlphabets; }
         }
@@ -177,26 +237,136 @@ namespace Bio
         /// <summary>
         ///  Gets the list of all DNA Alphabets which are supported by the framework.
         /// </summary>
-        public static IReadOnlyList<IAlphabet> AllRna
+        public static IReadOnlyList<IRnaAlphabet> AllRna
         {
             get { return KnownRnaAlphabets; }
         }
 
         /// <summary>
-        /// Gets the ambiguous alphabet
+        ///     This methods loops through the six alphabet types supported in the original 
+        ///     version of Bio and tries to identify the best alphabet type for the given symbols.
         /// </summary>
-        /// <param name="currentAlphabet">Alphabet to validate</param>
-        /// <returns></returns>
-        public static IAlphabet GetAmbiguousAlphabet(IAlphabet currentAlphabet)
+        /// <param name="symbols">Symbols on which auto detection should be performed.</param>
+        /// <param name="offset">Offset from which the auto detection should start.</param>
+        /// <param name="length">Number of symbols to process from the offset position.</param>
+        /// <param name="identifiedAlphabetType">In case the symbols passed are a sub set of a bigger sequence, 
+        /// provide the already identified alphabet type of the sequence.</param>
+        /// <returns>Returns the detected alphabet type or null if detection fails.</returns>
+        /// <remarks>
+        ///     Returns <see cref="DnaAlphabet"/>, <see cref="AmbiguousDnaAlphabet"/>,
+        ///     <see cref="RnaAlphabet"/>, <see cref="AmbiguousRnaAlphabet"/>, <see cref="ProteinAlphabet"/>
+        ///     or <see cref="AmbiguousProteinAlphabet"/> as appropriate, or <c>null</c>
+        ///     if none contains all the given symbols.
+        /// </remarks>
+        public static IAlphabet AutoDetectAlphabet(byte[] symbols, long offset, long length, IAlphabet identifiedAlphabetType)
         {
-            if (currentAlphabet == DnaAlphabet.Instance ||
-                currentAlphabet == RnaAlphabet.Instance ||
-                currentAlphabet == ProteinAlphabet.Instance)
+            int currentPriorityIndex = 0;
+
+            if (identifiedAlphabetType == null)
             {
-                return AmbiguousAlphabetMap[currentAlphabet];
+                identifiedAlphabetType = AlphabetPriorityList[0];
             }
 
-            return currentAlphabet;
+            while (identifiedAlphabetType != AlphabetPriorityList[currentPriorityIndex])
+            {
+                // Increment priority index and validate boundary condition
+                if (++currentPriorityIndex == AlphabetPriorityList.Count)
+                {
+                    throw new ArgumentException(CouldNotRecognizeAlphabet, nameof(identifiedAlphabetType));
+                }
+            }
+
+            // Start validating against alphabet types according to their priority
+            while (!AlphabetPriorityList[currentPriorityIndex].ValidateSequence(symbols, offset, length))
+            {
+                // Increment priority index and validate boundary condition
+                if (++currentPriorityIndex == AlphabetPriorityList.Count)
+                {
+                    // Last ditch effort - look at all registered alphabets and see if any contain all the located symbols.
+                    foreach (IAlphabet alphabet in All)
+                    {
+                        // Make sure alphabet supports validation -- if not, ignore it.
+                        try
+                        {
+                            if (alphabet.ValidateSequence(symbols, offset, length))
+                                return alphabet;
+                        }
+                        catch (NotImplementedException)
+                        {
+                        }
+                    }
+
+                    // No alphabet found.
+                    return null;
+                }
+            }
+
+            return AlphabetPriorityList[currentPriorityIndex];
+        }
+
+        /// <summary>
+        ///     This methods loops through supported Protein alphabet types and tries to identify
+        ///     the best alphabet type for the given symbols.
+        /// </summary>
+        /// <param name="symbols">Symbols on which auto detection should be performed.</param>
+        /// <param name="offset">Offset from which the auto detection should start.</param>
+        /// <param name="length">Number of symbols to process from the offset position.</param>
+        /// <param name="identifiedAlphabetType">In case the symbols passed are a sub set of a bigger sequence, 
+        /// provide the already identified alphabet type of the sequence.</param>
+        /// <returns>
+        ///     Returns the detected alphabet type or <c>null</c> if detection fails.
+        /// </returns>
+        /// <remarks>
+        ///     Returns <see cref="StrictProteinAlphabet"/>, <see cref="ProteinAlphabet"/>,
+        ///     <see cref="AmbiguousProteinAlphabet"/>, <see cref="PeaksPeptideAlphabet"/>, 
+        ///     or <see cref="ProteinScapePeptideAlphabet"/> as appropriate, or <c>null</c>
+        ///     if none contains all the given symbols.
+        /// </remarks>
+        public static IStrictProteinAlphabet AutoDetectProteinAlphabet(byte[] symbols, long offset, long length, 
+            IStrictProteinAlphabet identifiedAlphabetType)
+        {
+            int currentPriorityIndex = 0;
+
+            if (identifiedAlphabetType == null)
+            {
+                identifiedAlphabetType = ProteinAlphabetPriorityList[0];
+            }
+
+            while (identifiedAlphabetType != ProteinAlphabetPriorityList[currentPriorityIndex])
+            {
+                // Increment priority index and validate boundary condition
+                if (++currentPriorityIndex == ProteinAlphabetPriorityList.Count)
+                {
+                    throw new ArgumentException(CouldNotRecognizeAlphabet, nameof(identifiedAlphabetType));
+                }
+            }
+
+            // Start validating against alphabet types according to their priority
+            while (!ProteinAlphabetPriorityList[currentPriorityIndex].ValidateSequence(symbols, offset, length))
+            {
+                // Increment priority index and validate boundary condition
+                if (++currentPriorityIndex == ProteinAlphabetPriorityList.Count)
+                {
+                    // Last ditch effort - look at all registered alphabets and see if any contain all the located symbols.
+                    foreach (IAlphabet alphabet in All)
+                    {
+                        // Make sure alphabet supports validation -- if not, ignore it.
+                        try
+                        {
+                            if (alphabet.IsProtein && alphabet.ValidateSequence(symbols, offset, length))
+                                return alphabet as IStrictProteinAlphabet;
+                        }
+                        catch (NotImplementedException)
+                        {
+                        }
+                    }
+
+                    // No alphabet found.
+                    return null;
+                }
+            }
+
+            return ProteinAlphabetPriorityList[currentPriorityIndex];
         }
 
         /// <summary>
@@ -222,70 +392,47 @@ namespace Bio
         }
 
         /// <summary>
-        /// This methods loops through supported alphabet types and tries to identify
-        /// the best alphabet type for the given symbols.
+        /// Gets all registered alphabets in core folder and addins (optional) folders.
         /// </summary>
-        /// <param name="symbols">Symbols on which auto detection should be performed.</param>
-        /// <param name="offset">Offset from which the auto detection should start.</param>
-        /// <param name="length">Number of symbols to process from the offset position.</param>
-        /// <param name="identifiedAlphabetType">In case the symbols passed are a sub set of a bigger sequence, 
-        /// provide the already identified alphabet type of the sequence.</param>
-        /// <returns>Returns the detected alphabet type or null if detection fails.</returns>
-        public static IAlphabet AutoDetectAlphabet(byte[] symbols, long offset, long length, IAlphabet identifiedAlphabetType)
+        /// <returns>List of registered alphabets.</returns>
+        private static IEnumerable<IAlphabet> GetAlphabets()
         {
-            var currentPriorityIndex = 0;
+            IEnumerable<Type> implementations = BioRegistrationService.LocateRegisteredParts<IAlphabet>();
+            List<IAlphabet> registeredAlphabets = new List<IAlphabet>();
 
-            if (identifiedAlphabetType == null)
+            foreach (Type impl in implementations)
             {
-                identifiedAlphabetType = AlphabetPriorityList[0];
-            }
-
-            while (identifiedAlphabetType != AlphabetPriorityList[currentPriorityIndex])
-            {
-                // Increment priority index and validate boundary condition
-                if (++currentPriorityIndex == AlphabetPriorityList.Count)
+                try
                 {
-                    throw new ArgumentException(CouldNotRecognizeAlphabet, nameof(identifiedAlphabetType));
+                    IAlphabet alpha = Activator.CreateInstance(impl) as IAlphabet;
+                    if (alpha != null)
+                        registeredAlphabets.Add(alpha);
+                }
+                catch
+                {
+                    // Cannot create - no default ctor?
                 }
             }
 
-            // Start validating against alphabet types according to their priority
-            while (!AlphabetPriorityList[currentPriorityIndex].ValidateSequence(symbols, offset, length))
-            {
-                // Increment priority index and validate boundary condition
-                if (++currentPriorityIndex == AlphabetPriorityList.Count)
-                {
-                    // Last ditch effort - look at all registered alphabets and see if any contain all the located symbols.
-                    foreach (var alphabet in All)
-                    {
-                        // Make sure alphabet supports validation -- if not, ignore it.
-                        try
-                        {
-                            if (alphabet.ValidateSequence(symbols, offset, length))
-                                return alphabet;
-                        }
-                        catch (NotImplementedException)
-                        {
-                        }
-                    }
-
-                    // No alphabet found.
-                    return null;
-                }
-            }
-
-            return AlphabetPriorityList[currentPriorityIndex];
+            return registeredAlphabets;
         }
 
         /// <summary>
-        /// Maps the alphabet to its base alphabet.
-        /// For example: AmbiguousDnaAlphabet to DnaAlphabet
+        /// Gets the ambiguous alphabet
         /// </summary>
-        /// <param name="alphabet">Alphabet to map.</param>
-        /// <param name="baseAlphabet">Base alphabet to map.</param>
-        private static void MapAlphabetToBaseAlphabet(IAlphabet alphabet, IAlphabet baseAlphabet)
+        /// <param name="currentAlphabet">Alphabet to validate</param>
+        /// <returns></returns>
+        public static IAlphabet GetAmbiguousAlphabet(IAlphabet currentAlphabet)
         {
-            AlphabetToBaseAlphabetMap.Add(alphabet, baseAlphabet);
+            if (currentAlphabet == DnaAlphabet.Instance ||
+                currentAlphabet == RnaAlphabet.Instance ||
+                currentAlphabet == StrictProteinAlphabet.Instance ||
+                currentAlphabet == ProteinAlphabet.Instance)
+            {
+                return AmbiguousAlphabetMap[currentAlphabet];
+            }
+
+            return currentAlphabet;
         }
 
         /// <summary>
@@ -300,29 +447,14 @@ namespace Bio
         }
 
         /// <summary>
-        /// Gets all registered alphabets in core folder and addins (optional) folders.
+        /// Maps the alphabet to its base alphabet.
+        /// For example: AmbiguousDnaAlphabet to DnaAlphabet
         /// </summary>
-        /// <returns>List of registered alphabets.</returns>
-        private static IEnumerable<IAlphabet> GetAlphabets()
+        /// <param name="alphabet">Alphabet to map.</param>
+        /// <param name="baseAlphabet">Base alphabet to map.</param>
+        private static void MapAlphabetToBaseAlphabet(IAlphabet alphabet, IAlphabet baseAlphabet)
         {
-            var implementations = BioRegistrationService.LocateRegisteredParts<IAlphabet>();
-            var registeredAlphabets = new List<IAlphabet>();
-
-            foreach (var impl in implementations)
-            {
-                try
-                {
-                    var alpha = Activator.CreateInstance(impl) as IAlphabet;
-                    if (alpha != null)
-                        registeredAlphabets.Add(alpha);
-                }
-                catch
-                {
-                    // Cannot create - no default ctor?
-                }
-            }
-
-            return registeredAlphabets;
+            AlphabetToBaseAlphabetMap.Add(alphabet, baseAlphabet);
         }
     }
 }

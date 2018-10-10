@@ -52,7 +52,7 @@ namespace Bio.Tests.IO.Wiggle
         public void ValidateWiggleParserPublicProperties()
         {
             // Gets the filepath  from the Xml
-            var filePath = utilityObj.xmlUtil.GetTextValue(Constants.
+            string filePath = utilityObj.xmlUtil.GetTextValue(Constants.
                               SimpleWiggleWithFixedStepNodeName, Constants.FilePathNode).TestDir();
             Assert.IsTrue(File.Exists(filePath));
 
@@ -61,17 +61,17 @@ namespace Bio.Tests.IO.Wiggle
                 "Wiggle Parser BVT: File Exists in the Path '{0}'.", filePath));
 
             //Get the expected values from configuration file.
-            var expectedDescription = utilityObj.xmlUtil.GetTextValue(Constants.
+            string expectedDescription = utilityObj.xmlUtil.GetTextValue(Constants.
                         SimpleWiggleWithFixedStepNodeName, Constants.ParserDescriptionNode);
-            var expectedName = utilityObj.xmlUtil.GetTextValue(Constants.
+            string expectedName = utilityObj.xmlUtil.GetTextValue(Constants.
                         SimpleWiggleWithFixedStepNodeName, Constants.NameNode);
-            var expectedFileType = utilityObj.xmlUtil.GetTextValue(Constants.
+            string expectedFileType = utilityObj.xmlUtil.GetTextValue(Constants.
                         SimpleWiggleWithFixedStepNodeName, Constants.FileTypesNode);
 
-            var parser = new WiggleParser();
+            WiggleParser parser = new WiggleParser();
 
             //Parse the file
-            var annotation = parser.Parse(filePath);
+            IEnumerable<WiggleAnnotation> annotation = parser.Parse(filePath);
 
             Assert.IsNotNull(annotation);
             Assert.AreEqual(expectedDescription, parser.Description);
@@ -154,14 +154,14 @@ namespace Bio.Tests.IO.Wiggle
         public void ValidateWiggleFormatterPublicProperties()
         {
             //Get the expected values from configuration file.
-            var expectedDescription = utilityObj.xmlUtil.GetTextValue(Constants.
+            string expectedDescription = utilityObj.xmlUtil.GetTextValue(Constants.
                         SimpleWiggleWithFixedStepNodeName, Constants.FormatterDescriptionNode);
-            var expectedName = utilityObj.xmlUtil.GetTextValue(Constants.
+            string expectedName = utilityObj.xmlUtil.GetTextValue(Constants.
                         SimpleWiggleWithFixedStepNodeName, Constants.NameNode);
-            var expectedFileType = utilityObj.xmlUtil.GetTextValue(Constants.
+            string expectedFileType = utilityObj.xmlUtil.GetTextValue(Constants.
                         SimpleWiggleWithFixedStepNodeName, Constants.FileTypesNode);
 
-            var formatter = new WiggleFormatter();
+            WiggleFormatter formatter = new WiggleFormatter();
             Assert.AreEqual(expectedDescription, formatter.Description);
             Assert.AreEqual(expectedName, formatter.Name);
             Assert.AreEqual(expectedFileType, formatter.SupportedFileTypes);
@@ -184,7 +184,7 @@ namespace Bio.Tests.IO.Wiggle
             WiggleAnnotation annotation = null;
 
             // Gets the filepath  from the Xml
-            var filePath = utilityObj.xmlUtil.GetTextValue(Constants.
+            string filePath = utilityObj.xmlUtil.GetTextValue(Constants.
                               SimpleWiggleWithFixedStepNodeName, Constants.FilePathNode).TestDir();
             Assert.IsTrue(File.Exists(filePath));
 
@@ -192,26 +192,26 @@ namespace Bio.Tests.IO.Wiggle
             ApplicationLog.WriteLine(string.Format((IFormatProvider)null,
                 "Wiggle Parser BVT: File Exists in the Path '{0}'.", filePath));
 
-            var expectedbasePosition = utilityObj.xmlUtil.GetTextValue(Constants.
+            string expectedbasePosition = utilityObj.xmlUtil.GetTextValue(Constants.
                         SimpleWiggleWithFixedStepNodeName, Constants.BasePositionNode);
-            var expectedchromosome = utilityObj.xmlUtil.GetTextValue(Constants.
+            string expectedchromosome = utilityObj.xmlUtil.GetTextValue(Constants.
                         SimpleWiggleWithFixedStepNodeName, Constants.ChromosomeNode);
-            var expectedannotationCount = utilityObj.xmlUtil.GetTextValue(Constants.
+            string expectedannotationCount = utilityObj.xmlUtil.GetTextValue(Constants.
                         SimpleWiggleWithFixedStepNodeName, Constants.AnnotationCountNode);
-            var expectedSpan = utilityObj.xmlUtil.GetTextValue(Constants.
+            string expectedSpan = utilityObj.xmlUtil.GetTextValue(Constants.
                         SimpleWiggleWithFixedStepNodeName, Constants.ExpectedSpanNode);
-            var expectedStep = utilityObj.xmlUtil.GetTextValue(Constants.
+            string expectedStep = utilityObj.xmlUtil.GetTextValue(Constants.
                         SimpleWiggleWithFixedStepNodeName, Constants.ExpectedStepNode);
-            var annotationTypeNode = utilityObj.xmlUtil.GetTextValue(Constants.
+            string annotationTypeNode = utilityObj.xmlUtil.GetTextValue(Constants.
                         SimpleWiggleWithFixedStepNodeName, Constants.AnnotationTypeNode);
 
-            var annotationKeys = utilityObj.xmlUtil.GetTextValues(Constants.
+            string[] annotationKeys = utilityObj.xmlUtil.GetTextValues(Constants.
                         SimpleWiggleWithFixedStepNodeName, Constants.AnnotationMetadataNode);
 
-            var values = annotationKeys[0].Split(',');
-            var keys = annotationKeys[1].Split(',');
+            string[] values = annotationKeys[0].Split(',');
+            string[] keys = annotationKeys[1].Split(',');
 
-            var parser = new WiggleParser();
+            WiggleParser parser = new WiggleParser();
 
             //Parse the file
             annotation = parser.ParseOne(filePath);
@@ -227,10 +227,10 @@ namespace Bio.Tests.IO.Wiggle
                             CultureInfo.InvariantCulture), annotation.Step);
             Assert.AreEqual(annotationTypeNode, annotation.AnnotationType.ToString());
 
-            var annotationMetadata = annotation.Metadata;
+            Dictionary<string, string> annotationMetadata = annotation.Metadata;
 
             //Validate Annotation Metadata.
-            for (var i = 0; i < annotationMetadata.Count; i++)
+            for (int i = 0; i < annotationMetadata.Count; i++)
             {
                 Assert.AreEqual(keys[i], annotationMetadata.ElementAt(i).Key);
                 Assert.AreEqual(values[i], annotationMetadata.ElementAt(i).Value);
@@ -247,32 +247,32 @@ namespace Bio.Tests.IO.Wiggle
         [Category("Priority0")]
         public void ValidateWiggleAnnotation()
         {
-            var expectedValues = utilityObj.xmlUtil.GetTextValue(Constants.
+            string[] expectedValues = utilityObj.xmlUtil.GetTextValue(Constants.
                             AnnotationValuesNode, Constants.ExpectedValuesNode).Split(',');
-            var annotationKeys = utilityObj.xmlUtil.GetTextValue(Constants.
+            string[] annotationKeys = utilityObj.xmlUtil.GetTextValue(Constants.
                         AnnotationValuesNode, Constants.ExpectedKeysNode).Split(',');
 
-            var stepValue = utilityObj.xmlUtil.GetTextValue(Constants.
+            string stepValue = utilityObj.xmlUtil.GetTextValue(Constants.
                             AnnotationValuesNode, Constants.ExpectedStepNode);
-            var startValue = utilityObj.xmlUtil.GetTextValue(Constants.
+            string startValue = utilityObj.xmlUtil.GetTextValue(Constants.
                             AnnotationValuesNode, Constants.ExpectedStartNode);
-            var index = 0;
+            int index = 0;
 
-            var data = new float[expectedValues.Length];
+            float[] data = new float[expectedValues.Length];
 
             for (index = 0; index < expectedValues.Length; index++)
             {
                 data[index] = float.Parse(expectedValues[index], CultureInfo.InvariantCulture);
             }
 
-            var annotation = new WiggleAnnotation(data, Constants.
+            WiggleAnnotation annotation = new WiggleAnnotation(data, Constants.
                             ChromosomeNode, long.Parse(startValue, CultureInfo.InvariantCulture),
                             int.Parse(stepValue, CultureInfo.InvariantCulture));
 
             index = 0;
 
             //Validate keys and values of the parsed file.
-            foreach (var keyvaluePair in annotation)
+            foreach (KeyValuePair<long, float> keyvaluePair in annotation)
             {
                 Assert.AreEqual(float.Parse(annotationKeys[index],
                             CultureInfo.InvariantCulture), keyvaluePair.Key);
@@ -292,30 +292,30 @@ namespace Bio.Tests.IO.Wiggle
         [Category("Priority0")]
         public void ValidateGetValueArray()
         {
-            var expectedValues = utilityObj.xmlUtil.GetTextValue(Constants.
+            string[] expectedValues = utilityObj.xmlUtil.GetTextValue(Constants.
                             AnnotationValuesNode, Constants.ExpectedValuesNode).Split(',');
-            var stepValue = utilityObj.xmlUtil.GetTextValue(Constants.
+            string stepValue = utilityObj.xmlUtil.GetTextValue(Constants.
                             AnnotationValuesNode, Constants.ExpectedStepNode);
-            var startValue = utilityObj.xmlUtil.GetTextValue(Constants.
+            string startValue = utilityObj.xmlUtil.GetTextValue(Constants.
                             AnnotationValuesNode, Constants.ExpectedStartNode);
-            var index = 0;
+            int index = 0;
 
-            var data = new float[expectedValues.Length];
+            float[] data = new float[expectedValues.Length];
 
             for (index = 0; index < expectedValues.Length; index++)
             {
                 data[index] = float.Parse(expectedValues[index], CultureInfo.InvariantCulture);
             }
 
-            var annotation = new WiggleAnnotation(data, Constants.
+            WiggleAnnotation annotation = new WiggleAnnotation(data, Constants.
                             ChromosomeNode, long.Parse(startValue, CultureInfo.InvariantCulture), int.Parse(stepValue, CultureInfo.InvariantCulture));
 
             //Get the values.
-            var dataNew = annotation.GetValueArray(0, expectedValues.Length);
+            float[] dataNew = annotation.GetValueArray(0, expectedValues.Length);
             index = 0;
 
             //Validate the values from GetValueArray.
-            foreach (var value in dataNew)
+            foreach (float value in dataNew)
             {
                 Assert.AreEqual(data[index], value);
                 index++;
@@ -334,27 +334,27 @@ namespace Bio.Tests.IO.Wiggle
         private void ValidateWiggleParser(string nodeName, ParseType parseType)
         {
             // Gets the filepath.
-            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
             Assert.IsTrue(File.Exists(filePath));
 
-            var index = 0;
+            int index = 0;
             WiggleAnnotation annotation = null;
 
             // Logs information to the log file            
             ApplicationLog.WriteLine(string.Format((IFormatProvider)null,
                 "Wiggle Parser BVT: File Exists in the Path '{0}'.", filePath));
 
-            var expectedValues = utilityObj.xmlUtil.GetTextValue(nodeName,
+            string[] expectedValues = utilityObj.xmlUtil.GetTextValue(nodeName,
                                      Constants.ExpectedValuesNode).Split(',');
-            var expectedPoints = utilityObj.xmlUtil.GetTextValue(nodeName,
+            string[] expectedPoints = utilityObj.xmlUtil.GetTextValue(nodeName,
                                      Constants.ExpectedKeysNode).Split(',');
 
-            var parser = new WiggleParser();
+            WiggleParser parser = new WiggleParser();
 
             switch (parseType)
             {
                 case ParseType.Stream:
-                    using (var stream = File.OpenRead(filePath))
+                    using (FileStream stream = File.OpenRead(filePath))
                     {
                         annotation = parser.ParseOne(stream);
                     }
@@ -365,7 +365,7 @@ namespace Bio.Tests.IO.Wiggle
             }
 
             //Validate keys and values of the parsed file.
-            foreach (var keyvaluePair in annotation)
+            foreach (KeyValuePair<long, float> keyvaluePair in annotation)
             {
                 Assert.AreEqual(long.Parse(expectedPoints[index],
                             CultureInfo.InvariantCulture), keyvaluePair.Key);
@@ -386,17 +386,17 @@ namespace Bio.Tests.IO.Wiggle
         private void ValidateWiggleFormatter(string nodeName, FormatType formatType)
         {
             // Gets the filepath.
-            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
             Assert.IsTrue(File.Exists(filePath));
             WiggleAnnotation annotation = null, annotationNew = null;
 
-            var expectedValues = utilityObj.xmlUtil.GetTextValue(nodeName,
+            string[] expectedValues = utilityObj.xmlUtil.GetTextValue(nodeName,
                                      Constants.ExpectedValuesNode).Split(',');
-            var expectedPoints = utilityObj.xmlUtil.GetTextValue(nodeName,
+            string[] expectedPoints = utilityObj.xmlUtil.GetTextValue(nodeName,
                                      Constants.ExpectedKeysNode).Split(',');
 
             //Parse the file.
-            var parser = new WiggleParser();
+            WiggleParser parser = new WiggleParser();
             annotation = parser.ParseOne(filePath);
 
             WiggleFormatter formatter = null;
@@ -405,7 +405,7 @@ namespace Bio.Tests.IO.Wiggle
             switch (formatType)
             {
                 case FormatType.Stream:
-                    using (var writer = File.Create(Constants.WiggleTempFileName))
+                    using (FileStream writer = File.Create(Constants.WiggleTempFileName))
                     {
                         formatter = new WiggleFormatter();
                         formatter.Format(writer, annotation);
@@ -420,12 +420,12 @@ namespace Bio.Tests.IO.Wiggle
             }
 
             //Read the new file and then compare the annotations.
-            var parserNew = new WiggleParser();
+            WiggleParser parserNew = new WiggleParser();
             annotationNew = parserNew.ParseOne(Constants.WiggleTempFileName);
-            var index = 0;
+            int index = 0;
 
             //Validate keys and values of the parsed file.
-            foreach (var keyvaluePair in annotationNew)
+            foreach (KeyValuePair<long, float> keyvaluePair in annotationNew)
             {
                 Assert.AreEqual(long.Parse(expectedPoints[index],
                             CultureInfo.InvariantCulture), keyvaluePair.Key);

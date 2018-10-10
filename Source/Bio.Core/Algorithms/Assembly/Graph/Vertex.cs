@@ -64,7 +64,7 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             get
             {
-                var count = 0;
+                int count = 0;
                 if (IncomingEdges != null)
                 {
                     count = IncomingEdges.Count;
@@ -81,7 +81,7 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             get
             {
-                var count = 0;
+                int count = 0;
                 if (OutgoingEdges != null)
                 {
                     count = OutgoingEdges.Count;
@@ -129,7 +129,7 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <returns>Returns true if edge id found and successfully removed from the incoming list, else returns false.</returns>
         public bool RemoveFromIncomingEdge(long edgeID)
         {
-            var result = false;
+            bool result = false;
             if (IncomingEdges != null)
             {
                 result = IncomingEdges.Remove(edgeID);
@@ -146,7 +146,7 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <returns>Returns true if edge id found and successfully removed from the outgoing list, else returns false.</returns>
         public bool RemoveFromOutgoingEdge(long edgeId)
         {
-            var result = false;
+            bool result = false;
             if (OutgoingEdges != null)
             {
                 result = OutgoingEdges.Remove(edgeId);
@@ -163,10 +163,10 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <returns>Returns true if the oldEdgeId found and replaced with newEdgeid, else returns false.</returns>
         public bool ReplaceIncomingEdge(long oldEdgeId, long newEdgeId)
         {
-            var result = false;
+            bool result = false;
             if (IncomingEdges != null)
             {
-                var index = IncomingEdges.IndexOf(oldEdgeId);
+                int index = IncomingEdges.IndexOf(oldEdgeId);
                 if (index >= 0)
                 {
                     IncomingEdges[index] = newEdgeId;
@@ -185,10 +185,10 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <returns>Returns true if the oldEdgeId found and replaced with newEdgeid, else returns false.</returns>
         public bool ReplaceOutgoingEdge(long oldEdgeId, long newEdgeId)
         {
-            var result = false;
+            bool result = false;
             if (OutgoingEdges != null)
             {
-                var index = OutgoingEdges.IndexOf(oldEdgeId);
+                int index = OutgoingEdges.IndexOf(oldEdgeId);
                 if (index >= 0)
                 {
                     OutgoingEdges[index] = newEdgeId;

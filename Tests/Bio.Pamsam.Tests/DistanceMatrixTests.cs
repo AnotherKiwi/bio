@@ -15,11 +15,11 @@ namespace Bio.Pamsam.Tests
         [Test]
         public void TestDistanceMatrix()
         {
-            var dimension = 4;
+            int dimension = 4;
             IDistanceMatrix distanceMatrix = new SymmetricDistanceMatrix(dimension);
-            for (var i = 0; i < distanceMatrix.Dimension - 1; ++i)
+            for (int i = 0; i < distanceMatrix.Dimension - 1; ++i)
             {
-                for (var j = i + 1; j < distanceMatrix.Dimension; ++j)
+                for (int j = i + 1; j < distanceMatrix.Dimension; ++j)
                 {
                     distanceMatrix[i, j] = i + j;
                     distanceMatrix[j, i] = i + j;
@@ -31,9 +31,9 @@ namespace Bio.Pamsam.Tests
             Assert.AreEqual(dimension, distanceMatrix.NearestDistances.Length);
 
             // Test elements
-            for (var i = 0; i < distanceMatrix.Dimension - 1; ++i)
+            for (int i = 0; i < distanceMatrix.Dimension - 1; ++i)
             {
-                for (var j = i + 1; j < distanceMatrix.Dimension; ++j)
+                for (int j = i + 1; j < distanceMatrix.Dimension; ++j)
                 {
                     Assert.AreEqual(i + j, distanceMatrix[i, j]);
                     Assert.AreEqual(i + j, distanceMatrix[j, i]);

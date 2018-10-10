@@ -343,7 +343,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             AlignmentScore = AlignmentScoreA = AlignmentScoreB = AlignmentScoreC = float.MinValue;
 
             // Get our list of sequences.
-            var sequences = inputSequences.ToList();
+            List<ISequence> sequences = inputSequences.ToList();
             if (sequences.Count == 0)
             {
                 throw new ArgumentException("Empty input sequences");
@@ -367,11 +367,11 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             DoAlignment(sequences);
 
             // just for the purpose of integrating PW and MSA with the same output
-            var alignment = new Alignment.SequenceAlignment();
+            Alignment.SequenceAlignment alignment = new Alignment.SequenceAlignment();
             IAlignedSequence aSequence = new AlignedSequence();
-            foreach (var alignedSequence in AlignedSequences)
+            foreach (ISequence alignedSequence in AlignedSequences)
                 aSequence.Sequences.Add(alignedSequence);
-            foreach (var inputSequence in sequences)
+            foreach (ISequence inputSequence in sequences)
                 alignment.Sequences.Add(inputSequence);
             alignment.AlignedSequences.Add(aSequence);
             return new List<Alignment.ISequenceAlignment>() {alignment};
@@ -425,9 +425,9 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             }
             else
             {
-                var similarityMatrixDNA = new List<String> { "AmbiguousDNA" };
-                var similarityMatrixRNA = new List<String> { "AmbiguousRNA" };
-                var similarityMatrixProtein = new List<String> { "BLOSUM45", "BLOSUM50", "BLOSUM62", "BLOSUM80", "BLOSUM90", "PAM250", "PAM30", "PAM70" };
+                List<string> similarityMatrixDNA = new List<String> { "AmbiguousDNA" };
+                List<string> similarityMatrixRNA = new List<String> { "AmbiguousRNA" };
+                List<string> similarityMatrixProtein = new List<String> { "BLOSUM45", "BLOSUM50", "BLOSUM62", "BLOSUM80", "BLOSUM90", "PAM250", "PAM30", "PAM70" };
 
                 if (alphabet is DnaAlphabet)
                 {
@@ -523,7 +523,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
 
             ReportLog("Stage 1");
             // Generate DistanceMatrix
-            var kmerDistanceMatrixGenerator = new KmerDistanceMatrixGenerator(sequences, KmerLength, alphabet, DistanceFunctionName);
+            KmerDistanceMatrixGenerator kmerDistanceMatrixGenerator = new KmerDistanceMatrixGenerator(sequences, KmerLength, alphabet, DistanceFunctionName);
 
             // Hierarchical clustering
             IHierarchicalClustering hierarcicalClustering =
@@ -531,7 +531,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                     (kmerDistanceMatrixGenerator.DistanceMatrix, HierarchicalClusteringMethodName);
 
             // Generate Guide Tree
-            var binaryGuideTree = new BinaryGuideTree(hierarcicalClustering);
+            BinaryGuideTree binaryGuideTree = new BinaryGuideTree(hierarcicalClustering);
 
             // Progressive Alignment
             IProgressiveAligner progressiveAlignerA = new ProgressiveAligner(profileAligner);
@@ -560,7 +560,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             {
                 BinaryGuideTree binaryGuideTreeB = null;
                 IHierarchicalClustering hierarcicalClusteringB = null;
-                var kimuraDistanceMatrixGenerator = new KimuraDistanceMatrixGenerator();
+                KimuraDistanceMatrixGenerator kimuraDistanceMatrixGenerator = new KimuraDistanceMatrixGenerator();
 
                 if (UseStageB)
                 {
@@ -610,15 +610,15 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                 // STAGE 3
                 ReportLog("Stage 3");
                 // refinement
-                var maxRefineMentTime = 1;
+                int maxRefineMentTime = 1;
                 if (sequences.Count == 2)
                 {
                     maxRefineMentTime = 0;
                 }
 
-                var refinementTime = 0;
+                int refinementTime = 0;
                 AlignedSequencesC = new List<ISequence>(AlignedSequences.Count);
-                foreach (var t in AlignedSequences)
+                foreach (ISequence t in AlignedSequences)
                 {
                     AlignedSequencesC.Add(new Sequence(Alphabets.GetAmbiguousAlphabet(alphabet), t.ToArray())
                         {
@@ -632,15 +632,15 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                 {
                     ++refinementTime;
                     ReportLog("Refinement iter " + refinementTime);
-                    var needRefinement = false;
-                    for (var edgeIndex = 0; edgeIndex < binaryGuideTreeB.NumberOfEdges; ++edgeIndex)
+                    bool needRefinement = false;
+                    for (int edgeIndex = 0; edgeIndex < binaryGuideTreeB.NumberOfEdges; ++edgeIndex)
                     {
-                        var leafNodeIndices = binaryGuideTreeB.SeparateSequencesByCuttingTree(edgeIndex);
+                        List<int>[] leafNodeIndices = binaryGuideTreeB.SeparateSequencesByCuttingTree(edgeIndex);
 
-                        var allIndelPositions = new List<int>[2];
+                        List<int>[] allIndelPositions = new List<int>[2];
 
-                        var separatedProfileAlignments = ProfileAlignment.ProfileExtraction(AlignedSequencesC, leafNodeIndices[0], leafNodeIndices[1], out allIndelPositions);
-                        var eStrings = new List<int>[2];
+                        IProfileAlignment[] separatedProfileAlignments = ProfileAlignment.ProfileExtraction(AlignedSequencesC, leafNodeIndices[0], leafNodeIndices[1], out allIndelPositions);
+                        List<int>[] eStrings = new List<int>[2];
 
                         if (separatedProfileAlignments[0].NumberOfSequences < separatedProfileAlignments[1].NumberOfSequences)
                         {
@@ -655,15 +655,15 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                             eStrings[1] = profileAligner.GenerateEString(profileAligner.AlignedA);
                         }
 
-                        for (var set = 0; set < 2; ++set)
+                        for (int set = 0; set < 2; ++set)
                         {
                             Parallel.ForEach(leafNodeIndices[set], ParallelOption, i =>
                             {
                                 //Sequence seq = new Sequence(_alphabet, "");
-                                var seqBytes = new List<byte>();
+                                List<byte> seqBytes = new List<byte>();
 
-                                var indexAllIndel = 0;
-                                for (var j = 0; j < AlignedSequencesC[i].Count; ++j)
+                                int indexAllIndel = 0;
+                                for (int j = 0; j < AlignedSequencesC[i].Count; ++j)
                                 {
                                     if (indexAllIndel < allIndelPositions[set].Count && j == allIndelPositions[set][indexAllIndel])
                                     {

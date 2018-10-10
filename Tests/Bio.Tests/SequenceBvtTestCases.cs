@@ -45,22 +45,22 @@ namespace Bio.Tests
         public void ValidateSingleCharDnaSequence()
         {
             // Gets the actual sequence and the alphabet from the Xml
-            var alphabetName = utilityObj.xmlUtil.GetTextValue(
+            string alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleDnaAlphabetNode, Constants.AlphabetNameNode);
-            var actualSequence = utilityObj.xmlUtil.GetTextValue(
+            string actualSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleDnaAlphabetNode, Constants.ExpectedSingleChar);
 
             // Logs information to the log file
             ApplicationLog.WriteLine(string.Concat(
                 "Sequence BVT: Sequence is as expected."));
 
-            var createSequence = new Sequence(
+            Sequence createSequence = new Sequence(
                 Utility.GetAlphabet(alphabetName), actualSequence);
 
             Assert.IsNotNull(createSequence);
 
             // Validate the createdSequence            
-            var seqNew = new string(createSequence.Select(a => (char)a).ToArray());
+            string seqNew = new string(createSequence.Select(a => (char)a).ToArray());
             Assert.AreEqual(seqNew, actualSequence);
 
             ApplicationLog.WriteLine(string.Concat(
@@ -84,9 +84,9 @@ namespace Bio.Tests
         {
 
             // Gets the actual sequence and the alphabet from the Xml
-            var alphabetName = utilityObj.xmlUtil.GetTextValue(
+            string alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleDnaAlphabetNode, Constants.AlphabetNameNode);
-            var actualSequence = utilityObj.xmlUtil.GetTextValue(
+            string actualSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleDnaAlphabetNode, Constants.ExpectedNormalString);
 
             // Logs information to the log file
@@ -96,7 +96,7 @@ namespace Bio.Tests
             ISequence createSequence = new Sequence(Utility.GetAlphabet(alphabetName),actualSequence);
             Assert.IsNotNull(createSequence);
 
-            var seqNew = createSequence.ConvertToString();
+            string seqNew = createSequence.ConvertToString();
 
             // Validate the createdSequence
             Assert.AreEqual(seqNew, actualSequence);
@@ -117,21 +117,21 @@ namespace Bio.Tests
         public void ValidateRnaSequence()
         {
             // Gets the actual sequence and the alphabet from the Xml
-            var alphabetName = utilityObj.xmlUtil.GetTextValue(
+            string alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleRnaAlphabetNode, Constants.AlphabetNameNode);
-            var actualSequence = utilityObj.xmlUtil.GetTextValue(
+            string actualSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleRnaAlphabetNode, Constants.ExpectedNormalString);
 
             // Logs information to the log file
             ApplicationLog.WriteLine(string.Concat(
                 "Sequence BVT: Sequence ", actualSequence, " and Alphabet ", alphabetName));
 
-            var createSequence =new Sequence(Utility.GetAlphabet(alphabetName),
+            Sequence createSequence =new Sequence(Utility.GetAlphabet(alphabetName),
                     actualSequence);
             Assert.IsNotNull(createSequence);
 
             // Validate the createdSequence
-            var seqNew = new string(createSequence.Select(a => (char)a).ToArray());
+            string seqNew = new string(createSequence.Select(a => (char)a).ToArray());
             Assert.AreEqual(seqNew, actualSequence);
             ApplicationLog.WriteLine(string.Concat(
                 "Sequence BVT: Sequence is as expected."));
@@ -153,21 +153,21 @@ namespace Bio.Tests
         public void ValidateProteinSequence()
         {
             // Gets the actual sequence and the alphabet from the Xml
-            var alphabetName = utilityObj.xmlUtil.GetTextValue(
+            string alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleProteinAlphabetNode, Constants.AlphabetNameNode);
-            var actualSequence = utilityObj.xmlUtil.GetTextValue(
+            string actualSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleProteinAlphabetNode, Constants.ExpectedNormalString);
 
             // Logs information to the log file
             ApplicationLog.WriteLine(string.Concat(
                 "Sequence BVT: Sequence ", actualSequence, " and Alphabet ", alphabetName));
 
-            var createSequence = new Sequence(
+            Sequence createSequence = new Sequence(
                 Utility.GetAlphabet(alphabetName), actualSequence);
             Assert.IsNotNull(createSequence);
 
             // Validate the createdSequence
-            var seqNew = new string(createSequence.Select(a => (char)a).ToArray());
+            string seqNew = new string(createSequence.Select(a => (char)a).ToArray());
             Assert.AreEqual(seqNew, actualSequence);
 
             Assert.AreEqual(Utility.GetAlphabet(alphabetName), createSequence.Alphabet);
@@ -184,11 +184,11 @@ namespace Bio.Tests
         public void ValidateFastaAFileSequence()
         {
             // Gets the expected sequence from the Xml
-            var expectedSequence = utilityObj.xmlUtil.GetTextValue(
+            string expectedSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleFastaNodeName, Constants.ExpectedSequenceNode);
-            var fastAFilePath = utilityObj.xmlUtil.GetTextValue(
+            string fastAFilePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.SimpleFastaNodeName, Constants.FilePathNode);
-            var alphabet = utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
+            string alphabet = utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
                 Constants.AlphabetNameNode);
             Assert.IsTrue(File.Exists(fastAFilePath));
 
@@ -197,24 +197,24 @@ namespace Bio.Tests
                 "Sequence BVT: The File exist in the Path ", fastAFilePath));
 
             IEnumerable<ISequence> sequence = null;
-            var parser = new FastAParser();
+            FastAParser parser = new FastAParser();
             {
                 // Parse a FastA file Using Parse method and convert the same to sequence.
                 parser.Alphabet = Utility.GetAlphabet(alphabet);
                 sequence = parser.Parse(fastAFilePath);
 
                 Assert.IsNotNull(sequence);
-                var fastASequence = (Sequence)sequence.ElementAt(0);
+                Sequence fastASequence = (Sequence)sequence.ElementAt(0);
                 Assert.IsNotNull(fastASequence);
 
-                var seqString = sequence.ElementAt(0).Select(a => (char)a).ToArray();
-                var newSequence = new string(seqString);
+                char[] seqString = sequence.ElementAt(0).Select(a => (char)a).ToArray();
+                string newSequence = new string(seqString);
 
                 Assert.AreEqual(expectedSequence, newSequence);
                 ApplicationLog.WriteLine(string.Concat(
                     "Sequence BVT: The Sequence is as expected."));
 
-                var tmpEncodedSeq = new byte[fastASequence.Count];
+                byte[] tmpEncodedSeq = new byte[fastASequence.Count];
                 (fastASequence as IEnumerable<byte>).ToArray().CopyTo(tmpEncodedSeq, 0);
 
                 Assert.AreEqual(expectedSequence.Length, tmpEncodedSeq.Length);
@@ -280,19 +280,19 @@ namespace Bio.Tests
         public void ValidateSequenceConstructor()
         {
             // Get input and expected values from xml
-            var alphabetName = utilityObj.xmlUtil.GetTextValue(
+            string alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.DnaDerivedSequenceNode, Constants.AlphabetNameNode);
-            var expectedSequence = utilityObj.xmlUtil.GetTextValue(
+            string expectedSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.DnaDerivedSequenceNode, Constants.ExpectedDerivedSequence);
-            var alphabet = Utility.GetAlphabet(alphabetName);
+            IAlphabet alphabet = Utility.GetAlphabet(alphabetName);
 
-            var byteArray = new List<byte[]>
+            List<byte[]> byteArray = new List<byte[]>
             {
                  Encoding.UTF8.GetBytes(expectedSequence),                 
             };
 
             // Validating Constructor.
-            var constructorSequence = new Sequence(alphabet, byteArray[0]);
+            Sequence constructorSequence = new Sequence(alphabet, byteArray[0]);
             Assert.AreEqual(expectedSequence,
                         new string(constructorSequence.Select(a => (char)a).ToArray()));
             ApplicationLog.WriteLine(string.Concat(
@@ -307,20 +307,20 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateEnumerator()
         {
-            var alphabetName = utilityObj.xmlUtil.GetTextValue(
+            string alphabetName = utilityObj.xmlUtil.GetTextValue(
                                  Constants.DnaDerivedSequenceNode, Constants.AlphabetNameNode);
-            var alphabet = Utility.GetAlphabet(alphabetName);
-            var expectedSequence = (utilityObj.xmlUtil.GetTextValue(
+            IAlphabet alphabet = Utility.GetAlphabet(alphabetName);
+            string expectedSequence = (utilityObj.xmlUtil.GetTextValue(
                             Constants.DnaDerivedSequenceNode, Constants.ExpectedDerivedSequence));
-            var sequence = new Sequence(alphabet, expectedSequence);
+            Sequence sequence = new Sequence(alphabet, expectedSequence);
             //Validate Count
             Assert.AreEqual(Encoding.UTF8.GetByteCount(expectedSequence), sequence.Count);
             ApplicationLog.WriteLine(string.Concat(
                 "Sequence BVT: Validation of Count operation completed successfully."));
 
             //Validate Enumerator.
-            var sequenceString = "";
-            var enumFromSequence = sequence.GetEnumerator();
+            string sequenceString = "";
+            IEnumerator<byte> enumFromSequence = sequence.GetEnumerator();
             while (enumFromSequence.MoveNext())
             {
                 sequenceString += ((char)enumFromSequence.Current);
@@ -341,18 +341,18 @@ namespace Bio.Tests
         public void ValidateSequenceLastIndexOfNonGap()
         {
             // Get input and expected values from xml
-            var expectedSequence = utilityObj.xmlUtil.GetTextValue(Constants.RnaDerivedSequenceNode,
+            string expectedSequence = utilityObj.xmlUtil.GetTextValue(Constants.RnaDerivedSequenceNode,
                 Constants.ExpectedSequence);
-            var alphabetName = utilityObj.xmlUtil.GetTextValue(Constants.RnaDerivedSequenceNode,
+            string alphabetName = utilityObj.xmlUtil.GetTextValue(Constants.RnaDerivedSequenceNode,
                 Constants.AlphabetNameNode);
 
-            var alphabet = Utility.GetAlphabet(alphabetName);
+            IAlphabet alphabet = Utility.GetAlphabet(alphabetName);
 
             // Create a Sequence object.
-            var seqObj =
+            Sequence seqObj =
                 new Sequence(alphabet, expectedSequence);
 
-            var index = seqObj.LastIndexOfNonGap();
+            long index = seqObj.LastIndexOfNonGap();
 
             Assert.AreEqual(expectedSequence.Length - 1, index);
         }
@@ -365,30 +365,30 @@ namespace Bio.Tests
         public void ValidateCopyTo()
         {
             // Get input and expected values from xml
-            var expectedSequence = utilityObj.xmlUtil.GetTextValue(Constants.RnaDerivedSequenceNode,
+            string expectedSequence = utilityObj.xmlUtil.GetTextValue(Constants.RnaDerivedSequenceNode,
                 Constants.ExpectedSequence);
-            var alphabetName = utilityObj.xmlUtil.GetTextValue(Constants.RnaDerivedSequenceNode,
+            string alphabetName = utilityObj.xmlUtil.GetTextValue(Constants.RnaDerivedSequenceNode,
                 Constants.AlphabetNameNode);
-            var alphabet = Utility.GetAlphabet(alphabetName);
+            IAlphabet alphabet = Utility.GetAlphabet(alphabetName);
 
             // Create a Sequence object.
             ISequence iseqObj =
                 new Sequence(alphabet, expectedSequence);
-            var seqObj = new Sequence(iseqObj);
-            var array = new byte[expectedSequence.Length];
+            Sequence seqObj = new Sequence(iseqObj);
+            byte[] array = new byte[expectedSequence.Length];
             seqObj.CopyTo(array, 0, expectedSequence.Length);
-            var builder = new StringBuilder();
-            for (var i = 0; i < expectedSequence.Length; i++)
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < expectedSequence.Length; i++)
             {
                 builder.Append((char)array[i]);
             }
-            var actualValue = builder.ToString();
+            string actualValue = builder.ToString();
             Assert.AreEqual(expectedSequence, actualValue);
 
             //check with a part of the expected seq only
             seqObj.CopyTo(array, 0, 5);
             builder = new StringBuilder();
-            for (var i = 0; i < 5; i++)
+            for (int i = 0; i < 5; i++)
             {
                 builder.Append((char)array[i]);
             }
@@ -407,11 +407,11 @@ namespace Bio.Tests
         /// </summary>
         void ValidateSequences(string parentNode, SequenceMethods option)
         {
-            var alphabetName = utilityObj.xmlUtil.GetTextValue(
+            string alphabetName = utilityObj.xmlUtil.GetTextValue(
                                  parentNode, Constants.AlphabetNameNode);
-            var alphabet = Utility.GetAlphabet(alphabetName);
+            IAlphabet alphabet = Utility.GetAlphabet(alphabetName);
             ISequence seq = null;
-            var expectedValue = "";
+            string expectedValue = "";
             ISequence sequence = new Sequence(alphabet, Encoding.UTF8.GetBytes(
                                 utilityObj.xmlUtil.GetTextValue(parentNode, 
                                 Constants.ExpectedDerivedSequence)));

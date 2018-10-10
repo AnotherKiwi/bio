@@ -24,21 +24,21 @@ namespace Bio.IO.PacBio
             {
                 throw new ArgumentNullException(nameof(stream));
             }
-            var bp = new BAMParser ();
-            var header = bp.GetHeader (stream);
-            var field = header.RecordFields.ToList();
+            BAMParser bp = new BAMParser ();
+            SAMAlignmentHeader header = bp.GetHeader (stream);
+            List<SAMRecordField> field = header.RecordFields.ToList();
 
-            var pg = field.Where( p => p.Typecode=="PG").FirstOrDefault();
+            SAMRecordField pg = field.Where( p => p.Typecode=="PG").FirstOrDefault();
             if (pg == null) {
                 throw new ArgumentException ("BAM file did not contain a 'PG' tag in header");
             }
 
-            var cl = pg.Tags.Where (z => z.Tag == "CL").FirstOrDefault ();
+            SAMRecordFieldTag cl = pg.Tags.Where (z => z.Tag == "CL").FirstOrDefault ();
             if (cl == null) {
                 throw new ArgumentException ("BAM file did not contain a 'CL' tag within the 'PG' group in header.");
             }
 
-            var cmd = cl.Value;
+            string cmd = cl.Value;
             if(!cmd.StartsWith("ccs")) {
                 throw new ArgumentException("This is not a BAM file produced by the ccs command.");
             }
@@ -46,7 +46,7 @@ namespace Bio.IO.PacBio
 
 
             stream.Seek(0, SeekOrigin.Begin);
-            foreach (var s in bp.Parse (stream)) {
+            foreach (SAMAlignedSequence s in bp.Parse (stream)) {
                 yield return new PacBioCCSRead (s as SAMAlignedSequence);
             }
         }

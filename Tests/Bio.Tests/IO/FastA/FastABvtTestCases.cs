@@ -43,7 +43,7 @@ namespace Bio.TestAutomation.IO.FastA
         public void FastAParserValidateParse()
         {
             // Gets the expected sequence from the Xml
-            var filePath = utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
+            string filePath = utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
                                                               Constants.FilePathNode).TestDir();
 
             Assert.IsTrue(File.Exists(filePath));
@@ -52,10 +52,10 @@ namespace Bio.TestAutomation.IO.FastA
             ApplicationLog.WriteLine(string.Format(null,
                                                    "FastA Parser BVT: File Exists in the Path '{0}'.", filePath));
 
-            var parser = new FastAParser();
+            FastAParser parser = new FastAParser();
             {
                 parser.Alphabet = Alphabets.Protein;
-                var seqsList = parser.Parse(filePath);
+                IEnumerable<ISequence> seqsList = parser.Parse(filePath);
 
                 Assert.IsNotNull(seqsList);
                 Assert.AreEqual(1, seqsList.Count());
@@ -63,12 +63,12 @@ namespace Bio.TestAutomation.IO.FastA
                 ApplicationLog.WriteLine(string.Format("FastA Parser BVT: Number of Sequences found are '{0}'.",
                                                        seqsList.Count()));
 
-                var expectedSequence = utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
+                string expectedSequence = utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
                                                                           Constants.ExpectedSequenceNode);
 
-                var seq = (Sequence) seqsList.ElementAt(0);
-                var seqString = seqsList.ElementAt(0).Select(a => (char) a).ToArray();
-                var newSequence = new string(seqString);
+                Sequence seq = (Sequence) seqsList.ElementAt(0);
+                char[] seqString = seqsList.ElementAt(0).Select(a => (char) a).ToArray();
+                string newSequence = new string(seqString);
 
                 Assert.IsNotNull(seq);
                 Assert.AreEqual(expectedSequence, newSequence);
@@ -77,7 +77,7 @@ namespace Bio.TestAutomation.IO.FastA
                                                        "FastA Parser BVT: The FASTA sequence '{0}' validation after Parse() is found to be as expected.",
                                                        newSequence));
 
-                var tmpEncodedSeq = new byte[seq.Count];
+                byte[] tmpEncodedSeq = new byte[seq.Count];
                 (seq).ToArray().CopyTo(tmpEncodedSeq, 0);
 
                 Assert.AreEqual(expectedSequence.Length, tmpEncodedSeq.Length);
@@ -109,14 +109,14 @@ namespace Bio.TestAutomation.IO.FastA
         [Category("Priority0")]
         public void FastAParserValidateMoveNext()
         {
-            var filePath = utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
+            string filePath = utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
                                                               Constants.FilePathNode).TestDir();
             Assert.IsTrue(File.Exists(filePath));
             // Logs information to the log file            
             ApplicationLog.WriteLine(string.Format(null,
                                                    "FastA Parser BVT: File Exists in the Path '{0}'.", filePath));
             IEnumerable<ISequence> seqsList = null;
-            var parser = new FastAParser();
+            FastAParser parser = new FastAParser();
             {
                 parser.Alphabet = Alphabets.Protein;
                 seqsList = parser.Parse(filePath);
@@ -125,7 +125,7 @@ namespace Bio.TestAutomation.IO.FastA
                 ApplicationLog.WriteLine(string.Format(null,
                                                        "FastA Parser BVT: Number of Sequences found are '{0}'.",
                                                        seqsList.Count()));
-                var expectedSequence = utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
+                string expectedSequence = utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
                                                                           Constants.ExpectedSequenceNode);
                 Assert.IsNotNull(seqsList.ElementAt(0));
                 Assert.AreEqual(expectedSequence, new string(seqsList.ElementAt(0).Select(a => (char) a).ToArray()));
@@ -145,7 +145,7 @@ namespace Bio.TestAutomation.IO.FastA
         {
             List<ISequence> seqsList;
             // Gets the expected sequence from the Xml
-            var filePath = utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
+            string filePath = utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
                                                               Constants.FilePathNode).TestDir();
 
             Assert.IsTrue(File.Exists(filePath));
@@ -154,11 +154,11 @@ namespace Bio.TestAutomation.IO.FastA
             ApplicationLog.WriteLine(string.Format(null,
                                                    "FastA Parser BVT: File Exists in the Path '{0}'.", filePath));
 
-            using (var reader = File.OpenRead(filePath))
+            using (FileStream reader = File.OpenRead(filePath))
             {
                 IEnumerable<ISequence> seq = null;
 
-                var parser = new FastAParser();
+                FastAParser parser = new FastAParser();
                 {
                     parser.Alphabet = Alphabets.Protein;
                     seq = parser.Parse(reader);
@@ -170,10 +170,10 @@ namespace Bio.TestAutomation.IO.FastA
 
             Assert.IsNotNull(seqsList);
 
-            var expectedSequence = utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
+            string expectedSequence = utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
                                                                       Constants.ExpectedSequenceNode);
 
-            var seqString = new string(seqsList[0].Select(a => (char) a).ToArray());
+            string seqString = new string(seqsList[0].Select(a => (char) a).ToArray());
             Assert.AreEqual(expectedSequence, seqString);
 
             ApplicationLog.WriteLine(string.Format(null,
@@ -214,17 +214,17 @@ namespace Bio.TestAutomation.IO.FastA
         [Category("Priority0")]
         public void FastAFormatterValidateWrite()
         {
-            var formatter = new FastAFormatter();
+            FastAFormatter formatter = new FastAFormatter();
             {
                 // Gets the actual sequence and the alphabet from the Xml
-                var actualSequence = utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
+                string actualSequence = utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
                                                                         Constants.ExpectedSequenceNode);
-                var alpName = utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
+                string alpName = utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
                                                                  Constants.AlphabetNameNode);
                 // Logs information to the log file
                 ApplicationLog.WriteLine(string.Format("FastA Formatter BVT: Validating with Sequence '{0}' and Alphabet '{1}'.",
                                                        actualSequence, alpName));
-                var seqOriginal = new Sequence(Utility.GetAlphabet(alpName),
+                Sequence seqOriginal = new Sequence(Utility.GetAlphabet(alpName),
                                                actualSequence);
                 seqOriginal.ID = "";
                 Assert.IsNotNull(seqOriginal);
@@ -235,23 +235,23 @@ namespace Bio.TestAutomation.IO.FastA
                 IEnumerable<ISequence> seqsNew = null;
 
                 // Read the new file, then compare the sequences            
-                var parser = new FastAParser();
+                FastAParser parser = new FastAParser();
                 {
                     parser.Alphabet = Alphabets.Protein;
                     seqsNew = parser.Parse(Constants.FastaTempFileName);
-                    var seqString = seqsNew.ElementAt(0).Select(a => (char) a).ToArray();
-                    var newSequence = new string(seqString);
+                    char[] seqString = seqsNew.ElementAt(0).Select(a => (char) a).ToArray();
+                    string newSequence = new string(seqString);
                     Assert.IsNotNull(seqsNew);
 
                     ApplicationLog.WriteLine(string.Format("FastA Formatter BVT: New Sequence is '{0}'.",
                                                            newSequence));
 
                     // Now compare the sequences.
-                    var countNew = seqsNew.Count();
+                    int countNew = seqsNew.Count();
                     Assert.AreEqual(1, countNew);
                     ApplicationLog.WriteLine("The Number of sequences are matching.");
                     Assert.AreEqual(seqOriginal.ID, seqsNew.ElementAt(0).ID);
-                    var orgSeq = new string(seqsNew.ElementAt(0).Select(a => (char) a).ToArray());
+                    string orgSeq = new string(seqsNew.ElementAt(0).Select(a => (char) a).ToArray());
 
                     Assert.AreEqual(orgSeq, newSequence);
 
@@ -273,8 +273,8 @@ namespace Bio.TestAutomation.IO.FastA
         [Category("Priority0")]
         public void FastAFormatterValidateGetName()
         {
-            var formatter = new FastAFormatter();
-            var name = formatter.Name;
+            FastAFormatter formatter = new FastAFormatter();
+            string name = formatter.Name;
             Assert.IsNotNull(name);
             Assert.AreEqual(name, "FastA");
         }
@@ -287,8 +287,8 @@ namespace Bio.TestAutomation.IO.FastA
         [Category("Priority0")]
         public void FastAFormatterValidateGetSupportedFileTypes()
         {
-            var formatter = new FastAFormatter();
-            var supportedFileType = formatter.SupportedFileTypes;
+            FastAFormatter formatter = new FastAFormatter();
+            string supportedFileType = formatter.SupportedFileTypes;
             Assert.IsNotNull(supportedFileType);
             Assert.IsTrue(supportedFileType.Contains(".fa"));
             Assert.IsTrue(supportedFileType.Contains(".mpfa"));
@@ -306,8 +306,8 @@ namespace Bio.TestAutomation.IO.FastA
         [Category("Priority0")]
         public void FastAFormatterValidateGetDescription()
         {
-            var formatter = new FastAFormatter();
-            var desc = formatter.Description;
+            FastAFormatter formatter = new FastAFormatter();
+            string desc = formatter.Description;
             Assert.IsNotNull(desc);
         }
 
@@ -318,44 +318,44 @@ namespace Bio.TestAutomation.IO.FastA
         [Category("Priority0")]
         public void FastAFormatterValidateWrite1()
         {
-            var formatter = new FastAFormatter();
+            FastAFormatter formatter = new FastAFormatter();
             using (formatter.Open(Constants.FastaTempFileName))
             {
                 // Gets the actual sequence and the alphabet from the Xml
-                var actualSequence = utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
+                string actualSequence = utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
                                                                         Constants.ExpectedSequenceNode);
-                var alpName = utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
+                string alpName = utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
                                                                  Constants.AlphabetNameNode);
 
                 // Logs information to the log file
                 ApplicationLog.WriteLine(string.Format("FastA Formatter BVT: Validating with Sequence '{0}' and Alphabet '{1}'.",
                                                        actualSequence, alpName));
-                var seqOriginal = new Sequence(Utility.GetAlphabet(alpName),
+                Sequence seqOriginal = new Sequence(Utility.GetAlphabet(alpName),
                                                actualSequence) { ID = "" };
                 Assert.IsNotNull(seqOriginal);
 
                 // Use the formatter to write the original sequences to a temp file            
                 ApplicationLog.WriteLine(string.Format("FastA Formatter BVT: Creating the Temp file '{0}'.",
                                                        Constants.FastaTempFileName));
-                var seqList = new List<ISequence> { seqOriginal, seqOriginal, seqOriginal };
+                List<ISequence> seqList = new List<ISequence> { seqOriginal, seqOriginal, seqOriginal };
                 formatter.Format(seqList);
                 formatter.Close();
 
                 IEnumerable<ISequence> seqsNew = null;
                 // Read the new file, then compare the sequences            
-                var parser = new FastAParser();
+                FastAParser parser = new FastAParser();
                 {
                     parser.Alphabet = Alphabets.Protein;
                     seqsNew = parser.Parse(Constants.FastaTempFileName);
-                    var seqString = seqsNew.ElementAt(0).Select(a => (char) a).ToArray();
-                    var newSequence = new string(seqString);
+                    char[] seqString = seqsNew.ElementAt(0).Select(a => (char) a).ToArray();
+                    string newSequence = new string(seqString);
                     Assert.IsNotNull(seqsNew);
                     ApplicationLog.WriteLine(string.Format(null,
                                                            "FastA Formatter BVT: New Sequence is '{0}'.",
                                                            newSequence));
 
                     // Now compare the sequences.
-                    var countNew = seqsNew.Count();
+                    int countNew = seqsNew.Count();
                     Assert.AreEqual(3, countNew);
                     ApplicationLog.WriteLine("The Number of sequences are matching.");
                     Assert.AreEqual(seqOriginal.ID, seqsNew.ElementAt(0).ID);
@@ -385,22 +385,22 @@ namespace Bio.TestAutomation.IO.FastA
         [Category("Priority0")]
         public void FastAFormatterValidateWriteWithStream()
         {
-            var actualSequence = string.Empty;
+            string actualSequence = string.Empty;
 
-            var formatter = new FastAFormatter();
+            FastAFormatter formatter = new FastAFormatter();
             {
                 using (formatter.Open(Constants.FastaTempFileName))
                 {
                     // Gets the actual sequence and the alphabet from the Xml
                     actualSequence = utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
                                                                      Constants.ExpectedSequenceNode);
-                    var alpName = utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
+                    string alpName = utilityObj.xmlUtil.GetTextValue(Constants.SimpleFastaNodeName,
                                                                      Constants.AlphabetNameNode);
 
                     // Logs information to the log file
                     ApplicationLog.WriteLine(string.Format("FastA Formatter BVT: Validating with Sequence '{0}' and Alphabet '{1}'.",
                                                            actualSequence, alpName));
-                    var seqOriginal = new Sequence(Utility.GetAlphabet(alpName), actualSequence);
+                    Sequence seqOriginal = new Sequence(Utility.GetAlphabet(alpName), actualSequence);
 
                     seqOriginal.ID = "";
                     Assert.IsNotNull(seqOriginal);
@@ -412,19 +412,19 @@ namespace Bio.TestAutomation.IO.FastA
                 }
                 IEnumerable<ISequence> seq = null;
 
-                using (var reader = File.OpenRead(Constants.FastaTempFileName))
+                using (FileStream reader = File.OpenRead(Constants.FastaTempFileName))
                 {
                     // Read the new file, then compare the sequences            
-                    var parser = new FastAParser();
+                    FastAParser parser = new FastAParser();
                     {
                         parser.Alphabet = Alphabets.Protein;
                         seq = parser.Parse(reader);
 
                         //Create a list of sequences.
-                        var seqsList = seq.ToList();
+                        List<ISequence> seqsList = seq.ToList();
                         Assert.IsNotNull(seqsList);
 
-                        var seqString = new string(seqsList[0].Select(a => (char) a).ToArray());
+                        string seqString = new string(seqsList[0].Select(a => (char) a).ToArray());
                         Assert.AreEqual(actualSequence, seqString);
                     }
                 }

@@ -171,24 +171,24 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
             redundancyField = redundancy;
             kmerLength = lengthofKmer;
 
-            var readSeqs = ValidateReads(reads);
+            IEnumerable<ISequence> readSeqs = ValidateReads(reads);
 
             //Step1: Generate contig overlap graph.
             IList<ISequence> contigsList = new List<ISequence>(contigs);
-            var contigGraph = GenerateContigOverlapGraph(contigsList);
-            var nodes = contigGraph.Nodes.Where(t => t.ExtensionsCount == 0);
+            ContigGraph contigGraph = GenerateContigOverlapGraph(contigsList);
+            IEnumerable<Node> nodes = contigGraph.Nodes.Where(t => t.ExtensionsCount == 0);
 
-            foreach (var node in nodes)
+            foreach (Node node in nodes)
             {
                 contigsList.Remove(contigGraph.GetNodeSequence(node));
             }
 
             // Step2: Map Reads to contigs.
-            var readContigMaps = ReadContigMap(contigsList, readSeqs);
+            ReadContigMap readContigMaps = ReadContigMap(contigsList, readSeqs);
             contigsList = null;
 
             // Step3: Generate Contig Mate Pair Map.
-            var contigMatePairs = MapPairedReadsToContigs(readContigMaps, readSeqs);
+            ContigMatePairs contigMatePairs = MapPairedReadsToContigs(readContigMaps, readSeqs);
             readContigMaps = null;
 
             // Step4: Filter Paired Reads.
@@ -198,7 +198,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
             CalculateDistanceBetweenContigs(contigMatePairs);
 
             // Step6: Trace Scaffold Paths.
-            var paths = TracePath(contigGraph, contigMatePairs);
+            IList<ScaffoldPath> paths = TracePath(contigGraph, contigMatePairs);
             contigMatePairs = null;
 
             // Step7: Assemble paths.
@@ -231,7 +231,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
                 throw new ArgumentNullException(nameof(contigs));
             }
 
-            var contigGraph = new ContigGraph();
+            ContigGraph contigGraph = new ContigGraph();
             contigGraph.BuildContigGraph(contigs, kmerLength);
             return contigGraph;
         }
@@ -341,7 +341,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
                 throw new ArgumentNullException(nameof(paths));
             }
 
-            var scaffolds = paths.AsParallel().Select(t => t.BuildSequenceFromPath(contigGraph, kmerLength)).ToList();
+            List<ISequence> scaffolds = paths.AsParallel().Select(t => t.BuildSequenceFromPath(contigGraph, kmerLength)).ToList();
             IEnumerable<Node> visitedNodes = contigGraph.Nodes.AsParallel().Where(t => !t.IsMarked());
             scaffolds.AddRange(visitedNodes.AsParallel().Select(t => contigGraph.GetNodeSequence(t)));
             contigGraph.Dispose();
@@ -372,12 +372,12 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         /// <returns>Valid reads.</returns>
         private IEnumerable<ISequence> ValidateReads(IEnumerable<ISequence> reads)
         {
-            var readAlphabet = Alphabets.GetAmbiguousAlphabet(reads.First().Alphabet);
-            var ambiguousSymbols = readAlphabet.GetAmbiguousSymbols();
+            IAlphabet readAlphabet = Alphabets.GetAmbiguousAlphabet(reads.First().Alphabet);
+            HashSet<byte> ambiguousSymbols = readAlphabet.GetAmbiguousSymbols();
             HashSet<byte> gapSymbols;
             readAlphabet.TryGetGapSymbols(out gapSymbols);
 
-            foreach (var read in reads)
+            foreach (ISequence read in reads)
             {
                 string originalSequenceId;
                 string pairedReadType;
@@ -387,7 +387,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
                 {
                     if (!read.Alphabet.HasAmbiguity)
                     {
-                        var gapSymbolFound = false;
+                        bool gapSymbolFound = false;
                         for (long index = 0; index < read.Count; index++)
                         {
                             if (gapSymbols.Contains(read[index]))

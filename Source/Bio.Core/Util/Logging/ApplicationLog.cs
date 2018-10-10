@@ -38,7 +38,7 @@ namespace Bio.Util.Logging
         /// <returns>the formatted string that was written</returns>
         public static string Write(string fmt, params object[] args)
         {
-            var ret = string.Empty;
+            string ret = string.Empty;
             if (WriteHandler != null)
             {
                 ret = string.Format(CultureInfo.InvariantCulture, fmt, args);

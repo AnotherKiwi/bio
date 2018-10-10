@@ -67,7 +67,7 @@ namespace Bio.Util.ArgumentParser
         /// <param name="generateHelpPage">True/False whether to generate help or throw HelpException</param>
         public static void ConstructAndRun<T>(string[] commandArgs, bool generateHelpPage) where T : IRunnable
         {
-            var command = new CommandArguments(commandArgs);
+            CommandArguments command = new CommandArguments(commandArgs);
             command.GenerateHelpPage = generateHelpPage;
             command.ConstructAndRun<T>();
         }
@@ -81,7 +81,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns>The fully instantiated object</returns>
         public static T Construct<T>(string[] commandArgs)
         {
-            var command = new CommandArguments(commandArgs);
+            CommandArguments command = new CommandArguments(commandArgs);
             return command.Construct<T>();
         }
 
@@ -94,7 +94,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns>The fully instantiated object</returns>
         public static T Construct<T>(string commandString)
         {
-            var command = new CommandArguments(commandString);
+            CommandArguments command = new CommandArguments(commandString);
             return command.Construct<T>();
         }
 
@@ -117,7 +117,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns>The result</returns>
         public static CommandArguments FromParsable(object obj, bool suppressDefaults = true)
         {
-            var cmd = new CommandArguments();
+            CommandArguments cmd = new CommandArguments();
             cmd.PopulateFromParsableObject(obj, suppressDefaults);
             return cmd;
         }
@@ -143,16 +143,16 @@ namespace Bio.Util.ArgumentParser
         /// <returns>Created Usage String.</returns>
         protected override string CreateUsageString(IEnumerable<MemberInfo> requireds, MemberInfo requiredParamsOrNull, Type constructingType)
         {
-            var exeName = Path.GetFileName(Assembly.
+            string exeName = Path.GetFileName(Assembly.
 #if !SILVERLIGHT
                 GetEntryAssembly().Location);
 #else
                 GetExecutingAssembly().Location);
 #endif
-            var baseString = string.Format("{0} [OPTIONS] {1}", exeName, requireds.Select(member => member.Name).StringJoin(" "));
+            string baseString = string.Format("{0} [OPTIONS] {1}", exeName, requireds.Select(member => member.Name).StringJoin(" "));
             if (null != requiredParamsOrNull)
             {
-                var opName = requiredParamsOrNull.Name.EndsWith("s", StringComparison.CurrentCultureIgnoreCase) ?
+                string opName = requiredParamsOrNull.Name.EndsWith("s", StringComparison.CurrentCultureIgnoreCase) ?
                     requiredParamsOrNull.Name.Substring(0, requiredParamsOrNull.Name.Length - 1) :
                     requiredParamsOrNull.Name;
 
@@ -192,7 +192,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns>True if extracted Optional Flag Internal.</returns>
         protected override bool ExtractOptionalFlagInternal(string flag, bool removeFlag)
         {
-            var argIndex = FindFlag(flag);
+            int argIndex = FindFlag(flag);
 
             if (argIndex == -1)
             {
@@ -216,7 +216,7 @@ namespace Bio.Util.ArgumentParser
             if (string.IsNullOrEmpty(query))
                 return false;
 
-            foreach (var pre in FLAG_PREFIXES)
+            foreach (string pre in FLAG_PREFIXES)
                 if (query.Equals(pre + flagBase, StringComparison.OrdinalIgnoreCase))
                     return true;
             return false;
@@ -239,7 +239,7 @@ namespace Bio.Util.ArgumentParser
             if (string.IsNullOrWhiteSpace(query) || double.TryParse(query, out dummy))
                 return false;
 
-            foreach (var pre in FLAG_PREFIXES)
+            foreach (string pre in FLAG_PREFIXES)
                 if (query.StartsWith(pre, StringComparison.OrdinalIgnoreCase))
                     return true;
             return false;

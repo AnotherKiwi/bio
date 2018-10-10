@@ -67,7 +67,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                 throw new Exception("Out of momery", ex.InnerException);
             }
 
-            for (var i = 0; i < _linearDistanceMatrix.Capacity; ++i)
+            for (int i = 0; i < _linearDistanceMatrix.Capacity; ++i)
             {
                 _linearDistanceMatrix.Add(0);
             }
@@ -140,8 +140,8 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="current">current row/col number</param>
         private static int Summation(int n, int current)
         {
-            var _result = 0;
-            for (var i = 0; i < current; ++i)
+            int _result = 0;
+            for (int i = 0; i < current; ++i)
             {
                 _result += n - i - 1;
             }

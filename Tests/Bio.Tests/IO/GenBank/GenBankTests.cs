@@ -266,8 +266,8 @@ ORIGIN
         public void TestGenBankLocusTokenParser()
         {
             // parse
-            var parser = new GenBankParser();
-            var seq = parser.Parse(_genBankFile_LocusTokenParserTest).FirstOrDefault();
+            GenBankParser parser = new GenBankParser();
+            ISequence seq = parser.Parse(_genBankFile_LocusTokenParserTest).FirstOrDefault();
             Assert.IsNotNull(seq);
         }
 
@@ -280,8 +280,8 @@ ORIGIN
         public void TestGenBankEmptyOrganismClassification()
         {
             // parse
-            var parser = new GenBankParser();
-            var seq = parser.Parse(_genBankFile_EmptyOrganismClassificationTest).FirstOrDefault();
+            GenBankParser parser = new GenBankParser();
+            ISequence seq = parser.Parse(_genBankFile_EmptyOrganismClassificationTest).FirstOrDefault();
             Assert.IsNotNull(seq);
         }
 
@@ -295,8 +295,8 @@ ORIGIN
         public void TestGenBankParseVersionEmpty()
         {
             // parse
-            var parser = new GenBankParser();
-            var seq = parser.Parse(_genBankFile_ParseVersionEmpty).FirstOrDefault();
+            GenBankParser parser = new GenBankParser();
+            ISequence seq = parser.Parse(_genBankFile_ParseVersionEmpty).FirstOrDefault();
             Assert.IsNotNull(seq);
         }
 
@@ -310,8 +310,8 @@ ORIGIN
         public void TestGenBankParseOriginShifted()
         {
             // parse
-            var parser = new GenBankParser();
-            var seq = parser.Parse(_genBankFile_ParseOriginShifted).FirstOrDefault();
+            GenBankParser parser = new GenBankParser();
+            ISequence seq = parser.Parse(_genBankFile_ParseOriginShifted).FirstOrDefault();
             Assert.IsNotNull(seq);
         }
 
@@ -324,8 +324,8 @@ ORIGIN
         public void TestGenBankParseOriginShifted2()
         {
             // parse
-            var parser = new GenBankParser();
-            var seq = parser.Parse(_genBankFile_ParseOriginShifted2).FirstOrDefault();
+            GenBankParser parser = new GenBankParser();
+            ISequence seq = parser.Parse(_genBankFile_ParseOriginShifted2).FirstOrDefault();
             Assert.IsNotNull(seq);
         }
 
@@ -338,7 +338,7 @@ ORIGIN
         public void TestGenBankFailureWhenParsingEmpty()
         {
 
-            var failed = false;
+            bool failed = false;
 
             try
             {
@@ -365,7 +365,7 @@ ORIGIN
         {
             // parse
             ISequenceParser parser = new GenBankParser();
-            var seq = parser.Parse(_singleProteinSeqGenBankFilename).FirstOrDefault();
+            ISequence seq = parser.Parse(_singleProteinSeqGenBankFilename).FirstOrDefault();
 
             // test the non-metadata properties
             Assert.AreEqual(Alphabets.DNA, seq.Alphabet);
@@ -373,7 +373,7 @@ ORIGIN
 
             // test the metadata that is tricky to parse, and will not be tested implicitly by
             // testing the formatting
-            var metadata = (GenBankMetadata)seq.Metadata["GenBank"];
+            GenBankMetadata metadata = (GenBankMetadata)seq.Metadata["GenBank"];
 
             Assert.AreEqual(metadata.Locus.Strand, SequenceStrandType.None);
             Assert.AreEqual("none", metadata.Locus.StrandTopology.ToString().ToLower(CultureInfo.CurrentCulture));
@@ -384,7 +384,7 @@ ORIGIN
 
             // test that we're correctly putting all types of metadata in the right places
             Assert.AreEqual(1, seq.Metadata.Count);
-            var referenceList = metadata.References;
+            IList<CitationReference> referenceList = metadata.References;
             Assert.AreEqual(3, referenceList.Count);
             IList<FeatureItem> featureList = metadata.Features.All;
             Assert.AreEqual(6, featureList.Count);
@@ -393,15 +393,15 @@ ORIGIN
             Assert.AreEqual(1, featureList[2].Qualifiers.Count);
 
             // test the sequence string
-            var expected = @"gatcctccatatacaacggtatctccacctcaggtttagatctcaacaacggaaccattgccgacatgagacagttaggtatcgtcgagagttacaagctaaaacgagcagtagtcagctctgcatctgaagccgctgaagttctactaagggtggataacatcatccgtgcaagaccaagaaccgccaatagacaacatatgtaacatatttaggatatacctcgaaaataataaaccgccacactgtcattattataattagaaacagaacgcaaaaattatccactatataattcaaagacgcgaaaaaaaaagaacaacgcgtcatagaacttttggcaattcgcgtcacaaataaattttggcaacttatgtttcctcttcgagcagtactcgagccctgtctcaagaatgtaataatacccatcgtaggtatggttaaagatagcatctccacaacctcaaagctccttgccgagagtcgccctcctttgtcgagtaattttcacttttcatatgagaacttattttcttattctttactctcacatcctgtagtgattgacactgcaacagccaccatcactagaagaacagaacaattacttaatagaaaaattatatcttcctcgaaacgatttcctgcttccaacatctacgtatatcaagaagcattcacttaccatgacacagcttcagatttcattattgctgacagctactatatcactactccatctagtagtggccacgccctatgaggcatatcctatcggaaaacaataccccccagtggcaagagtcaatgaatcgtttacatttcaaatttccaatgatacctataaatcgtctgtagacaagacagctcaaataacatacaattgcttcgacttaccgagctggctttcgtttgactctagttctagaacgttctcaggtgaaccttcttctgacttactatctgatgcgaacaccacgttgtatttcaatgtaatactcgagggtacggactctgccgacagcacgtctttgaacaatacataccaatttgttgttacaaaccgtccatccatctcgctatcgtcagatttcaatctattggcgttgttaaaaaactatggttatactaacggcaaaaacgctctgaaactagatcctaatgaagtcttcaacgtgacttttgaccgttcaatgttcactaacgaagaatccattgtgtcgtattacggacgttctcagttgtataatgcgccgttacccaattggctgttcttcgattctggcgagttgaagtttactgggacggcaccggtgataaactcggcgattgctccagaaacaagctacagttttgtcatcatcgctacagacattgaaggattttctgccgttgaggtagaattcgaattagtcatcggggctcaccagttaactacctctattcaaaatagtttgataatcaacgttactgacacaggtaacgtttcatatgacttacctctaaactatgtttatctcgatgacgatcctatttcttctgataaattgggttctataaacttattggatgctccagactgggtggcattagataatgctaccatttccgggtctgtcccagatgaattactcggtaagaactccaatcctgccaatttttctgtgtccatttatgatacttatggtgatgtgatttatttcaacttcgaagttgtctccacaacggatttgtttgccattagttctcttcccaatattaacgctacaaggggtgaatggttctcctactattttttgccttctcagtttacagactacgtgaatacaaacgtttcattagagtttactaattcaagccaagaccatgactgggtgaaattccaatcatctaatttaacattagctggagaagtgcccaagaatttcgacaagctttcattaggtttgaaagcgaaccaaggttcacaatctcaagagctatattttaacatcattggcatggattcaaagataactcactcaaaccacagtgcgaatgcaacgtccacaagaagttctcaccactccacctcaacaagttcttacacatcttctacttacactgcaaaaatttcttctacctccgctgctgctacttcttctgctccagcagcgctgccagcagccaataaaacttcatctcacaataaaaaagcagtagcaattgcgtgcggtgttgctatcccattaggcgttatcctagtagctctcatttgcttcctaatattctggagacgcagaagggaaaatccagacgatgaaaacttaccgcatgctattagtggacctgatttgaataatcctgcaaataaaccaaatcaagaaaacgctacacctttgaacaacccctttgatgatgatgcttcctcgtacgatgatacttcaatagcaagaagattggctgctttgaacactttgaaattggataaccactctgccactgaatctgatatttccagcgtggatgaaaagagagattctctatcaggtatgaatacatacaatgatcagttccaatcccaaagtaaagaagaattattagcaaaacccccagtacagcctccagagagcccgttctttgacccacagaataggtcttcttctgtgtatatggatagtgaaccagcagtaaataaatcctggcgatatactggcaacctgtcaccagtctctgatattgtcagagacagttacggatcacaaaaaactgttgatacagaaaaacttttcgatttagaagcaccagagaaggaaaaacgtacgtcaagggatgtcactatgtcttcactggacccttggaacagcaatattagcccttctcccgtaagaaaatcagtaacaccatcaccatataacgtaacgaagcatcgtaaccgccacttacaaaatattcaagactctcaaagcggtaaaaacggaatcactcccacaacaatgtcaacttcatcttctgacgattttgttccggttaaagatggtgaaaatttttgctgggtccatagcatggaaccagacagaagaccaagtaagaaaaggttagtagatttttcaaataagagtaatgtcaatgttggtcaagttaaggacattcacggacgcatcccagaaatgctgtgattatacgcaacgatattttgcttaattttattttcctgttttattttttattagtggtttacagataccctatattttatttagtttttatacttagagacatttaattttaattccattcttcaaatttcatttttgcacttaaaacaaagatccaaaaatgctctcgccctcttcatattgagaatacactccattcaaaattttgtcgtcaccgctgattaatttttcactaaactgatgaataatcaaaggccccacgtcagaaccgactaaagaagtgagttttattttaggaggttgaaaaccattattgtctggtaaattttcatcttcttgacatttaacccagtttgaatccctttcaatttctgctttttcctccaaactatcgaccctcctgtttctgtccaacttatgtcctagttccaattcgatcgcattaataactgcttcaaatgttattgtgtcatcgttgactttaggtaatttctccaaatgcataatcaaactatttaaggaagatcggaattcgtcgaacacttcagtttccgtaatgatctgatcgtctttatccacatgttgtaattcactaaaatctaaaacgtatttttcaatgcataaatcgttctttttattaataatgcagatggaaaatctgtaaacgtgcgttaatttagaaagaacatccagtataagttcttctatatagtcaattaaagcaggatgcctattaatgggaacgaactgcggcaagttgaatgactggtaagtagtgtagtcgaatgactgaggtgggtatacatttctataaaataaaatcaaattaatgtagcattttaagtataccctcagccacttctctacccatctattcataaagctgacgcaacgattactattttttttttcttcttggatctcagtcgtcgcaaaaacgtataccttctttttccgaccttttttttagctttctggaaaagtttatattagttaaacagggtctagtcttagtgtgaaagctagtggtttcgattgactgatattaagaaagtggaaattaaattagtagtgtagacgtatatgcatatgtatttctcgcctgtttatgtttctacgtacttttgatttatagcaaggggaaaagaaatacatactattttttggtaaaggtgaaagcataatgtaaaagctagaataaaatggacgaaataaagagaggcttagttcatcttttttccaaaaagcacccaatgataataactaaaatgaaaaggatttgccatctgtcagcaacatcagttgtgtgagcaataataaaatcatcacctccgttgcctttagcgcgtttgtcgtttgtatcttccgtaattttagtcttatcaatgggaatcataaattttccaatgaattagcaatttcgtccaattctttttgagcttcttcatatttgctttggaattcttcgcacttcttttcccattcatctctttcttcttccaaagcaacgatccttctacccatttgctcagagttcaaatcggcctctttcagtttatccattgcttccttcagtttggcttcactgtcttctagctgttgttctagatcctggtttttcttggtgtagttctcattattagatctcaagttattggagtcttcagccaattgctttgtatcagacaattgactctctaacttctccacttcactgtcgagttgctcgtttttagcggacaaagatttaatctcgttttctttttcagtgttagattgctctaattctttgagctgttctctcagctcctcatatttttcttgccatgactcagattctaattttaagctattcaatttctctttgatc";
+            string expected = @"gatcctccatatacaacggtatctccacctcaggtttagatctcaacaacggaaccattgccgacatgagacagttaggtatcgtcgagagttacaagctaaaacgagcagtagtcagctctgcatctgaagccgctgaagttctactaagggtggataacatcatccgtgcaagaccaagaaccgccaatagacaacatatgtaacatatttaggatatacctcgaaaataataaaccgccacactgtcattattataattagaaacagaacgcaaaaattatccactatataattcaaagacgcgaaaaaaaaagaacaacgcgtcatagaacttttggcaattcgcgtcacaaataaattttggcaacttatgtttcctcttcgagcagtactcgagccctgtctcaagaatgtaataatacccatcgtaggtatggttaaagatagcatctccacaacctcaaagctccttgccgagagtcgccctcctttgtcgagtaattttcacttttcatatgagaacttattttcttattctttactctcacatcctgtagtgattgacactgcaacagccaccatcactagaagaacagaacaattacttaatagaaaaattatatcttcctcgaaacgatttcctgcttccaacatctacgtatatcaagaagcattcacttaccatgacacagcttcagatttcattattgctgacagctactatatcactactccatctagtagtggccacgccctatgaggcatatcctatcggaaaacaataccccccagtggcaagagtcaatgaatcgtttacatttcaaatttccaatgatacctataaatcgtctgtagacaagacagctcaaataacatacaattgcttcgacttaccgagctggctttcgtttgactctagttctagaacgttctcaggtgaaccttcttctgacttactatctgatgcgaacaccacgttgtatttcaatgtaatactcgagggtacggactctgccgacagcacgtctttgaacaatacataccaatttgttgttacaaaccgtccatccatctcgctatcgtcagatttcaatctattggcgttgttaaaaaactatggttatactaacggcaaaaacgctctgaaactagatcctaatgaagtcttcaacgtgacttttgaccgttcaatgttcactaacgaagaatccattgtgtcgtattacggacgttctcagttgtataatgcgccgttacccaattggctgttcttcgattctggcgagttgaagtttactgggacggcaccggtgataaactcggcgattgctccagaaacaagctacagttttgtcatcatcgctacagacattgaaggattttctgccgttgaggtagaattcgaattagtcatcggggctcaccagttaactacctctattcaaaatagtttgataatcaacgttactgacacaggtaacgtttcatatgacttacctctaaactatgtttatctcgatgacgatcctatttcttctgataaattgggttctataaacttattggatgctccagactgggtggcattagataatgctaccatttccgggtctgtcccagatgaattactcggtaagaactccaatcctgccaatttttctgtgtccatttatgatacttatggtgatgtgatttatttcaacttcgaagttgtctccacaacggatttgtttgccattagttctcttcccaatattaacgctacaaggggtgaatggttctcctactattttttgccttctcagtttacagactacgtgaatacaaacgtttcattagagtttactaattcaagccaagaccatgactgggtgaaattccaatcatctaatttaacattagctggagaagtgcccaagaatttcgacaagctttcattaggtttgaaagcgaaccaaggttcacaatctcaagagctatattttaacatcattggcatggattcaaagataactcactcaaaccacagtgcgaatgcaacgtccacaagaagttctcaccactccacctcaacaagttcttacacatcttctacttacactgcaaaaatttcttctacctccgctgctgctacttcttctgctccagcagcgctgccagcagccaataaaacttcatctcacaataaaaaagcagtagcaattgcgtgcggtgttgctatcccattaggcgttatcctagtagctctcatttgcttcctaatattctggagacgcagaagggaaaatccagacgatgaaaacttaccgcatgctattagtggacctgatttgaataatcctgcaaataaaccaaatcaagaaaacgctacacctttgaacaacccctttgatgatgatgcttcctcgtacgatgatacttcaatagcaagaagattggctgctttgaacactttgaaattggataaccactctgccactgaatctgatatttccagcgtggatgaaaagagagattctctatcaggtatgaatacatacaatgatcagttccaatcccaaagtaaagaagaattattagcaaaacccccagtacagcctccagagagcccgttctttgacccacagaataggtcttcttctgtgtatatggatagtgaaccagcagtaaataaatcctggcgatatactggcaacctgtcaccagtctctgatattgtcagagacagttacggatcacaaaaaactgttgatacagaaaaacttttcgatttagaagcaccagagaaggaaaaacgtacgtcaagggatgtcactatgtcttcactggacccttggaacagcaatattagcccttctcccgtaagaaaatcagtaacaccatcaccatataacgtaacgaagcatcgtaaccgccacttacaaaatattcaagactctcaaagcggtaaaaacggaatcactcccacaacaatgtcaacttcatcttctgacgattttgttccggttaaagatggtgaaaatttttgctgggtccatagcatggaaccagacagaagaccaagtaagaaaaggttagtagatttttcaaataagagtaatgtcaatgttggtcaagttaaggacattcacggacgcatcccagaaatgctgtgattatacgcaacgatattttgcttaattttattttcctgttttattttttattagtggtttacagataccctatattttatttagtttttatacttagagacatttaattttaattccattcttcaaatttcatttttgcacttaaaacaaagatccaaaaatgctctcgccctcttcatattgagaatacactccattcaaaattttgtcgtcaccgctgattaatttttcactaaactgatgaataatcaaaggccccacgtcagaaccgactaaagaagtgagttttattttaggaggttgaaaaccattattgtctggtaaattttcatcttcttgacatttaacccagtttgaatccctttcaatttctgctttttcctccaaactatcgaccctcctgtttctgtccaacttatgtcctagttccaattcgatcgcattaataactgcttcaaatgttattgtgtcatcgttgactttaggtaatttctccaaatgcataatcaaactatttaaggaagatcggaattcgtcgaacacttcagtttccgtaatgatctgatcgtctttatccacatgttgtaattcactaaaatctaaaacgtatttttcaatgcataaatcgttctttttattaataatgcagatggaaaatctgtaaacgtgcgttaatttagaaagaacatccagtataagttcttctatatagtcaattaaagcaggatgcctattaatgggaacgaactgcggcaagttgaatgactggtaagtagtgtagtcgaatgactgaggtgggtatacatttctataaaataaaatcaaattaatgtagcattttaagtataccctcagccacttctctacccatctattcataaagctgacgcaacgattactattttttttttcttcttggatctcagtcgtcgcaaaaacgtataccttctttttccgaccttttttttagctttctggaaaagtttatattagttaaacagggtctagtcttagtgtgaaagctagtggtttcgattgactgatattaagaaagtggaaattaaattagtagtgtagacgtatatgcatatgtatttctcgcctgtttatgtttctacgtacttttgatttatagcaaggggaaaagaaatacatactattttttggtaaaggtgaaagcataatgtaaaagctagaataaaatggacgaaataaagagaggcttagttcatcttttttccaaaaagcacccaatgataataactaaaatgaaaaggatttgccatctgtcagcaacatcagttgtgtgagcaataataaaatcatcacctccgttgcctttagcgcgtttgtcgtttgtatcttccgtaattttagtcttatcaatgggaatcataaattttccaatgaattagcaatttcgtccaattctttttgagcttcttcatatttgctttggaattcttcgcacttcttttcccattcatctctttcttcttccaaagcaacgatccttctacccatttgctcagagttcaaatcggcctctttcagtttatccattgcttccttcagtttggcttcactgtcttctagctgttgttctagatcctggtttttcttggtgtagttctcattattagatctcaagttattggagtcttcagccaattgctttgtatcagacaattgactctctaacttctccacttcactgtcgagttgctcgtttttagcggacaaagatttaatctcgttttctttttcagtgttagattgctctaattctttgagctgttctctcagctcctcatatttttcttgccatgactcagattctaattttaagctattcaatttctctttgatc";
             Assert.AreEqual(expected, new string(seq.Select(a => (char)a).ToArray()));
 
             // format
             ISequenceFormatter formatter = new GenBankFormatter();
             formatter.Format(seq, TempGenBankFileName);
 
-            var actual = string.Empty;
-            using (var reader = new StreamReader(TempGenBankFileName))
+            string actual = string.Empty;
+            using (StreamReader reader = new StreamReader(TempGenBankFileName))
             {
                 actual = reader.ReadToEnd();
             }
@@ -421,7 +421,7 @@ ORIGIN
         {
             // parse
             ISequenceParser parser = new GenBankParser();
-            var seqList = parser.Parse(_multipleSeqGenBankFilename);
+            IEnumerable<ISequence> seqList = parser.Parse(_multipleSeqGenBankFilename);
 
             // Just check the number of items returned and that they're not empty.  The guts
             // are tested in TestGenBankWhenParsingOne.
@@ -440,7 +440,7 @@ ORIGIN
             // set correct alphabet and parse
             ISequenceParser parser = new GenBankParser();
             parser.Alphabet = Alphabets.DNA;
-            var seq = parser.Parse(_singleProteinSeqGenBankFilename).FirstOrDefault();
+            ISequence seq = parser.Parse(_singleProteinSeqGenBankFilename).FirstOrDefault();
             Assert.AreEqual(Alphabets.DNA, seq.Alphabet);
 
             // format
@@ -449,8 +449,8 @@ ORIGIN
             using (formatter.Open(TempGenBankFileName))
                 formatter.Format(seq);
 
-            var actual = string.Empty;
-            using (var reader = new StreamReader(TempGenBankFileName))
+            string actual = string.Empty;
+            using (StreamReader reader = new StreamReader(TempGenBankFileName))
             {
                 actual = reader.ReadToEnd();
             }
@@ -471,15 +471,15 @@ ORIGIN
             // set correct alphabet and parse
             ISequenceParser parser = new GenBankParser();
             parser.Alphabet = Alphabets.DNA;
-            var seq = parser.Parse(_singleDnaSeqGenBankFilename).FirstOrDefault();
+            ISequence seq = parser.Parse(_singleDnaSeqGenBankFilename).FirstOrDefault();
             Assert.AreEqual(Alphabets.DNA, seq.Alphabet);
 
             // format
             ISequenceFormatter formatter = new GenBankFormatter();
             formatter.Format(seq, TempGenBankFileName);
 
-            var actual = string.Empty;
-            using (var reader = new StreamReader(TempGenBankFileName))
+            string actual = string.Empty;
+            using (StreamReader reader = new StreamReader(TempGenBankFileName))
             {
                 actual = reader.ReadToEnd();
             }
@@ -501,11 +501,11 @@ ORIGIN
             // parse
             ISequenceParser parser = new GenBankParser();
             parser.Alphabet = Alphabets.Protein;
-            var failed = false;
+            bool failed = false;
             try
             {
-                var seqList = parser.Parse(_singleDnaSeqGenBankFilename);
-                var x = seqList.ElementAt(0);
+                IEnumerable<ISequence> seqList = parser.Parse(_singleDnaSeqGenBankFilename);
+                ISequence x = seqList.ElementAt(0);
                 failed = true;
             }
             catch (InvalidDataException)
@@ -529,12 +529,12 @@ ORIGIN
 
             // iterate through the files in input dir, parsing and formatting each; write results
             // to log file
-            var inputDirInfo = new DirectoryInfo(_genBankDataPath);
-            foreach (var fileInfo in inputDirInfo.GetFiles("*.gbk"))
+            DirectoryInfo inputDirInfo = new DirectoryInfo(_genBankDataPath);
+            foreach (FileInfo fileInfo in inputDirInfo.GetFiles("*.gbk"))
             {
                 ApplicationLog.WriteLine("Parsing file {0}...{1}", fileInfo.FullName, Environment.NewLine);
 
-                var seqList = new GenBankParser().Parse(fileInfo.FullName);
+                IEnumerable<ISequence> seqList = new GenBankParser().Parse(fileInfo.FullName);
 
                 ISequenceFormatter formatter = new GenBankFormatter();
                 using (formatter.Open(TempGenBankFileName))
@@ -542,9 +542,9 @@ ORIGIN
                     (formatter as GenBankFormatter).Format(seqList.ToList());
                 }
 
-                using (var reader = new StreamReader(TempGenBankFileName))
+                using (StreamReader reader = new StreamReader(TempGenBankFileName))
                 {
-                    var actual = reader.ReadToEnd();
+                    string actual = reader.ReadToEnd();
                 }
                 
                 File.Delete(TempGenBankFileName);
@@ -580,15 +580,15 @@ ORIGIN
         public void GenBankFeatures()
         {
             // parse
-            var seq = new GenBankParser()
+            ISequence seq = new GenBankParser()
                 .Parse(_singleProteinSeqGenBankFilename)
                 .FirstOrDefault();
             Assert.IsNotNull(seq);
 
-            var metadata = seq.Metadata["GenBank"] as GenBankMetadata;
+            GenBankMetadata metadata = seq.Metadata["GenBank"] as GenBankMetadata;
             Assert.IsNotNull(metadata);
 
-            var CDS = metadata.Features.CodingSequences;
+            List<CodingSequence> CDS = metadata.Features.CodingSequences;
             Assert.AreEqual(CDS.Count, 3);
             Assert.AreEqual(CDS[0].DatabaseCrossReference.Count, 1);
             Assert.AreEqual(CDS[0].GeneSymbol, string.Empty);
@@ -600,7 +600,7 @@ ORIGIN
             Assert.AreEqual(metadata.GetFeatures(120, 150).Count, 2);
             Assert.AreEqual(metadata.GetCitationsReferredInFeatures().Count, 0);
 
-            var seq1 = new GenBankParser()
+            ISequence seq1 = new GenBankParser()
                 .Parse(Path.Combine(_genBankDataPath, "NC_001284.gbk"))
                 .FirstOrDefault();
             Assert.IsNotNull(seq1);
@@ -619,12 +619,12 @@ ORIGIN
             Assert.AreEqual(metadata.Features.GetFeatures(StandardFeatureKeys.CodingSequence).Count, 117);
             
             ISequence seqTemp = metadata.Features.CodingSequences[0].GetTranslation();
-            var tempData = new byte[seqTemp.Count];
-            for (var i = 0; i < seqTemp.Count; i++)
+            byte[] tempData = new byte[seqTemp.Count];
+            for (int i = 0; i < seqTemp.Count; i++)
             {
                 tempData[i] = seqTemp[i];
             }
-            var sequenceInString = Encoding.ASCII.GetString(tempData);
+            string sequenceInString = Encoding.ASCII.GetString(tempData);
             Assert.AreEqual(metadata.Features.CodingSequences[0].Translation.Trim('"'), sequenceInString.Trim('"'));
             Assert.AreEqual(2, metadata.GetFeatures(11918, 12241).Count);
         }
@@ -638,7 +638,7 @@ ORIGIN
         {
             // Test parsing Primary header which contains table with header.
             // TPA_SPAN         PRIMARY_IDENTIFIER PRIMARY_SPAN        COMP
-            var results = new GenBankParser()
+            List<ISequence> results = new GenBankParser()
                 .Parse(_genBankFile_WithTPAPrimaryData)
                 .ToList();
         }
@@ -652,7 +652,7 @@ ORIGIN
         {
             // Test parsing Primary header which contains table with header.
             // REFSEQ_SPAN         PRIMARY_IDENTIFIER PRIMARY_SPAN        COMP
-            var results = new GenBankParser()
+            List<ISequence> results = new GenBankParser()
                 .Parse(_genBankFile_WithREFSEQPrimaryData)
                 .ToList();
         }
@@ -667,11 +667,11 @@ ORIGIN
         {
             // Create a Sequence with all attributes.
             // parse and update the properties instead of parsing entire file.   
-            var tempFileName = Path.GetTempFileName();
+            string tempFileName = Path.GetTempFileName();
             ISequenceParser parser1 = new GenBankParser();
             using (parser1.Open(_genBankFile_WithMultipleDBLines))
             {
-                var orgSeq = parser1.Parse().First();
+                ISequence orgSeq = parser1.Parse().First();
                 ISequenceFormatter formatter = new GenBankFormatter();
                 using (formatter.Open(tempFileName))
                 {
@@ -679,7 +679,7 @@ ORIGIN
                     formatter.Close();
                 }
             }
-            var same = Utility.CompareFiles(tempFileName, _genBankFile_WithMultipleDBLines);
+            bool same = Utility.CompareFiles(tempFileName, _genBankFile_WithMultipleDBLines);
             File.Delete(tempFileName);
             Assert.IsTrue(same);
             ApplicationLog.WriteLine("GenBank Formatter: Successful read->write loop");

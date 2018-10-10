@@ -105,7 +105,7 @@ namespace Bio.Tests.IO.Wiggle
         public void ValidateArgumentNullException(ExceptionType exceptionType)
         {
             // Gets the filepath.
-            var filePath = utilityObj.xmlUtil.GetTextValue(Constants.
+            string filePath = utilityObj.xmlUtil.GetTextValue(Constants.
                               SimpleWiggleWithFixedStepNodeName, Constants.FilePathNode).TestDir();
             Assert.IsTrue(File.Exists(filePath));
             WiggleAnnotation annotation =null;
@@ -115,11 +115,11 @@ namespace Bio.Tests.IO.Wiggle
                 switch (exceptionType)
                 {
                     case ExceptionType.NullFormatter:
-                        var formatter = new WiggleFormatter();
+                        WiggleFormatter formatter = new WiggleFormatter();
                         formatter.Format(null, annotation);                        
                         break;
                     case ExceptionType.NullParser:
-                        var parser = new WiggleParser();
+                        WiggleParser parser = new WiggleParser();
                         string valueForParse = null;
                         parser.ParseOne(valueForParse);
                         break;
@@ -127,7 +127,7 @@ namespace Bio.Tests.IO.Wiggle
                         annotation = new WiggleAnnotation(null, Constants.StringByteArray);
                         break;
                     case ExceptionType.NullAnnotationWithChromosomeName:
-                        var data = new float[2] { 1.0F, 2.0F };
+                        float[] data = new float[2] { 1.0F, 2.0F };
                         annotation = new WiggleAnnotation(data, null,0,0);
                         break;
                 }
@@ -146,11 +146,11 @@ namespace Bio.Tests.IO.Wiggle
         public void ValidateFormatException(string nodeName)
         {
             // Gets the filepath.
-            var filePath = utilityObj.xmlUtil.GetTextValue(Constants.
+            string filePath = utilityObj.xmlUtil.GetTextValue(Constants.
                               InValidFileNamesNode, nodeName).TestDir();
             Assert.IsTrue(File.Exists(filePath));
 
-            var parser=new WiggleParser();
+            WiggleParser parser=new WiggleParser();
 
             try
             {

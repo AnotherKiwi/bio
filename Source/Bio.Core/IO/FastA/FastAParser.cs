@@ -80,12 +80,12 @@ namespace Bio.IO.FastA
                 throw new ArgumentNullException(nameof(stream));
             }
 
-            var buffer = new byte[PlatformManager.Services.DefaultBufferSize];
-            using (var reader = stream.OpenRead())
+            byte[] buffer = new byte[PlatformManager.Services.DefaultBufferSize];
+            using (StreamReader reader = stream.OpenRead())
             {
                 while (!reader.EndOfStream)
                 {
-                    var seq = ParseOne(reader, buffer);
+                    ISequence seq = ParseOne(reader, buffer);
                     if (seq != null)
                         yield return seq;
                 }
@@ -104,8 +104,8 @@ namespace Bio.IO.FastA
                 throw new ArgumentNullException(nameof(stream));
             }
 
-            var buffer = new byte[PlatformManager.Services.DefaultBufferSize];
-            using (var reader = stream.OpenRead())
+            byte[] buffer = new byte[PlatformManager.Services.DefaultBufferSize];
+            using (StreamReader reader = stream.OpenRead())
             {
                 return ParseOne(reader, buffer);
             }
@@ -125,10 +125,10 @@ namespace Bio.IO.FastA
             if (reader.Peek() == -1)
                 return null;
 
-            var currentBufferSize = PlatformManager.Services.DefaultBufferSize;
+            int currentBufferSize = PlatformManager.Services.DefaultBufferSize;
 
             string message;
-            var line = reader.ReadLine();
+            string line = reader.ReadLine();
 
             // Continue reading if blank line found.
             while (line != null && string.IsNullOrEmpty(line))
@@ -146,8 +146,8 @@ namespace Bio.IO.FastA
                 throw new Exception(message);
             }
 
-            var name = line.Substring(1);
-            var bufferPosition = 0;
+            string name = line.Substring(1);
+            int bufferPosition = 0;
 
             // Read next line.
             line = reader.ReadLine();
@@ -167,8 +167,8 @@ namespace Bio.IO.FastA
                 throw new Exception(message);
             }
 
-            var alphabet = Alphabet;
-            var tryAutoDetectAlphabet = alphabet == null;
+            IAlphabet alphabet = Alphabet;
+            bool tryAutoDetectAlphabet = alphabet == null;
 
             do
             {
@@ -178,17 +178,17 @@ namespace Bio.IO.FastA
                     throw new ArgumentOutOfRangeException(
                         string.Format(CultureInfo.CurrentUICulture, Properties.Resource.SequenceDataGreaterthan2GB, name));
                 }
-                var neededSize = bufferPosition + line.Length;
+                int neededSize = bufferPosition + line.Length;
                 if (neededSize >= currentBufferSize)
                 {
                     //Grow file dynamically, by buffer size, or if too small to fit the new sequence by the size of the sequence
-                    var suggestedSize = buffer.Length + PlatformManager.Services.DefaultBufferSize;
-                    var newSize = neededSize < suggestedSize ? suggestedSize : neededSize;
+                    int suggestedSize = buffer.Length + PlatformManager.Services.DefaultBufferSize;
+                    int newSize = neededSize < suggestedSize ? suggestedSize : neededSize;
                     Array.Resize(ref buffer, newSize);
                     currentBufferSize =newSize;
                 }
 
-                var symbols = Encoding.UTF8.GetBytes(line);
+                byte[] symbols = Encoding.UTF8.GetBytes(line);
 
                 // Array.Copy -- for performance improvement.
                 Array.Copy(symbols, 0, buffer, bufferPosition, symbols.Length);
@@ -267,7 +267,7 @@ namespace Bio.IO.FastA
             while (line != null);
 
             // Truncate buffer to remove trailing 0's
-            var tmpBuffer = new byte[bufferPosition];
+            byte[] tmpBuffer = new byte[bufferPosition];
             Array.Copy(buffer, tmpBuffer, bufferPosition);
 
             if (tryAutoDetectAlphabet)

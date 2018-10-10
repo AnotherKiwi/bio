@@ -23,12 +23,12 @@ namespace Bio.Tests.IO.ClustalW
         [Category("Priority0")]
         public void ClustalWParse()
         {
-            var filepath = @"TestUtils\ClustalW\AlignmentData.aln".TestDir();
+            string filepath = @"TestUtils\ClustalW\AlignmentData.aln".TestDir();
             Assert.IsTrue(File.Exists(filepath));
 
             IList<Dictionary<string, string>> expectedOutput = new List<Dictionary<string, string>>();
 
-            var expectedAlignment = new Dictionary<string, string>
+            Dictionary<string, string> expectedAlignment = new Dictionary<string, string>
             {
                 ["CYS1_DICDI"] = "-----MKVILLFVLAVFTVFVSS---------------RGIPPEEQ------------SQ"
                     + "FLEFQDKFNKKY-SHEEYLERFEIFKSNLGKIEELNLIAINHKADTKFGVNKFADLSSDE"
@@ -75,12 +75,12 @@ namespace Bio.Tests.IO.ClustalW
         [Category("Priority0")]
         public void ClustalWParseOne()
         {
-            var filepath = @"TestUtils\ClustalW\AlignmentData.aln".TestDir();
+            string filepath = @"TestUtils\ClustalW\AlignmentData.aln".TestDir();
             Assert.IsTrue(File.Exists(filepath));
 
             IList<Dictionary<string, string>> expectedOutput = new List<Dictionary<string, string>>();
 
-            var expectedAlignment = new Dictionary<string, string>
+            Dictionary<string, string> expectedAlignment = new Dictionary<string, string>
             {
                 ["CYS1_DICDI"] = "-----MKVILLFVLAVFTVFVSS---------------RGIPPEEQ------------SQ"
                     + "FLEFQDKFNKKY-SHEEYLERFEIFKSNLGKIEELNLIAINHKADTKFGVNKFADLSSDE"
@@ -109,7 +109,7 @@ namespace Bio.Tests.IO.ClustalW
 
             expectedOutput.Add(expectedAlignment);
 
-            var actualOutput = new List<ISequenceAlignment>();
+            List<ISequenceAlignment> actualOutput = new List<ISequenceAlignment>();
             ISequenceAlignment actualAlignment;
             ISequenceAlignmentParser parser = new ClustalWParser();
 
@@ -136,10 +136,10 @@ namespace Bio.Tests.IO.ClustalW
                 return false;
             }
 
-            var alignmentIndex = 0;
-            foreach (var alignment in actualOutput)
+            int alignmentIndex = 0;
+            foreach (ISequenceAlignment alignment in actualOutput)
             {
-                var expcetedAlignment = expectedOutput[alignmentIndex];
+                Dictionary<string, string> expcetedAlignment = expectedOutput[alignmentIndex];
 
                 foreach (Sequence actualSequence in alignment.AlignedSequences[0].Sequences)
                 {

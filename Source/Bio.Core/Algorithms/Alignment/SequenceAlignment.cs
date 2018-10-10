@@ -57,8 +57,8 @@ namespace Bio.Algorithms.Alignment
         /// <returns>Aligned Sequence Data.</returns>
         public override string ToString()
         {
-            var builder = new StringBuilder();
-            foreach (var seq in AlignedSequences)
+            StringBuilder builder = new StringBuilder();
+            foreach (IAlignedSequence seq in AlignedSequences)
             {
                 builder.AppendLine(seq.ToString());
             }

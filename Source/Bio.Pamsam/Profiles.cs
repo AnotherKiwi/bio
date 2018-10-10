@@ -53,7 +53,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                 internalItemSet = value;
                 ItemSetSmallInverted = new Dictionary<int, byte>();
 
-                foreach (var item in internalItemSet.Where(a => !char.IsLower((char)a.Key)))
+                foreach (KeyValuePair<byte, int> item in internalItemSet.Where(a => !char.IsLower((char)a.Key)))
                 {
                     ItemSetSmallInverted.Add(item.Value, item.Key);
                 }
@@ -188,7 +188,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             try
             {
                 _profilesMatrix = new List<float[]>(_rowSize);
-                for (var i = 0; i < _rowSize; ++i)
+                for (int i = 0; i < _rowSize; ++i)
                 {
                     _profilesMatrix.Add(new float[_colSize]);
                 }
@@ -222,18 +222,18 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         public static IProfiles GenerateProfiles(ISequence seq)
         {
             IProfiles profiles;
-            var sequenceLength = (int)seq.Count;
+            int sequenceLength = (int)seq.Count;
 
-            var colSize = (ItemSet.Count + 1) / 2;
+            int colSize = (ItemSet.Count + 1) / 2;
             profiles = new Profiles(sequenceLength, colSize);
 
-            for (var i = 0; i < sequenceLength; ++i)
+            for (int i = 0; i < sequenceLength; ++i)
             {
                 try
                 {
                     if (seq.Alphabet.CheckIsAmbiguous(seq[i]))
                     {
-                        for (var b = 0; b < AmbiguousCharactersMap[seq[i]].Count; ++b)
+                        for (int b = 0; b < AmbiguousCharactersMap[seq[i]].Count; ++b)
                         {
                             ++(profiles[i][ItemSet[AmbiguousCharactersMap[seq[i]][b]]]);
                         }
@@ -263,17 +263,17 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="weight">sequence weight</param>
         public static IProfiles GenerateProfiles(ISequence seq, float weight)
         {
-            var sequenceLength = (int)seq.Count;
-            var colSize = (ItemSet.Count + 1) / 2;
+            int sequenceLength = (int)seq.Count;
+            int colSize = (ItemSet.Count + 1) / 2;
             IProfiles profiles = new Profiles(sequenceLength, colSize);
 
-            for (var i = 0; i < sequenceLength; ++i)
+            for (int i = 0; i < sequenceLength; ++i)
             {
                 try
                 {
                     if (seq.Alphabet.CheckIsAmbiguous(seq[i]))
                     {
-                        for (var b = 0; b < AmbiguousCharactersMap[seq[i]].Count; ++b)
+                        for (int b = 0; b < AmbiguousCharactersMap[seq[i]].Count; ++b)
                         {
                             //profiles[i][ItemSet[AmbiguousCharactersMap[seq[i]][b]]] += weight;
                             ++(profiles[i][ItemSet[AmbiguousCharactersMap[seq[i]][b]]]);
@@ -301,10 +301,10 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="sequences">a set of aligned sequences</param>
         public static IProfiles GenerateProfiles(ICollection<ISequence> sequences)
         {
-            var enumeratorSeq = sequences.GetEnumerator();
+            IEnumerator<ISequence> enumeratorSeq = sequences.GetEnumerator();
             enumeratorSeq.MoveNext();
-            var sequenceLength = (int)enumeratorSeq.Current.Count;
-            var alphabet = enumeratorSeq.Current.Alphabet;
+            int sequenceLength = (int)enumeratorSeq.Current.Count;
+            IAlphabet alphabet = enumeratorSeq.Current.Alphabet;
             while (enumeratorSeq.MoveNext())
             {
                 if (enumeratorSeq.Current.Count!=sequenceLength)
@@ -317,17 +317,17 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                 }
             }
 
-            var colSize = (ItemSet.Count + 1) / 2;
+            int colSize = (ItemSet.Count + 1) / 2;
             IProfiles profiles = new Profiles(sequenceLength, colSize);
 
-            for (var i = 0; i < sequenceLength; ++i)
+            for (int i = 0; i < sequenceLength; ++i)
             {
                 enumeratorSeq.Reset();
                 while (enumeratorSeq.MoveNext())
                 {
                     if (enumeratorSeq.Current.Alphabet.CheckIsAmbiguous(enumeratorSeq.Current[i]))
                     {
-                        for (var b = 0; b < AmbiguousCharactersMap[enumeratorSeq.Current[i]].Count; ++b)
+                        for (int b = 0; b < AmbiguousCharactersMap[enumeratorSeq.Current[i]].Count; ++b)
                         {
                             ++(profiles[i][ItemSet[AmbiguousCharactersMap[enumeratorSeq.Current[i]][b]]]);
                         }
@@ -358,10 +358,10 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
 
             MsaUtils.Normalize(weights);
 
-            var enumeratorSeq = sequences.GetEnumerator();
+            IEnumerator<ISequence> enumeratorSeq = sequences.GetEnumerator();
             enumeratorSeq.MoveNext();
-            var sequenceLength = (int)enumeratorSeq.Current.Count;
-            var alphabet = enumeratorSeq.Current.Alphabet;
+            int sequenceLength = (int)enumeratorSeq.Current.Count;
+            IAlphabet alphabet = enumeratorSeq.Current.Alphabet;
             while (enumeratorSeq.MoveNext())
             {
                 if (enumeratorSeq.Current.Count != sequenceLength)
@@ -375,17 +375,17 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             }
 
             // each row is a column; each column is a profile
-            var colSize = (ItemSet.Count + 1) / 2;
+            int colSize = (ItemSet.Count + 1) / 2;
             IProfiles profiles = new Profiles(sequenceLength, colSize);
 
-            for (var i = 0; i < sequenceLength; ++i)
+            for (int i = 0; i < sequenceLength; ++i)
             {
                 enumeratorSeq.Reset();
                 while (enumeratorSeq.MoveNext())
                 {
                     if (!enumeratorSeq.Current.Alphabet.CheckIsAmbiguous(enumeratorSeq.Current[i])) // IsAmbiguous
                     {
-                        for (var b = 0; b < AmbiguousCharactersMap[enumeratorSeq.Current[i]].Count; ++b)
+                        for (int b = 0; b < AmbiguousCharactersMap[enumeratorSeq.Current[i]].Count; ++b)
                         {
                             profiles[i][ItemSet[AmbiguousCharactersMap[enumeratorSeq.Current[i]][b]]] += weights[i];
                         }
@@ -424,10 +424,10 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
 
             try
             {
-                var sequenceLength = (int)sequences[sequenceIndices[0]].Count;
-                var alphabet = sequences[sequenceIndices[0]].Alphabet;
+                int sequenceLength = (int)sequences[sequenceIndices[0]].Count;
+                IAlphabet alphabet = sequences[sequenceIndices[0]].Alphabet;
 
-                foreach (var i in sequenceIndices)
+                foreach (int i in sequenceIndices)
                 {
                     if (sequences[i].Count != sequenceLength)
                     {
@@ -442,14 +442,14 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                 allIndelPositions = new List<int>();
 
                 profiles = new Profiles();
-                var colSize = (ItemSet.Count + 1) / 2;
+                int colSize = (ItemSet.Count + 1) / 2;
 
                 // Discard all indels columns.
-                for (var col = 0; col < sequenceLength; ++col)
+                for (int col = 0; col < sequenceLength; ++col)
                 {
-                    var vector = new float[colSize];
-                    var isAllIndels = true;
-                    foreach (var i in sequenceIndices)
+                    float[] vector = new float[colSize];
+                    bool isAllIndels = true;
+                    foreach (int i in sequenceIndices)
                     {
                         if (!sequences[i].Alphabet.CheckIsGap(sequences[i][col]))
                         {
@@ -457,7 +457,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                         }
                         if (sequences[i].Alphabet.CheckIsAmbiguous(sequences[i][col]))
                         {
-                            for (var b = 0; b < AmbiguousCharactersMap[sequences[i][col]].Count; ++b)
+                            for (int b = 0; b < AmbiguousCharactersMap[sequences[i][col]].Count; ++b)
                             {
                                 ++(vector[ItemSet[AmbiguousCharactersMap[sequences[i][col]][b]]]);
                             }
@@ -514,10 +514,10 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
 
             try
             {
-                var sequenceLength = (int)sequences[sequenceIndices[0]].Count;
-                var alphabet = sequences[sequenceIndices[0]].Alphabet;
+                int sequenceLength = (int)sequences[sequenceIndices[0]].Count;
+                IAlphabet alphabet = sequences[sequenceIndices[0]].Alphabet;
 
-                foreach (var i in sequenceIndices)
+                foreach (int i in sequenceIndices)
                 {
                     if (sequences[i].Count != sequenceLength)
                     {
@@ -532,14 +532,14 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                 allIndelPositions = new List<int>();
 
                 profiles = new Profiles();
-                var colSize = (ItemSet.Count + 1) / 2;
+                int colSize = (ItemSet.Count + 1) / 2;
 
                 // Discard all indels columns.
-                for (var col = 0; col < sequenceLength; ++col)
+                for (int col = 0; col < sequenceLength; ++col)
                 {
-                    var vector = new float[colSize];
-                    var isAllIndels = true;
-                    foreach (var i in sequenceIndices)
+                    float[] vector = new float[colSize];
+                    bool isAllIndels = true;
+                    foreach (int i in sequenceIndices)
                     {
                         if (!sequences[i].Alphabet.CheckIsGap(sequences[i][col]))
                         {
@@ -548,7 +548,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                         if (sequences[i].Alphabet.CheckIsAmbiguous(sequences[i][col]))
                         {
                             //Console.WriteLine("residue {0} is {1}, ambiguous? {2}", i, seq[i].Symbol, seq[i].IsAmbiguous);
-                            for (var b = 0; b < AmbiguousCharactersMap[sequences[i][col]].Count; ++b)
+                            for (int b = 0; b < AmbiguousCharactersMap[sequences[i][col]].Count; ++b)
                             {
                                 vector[ItemSet[AmbiguousCharactersMap[sequences[i][col]][b]]] += weights[i];
                             }
@@ -600,9 +600,9 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
 
             profiles = new Profiles(profileA);
 
-            for (var i = 0; i < profiles.RowSize; ++i)
+            for (int i = 0; i < profiles.RowSize; ++i)
             {
-                for (var j = 0; j < profiles.ColumnSize; ++j)
+                for (int j = 0; j < profiles.ColumnSize; ++j)
                 {
                     profiles[i][j] = (profileA[i][j] * numberOfSequencesA + profileB[i][j] * numberOfSequencesB)
                                                 / (numberOfSequencesA + numberOfSequencesB);
@@ -641,10 +641,10 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             IProfiles profiles = new Profiles(aAligned.Length, profileA.ColumnSize);
 
             // a profile with gap only
-            var gapProfile = new float[profiles.ColumnSize];
+            float[] gapProfile = new float[profiles.ColumnSize];
             gapProfile[gapProfile.Length - 1] = 1;
 
-            for (var i = 0; i < aAligned.Length; ++i)
+            for (int i = 0; i < aAligned.Length; ++i)
             {
                 if (aAligned[i] == gapCode && bAligned[i] == gapCode)
                 {
@@ -652,7 +652,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                 }
                 if (aAligned[i] == gapCode)
                 {
-                    for (var j = 0; j < profiles.ColumnSize; ++j)
+                    for (int j = 0; j < profiles.ColumnSize; ++j)
                     {
                         profiles[i][j] = ((gapProfile[j] * numberOfSequencesA) + (profileB[bAligned[i]][j] * numberOfSequencesB))
                                                 / (numberOfSequencesA + numberOfSequencesB);
@@ -660,7 +660,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                 }
                 else if (bAligned[i] == gapCode)
                 {
-                    for (var j = 0; j < profiles.ColumnSize; ++j)
+                    for (int j = 0; j < profiles.ColumnSize; ++j)
                     {
                         profiles[i][j] = ((gapProfile[j] * numberOfSequencesA) + (profileA[aAligned[i]][j] * numberOfSequencesB))
                                                 / (numberOfSequencesA + numberOfSequencesB);
@@ -668,7 +668,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                 }
                 else
                 {
-                    for (var j = 0; j < profiles.ColumnSize; ++j)
+                    for (int j = 0; j < profiles.ColumnSize; ++j)
                     {
                         profiles[i][j] = ((profileA[aAligned[i]][j] * numberOfSequencesA) + (profileB[bAligned[i]][j] * numberOfSequencesB))
                                                 / (numberOfSequencesA + numberOfSequencesB);
@@ -711,10 +711,10 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             MsaUtils.Normalize(weights);
 
             // a profile with gap only
-            var gapProfile = new float[profiles.ColumnSize];
+            float[] gapProfile = new float[profiles.ColumnSize];
             gapProfile[gapProfile.Length - 1] = 1;
 
-            for (var i = 0; i < aAligned.Length; ++i)
+            for (int i = 0; i < aAligned.Length; ++i)
             {
                 if (aAligned[i] == gapCode && bAligned[i] == gapCode)
                 {
@@ -722,7 +722,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                 }
                 if (aAligned[i] == gapCode)
                 {
-                    for (var j = 0; j < profiles.ColumnSize; ++j)
+                    for (int j = 0; j < profiles.ColumnSize; ++j)
                     {
                         profiles[i][j] = ((gapProfile[j] * numberOfSequencesA * weights[0]) + (profileB[bAligned[i]][j] * numberOfSequencesB * weights[1]))
                                                 / (numberOfSequencesA + numberOfSequencesB);
@@ -730,7 +730,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                 }
                 else if (bAligned[i] == gapCode)
                 {
-                    for (var j = 0; j < profiles.ColumnSize; ++j)
+                    for (int j = 0; j < profiles.ColumnSize; ++j)
                     {
                         profiles[i][j] = ((gapProfile[j] * numberOfSequencesA * weights[0]) + (profileA[aAligned[i]][j] * numberOfSequencesB * weights[1]))
                                                 / (numberOfSequencesA + numberOfSequencesB);
@@ -738,7 +738,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                 }
                 else
                 {
-                    for (var j = 0; j < profiles.ColumnSize; ++j)
+                    for (int j = 0; j < profiles.ColumnSize; ++j)
                     {
                         profiles[i][j] = ((profileA[aAligned[i]][j] * numberOfSequencesA * weights[0]) + (profileB[bAligned[i]][j] * numberOfSequencesB * weights[1]))
                                                 / (numberOfSequencesA + numberOfSequencesB);

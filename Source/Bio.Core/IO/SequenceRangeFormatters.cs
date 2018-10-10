@@ -53,10 +53,10 @@ namespace Bio.IO
         static SequenceRangeFormatters()
         {
             // get the registered parsers
-            var registeredFormatters = GetSequenceRangeFormatters();
+            IEnumerable<ISequenceRangeFormatter> registeredFormatters = GetSequenceRangeFormatters();
             if (null != registeredFormatters)
             {
-                foreach (var formatter in registeredFormatters.Where(
+                foreach (ISequenceRangeFormatter formatter in registeredFormatters.Where(
                     fmt => fmt != null && KnownFormatters.All(sfmt => 
                         string.Compare(sfmt.Name, fmt.Name, StringComparison.OrdinalIgnoreCase) != 0)))
                 {
@@ -71,13 +71,13 @@ namespace Bio.IO
         private static IEnumerable<ISequenceRangeFormatter> GetSequenceRangeFormatters()
         {
             IList<ISequenceRangeFormatter> registeredFormatters = new List<ISequenceRangeFormatter>();
-            var implementations = BioRegistrationService.LocateRegisteredParts<ISequenceRangeParser>();
+            IEnumerable<Type> implementations = BioRegistrationService.LocateRegisteredParts<ISequenceRangeParser>();
 
-            foreach (var impl in implementations)
+            foreach (Type impl in implementations)
             {
                 try
                 {
-                    var formatter = Activator.CreateInstance(impl) as ISequenceRangeFormatter;
+                    ISequenceRangeFormatter formatter = Activator.CreateInstance(impl) as ISequenceRangeFormatter;
                     if (formatter != null)
                         registeredFormatters.Add(formatter);
                 }

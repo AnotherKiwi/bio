@@ -72,9 +72,9 @@ namespace Bio.TestAutomation.IO.Snp
         [Category("Priority0")]
         public void SnpBvtParserProperties()
         {
-            var filepath = utilityObj.xmlUtil.GetTextValue(Constants.SimpleSnpNodeName,
+            string filepath = utilityObj.xmlUtil.GetTextValue(Constants.SimpleSnpNodeName,
                Constants.FilePathNode);
-            var snpParser = new SimpleSnpParser();
+            SimpleSnpParser snpParser = new SimpleSnpParser();
             Assert.AreEqual(Constants.SnpDescription, snpParser.Description);
             Assert.AreEqual(Constants.SnpFileTypes, snpParser.SupportedFileTypes);
             Assert.AreEqual(Constants.SnpName, snpParser.Name);
@@ -122,11 +122,11 @@ namespace Bio.TestAutomation.IO.Snp
         [Category("Priority0")]
         public void SnpItemBvtValidateEqualsSnpItem()
         {
-            var snpItem1 = new SnpItem();
+            SnpItem snpItem1 = new SnpItem();
             snpItem1.AlleleOne = 'A';
             snpItem1.AlleleTwo = 'G';
 
-            var snpItem2 = new SnpItem();
+            SnpItem snpItem2 = new SnpItem();
             snpItem2.AlleleOne = 'A';
             snpItem2.AlleleTwo = 'G';
 
@@ -141,11 +141,11 @@ namespace Bio.TestAutomation.IO.Snp
         [Category("Priority0")]
         public void SnpItemBvtValidateEqualsObject()
         {
-            var snpItem1 = new SnpItem();
+            SnpItem snpItem1 = new SnpItem();
             snpItem1.AlleleOne = 'A';
             snpItem1.AlleleTwo = 'G';
 
-            var snpItem2 = new SnpItem();
+            SnpItem snpItem2 = new SnpItem();
             snpItem2.AlleleOne = 'A';
             snpItem2.AlleleTwo = 'G';
 
@@ -160,7 +160,7 @@ namespace Bio.TestAutomation.IO.Snp
         [Category("Priority0")]
         public void SnpItemBvtValidateGetHashCode()
         {
-            var snpItem1 = new SnpItem();
+            SnpItem snpItem1 = new SnpItem();
             snpItem1.AlleleOne = 'A';
             snpItem1.AlleleTwo = 'G';
 
@@ -182,7 +182,7 @@ namespace Bio.TestAutomation.IO.Snp
         void SnpParserGeneralTestCases(string nodename, AdditionalParameters additionalParam)
         {
             // Gets the expected sequence from the Xml
-            var filepath = utilityObj.xmlUtil.GetTextValue(nodename,
+            string filepath = utilityObj.xmlUtil.GetTextValue(nodename,
                 Constants.FilePathNode).TestDir();
 
             Assert.IsTrue(File.Exists(filepath));
@@ -193,25 +193,25 @@ namespace Bio.TestAutomation.IO.Snp
 
             IList<ISequence> seqList = null;
             SparseSequence sparseSeq = null;
-            var parser = new SimpleSnpParser();
+            SimpleSnpParser parser = new SimpleSnpParser();
 
-            var expectedPosition = utilityObj.xmlUtil.GetTextValue(nodename,
+            string expectedPosition = utilityObj.xmlUtil.GetTextValue(nodename,
                 Constants.ExpectedPositionNode);
 
-            var expectedPositions = expectedPosition.Split(',');
+            string[] expectedPositions = expectedPosition.Split(',');
             string[] expectedCharacters = null;
 
             switch (additionalParam)
             {
                 case AdditionalParameters.ParseAlleleTwo:
                     parser.ParseAlleleOne = false;
-                    var expectedAlleleTwoSequence =
+                    string expectedAlleleTwoSequence =
                         utilityObj.xmlUtil.GetTextValue(nodename,
                         Constants.ExpectedSequenceAllele2Node);
                     expectedCharacters = expectedAlleleTwoSequence.Split(',');
                     break;
                 default:
-                    var expectedSequence = utilityObj.xmlUtil.GetTextValue(nodename,
+                    string expectedSequence = utilityObj.xmlUtil.GetTextValue(nodename,
               Constants.ExpectedSequenceNode);
                     expectedCharacters = expectedSequence.Split(',');
                     break;
@@ -230,11 +230,11 @@ namespace Bio.TestAutomation.IO.Snp
                     seqList.Count.ToString((IFormatProvider)null)));
             }
 
-            for (var i = 0; i < expectedPositions.Length; i++)
+            for (int i = 0; i < expectedPositions.Length; i++)
             {
-                var item = sparseSeq[int.Parse(expectedPositions[i], (IFormatProvider)null)];
+                byte item = sparseSeq[int.Parse(expectedPositions[i], (IFormatProvider)null)];
 
-                var enc = new ASCIIEncoding();
+                ASCIIEncoding enc = new ASCIIEncoding();
 
                 Assert.AreEqual(enc.GetBytes(expectedCharacters[i])[0].ToString((IFormatProvider)null),
                     item.ToString((IFormatProvider)null));
@@ -251,7 +251,7 @@ namespace Bio.TestAutomation.IO.Snp
                 "Snp Parser BVT: The Sequence Alphabet is '{0}' and is as expected.",
                 sparseSeq.Alphabet.Name));
 
-            var expSequenceID = utilityObj.xmlUtil.GetTextValue(nodename,
+            string expSequenceID = utilityObj.xmlUtil.GetTextValue(nodename,
                 Constants.SequenceIdNode);
 
             Assert.AreEqual(expSequenceID, sparseSeq.ID);

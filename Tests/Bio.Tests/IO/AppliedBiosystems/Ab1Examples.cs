@@ -37,7 +37,7 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
         {
             using (Stream stream = new FileInfo(fileName).OpenRead())
             {
-                var reader = new BinaryReader(stream);
+                BinaryReader reader = new BinaryReader(stream);
                 return Ab1Parser.Parse(reader);
             }
         }

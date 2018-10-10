@@ -127,10 +127,10 @@ namespace Bio.Algorithms.Assembly
             // gets a fixed number.
             // sequence index = index into inputs (which we won't modify)
             // contig index = nSequences + index into contigs
-            var pool = inputSequences.Select(seq => new PoolItem(seq)).ToList();
+            List<PoolItem> pool = inputSequences.Select(seq => new PoolItem(seq)).ToList();
 
             // Initialization
-            var sequenceCount = pool.Count;
+            int sequenceCount = pool.Count;
             if (sequenceCount > 0)
             {
                 _sequenceAlphabet = pool[0].Sequence.Alphabet;
@@ -148,19 +148,19 @@ namespace Bio.Algorithms.Assembly
             // put all the initial sequences into the pool, and generate the pair scores.
             // there are no contigs in the pool yet.
             // to save an iteration, we'll also find the best global score as we go.
-            var globalBest = new ItemScore(-1, -1, false, false, 0, 0);
-            var globalBestLargerIndex = -1;
-            var unconsumedCount = sequenceCount;
+            ItemScore globalBest = new ItemScore(-1, -1, false, false, 0, 0);
+            int globalBestLargerIndex = -1;
+            int unconsumedCount = sequenceCount;
 
             // Compute alignment scores for all combinations between input sequences
             // Store these scores in the poolItem corresponding to each sequence
-            for (var newSeq = 0; newSeq < pool.Count; ++newSeq)
+            for (int newSeq = 0; newSeq < pool.Count; ++newSeq)
             {
-                var newItem = pool[newSeq];
-                for (var oldSeq = 0; oldSeq < newSeq; ++oldSeq)
+                PoolItem newItem = pool[newSeq];
+                for (int oldSeq = 0; oldSeq < newSeq; ++oldSeq)
                 {
-                    var oldItem = pool[oldSeq];
-                    var score = AlignSequence(oldItem.SequenceOrConsensus, newItem.SequenceOrConsensus, oldSeq, newSeq);
+                    PoolItem oldItem = pool[oldSeq];
+                    ItemScore score = AlignSequence(oldItem.SequenceOrConsensus, newItem.SequenceOrConsensus, oldSeq, newSeq);
                     newItem.Scores.Add(score);
                     if (score.OverlapScore > globalBest.OverlapScore)
                     {
@@ -179,9 +179,9 @@ namespace Bio.Algorithms.Assembly
                     ApplicationLog.WriteLine("Merging (overlap score {0}):", globalBest.OverlapScore);
                 }
 
-                var mergeItem1 = pool[globalBest.OtherItem];
-                var mergeItem2 = pool[globalBestLargerIndex];
-                var newContig = new Contig();
+                PoolItem mergeItem1 = pool[globalBest.OtherItem];
+                PoolItem mergeItem2 = pool[globalBestLargerIndex];
+                Contig newContig = new Contig();
                 if (Trace.Want(Trace.AssemblyDetails))
                 {
                     ApplicationLog.WriteLine(
@@ -207,11 +207,11 @@ namespace Bio.Algorithms.Assembly
                 while (unconsumedCount > 1)
                 {
                     // Compute scores for each unconsumed sequence with new contig
-                    var newSeq = pool.Count - 1;
-                    var newItem = pool[newSeq];
-                    for (var oldSeq = 0; oldSeq < pool.Count - 1; ++oldSeq)
+                    int newSeq = pool.Count - 1;
+                    PoolItem newItem = pool[newSeq];
+                    for (int oldSeq = 0; oldSeq < pool.Count - 1; ++oldSeq)
                     {
-                        var oldItem = pool[oldSeq];
+                        PoolItem oldItem = pool[oldSeq];
                         if (oldItem.ConsumedBy >= 0)
                         {
                             // already consumed - just add dummy score to maintain correct indices
@@ -219,7 +219,7 @@ namespace Bio.Algorithms.Assembly
                         }
                         else
                         {
-                            var score = AlignSequence(oldItem.SequenceOrConsensus, newItem.SequenceOrConsensus, oldSeq, newSeq);
+                            ItemScore score = AlignSequence(oldItem.SequenceOrConsensus, newItem.SequenceOrConsensus, oldSeq, newSeq);
                             newItem.Scores.Add(score);
                         }
                     }
@@ -227,16 +227,16 @@ namespace Bio.Algorithms.Assembly
                     // find best global score in the modified pool.
                     globalBest = new ItemScore(-1, -1, false, false, 0, 0);
                     globalBestLargerIndex = -1;
-                    for (var current = 0; current < pool.Count; ++current)
+                    for (int current = 0; current < pool.Count; ++current)
                     {
-                        var curItem = pool[current];
+                        PoolItem curItem = pool[current];
                         if (curItem.ConsumedBy < 0)
                         {
-                            for (var other = 0; other < current; ++other)
+                            for (int other = 0; other < current; ++other)
                             {
                                 if (pool[other].ConsumedBy < 0)
                                 {
-                                    var itemScore = curItem.Scores[other];
+                                    ItemScore itemScore = curItem.Scores[other];
                                     if (itemScore.OverlapScore > globalBest.OverlapScore)
                                     {
                                         globalBest = new ItemScore(itemScore);  // copy the winner so far
@@ -335,8 +335,8 @@ namespace Bio.Algorithms.Assembly
 
             // no further qualifying merges, so we're done.
             // populate contigs and unmergedSequences
-            var sequenceAssembly = new OverlapDeNovoAssembly();
-            foreach (var curItem in pool)
+            OverlapDeNovoAssembly sequenceAssembly = new OverlapDeNovoAssembly();
+            foreach (PoolItem curItem in pool)
             {
                 if (curItem.ConsumedBy < 0)
                 {
@@ -390,13 +390,13 @@ namespace Bio.Algorithms.Assembly
                 ++start;
             }
 
-            var len = inputSequence.Count - start;
+            long len = inputSequence.Count - start;
             while (inputSequence[len - 1] == '-')
             {
                 --len;
             }
 
-            var seq = inputSequence.GetSubSequence(start, len);
+            ISequence seq = inputSequence.GetSubSequence(start, len);
             seq.ID = inputSequence.ID;
             return seq;
         }
@@ -411,9 +411,9 @@ namespace Bio.Algorithms.Assembly
         /// <param name="consumedContig">Contig to be merged</param>
         private static void MergeLowerIndexedContig(Contig newContig, ItemScore globalBest, Contig consumedContig)
         {
-            foreach (var aseq in consumedContig.Sequences)
+            foreach (Contig.AssembledSequence aseq in consumedContig.Sequences)
             {
-                var newASeq = new Contig.AssembledSequence();
+                Contig.AssembledSequence newASeq = new Contig.AssembledSequence();
 
                 // lower-indexed item might be reversed or complemented. 
                 // Construct new sequence based on setting in globalBest
@@ -425,7 +425,7 @@ namespace Bio.Algorithms.Assembly
                 // this depends on whether the contig is reverse-aligned.
                 if (globalBest.Reversed)
                 {
-                    var rightOffset = consumedContig.Length - (aseq.Sequence.Count + aseq.Position);
+                    long rightOffset = consumedContig.Length - (aseq.Sequence.Count + aseq.Position);
                     newASeq.Position = globalBest.FirstOffset + rightOffset;
                 }
                 else
@@ -457,7 +457,7 @@ namespace Bio.Algorithms.Assembly
         /// <param name="consumedSequence">Consumed Sequence to be merged</param>
         private static void MergeLowerIndexedSequence(Contig newContig, ItemScore globalBest, ISequence consumedSequence)
         {
-            var newASeq = new Contig.AssembledSequence();
+            Contig.AssembledSequence newASeq = new Contig.AssembledSequence();
 
             // lower-indexed item might be reversed or complemented. 
             // Retreive information from globalBest
@@ -488,9 +488,9 @@ namespace Bio.Algorithms.Assembly
         /// <param name="consumedContig">Consumed Contig to be merged</param>
         private static void MergeHigherIndexedContig(Contig newContig, ItemScore globalBest, Contig consumedContig)
         {
-            foreach (var aseq in consumedContig.Sequences)
+            foreach (Contig.AssembledSequence aseq in consumedContig.Sequences)
             {
-                var newASeq = new Contig.AssembledSequence();
+                Contig.AssembledSequence newASeq = new Contig.AssembledSequence();
 
                 // as the higher-index item, this contig is never reversed or complemented, so:
                 newASeq.IsReversed = aseq.IsReversed;
@@ -523,7 +523,7 @@ namespace Bio.Algorithms.Assembly
         /// <param name="consumedSequence">Consumed Sequence to be merged</param>
         private static void MergeHigherIndexedSequence(Contig newContig, ItemScore globalBest, ISequence consumedSequence)
         {
-            var newASeq = new Contig.AssembledSequence();
+            Contig.AssembledSequence newASeq = new Contig.AssembledSequence();
 
             // as the higher-index item, this sequence is never reversed or complemented, so:
             newASeq.IsReversed = false;
@@ -565,7 +565,7 @@ namespace Bio.Algorithms.Assembly
         {
             ApplicationLog.WriteLine("contig has {0} seqs, length {1}", contig.Sequences.Count, contig.Length);
             ApplicationLog.WriteLine("consensus: {0}", contig.Consensus);
-            foreach (var aseq in contig.Sequences)
+            foreach (Contig.AssembledSequence aseq in contig.Sequences)
             {
                 ApplicationLog.WriteLine(
                     "seq (rev = {0} comp = {1} pos = {2}) {3}",
@@ -589,7 +589,7 @@ namespace Bio.Algorithms.Assembly
         /// <returns>ItemScore containing score, consensus, offset of best alignment</returns>
         private ItemScore AlignSequence(ISequence lowerIndexedSequence, ISequence higherIndexedSequence, int lowerIndex, int higherIndex)
         {
-            var bestScore = new ItemScore(lowerIndex, -1, false, false, 0, 0);
+            ItemScore bestScore = new ItemScore(lowerIndex, -1, false, false, 0, 0);
             bestScore = AlignAndUpdateBestScore(lowerIndexedSequence, higherIndexedSequence, false, false, bestScore, lowerIndex, higherIndex, Properties.Resource.MsgPlainOverlapItems);
 
             // Always try reverse complement
@@ -634,7 +634,7 @@ namespace Bio.Algorithms.Assembly
         {
             // we will look for the best (largest) overlap score. Note that
             // lower-index items are already in place, so can do this in same pass
-            var alignment = RunAlignSimple(sequence1, sequence2);
+            IList<ISequenceAlignment> alignment = RunAlignSimple(sequence1, sequence2);
             if (Trace.Want(Trace.AssemblyDetails))
             {
                 ApplicationLog.WriteLine("{0} {1} and {2}", message, sequence1PoolIndex, sequence2PoolIndex);
@@ -892,7 +892,7 @@ namespace Bio.Algorithms.Assembly
                 {
                     if (!_isContig)
                     {
-                        var message = Properties.Resource.PoolItemNotContig;
+                        string message = Properties.Resource.PoolItemNotContig;
                         Trace.Report(message);
                         throw new Exception(message);
                     }
@@ -910,7 +910,7 @@ namespace Bio.Algorithms.Assembly
                 {
                     if (_isContig)
                     {
-                        var message = Properties.Resource.PoolItemNotSequence;
+                        string message = Properties.Resource.PoolItemNotSequence;
                         Trace.Report(message);
                         throw new Exception(message);
                     }

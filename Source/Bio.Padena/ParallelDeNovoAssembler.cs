@@ -242,9 +242,9 @@ namespace Bio.Algorithms.Assembly.Padena
             long minSeqLength = long.MaxValue, maxSeqLength = 0;
 
             // Get the min/max ranges for the sequences
-            foreach (var seq in sequences)
+            foreach (ISequence seq in sequences)
             {
-                var seqCount = seq.Count;
+                long seqCount = seq.Count;
                 if (minSeqLength > seqCount)
                     minSeqLength = seqCount;
                 if (maxSeqLength < seqCount)
@@ -255,7 +255,7 @@ namespace Bio.Algorithms.Assembly.Padena
             float minLengthOfKmer = Math.Max(1, maxSeqLength / 2);
             float maxLengthOfKmer = minSeqLength;
 
-            var kmerLength = minLengthOfKmer < maxLengthOfKmer
+            int kmerLength = minLengthOfKmer < maxLengthOfKmer
                                  ? (int)Math.Ceiling((minLengthOfKmer + maxLengthOfKmer) / 2)
                                  : (int)Math.Floor(maxLengthOfKmer);
 
@@ -291,7 +291,7 @@ namespace Bio.Algorithms.Assembly.Padena
 
             sequenceReads = inputSequences;
 
-            var cts = new CancellationTokenSource();
+            CancellationTokenSource cts = new CancellationTokenSource();
             ReportIntermediateProgress(cts.Token);
 
             try
@@ -300,7 +300,7 @@ namespace Bio.Algorithms.Assembly.Padena
                 Initialize();
 
                 // Step 1, 2: Create k-mers from reads and build de bruijn graph
-                var sw = Stopwatch.StartNew();
+                Stopwatch sw = Stopwatch.StartNew();
                 CreateGraphStarted();
                 CreateGraph();
                 sw.Stop();
@@ -349,13 +349,13 @@ namespace Bio.Algorithms.Assembly.Padena
                 // Step 5: Build Contigs
                 sw = Stopwatch.StartNew();
                 BuildContigsStarted();
-                var contigSequences = BuildContigs();
+                IEnumerable<ISequence> contigSequences = BuildContigs();
                 sw.Stop();
 
                 BuildContigsEnded();
                 TaskTimeSpanReport(sw.Elapsed);
 
-                var result = new PadenaAssembly();
+                PadenaAssembly result = new PadenaAssembly();
                 result.AddContigs(contigSequences);
 
                 return result;
@@ -375,13 +375,13 @@ namespace Bio.Algorithms.Assembly.Padena
         /// <returns>Assembled output.</returns>
         public IDeNovoAssembly Assemble(IEnumerable<ISequence> inputSequences, bool includeScaffolds)
         {
-            var assemblyResult = (PadenaAssembly)Assemble(inputSequences);
+            PadenaAssembly assemblyResult = (PadenaAssembly)Assemble(inputSequences);
 
             if (includeScaffolds)
             {
                 // Step 6: Build _scaffolds
                 BuildScaffoldsStarted();
-                var scaffolds = BuildScaffolds(assemblyResult.ContigSequences);
+                IList<ISequence> scaffolds = BuildScaffolds(assemblyResult.ContigSequences);
                 BuildScaffoldsEnded();
 
                 if (scaffolds != null)
@@ -417,7 +417,7 @@ namespace Bio.Algorithms.Assembly.Padena
                 // In case of low coverage data, set default as 2.
                 // Reference: ABySS Release Notes 1.0.15
                 // Before calculating median, discard thresholds less than 2.
-                var kmerCoverage = Graph.GetNodes().AsParallel().Aggregate(
+                List<long> kmerCoverage = Graph.GetNodes().AsParallel().Aggregate(
                     new List<long>(),
                     (kmerList, n) =>
                     {
@@ -437,7 +437,7 @@ namespace Bio.Algorithms.Assembly.Padena
                 else
                 {
                     kmerCoverage.Sort();
-                    var midPoint = kmerCoverage.Count / 2;
+                    int midPoint = kmerCoverage.Count / 2;
                     double median = (kmerCoverage.Count % 2 == 1 || midPoint == 0) ?
                         kmerCoverage[midPoint] :
                         ((float)(kmerCoverage[midPoint] + kmerCoverage[midPoint - 1])) / 2;
@@ -486,7 +486,7 @@ namespace Bio.Algorithms.Assembly.Padena
                 DanglingLinksPurger.LengthThreshold = DanglingLinksThreshold - 1;
 
                 IEnumerable<int> danglingLengths;
-                var graphEndsEroder = DanglingLinksPurger as IGraphEndsEroder;
+                IGraphEndsEroder graphEndsEroder = DanglingLinksPurger as IGraphEndsEroder;
                 if (graphEndsEroder != null && AllowErosion)
                 {
                     // If eroder is implemented, while getting lengths of dangling links, 
@@ -507,7 +507,7 @@ namespace Bio.Algorithms.Assembly.Padena
                 ErosionThreshold = -1;
             
                 // Start removing dangling links
-                foreach (var threshold in danglingLengths)
+                foreach (int threshold in danglingLengths)
                 {
                     if (Graph.NodeCount >= threshold)
                     {

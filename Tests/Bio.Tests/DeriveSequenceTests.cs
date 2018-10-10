@@ -19,8 +19,8 @@ namespace Bio.Tests
             const string sequence = "ATGCC";
             const string expectedSequence = "CCGTA";
             ISequence orignalSequence = new Sequence(Alphabets.DNA, sequence);
-            var deriveSequence = new DerivedSequence(orignalSequence, false, false);
-            var actualSequence = new string(deriveSequence.GetReversedSequence().Select(a => (char)a).ToArray());
+            DerivedSequence deriveSequence = new DerivedSequence(orignalSequence, false, false);
+            string actualSequence = new string(deriveSequence.GetReversedSequence().Select(a => (char)a).ToArray());
             Assert.AreEqual(expectedSequence, actualSequence);
         }
 
@@ -34,8 +34,8 @@ namespace Bio.Tests
             const string sequence = "ATGCC";
             const string expectedSequence = "TACGG";
             ISequence orignalSequence = new Sequence(Alphabets.DNA, sequence);
-            var deriveSequence = new DerivedSequence(orignalSequence, false, false);
-            var actualSequence = new string(deriveSequence.GetComplementedSequence().Select(a => (char)a).ToArray());
+            DerivedSequence deriveSequence = new DerivedSequence(orignalSequence, false, false);
+            string actualSequence = new string(deriveSequence.GetComplementedSequence().Select(a => (char)a).ToArray());
             Assert.AreEqual(expectedSequence, actualSequence);
         }
 
@@ -49,8 +49,8 @@ namespace Bio.Tests
             const string sequence = "ATGCC";
             const string expectedSequence = "GGCAT";
             ISequence orignalSequence = new Sequence(Alphabets.DNA, sequence);
-            var deriveSequence = new DerivedSequence(orignalSequence, false, false);
-            var actualSequence = new string(deriveSequence.GetReverseComplementedSequence().Select(a => (char)a).ToArray());
+            DerivedSequence deriveSequence = new DerivedSequence(orignalSequence, false, false);
+            string actualSequence = new string(deriveSequence.GetReverseComplementedSequence().Select(a => (char)a).ToArray());
             Assert.AreEqual(expectedSequence, actualSequence);
         }
     }

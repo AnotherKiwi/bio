@@ -26,7 +26,7 @@ namespace Bio.Util
         public SerialNumbers(IEnumerable<T> sequence)
             : this()
         {
-            foreach (var item in sequence)
+            foreach (T item in sequence)
             {
                 GetNewOrOld(item);
             }
@@ -55,7 +55,7 @@ namespace Bio.Util
             if (!ItemToSerialNumber.ContainsKey(item))
             {
                 Debug.Assert(ItemToSerialNumber.Count == ItemList.Count); // real assert
-                var serialNumber = ItemToSerialNumber.Count;
+                int serialNumber = ItemToSerialNumber.Count;
                 Debug.Assert(serialNumber == ItemList.Count); // real assert
                 ItemToSerialNumber.Add(item, serialNumber);
                 ItemList.Add(item);
@@ -63,7 +63,7 @@ namespace Bio.Util
             }
             else
             {
-                var serialNumber = ItemToSerialNumber[item];
+                int serialNumber = ItemToSerialNumber[item];
                 return serialNumber;
             }
         }
@@ -77,7 +77,7 @@ namespace Bio.Util
         {
             Helper.CheckCondition(!ItemToSerialNumber.ContainsKey(item), () => string.Format(CultureInfo.InvariantCulture, Properties.Resource.ExpectedItemToNotExist, item));
             Debug.Assert(ItemToSerialNumber.Count == ItemList.Count); // real assert
-            var serialNumber = ItemToSerialNumber.Count;
+            int serialNumber = ItemToSerialNumber.Count;
             Debug.Assert(serialNumber == ItemList.Count); // real assert
             ItemToSerialNumber.Add(item, serialNumber);
             ItemList.Add(item);
@@ -161,7 +161,7 @@ namespace Bio.Util
 
         private static void WriteEachLine<T1>(IEnumerable<T1> list, TextWriter writer)
         {
-            foreach (var t in list)
+            foreach (T1 t in list)
             {
                 writer.WriteLine(t.ToString());
             }

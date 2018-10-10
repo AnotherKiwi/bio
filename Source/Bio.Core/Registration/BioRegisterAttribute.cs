@@ -44,8 +44,8 @@ namespace Bio.Registration
             if (locatedParts == null)
             {
                 locatedParts = new List<BioRegisterAttribute>();
-                var assemblies = PlatformManager.Services.GetAssemblies();
-                foreach (var assembly in assemblies)
+                IEnumerable<Assembly> assemblies = PlatformManager.Services.GetAssemblies();
+                foreach (Assembly assembly in assemblies)
                 {
                     locatedParts.AddRange(assembly.GetCustomAttributes<BioRegisterAttribute>());
                 }

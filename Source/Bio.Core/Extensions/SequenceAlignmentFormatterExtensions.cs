@@ -32,7 +32,7 @@ namespace Bio
         /// <param name="sequences">Sequences to write.</param>
         public static void Format(this ISequenceAlignmentFormatter formatter, IEnumerable<ISequenceAlignment> sequences)
         {
-            var fs = ParserFormatterExtensions<ISequenceAlignmentFormatter>.GetOpenStream(formatter, true);
+            Stream fs = ParserFormatterExtensions<ISequenceAlignmentFormatter>.GetOpenStream(formatter, true);
             if (fs != null)
                 formatter.Format(fs, sequences);
             else
@@ -46,7 +46,7 @@ namespace Bio
         /// <param name="sequence">Sequence</param>
         public static void Format(this ISequenceAlignmentFormatter formatter, ISequenceAlignment sequence)
         {
-            var fs = ParserFormatterExtensions<ISequenceAlignmentFormatter>.GetOpenStream(formatter, true);
+            Stream fs = ParserFormatterExtensions<ISequenceAlignmentFormatter>.GetOpenStream(formatter, true);
             if (fs != null)
                 formatter.Format(fs, sequence);
             else
@@ -61,7 +61,7 @@ namespace Bio
         /// <param name="fileName">Filename to write to</param>
         public static void Format(this ISequenceAlignmentFormatter formatter, IEnumerable<ISequenceAlignment> sequences, string fileName)
         {
-            using (var fs = File.OpenWrite(fileName))
+            using (FileStream fs = File.OpenWrite(fileName))
             {
                 formatter.Format(fs, sequences);
             }
@@ -86,7 +86,7 @@ namespace Bio
             }
             else
             {
-                using (var fs = File.Create(fileName))
+                using (FileStream fs = File.Create(fileName))
                 {
                     formatter.Format(fs, sequence);
                 }

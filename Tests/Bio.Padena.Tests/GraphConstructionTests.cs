@@ -20,16 +20,16 @@ namespace Bio.Padena.Tests
         public void TestDeBruijnGraphBuilderTiny()
         {
             const int KmerLength = 3;
-            var reads = TestInputs.GetTinyReads();
+            List<ISequence> reads = TestInputs.GetTinyReads();
             this.KmerLength = KmerLength;
             SequenceReads.Clear();
             SetSequenceReads(reads);
 
             CreateGraph();
-            var graph = Graph;
+            DeBruijnGraph graph = Graph;
 
             Assert.AreEqual(9, graph.NodeCount);
-            var nodeStrings = new HashSet<string>(graph.GetNodes().Select(n => 
+            HashSet<string> nodeStrings = new HashSet<string>(graph.GetNodes().Select(n => 
                 new string(graph.GetNodeSequence(n).Select(a => (char)a).ToArray())));
             Assert.IsTrue(nodeStrings.Contains("ATG") || nodeStrings.Contains("CAT"));
             Assert.IsTrue(nodeStrings.Contains("TGC") || nodeStrings.Contains("GCA"));
@@ -51,18 +51,18 @@ namespace Bio.Padena.Tests
         public void TestDeBruijnGraphBuilderSmall()
         {
             const int KmerLength = 6;
-            var reads = TestInputs.GetSmallReads();
+            List<ISequence> reads = TestInputs.GetSmallReads();
             this.KmerLength = KmerLength;
             SequenceReads.Clear();
             SetSequenceReads(reads);
 
             CreateGraph();
-            var graph = Graph;
+            DeBruijnGraph graph = Graph;
 
             Assert.AreEqual(20, graph.NodeCount);
-            var nodeStrings = GetGraphNodesForSmallReads();
+            HashSet<string> nodeStrings = GetGraphNodesForSmallReads();
             string nodeStr, nodeStrRC;
-            foreach (var node in graph.GetNodes())
+            foreach (DeBruijnNode node in graph.GetNodes())
             {
                 nodeStr = new string(graph.GetNodeSequence(node).Select(a => (char)a).ToArray());
                 nodeStrRC = new string(graph.GetNodeSequence(node).GetReverseComplementedSequence().Select(a => (char)a).ToArray());

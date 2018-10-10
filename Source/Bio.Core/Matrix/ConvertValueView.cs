@@ -152,7 +152,7 @@ namespace Bio.Matrix
             }
             else
             {
-                var valueParent = ViewValueToParentValue(value);
+                TValueParent valueParent = ViewValueToParentValue(value);
                 Helper.CheckCondition(!ParentMatrix.IsMissing(valueParent), Properties.Resource.MayNotConvert);
                 return valueParent;
             }

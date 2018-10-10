@@ -29,8 +29,8 @@ namespace Bio.Util.ArgumentParser
             {
                 if (allReferencedAssemblies == null)
                 {
-                    var userAssemblies = EnumerateAllUserAssemblyCodeBases().ToHashSet();
-                    var systemAssemblies = EnumerateReferencedSystemAssemblies(userAssemblies).ToHashSet();
+                    HashSet<Assembly> userAssemblies = EnumerateAllUserAssemblyCodeBases().ToHashSet();
+                    HashSet<Assembly> systemAssemblies = EnumerateReferencedSystemAssemblies(userAssemblies).ToHashSet();
                     allReferencedAssemblies = userAssemblies.Union(systemAssemblies);
                 }
                 return allReferencedAssemblies;
@@ -58,7 +58,7 @@ namespace Bio.Util.ArgumentParser
             if (baseType == null)
                 throw new ArgumentNullException(nameof(baseType));
 
-            var result = TypeNameAndBaseNameToType.GetOrAdd(Tuple.Create(typeName.ToLower(), baseType), typeAndBase =>
+            Type result = TypeNameAndBaseNameToType.GetOrAdd(Tuple.Create(typeName.ToLower(), baseType), typeAndBase =>
             {
                 Type foundType;
                 return TryGetTypeInternal(typeAndBase.Item1, typeAndBase.Item2, out foundType) ? foundType : null;
@@ -108,7 +108,7 @@ namespace Bio.Util.ArgumentParser
             if (!TryGetGenericParameters(ref typeName, out genericTypes))
                 return false;
 
-            foreach (var assembly in AllReferencedAssemblies)
+            foreach (Assembly assembly in AllReferencedAssemblies)
             {
                 returnType = GetType(assembly, baseType, typeName, genericTypes);
 
@@ -158,11 +158,11 @@ namespace Bio.Util.ArgumentParser
 #endif
                 }
 
-                foreach (var type in assembly.GetTypes())
+                foreach (Type type in assembly.GetTypes())
                 {
                     if (type.Name.Equals(typeName, StringComparison.CurrentCultureIgnoreCase))
                     {
-                        var result = type;
+                        Type result = type;
                         if (null != genericTypes)
                             result = type.MakeGenericType(genericTypes);
 
@@ -181,8 +181,8 @@ namespace Bio.Util.ArgumentParser
         /// <returns>List of type.</returns>
         public static IEnumerable<Type> GetReferencedTypes()
         {
-            foreach (var assembly in AllReferencedAssemblies)
-                foreach (var type in GetAssemblyTypes(assembly))
+            foreach (Assembly assembly in AllReferencedAssemblies)
+                foreach (Type type in GetAssemblyTypes(assembly))
                     yield return type;
 
         }
@@ -215,22 +215,22 @@ namespace Bio.Util.ArgumentParser
         {
             genericTypes = null;
 
-            var firstIdx = typeName.IndexOf('<');
+            int firstIdx = typeName.IndexOf('<');
             if (firstIdx < 0)
                 return true;
 
-            var lastIdx = typeName.LastIndexOf('>');
+            int lastIdx = typeName.LastIndexOf('>');
             Helper.CheckCondition(lastIdx == typeName.Length - 1, "Unbalanced <>");
 
-            var typeListString = typeName.Substring(firstIdx + 1, lastIdx - firstIdx - 1);
+            string typeListString = typeName.Substring(firstIdx + 1, lastIdx - firstIdx - 1);
             typeName = typeName.Substring(0, firstIdx);
-            var genericTypesAsList = new List<Type>();
+            List<Type> genericTypesAsList = new List<Type>();
 
             IEnumerable<string> typeArgs;
             try { typeArgs = typeListString.ProtectedSplit('<', '>', false, ','); }
             catch (Exception) { return false; }
 
-            foreach (var typeArgument in typeArgs)
+            foreach (string typeArgument in typeArgs)
             {
                 Type genericArgumentType;
                 if (!TryGetType(typeArgument, typeof(object), out genericArgumentType))
@@ -249,7 +249,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns>List of Assembly.</returns>
         private static IEnumerable<Assembly> EnumerateAllUserAssemblyCodeBases()
         {
-            var entryAssembly = SpecialFunctions.GetEntryOrCallingAssembly();
+            Assembly entryAssembly = SpecialFunctions.GetEntryOrCallingAssembly();
 
             yield return entryAssembly;
 
@@ -257,9 +257,9 @@ namespace Bio.Util.ArgumentParser
             yield break;
 #else
 
-            var exePath = Path.GetDirectoryName(entryAssembly.Location);
+            string exePath = Path.GetDirectoryName(entryAssembly.Location);
             Assembly assembly;
-            foreach (var dllName in Directory.EnumerateFiles(exePath, "*.dll").Union(Directory.EnumerateFiles(exePath, "*.exe")))
+            foreach (string dllName in Directory.EnumerateFiles(exePath, "*.dll").Union(Directory.EnumerateFiles(exePath, "*.exe")))
             {
                 assembly = null;
                 try
@@ -287,13 +287,13 @@ namespace Bio.Util.ArgumentParser
 #if SILVERLIGHT
             yield break;
 #else
-            var alreadySeen = new HashSet<string>();
-            foreach (var userAssembly in userAssemblies)
+            HashSet<string> alreadySeen = new HashSet<string>();
+            foreach (Assembly userAssembly in userAssemblies)
             {
                 if (!alreadySeen.Contains(userAssembly.FullName))
                 {
                     alreadySeen.Add(userAssembly.FullName);
-                    foreach (var assemblyName in userAssembly.GetReferencedAssemblies())
+                    foreach (AssemblyName assemblyName in userAssembly.GetReferencedAssemblies())
                     {
                         // SpecialFunctions.CheckDate(2010, 4, 13);
                         if (assemblyName.FullName.StartsWith("System.Windows.Forms.DataVisualization"))

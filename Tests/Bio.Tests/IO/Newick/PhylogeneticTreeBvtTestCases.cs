@@ -125,18 +125,18 @@ namespace Bio.TestAutomation.IO.Newick
         [Category("Priority0")]
         public void PhylogeneticTreeBvtParserValidateNewickExtended()
         {
-            var parser = new NewickParser();
+            NewickParser parser = new NewickParser();
             {
-                using (var reader = File.OpenRead(@"TestUtils\NewickExtended.nhx".TestDir()))
+                using (FileStream reader = File.OpenRead(@"TestUtils\NewickExtended.nhx".TestDir()))
                 {
-                    var rootTree = parser.Parse(reader);
+                    Tree rootTree = parser.Parse(reader);
 
                     //Verify metadata at root
                     Assert.AreEqual("40",rootTree.Root.MetaData["N"]);
                     //Verify name at root
                     Assert.AreEqual("Euteleostomi",rootTree.Root.Name);
                     //now verify it also worked for a somewhat arbitrary internal node
-                    var internalNode = rootTree.Root.Children.Keys.First().Children.Keys.First();
+                    Node internalNode = rootTree.Root.Children.Keys.First().Children.Keys.First();
                     Assert.AreEqual("Tetrapoda", internalNode.Name);
                     Assert.AreEqual("0.00044378",internalNode.MetaData["PVAL"]);
                     Assert.AreEqual(8,internalNode.MetaData.Count);
@@ -252,9 +252,9 @@ namespace Bio.TestAutomation.IO.Newick
         [Category("Priority0")]
         public void TestNamesOnInternalNodes()
         {
-            var filename = @"TestUtils\\positives.newick".TestDir();
-            var parser = new NewickParser();
-            var tree = parser.Parse(filename);
+            string filename = @"TestUtils\\positives.newick".TestDir();
+            NewickParser parser = new NewickParser();
+            Tree tree = parser.Parse(filename);
             Assert.AreEqual(3, tree.Root.Children.Count);
         }
 
@@ -270,27 +270,27 @@ namespace Bio.TestAutomation.IO.Newick
         void PhylogeneticTreeParserGeneralTests(string nodeName, AdditionalParameters addParam)
         {
             // Gets the expected sequence from the Xml
-            var filePath = _utilityObj.xmlUtil.GetTextValue(nodeName,
+            string filePath = _utilityObj.xmlUtil.GetTextValue(nodeName,
                 Constants.FilePathNode).TestDir();
 
             Assert.IsTrue(File.Exists(filePath));
 
-            var parser = new NewickParser();
+            NewickParser parser = new NewickParser();
             {
                 Tree rootTree = null;
 
                 switch (addParam)
                 {
                     case AdditionalParameters.Stream:
-                        using (var reader = File.OpenRead(filePath))
+                        using (FileStream reader = File.OpenRead(filePath))
                         {
                             rootTree = parser.Parse(reader);
                         }
                         break;
                     case AdditionalParameters.StringBuilder:
-                        using (var reader = File.OpenText(filePath))
+                        using (StreamReader reader = File.OpenText(filePath))
                         {
-                            var strBuilderObj = new StringBuilder(reader.ReadToEnd());
+                            StringBuilder strBuilderObj = new StringBuilder(reader.ReadToEnd());
                             rootTree = parser.Parse(strBuilderObj);
                         }
                         break;
@@ -299,9 +299,9 @@ namespace Bio.TestAutomation.IO.Newick
                         break;
                 }
 
-                var rootNode = rootTree.Root;
+                Node rootNode = rootTree.Root;
 
-                var rootBranchCount = _utilityObj.xmlUtil.GetTextValue(nodeName,
+                string rootBranchCount = _utilityObj.xmlUtil.GetTextValue(nodeName,
                     Constants.RootBranchCountNode);
 
                 // Validate the root branch count
@@ -312,24 +312,24 @@ namespace Bio.TestAutomation.IO.Newick
                     "Phylogenetic Tree Parser BVT: Number of Root Branches found are '{0}'.",
                     rootNode.Children.Count.ToString((IFormatProvider)null)));
 
-                var leavesName = new List<string>();
-                var leavesDistance = new List<double>();
+                List<string> leavesName = new List<string>();
+                List<double> leavesDistance = new List<double>();
 
                 // Gets all the nodes and edges
                 GetAllNodesAndEdges(rootNode, ref leavesName, ref leavesDistance);
 
-                var expectedLeavesName = _utilityObj.xmlUtil.GetTextValue(nodeName,
+                string[] expectedLeavesName = _utilityObj.xmlUtil.GetTextValue(nodeName,
                     Constants.NodeNamesNode).Split(',');
 
-                var expectedLeavesDistance = _utilityObj.xmlUtil.GetTextValue(nodeName,
+                string[] expectedLeavesDistance = _utilityObj.xmlUtil.GetTextValue(nodeName,
                     Constants.EdgeDistancesNode).Split(',');
 
-                for (var i = 0; i < expectedLeavesName.Length; i++)
+                for (int i = 0; i < expectedLeavesName.Length; i++)
                 {
                     Assert.AreEqual(expectedLeavesName[i], leavesName[i]);
                 }
 
-                for (var i = 0; i < expectedLeavesDistance.Length; i++)
+                for (int i = 0; i < expectedLeavesDistance.Length; i++)
                 {
                     Assert.AreEqual(expectedLeavesDistance[i],
                         leavesDistance[i].ToString((IFormatProvider)null));
@@ -349,9 +349,9 @@ namespace Bio.TestAutomation.IO.Newick
             FormatterParameters formatParam)
         {
             // Gets the expected sequence from the Xml
-            var filePath = string.Empty;
+            string filePath = string.Empty;
 
-            var parser = new NewickParser();
+            NewickParser parser = new NewickParser();
             {
                 Tree rootTree;
 
@@ -374,23 +374,23 @@ namespace Bio.TestAutomation.IO.Newick
                         break;
                 }
 
-                var outputFilepath = _utilityObj.xmlUtil.GetTextValue(nodeName,
+                string outputFilepath = _utilityObj.xmlUtil.GetTextValue(nodeName,
                          Constants.OutputFilePathNode);
 
-                var format = new NewickFormatter();
+                NewickFormatter format = new NewickFormatter();
                 switch (formatParam)
                 {
                     case FormatterParameters.Stream:
-                        using (var writer = File.Create(outputFilepath))
+                        using (FileStream writer = File.Create(outputFilepath))
                         {
                             format.Format(writer, rootTree);
                         }
                         break;
                     case FormatterParameters.FormatString:
                         // Validate format String
-                        var formatString = format.FormatString(rootTree);
+                        string formatString = format.FormatString(rootTree);
 
-                        var expectedFormatString =
+                        string expectedFormatString =
                             _utilityObj.xmlUtil.GetTextValue(nodeName,
                             Constants.FormatStringNode);
 
@@ -407,7 +407,7 @@ namespace Bio.TestAutomation.IO.Newick
                 if (FormatterParameters.FormatString != formatParam)
                 {
                     // Re-parse the created file and validate the tree.
-                    var newparserObj = new NewickParser();
+                    NewickParser newparserObj = new NewickParser();
                     {
                         Tree newrootTreeObj = null;
 
@@ -420,9 +420,9 @@ namespace Bio.TestAutomation.IO.Newick
 
                         newrootTreeObj = newparserObj.Parse(outputFilepath);
 
-                        var rootNode = newrootTreeObj.Root;
+                        Node rootNode = newrootTreeObj.Root;
 
-                        var rootBranchCount = _utilityObj.xmlUtil.GetTextValue(nodeName,
+                        string rootBranchCount = _utilityObj.xmlUtil.GetTextValue(nodeName,
                            Constants.RootBranchCountNode);
 
                         // Validate the root branch count
@@ -433,24 +433,24 @@ namespace Bio.TestAutomation.IO.Newick
                             "Phylogenetic Tree Parser BVT: Number of Root Branches found are '{0}'.",
                             rootNode.Children.Count.ToString((IFormatProvider)null)));
 
-                        var leavesName = new List<string>();
-                        var leavesDistance = new List<double>();
+                        List<string> leavesName = new List<string>();
+                        List<double> leavesDistance = new List<double>();
 
                         // Gets all the leaves in the root node list
                         GetAllNodesAndEdges(rootNode, ref leavesName, ref leavesDistance);
 
-                        var expectedLeavesName = _utilityObj.xmlUtil.GetTextValue(nodeName,
+                        string[] expectedLeavesName = _utilityObj.xmlUtil.GetTextValue(nodeName,
                            Constants.NodeNamesNode).Split(',');
 
-                        var expectedLeavesDistance = _utilityObj.xmlUtil.GetTextValue(nodeName,
+                        string[] expectedLeavesDistance = _utilityObj.xmlUtil.GetTextValue(nodeName,
                            Constants.EdgeDistancesNode).Split(',');
 
-                        for (var i = 0; i < expectedLeavesName.Length; i++)
+                        for (int i = 0; i < expectedLeavesName.Length; i++)
                         {
                             Assert.AreEqual(expectedLeavesName[i], leavesName[i]);
                         }
 
-                        for (var i = 0; i < expectedLeavesDistance.Length; i++)
+                        for (int i = 0; i < expectedLeavesDistance.Length; i++)
                         {
                             Assert.AreEqual(expectedLeavesDistance[i],
                                 leavesDistance[i].ToString((IFormatProvider)null));
@@ -475,23 +475,23 @@ namespace Bio.TestAutomation.IO.Newick
         void GetAllNodesAndEdges(Node rootNode,
               ref List<string> nodeName, ref List<double> distance)
         {
-            var edges = rootNode.Edges;
+            IList<Edge> edges = rootNode.Edges;
 
             if (null != edges)
             {
                 // Get all the edges distances
-                foreach (var ed in edges)
+                foreach (Edge ed in edges)
                 {
                     distance.Add(ed.Distance);
                 }
             }
 
             // Gets all the nodes
-            var nodes = rootNode.Nodes;
+            IList<Node> nodes = rootNode.Nodes;
 
             if (null != nodes)
             {
-                foreach (var nd in nodes)
+                foreach (Node nd in nodes)
                 {
                     if (nd.IsLeaf)
                     {
@@ -514,38 +514,38 @@ namespace Bio.TestAutomation.IO.Newick
         private static Tree GetFormattedObject()
         {
             // Tree with three nodes are created
-            var nd1 = new Node();
+            Node nd1 = new Node();
             nd1.Name = "a";
-            var ed1 = new Edge();
+            Edge ed1 = new Edge();
             ed1.Distance = 0.1;
 
-            var nd2 = new Node();
+            Node nd2 = new Node();
             nd2.Name = "b";
-            var ed2 = new Edge();
+            Edge ed2 = new Edge();
             ed2.Distance = 0.2;
 
-            var nd3 = new Node();
+            Node nd3 = new Node();
             nd3.Name = "c";
-            var ed3 = new Edge();
+            Edge ed3 = new Edge();
             ed3.Distance = 0.3;
 
-            var nd4 = new Node();
+            Node nd4 = new Node();
             nd4.Children.Add(nd1, ed1);
-            var ed4 = new Edge();
+            Edge ed4 = new Edge();
             ed4.Distance = 0.4;
 
-            var nd5 = new Node();
+            Node nd5 = new Node();
             nd5.Children.Add(nd2, ed2);
             nd5.Children.Add(nd3, ed3);
-            var ed5 = new Edge();
+            Edge ed5 = new Edge();
             ed5.Distance = 0.5;
 
-            var ndRoot = new Node();
+            Node ndRoot = new Node();
             ndRoot.Children.Add(nd4, ed4);
             ndRoot.Children.Add(nd5, ed5);
 
             // All the Node and Edges are combined to form a tree
-            var baseTree = new Tree();
+            Tree baseTree = new Tree();
             baseTree.Root = ndRoot;
 
             return baseTree;

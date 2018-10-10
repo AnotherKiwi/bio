@@ -27,17 +27,17 @@ namespace Bio.Tests.Algorithms.Translation
         [Category("Priority2")]
         public void ValidateLookupWithMoreThanTwelveChars()
         {
-            var alphabetName = utilityObj.xmlUtil.GetTextValue(Constants.SimpleRnaAlphabetNode,
+            string alphabetName = utilityObj.xmlUtil.GetTextValue(Constants.SimpleRnaAlphabetNode,
                                                                   Constants.AlphabetNameNode);
-            var expectedSeq = utilityObj.xmlUtil.GetTextValue(Constants.CodonsNode,
+            string expectedSeq = utilityObj.xmlUtil.GetTextValue(Constants.CodonsNode,
                                                                  Constants.SequenceWithmoreThanTweleveChars);
-            var expectedAminoAcid = utilityObj.xmlUtil.GetTextValue(Constants.CodonsNode,
+            string expectedAminoAcid = utilityObj.xmlUtil.GetTextValue(Constants.CodonsNode,
                                                                        Constants.OffsetZeroSixCharsAminoAcidV2);
-            var expectedOffset = utilityObj.xmlUtil.GetTextValue(Constants.CodonsNode,
+            string expectedOffset = utilityObj.xmlUtil.GetTextValue(Constants.CodonsNode,
                                                                     Constants.OffsetVaule2);
             string aminoAcid = null;
 
-            var seq = new Sequence(Utility.GetAlphabet(alphabetName), expectedSeq);
+            Sequence seq = new Sequence(Utility.GetAlphabet(alphabetName), expectedSeq);
             // Validate Codons lookup method.
             aminoAcid = Codons.Lookup(seq, Convert.ToInt32(expectedOffset, null)).ToString();
 
@@ -59,17 +59,17 @@ namespace Bio.Tests.Algorithms.Translation
         [Category("Priority2")]
         public void ValidateLookupWithZeroOffset()
         {
-            var alphabetName = utilityObj.xmlUtil.GetTextValue(Constants.SimpleRnaAlphabetNode,
+            string alphabetName = utilityObj.xmlUtil.GetTextValue(Constants.SimpleRnaAlphabetNode,
                                                                   Constants.AlphabetNameNode);
-            var expectedSeq = utilityObj.xmlUtil.GetTextValue(Constants.CodonsNode,
+            string expectedSeq = utilityObj.xmlUtil.GetTextValue(Constants.CodonsNode,
                                                                  Constants.SequenceWithmoreThanTweleveChars);
-            var expectedAminoAcid = utilityObj.xmlUtil.GetTextValue(Constants.CodonsNode,
+            string expectedAminoAcid = utilityObj.xmlUtil.GetTextValue(Constants.CodonsNode,
                                                                        Constants.OffsetOneMoreThanTwelveCharsAminoAcidV2);
-            var expectedOffset = utilityObj.xmlUtil.GetTextValue(Constants.CodonsNode,
+            string expectedOffset = utilityObj.xmlUtil.GetTextValue(Constants.CodonsNode,
                                                                     Constants.OffsetVaule4);
             string aminoAcid = null;
 
-            var seq = new Sequence(Utility.GetAlphabet(alphabetName), expectedSeq);
+            Sequence seq = new Sequence(Utility.GetAlphabet(alphabetName), expectedSeq);
             // Validate Codons lookup method.
             aminoAcid = Codons.Lookup(seq, Convert.ToInt32(expectedOffset, null)).ToString();
 
@@ -91,17 +91,17 @@ namespace Bio.Tests.Algorithms.Translation
         [Category("Priority2")]
         public void ValidateLookupWithOneOffset()
         {
-            var alphabetName = utilityObj.xmlUtil.GetTextValue(Constants.SimpleRnaAlphabetNode,
+            string alphabetName = utilityObj.xmlUtil.GetTextValue(Constants.SimpleRnaAlphabetNode,
                                                                   Constants.AlphabetNameNode);
-            var expectedSeq = utilityObj.xmlUtil.GetTextValue(Constants.CodonsNode,
+            string expectedSeq = utilityObj.xmlUtil.GetTextValue(Constants.CodonsNode,
                                                                  Constants.SequenceWithmoreThanTweleveChars);
-            var expectedAminoAcid = utilityObj.xmlUtil.GetTextValue(Constants.CodonsNode,
+            string expectedAminoAcid = utilityObj.xmlUtil.GetTextValue(Constants.CodonsNode,
                                                                        Constants.OffsetOneMoreThanTwelveCharsAminoAcidV2);
-            var expectedOffset = utilityObj.xmlUtil.GetTextValue(Constants.CodonsNode,
+            string expectedOffset = utilityObj.xmlUtil.GetTextValue(Constants.CodonsNode,
                                                                     Constants.OffsetVaule4);
             string aminoAcid = null;
 
-            var seq = new Sequence(Utility.GetAlphabet(alphabetName), expectedSeq);
+            Sequence seq = new Sequence(Utility.GetAlphabet(alphabetName), expectedSeq);
             // Validate Codons lookup method.
             aminoAcid = Codons.Lookup(seq, Convert.ToInt32(expectedOffset, null)).ToString();
 
@@ -123,22 +123,22 @@ namespace Bio.Tests.Algorithms.Translation
         [Category("Priority2")]
         public void ValidateLookupWithDnaSeqAndOffsetValue()
         {
-            var alphabetName = utilityObj.xmlUtil.GetTextValue(Constants.SimpleDnaAlphabetNode,
+            string alphabetName = utilityObj.xmlUtil.GetTextValue(Constants.SimpleDnaAlphabetNode,
                                                                   Constants.AlphabetNameNode);
-            var expectedSeq = utilityObj.xmlUtil.GetTextValue(Constants.TranscribeNode,
+            string expectedSeq = utilityObj.xmlUtil.GetTextValue(Constants.TranscribeNode,
                                                                  Constants.DnaSequence);
-            var expectedAminoAcid = utilityObj.xmlUtil.GetTextValue(Constants.CodonsNode,
+            string expectedAminoAcid = utilityObj.xmlUtil.GetTextValue(Constants.CodonsNode,
                                                                        Constants.DnaSeqAminoAcidWithOffsetValueOneDna);
-            var expectedOffset = utilityObj.xmlUtil.GetTextValue(Constants.CodonsNode,
+            string expectedOffset = utilityObj.xmlUtil.GetTextValue(Constants.CodonsNode,
                                                                     Constants.OffsetVaule4);
             ISequence transcribe = null;
 
-            var seq = new Sequence(Utility.GetAlphabet(alphabetName), expectedSeq);
+            Sequence seq = new Sequence(Utility.GetAlphabet(alphabetName), expectedSeq);
             // Transcribe DNA to RNA.
             transcribe = Transcription.Transcribe(seq);
 
             // Validate Codons lookup method.
-            var aminoAcid = Codons.Lookup(transcribe, Convert.ToInt32(expectedOffset, null)).ToString();
+            string aminoAcid = Codons.Lookup(transcribe, Convert.ToInt32(expectedOffset, null)).ToString();
 
             // Validate amino acids for a given sequence.
             Assert.AreEqual(expectedAminoAcid, aminoAcid);
@@ -162,7 +162,7 @@ namespace Bio.Tests.Algorithms.Translation
         [Category("Priority2")]
         public void ValidateRevTranscribeForNull()
         {
-            var Exthrown = false;
+            bool Exthrown = false;
 
             // Reverse Transcribe null Sequence.
             try
@@ -188,7 +188,7 @@ namespace Bio.Tests.Algorithms.Translation
         [Category("Priority2")]
         public void ValidateTranslationForNull()
         {
-            var Exthrown = false;
+            bool Exthrown = false;
 
             // Translation by passing null Sequence.
             try
@@ -216,7 +216,7 @@ namespace Bio.Tests.Algorithms.Translation
         public void ValidateTranslationForInvalidOffset()
         {
             // Get Node values from XML.
-            var Exthrown = false;
+            bool Exthrown = false;
 
             // Translation by passing null Sequence.
             try
@@ -244,9 +244,9 @@ namespace Bio.Tests.Algorithms.Translation
         public void ValidateTranslationForNegativeOffset()
         {
             // Get Node values from XML.
-            var expectedSeq = utilityObj.xmlUtil.GetTextValue(Constants.TranslationNode,
+            string expectedSeq = utilityObj.xmlUtil.GetTextValue(Constants.TranslationNode,
                                                                  Constants.RnaSequence);
-            var Exthrown = false;
+            bool Exthrown = false;
 
             // Translate Six characters RNA to protein.
             ISequence proteinTranslation = new Sequence(Alphabets.RNA, expectedSeq);
@@ -277,9 +277,9 @@ namespace Bio.Tests.Algorithms.Translation
         public void ValidateTranslationOfAmbiguousRnaUsingRnaAlphabet()
         {
             // Get Node values from XML.
-            var rnaSequenceStr = utilityObj.xmlUtil.GetTextValue(Constants.TranslationNode,
+            string rnaSequenceStr = utilityObj.xmlUtil.GetTextValue(Constants.TranslationNode,
                                                                     Constants.AmbiguousRnaSequence);
-            var Exthrown = false;
+            bool Exthrown = false;
 
             // Build ambiguous RNA sequence using an RNA alphabet.
             ISequence rnaSequence = new Sequence(Alphabets.RNA, rnaSequenceStr, false);

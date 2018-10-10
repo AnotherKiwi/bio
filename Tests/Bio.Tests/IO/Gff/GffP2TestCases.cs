@@ -286,7 +286,7 @@ using NUnit.Framework;
             try
             {
                 // Gets the expected sequence from the Xml
-                var filePath = utilityObj.xmlUtil.GetTextValue(nodeName,Constants.FilePathNode).TestDir();
+                string filePath = utilityObj.xmlUtil.GetTextValue(nodeName,Constants.FilePathNode).TestDir();
                 new GffParser().Parse(filePath).ToList();
                 Assert.Fail();
             }
@@ -320,7 +320,7 @@ using NUnit.Framework;
         void InvalidateGffWriteMethod(ArgumentNullExceptions method)            
         {
             ISequence sequence=null;
-            var collection = new List<ISequence>();
+            List<ISequence> collection = new List<ISequence>();
             string sequenceData = null;
             GffFormatter gffFormatter = null;
 

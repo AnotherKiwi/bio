@@ -42,8 +42,8 @@ namespace Bio.IO.BAM
                 throw new ArgumentException("Use different filenames for index and alignment.", nameof(indexFilename));
             }
 
-            using (var fs = File.Create(filename))
-            using (var bamIndexFile = new BAMIndexStorage(File.Create(indexFilename)))
+            using (FileStream fs = File.Create(filename))
+            using (BAMIndexStorage bamIndexFile = new BAMIndexStorage(File.Create(indexFilename)))
             {
                 formatter.Format(fs, bamIndexFile, sam);
             }
@@ -70,12 +70,12 @@ namespace Bio.IO.BAM
                 throw new ArgumentNullException(nameof(filename));
             }
 
-            using (var fs = File.Create(filename))
+            using (FileStream fs = File.Create(filename))
             {
                 // Create the IndexFile if necessary
                 if (formatter.CreateIndexFile)
                 {
-                    using (var bamIndexFile = new BAMIndexStorage(
+                    using (BAMIndexStorage bamIndexFile = new BAMIndexStorage(
                         File.Create(filename + Properties.Resource.BAM_INDEXFILEEXTENSION)))
                     {
                         formatter.Format(fs, bamIndexFile, sam);

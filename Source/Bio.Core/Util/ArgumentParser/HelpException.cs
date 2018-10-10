@@ -41,21 +41,21 @@ namespace Bio.Util.ArgumentParser
         /// <returns>Formatted Message.</returns>
         private static string FormatMessage(string message, bool includeDateStamp)
         {
-            var windowWidth =
+            int windowWidth =
 #if !SILVERLIGHT
                 Console.BufferWidth;
 #else
                 80;
 #endif
-            var indentWidth = 5;
-            var indentString = Enumerable.Repeat(' ', 5).StringJoin("");
+            int indentWidth = 5;
+            string indentString = Enumerable.Repeat(' ', 5).StringJoin("");
 
-            var result = new StringBuilder();
+            StringBuilder result = new StringBuilder();
 
-            var line = new StringBuilder(windowWidth);
-            var indents = 0;
+            StringBuilder line = new StringBuilder(windowWidth);
+            int indents = 0;
 
-            foreach (var word in Tokens(message))
+            foreach (string word in Tokens(message))
             {
                 switch (word)
                 {
@@ -97,7 +97,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns>DateCompiledString.</returns>
         private static string GetDateCompiledString()
         {
-            var compileDate = SpecialFunctions.DateProgramWasCompiled();
+            DateTime compileDate = SpecialFunctions.DateProgramWasCompiled();
             if (compileDate.Ticks > 0)
                 return "Program last modified " + compileDate;
             else
@@ -123,11 +123,11 @@ namespace Bio.Util.ArgumentParser
         private static IEnumerable<string> Tokens(string str)
         {
             str = str.Replace("\n\n", "<br><br>");
-            var wordBeforeTag = "";
-            var word = new StringBuilder();
+            string wordBeforeTag = "";
+            StringBuilder word = new StringBuilder();
 
-            var tagDepth = 0;
-            foreach (var c in str)
+            int tagDepth = 0;
+            foreach (char c in str)
             {
                 if (c == '<')
                 {
@@ -147,7 +147,7 @@ namespace Bio.Util.ArgumentParser
                         tagDepth--;
                         if (tagDepth == 0)
                         {
-                            var tag = word.ToString();
+                            string tag = word.ToString();
                             if (KnownTag(tag))
                             {
                                 if (wordBeforeTag.Length > 0)

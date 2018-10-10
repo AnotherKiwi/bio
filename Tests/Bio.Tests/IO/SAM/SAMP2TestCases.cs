@@ -213,7 +213,7 @@ namespace Bio.TestAutomation.IO.SAM
         [Category("Priority2")]
         public void InvalidateSAMParseHeaderBioReader()
         {
-            var filePath = utilityObj.xmlUtil.GetTextValue(
+            string filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.InvalidSamBioReaderNode,
                 Constants.FilePathNode).TestDir();
 
@@ -244,7 +244,7 @@ namespace Bio.TestAutomation.IO.SAM
         {
             try
             {
-                var sparserObj = new SAMParser();
+                SAMParser sparserObj = new SAMParser();
                 {
                     sparserObj.Alphabet = Alphabets.DNA;
                 }
@@ -271,7 +271,7 @@ namespace Bio.TestAutomation.IO.SAM
         [Category("Priority2")]
         public void InvalidateSAMWriteTextWriter()
         {
-            var header = new SAMAlignmentHeader();
+            SAMAlignmentHeader header = new SAMAlignmentHeader();
 
             try
             {
@@ -461,7 +461,7 @@ namespace Bio.TestAutomation.IO.SAM
         /// </summary>
         private static void ValidateQualitySeqLength(ParseOrFormatQualLength method)
         {
-            var align = new SAMAlignedSequence();
+            SAMAlignedSequence align = new SAMAlignedSequence();
 
             try
             {
@@ -522,7 +522,7 @@ namespace Bio.TestAutomation.IO.SAM
         /// </summary>
         void ValidateSamFormatter(ParseOrFormatTypes method)
         {
-            var filePath = utilityObj.xmlUtil.GetTextValue(
+            string filePath = utilityObj.xmlUtil.GetTextValue(
                 Constants.SmallSAMFileNode, Constants.FilePathNode).TestDir();
             ISequenceAlignmentParser parser = new SAMParser();
             ISequenceAlignment alignment = null;
@@ -559,14 +559,14 @@ namespace Bio.TestAutomation.IO.SAM
                             null as ICollection<ISequenceAlignment>);
                         break;
                     case ParseOrFormatTypes.ParseOneOrFormatSeq:
-                        var align = new SequenceAlignmentMap();
+                        SequenceAlignmentMap align = new SequenceAlignmentMap();
                         new SAMFormatter().Format(align, null as string);
                         break;
                     case ParseOrFormatTypes.ParseOneOrFormatSeqFile:
                         new SAMFormatter().Format(null as SequenceAlignmentMap, null as string);
                         break;
                     case ParseOrFormatTypes.ParseOrFormatIseqT:
-                        var alignments =
+                        SequenceAlignmentMap alignments =
                             new SequenceAlignmentMap();
                         new SAMFormatter().Format(alignments, null as string);
                         break;

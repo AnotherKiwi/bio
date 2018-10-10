@@ -194,28 +194,28 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             }
 
             // Initialize countsDictionary
-            var countsDictionary = new Dictionary<String, float>();
+            Dictionary<string, float> countsDictionary = new Dictionary<String, float>();
 
             // StringBuilder 'kmer' stores the k-mer in each window.
             // When sliding the k-length window, new k-mer is generated 
             // by simply adding one item at the end and removing one in 
             // the front.
-            var kmer = new StringBuilder();
+            StringBuilder kmer = new StringBuilder();
             
-            for (var i = 0; i < kmerLength; ++i)
+            for (int i = 0; i < kmerLength; ++i)
             {
                 kmer.Append((char)seq[i]);
             }
             countsDictionary[kmer.ToString()] = 1;
 
             // Slide the window and add each kmer into countsDictionary
-            for (var i = kmerLength; i < seq.Count; ++i)
+            for (int i = kmerLength; i < seq.Count; ++i)
             {
                 // modify kmer for the new window
                 kmer.Append((char)seq[i]);
                 kmer.Remove(0, 1);
 
-                var kmerString = kmer.ToString();
+                string kmerString = kmer.ToString();
 
                 // Add into countsDictionary
                 if (countsDictionary.ContainsKey(kmerString))
@@ -239,7 +239,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         {
             float result = 0;
 
-            foreach (var pair in countsDA)
+            foreach (KeyValuePair<string, float> pair in countsDA)
             {
                 if (countsDB.ContainsKey(pair.Key))
                 {
@@ -250,7 +250,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                     result += (float)Math.Pow(countsDA[pair.Key], 2);
                 }
             }
-            foreach (var pair in countsDB)
+            foreach (KeyValuePair<string, float> pair in countsDB)
             {
                 if (!countsDA.ContainsKey(pair.Key))
                 {
@@ -267,31 +267,31 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
 
             float averageA = 0, standardDeviationA = 0, averageB = 0, standardDeviationB = 0;
             
-            foreach (var pair in countsDA)
+            foreach (KeyValuePair<string, float> pair in countsDA)
             {
                 averageA += countsDA[pair.Key];
             }
             averageA /= _numberOfPossibleKmers;
-            foreach (var pair in countsDA)
+            foreach (KeyValuePair<string, float> pair in countsDA)
             {
                 standardDeviationA += (float)Math.Pow(countsDA[pair.Key] - averageA, 2);
             }
             standardDeviationA /= _numberOfPossibleKmers;
             standardDeviationA = (float)Math.Sqrt(standardDeviationA);
 
-            foreach (var pair in countsDB)
+            foreach (KeyValuePair<string, float> pair in countsDB)
             {
                 averageB += countsDB[pair.Key];
             }
             averageB /= _numberOfPossibleKmers;
-            foreach (var pair in countsDB)
+            foreach (KeyValuePair<string, float> pair in countsDB)
             {
                 standardDeviationB += (float)Math.Pow(countsDB[pair.Key] - averageB, 2);
             }
             standardDeviationB /= _numberOfPossibleKmers;
             standardDeviationB = (float)Math.Sqrt(standardDeviationB);
 
-            foreach (var pair in countsDA)
+            foreach (KeyValuePair<string, float> pair in countsDA)
             {
                 if (countsDB.ContainsKey(pair.Key))
                 {
@@ -302,7 +302,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                     result += (countsDA[pair.Key] - averageA) * (-averageB);
                 }
             }
-            foreach (var pair in countsDB)
+            foreach (KeyValuePair<string, float> pair in countsDB)
             {
                 if (!countsDA.ContainsKey(pair.Key))
                 {
@@ -321,31 +321,31 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
 
             float averageA = 0, standardDeviationA = 0, averageB = 0, standardDeviationB = 0;
 
-            foreach (var pair in countsDA)
+            foreach (KeyValuePair<string, float> pair in countsDA)
             {
                 averageA += countsDA[pair.Key];
             }
             averageA /= _numberOfPossibleKmers;
-            foreach (var pair in countsDA)
+            foreach (KeyValuePair<string, float> pair in countsDA)
             {
                 standardDeviationA += (float)Math.Pow(countsDA[pair.Key] - averageA, 2);
             }
             standardDeviationA /= _numberOfPossibleKmers;
             standardDeviationA = (float)Math.Sqrt(standardDeviationA);
 
-            foreach (var pair in countsDB)
+            foreach (KeyValuePair<string, float> pair in countsDB)
             {
                 averageB += countsDB[pair.Key];
             }
             averageB /= _numberOfPossibleKmers;
-            foreach (var pair in countsDB)
+            foreach (KeyValuePair<string, float> pair in countsDB)
             {
                 standardDeviationB += (float)Math.Pow(countsDB[pair.Key] - averageB, 2);
             }
             standardDeviationB /= _numberOfPossibleKmers;
             standardDeviationB = (float)Math.Sqrt(standardDeviationB);
 
-            foreach (var pair in countsDA)
+            foreach (KeyValuePair<string, float> pair in countsDA)
             {
                 if (countsDB.ContainsKey(pair.Key))
                 {
@@ -356,7 +356,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                     result += (countsDA[pair.Key] - averageA) * (-averageB);
                 }
             }
-            foreach (var pair in countsDB)
+            foreach (KeyValuePair<string, float> pair in countsDB)
             {
                 if (!countsDA.ContainsKey(pair.Key))
                 {
@@ -373,7 +373,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         {
             float result = 0;
 
-            foreach (var pair in countsDA)
+            foreach (KeyValuePair<string, float> pair in countsDA)
             {
                 if (countsDB.ContainsKey(pair.Key))
                 {

@@ -1114,12 +1114,12 @@ namespace Bio.Tests.Algorithms.Alignment
             ISequence aInput;
             ISequence bInput;
 
-            var alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.AlphabetNameNode));
+            IAlphabet alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.AlphabetNameNode));
 
             if (alignParam.ToString().Contains("Code"))
             {
-                var sequence1 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode1);
-                var sequence2 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode2);
+                string sequence1 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode1);
+                string sequence2 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode2);
 
                 aInput = new Sequence(alphabet, sequence1);
                 bInput = new Sequence(alphabet, sequence2);
@@ -1127,15 +1127,15 @@ namespace Bio.Tests.Algorithms.Alignment
             else
             {
                 // Read the xml file for getting both the files for aligning.
-                var filePath1 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode1).TestDir();
-                var filePath2 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode2).TestDir();
+                string filePath1 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode1).TestDir();
+                string filePath2 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode2).TestDir();
 
-                var parser1 = new FastAParser { Alphabet = alphabet };
+                FastAParser parser1 = new FastAParser { Alphabet = alphabet };
                 aInput = parser1.Parse(filePath1).ElementAt(0);
                 bInput = parser1.Parse(filePath2).ElementAt(0);
             }
 
-            var blosumFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.BlosumFilePathNode).TestDir();
+            string blosumFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.BlosumFilePathNode).TestDir();
             SimilarityMatrix sm;
 
             switch (similarityMatrixParam)
@@ -1145,8 +1145,8 @@ namespace Bio.Tests.Algorithms.Alignment
                         sm = new SimilarityMatrix(reader);
                     break;
                 case SimilarityMatrixParameters.DiagonalMatrix:
-                    var matchValue = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MatchScoreNode);
-                    var misMatchValue = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MisMatchScoreNode);
+                    string matchValue = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MatchScoreNode);
+                    string misMatchValue = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MisMatchScoreNode);
                     sm = new DiagonalSimilarityMatrix(int.Parse(matchValue, null), int.Parse(misMatchValue, null));
                     break;
                 default:
@@ -1154,10 +1154,10 @@ namespace Bio.Tests.Algorithms.Alignment
                     break;
             }
 
-            var gapOpenCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapOpenCostNode), null);
-            var gapExtensionCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapExtensionCostNode), null);
+            int gapOpenCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapOpenCostNode), null);
+            int gapExtensionCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapExtensionCostNode), null);
 
-            var pairwiseOverlapObj = new PairwiseOverlapAligner();
+            PairwiseOverlapAligner pairwiseOverlapObj = new PairwiseOverlapAligner();
             if (AlignParameters.AllParam != alignParam)
             {
                 pairwiseOverlapObj.SimilarityMatrix = sm;
@@ -1170,7 +1170,7 @@ namespace Bio.Tests.Algorithms.Alignment
             {
                 case AlignParameters.AlignList:
                 case AlignParameters.AlignListCode:
-                    var sequences = new List<ISequence> {aInput, bInput};
+                    List<ISequence> sequences = new List<ISequence> {aInput, bInput};
                     switch (alignType)
                     {
                         case AlignmentType.Align:
@@ -1232,14 +1232,14 @@ namespace Bio.Tests.Algorithms.Alignment
             }
 
             IList<IPairwiseSequenceAlignment> expectedOutput = new List<IPairwiseSequenceAlignment>();
-            var seperators = new [] {';'};
-            var expectedSequences1 = expectedSequence1.Split(seperators);
-            var expectedSequences2 = expectedSequence2.Split(seperators);
+            char[] seperators = new [] {';'};
+            string[] expectedSequences1 = expectedSequence1.Split(seperators);
+            string[] expectedSequences2 = expectedSequence2.Split(seperators);
 
             IPairwiseSequenceAlignment align = new PairwiseSequenceAlignment();
-            for (var i = 0; i < expectedSequences1.Length; i++)
+            for (int i = 0; i < expectedSequences1.Length; i++)
             {
-                var alignedSeq = new PairwiseAlignedSequence
+                PairwiseAlignedSequence alignedSeq = new PairwiseAlignedSequence
                 {
                     FirstSequence = new Sequence(alphabet, expectedSequences1[i]),
                     SecondSequence = new Sequence(alphabet, expectedSequences2[i]),

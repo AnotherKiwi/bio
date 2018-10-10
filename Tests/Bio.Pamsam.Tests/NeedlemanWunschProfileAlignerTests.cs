@@ -25,8 +25,8 @@ namespace Bio.Pamsam.Tests
         public void TestNeedlemanWunschProfileAligner()
         {
             ISequence templateSequence = new Sequence(Alphabets.AmbiguousDNA, "ATGCSWRYKMBVHDN-");
-            var itemSet = new Dictionary<byte, int>();
-            for (var i = 0; i < templateSequence.Count; ++i)
+            Dictionary<byte, int> itemSet = new Dictionary<byte, int>();
+            for (int i = 0; i < templateSequence.Count; ++i)
             {
                 itemSet.Add(templateSequence[i], i);
                 if (char.IsLetter((char)templateSequence[i]))
@@ -34,9 +34,9 @@ namespace Bio.Pamsam.Tests
             }
             Profiles.ItemSet = itemSet;
 
-            var similarityMatrix = new SimilarityMatrix(SimilarityMatrix.StandardSimilarityMatrix.AmbiguousDna);
-            var gapOpenPenalty = -3;
-            var gapExtendPenalty = -1;
+            SimilarityMatrix similarityMatrix = new SimilarityMatrix(SimilarityMatrix.StandardSimilarityMatrix.AmbiguousDna);
+            int gapOpenPenalty = -3;
+            int gapExtendPenalty = -1;
 
             IProfileAligner profileAligner = new NeedlemanWunschProfileAlignerSerial(similarityMatrix, ProfileScoreFunctionNames.WeightedInnerProduct,
                                                                                 gapOpenPenalty, gapExtendPenalty, Environment.ProcessorCount);
@@ -44,53 +44,53 @@ namespace Bio.Pamsam.Tests
             ISequence seqA = new Sequence(Alphabets.DNA, "GGGAAAAATCAGATT");
             ISequence seqB = new Sequence(Alphabets.DNA, "GGGAATCAAAATCAG");
 
-            var sequences = new List<ISequence>
+            List<ISequence> sequences = new List<ISequence>
             {
                 seqA,
                 seqB
             };
 
-            var profileAlignmentA = ProfileAlignment.GenerateProfileAlignment(sequences[0]);
-            var profileAlignmentB = ProfileAlignment.GenerateProfileAlignment(sequences[1]);
+            IProfileAlignment profileAlignmentA = ProfileAlignment.GenerateProfileAlignment(sequences[0]);
+            IProfileAlignment profileAlignmentB = ProfileAlignment.GenerateProfileAlignment(sequences[1]);
             profileAligner.Align(profileAlignmentA, profileAlignmentB);
 
 
-            var eStringSubtree = profileAligner.GenerateEString(profileAligner.AlignedA);
-            var eStringSubtreeB = profileAligner.GenerateEString(profileAligner.AlignedB);
+            List<int> eStringSubtree = profileAligner.GenerateEString(profileAligner.AlignedA);
+            List<int> eStringSubtreeB = profileAligner.GenerateEString(profileAligner.AlignedB);
 
-            var alignedSequences = new List<ISequence>();
+            List<ISequence> alignedSequences = new List<ISequence>();
 
             ISequence seq = profileAligner.GenerateSequenceFromEString(eStringSubtree, sequences[0]);
             alignedSequences.Add(seq);
             seq = profileAligner.GenerateSequenceFromEString(eStringSubtreeB, sequences[1]);
             alignedSequences.Add(seq);
 
-            var profileScore = MsaUtils.MultipleAlignmentScoreFunction(alignedSequences, similarityMatrix, gapOpenPenalty, gapExtendPenalty);
+            float profileScore = MsaUtils.MultipleAlignmentScoreFunction(alignedSequences, similarityMatrix, gapOpenPenalty, gapExtendPenalty);
 
             Console.WriteLine("alignment score is: {0}", profileScore);
 
             Console.WriteLine("the aligned sequences are:");
-            for (var i = 0; i < alignedSequences.Count; ++i)
+            for (int i = 0; i < alignedSequences.Count; ++i)
                 Console.WriteLine(alignedSequences[i]);
 
             // Test on case 3: 36 sequences
-            var filepath = @"TestUtils\RV11_BBS_allSmall.afa";
-            var filePathObj = filepath.TestDir();
+            string filepath = @"TestUtils\RV11_BBS_allSmall.afa";
+            string filePathObj = filepath.TestDir();
             IList<ISequence> orgSequences = new FastAParser() { Alphabet = AmbiguousDnaAlphabet.Instance }.Parse(filePathObj).ToList();
 
             sequences = MsaUtils.UnAlign(orgSequences);
-            var numberOfSequences = orgSequences.Count;
+            int numberOfSequences = orgSequences.Count;
 
             Console.WriteLine("Original unaligned sequences are:");
-            for (var i = 0; i < numberOfSequences; ++i)
+            for (int i = 0; i < numberOfSequences; ++i)
             {
                 Console.WriteLine(">");
                 Console.WriteLine(sequences[i]);
             }
 
-            for (var i = 1; i < numberOfSequences - 1; ++i)
+            for (int i = 1; i < numberOfSequences - 1; ++i)
             {
-                for (var j = i + 1; j < numberOfSequences; ++j)
+                for (int j = i + 1; j < numberOfSequences; ++j)
                 {
                     profileAlignmentA = ProfileAlignment.GenerateProfileAlignment(sequences[i]);
                     profileAlignmentB = ProfileAlignment.GenerateProfileAlignment(sequences[j]);
@@ -104,12 +104,12 @@ namespace Bio.Pamsam.Tests
 
                     Console.WriteLine("Sequences lengths are: {0}-{1}", sequences[i].Count, sequences[j].Count);
                     Console.WriteLine("estring 1:");
-                    for (var k = 0; k < eStringSubtree.Count; ++k)
+                    for (int k = 0; k < eStringSubtree.Count; ++k)
                     {
                         Console.Write("{0}\t", eStringSubtree[k]);
                     }
                     Console.WriteLine("\nestring 2:");
-                    for (var k = 0; k < eStringSubtreeB.Count; ++k)
+                    for (int k = 0; k < eStringSubtreeB.Count; ++k)
                     {
                         Console.Write("{0}\t", eStringSubtreeB[k]);
                     }
@@ -126,7 +126,7 @@ namespace Bio.Pamsam.Tests
                     Console.WriteLine("\nalignment score is: {0}", profileScore);
 
                     Console.WriteLine("the aligned sequences are:");
-                    for (var k = 0; k < alignedSequences.Count; ++k)
+                    for (int k = 0; k < alignedSequences.Count; ++k)
                     {
                         Console.WriteLine(new string(alignedSequences[k].Select(a => (char)a).ToArray()));
                     }

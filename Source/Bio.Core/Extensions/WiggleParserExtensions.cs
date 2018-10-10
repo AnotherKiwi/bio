@@ -28,10 +28,10 @@ namespace Bio.IO.Wiggle
         /// <returns>Set of parsed sequences.</returns>
         public static IEnumerable<WiggleAnnotation> Parse(this WiggleParser parser)
         {
-            var fs = ParserFormatterExtensions<WiggleParser>.GetOpenStream(parser, false);
+            Stream fs = ParserFormatterExtensions<WiggleParser>.GetOpenStream(parser, false);
             if (fs != null)
             {
-                foreach (var item in parser.Parse(fs))
+                foreach (WiggleAnnotation item in parser.Parse(fs))
                     yield return item;
             }
         }
@@ -44,9 +44,9 @@ namespace Bio.IO.Wiggle
         /// <returns>Set of parsed sequences.</returns>
         public static IEnumerable<WiggleAnnotation> Parse(this WiggleParser parser, string fileName)
         {
-            using (var fs = File.OpenRead(fileName))
+            using (FileStream fs = File.OpenRead(fileName))
             {
-                foreach (var item in parser.Parse(fs))
+                foreach (WiggleAnnotation item in parser.Parse(fs))
                     yield return item;
             }
         }
@@ -59,7 +59,7 @@ namespace Bio.IO.Wiggle
         /// <returns>Set of parsed sequences.</returns>
         public static WiggleAnnotation ParseOne(this WiggleParser parser, string fileName)
         {
-            using (var fs = File.OpenRead(fileName))
+            using (FileStream fs = File.OpenRead(fileName))
             {
                 return parser.ParseOne(fs);
             }

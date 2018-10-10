@@ -92,7 +92,7 @@
                 null);
             attributes.Add(KmerLength, alignmentAttribute);
 
-            var listValidator = new StringListValidator(
+            StringListValidator listValidator = new StringListValidator(
                 Enum.GetNames(typeof(DistanceFunctionTypes))
                 );
             alignmentAttribute = new AlignmentInfo(

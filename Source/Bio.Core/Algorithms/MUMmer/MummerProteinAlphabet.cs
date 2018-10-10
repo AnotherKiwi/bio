@@ -27,7 +27,7 @@ namespace Bio.Algorithms.MUMmer
 
             ConcatenationChar = (byte)'+';
 
-            AddAminoAcid(ConcatenationChar, "Cat", "Concatenation");
+            AddAminoAcid(ConcatenationChar, "Cat", "Concatenation", false);
         }
 
         /// <summary>

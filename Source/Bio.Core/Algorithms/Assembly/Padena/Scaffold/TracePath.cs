@@ -66,7 +66,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
             kmerLength = lengthOfKmer;
             depth = searchDepth;
 
-            var scaffoldPaths = new List<ScaffoldPath>();
+            List<ScaffoldPath> scaffoldPaths = new List<ScaffoldPath>();
             Parallel.ForEach(
                 overlapGraph.Nodes, 
                 (Node node) =>
@@ -74,7 +74,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
                 Dictionary<ISequence, IList<ValidMatePair>> contigPairedReadMap;
                 if (contigPairedReadMaps.TryGetValue(overlapGraph.GetNodeSequence(node), out contigPairedReadMap))
                 {
-                    var scaffoldPath = TraverseGraph(node, contigPairedReadMap);
+                    List<ScaffoldPath> scaffoldPath = TraverseGraph(node, contigPairedReadMap);
                     lock (scaffoldPaths)
                     {
                         scaffoldPaths.AddRange(scaffoldPath);
@@ -96,8 +96,8 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
             Node node,
             Dictionary<ISequence, IList<ValidMatePair>> contigPairedReadMap)
         {
-            var search = new Queue<Paths>();
-            var paths = new List<Paths>();
+            Queue<Paths> search = new Queue<Paths>();
+            List<Paths> paths = new List<Paths>();
             LeftExtension(
                 new KeyValuePair<Node, Edge>(node, new Edge(false)),
                 search,
@@ -176,7 +176,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
             Paths childPath;
             if (node.Key.LeftExtensionNodes.Count > 0)
             {
-                foreach (var child in node.Key.LeftExtensionNodes)
+                foreach (KeyValuePair<Node, Edge> child in node.Key.LeftExtensionNodes)
                 {
                     childPath = new Paths();
                     childPath.CurrentNode = child;
@@ -247,7 +247,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
             Paths childPath;
             if (node.Key.RightExtensionNodes.Count > 0)
             {
-                foreach (var child in node.Key.RightExtensionNodes)
+                foreach (KeyValuePair<Node, Edge> child in node.Key.RightExtensionNodes)
                 {
                     childPath = new Paths();
                     childPath.CurrentNode = child;
@@ -314,7 +314,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
             IList<ValidMatePair> map;
             if (contigPairedReadMaps.TryGetValue(graph.GetNodeSequence(childPath.CurrentNode.Key), out map))
             {
-                var pathlength = GetPathLength(childPath);
+                float pathlength = GetPathLength(childPath);
                 if (childPath.CurrentNode.Value.IsSameOrientation)
                 {
                     if ((map[0].DistanceBetweenContigs[0] -
@@ -349,7 +349,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         private float GetPathLength(Paths childPath)
         {
             float distance = 0;
-            for (var index = 1; index < childPath.FamilyTree.Count; index++)
+            for (int index = 1; index < childPath.FamilyTree.Count; index++)
             {
                 distance += graph.GetNodeSequence(childPath.FamilyTree[index].Key).Count - kmerLength;
             }

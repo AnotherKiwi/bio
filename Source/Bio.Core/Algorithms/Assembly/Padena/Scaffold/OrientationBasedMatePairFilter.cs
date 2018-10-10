@@ -37,9 +37,9 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
                 throw new ArgumentException(Properties.Resource.NegativeRedundancy);
             }
 
-            foreach (var matePair in matePairMap)
+            foreach (KeyValuePair<ISequence, Dictionary<ISequence, IList<ValidMatePair>>> matePair in matePairMap)
             {
-                foreach (var validMatePair in matePair.Value)
+                foreach (KeyValuePair<ISequence, IList<ValidMatePair>> validMatePair in matePair.Value)
                 {
                     if (matePair.Key != validMatePair.Key)
                     {
@@ -74,10 +74,10 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
                 }
             }
 
-            var newMatePairMap = new ContigMatePairs();
+            ContigMatePairs newMatePairMap = new ContigMatePairs();
             Parallel.ForEach(matePairMap, matePair =>
             {
-                var map = matePair.Value
+                Dictionary<ISequence, IList<ValidMatePair>> map = matePair.Value
                     .Where(validMatePair => validMatePair.Value.Count > 0)
                     .ToDictionary(validMatePair => validMatePair.Key, validMatePair => validMatePair.Value);
 
@@ -117,7 +117,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
                 }
                 else
                 {
-                    foreach (var validPair in validPair2)
+                    foreach (ValidMatePair validPair in validPair2)
                     {
                         validPair1.Add(validPair);
                     }

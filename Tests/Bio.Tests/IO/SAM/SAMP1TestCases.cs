@@ -65,11 +65,11 @@ namespace Bio.TestAutomation.IO.SAM
         [Category("Priority1")]
         public void ValidateSAMParserWithEmptyAlignmentMap()
         {
-            var fn = utilityObj.xmlUtil.GetTextValue(Constants.EmptySamFileNode, Constants.FilePathNode).TestDir();
+            string fn = utilityObj.xmlUtil.GetTextValue(Constants.EmptySamFileNode, Constants.FilePathNode).TestDir();
 
-            var parser = new SAMParser();
+            SAMParser parser = new SAMParser();
             {
-                var alignment = parser.ParseOne<SequenceAlignmentMap>(fn);
+                SequenceAlignmentMap alignment = parser.ParseOne<SequenceAlignmentMap>(fn);
                 Assert.IsNotNull(alignment);
             }
         }
@@ -105,32 +105,32 @@ namespace Bio.TestAutomation.IO.SAM
         void ValidateSAMParser(string nodeName)
         {
             // Gets the expected sequence from the Xml
-            var filePath = utilityObj.xmlUtil.GetTextValue(
+            string filePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FilePathNode).TestDir();
-            var expectedSequenceFile = utilityObj.xmlUtil.GetTextValue(
+            string expectedSequenceFile = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExpectedSequence).TestDir();
-            var parser = new SAMParser();
+            SAMParser parser = new SAMParser();
             {
                 SequenceAlignmentMap alignments = null;
 
                 // Parse SAM File
-                using (var reader = File.OpenRead(filePath))
+                using (FileStream reader = File.OpenRead(filePath))
                 {
                     alignments = parser.Parse(reader);
                 }
 
                 // Get expected sequences
-                var parserObj = new FastAParser();
+                FastAParser parserObj = new FastAParser();
                 {
-                    var expectedSequences = parserObj.Parse(expectedSequenceFile);
+                    IEnumerable<ISequence> expectedSequences = parserObj.Parse(expectedSequenceFile);
                     IList<ISequence> expectedSequencesList = expectedSequences.ToList();
 
                     // Validate parsed output with expected output
-                    for (var index = 0;
+                    for (int index = 0;
                         index < alignments.QuerySequences.Count;
                         index++)
                     {
-                        for (var count = 0;
+                        for (int count = 0;
                             count < alignments.QuerySequences[index].Sequences.Count;
                             count++)
                         {
@@ -150,16 +150,16 @@ namespace Bio.TestAutomation.IO.SAM
         void ValidateSAMFormatter(string nodeName)
         {
             // Gets the expected sequence from the Xml
-            var filePath = utilityObj.xmlUtil.GetTextValue(
+            string filePath = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.FilePathNode).TestDir();
-            var expectedSequenceFile = utilityObj.xmlUtil.GetTextValue(
+            string expectedSequenceFile = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.ExpectedSequence).TestDir();
-            var parser = new SAMParser();
+            SAMParser parser = new SAMParser();
             {
-                var alignments = (SequenceAlignmentMap) parser.ParseOne(filePath);
-                var formatter = new SAMFormatter();
+                SequenceAlignmentMap alignments = (SequenceAlignmentMap) parser.ParseOne(filePath);
+                SAMFormatter formatter = new SAMFormatter();
 
-                using (var writer =
+                using (FileStream writer =
                             File.Create(Constants.SAMTempFileName))
                 {
                     formatter.Format(writer, alignments);
@@ -168,19 +168,19 @@ namespace Bio.TestAutomation.IO.SAM
                 alignments = parser.ParseOne<SequenceAlignmentMap>(Constants.SAMTempFileName);
 
                 // Get expected sequences
-                var parserObj = new FastAParser();
+                FastAParser parserObj = new FastAParser();
                 {
-                    var expectedSequences =
+                    IEnumerable<ISequence> expectedSequences =
                         parserObj.Parse(expectedSequenceFile);
 
                     IList<ISequence> expectedSequencesList = expectedSequences.ToList();
 
                     // Validate parsed output with expected output
-                    for (var index = 0;
+                    for (int index = 0;
                         index < alignments.QuerySequences.Count;
                         index++)
                     {
-                        for (var count = 0;
+                        for (int count = 0;
                             count < alignments.QuerySequences[index].Sequences.Count;
                             count++)
                         {

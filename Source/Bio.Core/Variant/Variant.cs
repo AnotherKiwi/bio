@@ -100,9 +100,9 @@ namespace Bio.Variant
         public override int GetHashCode ()
         {
             //TODO: This is a little unsafe as these fields are mutable...
-            var h1 = RefName != null ? RefName.GetHashCode () : 0;
-            var h2 = StartPosition.GetHashCode ();
-            var h3 = EndPosition.GetHashCode ();
+            int h1 = RefName != null ? RefName.GetHashCode () : 0;
+            int h2 = StartPosition.GetHashCode ();
+            int h3 = EndPosition.GetHashCode ();
             return h1 ^ h2 ^ h3;
         }
         /// <summary>
@@ -115,7 +115,7 @@ namespace Bio.Variant
         /// <see cref="Bio.Variant.Variant"/>; otherwise, <c>false</c>.</returns>
         public override bool Equals (object obj)
         {
-            var res = obj as Variant;
+            Variant res = obj as Variant;
             if (res != null)
                 return Equals (res);
             return false;
@@ -131,7 +131,7 @@ namespace Bio.Variant
         /// <param name="other">Other.</param>
         public int CompareTo (Variant other)
         {
-            var nameComp = String.CompareOrdinal(RefName,other.RefName);
+            int nameComp = String.CompareOrdinal(RefName,other.RefName);
             if (nameComp == 0) {
                 return StartPosition.CompareTo (other.StartPosition);
             }
@@ -151,7 +151,7 @@ namespace Bio.Variant
         /// <see cref="Bio.Variant.Variant"/>; otherwise, <c>false</c>.</returns>
         bool IEquatable<Variant>.Equals (Variant other)
         {
-            var otherComp = CompareTo (other);
+            int otherComp = CompareTo (other);
             if (otherComp == 0) {
                 return StartPosition == other.StartPosition && Type == other.Type && EndPosition == other.EndPosition;
             }

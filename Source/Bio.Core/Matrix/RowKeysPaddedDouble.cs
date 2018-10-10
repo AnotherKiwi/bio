@@ -27,8 +27,8 @@ namespace Bio.Matrix
 #pragma warning restore 1591
         {
             //System.Text.ASCIIEncoding  encoding=new System.Text.ASCIIEncoding();
-            var s = PaddedDouble.StoreToSparseVal(value);
-            var byteArray = Encoding.UTF8.GetBytes(s);
+            string s = PaddedDouble.StoreToSparseVal(value);
+            byte[] byteArray = Encoding.UTF8.GetBytes(s);
             return byteArray;
         }
 
@@ -65,7 +65,7 @@ namespace Bio.Matrix
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope"), SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
         public static RowKeysPaddedDouble GetInstanceFromPaddedDouble(string paddedDoubleFileName, ParallelOptions parallelOptions, FileAccess fileAccess = FileAccess.Read, FileShare fileShare = FileShare.Read)
         {
-            var rowKeysPaddedDouble = new RowKeysPaddedDouble();
+            RowKeysPaddedDouble rowKeysPaddedDouble = new RowKeysPaddedDouble();
             rowKeysPaddedDouble.GetInstanceFromDenseStructFileNameInternal(paddedDoubleFileName, parallelOptions, fileAccess, fileShare);
             return rowKeysPaddedDouble;
         }
@@ -82,7 +82,7 @@ namespace Bio.Matrix
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope"), SuppressMessage("Microsoft.Design", "CA1026:DefaultParametersShouldNotBeUsed")]
         public static RowKeysPaddedDouble GetInstanceFromRowKeys(string rowKeysFileName, ParallelOptions parallelOptions, FileAccess fileAccess = FileAccess.Read, FileShare fileShare = FileShare.Read)
         {
-            var rowKeysPaddedDouble = new RowKeysPaddedDouble();
+            RowKeysPaddedDouble rowKeysPaddedDouble = new RowKeysPaddedDouble();
             rowKeysPaddedDouble.GetInstanceFromRowKeysStructFileNameInternal(rowKeysFileName, parallelOptions, fileAccess, fileShare);
             return rowKeysPaddedDouble;
         }

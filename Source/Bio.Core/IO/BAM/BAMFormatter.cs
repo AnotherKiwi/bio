@@ -162,18 +162,18 @@ namespace Bio.IO.BAM
             {
                 throw new ArgumentNullException(nameof(writer));
             }
-            var array = new byte[MaxBlockSize];
+            byte[] array = new byte[MaxBlockSize];
 
-            var bytesRead = -1;
+            int bytesRead = -1;
             //note that the reads can be split over a block per mailing list discussion
             bytesRead = reader.Read(array, 0, MaxBlockSize);
             while (bytesRead != 0)
             {
                 byte[] bgzfArray;
-                var memStream = new MemoryStream();
+                MemoryStream memStream = new MemoryStream();
                 try
                 {
-                    using (var compress = new GZipStream(memStream, CompressionMode.Compress, true))
+                    using (GZipStream compress = new GZipStream(memStream, CompressionMode.Compress, true))
                     {
                         compress.Write(array, 0, bytesRead);
                         compress.Flush();
@@ -220,14 +220,14 @@ namespace Bio.IO.BAM
                 refSequences = header.GetReferenceSequenceRanges();
             }
 
-            using (var strwriter = new StringWriter(CultureInfo.InvariantCulture))
+            using (StringWriter strwriter = new StringWriter(CultureInfo.InvariantCulture))
             {
                 SAMFormatter.WriteHeader(strwriter, header);
                 samHeader = strwriter.ToString();
             }
 
-            var samHeaderLen = samHeader.Length;
-            var bytes = Encoding.UTF8.GetBytes(samHeader);
+            int samHeaderLen = samHeader.Length;
+            byte[] bytes = Encoding.UTF8.GetBytes(samHeader);
             byte[] bamMagicNumber = { 66, 65, 77, 1 };
 
             // write BAM magic number
@@ -241,11 +241,11 @@ namespace Bio.IO.BAM
             // number of reference sequences
             writer.Write(Helper.GetLittleEndianByteArray(refSequences.Count), 0, 4);
 
-            foreach (var range in refSequences)
+            foreach (SequenceRange range in refSequences)
             {
-                var len = range.ID.Length;
+                int len = range.ID.Length;
 
-                var array = Encoding.UTF8.GetBytes(range.ID);
+                byte[] array = Encoding.UTF8.GetBytes(range.ID);
                 writer.Write(Helper.GetLittleEndianByteArray(len + 1), 0, 4);
                 writer.Write(array, 0, len);
                 writer.WriteByte((byte)'\0');
@@ -291,8 +291,8 @@ namespace Bio.IO.BAM
         /// <param name="indexStorage"></param>
         private static void CreateBAMIndexFile(Stream compressedBAMStream, BAMIndexStorage indexStorage)
         {
-            var parser = new BAMParser();
-            var bamIndex = parser.GetIndexFromBAMStorage(compressedBAMStream);
+            BAMParser parser = new BAMParser();
+            BAMIndex bamIndex = parser.GetIndexFromBAMStorage(compressedBAMStream);
             indexStorage.Write(bamIndex);
         }
 
@@ -305,7 +305,7 @@ namespace Bio.IO.BAM
         // Validates alignment header.
         private static void ValidateAlignmentHeader(SAMAlignmentHeader header)
         {
-            var message = header.IsValid();
+            string message = header.IsValid();
             if (!string.IsNullOrEmpty(message))
             {
                 throw new ArgumentException(message);
@@ -315,10 +315,10 @@ namespace Bio.IO.BAM
         // Gets SQ fields from the list of fields
         private static IList<SAMRecordField> GetSQHeaders(IList<SAMRecordField> recordFields)
         {
-            var sqHeaders = new List<SAMRecordField>();
-            for (var i = 0; i < recordFields.Count; i++)
+            List<SAMRecordField> sqHeaders = new List<SAMRecordField>();
+            for (int i = 0; i < recordFields.Count; i++)
             {
-                var field = recordFields[i];
+                SAMRecordField field = recordFields[i];
                 if (field.Typecode.Equals("SQ"))
                 {
                     sqHeaders.Add(field);
@@ -337,10 +337,10 @@ namespace Bio.IO.BAM
         private void WriteSequenceAlignment(ISequenceAlignment sequenceAlignment, Stream writer, BAMIndexStorage indexStorage)
         {
             // validate sequenceAlignment.
-            var sequenceAlignmentMap = ValidateAlignment(sequenceAlignment);
+            SequenceAlignmentMap sequenceAlignmentMap = ValidateAlignment(sequenceAlignment);
 
             // write bam struct to temp file.
-            using (var fstemp = PlatformManager.Services.CreateTempStream())
+            using (Stream fstemp = PlatformManager.Services.CreateTempStream())
             {
                 WriteUncompressed(sequenceAlignmentMap, fstemp, CreateSortedBAMFile);
 
@@ -367,7 +367,7 @@ namespace Bio.IO.BAM
         /// <param name="createSortedFile">If this flag is true output file will be sorted.</param>
         private void WriteUncompressed(SequenceAlignmentMap sequenceAlignmentMap, Stream writer, bool createSortedFile)
         {
-            var header = sequenceAlignmentMap.Header;
+            SAMAlignmentHeader header = sequenceAlignmentMap.Header;
             if (createSortedFile && SortType == BAMSortByFields.ChromosomeNameAndCoordinates)
             {
                 header = GetHeaderWithSortedSQFields(header, true);
@@ -387,9 +387,9 @@ namespace Bio.IO.BAM
             }
             else
             {
-                foreach (var seq in sequenceAlignmentMap.QuerySequences)
+                foreach (SAMAlignedSequence seq in sequenceAlignmentMap.QuerySequences)
                 {
-                    var alignedSeq = seq;
+                    SAMAlignedSequence alignedSeq = seq;
                     ValidateSQHeader(alignedSeq.RName);
                     WriteAlignedSequence(alignedSeq, writer);
                     writer.Flush();
@@ -409,21 +409,21 @@ namespace Bio.IO.BAM
         {
             if (SortType != BAMSortByFields.ReadNames)
             {
-                var groups =
+                List<IGrouping<string, SAMAlignedSequence>> groups =
                     sequenceAlignmentMap.QuerySequences.GroupBy(Q => Q.RName).OrderBy(G => G.Key).ToList();
 
-                foreach (var range in refSequences)
+                foreach (SequenceRange range in refSequences)
                 {
-                    var group = groups.FirstOrDefault(G => G.Key.Equals(range.ID));
+                    IGrouping<string, SAMAlignedSequence> group = groups.FirstOrDefault(G => G.Key.Equals(range.ID));
                     if (group == null)
                     {
                         continue;
                     }
 
                     // sort aligned sequence on left co-ordinate.
-                    var alignedSeqs = group.OrderBy(A => A.Pos).ToList();
+                    List<SAMAlignedSequence> alignedSeqs = group.OrderBy(A => A.Pos).ToList();
 
-                    foreach (var alignedSeq in alignedSeqs)
+                    foreach (SAMAlignedSequence alignedSeq in alignedSeqs)
                     {
                         ValidateSQHeader(alignedSeq.RName);
                         WriteAlignedSequence(alignedSeq, writer);
@@ -433,10 +433,10 @@ namespace Bio.IO.BAM
             }
             else
             {
-                var alignedSeqs =
+                List<SAMAlignedSequence> alignedSeqs =
                         sequenceAlignmentMap.QuerySequences.OrderBy(Q => Q.QName).ToList();
 
-                foreach (var alignedSeq in alignedSeqs)
+                foreach (SAMAlignedSequence alignedSeq in alignedSeqs)
                 {
                     ValidateSQHeader(alignedSeq.RName);
                     WriteAlignedSequence(alignedSeq, writer);
@@ -451,10 +451,10 @@ namespace Bio.IO.BAM
         /// <param name="compressedStream">BAM file which is compressed according to BGZF compression.</param>
         private static byte[] GetBGZFStructure(Stream compressedStream)
         {
-            var compressedArray = new byte[compressedStream.Length];
+            byte[] compressedArray = new byte[compressedStream.Length];
             compressedStream.Read(compressedArray, 0, (int)compressedStream.Length);
-            var blockSize = (UInt16)(compressedStream.Length + 8);
-            var bgzfArray = new byte[blockSize];
+            ushort blockSize = (UInt16)(compressedStream.Length + 8);
+            byte[] bgzfArray = new byte[blockSize];
 
             bgzfArray[0] = 31;  // gzip IDentifier1
             bgzfArray[1] = 139; // gzip IDentifier2
@@ -468,12 +468,12 @@ namespace Bio.IO.BAM
             bgzfArray[14] = 2;  // Subfield LENgth
             bgzfArray[15] = 0;
 
-            var intvalue = Helper.GetLittleEndianByteArray((UInt16)(blockSize - 1));
+            byte[] intvalue = Helper.GetLittleEndianByteArray((UInt16)(blockSize - 1));
 
             bgzfArray[16] = intvalue[0];
             bgzfArray[17] = intvalue[1];
             //start at 10 to skip the gzip header which was already added above
-            for (var i = 10; i < compressedStream.Length; i++)
+            for (int i = 10; i < compressedStream.Length; i++)
             {
                 bgzfArray[i + 8] = compressedArray[i];
             }
@@ -491,11 +491,11 @@ namespace Bio.IO.BAM
             // be taken care by "GetBGZFStructure" method.
             const int BlockSize = 20;
 
-            var block = new byte[BlockSize];
+            byte[] block = new byte[BlockSize];
             // represents no data.
             // got this value by reading Empty block from BAM file.
             block[10] = 3;
-            using (var memStream = new MemoryStream(BlockSize))
+            using (MemoryStream memStream = new MemoryStream(BlockSize))
             {
                 memStream.Write(block, 0, BlockSize);
                 memStream.Seek(0, SeekOrigin.Begin);
@@ -511,28 +511,28 @@ namespace Bio.IO.BAM
         private void WriteAlignedSequence(SAMAlignedSequence alignedSeq, Stream writer)
         {
             // Get the total block size required.
-            var blocksize = GetBlockSize(alignedSeq);
+            int blocksize = GetBlockSize(alignedSeq);
 
             // Get Reference sequence index.
-            var rid = GetRefSeqID(alignedSeq.RName);
+            int rid = GetRefSeqID(alignedSeq.RName);
 
             // bin<<16|mapQual<<8|read_name_len (including NULL)
-            var bin_mq_nl = (uint)alignedSeq.Bin << 16;
+            uint bin_mq_nl = (uint)alignedSeq.Bin << 16;
             bin_mq_nl = bin_mq_nl | (uint)alignedSeq.MapQ << 8;
             bin_mq_nl = bin_mq_nl | (uint)(alignedSeq.QName.Length + 1);
 
             // flag<<16|cigar_len
-            var flag_nc = (uint)alignedSeq.Flag << 16;
+            uint flag_nc = (uint)alignedSeq.Flag << 16;
             flag_nc = flag_nc | (uint)GetCIGARLength(alignedSeq.CIGAR);
 
-            var readLen = (int)alignedSeq.QuerySequence.Count;
+            int readLen = (int)alignedSeq.QuerySequence.Count;
 
-            var mateRefId = GetRefSeqID(alignedSeq.MRNM);
+            int mateRefId = GetRefSeqID(alignedSeq.MRNM);
 
-            var readName = Encoding.UTF8.GetBytes(alignedSeq.QName);
+            byte[] readName = Encoding.UTF8.GetBytes(alignedSeq.QName);
 
             // Cigar: op_len<<4|op. Op: MIDNSHP=X => 012345678
-            var encodedCIGAR = GetEncodedCIGAR(alignedSeq.CIGAR);
+            IList<uint> encodedCIGAR = GetEncodedCIGAR(alignedSeq.CIGAR);
 
             //block size
             writer.Write(Helper.GetLittleEndianByteArray(blocksize), 0, 4);
@@ -568,13 +568,13 @@ namespace Bio.IO.BAM
             writer.WriteByte((byte)'\0');
 
             // Cigar: op_len<<4|op. Op: MIDNSHP=>0123456
-            foreach (var data in encodedCIGAR)
+            foreach (uint data in encodedCIGAR)
             {
                 writer.Write(Helper.GetLittleEndianByteArray(data), 0, 4);
             }
 
             // 4-bit encoded read: =ACGTN=>0,1,2,4,8,15; the earlier base is stored in the high-order 4 bits of the byte.
-            var encodedValues = GetEncodedSequence(alignedSeq);
+            byte[] encodedValues = GetEncodedSequence(alignedSeq);
             writer.Write(encodedValues, 0, encodedValues.Length);
 
             // Phred base quality (0xFF if absent)
@@ -582,9 +582,9 @@ namespace Bio.IO.BAM
             writer.Write(encodedValues, 0, encodedValues.Length);
 
             // Optional fields
-            foreach (var field in alignedSeq.OptionalFields)
+            foreach (SAMOptionalField field in alignedSeq.OptionalFields)
             {
-                var optionalArray = GetOptioanField(field);
+                byte[] optionalArray = GetOptioanField(field);
                 writer.Write(optionalArray, 0, optionalArray.Length);
             }
         }
@@ -596,8 +596,8 @@ namespace Bio.IO.BAM
         /// <returns></returns>
         private static byte[] GetEncodedSequence(SAMAlignedSequence alignedSeq)
         {
-            var byteList = new List<byte>();
-            var seq = alignedSeq.QuerySequence;
+            List<byte> byteList = new List<byte>();
+            ISequence seq = alignedSeq.QuerySequence;
             if (seq != null)
             {
                 if (!(seq.Alphabet is DnaAlphabet))
@@ -605,11 +605,11 @@ namespace Bio.IO.BAM
                     throw new ArgumentException(Properties.Resource.BAMFormatterSupportsDNAOnly);
                 }
 
-                var symbolMap = seq.Alphabet.GetSymbolValueMap();
+                byte[] symbolMap = seq.Alphabet.GetSymbolValueMap();
 
-                for (var i = 0; i < seq.Count; i++)
+                for (int i = 0; i < seq.Count; i++)
                 {
-                    var symbol = (char)symbolMap[seq[i]];
+                    char symbol = (char)symbolMap[seq[i]];
                     byte encodedvalue = 0;
 
                   
@@ -690,10 +690,10 @@ namespace Bio.IO.BAM
         /// <param name="sequence">Sequence object.</param>
         private static byte[] GetQualityValue(ISequence sequence)
         {
-            var qualityValues = new byte[sequence.Count];
-            var qualitativeSeq = sequence as QualitativeSequence;
+            byte[] qualityValues = new byte[sequence.Count];
+            QualitativeSequence qualitativeSeq = sequence as QualitativeSequence;
 
-            for (var i = 0; i < qualityValues.Length; i++)
+            for (int i = 0; i < qualityValues.Length; i++)
             {
                 if (qualitativeSeq == null)
                 {
@@ -714,7 +714,7 @@ namespace Bio.IO.BAM
         /// <param name="cigar">CIGAR</param>
         private static IList<uint> GetEncodedCIGAR(string cigar)
         {
-            var encodedValues = new List<uint>();
+            List<uint> encodedValues = new List<uint>();
             if (cigar.Equals("*"))
             {
                 return encodedValues;
@@ -722,8 +722,8 @@ namespace Bio.IO.BAM
 
             uint value;
             cigar = cigar.ToUpperInvariant();
-            var intvalue = string.Empty;
-            foreach (var ch in cigar)
+            string intvalue = string.Empty;
+            foreach (char ch in cigar)
             {
                 if (Char.IsDigit(ch))
                 {
@@ -772,9 +772,9 @@ namespace Bio.IO.BAM
         // Gets block size required for the specified SAMAlignedSequence object.
         private int GetBlockSize(SAMAlignedSequence alignedSeq)
         {
-            var readNameLen = alignedSeq.QName.Length + 1;
-            var cigarLen = GetCIGARLength(alignedSeq.CIGAR);
-            var readLen = (int)alignedSeq.QuerySequence.Count;
+            int readNameLen = alignedSeq.QName.Length + 1;
+            int cigarLen = GetCIGARLength(alignedSeq.CIGAR);
+            int readLen = (int)alignedSeq.QuerySequence.Count;
 
             return 32 + readNameLen + (cigarLen * 4) + ((readLen + 1) / 2) + readLen + GetAuxiliaryDataLength(alignedSeq);
         }
@@ -782,14 +782,14 @@ namespace Bio.IO.BAM
         // Gets the length of the optional fields in a SAMAlignedSequence object.
         private static int GetAuxiliaryDataLength(SAMAlignedSequence alignedSeq)
         {
-            var size = 0;
-            foreach (var field in alignedSeq.OptionalFields)
+            int size = 0;
+            foreach (SAMOptionalField field in alignedSeq.OptionalFields)
             {
                 size += 3;
-                var valueSize = GetOptionalFieldValueSize(field);
+                int valueSize = GetOptionalFieldValueSize(field);
                 if (valueSize == 0)
                 {
-                    var message = string.Format(CultureInfo.InvariantCulture, Properties.Resource.BAM_InvalidIntValueInOptFieldOfAlignedSeq, field.Value, field.Tag, alignedSeq.QName);
+                    string message = string.Format(CultureInfo.InvariantCulture, Properties.Resource.BAM_InvalidIntValueInOptFieldOfAlignedSeq, field.Value, field.Tag, alignedSeq.QName);
                     throw new FormatException(message);
                 }
 
@@ -820,11 +820,11 @@ namespace Bio.IO.BAM
                 case "H": // HexString
                     return optionalField.Value.Length + 1;
                 case "B"://integer or numeric array
-                    var type = optionalField.Value[0];
-                    var arrayTypeSize = GetSizeOfArrayType(type);
-                    var numberofelements = optionalField.Value.Split(DelimComma, StringSplitOptions.RemoveEmptyEntries).Length - 1;
-                    var elementsSize = arrayTypeSize * numberofelements;
-                    var arraylen = elementsSize + 1 + 4;  // 1 to store array type and 4 to store number of values in array.
+                    char type = optionalField.Value[0];
+                    int arrayTypeSize = GetSizeOfArrayType(type);
+                    int numberofelements = optionalField.Value.Split(DelimComma, StringSplitOptions.RemoveEmptyEntries).Length - 1;
+                    int elementsSize = arrayTypeSize * numberofelements;
+                    int arraylen = elementsSize + 1 + 4;  // 1 to store array type and 4 to store number of values in array.
                     return arraylen;
                 default:
                     throw new Exception(Properties.Resource.BAM_InvalidOptValType);
@@ -904,20 +904,20 @@ namespace Bio.IO.BAM
         // Gets optional field in a byte array.
         private static byte[] GetOptioanField(SAMOptionalField field)
         {
-            var valueSize = GetOptionalFieldValueSize(field);
+            int valueSize = GetOptionalFieldValueSize(field);
             if (valueSize == 0)
             {
-                var message = string.Format(CultureInfo.InvariantCulture, Properties.Resource.BAM_InvalidIntValueInOptField, field.Value, field.Tag);
+                string message = string.Format(CultureInfo.InvariantCulture, Properties.Resource.BAM_InvalidIntValueInOptField, field.Value, field.Tag);
                 throw new FormatException(message);
             }
 
-            var arrayLen = valueSize < 0 ? -valueSize : valueSize;
+            int arrayLen = valueSize < 0 ? -valueSize : valueSize;
             arrayLen += 3;
-            var array = new byte[arrayLen];
+            byte[] array = new byte[arrayLen];
             array[0] = (byte)field.Tag[0];
             array[1] = (byte)field.Tag[1];
             array[2] = (byte)field.VType[0];
-            var temparray = new byte[4];
+            byte[] temparray = new byte[4];
 
             switch (field.VType)
             {
@@ -937,13 +937,13 @@ namespace Bio.IO.BAM
                     }
                     else if (valueSize == -1)
                     {
-                        var sb = sbyte.Parse(field.Value, CultureInfo.InvariantCulture);
+                        sbyte sb = sbyte.Parse(field.Value, CultureInfo.InvariantCulture);
                         array[2] = (byte)'c';
                         array[3] = (byte)sb;
                     }
                     else if (valueSize == 2)
                     {
-                        var uint16value = UInt16.Parse(field.Value, CultureInfo.InvariantCulture);
+                        ushort uint16value = UInt16.Parse(field.Value, CultureInfo.InvariantCulture);
                         temparray = Helper.GetLittleEndianByteArray(uint16value);
                         array[2] = (byte)'S';
                         array[3] = temparray[0];
@@ -951,7 +951,7 @@ namespace Bio.IO.BAM
                     }
                     else if (valueSize == -2)
                     {
-                        var int16value = Int16.Parse(field.Value, CultureInfo.InvariantCulture);
+                        short int16value = Int16.Parse(field.Value, CultureInfo.InvariantCulture);
                         temparray = Helper.GetLittleEndianByteArray(int16value);
                         array[2] = (byte)'s';
                         array[3] = temparray[0];
@@ -959,7 +959,7 @@ namespace Bio.IO.BAM
                     }
                     else if (valueSize == 4)
                     {
-                        var uint32value = uint.Parse(field.Value, CultureInfo.InvariantCulture);
+                        uint uint32value = uint.Parse(field.Value, CultureInfo.InvariantCulture);
                         temparray = Helper.GetLittleEndianByteArray(uint32value);
                         array[2] = (byte)'I';
                         array[3] = temparray[0];
@@ -969,7 +969,7 @@ namespace Bio.IO.BAM
                     }
                     else
                     {
-                        var int32value = int.Parse(field.Value, CultureInfo.InvariantCulture);
+                        int int32value = int.Parse(field.Value, CultureInfo.InvariantCulture);
                         temparray = Helper.GetLittleEndianByteArray(int32value);
                         array[2] = (byte)'i';
                         array[3] = temparray[0];
@@ -980,7 +980,7 @@ namespace Bio.IO.BAM
 
                     break;
                 case "f": // float
-                    var floatvalue = float.Parse(field.Value, CultureInfo.InvariantCulture);
+                    float floatvalue = float.Parse(field.Value, CultureInfo.InvariantCulture);
                     temparray = Helper.GetLittleEndianByteArray(floatvalue);
                     array[3] = temparray[0];
                     array[4] = temparray[1];
@@ -1010,12 +1010,12 @@ namespace Bio.IO.BAM
 
         private static void UpdateArrayType(byte[] array, SAMOptionalField field)
         {
-            var temparray = new byte[4];
-            var arraytype = field.Value[0];
-            var arrayTypeSize = GetSizeOfArrayType(arraytype);
-            var elements = field.Value.Split(DelimComma, StringSplitOptions.RemoveEmptyEntries);
+            byte[] temparray = new byte[4];
+            char arraytype = field.Value[0];
+            int arrayTypeSize = GetSizeOfArrayType(arraytype);
+            string[] elements = field.Value.Split(DelimComma, StringSplitOptions.RemoveEmptyEntries);
             array[3] = (byte)arraytype;
-            var arrayIndex = 4;
+            int arrayIndex = 4;
 
             temparray = Helper.GetLittleEndianByteArray(elements.Length - 1);
             array[arrayIndex++] = temparray[0];
@@ -1025,7 +1025,7 @@ namespace Bio.IO.BAM
 
 
             //elemetns[0] contains array type;
-            for (var i = 1; i < elements.Length; i++)
+            for (int i = 1; i < elements.Length; i++)
             {
                 switch (arraytype)
                 {
@@ -1039,23 +1039,23 @@ namespace Bio.IO.BAM
                         temparray[0] = byte.Parse(elements[i], CultureInfo.InvariantCulture);
                         break;
                     case 's': // signed 16 bit integer
-                        var int16value = Int16.Parse(elements[i], CultureInfo.InvariantCulture);
+                        short int16value = Int16.Parse(elements[i], CultureInfo.InvariantCulture);
                         temparray = Helper.GetLittleEndianByteArray(int16value);
                         break;
                     case 'S'://unsinged 16 bit integer
-                        var uint16value = UInt16.Parse(elements[i], CultureInfo.InvariantCulture);
+                        ushort uint16value = UInt16.Parse(elements[i], CultureInfo.InvariantCulture);
                         temparray = Helper.GetLittleEndianByteArray(uint16value);
                         break;
                     case 'i': // signed 32 bit integer
-                        var int32value = int.Parse(elements[i], CultureInfo.InvariantCulture);
+                        int int32value = int.Parse(elements[i], CultureInfo.InvariantCulture);
                         temparray = Helper.GetLittleEndianByteArray(int32value);
                         break;
                     case 'I': // unsigned 32 bit integer
-                        var uint32value = uint.Parse(elements[i], CultureInfo.InvariantCulture);
+                        uint uint32value = uint.Parse(elements[i], CultureInfo.InvariantCulture);
                         temparray = Helper.GetLittleEndianByteArray(uint32value);
                         break;
                     case 'f': // float
-                        var floatvalue = float.Parse(elements[i], CultureInfo.InvariantCulture);
+                        float floatvalue = float.Parse(elements[i], CultureInfo.InvariantCulture);
                         temparray = Helper.GetLittleEndianByteArray(floatvalue);
                         break;
                     default:
@@ -1063,7 +1063,7 @@ namespace Bio.IO.BAM
 
                 }
 
-                for (var tempIndex = 0; tempIndex < arrayTypeSize; tempIndex++)
+                for (int tempIndex = 0; tempIndex < arrayTypeSize; tempIndex++)
                 {
                     array[arrayIndex++] = temparray[tempIndex];
                 }
@@ -1080,7 +1080,7 @@ namespace Bio.IO.BAM
         // Gets ref seq index.
         private int GetRefSeqID(string refSeqName)
         {
-            var range = refSequences.FirstOrDefault(SR => string.Compare(SR.ID, refSeqName, StringComparison.OrdinalIgnoreCase) == 0);
+            SequenceRange range = refSequences.FirstOrDefault(SR => string.Compare(SR.ID, refSeqName, StringComparison.OrdinalIgnoreCase) == 0);
             if (range == null)
             {
                 return -1;
@@ -1092,7 +1092,7 @@ namespace Bio.IO.BAM
         // Validates the alignment.
         private SequenceAlignmentMap ValidateAlignment(ISequenceAlignment sequenceAlignment)
         {
-            var seqAlignmentMap = sequenceAlignment as SequenceAlignmentMap;
+            SequenceAlignmentMap seqAlignmentMap = sequenceAlignment as SequenceAlignmentMap;
             if (seqAlignmentMap != null)
             {
                 ValidateAlignmentHeader(seqAlignmentMap.Header);
@@ -1108,7 +1108,7 @@ namespace Bio.IO.BAM
                 return seqAlignmentMap;
             }
 
-            var header = sequenceAlignment.Metadata[Helper.SAMAlignmentHeaderKey] as SAMAlignmentHeader;
+            SAMAlignmentHeader header = sequenceAlignment.Metadata[Helper.SAMAlignmentHeaderKey] as SAMAlignmentHeader;
             if (header == null)
             {
                 throw new ArgumentException(Properties.Resource.SAMAlignmentHeaderNotFound);
@@ -1126,15 +1126,15 @@ namespace Bio.IO.BAM
                 refSequences = seqAlignmentMap.Header.GetReferenceSequenceRanges();
             }
 
-            foreach (var alignedSeq in sequenceAlignment.AlignedSequences)
+            foreach (IAlignedSequence alignedSeq in sequenceAlignment.AlignedSequences)
             {
-                var alignedHeader = alignedSeq.Metadata[Helper.SAMAlignedSequenceHeaderKey] as SAMAlignedSequenceHeader;
+                SAMAlignedSequenceHeader alignedHeader = alignedSeq.Metadata[Helper.SAMAlignedSequenceHeaderKey] as SAMAlignedSequenceHeader;
                 if (alignedHeader == null)
                 {
                     throw new ArgumentException(Properties.Resource.SAMAlignedSequenceHeaderNotFound);
                 }
 
-                var samAlignedSeq = new SAMAlignedSequence(alignedHeader);
+                SAMAlignedSequence samAlignedSeq = new SAMAlignedSequence(alignedHeader);
                 samAlignedSeq.QuerySequence = alignedSeq.Sequences[0];
                 seqAlignmentMap.QuerySequences.Add(samAlignedSeq);
             }
@@ -1148,7 +1148,7 @@ namespace Bio.IO.BAM
             if (refSeqName != Properties.Resource.SAM_NO_REFERENCE_DEFINED_INDICATOR)// the '*' to indicate the read is unmapped
             {
                 string message;
-                var rages = refSequences.Where(SR => string.Compare(SR.ID, refSeqName, StringComparison.OrdinalIgnoreCase) == 0).ToList();
+                List<SequenceRange> rages = refSequences.Where(SR => string.Compare(SR.ID, refSeqName, StringComparison.OrdinalIgnoreCase) == 0).ToList();
 
                 if (rages.Count == 0)
                 {
@@ -1168,7 +1168,7 @@ namespace Bio.IO.BAM
         // returns true if the list is sorted by chromosome name else returns false.
         private bool IsSortedByChromosomeNames(IList<SAMRecordField> sqHeaders)
         {
-            for (var i = 1; i < sqHeaders.Count; i++)
+            for (int i = 1; i < sqHeaders.Count; i++)
             {
                 if (CompareByChromosomeName(sqHeaders[i - 1], sqHeaders[i]) > 0)
                 {
@@ -1186,14 +1186,14 @@ namespace Bio.IO.BAM
             if (IsSortedByChromosomeNames(GetSQHeaders(header.RecordFields)))
                 return header;
 
-            var newHeader = new SAMAlignmentHeader();
-            var i = 0;
+            SAMAlignmentHeader newHeader = new SAMAlignmentHeader();
+            int i = 0;
             if (canChangeOtherTagPos)
             {
-                var sqHeaders = new List<SAMRecordField>();
+                List<SAMRecordField> sqHeaders = new List<SAMRecordField>();
                 for (; i < header.RecordFields.Count; i++)
                 {
-                    var field = header.RecordFields[i];
+                    SAMRecordField field = header.RecordFields[i];
                     if (field.Typecode.Equals("SQ"))
                     {
                         sqHeaders.Add(field);
@@ -1205,12 +1205,12 @@ namespace Bio.IO.BAM
 
                     sqHeaders.Sort(CompareByChromosomeName);
 
-                    foreach (var sqfield in sqHeaders)
+                    foreach (SAMRecordField sqfield in sqHeaders)
                     {
                         newHeader.RecordFields.Add(sqfield);
                     }
 
-                    foreach (var str in header.Comments)
+                    foreach (string str in header.Comments)
                     {
                         newHeader.Comments.Add(str);
                     }
@@ -1218,11 +1218,11 @@ namespace Bio.IO.BAM
             }
             else
             {
-                 var map = new Util.SortedList<SAMRecordField, int>(new ComparisonWrapper<SAMRecordField>(CompareByChromosomeName));
+                Util.SortedList<SAMRecordField, int> map = new Util.SortedList<SAMRecordField, int>(new ComparisonWrapper<SAMRecordField>(CompareByChromosomeName));
 
                 for (; i < header.RecordFields.Count; i++)
                 {
-                    var field = header.RecordFields[i];
+                    SAMRecordField field = header.RecordFields[i];
                     if (field.Typecode.Equals("SQ"))
                     {
                         map.Add(field, i);
@@ -1232,12 +1232,12 @@ namespace Bio.IO.BAM
                 }
 
                 i = 0;
-                foreach (var index in map.Values.OrderBy(I => I))
+                foreach (int index in map.Values.OrderBy(I => I))
                 {
                     newHeader.RecordFields[index] = map.Keys[i++];
                 }
 
-                foreach (var str in header.Comments)
+                foreach (string str in header.Comments)
                 {
                     newHeader.Comments.Add(str);
                 }
@@ -1249,8 +1249,8 @@ namespace Bio.IO.BAM
         // compares chromosome name in the specified fields.
         private int CompareByChromosomeName(SAMRecordField field1, SAMRecordField field2)
         {
-            var chr1 = field1.Tags.FirstOrDefault(Tag => Tag.Tag.Equals("SN")).Value;
-            var chr2 = field2.Tags.FirstOrDefault(Tag => Tag.Tag.Equals("SN")).Value;
+            string chr1 = field1.Tags.FirstOrDefault(Tag => Tag.Tag.Equals("SN")).Value;
+            string chr2 = field2.Tags.FirstOrDefault(Tag => Tag.Tag.Equals("SN")).Value;
             return string.Compare(chr1, chr2, StringComparison.Ordinal);
         }
     }

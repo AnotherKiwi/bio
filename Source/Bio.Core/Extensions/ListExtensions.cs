@@ -34,7 +34,7 @@ namespace Bio.Extensions
         /// <param name="newItems"></param>
         public static void AddRange<T>(this IList<T> list, IEnumerable<T> newItems)
         {
-            foreach (var item in newItems)
+            foreach (T item in newItems)
                 list.Add(item);
         }
 

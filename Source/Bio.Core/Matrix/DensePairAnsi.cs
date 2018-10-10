@@ -50,9 +50,9 @@ namespace Bio.Matrix
         internal static string StoreListToString(List<UOPair<byte>> storeList, int colCount)
         {
             Helper.CheckCondition(storeList.Count == colCount, () => string.Format(CultureInfo.InvariantCulture, Properties.Resource.ExpectedStoreListCountToEqualColCount, storeList.Count, colCount));
-            var sb = new StringBuilder(colCount * 2);
+            StringBuilder sb = new StringBuilder(colCount * 2);
             //05/18/2009 optimize: do on multiple threads?
-            foreach (var store in storeList)
+            foreach (UOPair<byte> store in storeList)
             {
                 sb.Append((char)store.First);
                 sb.Append((char)store.Second);
@@ -68,9 +68,9 @@ namespace Bio.Matrix
             {
                 new MatrixFormatException("Every data string should have two chars per colKey.");
             }
-            var storeList = new List<UOPair<byte>>(ColCount);
+            List<UOPair<byte>> storeList = new List<UOPair<byte>>(ColCount);
             //05/18/2009 optimize: do on multiple threads?
-            for (var i = 0; i < ColCount; ++i)
+            for (int i = 0; i < ColCount; ++i)
             {
                 if (line[i + i].CompareTo(line[i + i + 1]) == 1)
                 {
@@ -91,7 +91,7 @@ namespace Bio.Matrix
             {
                 new MatrixFormatException("The char pairs in the sparse file must be sorted. " + val);
             }
-            var store = new UOPair<byte>((byte)val[0], (byte)val[1]);
+            UOPair<byte> store = new UOPair<byte>((byte)val[0], (byte)val[1]);
             return store;
         }
 
@@ -128,7 +128,7 @@ namespace Bio.Matrix
         {
             //OK to use Equals because UOPair<char> can't be null.
             Helper.CheckCondition(missingValue.Equals(StaticMissingValue), () => Properties.Resource.DensePairAnsiMissingValueSignatureMustBe);
-            var densePairAnsi = new DensePairAnsi();
+            DensePairAnsi densePairAnsi = new DensePairAnsi();
             densePairAnsi.InternalCreateEmptyInstance(rowKeySequence, colKeySequence);
             return densePairAnsi;
         }
@@ -140,7 +140,7 @@ namespace Bio.Matrix
         /// <returns>An instance of DensePairAnsi.</returns>
         public static DensePairAnsi GetInstanceFromSparse(string inputSparseFileName)
         {
-            var densePairAnsi = new DensePairAnsi();
+            DensePairAnsi densePairAnsi = new DensePairAnsi();
             densePairAnsi.GetInstanceFromSparseInternal(inputSparseFileName);
             return densePairAnsi;
         }
@@ -152,7 +152,7 @@ namespace Bio.Matrix
         /// <returns>A DensePairAnsi object</returns>
         public static DensePairAnsi GetInstanceFromSparse(IEnumerable<RowKeyColKeyValue<string, string, UOPair<char>>> tripleEnumerable)
         {
-            var densePairAnsi = new DensePairAnsi();
+            DensePairAnsi densePairAnsi = new DensePairAnsi();
             densePairAnsi.GetInstanceFromSparseInternal(tripleEnumerable);
             return densePairAnsi;
         }
@@ -160,24 +160,24 @@ namespace Bio.Matrix
         internal static void MergeDensePairAnsiFiles(string inputDensePairAnsiPattern, string outputDensePairAnsiFileName, byte[] map, ParallelOptions parallelOptions)
         {
 
-            var colKeyList = new List<string>();
+            List<string> colKeyList = new List<string>();
 
-            var rowKeyToLineList = new List<Dictionary<string, string>>();
-            foreach (var fileName in FileUtils.GetFiles(inputDensePairAnsiPattern, /*zeroIsOK*/ false))
+            List<Dictionary<string, string>> rowKeyToLineList = new List<Dictionary<string, string>>();
+            foreach (string fileName in FileUtils.GetFiles(inputDensePairAnsiPattern, /*zeroIsOK*/ false))
             {
                 Console.WriteLine(Properties.Resource.ProgressStatus_Reading, fileName);
 
-                var rowKeyToLine = new Dictionary<string, string>();
+                Dictionary<string, string> rowKeyToLine = new Dictionary<string, string>();
                 rowKeyToLineList.Add(rowKeyToLine);
 
-                var keepDelegate = OnlyKeepKeysThatHaveAppearedBefore(rowKeyToLineList);
+                Predicate<string> keepDelegate = OnlyKeepKeysThatHaveAppearedBefore(rowKeyToLineList);
 
                 using (TextReader textReader = File.OpenText(fileName))
                 {
-                    var header = textReader.ReadLine();
+                    string header = textReader.ReadLine();
                     Helper.CheckCondition(null != header, () => string.Format(CultureInfo.InvariantCulture, Properties.Resource.ExpectedFileToHaveHeader, fileName));
-                    var colKeyCountBefore = colKeyList.Count;
-                    var headerFields = header.Split('\t');
+                    int colKeyCountBefore = colKeyList.Count;
+                    string[] headerFields = header.Split('\t');
                     colKeyList.AddRange(headerFields.Skip(1));
                     Helper.CheckCondition(colKeyCountBefore + headerFields.Length - 1 == colKeyList.Count, () => Properties.Resource.ExpectedNoOverlapBetweenRowKeys);
 
@@ -186,7 +186,7 @@ namespace Bio.Matrix
                     while (null != (line = textReader.ReadLine()))
                     {
                         //counterWithMessages.Increment();
-                        var fields = line.Split('\t');
+                        string[] fields = line.Split('\t');
                         Helper.CheckCondition(fields.Length == 2, () => string.Format(CultureInfo.InvariantCulture, Properties.Resource.ExpectedTwoFieldsFoundN, fields.Length));
                         if (keepDelegate(fields[0]))
                         {
@@ -199,18 +199,18 @@ namespace Bio.Matrix
             FileUtils.CreateDirectoryForFileIfNeeded(outputDensePairAnsiFileName);
             using (TextWriter textWriter = File.CreateText(outputDensePairAnsiFileName))
             {
-                var rowKeyList = rowKeyToLineList[rowKeyToLineList.Count - 1].Keys;
+                Dictionary<string, string>.KeyCollection rowKeyList = rowKeyToLineList[rowKeyToLineList.Count - 1].Keys;
 
                 //CounterWithMessages counterWithMessages = new CounterWithMessages("writing line {0} of {1}", 10000, rowKeyList.Count);
 
                 textWriter.WriteLine("var\t" + colKeyList.StringJoin("\t"));
-                foreach (var rowKey in rowKeyList)
+                foreach (string rowKey in rowKeyList)
                 {
                     //counterWithMessages.Increment();
                     textWriter.Write(rowKey + "\t");
-                    foreach (var rowKeyToLine in rowKeyToLineList)
+                    foreach (Dictionary<string, string> rowKeyToLine in rowKeyToLineList)
                     {
-                        foreach (var c in rowKeyToLine[rowKey])
+                        foreach (char c in rowKeyToLine[rowKey])
                         {
                             textWriter.Write((char)map[(byte)c]);
                         }
@@ -250,22 +250,22 @@ namespace Bio.Matrix
                 throw new ArgumentNullException(nameof(snpGroupsCidToNucPairEnumerable));
             }
 
-            var densePairAnsi = new DensePairAnsi();
+            DensePairAnsi densePairAnsi = new DensePairAnsi();
 
             densePairAnsi.ColSerialNumbers = new SerialNumbers<string>();
             densePairAnsi.RowKeyToStoreList = new Dictionary<string, List<UOPair<byte>>>();
 
-            foreach (var snpGroupsCidToNucPair in snpGroupsCidToNucPairEnumerable)
+            foreach (IGrouping<string, KeyValuePair<string, UOPair<char>>> snpGroupsCidToNucPair in snpGroupsCidToNucPairEnumerable)
             {
-                var storeArray = Enumerable.Repeat(StaticStoreMissingValue, densePairAnsi.ColSerialNumbers.Count).ToList();
-                var var = snpGroupsCidToNucPair.Key;
+                List<UOPair<byte>> storeArray = Enumerable.Repeat(StaticStoreMissingValue, densePairAnsi.ColSerialNumbers.Count).ToList();
+                string var = snpGroupsCidToNucPair.Key;
                 densePairAnsi.RowKeyToStoreList.Add(var, storeArray);
 
-                foreach (var cidAndNucPair in snpGroupsCidToNucPair)
+                foreach (KeyValuePair<string, UOPair<char>> cidAndNucPair in snpGroupsCidToNucPair)
                 {
-                    var valPair = cidAndNucPair.Value;
+                    UOPair<char> valPair = cidAndNucPair.Value;
 
-                    var colIndex = densePairAnsi.ColSerialNumbers.GetNewOrOld(cidAndNucPair.Key);
+                    int colIndex = densePairAnsi.ColSerialNumbers.GetNewOrOld(cidAndNucPair.Key);
                     if (colIndex < storeArray.Count)
                     {
                         Helper.CheckCondition(storeArray[colIndex] == StaticStoreMissingValue, () => string.Format(CultureInfo.InvariantCulture, "Each pair of keys, i,e,.<{0},{1}>, should only be seen once", var, cidAndNucPair.Key));
@@ -293,7 +293,7 @@ namespace Bio.Matrix
         /// <returns>the DensePairAnsi object</returns>
         public static DensePairAnsi GetInstance(string densePairAnsiFileName, ParallelOptions parallelOptions)
         {
-            var densePairAnsi = new DensePairAnsi();
+            DensePairAnsi densePairAnsi = new DensePairAnsi();
             densePairAnsi.GetInstanceInternal(densePairAnsiFileName, parallelOptions);
             return densePairAnsi;
         }
@@ -330,7 +330,7 @@ namespace Bio.Matrix
         /// <returns>A densePairAnsi version of the matrix</returns>
         public static DensePairAnsi ToDensePairAnsi(this Matrix<string, string, UOPair<char>> matrix, ParallelOptions parallelOptions)
         {
-            var densePairAnsi = DensePairAnsi.CreateEmptyInstance(matrix.RowKeys, matrix.ColKeys, DensePairAnsi.StaticMissingValue);
+            DensePairAnsi densePairAnsi = DensePairAnsi.CreateEmptyInstance(matrix.RowKeys, matrix.ColKeys, DensePairAnsi.StaticMissingValue);
 
             //Console.WriteLine("Convert no more than {0} values", matrix.RowCount * matrix.ColCount);
             //CounterWithMessages counterWithMessages = new CounterWithMessages("adding value #{0}", 100000, null);
@@ -370,13 +370,13 @@ namespace Bio.Matrix
         public static void WriteDensePairAnsi(this Matrix<string, string, UOPair<char>> matrix, TextWriter textWriter, ParallelOptions parallelOptions)
         {
             textWriter.WriteLine("var\t{0}", matrix.ColKeys.StringJoin("\t"));
-            foreach (var rowKey in matrix.RowKeys)
+            foreach (string rowKey in matrix.RowKeys)
             {
                 textWriter.Write(rowKey);
                 textWriter.Write("\t");
-                var rowIndex = matrix.IndexOfRowKey[rowKey];
-                var storeList = new List<UOPair<byte>>(matrix.ColCount);
-                for (var colIndex = 0; colIndex < matrix.ColCount; ++colIndex)
+                int rowIndex = matrix.IndexOfRowKey[rowKey];
+                List<UOPair<byte>> storeList = new List<UOPair<byte>>(matrix.ColCount);
+                for (int colIndex = 0; colIndex < matrix.ColCount; ++colIndex)
                 {
                     UOPair<char> value;
                     UOPair<byte> store;
@@ -391,7 +391,7 @@ namespace Bio.Matrix
                     storeList.Add(store);
                 }
                 Helper.CheckCondition(storeList.Count == matrix.ColCount, () => string.Format(CultureInfo.InvariantCulture, Properties.Resource.ExpectedStoreListCountToEqualColCount, storeList.Count, matrix.ColCount));
-                var s = DensePairAnsi.StoreListToString(storeList, matrix.ColCount);
+                string s = DensePairAnsi.StoreListToString(storeList, matrix.ColCount);
                 textWriter.WriteLine(s);
             }
         }

@@ -24,14 +24,14 @@ namespace Bio.Tests.IO.FastA
         {
             // parse
 
-            var filepath = Path.Combine("TestUtils","Fasta","5_sequences.fasta").TestDir();
-            var parser = new FastAParser { Alphabet = Alphabets.Protein };
+            string filepath = Path.Combine("TestUtils","Fasta","5_sequences.fasta").TestDir();
+            FastAParser parser = new FastAParser { Alphabet = Alphabets.Protein };
             using (parser.Open(filepath))
             {
                 int[] sequenceCountArray = { 27, 29, 30, 35, 32 };
 
-                var i = 0;
-                foreach (var seq in parser.Parse())
+                int i = 0;
+                foreach (ISequence seq in parser.Parse())
                 {
                     Assert.IsNotNull(seq);
                     Assert.AreEqual(seq.Count, sequenceCountArray[i]);
@@ -47,7 +47,7 @@ namespace Bio.Tests.IO.FastA
         [Category("Priority0")]
         public void TestFastaFor186972391()
         {
-            var expectedSequence =
+            string expectedSequence =
 
                 "IFYEPVEILGYDNKSSLVLVKRLITRMYQQKSLISSLNDSNQNEFWGHKNSFSSHFSSQMVSEGFGVILE" +
                 "IPFSSRLVSSLEEKRIPKSQNLRSIHSIFPFLEDKLSHLNYVSDLLIPHPIHLEILVQILQCWIKDVPSL" +
@@ -58,18 +58,18 @@ namespace Bio.Tests.IO.FastA
                 "LGSGFLEEFFLEEE";
 
             // parse
-            var filepath = Path.Combine("TestUtils","Fasta", "186972391.fasta").TestDir();
+            string filepath = Path.Combine("TestUtils","Fasta", "186972391.fasta").TestDir();
 
 
             Assert.IsTrue(File.Exists(filepath));
 
-            var parser = new FastAParser { Alphabet = Alphabets.Protein };
-            foreach (var seq in parser.Parse(filepath))
+            FastAParser parser = new FastAParser { Alphabet = Alphabets.Protein };
+            foreach (ISequence seq in parser.Parse(filepath))
             {
                 Assert.IsNotNull(seq);
                 Assert.AreEqual(434, seq.Count);
 
-                var actual = seq.Aggregate("", (current, b) => current + (char)b);
+                string actual = seq.Aggregate("", (current, b) => current + (char)b);
 
                 Assert.AreEqual(expectedSequence, actual);
                 Assert.AreEqual(seq.Alphabet.Name, "Protein");
@@ -87,16 +87,16 @@ namespace Bio.Tests.IO.FastA
         {
             if (Environment.Is64BitProcess)
             {
-                var sequenceCount = 300 * 1024 * 1024; // 300 MB of data
-                var filePath = CreateData(sequenceCount);
+                int sequenceCount = 300 * 1024 * 1024; // 300 MB of data
+                string filePath = CreateData(sequenceCount);
 
                 Assert.IsTrue(File.Exists(filePath));
 
                 try
                 {
-                    var parser = new FastAParser { Alphabet = Alphabets.Protein };
-                    var count = 0;
-                    foreach (var seq in parser.Parse(filePath))
+                    FastAParser parser = new FastAParser { Alphabet = Alphabets.Protein };
+                    int count = 0;
+                    foreach (ISequence seq in parser.Parse(filePath))
                     {
                         Assert.IsNotNull(seq);
                         Assert.AreEqual(sequenceCount, seq.Count);
@@ -121,9 +121,9 @@ namespace Bio.Tests.IO.FastA
         {
             // parse
             const string relativepath = @"\TestUtils\Fasta\EmptySequenceWithID.fasta";
-            var assemblypath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase).Substring(6);
-            var filepath = assemblypath + relativepath;
-            var parser = new FastAParser();
+            string assemblypath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase).Substring(6);
+            string filepath = assemblypath + relativepath;
+            FastAParser parser = new FastAParser();
 
             try
             {
@@ -145,9 +145,9 @@ namespace Bio.Tests.IO.FastA
         /// <param name="seqLength">Length of sequence</param>
         private static void CreateSeq(string filename, long seqCount, long seqLength)
         {
-            var rnd = new Random(DateTime.Now.Millisecond);
-            var alphs = new char[] { 'A', 'C', 'G', 'T' };
-            using (var writer = new StreamWriter(filename))
+            Random rnd = new Random(DateTime.Now.Millisecond);
+            char[] alphs = new char[] { 'A', 'C', 'G', 'T' };
+            using (StreamWriter writer = new StreamWriter(filename))
             {
                 for (long i = 0; i < seqCount; i++)
                 {
@@ -180,7 +180,7 @@ namespace Bio.Tests.IO.FastA
         /// <returns>return the name of file</returns>
         private static string CreateData(int count)
         {
-            var FileName = Path.GetTempFileName() + ".fasta";
+            string FileName = Path.GetTempFileName() + ".fasta";
 
             CreateSeq(FileName, 1, count);
 

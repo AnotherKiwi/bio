@@ -76,7 +76,7 @@ namespace Bio.Algorithms.Kmer
             }
 
             ulong compressedKmer = 0;
-            for (var index = from; index < from + kmerLength; index++)
+            for (long index = from; index < from + kmerLength; index++)
             {
                 ulong value;
                 switch (sequence[index])
@@ -116,14 +116,14 @@ namespace Bio.Algorithms.Kmer
             if (sequence == null)
                 throw new ArgumentNullException(nameof(sequence));
 
-            var count = sequence.Count;
+            long count = sequence.Count;
             if (kmerLength > count || kmerLength > MAX_KMER_LENGTH)
                 throw new ArgumentException("Invalid k-mer length - cannot exceed " + MAX_KMER_LENGTH, nameof(kmerLength));
 
-            var kmers = new KmerData32[count - kmerLength + 1];
+            KmerData32[] kmers = new KmerData32[count - kmerLength + 1];
             
             //First to make a mask to hide higher bits as we move things over
-            var mask = ulong.MaxValue;//should be all bits in ulong
+            ulong mask = ulong.MaxValue;//should be all bits in ulong
             mask <<= (kmerLength * 2);//move mask over filling in regions to keep with zeros
             mask = ~mask;//then flip the bits to get the mask
             
@@ -158,7 +158,7 @@ namespace Bio.Algorithms.Kmer
                     //hide top bits
                     compressedKmer = compressedKmer & mask;
                     //get reverse compliment
-                    var nk = new KmerData32();
+                    KmerData32 nk = new KmerData32();
                     nk.SetKmerData(compressedKmer, kmerLength);
                     kmers[i - kmerLength + 1] = nk;
                 }
@@ -175,9 +175,9 @@ namespace Bio.Algorithms.Kmer
             KmerData = encodedKmer;
             // Get the Reverse Complement value. This is a duplication of the code in a method of this class
             // perhaps put here to ensure the method is inlined?
-            var revComplementKey = GetReverseComplement(encodedKmer, kmerLength);
+            ulong revComplementKey = GetReverseComplement(encodedKmer, kmerLength);
             //equal values should be impossible with odd length k-mer
-            var forwardOrientation = KmerData >= revComplementKey;
+            bool forwardOrientation = KmerData >= revComplementKey;
             if (!forwardOrientation)
             {
                 KmerData = revComplementKey;
@@ -237,7 +237,7 @@ namespace Bio.Algorithms.Kmer
         /// </returns>
         public int CompareTo(object value)
         {
-            var kmer = (KmerData32)value;
+            KmerData32 kmer = (KmerData32)value;
             return KmerData.CompareTo(kmer.KmerData);
         }
 
@@ -256,7 +256,7 @@ namespace Bio.Algorithms.Kmer
         /// <returns>Returns the last symbol from the decompressed kmer value.</returns>
         public byte GetLastSymbol(int kmerLength, bool orientation)
         {
-            var seq = ConvertLongToSequence(orientation ? KmerData : GetReverseComplement(KmerData, kmerLength), kmerLength);
+            byte[] seq = ConvertLongToSequence(orientation ? KmerData : GetReverseComplement(KmerData, kmerLength), kmerLength);
             return seq[seq.Length - 1];
         }
 
@@ -291,9 +291,9 @@ namespace Bio.Algorithms.Kmer
             ulong reverse = 0;
             checked
             {
-                for (var index = 0; index < kmerLength * 2; index += 2)
+                for (int index = 0; index < kmerLength * 2; index += 2)
                 {
-                    var bits = kmer & 3;
+                    ulong bits = kmer & 3;
                     kmer = kmer >> 2;
                     // Reversing the bits and adding to new long will generate reverse complement.
                     reverse = (reverse << 2) + ((~bits) & 3);
@@ -313,7 +313,7 @@ namespace Bio.Algorithms.Kmer
             ulong compressedKmer = 0;
 
             // Push each sequence alphabet in its binary represenatation into an long.
-            foreach (var seq in sequence)
+            foreach (byte seq in sequence)
             {
                 ulong value;
                 switch (seq)
@@ -352,10 +352,10 @@ namespace Bio.Algorithms.Kmer
         /// <returns>Kmer sequence.</returns>
         private static byte[] ConvertLongToSequence(ulong compressedKmer, int kmerLength)
         {
-            var seq = new byte[kmerLength];
+            byte[] seq = new byte[kmerLength];
 
             // Converting bits to sequence and adding to readonly false sequence. 
-            for (var index = 0; index < kmerLength; index++)
+            for (int index = 0; index < kmerLength; index++)
             {
                 switch (compressedKmer & 3)
                 {

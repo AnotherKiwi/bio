@@ -108,13 +108,13 @@ namespace Bio.Util
                     throw new ArgumentOutOfRangeException(nameof(index));
                 }
 
-                var positionToSeek = index * BytesPerRecord;
+                long positionToSeek = index * BytesPerRecord;
                 collectionFileReader.Position = positionToSeek;
 
                 if (collectionFileReader.Read(readBuffer, 0, BytesPerRecord) != BytesPerRecord)
                     throw new ArgumentException(Properties.Resource.DeltaCollectionFileCorrupted);
 
-                var position = BitConverter.ToInt64(readBuffer, 0);
+                long position = BitConverter.ToInt64(readBuffer, 0);
                 return DeltaAlignmentParser.GetDeltaAlignmentAt(position);
             }
         }
@@ -125,8 +125,8 @@ namespace Bio.Util
         public IEnumerable<List<DeltaAlignment>> GetDeltaAlignmentsByReads()
         {
             List<DeltaAlignment> list = null;
-            var previousQueryId = string.Empty;
-            foreach (var delta in DeltaAlignmentParser.Parse())
+            string previousQueryId = string.Empty;
+            foreach (DeltaAlignment delta in DeltaAlignmentParser.Parse())
             {
                 if (previousQueryId != delta.QuerySequence.ID)
                 {
@@ -149,13 +149,13 @@ namespace Bio.Util
         public List<DeltaAlignment> GetDeltaAlignmentFor(string sequenceId)
         {
             string fullSequenceId;
-            var list = new List<DeltaAlignment>();
+            List<DeltaAlignment> list = new List<DeltaAlignment>();
 
-            var deltaId = GetDeltaAlignmentIdFor(sequenceId, out fullSequenceId);
+            long deltaId = GetDeltaAlignmentIdFor(sequenceId, out fullSequenceId);
             if (deltaId == -1)
                 return list;
 
-            foreach (var delta in DeltaAlignmentParser.ParseFrom(deltaId))
+            foreach (DeltaAlignment delta in DeltaAlignmentParser.ParseFrom(deltaId))
             {
                 if (fullSequenceId != delta.QuerySequence.ID)
                     return list;
@@ -215,9 +215,9 @@ namespace Bio.Util
             collectionFileReader.Seek(0, SeekOrigin.Begin);
             Count = 0;
 
-            foreach (var position in DeltaAlignmentParser.GetPositions())
+            foreach (long position in DeltaAlignmentParser.GetPositions())
             {
-                var bytes = BitConverter.GetBytes(position);
+                byte[] bytes = BitConverter.GetBytes(position);
                 collectionFileReader.Write(bytes, 0, BytesPerRecord);
                 Count++;
             }
@@ -234,10 +234,10 @@ namespace Bio.Util
         /// <returns>Delta alignment id.</returns>
         private long GetDeltaAlignmentIdFor(string sequenceId, out string fullSequenceId)
         {
-            foreach (var data in DeltaAlignmentParser.GetQuerySeqIds())
+            foreach (Tuple<string, string> data in DeltaAlignmentParser.GetQuerySeqIds())
             {
-                var id = data.Item2;
-                var index = id.LastIndexOf(Helper.PairedReadDelimiter);
+                string id = data.Item2;
+                int index = id.LastIndexOf(Helper.PairedReadDelimiter);
                 if (index > 0)
                     id = id.Substring(0, index);
 

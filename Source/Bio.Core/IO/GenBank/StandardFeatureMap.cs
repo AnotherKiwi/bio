@@ -92,9 +92,9 @@ namespace Bio.IO.GenBank
 
             if (type != null)
             {
-                var newItem = (FeatureItem)Activator.CreateInstance(type, item.Location);
+                FeatureItem newItem = (FeatureItem)Activator.CreateInstance(type, item.Location);
 
-                foreach (var kvp in item.Qualifiers)
+                foreach (KeyValuePair<string, List<string>> kvp in item.Qualifiers)
                 {
                     newItem.Qualifiers.Add(kvp.Key, kvp.Value);
                 }

@@ -61,7 +61,7 @@
                 return false;
             }
 
-            var info = (CloneLibraryInformation)obj;
+            CloneLibraryInformation info = (CloneLibraryInformation)obj;
             return ((LibraryName == info.LibraryName) && (MeanLengthOfInsert == info.MeanLengthOfInsert)
                 && (StandardDeviationOfInsert == info.StandardDeviationOfInsert));
         }

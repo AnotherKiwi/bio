@@ -37,7 +37,7 @@ namespace Bio.Matrix
         {
             _rowKeys = new ReadOnlyCollection<TRowKey>(rowKeySequence.ToList());
             _colKeys = new ReadOnlyCollection<TColKey>(colKeySequence.ToList());
-            var valueArray2 = valueArray;
+            TValue[,] valueArray2 = valueArray;
             Helper.CheckCondition(valueArray.GetLength(0) == _rowKeys.Count, () => string.Format(CultureInfo.InvariantCulture, Properties.Resource.ExpectedRowKeysCountToEqualValueArrayCount, _rowKeys.Count, valueArray2.GetLength(0)));
             Helper.CheckCondition(valueArray.GetLength(1) == _colKeys.Count, () => string.Format(CultureInfo.InvariantCulture, Properties.Resource.ExpectedColumnKeysCountToEqualValueArrayCount, _colKeys.Count, valueArray2.GetLength(1)));
 
@@ -125,7 +125,7 @@ namespace Bio.Matrix
         public static bool TryParseRFileWithDefaultMissing(string rFileName, TValue missingValue, ParallelOptions parallelOptions, out Matrix<TRowKey, TColKey, TValue> matrix)
         {
             string errorMsg;
-            var result = TryParseRFileWithDefaultMissing(rFileName, missingValue, parallelOptions, out matrix, out errorMsg);
+            bool result = TryParseRFileWithDefaultMissing(rFileName, missingValue, parallelOptions, out matrix, out errorMsg);
             if (!string.IsNullOrEmpty(errorMsg))
                 Console.Error.WriteLine(errorMsg);
             return result;
@@ -212,16 +212,16 @@ namespace Bio.Matrix
             }
 
             errorMsg = "";
-            var matrix = new DenseMatrix<TRowKey, TColKey, TValue>();
+            DenseMatrix<TRowKey, TColKey, TValue> matrix = new DenseMatrix<TRowKey, TColKey, TValue>();
             result = matrix;
             matrix._missingValue = missingValue;
 
-            var rowCount = namedStreamCreator.ReadEachUncommentedLine().Count();
+            int rowCount = namedStreamCreator.ReadEachUncommentedLine().Count();
 
 
-            using (var textReader = namedStreamCreator.OpenUncommentedText())
+            using (CommentedStreamReader textReader = namedStreamCreator.OpenUncommentedText())
             {
-                var firstLine = textReader.ReadLine();
+                string firstLine = textReader.ReadLine();
                 //Helper.CheckCondition(null != firstLine, "Expect file to have first line. ");
                 if (null == firstLine)
                 {
@@ -230,8 +230,8 @@ namespace Bio.Matrix
                 }
                 Debug.Assert(rowCount >= 0); // real assert
 
-                var unparsedRowNames = new List<string>(rowCount);
-                var unparsedColNames = firstLine.Split(separatorArray).ToList();
+                List<string> unparsedRowNames = new List<string>(rowCount);
+                List<string> unparsedColNames = firstLine.Split(separatorArray).ToList();
                 try
                 {
                     matrix.ValueArray = new TValue[rowCount, unparsedColNames.Count];
@@ -242,13 +242,13 @@ namespace Bio.Matrix
                     return false;
                 }
                 string line;
-                var rowIndex = -1;
+                int rowIndex = -1;
 
                 //while (null != (line = textReader.ReadLine()))
                 while (!string.IsNullOrEmpty(line = textReader.ReadLine()))
                 {
                     ++rowIndex;
-                    var fields = line.Split(separatorArray);
+                    string[] fields = line.Split(separatorArray);
                     //Helper.CheckCondition(fields.Length >= 1, string.Format("Expect each line to have at least one field (file={0}, rowIndex={1})", rFileName, rowIndex));
                     if (fields.Length < 2)
                     {
@@ -256,7 +256,7 @@ namespace Bio.Matrix
                         return false;
                     }
 
-                    var rowKey = fields[0];
+                    string rowKey = fields[0];
                     unparsedRowNames.Add(rowKey);
 
                     // if the first data row has same length as header row, then header row much contain a name for the column of row names. Remove it and proceed.
@@ -273,7 +273,7 @@ namespace Bio.Matrix
                     }
 
                     //for (int colIndex = 0; colIndex < matrix.ValueArray.GetLength(0); ++colIndex)
-                    for (var colIndex = 0; colIndex < unparsedColNames.Count; ++colIndex)
+                    for (int colIndex = 0; colIndex < unparsedColNames.Count; ++colIndex)
                     {
                         TValue r;
                         if (!Parser.TryParse<TValue>(fields[colIndex + 1], out r))
@@ -325,7 +325,7 @@ namespace Bio.Matrix
         /// <returns>A new instance of DenseMatrix</returns>
         public static DenseMatrix<TRowKey, TColKey, TValue> CreateDefaultInstance(IEnumerable<TRowKey> rowKeySequence, IEnumerable<TColKey> colKeySequence, TValue missingValue)
         {
-            var matrix = new DenseMatrix<TRowKey, TColKey, TValue>();
+            DenseMatrix<TRowKey, TColKey, TValue> matrix = new DenseMatrix<TRowKey, TColKey, TValue>();
             matrix._rowKeys = new ReadOnlyCollection<TRowKey>(rowKeySequence.ToList());
             matrix._colKeys = new ReadOnlyCollection<TColKey>(colKeySequence.ToList());
             try
@@ -335,16 +335,16 @@ namespace Bio.Matrix
             }
             catch (ArgumentException)
             {
-                var rowSet = matrix.RowKeys.ToHashSet();
+                HashSet<TRowKey> rowSet = matrix.RowKeys.ToHashSet();
                 if (rowSet.Count != matrix.RowKeys.Count)
                 {
-                    var set = new HashSet<TRowKey>();
+                    HashSet<TRowKey> set = new HashSet<TRowKey>();
                     throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, "The following row keys are duplicates: {0}", matrix.RowKeys.Where(key => !set.Add(key)).StringJoin(",")));
                 }
-                var colSet = matrix.ColKeys.ToHashSet();
+                HashSet<TColKey> colSet = matrix.ColKeys.ToHashSet();
                 if (colSet.Count != matrix.ColKeys.Count)
                 {
-                    var set = new HashSet<TColKey>();
+                    HashSet<TColKey> set = new HashSet<TColKey>();
                     throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, "The following col keys are duplicates: {0}", matrix.ColKeys.Where(key => !set.Add(key)).StringJoin(",")));
                 }
                 throw;
@@ -382,7 +382,7 @@ namespace Bio.Matrix
         public override bool Remove(int rowIndex, int colIndex)
 #pragma warning restore 1591
         {
-            var oldvalue = ValueArray[rowIndex, colIndex];
+            TValue oldvalue = ValueArray[rowIndex, colIndex];
             ValueArray[rowIndex, colIndex] = MissingValue;
             return !IsMissing(oldvalue);
         }

@@ -20,9 +20,9 @@ namespace Bio.Tests.Algorithms.StringSearch
         {
             ISequence sequence = new Sequence(DnaAlphabet.Instance, "AGCT");
             IPatternFinder patternFinder = new BoyerMoore();
-            var actual = patternFinder.FindMatch(sequence, "AGCT");
+            IList<int> actual = patternFinder.FindMatch(sequence, "AGCT");
 
-            var expected = new HashSet<int>
+            HashSet<int> expected = new HashSet<int>
             {
                 0
             };
@@ -39,9 +39,9 @@ namespace Bio.Tests.Algorithms.StringSearch
         {
             ISequence sequence = new Sequence(DnaAlphabet.Instance, "AGTAGT");
             IPatternFinder patternFinder = new BoyerMoore();
-            var actual = patternFinder.FindMatch(sequence, "AGT");
+            IList<int> actual = patternFinder.FindMatch(sequence, "AGT");
 
-            var expected = new HashSet<int>
+            HashSet<int> expected = new HashSet<int>
             {
                 0,
                 3
@@ -64,10 +64,10 @@ namespace Bio.Tests.Algorithms.StringSearch
                 "AAAAA"
             };
             IPatternFinder patternFinder = new BoyerMoore();
-            var actual = patternFinder.FindMatch(sequence, patterns);
+            IDictionary<string, IList<int>> actual = patternFinder.FindMatch(sequence, patterns);
 
             IDictionary<string, HashSet<int>> expected = new Dictionary<string, HashSet<int>>();
-            var indices = new HashSet<int>
+            HashSet<int> indices = new HashSet<int>
             {
                 0
             };
@@ -93,10 +93,10 @@ namespace Bio.Tests.Algorithms.StringSearch
                 "AAAAA"
             };
             IPatternFinder patternFinder = new BoyerMoore();
-            var actual = patternFinder.FindMatch(sequence, patterns);
+            IDictionary<string, IList<int>> actual = patternFinder.FindMatch(sequence, patterns);
 
             IDictionary<string, HashSet<int>> expected = new Dictionary<string, HashSet<int>>();
-            var indices = new HashSet<int>
+            HashSet<int> indices = new HashSet<int>
             {
                 0,
                 8
@@ -122,9 +122,9 @@ namespace Bio.Tests.Algorithms.StringSearch
         {
             ISequence sequence = new Sequence(DnaAlphabet.Instance, "AGCTAGGTAGCTCAAAAA");
             IPatternFinder patternFinder = new BoyerMoore();
-            var actual = patternFinder.FindMatch(sequence, "AGCTAGGTAGCTCA*");
+            IList<int> actual = patternFinder.FindMatch(sequence, "AGCTAGGTAGCTCA*");
 
-            var expected = new HashSet<int>
+            HashSet<int> expected = new HashSet<int>
             {
                 0
             };
@@ -142,9 +142,9 @@ namespace Bio.Tests.Algorithms.StringSearch
         {
             ISequence sequence = new Sequence(DnaAlphabet.Instance, "AGCTAGGTAGCTCAAAAAAGGG");
             IPatternFinder patternFinder = new BoyerMoore();
-            var actual = patternFinder.FindMatch(sequence, "AGCTAGGTAGCTCA*GGG");
+            IList<int> actual = patternFinder.FindMatch(sequence, "AGCTAGGTAGCTCA*GGG");
 
-            var expected = new HashSet<int>
+            HashSet<int> expected = new HashSet<int>
             {
                 0
             };
@@ -160,7 +160,7 @@ namespace Bio.Tests.Algorithms.StringSearch
             }
 
             HashSet<int> indices = null;
-            foreach (var result in actual)
+            foreach (KeyValuePair<string, IList<int>> result in actual)
             {
                 if (expected.TryGetValue(result.Key, out indices))
                 {
@@ -192,7 +192,7 @@ namespace Bio.Tests.Algorithms.StringSearch
                 return false;
             }
 
-            foreach (var result in actual)
+            foreach (int result in actual)
             {
                 if (!expected.Contains(result))
                 {

@@ -142,7 +142,7 @@ namespace Bio
         /// <inheritdoc />
         public byte[] GetData(long startIndex = 0, long length = -1)
         {
-            var seq = (Sequence)baseSequence;
+            Sequence seq = (Sequence)baseSequence;
             return seq.GetData(startIndex, length);
         }
 
@@ -178,7 +178,7 @@ namespace Bio
         /// <returns>The sub-sequence.</returns>
         public ISequence GetSubSequence(long start, long length)
         {
-            var subSequence = new byte[length];
+            byte[] subSequence = new byte[length];
             for (long index = 0; index < length; index++)
             {
                 subSequence[index] = this[start + index];
@@ -272,10 +272,10 @@ namespace Bio
                 throw new ArgumentOutOfRangeException(nameof(startIndex), "> 0");
             }
 
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             try
             {
-                for (var index = startIndex; index < startIndex+ length; index++)
+                for (long index = startIndex; index < startIndex+ length; index++)
                 {
                     sb.Append((char)this[index]);
                 }
@@ -306,7 +306,7 @@ namespace Bio
                 throw new ArgumentException(DestArrayNotLargeEnough);
             }
 
-            var seq = (Sequence)GetSubSequence(0, Count);
+            Sequence seq = (Sequence)GetSubSequence(0, Count);
             seq.CopyTo(byteArray, start, count);
         }
 

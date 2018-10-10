@@ -23,23 +23,23 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority0")]
         public void PairwiseOverlapProteinSeqSimpleGap()
         {
-            var sequenceString1 = "HEAGAWGHEE";
-            var sequenceString2 = "PAWHEAE";
+            string sequenceString1 = "HEAGAWGHEE";
+            string sequenceString2 = "PAWHEAE";
 
-            var sequence1 = new Sequence(Alphabets.Protein, sequenceString1);
-            var sequence2 = new Sequence(Alphabets.Protein, sequenceString2);
+            Sequence sequence1 = new Sequence(Alphabets.Protein, sequenceString1);
+            Sequence sequence2 = new Sequence(Alphabets.Protein, sequenceString2);
 
-            var sm = new SimilarityMatrix(SimilarityMatrix.StandardSimilarityMatrix.Blosum50);
-            var gapPenalty = -8;
+            SimilarityMatrix sm = new SimilarityMatrix(SimilarityMatrix.StandardSimilarityMatrix.Blosum50);
+            int gapPenalty = -8;
 
-            var overlap = new PairwiseOverlapAligner();
+            PairwiseOverlapAligner overlap = new PairwiseOverlapAligner();
             overlap.SimilarityMatrix = sm;
             overlap.GapOpenCost = gapPenalty;
-            var result = overlap.AlignSimple(sequence1, sequence2);
+            IList<IPairwiseSequenceAlignment> result = overlap.AlignSimple(sequence1, sequence2);
 
             ApplicationLog.WriteLine(string.Format((IFormatProvider)null,
                 "{0}, Simple; Matrix {1}; GapOpenCost {2}", overlap.Name, overlap.SimilarityMatrix.Name, overlap.GapOpenCost));
-            foreach (var sequenceResult in result)
+            foreach (IPairwiseSequenceAlignment sequenceResult in result)
             {
                 ApplicationLog.WriteLine(string.Format((IFormatProvider)null,
                     "score {0}", sequenceResult.PairwiseAlignedSequences[0].Score));
@@ -57,7 +57,7 @@ namespace Bio.Tests.Algorithms.Alignment
 
             IList<IPairwiseSequenceAlignment> expectedOutput = new List<IPairwiseSequenceAlignment>();
             IPairwiseSequenceAlignment align = new PairwiseSequenceAlignment();
-            var alignedSeq = new PairwiseAlignedSequence();
+            PairwiseAlignedSequence alignedSeq = new PairwiseAlignedSequence();
             alignedSeq.FirstSequence = new Sequence(Alphabets.Protein, "GAWGHEE");
             alignedSeq.SecondSequence = new Sequence(Alphabets.Protein, "PAW-HEA");
             alignedSeq.Consensus = new Sequence(Alphabets.AmbiguousProtein, "XAWGHEX");
@@ -76,25 +76,25 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority0")]
         public void PairwiseOverlapProteinSeqAffineGap()
         {
-            var sequenceString1 = "HEAGAWGHEE";
-            var sequenceString2 = "PAWHEAE";
+            string sequenceString1 = "HEAGAWGHEE";
+            string sequenceString2 = "PAWHEAE";
 
-            var sequence1 = new Sequence(Alphabets.Protein, sequenceString1);
-            var sequence2 = new Sequence(Alphabets.Protein, sequenceString2);
+            Sequence sequence1 = new Sequence(Alphabets.Protein, sequenceString1);
+            Sequence sequence2 = new Sequence(Alphabets.Protein, sequenceString2);
 
-            var sm = new SimilarityMatrix(SimilarityMatrix.StandardSimilarityMatrix.Blosum50);
-            var gapPenalty = -8;
+            SimilarityMatrix sm = new SimilarityMatrix(SimilarityMatrix.StandardSimilarityMatrix.Blosum50);
+            int gapPenalty = -8;
 
-            var overlap = new PairwiseOverlapAligner();
+            PairwiseOverlapAligner overlap = new PairwiseOverlapAligner();
             overlap.SimilarityMatrix = sm;
             overlap.GapOpenCost = gapPenalty;
             overlap.GapExtensionCost = -1;
-            var result = overlap.Align(sequence1, sequence2);
+            IList<IPairwiseSequenceAlignment> result = overlap.Align(sequence1, sequence2);
 
             ApplicationLog.WriteLine(string.Format((IFormatProvider)null,
             "{0}, Affine; Matrix {1}; GapOpenCost {2}; GapExtenstionCost {3}",
             overlap.Name, overlap.SimilarityMatrix.Name, overlap.GapOpenCost, overlap.GapExtensionCost));
-            foreach (var sequenceResult in result)
+            foreach (IPairwiseSequenceAlignment sequenceResult in result)
             {
                 ApplicationLog.WriteLine(string.Format((IFormatProvider)null,
                     "score {0}", sequenceResult.PairwiseAlignedSequences[0].Score));
@@ -112,7 +112,7 @@ namespace Bio.Tests.Algorithms.Alignment
 
             IList<IPairwiseSequenceAlignment> expectedOutput = new List<IPairwiseSequenceAlignment>();
             IPairwiseSequenceAlignment align = new PairwiseSequenceAlignment();
-            var alignedSeq = new PairwiseAlignedSequence();
+            PairwiseAlignedSequence alignedSeq = new PairwiseAlignedSequence();
             alignedSeq.FirstSequence = new Sequence(Alphabets.Protein, "GAWGHEE");
             alignedSeq.SecondSequence = new Sequence(Alphabets.Protein, "PAW-HEA");
             alignedSeq.Consensus = new Sequence(Alphabets.AmbiguousProtein, "XAWGHEX");
@@ -131,19 +131,19 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority0")]
         public void PairwiseOverlapProteinSeqWithZeroOverlap()
         {
-            var sequence1 = new Sequence(Alphabets.Protein, "ACDEF");
-            var sequence2 = new Sequence(Alphabets.Protein, "TUVWY");
+            Sequence sequence1 = new Sequence(Alphabets.Protein, "ACDEF");
+            Sequence sequence2 = new Sequence(Alphabets.Protein, "TUVWY");
             SimilarityMatrix sm = new DiagonalSimilarityMatrix(5, -5);
-            var gapPenalty = -10;
-            var overlap = new PairwiseOverlapAligner();
+            int gapPenalty = -10;
+            PairwiseOverlapAligner overlap = new PairwiseOverlapAligner();
             overlap.SimilarityMatrix = sm;
             overlap.GapOpenCost = gapPenalty;
             overlap.GapExtensionCost = -1;
-            var result = overlap.Align(sequence1, sequence2);
+            IList<IPairwiseSequenceAlignment> result = overlap.Align(sequence1, sequence2);
 
             ApplicationLog.WriteLine(string.Format((IFormatProvider)null,
                 "{0}, Simple; Matrix {1}; GapOpenCost {2}", overlap.Name, overlap.SimilarityMatrix.Name, overlap.GapOpenCost));
-            foreach (var sequenceResult in result)
+            foreach (IPairwiseSequenceAlignment sequenceResult in result)
             {
                 ApplicationLog.WriteLine(string.Format((IFormatProvider)null,
                     "score {0}", sequenceResult.PairwiseAlignedSequences[0].Score));
@@ -170,18 +170,18 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority0")]
         public void PairwiseOverlapMultipleAlignments()
         {
-            var sequence1 = new Sequence(Alphabets.DNA, "CCCAACCC");
-            var sequence2 = new Sequence(Alphabets.DNA, "CCC");
+            Sequence sequence1 = new Sequence(Alphabets.DNA, "CCCAACCC");
+            Sequence sequence2 = new Sequence(Alphabets.DNA, "CCC");
             SimilarityMatrix sm = new DiagonalSimilarityMatrix(5, -20);
-            var gapPenalty = -10;
-            var overlap = new PairwiseOverlapAligner();
+            int gapPenalty = -10;
+            PairwiseOverlapAligner overlap = new PairwiseOverlapAligner();
             overlap.SimilarityMatrix = sm;
             overlap.GapOpenCost = gapPenalty;
-            var result = overlap.AlignSimple(sequence1, sequence2);
+            IList<IPairwiseSequenceAlignment> result = overlap.AlignSimple(sequence1, sequence2);
 
             ApplicationLog.WriteLine(string.Format((IFormatProvider)null,
                 "{0}, Simple; Matrix {1}; GapOpenCost {2}", overlap.Name, overlap.SimilarityMatrix.Name, overlap.GapOpenCost));
-            foreach (var sequenceResult in result)
+            foreach (IPairwiseSequenceAlignment sequenceResult in result)
             {
                 ApplicationLog.WriteLine(string.Format((IFormatProvider)null,
                     "score {0}", sequenceResult.PairwiseAlignedSequences[0].Score));
@@ -201,7 +201,7 @@ namespace Bio.Tests.Algorithms.Alignment
             IPairwiseSequenceAlignment align = new PairwiseSequenceAlignment();
 
             // First alignment
-            var alignedSeq = new PairwiseAlignedSequence();
+            PairwiseAlignedSequence alignedSeq = new PairwiseAlignedSequence();
             alignedSeq.FirstSequence = new Sequence(Alphabets.DNA, "CCC");
             alignedSeq.SecondSequence = new Sequence(Alphabets.DNA, "CCC");
             alignedSeq.Consensus = new Sequence(Alphabets.DNA, "CCC");
@@ -235,14 +235,14 @@ namespace Bio.Tests.Algorithms.Alignment
                 IList<IPairwiseSequenceAlignment> result,
                 IList<IPairwiseSequenceAlignment> expectedAlignment)
         {
-            var output = true;
+            bool output = true;
             if (result.Count == expectedAlignment.Count)
             {
-                for (var count = 0; count < result.Count; count++)
+                for (int count = 0; count < result.Count; count++)
                 {
                     if (result[count].PairwiseAlignedSequences.Count == expectedAlignment[count].PairwiseAlignedSequences.Count)
                     {
-                        for (var count1 = 0; count1 < result[count].PairwiseAlignedSequences.Count; count1++)
+                        for (int count1 = 0; count1 < result[count].PairwiseAlignedSequences.Count; count1++)
                         {
                             if (result[count].PairwiseAlignedSequences[count1].FirstSequence.ToString().Equals(
                                     expectedAlignment[count].PairwiseAlignedSequences[count1].FirstSequence.ToString())

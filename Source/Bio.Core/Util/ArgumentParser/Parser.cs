@@ -22,11 +22,11 @@ namespace Bio.Util.ArgumentParser
             if (type == null)
                 return false;
 
-            var tryParse = type.GetMethod("TryParse", new Type[] { typeof(string), type.MakeByRefType() });
+            MethodInfo tryParse = type.GetMethod("TryParse", new Type[] { typeof(string), type.MakeByRefType() });
             if (tryParse != null && tryParse.IsStatic)
                 return true;
 
-            var parse = type.GetMethod("Parse", new Type[] { typeof(string) });
+            MethodInfo parse = type.GetMethod("Parse", new Type[] { typeof(string) });
             if (parse != null && parse.IsStatic)
                 return true;
 
@@ -46,7 +46,7 @@ namespace Bio.Util.ArgumentParser
             if (values == null)
                 return false;
 
-            foreach (var s in values)
+            foreach (string s in values)
             {
                 T value;
                 if (TryParse<T>(s, out value))
@@ -69,7 +69,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns>List of Parsed types.</returns>
         public static IEnumerable<T> ParseAll<T>(IEnumerable<string> values)
         {
-            foreach (var s in values)
+            foreach (string s in values)
             {
                 yield return Parse<T>(s);
             }
@@ -83,10 +83,10 @@ namespace Bio.Util.ArgumentParser
         /// <returns>Parsed Object.</returns>
         public static object Parse(string field, Type type)
         {
-            var potentialMethods = typeof(Parser).GetMethods().Where(m => m.Name == "Parse" && m.IsGenericMethod);
-            var parseInfo = potentialMethods.First().MakeGenericMethod(type);
+            IEnumerable<MethodInfo> potentialMethods = typeof(Parser).GetMethods().Where(m => m.Name == "Parse" && m.IsGenericMethod);
+            MethodInfo parseInfo = potentialMethods.First().MakeGenericMethod(type);
 
-            var parameters = new object[] { field };
+            object[] parameters = new object[] { field };
             return parseInfo.Invoke(null, parameters);
         }
 
@@ -124,7 +124,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns>bool</returns>
         public static bool TryParse<T>(string s, out T t)
         {
-            var type = typeof(T);
+            Type type = typeof(T);
             if ((String.IsNullOrEmpty(s)) || (s.Equals("null", StringComparison.CurrentCultureIgnoreCase) && type.IsClass))
             {
                 t = default(T);  // return null
@@ -182,15 +182,15 @@ namespace Bio.Util.ArgumentParser
                 return true;
             }
 
-            var type = typeof(T);
-            var underlyingType = type.GetGenericArguments()[0];
+            Type type = typeof(T);
+            Type underlyingType = type.GetGenericArguments()[0];
             //underlyingType.TypeInitializer
-            var tryParse = typeof(Parser).GetMethod("TryParse", BindingFlags.Public | BindingFlags.Static);
-            var genericTryParse = tryParse.MakeGenericMethod(underlyingType);
+            MethodInfo tryParse = typeof(Parser).GetMethod("TryParse", BindingFlags.Public | BindingFlags.Static);
+            MethodInfo genericTryParse = tryParse.MakeGenericMethod(underlyingType);
 
-            var args = new object[] { s, Activator.CreateInstance(underlyingType) };
+            object[] args = new object[] { s, Activator.CreateInstance(underlyingType) };
 
-            var success = (bool)genericTryParse.Invoke(null, args);
+            bool success = (bool)genericTryParse.Invoke(null, args);
             if (success)
             {
                 t = (T)args[1];
@@ -220,16 +220,16 @@ namespace Bio.Util.ArgumentParser
         /// <returns></returns>
         private static bool CollectionsTryParse<T>(string s, out T t)
         {
-            var type = typeof(T);
+            Type type = typeof(T);
             Helper.CheckCondition<ParseException>(type.HasPublicDefaultConstructor(), "Type must must have a constructor, for example, List<string> rather than IList<string>");
-            var genericType = type.GetGenericArguments()[0];
+            Type genericType = type.GetGenericArguments()[0];
 
-            var collectionTryParse = typeof(Parser).GetMethod("GenericCollectionsTryParse", BindingFlags.NonPublic | BindingFlags.Static);
-            var genericCollectionTryParse = collectionTryParse.MakeGenericMethod(type, genericType);
+            MethodInfo collectionTryParse = typeof(Parser).GetMethod("GenericCollectionsTryParse", BindingFlags.NonPublic | BindingFlags.Static);
+            MethodInfo genericCollectionTryParse = collectionTryParse.MakeGenericMethod(type, genericType);
             t = default(T);
-            var args = new object[] { s, t };
+            object[] args = new object[] { s, t };
 
-            var success = (bool)genericCollectionTryParse.Invoke(null, args);
+            bool success = (bool)genericCollectionTryParse.Invoke(null, args);
             if (success)
             {
                 t = (T)args[1];
@@ -259,7 +259,7 @@ namespace Bio.Util.ArgumentParser
                 return true;
             }
 
-            foreach (var itemAsString in s.ProtectedSplit('(', ')', false, ','))
+            foreach (string itemAsString in s.ProtectedSplit('(', ')', false, ','))
             {
                 S item;
                 if (TryParse<S>(itemAsString, out item))
@@ -325,7 +325,7 @@ namespace Bio.Util.ArgumentParser
 
             static GenericParser()
             {
-                var type = typeof(T);
+                Type type = typeof(T);
                 _tryParse = type.GetMethod("TryParse", new Type[] { typeof(string), type.MakeByRefType() });
                 if (_tryParse != null && !_tryParse.IsStatic)
                     _tryParse = null;
@@ -357,12 +357,12 @@ namespace Bio.Util.ArgumentParser
             {
                 //Helper.CheckCondition(IsParsable(), "Cannot parse type {0}. It does not have a TryParse or Parse method defined", typeof(T));
                 // now the general one.
-                var success = false;
+                bool success = false;
                 t = default(T);
 
                 if (_tryParse != null)
                 {
-                    var args = new object[] { s, t };
+                    object[] args = new object[] { s, t };
 
                     success = (bool)_tryParse.Invoke(null, args);
 
@@ -375,7 +375,7 @@ namespace Bio.Util.ArgumentParser
                 {
                     try
                     {
-                        var args = new object[] { s };
+                        object[] args = new object[] { s };
                         t = (T)_parse.Invoke(null, args);
                         success = true;
                     }
@@ -383,7 +383,7 @@ namespace Bio.Util.ArgumentParser
                 }
                 else
                 {
-                    var constLine = new ConstructorArguments(s);
+                    ConstructorArguments constLine = new ConstructorArguments(s);
                     try
                     {
                         t = constLine.Construct<T>();

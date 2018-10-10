@@ -147,7 +147,7 @@ namespace Bio.Algorithms.Alignment
                 Cluster cluster,
                 MatchExtension match)
         {
-            var deltaAlignment = new DeltaAlignment(referenceSequence, querySequence)
+            DeltaAlignment deltaAlignment = new DeltaAlignment(referenceSequence, querySequence)
             {
                 FirstSequenceStart = match.ReferenceSequenceOffset,
                 SecondSequenceStart = match.QuerySequenceOffset,
@@ -166,11 +166,11 @@ namespace Bio.Algorithms.Alignment
         /// Query sequence alignment at 1st index</returns>
         public PairwiseAlignedSequence ConvertDeltaToSequences()
         {
-            var alignedSequence = new PairwiseAlignedSequence();
-            var gap = 0;
-            var startOffsets = new List<long>(2);
-            var endOffsets = new List<long>(2);
-            var insertions = new List<long>(2);
+            PairwiseAlignedSequence alignedSequence = new PairwiseAlignedSequence();
+            int gap = 0;
+            List<long> startOffsets = new List<long>(2);
+            List<long> endOffsets = new List<long>(2);
+            List<long> insertions = new List<long>(2);
 
             startOffsets.Add(FirstSequenceStart);
             startOffsets.Add(SecondSequenceStart);
@@ -181,14 +181,14 @@ namespace Bio.Algorithms.Alignment
             insertions.Add(0);
 
             // Create the new sequence object with given start and end indices
-            var referenceSequence = new List<byte>();
-            for (var index = FirstSequenceStart; index <= FirstSequenceEnd; index++)
+            List<byte> referenceSequence = new List<byte>();
+            for (long index = FirstSequenceStart; index <= FirstSequenceEnd; index++)
             {
                 referenceSequence.Add(ReferenceSequence[index]);
             }
 
-            var querySequence = new List<byte>();
-            for (var index = SecondSequenceStart; index <= SecondSequenceEnd; index++)
+            List<byte> querySequence = new List<byte>();
+            for (long index = SecondSequenceStart; index <= SecondSequenceEnd; index++)
             {
                 querySequence.Add(QuerySequence[index]);
             }
@@ -210,15 +210,15 @@ namespace Bio.Algorithms.Alignment
                 }
             }
 
-            var refSeq = referenceSequence.ToArray();
-            var alphabet = Alphabets.AutoDetectAlphabet(refSeq, 0, refSeq.GetLongLength(), null);
+            byte[] refSeq = referenceSequence.ToArray();
+            IAlphabet alphabet = Alphabets.AutoDetectAlphabet(refSeq, 0, refSeq.GetLongLength(), null);
             alignedSequence.FirstSequence = new Sequence(alphabet, refSeq, false)
             {
                 ID = ReferenceSequence.ID,
                 Metadata = new Dictionary<string, object>(ReferenceSequence.Metadata)
             };
 
-            var querySeq = querySequence.ToArray();
+            byte[] querySeq = querySequence.ToArray();
             alphabet = Alphabets.AutoDetectAlphabet(querySeq, 0, querySeq.GetLongLength(), QuerySequence.Alphabet);
             alignedSequence.SecondSequence = new Sequence(alphabet, querySeq, false)
             {

@@ -108,10 +108,10 @@ namespace Bio.Util
 				throw new ArgumentOutOfRangeException(nameof(length));
 			}
 
-			var newSeqData = new byte[length];
+			byte[] newSeqData = new byte[length];
 
 			long j = 0;
-			for (var i = start; i < start + length; i++, j++)
+			for (long i = start; i < start + length; i++, j++)
 			{
 				newSeqData[j] = sequence[i];
 			}
@@ -154,7 +154,7 @@ namespace Bio.Util
 				throw new ArgumentOutOfRangeException(nameof(length));
 			}
 
-			var tmpData = new byte[sequence.Count - length];
+			byte[] tmpData = new byte[sequence.Count - length];
 			for (long i = 0; i < start; i++)
 			{
 				tmpData[i] = sequence[i];
@@ -179,16 +179,16 @@ namespace Bio.Util
 				throw new ArgumentNullException(nameof(seq));
 			}
 
-			var num_fragments = seq.Count * coverage / fragment_length;
-			var fragment_list = new List<ISequence>();
-			var RandNum = new Random();
+			long num_fragments = seq.Count * coverage / fragment_length;
+			List<ISequence> fragment_list = new List<ISequence>();
+			Random RandNum = new Random();
 
-			for (var j = 0; j < num_fragments; j++)
+			for (int j = 0; j < num_fragments; j++)
 			{
 				long start = RandNum.Next((int)seq.Count - (int)fragment_length + 1);
-				var tempSeq = GetSequenceRange(seq, start, fragment_length);
-				var tmpFragment = new byte[tempSeq.Count];
-				for (var i = 0; i < tempSeq.Count; i++)
+				ISequence tempSeq = GetSequenceRange(seq, start, fragment_length);
+				byte[] tmpFragment = new byte[tempSeq.Count];
+				for (int i = 0; i < tempSeq.Count; i++)
 				{
 					tmpFragment[i] = tempSeq[i];
 				}
@@ -227,7 +227,7 @@ namespace Bio.Util
 				throw new ArgumentException(Properties.Resource.BuilderIncorrectLength);
 			}
 
-			for (var i = sequence.Length - 1; i >= 0; i--)
+			for (int i = sequence.Length - 1; i >= 0; i--)
 			{
 				char rc;
 				switch (sequence[i])
@@ -270,13 +270,13 @@ namespace Bio.Util
 		public static bool IsFasta(string fileName)
 		{
 
-			var isfasta = false;
-			var extensionDelimiter = fileName.LastIndexOf('.');
+			bool isfasta = false;
+			int extensionDelimiter = fileName.LastIndexOf('.');
 			if (-1 < extensionDelimiter)
 			{
-				var fileExtension = fileName.Substring(extensionDelimiter);
-				var fastaExtensions = Properties.Resource.FASTA_FILEEXTENSION;
-				var extensions = fastaExtensions.Split(',');
+				string fileExtension = fileName.Substring(extensionDelimiter);
+				string fastaExtensions = Properties.Resource.FASTA_FILEEXTENSION;
+				string[] extensions = fastaExtensions.Split(',');
 				if (extensions.Any(extension => fileExtension.Equals(extension, StringComparison.CurrentCultureIgnoreCase)))
 				{
 					isfasta = true;
@@ -340,14 +340,14 @@ namespace Bio.Util
 		/// </returns>
 		public static bool IsFastQ(string fileName)
 		{
-			var isfastQ = false;
-			var extensionDelimiter = fileName.LastIndexOf('.');
+			bool isfastQ = false;
+			int extensionDelimiter = fileName.LastIndexOf('.');
 			if (-1 < extensionDelimiter)
 			{
-				var fileExtension = fileName.Substring(extensionDelimiter);
-				var fastQExtensions = Properties.Resource.FASTQ_FILEEXTENSION;
-				var extensions = fastQExtensions.Split(',');
-				foreach (var extension in extensions)
+				string fileExtension = fileName.Substring(extensionDelimiter);
+				string fastQExtensions = Properties.Resource.FASTQ_FILEEXTENSION;
+				string[] extensions = fastQExtensions.Split(',');
+				foreach (string extension in extensions)
 				{
 					if (fileExtension.Equals(extension, StringComparison.CurrentCultureIgnoreCase))
 					{
@@ -370,14 +370,14 @@ namespace Bio.Util
 		/// </returns>
 		public static bool IsGenBank(string fileName)
 		{
-			var isGenBank = false;
-			var extensionDelimiter = fileName.LastIndexOf('.');
+			bool isGenBank = false;
+			int extensionDelimiter = fileName.LastIndexOf('.');
 			if (-1 < extensionDelimiter)
 			{
-				var fileExtension = fileName.Substring(extensionDelimiter);
-				var genBankExtensions = Properties.Resource.GENBANK_FILEEXTENSION;
-				var extensions = genBankExtensions.Split(',');
-				foreach (var extension in extensions)
+				string fileExtension = fileName.Substring(extensionDelimiter);
+				string genBankExtensions = Properties.Resource.GENBANK_FILEEXTENSION;
+				string[] extensions = genBankExtensions.Split(',');
+				foreach (string extension in extensions)
 				{
 					if (fileExtension.Equals(extension, StringComparison.CurrentCultureIgnoreCase))
 					{
@@ -402,13 +402,13 @@ namespace Bio.Util
 				throw new ArgumentNullException(nameof(accession));
 			}
 
-			var strBuilder = new StringBuilder();
+			StringBuilder strBuilder = new StringBuilder();
 			if (accession.Primary != null)
 			{
 				strBuilder.Append(accession.Primary);
 			}
 
-			foreach (var str in accession.Secondary)
+			foreach (string str in accession.Secondary)
 			{
 				strBuilder.Append(Space);
 				strBuilder.Append(str);
@@ -429,11 +429,11 @@ namespace Bio.Util
 				throw new ArgumentNullException(nameof(projectIdentifier));
 			}
 
-			var strBuilder = new StringBuilder();
+			StringBuilder strBuilder = new StringBuilder();
 			strBuilder.Append(projectIdentifier.Name);
 			strBuilder.Append(Colon);
 
-			for (var i = 0; i < projectIdentifier.Numbers.Count; i++)
+			for (int i = 0; i < projectIdentifier.Numbers.Count; i++)
 			{
 				strBuilder.Append(projectIdentifier.Numbers[i]);
 				if (i != projectIdentifier.Numbers.Count - 1)
@@ -457,11 +457,11 @@ namespace Bio.Util
 				throw new ArgumentNullException(nameof(crossReferenceLinks));
 			}
 
-			var strBuilder = new StringBuilder();
-			var toReturn = new List<string>();
-			foreach (var crossReferenceLink in crossReferenceLinks)
+			StringBuilder strBuilder = new StringBuilder();
+			List<string> toReturn = new List<string>();
+			foreach (CrossReferenceLink crossReferenceLink in crossReferenceLinks)
 			{
-				var referenceType = string.Empty;
+				string referenceType = string.Empty;
 				if (crossReferenceLink.Type == CrossReferenceType.Project)
 				{
 					referenceType = ProjectDBLink;
@@ -478,7 +478,7 @@ namespace Bio.Util
 				strBuilder.Append(referenceType);
 				strBuilder.Append(Colon);
 
-				for (var i = 0; i < crossReferenceLink.Numbers.Count; i++)
+				for (int i = 0; i < crossReferenceLink.Numbers.Count; i++)
 				{
 					strBuilder.Append(crossReferenceLink.Numbers[i]);
 					if (i != crossReferenceLink.Numbers.Count - 1)
@@ -616,8 +616,8 @@ namespace Bio.Util
 		/// <returns>The multiplied string.</returns>
 		public static string StringMultiply(string str, int count)
 		{
-			var sb = new StringBuilder(count);
-			for (var i = 0; i < count; ++i)
+			StringBuilder sb = new StringBuilder(count);
+			for (int i = 0; i < count; ++i)
 			{
 				sb.Append(str);
 			}
@@ -637,7 +637,7 @@ namespace Bio.Util
 				throw new ArgumentNullException(nameof(args));
 			}
 
-			foreach (var s in args)
+			foreach (string s in args)
 			{
 				if (test == s)
 				{
@@ -660,11 +660,11 @@ namespace Bio.Util
             // we'll find the maximum value of the illegal characters
             // and only check the full set if the value is below that, only
             // checking the full set of illegal characters if we are below that range.
-            var cmax = (ushort)illegalCharacters[0];
-            for (var i = 1; i < illegalCharacters.Length; i++) {
+            ushort cmax = (ushort)illegalCharacters[0];
+            for (int i = 1; i < illegalCharacters.Length; i++) {
                 cmax = Math.Max(cmax, (ushort)illegalCharacters[i]);    
             }
-            for (var i = 0; i < toTest.Length; i++)
+            for (int i = 0; i < toTest.Length; i++)
             {
                 if ((ushort)toTest[i] <= cmax &&
                     illegalCharacters.Contains(toTest[i])) {
@@ -685,7 +685,7 @@ namespace Bio.Util
 		{
 			if (string.IsNullOrEmpty(value) || !IsValidRegexValue(pattern, value))
 			{
-				var message = string.Format(CultureInfo.CurrentCulture,
+				string message = string.Format(CultureInfo.CurrentCulture,
 								Properties.Resource.InvalidPatternMessage,
 								name,
 								value,
@@ -714,7 +714,7 @@ namespace Bio.Util
 		   
 			if (string.IsNullOrEmpty(value) || !IsValidRegexValue(regx, value))
 			{
-				var message = string.Format(CultureInfo.CurrentCulture,
+				string message = string.Format(CultureInfo.CurrentCulture,
 								Properties.Resource.InvalidPatternMessage,
 								name,
 								value,
@@ -753,8 +753,8 @@ namespace Bio.Util
 		/// regular expression; otherwise false.</returns>
 		public static bool IsValidRegexValue(string pattern, string value)
 		{
-			var regx = new Regex(pattern);
-			var match = regx.Match(value);
+			Regex regx = new Regex(pattern);
+			Match match = regx.Match(value);
 			if (!match.Success || match.Value.Length != value.Length)
 			{
 				return false;
@@ -782,7 +782,7 @@ namespace Bio.Util
 				throw new ArgumentNullException(nameof(value));
 			}
 
-			var match = regx.Match(value);
+			Match match = regx.Match(value);
 			if (!match.Success || match.Value.Length != value.Length)
 			{
 				return false;
@@ -847,7 +847,7 @@ namespace Bio.Util
 		{
 			if (!condition)
 			{
-				var message = messageFunction();
+				string message = messageFunction();
 				throw new Exception(message);
 			}
 		}
@@ -911,7 +911,7 @@ namespace Bio.Util
 		{
 			if (!condition)
 			{
-				var message = messageFunction();
+				string message = messageFunction();
 				CheckCondition<T>(condition, message);
 			}
 		}
@@ -961,7 +961,7 @@ namespace Bio.Util
 		public static int WrapAroundLeftShift(int someInt, int count)
 		{
 			//Tip: Use "?Convert.ToString(WrapAroundLeftShift(someInt,count),2)" to see this work
-			var result = (someInt << count) | ((~(-1 << count)) & (someInt >> (8 * sizeof(int) - count)));
+			int result = (someInt << count) | ((~(-1 << count)) & (someInt >> (8 * sizeof(int) - count)));
 			return result;
 		}
 
@@ -977,11 +977,11 @@ namespace Bio.Util
 			if (input == null) 
 				return false;
 
-			var allOk = true;
-			var sb = new StringBuilder();
-			for (var i = 0; i < input.Length; i++)
+			bool allOk = true;
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < input.Length; i++)
 			{
-				var ch = input[i];
+				byte ch = input[i];
 				if (ch <= 0x7f) sb.Append((char)ch);
 				else
 				{
@@ -1016,7 +1016,7 @@ namespace Bio.Util
 		/// <param name="value">16 bit singed integer value.</param>
 		public static byte[] GetLittleEndianByteArray(Int16 value)
 		{
-			var array = new byte[2];
+			byte[] array = new byte[2];
 
 			array[0] = (byte)(value & 0x00FF);
 			array[1] = (byte)((value & 0xFF00) >> 8);
@@ -1029,7 +1029,7 @@ namespace Bio.Util
 		/// <param name="value">16 bit unsinged integer value.</param>
 		public static byte[] GetLittleEndianByteArray(UInt16 value)
 		{
-			var array = new byte[2];
+			byte[] array = new byte[2];
 
 			array[0] = (byte)(value & 0x00FF);
 			array[1] = (byte)((value & 0xFF00) >> 8);
@@ -1042,7 +1042,7 @@ namespace Bio.Util
 		/// <param name="value">32 bit singed integer value.</param>
 		public static byte[] GetLittleEndianByteArray(int value)
 		{
-			var array = new byte[4];
+			byte[] array = new byte[4];
 
 			array[0] = (byte)(value & 0x000000FF);
 			array[1] = (byte)((value & 0x0000FF00) >> 8);
@@ -1057,7 +1057,7 @@ namespace Bio.Util
 		/// <param name="value">32 bit unsigned integer value.</param>
 		public static byte[] GetLittleEndianByteArray(uint value)
 		{
-			var array = new byte[4];
+			byte[] array = new byte[4];
 
 			array[0] = (byte)(value & 0x000000FF);
 			array[1] = (byte)((value & 0x0000FF00) >> 8);
@@ -1233,9 +1233,9 @@ namespace Bio.Util
 				throw new ArgumentOutOfRangeException(nameof(length));
 			}
 
-			var Result = new StringBuilder();
-			var HexAlphabet = "0123456789ABCDEF";
-			for (var i = startIndex; i < startIndex + length; i++)
+			StringBuilder Result = new StringBuilder();
+			string HexAlphabet = "0123456789ABCDEF";
+			for (int i = startIndex; i < startIndex + length; i++)
 			{
 				Result.Append(HexAlphabet[(byteArray[i] >> 4)]);
 				Result.Append(HexAlphabet[(byteArray[i] & 0xF)]);
@@ -1274,8 +1274,8 @@ namespace Bio.Util
 			if (steps < 0)
 				throw new ArgumentException("Step count can not be negative");
 
-			var sum = 0.0;
-			for (var i = 0; i < steps; i++)
+			double sum = 0.0;
+			for (int i = 0; i < steps; i++)
 				sum += random.NextDouble();
 
 			// RandomDouble gives us a uniformly distributed number between 0 and 1.
@@ -1299,18 +1299,18 @@ namespace Bio.Util
 		/// </returns>
 		public static bool IsBAM(string fileName)
 		{
-			var isBAM = false;
+			bool isBAM = false;
 			if (string.IsNullOrWhiteSpace(fileName))
 			{
 				return isBAM;
 			}
 
-			var extensionDelimiter = fileName.LastIndexOf('.');
+			int extensionDelimiter = fileName.LastIndexOf('.');
 			if (-1 < extensionDelimiter)
 			{
-				var fileExtension = fileName.Substring(extensionDelimiter);
-				var bamExtensions = Properties.Resource.BAM_FILEEXTENSION;
-				var extensions = bamExtensions.Split(Comma.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+				string fileExtension = fileName.Substring(extensionDelimiter);
+				string bamExtensions = Properties.Resource.BAM_FILEEXTENSION;
+				string[] extensions = bamExtensions.Split(Comma.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 				isBAM = (extensions.Any(extension => fileExtension.Equals(extension, StringComparison.CurrentCultureIgnoreCase)));
 			}
 
@@ -1348,9 +1348,9 @@ namespace Bio.Util
 
 			try
 			{
-				var id = pairedSequenceId;
-				var index = id.LastIndexOf(PairedReadDelimiter);
-				var endindex = id.Length;
+				string id = pairedSequenceId;
+				int index = id.LastIndexOf(PairedReadDelimiter);
+				int endindex = id.Length;
 				if (index > 0)
 				{
 					id = id.Substring(0, index);
@@ -1464,8 +1464,8 @@ namespace Bio.Util
 				return readId;
 			}
 
-			var result = readId;
-			var index = readId.LastIndexOf(PairedReadDelimiter);
+			string result = readId;
+			int index = readId.LastIndexOf(PairedReadDelimiter);
 			if (index > 0)
 			{
 				result = readId.Substring(0, index);
@@ -1486,7 +1486,7 @@ namespace Bio.Util
 				return string.Empty;
 			}
 
-			var builder = new StringBuilder();
+			StringBuilder builder = new StringBuilder();
 			builder.AppendLine("@" + deltaAlignment.Id);
 			builder.AppendLine(">" + deltaAlignment.ReferenceSequence.ID);
 			if (deltaAlignment.QuerySequence != null)
@@ -1512,7 +1512,7 @@ namespace Bio.Util
 				deltaAlignment.SimilarityErrors,
 				deltaAlignment.NonAlphas));
 
-			foreach (var deltas in deltaAlignment.Deltas)
+			foreach (long deltas in deltaAlignment.Deltas)
 			{
 				builder.AppendLine(deltas.ToString(CultureInfo.InvariantCulture));
 			}

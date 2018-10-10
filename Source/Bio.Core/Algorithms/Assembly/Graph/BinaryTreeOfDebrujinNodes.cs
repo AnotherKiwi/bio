@@ -39,11 +39,11 @@ namespace Bio.Algorithms.Assembly.Graph
             }
             else
             {
-                var newKey = value.KmerData;
-                var node = _root;
+                ulong newKey = value.KmerData;
+                DeBruijnNode node = _root;
                 while (true)
                 {
-                    var currentKey = node.NodeValue.KmerData;
+                    ulong currentKey = node.NodeValue.KmerData;
                     if (currentKey == newKey)
                     {
                         // key already exists.
@@ -96,10 +96,10 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <returns>Actual node in the tree.</returns>
         public DeBruijnNode SearchTree(KmerData32 kmerValue)
         {
-            var startNode = _root;
+            DeBruijnNode startNode = _root;
             while (startNode != null)
             {
-                var currentValue = startNode.NodeValue.KmerData;
+                ulong currentValue = startNode.NodeValue.KmerData;
                 
                 // parameter value found
                 if (currentValue == kmerValue.KmerData)
@@ -120,11 +120,11 @@ namespace Bio.Algorithms.Assembly.Graph
         {
             if (Count > 0)
             {
-                var traversalStack = new Stack<DeBruijnNode>((int)Math.Log(Count, 2.0));
+                Stack<DeBruijnNode> traversalStack = new Stack<DeBruijnNode>((int)Math.Log(Count, 2.0));
                 traversalStack.Push(_root);
                 while (traversalStack.Count > 0)
                 {
-                    var current = traversalStack.Pop();
+                    DeBruijnNode current = traversalStack.Pop();
                     if (current != null)
                     {
                         traversalStack.Push(current.Right);

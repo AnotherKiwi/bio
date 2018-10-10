@@ -141,7 +141,7 @@ namespace Bio.IO.SAM
                 throw new ArgumentNullException(nameof(libraryName));
             }
 
-            var libraryInfo = CloneLibrary.Instance.GetLibraryInformation(libraryName);
+            CloneLibraryInformation libraryInfo = CloneLibrary.Instance.GetLibraryInformation(libraryName);
 
             if (libraryInfo == null)
             {
@@ -190,7 +190,7 @@ namespace Bio.IO.SAM
         {
             // Calculate the Mean of insert lengths. 
             // Note: In case MultipleHits, Orphan, Chimera, StructuralAnomaly we can't calculate insert length.
-            var reads = allreads.Where(R => R.PairedType == PairedReadType.Normal || R.PairedType == PairedReadType.LengthAnomaly);
+            IEnumerable<PairedRead> reads = allreads.Where(R => R.PairedType == PairedReadType.Normal || R.PairedType == PairedReadType.LengthAnomaly);
             if (!reads.Any())
                 return;
 
@@ -200,15 +200,15 @@ namespace Bio.IO.SAM
                 count = reads.Count();
             }
 
-            var mean = (float)(sum / count);
+            float mean = (float)(sum / count);
             sum = reads.Sum(pairedRead => Math.Pow((pairedRead.InsertLength - mean), 2));
 
-            var stddeviation = (float)Math.Sqrt(sum / count);
+            float stddeviation = (float)Math.Sqrt(sum / count);
             // µ + 3σ
-            var upperLimit = mean + (3 * stddeviation);
+            float upperLimit = mean + (3 * stddeviation);
             // µ - 3σ
-            var lowerLimit = mean - (3 * stddeviation);
-            foreach (var pairedRead in reads)
+            float lowerLimit = mean - (3 * stddeviation);
+            foreach (PairedRead pairedRead in reads)
             {
 
                 if (pairedRead.InsertLength > upperLimit || pairedRead.InsertLength < lowerLimit)
@@ -233,14 +233,14 @@ namespace Bio.IO.SAM
         private IList<PairedRead> GetInMemoryPairedReads(float meanLengthOfInsert, float standardDeviationOfInsert, bool calculate = false)
         {
             // Dictionary helps to get the information at one pass of alinged sequence list.
-            var pairedReads = new Dictionary<string, PairedRead>();
+            Dictionary<string, PairedRead> pairedReads = new Dictionary<string, PairedRead>();
             double sum = 0;
-            var count = 0;
+            int count = 0;
 
-            for (var i = 0; i < QuerySequences.Count; i++)
+            for (int i = 0; i < QuerySequences.Count; i++)
             {
                 PairedRead pairedRead;
-                var read = QuerySequences[i];
+                SAMAlignedSequence read = QuerySequences[i];
                 if ((read.Flag & SAMFlags.PairedRead) == SAMFlags.PairedRead)
                 {
                     if (pairedReads.TryGetValue(read.QName, out pairedRead))
@@ -299,7 +299,7 @@ namespace Bio.IO.SAM
                 }
             }
 
-            var allreads = pairedReads.Values.ToList();
+            List<PairedRead> allreads = pairedReads.Values.ToList();
             pairedReads = null;
             if (calculate && count > 0)
             {

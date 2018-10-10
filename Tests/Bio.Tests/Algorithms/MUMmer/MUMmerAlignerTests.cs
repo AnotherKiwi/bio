@@ -29,23 +29,23 @@ namespace Bio.Tests.Algorithms.MUMmer
             ISequence referenceSeq = new Sequence(Alphabets.DNA, reference);
             ISequence searchSeq = new Sequence(Alphabets.DNA, search);
 
-            var searchSeqs = new List<ISequence> {searchSeq};
+            List<ISequence> searchSeqs = new List<ISequence> {searchSeq};
 
-            var mummer = new MUMmerAligner
+            MUMmerAligner mummer = new MUMmerAligner
             {
                 LengthOfMUM = 3,
                 PairWiseAlgorithm = new NeedlemanWunschAligner(),
                 GapExtensionCost = -2
             };
 
-            var result = mummer.Align(referenceSeq, searchSeqs);
+            IList<IPairwiseSequenceAlignment> result = mummer.Align(referenceSeq, searchSeqs);
 
             // Check if output is not null
             Assert.AreNotEqual(null, result);
 
             IList<IPairwiseSequenceAlignment> expectedOutput = new List<IPairwiseSequenceAlignment>();
             IPairwiseSequenceAlignment align = new PairwiseSequenceAlignment();
-            var alignedSeq = new PairwiseAlignedSequence
+            PairwiseAlignedSequence alignedSeq = new PairwiseAlignedSequence
             {
                 FirstSequence = new Sequence(Alphabets.DNA, "TTAATTTTAG--"),
                 SecondSequence = new Sequence(Alphabets.DNA, "---AGTTTAGAG"),
@@ -66,8 +66,8 @@ namespace Bio.Tests.Algorithms.MUMmer
         [Category("Priority0")]
         public void TestMUMmerAlignerMultipleMum()
         {
-            var reference = "ATGCGCATCCCCTT";
-            var search = "GCGCCCCCTA";
+            string reference = "ATGCGCATCCCCTT";
+            string search = "GCGCCCCCTA";
 
             Sequence referenceSeq = null;
             Sequence searchSeq = null;
@@ -75,22 +75,22 @@ namespace Bio.Tests.Algorithms.MUMmer
             referenceSeq = new Sequence(Alphabets.DNA, reference);
             searchSeq = new Sequence(Alphabets.DNA, search);
 
-            var searchSeqs = new List<ISequence>
+            List<ISequence> searchSeqs = new List<ISequence>
             {
                 searchSeq
             };
 
-            var mummer = new MUMmerAligner();
+            MUMmerAligner mummer = new MUMmerAligner();
             mummer.LengthOfMUM = 4;
             mummer.PairWiseAlgorithm = new NeedlemanWunschAligner();
 
-            var result = mummer.AlignSimple(referenceSeq, searchSeqs);
+            IList<IPairwiseSequenceAlignment> result = mummer.AlignSimple(referenceSeq, searchSeqs);
 
             // Check if output is not null
             Assert.AreNotEqual(null, result);
             IList<IPairwiseSequenceAlignment> expectedOutput = new List<IPairwiseSequenceAlignment>();
             IPairwiseSequenceAlignment align = new PairwiseSequenceAlignment();
-            var alignedSeq = new PairwiseAlignedSequence();
+            PairwiseAlignedSequence alignedSeq = new PairwiseAlignedSequence();
             alignedSeq.FirstSequence = new Sequence(Alphabets.DNA, "ATGCGCATCCCCTT");
             alignedSeq.SecondSequence = new Sequence(Alphabets.DNA, "--GCGC--CCCCTA");
             alignedSeq.Consensus = new Sequence(AmbiguousDnaAlphabet.Instance, "ATGCGCATCCCCTW");
@@ -109,8 +109,8 @@ namespace Bio.Tests.Algorithms.MUMmer
         [Category("Priority0")]
         public void TestMUMmer3MultipleMumWithCustomMatrix()
         {
-            var reference = "ATGCGCATCCCCTT";
-            var search = "GCGCCCCCTA";
+            string reference = "ATGCGCATCCCCTT";
+            string search = "GCGCCCCCTA";
 
             Sequence referenceSeq = null;
             Sequence searchSeq = null;
@@ -118,12 +118,12 @@ namespace Bio.Tests.Algorithms.MUMmer
             referenceSeq = new Sequence(Alphabets.DNA, reference);
             searchSeq = new Sequence(Alphabets.DNA, search);
 
-            var searchSeqs = new List<ISequence>
+            List<ISequence> searchSeqs = new List<ISequence>
             {
                 searchSeq
             };
 
-            var customMatrix = new int[256, 256];
+            int[,] customMatrix = new int[256, 256];
 
             customMatrix[(byte)'A', (byte)'A'] = 3;
             customMatrix[(byte)'A', (byte)'T'] = -2;
@@ -145,25 +145,25 @@ namespace Bio.Tests.Algorithms.MUMmer
             customMatrix[(byte)'C', (byte)'A'] = -2;
             customMatrix[(byte)'C', (byte)'G'] = -2;
 
-            var matrix = new DiagonalSimilarityMatrix(3, -2);
+            DiagonalSimilarityMatrix matrix = new DiagonalSimilarityMatrix(3, -2);
 
-            var gapOpenCost = -6;
+            int gapOpenCost = -6;
 
-            var mummer = new MUMmerAligner();
+            MUMmerAligner mummer = new MUMmerAligner();
             mummer.LengthOfMUM = 4;
             mummer.PairWiseAlgorithm = new NeedlemanWunschAligner();
             mummer.SimilarityMatrix = matrix;
             mummer.GapOpenCost = gapOpenCost;
             mummer.GapExtensionCost = -2;
 
-            var result = mummer.AlignSimple(referenceSeq, searchSeqs);
+            IList<IPairwiseSequenceAlignment> result = mummer.AlignSimple(referenceSeq, searchSeqs);
 
             // Check if output is not null
             Assert.AreNotEqual(null, result);
 
             IList<IPairwiseSequenceAlignment> expectedOutput = new List<IPairwiseSequenceAlignment>();
             IPairwiseSequenceAlignment align = new PairwiseSequenceAlignment();
-            var alignedSeq = new PairwiseAlignedSequence();
+            PairwiseAlignedSequence alignedSeq = new PairwiseAlignedSequence();
             alignedSeq.FirstSequence = new Sequence(Alphabets.DNA, "ATGCGCATCCCCTT");
             alignedSeq.SecondSequence = new Sequence(Alphabets.DNA, "--GCGC--CCCCTA");
             alignedSeq.Consensus = new Sequence(AmbiguousDnaAlphabet.Instance, "ATGCGCATCCCCTW");
@@ -185,7 +185,7 @@ namespace Bio.Tests.Algorithms.MUMmer
             const string reference = "AUGCUUUUCCCCCCC";
             const string search = "UAUAUUUUGG";
 
-            var mummer = new MUMmerAligner
+            MUMmerAligner mummer = new MUMmerAligner
             {
                 LengthOfMUM = 3,
                 PairWiseAlgorithm = new NeedlemanWunschAligner(),
@@ -195,8 +195,8 @@ namespace Bio.Tests.Algorithms.MUMmer
             };
 
             ISequence referenceSeq = new Sequence(Alphabets.RNA, reference);
-            var searchSeqs = new List<ISequence> { new Sequence(Alphabets.RNA, search) };
-            var result = mummer.Align(referenceSeq, searchSeqs);
+            List<ISequence> searchSeqs = new List<ISequence> { new Sequence(Alphabets.RNA, search) };
+            IList<IPairwiseSequenceAlignment> result = mummer.Align(referenceSeq, searchSeqs);
 
             // Check if output is not null
             Assert.AreNotEqual(0, result.Count);
@@ -228,14 +228,14 @@ namespace Bio.Tests.Algorithms.MUMmer
                 IList<IPairwiseSequenceAlignment> result,
                 IList<IPairwiseSequenceAlignment> expectedAlignment)
         {
-            var output = true;
+            bool output = true;
             if (result.Count == expectedAlignment.Count)
             {
-                for (var count = 0; count < result.Count; count++)
+                for (int count = 0; count < result.Count; count++)
                 {
                     if (result[count].PairwiseAlignedSequences.Count == expectedAlignment[count].PairwiseAlignedSequences.Count)
                     {
-                        for (var count1 = 0; count1 < result[count].PairwiseAlignedSequences.Count; count1++)
+                        for (int count1 = 0; count1 < result[count].PairwiseAlignedSequences.Count; count1++)
                         {
                             if (result[count].PairwiseAlignedSequences[count1].FirstSequence.ToStrings().Equals(
                                     expectedAlignment[count].PairwiseAlignedSequences[count1].FirstSequence.ToStrings())

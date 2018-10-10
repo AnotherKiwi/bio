@@ -25,7 +25,7 @@ namespace Bio.Util.ArgumentParser
             if (type.Name == "Int64") return "long";
             if (type.Name == "Boolean") return "bool";
 
-            var typeString = new StringBuilder(type.Name);
+            StringBuilder typeString = new StringBuilder(type.Name);
             if (type.IsGenericType)
             {
                 typeString.Remove(typeString.Length - 2, 2);
@@ -62,8 +62,8 @@ namespace Bio.Util.ArgumentParser
         public static IEnumerable<Type> GetImplementingTypes(this Type interfaceType)
         {
             if (!interfaceType.IsInterface) throw new ParseException("type {0} is not an interface", interfaceType);
-            var interfaceName = interfaceType.Name;
-            foreach (var t in TypeFactory.GetReferencedTypes())
+            string interfaceName = interfaceType.Name;
+            foreach (Type t in TypeFactory.GetReferencedTypes())
             {
                 if (t.IsPublic && t.GetInterface(interfaceName, ignoreCase: true) != null)
                     yield return t;
@@ -77,7 +77,7 @@ namespace Bio.Util.ArgumentParser
         /// <returns>List of type.</returns>
         public static IEnumerable<Type> GetDerivedTypes(this Type classType)
         {
-            foreach (var t in TypeFactory.GetReferencedTypes())
+            foreach (Type t in TypeFactory.GetReferencedTypes())
             {
                 if (t.IsPublic && t.IsSubclassOf(classType))
                     yield return t;
@@ -137,7 +137,7 @@ namespace Bio.Util.ArgumentParser
             if (type == null || propertyType == null)
                 return null;
 
-            var result = from p in type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            IEnumerable<PropertyInfo> result = from p in type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                          where p.PropertyType == propertyType
                          select p;
 
@@ -155,7 +155,7 @@ namespace Bio.Util.ArgumentParser
             if (type == null || fieldType == null)
                 return null;
 
-            var result = from p in type.GetFields(BindingFlags.Public | BindingFlags.Instance)
+            IEnumerable<FieldInfo> result = from p in type.GetFields(BindingFlags.Public | BindingFlags.Instance)
                          where p.FieldType == fieldType
                          select p;
 
@@ -173,7 +173,7 @@ namespace Bio.Util.ArgumentParser
             if (type == null || memberType == null)
                 return null;
 
-            var result = type.GetFieldsOfType(memberType).Cast<MemberInfo>().Concat(type.GetPropertiesOfType(memberType).Cast<MemberInfo>());
+            IEnumerable<MemberInfo> result = type.GetFieldsOfType(memberType).Cast<MemberInfo>().Concat(type.GetPropertiesOfType(memberType).Cast<MemberInfo>());
 
             return result;
         }

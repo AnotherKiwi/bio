@@ -168,8 +168,8 @@ namespace Bio.IO.GenBank
                     basicDerSeq = new DerivedSequence(GetSubSequence(location.LocationStart, location.LocationEnd, location.Accession, location.Separator, sequence, referredSequences), false, true);
                 }
 
-                var tempSeqData = new byte[basicDerSeq.Count];
-                for (var i = 0; i < basicDerSeq.Count; i++)
+                byte[] tempSeqData = new byte[basicDerSeq.Count];
+                for (int i = 0; i < basicDerSeq.Count; i++)
                 {
                     tempSeqData[i] = basicDerSeq[i];
                 }
@@ -179,10 +179,10 @@ namespace Bio.IO.GenBank
 
             if (location.Operator == LocationOperator.Order)
             {
-                var subSequences = new List<ISequence>();
+                List<ISequence> subSequences = new List<ISequence>();
                 if (location.SubLocations.Count > 0)
                 {
-                    foreach (var loc in location.SubLocations)
+                    foreach (ILocation loc in location.SubLocations)
                     {
                         subSequences.Add(loc.GetSubSequence(sequence, referredSequences));
                     }
@@ -190,7 +190,7 @@ namespace Bio.IO.GenBank
                 else
                 {
                     basicDerSeq = new DerivedSequence(GetSubSequence(location.LocationStart, location.LocationEnd, location.Accession, location.Separator, sequence, referredSequences), false, false);
-                    var seqData = new byte[basicDerSeq.Count];
+                    byte[] seqData = new byte[basicDerSeq.Count];
                     for (long i = 0; i < basicDerSeq.Count; i++)
                     {
                         seqData[i] = basicDerSeq[i];
@@ -201,15 +201,15 @@ namespace Bio.IO.GenBank
 
                 long totalSubSequenceLength = 0;
                 long j = 0;
-                foreach (var seq in subSequences)
+                foreach (ISequence seq in subSequences)
                 {
                     totalSubSequenceLength += seq.Count;
                 }
-                var tempSeqData = new byte[totalSubSequenceLength];
+                byte[] tempSeqData = new byte[totalSubSequenceLength];
                 totalSubSequenceLength = 0;
                 IAlphabet alphabet = null;
-                var m = 0;
-                foreach (var seq in subSequences)
+                int m = 0;
+                foreach (ISequence seq in subSequences)
                 {
                     totalSubSequenceLength += seq.Count;
                     while (j < totalSubSequenceLength)
@@ -231,8 +231,8 @@ namespace Bio.IO.GenBank
             {
                 if (location.SubLocations.Count > 0)
                 {
-                    var subSequences = new List<ISequence>();
-                    foreach (var loc in location.SubLocations)
+                    List<ISequence> subSequences = new List<ISequence>();
+                    foreach (ILocation loc in location.SubLocations)
                     {
                         subSequences.Add(loc.GetSubSequence(sequence, referredSequences));
                     }
@@ -240,14 +240,14 @@ namespace Bio.IO.GenBank
 
                     long i = 0;
                     long subSeqLength = 0;
-                    foreach (var subSeq in subSequences)
+                    foreach (ISequence subSeq in subSequences)
                     {
                         subSeqLength += subSeq.Count;
                     }
-                    var seqData = new byte[subSeqLength];
+                    byte[] seqData = new byte[subSeqLength];
                     subSeqLength = 0;
-                    var m = 0;
-                    foreach (var subSeq in subSequences)
+                    int m = 0;
+                    foreach (ISequence subSeq in subSequences)
                     {
                         subSeqLength += subSeq.Count;
                         while (i < subSeqLength)
@@ -259,7 +259,7 @@ namespace Bio.IO.GenBank
                         m = 0;
                     }
 
-                    var seq = new Sequence(sequence.Alphabet,seqData);
+                    Sequence seq = new Sequence(sequence.Alphabet,seqData);
 
                     return seq;
                 }
@@ -293,11 +293,11 @@ namespace Bio.IO.GenBank
                 throw new ArgumentNullException(Properties.Resource.ParameterNameLocation);
             }
 
-            var leafLocations = location.GetLeafLocations();
-            foreach (var loc in leafLocations)
+            List<ILocation> leafLocations = location.GetLeafLocations();
+            foreach (ILocation loc in leafLocations)
             {
-                var minStart = ResolveStart(loc.StartData);
-                var maxStart = ResolveEnd(loc.StartData);
+                int minStart = ResolveStart(loc.StartData);
+                int maxStart = ResolveEnd(loc.StartData);
                 if (position >= minStart && position <= maxStart)
                 {
                     return true;
@@ -323,11 +323,11 @@ namespace Bio.IO.GenBank
                 throw new ArgumentNullException(Properties.Resource.ParameterNameLocation);
             }
 
-            var leafLocations = location.GetLeafLocations();
-            foreach (var loc in leafLocations)
+            List<ILocation> leafLocations = location.GetLeafLocations();
+            foreach (ILocation loc in leafLocations)
             {
-                var maxStart = ResolveEnd(loc.EndData);
-                var minStart = ResolveStart(loc.EndData);
+                int maxStart = ResolveEnd(loc.EndData);
+                int minStart = ResolveStart(loc.EndData);
 
                 if (position >= minStart && position <= maxStart)
                 {
@@ -351,8 +351,8 @@ namespace Bio.IO.GenBank
                 throw new ArgumentNullException(Properties.Resource.ParameterNameLocation);
             }
 
-            var leafLocations = location.GetLeafLocations();
-            foreach (var loc in leafLocations)
+            List<ILocation> leafLocations = location.GetLeafLocations();
+            foreach (ILocation loc in leafLocations)
             {
                 if (position >= loc.LocationStart && position <= loc.LocationEnd)
                 {
@@ -389,10 +389,10 @@ namespace Bio.IO.GenBank
             {
                 if (str.StartsWith(">", StringComparison.OrdinalIgnoreCase))
                 {
-                    var firstIndex = str.IndexOf(">", StringComparison.OrdinalIgnoreCase);
+                    int firstIndex = str.IndexOf(">", StringComparison.OrdinalIgnoreCase);
                     if (firstIndex != str.LastIndexOf(">", StringComparison.OrdinalIgnoreCase))
                     {
-                        var msgStr = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidStartData, str);
+                        string msgStr = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidStartData, str);
                         throw new FormatException(msgStr);
                     }
 
@@ -400,10 +400,10 @@ namespace Bio.IO.GenBank
                 }
                 else if (str.StartsWith("<", StringComparison.OrdinalIgnoreCase))
                 {
-                    var firstIndex = str.IndexOf("<", StringComparison.OrdinalIgnoreCase);
+                    int firstIndex = str.IndexOf("<", StringComparison.OrdinalIgnoreCase);
                     if (firstIndex != str.LastIndexOf("<", StringComparison.OrdinalIgnoreCase))
                     {
-                        var msgStr = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidStartData, str);
+                        string msgStr = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidStartData, str);
                         throw new FormatException(msgStr);
                     }
 
@@ -411,17 +411,17 @@ namespace Bio.IO.GenBank
                 }
                 else if (str.Contains("^"))
                 {
-                    var firstIndex = str.IndexOf("^", StringComparison.OrdinalIgnoreCase);
+                    int firstIndex = str.IndexOf("^", StringComparison.OrdinalIgnoreCase);
                     if (firstIndex != str.LastIndexOf("^", StringComparison.OrdinalIgnoreCase))
                     {
-                        var msgStr = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidStartData, str);
+                        string msgStr = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidStartData, str);
                         throw new FormatException(msgStr);
                     }
 
-                    var values = str.Split("^".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                    string[] values = str.Split("^".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                     if (values.Length != 2)
                     {
-                        var msgStr = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidStartData, str);
+                        string msgStr = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidStartData, str);
                         throw new FormatException(msgStr);
                     }
 
@@ -429,17 +429,17 @@ namespace Bio.IO.GenBank
                 }
                 else if (str.Contains("."))
                 {
-                    var firstIndex = str.IndexOf(".", StringComparison.OrdinalIgnoreCase);
+                    int firstIndex = str.IndexOf(".", StringComparison.OrdinalIgnoreCase);
                     if (firstIndex != str.LastIndexOf(".", StringComparison.OrdinalIgnoreCase))
                     {
-                        var msgStr = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidStartData, str);
+                        string msgStr = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidStartData, str);
                         throw new FormatException(msgStr);
                     }
 
-                    var values = str.Split(".".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                    string[] values = str.Split(".".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                     if (values.Length != 2)
                     {
-                        var msgStr = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidStartData, str);
+                        string msgStr = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidStartData, str);
                         throw new FormatException(msgStr);
                     }
 
@@ -447,7 +447,7 @@ namespace Bio.IO.GenBank
                 }
                 else
                 {
-                    var msgStr = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidStartData, str);
+                    string msgStr = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidStartData, str);
                     throw new FormatException(msgStr);
                 }
             }
@@ -468,10 +468,10 @@ namespace Bio.IO.GenBank
             {
                 if (str.StartsWith(">", StringComparison.OrdinalIgnoreCase))
                 {
-                    var firstIndex = str.IndexOf(">", StringComparison.OrdinalIgnoreCase);
+                    int firstIndex = str.IndexOf(">", StringComparison.OrdinalIgnoreCase);
                     if (firstIndex != str.LastIndexOf(">", StringComparison.OrdinalIgnoreCase))
                     {
-                        var msgStr = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidEndData, str);
+                        string msgStr = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidEndData, str);
                         throw new FormatException(msgStr);
                     }
 
@@ -479,10 +479,10 @@ namespace Bio.IO.GenBank
                 }
                 else if (str.StartsWith("<", StringComparison.OrdinalIgnoreCase))
                 {
-                    var firstIndex = str.IndexOf("<", StringComparison.OrdinalIgnoreCase);
+                    int firstIndex = str.IndexOf("<", StringComparison.OrdinalIgnoreCase);
                     if (firstIndex != str.LastIndexOf("<", StringComparison.OrdinalIgnoreCase))
                     {
-                        var msgStr = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidEndData, str);
+                        string msgStr = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidEndData, str);
                         throw new FormatException(msgStr);
                     }
 
@@ -490,17 +490,17 @@ namespace Bio.IO.GenBank
                 }
                 else if (str.Contains("^"))
                 {
-                    var firstIndex = str.IndexOf("^", StringComparison.OrdinalIgnoreCase);
+                    int firstIndex = str.IndexOf("^", StringComparison.OrdinalIgnoreCase);
                     if (firstIndex != str.LastIndexOf("^", StringComparison.OrdinalIgnoreCase))
                     {
-                        var msgStr = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidEndData, str);
+                        string msgStr = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidEndData, str);
                         throw new FormatException(msgStr);
                     }
 
-                    var values = str.Split("^".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                    string[] values = str.Split("^".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                     if (values.Length > 2)
                     {
-                        var msgStr = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidEndData, str);
+                        string msgStr = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidEndData, str);
                         throw new FormatException(msgStr);
                     }
 
@@ -508,17 +508,17 @@ namespace Bio.IO.GenBank
                 }
                 else if (str.Contains("."))
                 {
-                    var firstIndex = str.IndexOf(".", StringComparison.OrdinalIgnoreCase);
+                    int firstIndex = str.IndexOf(".", StringComparison.OrdinalIgnoreCase);
                     if (firstIndex != str.LastIndexOf(".", StringComparison.OrdinalIgnoreCase))
                     {
-                        var msgStr = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidEndData, str);
+                        string msgStr = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidEndData, str);
                         throw new FormatException(msgStr);
                     }
 
-                    var values = str.Split(".".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                    string[] values = str.Split(".".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                     if (values.Length > 2)
                     {
-                        var msgStr = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidEndData, str);
+                        string msgStr = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidEndData, str);
                         throw new FormatException(msgStr);
                     }
 
@@ -526,7 +526,7 @@ namespace Bio.IO.GenBank
                 }
                 else
                 {
-                    var msgStr = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidEndData, str);
+                    string msgStr = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidEndData, str);
                     throw new FormatException(msgStr);
                 }
             }
@@ -554,13 +554,13 @@ namespace Bio.IO.GenBank
                 string.Compare(sepataror, ".", StringComparison.OrdinalIgnoreCase) != 0 &&
                 !string.IsNullOrEmpty(sepataror))
             {
-                var str = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidSeparator, sepataror);
+                string str = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidSeparator, sepataror);
                 throw new ArgumentException(str);
             }
 
             if (!string.IsNullOrEmpty(accession) && (referredSequences == null || !referredSequences.ContainsKey(accession)))
             {
-                var str = string.Format(CultureInfo.CurrentCulture, Properties.Resource.AccessionSequenceNotFound, accession);
+                string str = string.Format(CultureInfo.CurrentCulture, Properties.Resource.AccessionSequenceNotFound, accession);
                 throw new ArgumentException(str);
             }
 
@@ -568,7 +568,7 @@ namespace Bio.IO.GenBank
             {
                 if (source.Alphabet != referredSequences[accession].Alphabet)
                 {
-                    var str = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidReferredAlphabet, accession);
+                    string str = string.Format(CultureInfo.CurrentCulture, Properties.Resource.InvalidReferredAlphabet, accession);
                     throw new ArgumentException(str);
                 }
 
@@ -577,15 +577,15 @@ namespace Bio.IO.GenBank
 
             // as location.start is one based where as Range accepts zero based index.
             start = start - 1;
-            var length = end - start;
+            int length = end - start;
 
             if (string.IsNullOrEmpty(sepataror) || string.Compare(sepataror, ".", StringComparison.OrdinalIgnoreCase) == 0)
             {
                 length = 1;
             }
 
-            var newSequence = source.GetSubSequence(start, length);
-            var seqData = new byte[newSequence.Count];
+            ISequence newSequence = source.GetSubSequence(start, length);
+            byte[] seqData = new byte[newSequence.Count];
             for (long i = 0; i < newSequence.Count; i++)
             {
                 seqData[i] = newSequence[i];

@@ -44,7 +44,7 @@ namespace Bio.Matrix
         {
             NewKeyToOldKey = newNameAndOldNameSequence.ToDictionary(pair => pair.Key, pair => pair.Value).AsRestrictedAccessDictionary();
 
-            var unmatchedCols = NewKeyToOldKey.Values.Except(parentMatrix.ColKeys).ToList();
+            List<TColKey> unmatchedCols = NewKeyToOldKey.Values.Except(parentMatrix.ColKeys).ToList();
             Helper.CheckCondition(unmatchedCols.Count == 0, () => string.Format(CultureInfo.InvariantCulture, Properties.Resource.ExpectedEveryRemappedColKeyToBeInOriginalMatrix, unmatchedCols.StringJoin(",")));
 
             ParentMatrix = parentMatrix;

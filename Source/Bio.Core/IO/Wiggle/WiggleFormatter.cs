@@ -51,7 +51,7 @@ namespace Bio.IO.Wiggle
                 throw new ArgumentNullException(nameof(data));
             }
 
-            using (var writer = stream.OpenWrite())
+            using (StreamWriter writer = stream.OpenWrite())
             {
                 WriteOne(writer, data);
             }
@@ -74,9 +74,9 @@ namespace Bio.IO.Wiggle
                 throw new ArgumentNullException(nameof(annotations));
             }
 
-            using (var writer = stream.OpenWrite())
+            using (StreamWriter writer = stream.OpenWrite())
             {
-                foreach (var entry in annotations)
+                foreach (WiggleAnnotation entry in annotations)
                 {
                     WriteOne(writer, entry);
                 }
@@ -92,7 +92,7 @@ namespace Bio.IO.Wiggle
         {
             // track line
             writer.Write(WiggleSchema.Track);
-            foreach (var x in annotation.Metadata)
+            foreach (KeyValuePair<string, string> x in annotation.Metadata)
                 writer.Write(" " + x.Key + "=" + (x.Value.Contains(" ") ? "\"" + x.Value + "\"" : x.Value));
 
             writer.WriteLine();
@@ -117,14 +117,14 @@ namespace Bio.IO.Wiggle
             // write data
             if (annotation.AnnotationType == WiggleAnnotationType.FixedStep)
             {
-                foreach (var item in annotation)
+                foreach (KeyValuePair<long, float> item in annotation)
                 {
                     writer.WriteLine(item.Value);
                 }
             }
             else
             {
-                foreach (var item in annotation)
+                foreach (KeyValuePair<long, float> item in annotation)
                 {
                     writer.WriteLine(item.Key + " " + item.Value);
                 }

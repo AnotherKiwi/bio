@@ -45,7 +45,12 @@ namespace Bio
         bool HasTerminations { get; }
 
         /// <summary>
-        ///     Gets a value indicating whether this alphabet supports complement or not.
+        ///     Gets a value indicating whether the alphabet is case sensitive or not.
+        /// </summary>
+        bool IsCaseSensitive { get; }
+
+        /// <summary>
+        ///     Gets a value indicating whether the alphabet supports complement or not.
         /// </summary>
         bool IsComplementSupported { get; }
 
@@ -232,12 +237,15 @@ namespace Bio
         bool TryGetTerminationSymbols(out HashSet<byte> terminationSymbols);
 
         /// <summary>
-        ///     Returns <c>true</c> if all symbols are contained in the alphabet.
+        /// 	Returns <c>true</c> if all symbols are contained in the alphabet.
         /// </summary>
         /// <param name="symbols">Symbols to be validated.</param>
-        /// <param name="offset">Offset from where validation should start.</param>
+        /// <param name="offset">The offset from which to start validating symbols.</param>
         /// <param name="length">Number of symbols to validate from the specified offset.</param>
-        /// <returns>If the validation succeeds returns <c>true</c>, else <c>false</c>.</returns>
-        bool ValidateSequence(byte[] symbols, long offset = 0, long length = -1);
+        /// <returns>
+        ///  	<see cref="bool"/>: 
+        ///  	Returns <c>true</c> if the validation succeeds, else <c>false</c>.
+        /// </returns>
+        bool ValidateSequence(byte[] symbols, long offset, long length);
     }
 }

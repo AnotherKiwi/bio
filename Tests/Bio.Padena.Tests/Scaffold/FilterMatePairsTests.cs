@@ -27,7 +27,7 @@ namespace Bio.Padena.Tests.Scaffold
         {
             const int kmerLength = 6;
             IList<ISequence> sequences = new List<ISequence>();
-            var seq = new Sequence(Alphabets.DNA, "GATCTGATAA".Select(a => (byte)a).ToArray());
+            Sequence seq = new Sequence(Alphabets.DNA, "GATCTGATAA".Select(a => (byte)a).ToArray());
             seq.ID = ">gi|263191773|ref|NG_015830.1| Homo sapiens insulin receptor substrate 1 (IRS1) on chromosome 2.X1:0.5K";
             sequences.Add(seq);
             seq = new Sequence(Alphabets.DNA, "ATCTGATAAG".Select(a => (byte)a).ToArray());
@@ -49,21 +49,21 @@ namespace Bio.Padena.Tests.Scaffold
             IList<ISequence> contigs = new List<ISequence> { new Sequence(Alphabets.DNA, "GATCTGATAAGG".Select(a => (byte)a).ToArray()), 
                 new Sequence(Alphabets.DNA, "TTTTTGATGGCA".Select(a => (byte)a).ToArray())};
 
-            var mapper = new ReadContigMapper();
-            var maps = mapper.Map(contigs, sequences, kmerLength);
+            ReadContigMapper mapper = new ReadContigMapper();
+            ReadContigMap maps = mapper.Map(contigs, sequences, kmerLength);
 
-            var mapPairedReads = new MatePairMapper();
-            var pairs = mapPairedReads.MapContigToMatePairs(sequences, maps);
+            MatePairMapper mapPairedReads = new MatePairMapper();
+            ContigMatePairs pairs = mapPairedReads.MapContigToMatePairs(sequences, maps);
 
-            var filter = new OrientationBasedMatePairFilter();
-            var contigpairedReads = filter.FilterPairedReads(pairs);
+            OrientationBasedMatePairFilter filter = new OrientationBasedMatePairFilter();
+            ContigMatePairs contigpairedReads = filter.FilterPairedReads(pairs);
             Assert.AreEqual(contigpairedReads.Values.Count, 1);
 
             Assert.IsTrue(contigpairedReads.ContainsKey(contigs[0]));
-            var map = contigpairedReads[contigs[0]];
+            Dictionary<ISequence, IList<ValidMatePair>> map = contigpairedReads[contigs[0]];
             Assert.IsTrue(map.ContainsKey(contigs[1]));
 
-            var valid = Sort(map[contigs[1]], sequences);
+            List<ValidMatePair> valid = Sort(map[contigs[1]], sequences);
             Assert.AreEqual(valid[0].ForwardReadStartPosition[0], 1);
             Assert.AreEqual(valid[0].ReverseReadReverseComplementStartPosition[0], 10);
             Assert.AreEqual(valid[0].ReverseReadStartPosition[0], 10);
@@ -82,8 +82,8 @@ namespace Bio.Padena.Tests.Scaffold
         {
             const int kmerLength = 6;
 
-            var sequences = new List<ISequence>();
-            var seq = new Sequence(Alphabets.DNA, "GATCTGATAA".Select(a => (byte)a).ToArray());
+            List<ISequence> sequences = new List<ISequence>();
+            Sequence seq = new Sequence(Alphabets.DNA, "GATCTGATAA".Select(a => (byte)a).ToArray());
             seq.ID = ">gi|263191773|ref|NG_015830.1| Homo sapiens insulin receptor substrate 1 (IRS1) on chromosome 2.X1:0.5K";
             sequences.Add(seq);
             seq = new Sequence(Alphabets.DNA, "ATCTGATAAG".Select(a => (byte)a).ToArray());
@@ -104,21 +104,21 @@ namespace Bio.Padena.Tests.Scaffold
             IList<ISequence> contigs = new List<ISequence> { new Sequence(Alphabets.DNA, "GATCTGATAAGG".Select(a => (byte)a).ToArray()), 
                 new Sequence(Alphabets.DNA, "TGCCATCAAAAA".Select(a => (byte)a).ToArray())};
 
-            var mapper = new ReadContigMapper();
-            var maps = mapper.Map(contigs, sequences, kmerLength);
+            ReadContigMapper mapper = new ReadContigMapper();
+            ReadContigMap maps = mapper.Map(contigs, sequences, kmerLength);
 
-            var mapPairedReads = new MatePairMapper();
-            var pairs = mapPairedReads.MapContigToMatePairs(sequences, maps);
+            MatePairMapper mapPairedReads = new MatePairMapper();
+            ContigMatePairs pairs = mapPairedReads.MapContigToMatePairs(sequences, maps);
 
-            var filter = new OrientationBasedMatePairFilter();
-            var contigpairedReads = filter.FilterPairedReads(pairs);
+            OrientationBasedMatePairFilter filter = new OrientationBasedMatePairFilter();
+            ContigMatePairs contigpairedReads = filter.FilterPairedReads(pairs);
             Assert.AreEqual(contigpairedReads.Values.Count, 1);
 
             Assert.IsTrue(contigpairedReads.ContainsKey(contigs[0]));
-            var map = contigpairedReads[contigs[0]];
+            Dictionary<ISequence, IList<ValidMatePair>> map = contigpairedReads[contigs[0]];
             Assert.IsTrue(map.ContainsKey(contigs[1]));
 
-            var valid = Sort(map[contigs[1]], sequences);
+            List<ValidMatePair> valid = Sort(map[contigs[1]], sequences);
             Assert.AreEqual(valid[0].ForwardReadStartPosition[0], 1);
             Assert.AreEqual(valid[0].ReverseReadReverseComplementStartPosition[0], 10);
             Assert.AreEqual(valid[0].ReverseReadStartPosition[0], 10);

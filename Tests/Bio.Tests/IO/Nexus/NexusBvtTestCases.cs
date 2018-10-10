@@ -123,7 +123,7 @@ namespace Bio.TestAutomation.IO.Nexus
         [Category("Priority0")]
         public void ValidateNexusParserProperties()
         {
-            var parser = new NexusParser();
+            NexusParser parser = new NexusParser();
             Assert.AreEqual(
                 utilityObj.xmlUtil.GetTextValue(Constants.NexusPropertyNode,
                 Constants.NexusDescriptionNode),
@@ -144,12 +144,12 @@ namespace Bio.TestAutomation.IO.Nexus
         [Category("Priority0")]
         public void NexusParserValidateCharBlock()
         {
-            var filePath = utilityObj.xmlUtil.GetTextValue(
+            string filePath = utilityObj.xmlUtil.GetTextValue(
                     Constants.SimpleNexusCharBlockNode,
                     Constants.FilePathNode).TestDir();
-            var parser = new NexusParser();
+            NexusParser parser = new NexusParser();
 
-            var alignment = parser.Parse(filePath);
+            IEnumerable<ISequenceAlignment> alignment = parser.Parse(filePath);
 
             Assert.AreEqual(1, alignment.Count());
         }
@@ -167,13 +167,13 @@ namespace Bio.TestAutomation.IO.Nexus
         void ParserGeneralTestCases(string nodeName, AdditionalParameters addParam)
         {
             // Gets the Filename
-            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
 
             Assert.IsFalse(string.IsNullOrEmpty(filePath));
             ApplicationLog.WriteLine($"Nexus Parser BVT: Reading the File from location '{filePath}'");
 
             // Get the rangelist after parsing.
-            var parserObj = new NexusParser();
+            NexusParser parserObj = new NexusParser();
 
             IEnumerable<ISequenceAlignment> sequenceAlignmentList = null;
             ISequenceAlignment sequenceAlignment = null;
@@ -189,14 +189,14 @@ namespace Bio.TestAutomation.IO.Nexus
                     sequenceAlignment = parserObj.ParseOne(filePath);
                     break;
                 case AdditionalParameters.ParseTextReader:
-                    using (var strRdrObj = File.OpenRead(filePath))
+                    using (FileStream strRdrObj = File.OpenRead(filePath))
                     {
                         sequenceAlignmentList = parserObj.Parse(strRdrObj);
                         sequenceAlignment = sequenceAlignmentList.First();
                     }
                     break;
                 case AdditionalParameters.ParseOneTextReader:
-                    using (var strRdrObj = File.OpenRead(filePath))
+                    using (FileStream strRdrObj = File.OpenRead(filePath))
                     {
                         sequenceAlignment = parserObj.ParseOne(strRdrObj);
                     }
@@ -206,10 +206,10 @@ namespace Bio.TestAutomation.IO.Nexus
             }
 
             // Gets all the expected values from xml.
-            var expectedAlignmentList = new List<Dictionary<string, string>>();
-            var expectedAlignmentObj = new Dictionary<string, string>();
+            List<Dictionary<string, string>> expectedAlignmentList = new List<Dictionary<string, string>>();
+            Dictionary<string, string> expectedAlignmentObj = new Dictionary<string, string>();
 
-            var expectedAlignmentNodes = utilityObj.xmlUtil.GetNode(nodeName, Constants.ExpectedAlignmentNode);
+            XElement expectedAlignmentNodes = utilityObj.xmlUtil.GetNode(nodeName, Constants.ExpectedAlignmentNode);
             IList<XNode> nodes = expectedAlignmentNodes.Nodes().ToList();
 
             //Get all the values from the elements in the node.
@@ -239,12 +239,12 @@ namespace Bio.TestAutomation.IO.Nexus
                 return false;
             }
 
-            var alignmentIndex = 0;
+            int alignmentIndex = 0;
 
             // Validate each output alignment
-            foreach (var alignment in actualOutput)
+            foreach (ISequenceAlignment alignment in actualOutput)
             {
-                var expectedAlignment =
+                Dictionary<string, string> expectedAlignment =
                     expectedOutput[alignmentIndex];
 
                 foreach (Sequence actualSequence in alignment.AlignedSequences[0].Sequences)

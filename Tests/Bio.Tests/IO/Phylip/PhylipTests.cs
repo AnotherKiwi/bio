@@ -23,12 +23,12 @@ namespace Bio.Tests.IO.Phylip
         [Category("Priority0")]
         public void PhylipParse()
         {
-            var filepath = @"TestUtils\Phylip\dna.phy".TestDir();
+            string filepath = @"TestUtils\Phylip\dna.phy".TestDir();
             Assert.IsTrue(File.Exists(filepath));
 
             IList<Dictionary<string, string>> expectedOutput = new List<Dictionary<string, string>>();
 
-            var expectedAlignment = new Dictionary<string, string>
+            Dictionary<string, string> expectedAlignment = new Dictionary<string, string>
             {
                 ["Cow"] = "ATGGCATATCCCATACAACTAGGATTCCAAGATGCAACATCACCAATCATAGAAGAACTA"
                     + "CTTCACTTTCATGACCACACGCTAATAATTGTCTTCTTAATTAGCTCATTAGTACTTTAC"
@@ -181,12 +181,12 @@ namespace Bio.Tests.IO.Phylip
         [Category("Priority0")]
         public void PhylipParseOne()
         {
-            var filepath = @"TestUtils\Phylip\dna.phy".TestDir();
+            string filepath = @"TestUtils\Phylip\dna.phy".TestDir();
             Assert.IsTrue(File.Exists(filepath));
 
             IList<Dictionary<string, string>> expectedOutput = new List<Dictionary<string, string>>();
 
-            var expectedAlignment = new Dictionary<string, string>
+            Dictionary<string, string> expectedAlignment = new Dictionary<string, string>
             {
                 ["Cow"] = "ATGGCATATCCCATACAACTAGGATTCCAAGATGCAACATCACCAATCATAGAAGAACTA"
                     + "CTTCACTTTCATGACCACACGCTAATAATTGTCTTCTTAATTAGCTCATTAGTACTTTAC"
@@ -321,7 +321,7 @@ namespace Bio.Tests.IO.Phylip
 
             expectedOutput.Add(expectedAlignment);
 
-            var actualOutput = new List<ISequenceAlignment>();
+            List<ISequenceAlignment> actualOutput = new List<ISequenceAlignment>();
             ISequenceAlignment actualAlignment = null;
             ISequenceAlignmentParser parser = new PhylipParser();
 
@@ -340,12 +340,12 @@ namespace Bio.Tests.IO.Phylip
         [Category("Priority0")]
         public void PhylipParsePrimates()
         {
-            var filepath = @"TestUtils\Phylip\primates.phy".TestDir();
+            string filepath = @"TestUtils\Phylip\primates.phy".TestDir();
             Assert.IsTrue(File.Exists(filepath));
 
             IList<Dictionary<string, string>> expectedOutput = new List<Dictionary<string, string>>();
 
-            var expectedAlignment = new Dictionary<string, string>
+            Dictionary<string, string> expectedAlignment = new Dictionary<string, string>
             {
                 ["Mouse"] = "ACCAAAAAAACATCCAAACACCAACCCCAGCCCTTACGCAATAGCCATACAAAGAATATT"
                     + "ATACTACTAAAAACTCAAATTAACTCTTTAATCTTTATACAACATTCCACCAACCTATCC"
@@ -446,10 +446,10 @@ namespace Bio.Tests.IO.Phylip
                 return false;
             }
 
-            var alignmentIndex = 0;
-            foreach (var alignment in actualOutput)
+            int alignmentIndex = 0;
+            foreach (ISequenceAlignment alignment in actualOutput)
             {
-                var expcetedAlignment = expectedOutput[alignmentIndex];
+                Dictionary<string, string> expcetedAlignment = expectedOutput[alignmentIndex];
 
                 foreach (Sequence actualSequence in alignment.AlignedSequences[0].Sequences)
                 {

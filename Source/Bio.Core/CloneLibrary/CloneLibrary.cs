@@ -137,7 +137,7 @@ namespace Bio
                 throw new ArgumentException(Properties.Resource.LibraryInvalidParameters);
             }
 
-            var library = new CloneLibraryInformation()
+            CloneLibraryInformation library = new CloneLibraryInformation()
             {
                 LibraryName = libraryName,
                 MeanLengthOfInsert = mean,
@@ -156,13 +156,13 @@ namespace Bio
         /// </summary>
         private void ReadLibrary()
         {
-            var libData = typeof(CloneLibrary).GetTypeInfo().Assembly.GetManifestResourceStream("Bio.CloneLibrary.Resources.Library.txt");
+            Stream libData = typeof(CloneLibrary).GetTypeInfo().Assembly.GetManifestResourceStream("Bio.CloneLibrary.Resources.Library.txt");
             if (libData == null)
                 throw new Exception("Failed to load Clone Library data from resources.");
 
             using (TextReader reader = new StreamReader(libData))
             {
-                var library = reader.ReadLine();
+                string library = reader.ReadLine();
                 while (!string.IsNullOrEmpty(library))
                 {
                     Parse(library);
@@ -177,8 +177,8 @@ namespace Bio
         /// <param name="library">Name of Library.</param>
         private void Parse(string library)
         {
-            var libraryInformation = library.Split(new char[] { ' ' }, 3);
-            var information = new CloneLibraryInformation()
+            string[] libraryInformation = library.Split(new char[] { ' ' }, 3);
+            CloneLibraryInformation information = new CloneLibraryInformation()
             {
                 LibraryName = libraryInformation[0],
                 MeanLengthOfInsert = float.Parse(libraryInformation[1], CultureInfo.InvariantCulture),

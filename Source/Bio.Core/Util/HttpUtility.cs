@@ -84,7 +84,7 @@ namespace Bio.Util
                 return str;
             }
 
-            var bytes = enc.GetBytes(str);
+            byte[] bytes = enc.GetBytes(str);
             return new string(UrlEncodeToBytes(bytes, 0, bytes.Length).Select(b => (char)b).ToArray());
         }
         #endregion
@@ -97,7 +97,7 @@ namespace Bio.Util
             if (bytes == null)
                 return null;
 
-            var len = bytes.Length;
+            int len = bytes.Length;
             if (len == 0)
                 return new byte[0];
 
@@ -107,10 +107,10 @@ namespace Bio.Util
             if (count < 0 || count > len - offset)
                 throw new ArgumentOutOfRangeException(nameof(count));
 
-            using (var result = new MemoryStream(count))
+            using (MemoryStream result = new MemoryStream(count))
             {
-                var end = offset + count;
-                for (var i = offset; i < end; i++)
+                int end = offset + count;
+                for (int i = offset; i < end; i++)
                     UrlEncodeChar((char)bytes[i], result, false);
 
                 return result.ToArray();
@@ -125,7 +125,7 @@ namespace Bio.Util
                 if (!isUnicode)
                     throw new ArgumentOutOfRangeException(nameof(ch), ch, Properties.Resource.ParamCHmustbeLessThan256);
                 int idx;
-                var i = (int)ch;
+                int i = (int)ch;
 
                 result.WriteByte((byte)'%');
                 result.WriteByte((byte)'u');
@@ -165,7 +165,7 @@ namespace Bio.Util
                 else
                     result.WriteByte((byte)'%');
 
-                var idx = ((int)ch) >> 4;
+                int idx = ((int)ch) >> 4;
                 result.WriteByte((byte)hexChars[idx]);
                 idx = ((int)ch) & 0x0F;
                 result.WriteByte((byte)hexChars[idx]);

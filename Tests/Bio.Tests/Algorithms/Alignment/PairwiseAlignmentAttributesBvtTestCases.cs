@@ -23,16 +23,16 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority0")]
         public void ValidatePairwiseAlignmentAttributes()
         {
-            var pwAlignAttrib = new PairwiseAlignmentAttributes();
-            var attributes = pwAlignAttrib.Attributes;
+            PairwiseAlignmentAttributes pwAlignAttrib = new PairwiseAlignmentAttributes();
+            Dictionary<string, AlignmentInfo> attributes = pwAlignAttrib.Attributes;
 
-            var similarityMatrixObj = attributes["SIMILARITYMATRIX"];
-            var gapOpenCostObj = attributes["GAPOPENCOST"];
-            var gapExtensionCostObj = attributes["GAPEXTENSIONCOST"];
+            AlignmentInfo similarityMatrixObj = attributes["SIMILARITYMATRIX"];
+            AlignmentInfo gapOpenCostObj = attributes["GAPOPENCOST"];
+            AlignmentInfo gapExtensionCostObj = attributes["GAPEXTENSIONCOST"];
 
             Assert.AreEqual("Similarity Matrix", similarityMatrixObj.Name);
 
-            var validator = new StringListValidator(
+            StringListValidator validator = new StringListValidator(
                 "Diagonal (Match x Mismatch)",
                 SimilarityMatrix.StandardSimilarityMatrix.AmbiguousDna.ToString(),
                 SimilarityMatrix.StandardSimilarityMatrix.AmbiguousRna.ToString(),

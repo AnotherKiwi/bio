@@ -14,7 +14,7 @@ namespace Bio.Padena.Tests
         /// <returns>List of sequences</returns>
         public static List<ISequence> GetTinyReads()
         {
-            var reads = new List<string>
+            List<string> reads = new List<string>
             {
                 "ATGCC",
                 "TCCTA",
@@ -32,7 +32,7 @@ namespace Bio.Padena.Tests
         public static List<ISequence> GetSmallReads()
         {
             // Sequence to assemble: GATGCCTCCTATCGATCGTCGATGC
-            var reads = new List<string>
+            List<string> reads = new List<string>
             {
                 "GATGCCTCCTAT",
                 "CCTCCTATCGA",
@@ -54,7 +54,7 @@ namespace Bio.Padena.Tests
         public static List<ISequence> GetDanglingReads()
         {
             // Sequence to assemble: ATCGCTAGCATCGAACGATCATTA
-            var reads = new List<string>
+            List<string> reads = new List<string>
             {
                 "ATCGCTAGCATCG",
                 "CTAGCATCGAAC",
@@ -77,7 +77,7 @@ namespace Bio.Padena.Tests
         public static List<ISequence> GetRedundantPathReads()
         {
             // Sequence to assemble: ATGCCTCCTATCTTAGCGATGCGGTGT
-            var reads = new List<string>
+            List<string> reads = new List<string>
             {
                 "ATGCCTCCTAT",
                 "CCTCCTATCTT",
@@ -101,8 +101,8 @@ namespace Bio.Padena.Tests
         /// </summary>
         public static List<ISequence> GetReadsForScaffolds()
         {
-            var sequences = new List<ISequence>();
-            var seq = new Sequence(Alphabets.DNA, "ATGCCTC".Select(a => (byte)a).ToArray());
+            List<ISequence> sequences = new List<ISequence>();
+            Sequence seq = new Sequence(Alphabets.DNA, "ATGCCTC".Select(a => (byte)a).ToArray());
             seq.ID = ">10.x1:abc";
             sequences.Add(seq);
             seq = new Sequence(Alphabets.DNA, "CCTCCTAT".Select(a => (byte)a).ToArray());

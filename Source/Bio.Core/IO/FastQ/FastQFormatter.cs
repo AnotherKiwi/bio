@@ -77,7 +77,7 @@ namespace Bio.IO.FastQ
         /// <param name="data">QualitativeSequence to write.</param>
         void IFormatter<ISequence>.Format(Stream stream, ISequence data)
         {
-            var qualitativeSequence = data as QualitativeSequence;
+            QualitativeSequence qualitativeSequence = data as QualitativeSequence;
             if (qualitativeSequence == null)
             {
                 throw new ArgumentNullException(nameof(data), Properties.Resource.FastQ_NotAQualitativeSequence);
@@ -103,9 +103,9 @@ namespace Bio.IO.FastQ
                 throw new ArgumentNullException(nameof(sequences));
             }
 
-            using (var writer = stream.OpenWrite())
+            using (StreamWriter writer = stream.OpenWrite())
             {
-                foreach (var sequence in sequences.OfType<QualitativeSequence>())
+                foreach (QualitativeSequence sequence in sequences.OfType<QualitativeSequence>())
                 {
                     Format(writer, sequence);
                 }
@@ -129,7 +129,7 @@ namespace Bio.IO.FastQ
                 throw new ArgumentNullException(nameof(qualitativeSequence));
             }
 
-            using(var writer = stream.OpenWrite())
+            using(StreamWriter writer = stream.OpenWrite())
             {
                 Format(writer, qualitativeSequence);
             }
@@ -142,21 +142,21 @@ namespace Bio.IO.FastQ
         /// <param name="qualitativeSequence"></param>
         private void Format(StreamWriter writer, IQualitativeSequence qualitativeSequence)
         {
-            var header = qualitativeSequence.ID;
+            string header = qualitativeSequence.ID;
             const string LengthStr = " length=";
 
             if (qualitativeSequence.ID.Contains(LengthStr))
             {
-                var startIndex = qualitativeSequence.ID.LastIndexOf(LengthStr, StringComparison.OrdinalIgnoreCase);
+                int startIndex = qualitativeSequence.ID.LastIndexOf(LengthStr, StringComparison.OrdinalIgnoreCase);
                 header = header.Substring(0, startIndex + 8) + qualitativeSequence.Count;
             }
 
             // Write to stream.
             writer.WriteLine("@" + header);
-            var sequenceBytes = qualitativeSequence.ToArray();
+            byte[] sequenceBytes = qualitativeSequence.ToArray();
             writer.WriteLine(Encoding.UTF8.GetString(sequenceBytes, 0, sequenceBytes.Length));
             writer.WriteLine("+" + header);
-            var qualityValues = QualitativeSequence.ConvertEncodedQualityScore(qualitativeSequence.FormatType, FormatType, qualitativeSequence.GetEncodedQualityScores());
+            byte[] qualityValues = QualitativeSequence.ConvertEncodedQualityScore(qualitativeSequence.FormatType, FormatType, qualitativeSequence.GetEncodedQualityScores());
             writer.WriteLine(Encoding.UTF8.GetString(qualityValues, 0, qualityValues.Length));
 
             if (AutoFlush)

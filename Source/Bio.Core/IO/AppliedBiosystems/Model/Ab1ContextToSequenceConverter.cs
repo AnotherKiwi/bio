@@ -20,15 +20,15 @@ namespace Bio.IO.AppliedBiosystems.Model
         /// <returns></returns>
         public static ISequence Convert(IParserContext context)
         {
-            var sequence = GetSequence(context);
-            var metadata = GetAb1Metadata(context);
+            ISequence sequence = GetSequence(context);
+            Ab1Metadata metadata = GetAb1Metadata(context);
             Ab1Metadata.SetAb1Data(sequence, metadata);
             return sequence;
         }
 
         private static Ab1Metadata GetAb1Metadata(IParserContext context)
         {
-            var metadata = new Ab1Metadata();
+            Ab1Metadata metadata = new Ab1Metadata();
             LoadPeakLocations(metadata, context);
             LoadSequenceConfidence(metadata, context);
             LoadColorWheelData(metadata, context);
@@ -37,12 +37,12 @@ namespace Bio.IO.AppliedBiosystems.Model
 
         private static void LoadColorWheelData(Ab1Metadata metadata, IParserContext context)
         {
-            var nucleotideIndices = GetNucleotideDataIndex(context);
-            var dataItems = context.DataItems.OfType<ShortDataItem>();
+            List<KeyValuePair<byte, int>> nucleotideIndices = GetNucleotideDataIndex(context);
+            IEnumerable<ShortDataItem> dataItems = context.DataItems.OfType<ShortDataItem>();
             nucleotideIndices.ForEach(
                 pair =>
                     {
-                        var item =
+                        ShortDataItem item =
                             dataItems.First(i => i.Entry.TagNumber == pair.Value && i.Entry.TagName == Constants.DataTagName);
                         metadata.SetColorData(
                             pair.Key,
@@ -72,7 +72,7 @@ namespace Bio.IO.AppliedBiosystems.Model
         /// <returns></returns>
         private static ISequence GetSequence(IParserContext context)
         {
-            var value = context.DataItems
+            char[] value = context.DataItems
                 .OfType<CharDataItem>()
                 .First(item => item.Entry.TagName == Constants.SequenceTagName)
                 .Value;
@@ -87,20 +87,20 @@ namespace Bio.IO.AppliedBiosystems.Model
         /// <returns></returns>
         private static List<KeyValuePair<byte, int>> GetNucleotideDataIndex(IParserContext context)
         {
-            var value = context.DataItems
+            char[] value = context.DataItems
                 .OfType<CharDataItem>()
                 .First(item => item.Entry.TagName == Constants.SequencingOrderTagName)
                 .Value;
 
-            var items = new List<KeyValuePair<byte, int>>();
+            List<KeyValuePair<byte, int>> items = new List<KeyValuePair<byte, int>>();
 
             // 
             // Analyzed color wheel data is contained in data tags 9-12
             //
 
-            var alphabetMap = DnaAlphabet.Instance.GetSymbolValueMap();
+            byte[] alphabetMap = DnaAlphabet.Instance.GetSymbolValueMap();
 
-            var index = new[] {9};
+            int[] index = new[] {9};
             value.ToList().ForEach(
                 c =>
                     {

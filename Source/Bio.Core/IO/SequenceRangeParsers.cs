@@ -50,10 +50,10 @@ namespace Bio.IO
         static SequenceRangeParsers()
         {
             // get the registered parsers
-            var registeredParsers = GetSequenceRangeParsers();
+            IEnumerable<ISequenceRangeParser> registeredParsers = GetSequenceRangeParsers();
             if (null != registeredParsers)
             {
-                foreach (var parser in registeredParsers.Where(parser => 
+                foreach (ISequenceRangeParser parser in registeredParsers.Where(parser => 
                         parser != null && KnownParsers.All(sp => string.Compare(sp.Name, parser.Name, StringComparison.OrdinalIgnoreCase) != 0)))
                 {
                     KnownParsers.Add(parser);
@@ -67,14 +67,14 @@ namespace Bio.IO
         /// <returns></returns>
         private static IEnumerable<ISequenceRangeParser> GetSequenceRangeParsers()
         {
-            var registeredParsers = new List<ISequenceRangeParser>();
-            var implementations = BioRegistrationService.LocateRegisteredParts<ISequenceRangeParser>();
+            List<ISequenceRangeParser> registeredParsers = new List<ISequenceRangeParser>();
+            IEnumerable<Type> implementations = BioRegistrationService.LocateRegisteredParts<ISequenceRangeParser>();
 
-            foreach (var impl in implementations)
+            foreach (Type impl in implementations)
             {
                 try
                 {
-                    var parser = Activator.CreateInstance(impl) as ISequenceRangeParser;
+                    ISequenceRangeParser parser = Activator.CreateInstance(impl) as ISequenceRangeParser;
                     if (parser != null)
                         registeredParsers.Add(parser);
                 }

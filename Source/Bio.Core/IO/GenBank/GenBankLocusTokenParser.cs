@@ -27,15 +27,15 @@ namespace Bio.IO.GenBank
       {
          line = locusText;
 
-         var locus = new GenBankLocusInfo();
-         var tokenParsers = GetLocusTokenParsers(locus);
+         GenBankLocusInfo locus = new GenBankLocusInfo();
+         List<Func<string, bool>> tokenParsers = GetLocusTokenParsers(locus);
 
-         foreach (var token in line.Split(' '))
+         foreach (string token in line.Split(' '))
          {
             if (string.IsNullOrEmpty(token)) continue;
 
-            var token1 = token;
-            var usedParser = tokenParsers.FirstOrDefault(parser => parser(token1));
+            string token1 = token;
+            Func<string, bool> usedParser = tokenParsers.FirstOrDefault(parser => parser(token1));
 
             if (usedParser == null)
             {
@@ -48,7 +48,7 @@ namespace Bio.IO.GenBank
 
          if (String.IsNullOrEmpty(locus.SequenceType))
          {
-            var message = String.Format(Properties.Resource.GenBankUnknownLocusFormat, line);
+            string message = String.Format(Properties.Resource.GenBankUnknownLocusFormat, line);
             Trace.Report(message);
             throw new Exception(message);
          }
@@ -109,7 +109,7 @@ namespace Bio.IO.GenBank
                      // as ds-DNA so the parsing occurs on one token.
                      // 
 
-                     var s = token.ToLowerInvariant();
+                     string s = token.ToLowerInvariant();
 
                      locus.Strand = FirstOrDefault(
                         LocusConstants.SequenceStrandTypes,
@@ -153,7 +153,7 @@ namespace Bio.IO.GenBank
                   token =>
                   {
                      int length;
-                     var result = int.TryParse(token, out length);
+                     bool result = int.TryParse(token, out length);
                      if (result)
                         locus.SequenceLength = length;
                      return result;
@@ -178,7 +178,7 @@ namespace Bio.IO.GenBank
                   token =>
                   {
                      DateTime dateTime;
-                     var result = DateTime.TryParse(token, out dateTime);
+                     bool result = DateTime.TryParse(token, out dateTime);
                      if (result)
                         locus.Date = dateTime;
                      return result;
@@ -198,7 +198,7 @@ namespace Bio.IO.GenBank
 
       private static T FirstOrDefault<T>(IEnumerable<T> list, Func<T, bool> predicate, T defaultValue)
       {
-         foreach (var item in list.Where(predicate))
+         foreach (T item in list.Where(predicate))
          {
             return item;
          }

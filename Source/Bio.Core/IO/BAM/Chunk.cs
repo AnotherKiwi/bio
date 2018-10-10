@@ -61,7 +61,7 @@ namespace Bio.IO.BAM
                 throw new ArgumentNullException(nameof(y));
             }
 
-            var result = x.ChunkStart.CompareTo(y.ChunkStart);
+            int result = x.ChunkStart.CompareTo(y.ChunkStart);
             if (result == 0)
             {
                 // compare y to x so that if the x.ChunkEnd is more than Y.ChunkEnd then X should appear first.

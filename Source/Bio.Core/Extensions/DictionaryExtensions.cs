@@ -97,7 +97,7 @@ namespace Bio.Util
             TValue value;
             if (!dictionary.TryGetValue(key, out value))
             {
-                var defaultValue = defaultValueConstructor();
+                TValue defaultValue = defaultValueConstructor();
                 if (insertIfMissing)
                 {
                     dictionary.Add(key, defaultValue);

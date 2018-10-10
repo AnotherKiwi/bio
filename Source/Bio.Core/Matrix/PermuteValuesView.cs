@@ -73,7 +73,7 @@ namespace Bio.Matrix
             _indexOfParentCol = colIndexSequence.ToList();
 
             Helper.CheckCondition(IndexOfParentCol.Count == ParentMatrix.ColCount, () => Properties.Resource.ExpectedEveryColumnToBeAMemberOfThePermutation);
-            var rangeCollection = new RangeCollection(colIndexSequence);
+            RangeCollection rangeCollection = new RangeCollection(colIndexSequence);
             Helper.CheckCondition(rangeCollection.IsComplete(0, ParentMatrix.ColCount - 1), () => Properties.Resource.ExpectedEveryColumnToBeUsedOnceInThePermuation);
         }
 

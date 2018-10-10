@@ -10,6 +10,8 @@ using System.Text;
 
 using Bio.IO.FastA;
 using Bio.IO.Newick;
+using Bio.Phylogenetics;
+using Bio.SimilarityMatrices;
 
 namespace Bio.Web.Selectome
 {
@@ -59,11 +61,11 @@ namespace Bio.Web.Selectome
         {
             //make a URL like
             //http://selectome.unil.ch/wwwtmp/ENSGT00550000074556/Euteleostomi/ENSGT00550000074556.Euteleostomi.003.nhx
-            var treePrefix = "." + new String('0', 3 - vetebrateQueryResult.RelatedLink.SubTree.Length)+vetebrateQueryResult.RelatedLink.SubTree;
-            var url = SelectomeConstantsAndEnums.BaseSelectomeWebsite+"wwwtmp/"+vetebrateQueryResult.RelatedLink.Tree+"/"+SelectomeConstantsAndEnums.VertebratesGroupName+"/"
+            string treePrefix = "." + new String('0', 3 - vetebrateQueryResult.RelatedLink.SubTree.Length)+vetebrateQueryResult.RelatedLink.SubTree;
+            string url = SelectomeConstantsAndEnums.BaseSelectomeWebsite+"wwwtmp/"+vetebrateQueryResult.RelatedLink.Tree+"/"+SelectomeConstantsAndEnums.VertebratesGroupName+"/"
                 +vetebrateQueryResult.RelatedLink.Tree+"."+SelectomeConstantsAndEnums.VertebratesGroupName+treePrefix+"."+suffix;
 
-            var reqUri = new Uri(url);
+            Uri reqUri = new Uri(url);
             return await new HttpClient().GetStringAsync(reqUri);
         }
         /// <summary>
@@ -72,7 +74,7 @@ namespace Bio.Web.Selectome
         /// <returns></returns>
         public double GetMaskedBlosum90AlignmentScore()
         {
-            var blosum = new SimilarityMatrices.SimilarityMatrix(SimilarityMatrices.SimilarityMatrix.StandardSimilarityMatrix.Blosum90);
+            SimilarityMatrix blosum = new SimilarityMatrices.SimilarityMatrix(SimilarityMatrices.SimilarityMatrix.StandardSimilarityMatrix.Blosum90);
             return MultiSequenceAlignment.MultipleAlignmentScoreFunction(MaskedAminoAcidAlignment.Sequences.ToList(), blosum, -5, -2);
         }
 
@@ -82,7 +84,7 @@ namespace Bio.Web.Selectome
         /// <returns></returns>
         public double GetUnmaskedBlosum90AlignmentScore()
         {
-            var blosum = new SimilarityMatrices.SimilarityMatrix(SimilarityMatrices.SimilarityMatrix.StandardSimilarityMatrix.Blosum90);
+            SimilarityMatrix blosum = new SimilarityMatrices.SimilarityMatrix(SimilarityMatrices.SimilarityMatrix.StandardSimilarityMatrix.Blosum90);
             return MultiSequenceAlignment.MultipleAlignmentScoreFunction(UnmaskedAminoAcidAlignment.Sequences.ToList(), blosum, -5, -2);
         }
         /// <summary>
@@ -95,9 +97,9 @@ namespace Bio.Web.Selectome
                 if (vetebrateTree == null)
                 {
                     //make the tree
-                    var treeString = GetStringFromURLRequest("nhx").Result;
-                    var np = new NewickParser();
-                    var tmpTree = np.Parse(new StringBuilder(treeString));
+                    string treeString = GetStringFromURLRequest("nhx").Result;
+                    NewickParser np = new NewickParser();
+                    Tree tmpTree = np.Parse(new StringBuilder(treeString));
                     vetebrateTree = new SelectomeTree(tmpTree);
                 }
                 return vetebrateTree;
@@ -111,8 +113,8 @@ namespace Bio.Web.Selectome
             get
             {
                 //make the tree
-                var treeString = GetStringFromURLRequest("nhx").Result;
-                var np = new NewickParser();
+                string treeString = GetStringFromURLRequest("nhx").Result;
+                NewickParser np = new NewickParser();
                 {
                     return np.Parse(new StringBuilder(treeString));
                 }
@@ -170,9 +172,9 @@ namespace Bio.Web.Selectome
         {
             if (msa == null)
             {
-                var alignmentString = GetStringFromURLRequest(suffix).Result;
-                var parser = new FastAParser { Alphabet = alphabet };
-                var seqs = parser.Parse(new MemoryStream(Encoding.Unicode.GetBytes(alignmentString)));
+                string alignmentString = GetStringFromURLRequest(suffix).Result;
+                FastAParser parser = new FastAParser { Alphabet = alphabet };
+                IEnumerable<ISequence> seqs = parser.Parse(new MemoryStream(Encoding.Unicode.GetBytes(alignmentString)));
                 msa = new MultiSequenceAlignment(seqs.ToList());
             }
         }

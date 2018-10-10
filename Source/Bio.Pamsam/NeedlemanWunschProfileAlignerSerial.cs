@@ -107,7 +107,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// </summary>
         protected override void SetRowBoundaryConditionSimple()
         {
-            for (var row = 0; row < _nRows; row++)
+            for (int row = 0; row < _nRows; row++)
             {
                 _FScore[row] = row * _gapOpenPenalty;
                 _FSource[row] = SourceDirection.Up;
@@ -137,7 +137,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// </summary>
         protected override void SetRowBoundaryConditionAffine()
         {
-            for (var row = 0; row < _nRows; row++)
+            for (int row = 0; row < _nRows; row++)
             {
                 _IxGapScore[row] = int.MinValue / 2;
                 if (row == 0)
@@ -196,9 +196,9 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         {
             // For NW, aligned sequence will be at least as long as longest input sequence.
             // May be longer if there are gaps in both aligned sequences.
-            var guessLen = Math.Max(_a.Length, _b.Length);
-            var aAlignedList = new List<int>(guessLen);
-            var bAlignedList = new List<int>(guessLen);
+            int guessLen = Math.Max(_a.Length, _b.Length);
+            List<int> aAlignedList = new List<int>(guessLen);
+            List<int> bAlignedList = new List<int>(guessLen);
 
             // Start at the bottom left element of F and work backwards until we get to upper left
             int col, row, cell;
@@ -244,7 +244,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
 
                     default:
                         {
-                            var message = "NeedlemanWunschAligner: Bad source in Traceback.";
+                            string message = "NeedlemanWunschAligner: Bad source in Traceback.";
                             Trace.Report(message);
                             throw new Exception(message);
                         }
@@ -254,7 +254,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             // Prepare solution, copy diagnostic data, turn aligned sequences around, etc
             // Be nice, turn aligned solutions around so that they match the input sequences
             int i, j; // utility indices used to reverse aligned sequences
-            var len = aAlignedList.Count;
+            int len = aAlignedList.Count;
             aAligned = new int[len];
             bAligned = new int[len];
             for (i = 0, j = len - 1; i < len; i++, j--)

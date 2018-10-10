@@ -35,7 +35,7 @@ namespace Bio.Padena.Tests.Scaffold
             const int dangleThreshold = 3;
             const int redundantThreshold = 6;
 
-            var sequences = new List<ISequence>()
+            List<ISequence> sequences = new List<ISequence>()
             {
                 new Sequence(Alphabets.DNA, "ATGCCTC") {ID = "0"},
                 new Sequence(Alphabets.DNA, "CCTCCTAT") {ID = "1"},
@@ -70,27 +70,27 @@ namespace Bio.Padena.Tests.Scaffold
             RemoveRedundancy();
 
             IList<ISequence> contigs = BuildContigs().ToList();
-            var mapper = new ReadContigMapper();
+            ReadContigMapper mapper = new ReadContigMapper();
 
-            var maps = mapper.Map(contigs, sequences, kmerLengthConst);
-            var builder = new MatePairMapper();
+            ReadContigMap maps = mapper.Map(contigs, sequences, kmerLengthConst);
+            MatePairMapper builder = new MatePairMapper();
             CloneLibrary.Instance.AddLibrary("abc", 5, 15);
-            var pairedReads = builder.MapContigToMatePairs(sequences, maps);
+            ContigMatePairs pairedReads = builder.MapContigToMatePairs(sequences, maps);
 
-            var filter = new OrientationBasedMatePairFilter();
+            OrientationBasedMatePairFilter filter = new OrientationBasedMatePairFilter();
             
-            var overlap = filter.FilterPairedReads(pairedReads, 0);
-            var dist = new DistanceCalculator(overlap);
+            ContigMatePairs overlap = filter.FilterPairedReads(pairedReads, 0);
+            DistanceCalculator dist = new DistanceCalculator(overlap);
             
             overlap = dist.CalculateDistance();
-            var graph = new ContigGraph();
+            ContigGraph graph = new ContigGraph();
             graph.BuildContigGraph(contigs, KmerLength);
-            var path = new TracePath();
-            var paths = path.FindPaths(graph, overlap, kmerLengthConst, 3);
+            TracePath path = new TracePath();
+            IList<ScaffoldPath> paths = path.FindPaths(graph, overlap, kmerLengthConst, 3);
 
             Assert.AreEqual(paths.Count, 3);
             Assert.AreEqual(paths.First().Count, 3);
-            var scaffold = paths.First();
+            ScaffoldPath scaffold = paths.First();
 
             Assert.AreEqual("ATGCCTCCTATCTTAGC", graph.GetNodeSequence(scaffold[0].Key).ConvertToString());
             Assert.AreEqual("TTAGCGCG", graph.GetNodeSequence(scaffold[1].Key).ConvertToString());

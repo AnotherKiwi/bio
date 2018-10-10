@@ -105,7 +105,7 @@ namespace Bio.IO.Gff
                 throw new ArgumentNullException(nameof(data));
             }
 
-            using (var writer = stream.OpenWrite())
+            using (StreamWriter writer = stream.OpenWrite())
             {
                 Format(data, writer);
             }
@@ -134,12 +134,12 @@ namespace Bio.IO.Gff
 
             // Try to cast for performance, otherwise create a new list; we enumerate
             // this many times so we need to make sure it's all available in memory.
-            var data = sequences as IList<ISequence> ?? sequences.ToList();
+            IList<ISequence> data = sequences as IList<ISequence> ?? sequences.ToList();
 
-            using (var writer = stream.OpenWrite())
+            using (StreamWriter writer = stream.OpenWrite())
             {
                 WriteHeaders(data, writer);
-                foreach (var sequence in data)
+                foreach (ISequence sequence in data)
                 {
                     WriteFeatures(sequence, writer);
                 }
@@ -183,13 +183,13 @@ namespace Bio.IO.Gff
             string source = null;
             string version = null;
             string type = null;
-            var firstSeq = true;
+            bool firstSeq = true;
             ISequence commonSeq = null;
-            var typeExceptionList = new List<string>();
-            var seqDataExceptionList = new List<string>();
-            var seqRegExceptionList = new List<string>();
+            List<string> typeExceptionList = new List<string>();
+            List<string> seqDataExceptionList = new List<string>();
+            List<string> seqRegExceptionList = new List<string>();
 
-            foreach (var sequence in sequenceList)
+            foreach (ISequence sequence in sequenceList)
             {
                 MetadataListItem<string> sourceVersion;
                 if (firstSeq)
@@ -219,7 +219,7 @@ namespace Bio.IO.Gff
                     // source and version go together; can't output one without the other
                     if (source != null)
                     {
-                        var sourceAndVersionMatchOthers = false;
+                        bool sourceAndVersionMatchOthers = false;
 
                         object tmpobj;
                         // source and version go together; can't output one without the other
@@ -257,15 +257,15 @@ namespace Bio.IO.Gff
 
             WriteCommonMetadata(commonSeq, sequenceList, writer, source, version, type, 1);
 
-            var totalTypeCount = commonSeq.Metadata.Keys.Count(K => K.ToUpperInvariant().Contains(MultiTypeKey));
-            var currentTypeCount = 0;
-            var totalSeqData = commonSeq.Metadata.Keys.Count(K => K.ToUpperInvariant().Contains(MultiSeqDataKey));
-            var totalSeqRegs = commonSeq.Metadata.Keys.Count(K => K.ToUpperInvariant().Contains(MultiSeqRegKey));
+            int totalTypeCount = commonSeq.Metadata.Keys.Count(K => K.ToUpperInvariant().Contains(MultiTypeKey));
+            int currentTypeCount = 0;
+            int totalSeqData = commonSeq.Metadata.Keys.Count(K => K.ToUpperInvariant().Contains(MultiSeqDataKey));
+            int totalSeqRegs = commonSeq.Metadata.Keys.Count(K => K.ToUpperInvariant().Contains(MultiSeqRegKey));
 
-            foreach (var key in commonSeq.Metadata.Keys)
+            foreach (string key in commonSeq.Metadata.Keys)
             {
-                var keyToCompare = key.ToUpperInvariant();
-                var value = string.Empty;
+                string keyToCompare = key.ToUpperInvariant();
+                string value = string.Empty;
 
                 if (keyToCompare.Contains(CommentSectionKey))
                 {
@@ -332,7 +332,7 @@ namespace Bio.IO.Gff
                         }
                         else if (totalTypeCount == 0)
                         {
-                            foreach (var sequence in sequenceList)
+                            foreach (ISequence sequence in sequenceList)
                             {
                                 type = GetGenericTypeString(sequence.Alphabet);
 
@@ -364,7 +364,7 @@ namespace Bio.IO.Gff
 
                                 if (currentTypeCount == totalTypeCount)
                                 {
-                                    foreach (var sequence in sequenceList)
+                                    foreach (ISequence sequence in sequenceList)
                                     {
                                         if (typeExceptionList.Contains(sequence.ID))
                                         {
@@ -411,7 +411,7 @@ namespace Bio.IO.Gff
 
                             if (totalSeqData == 0)
                             {
-                                foreach (var sequence in sequenceList)
+                                foreach (ISequence sequence in sequenceList)
                                 {
                                     if (seqDataExceptionList.Contains(sequence.ID))
                                     {
@@ -446,7 +446,7 @@ namespace Bio.IO.Gff
                         if (totalSeqRegs == 0)
                         {
                             // sequence-region header
-                            foreach (var sequence in sequenceList)
+                            foreach (ISequence sequence in sequenceList)
                             {
                                 if (seqRegExceptionList.Contains(sequence.ID))
                                 {
@@ -486,14 +486,14 @@ namespace Bio.IO.Gff
 
                 for (long lineStart = 0; lineStart < sequence.Count; lineStart += MaxSequenceSymbolsPerLine)
                 {
-                    var length = Math.Min(MaxSequenceSymbolsPerLine, sequence.Count - lineStart);
-                    var subSequence = sequence.GetSubSequence(lineStart, length);
+                    long length = Math.Min(MaxSequenceSymbolsPerLine, sequence.Count - lineStart);
+                    ISequence subSequence = sequence.GetSubSequence(lineStart, length);
                     TempSeqData = new byte[length];
-                    for (var i = 0; i < length; i++)
+                    for (int i = 0; i < length; i++)
                     {
                         TempSeqData[i] = subSequence[i];
                     }
-                    var key = Encoding.UTF8.GetString(TempSeqData, 0, TempSeqData.Length);
+                    string key = Encoding.UTF8.GetString(TempSeqData, 0, TempSeqData.Length);
 
                     WriteHeaderLine(writer, key);
                 }
@@ -521,7 +521,7 @@ namespace Bio.IO.Gff
             string type,
             int startFrom)
         {
-            var totalTypeCount = commonSeq.Metadata.Keys.Count(K => K.ToUpperInvariant().Contains(MultiTypeKey));
+            int totalTypeCount = commonSeq.Metadata.Keys.Count(K => K.ToUpperInvariant().Contains(MultiTypeKey));
 
             if (startFrom == 1)
             {
@@ -567,7 +567,7 @@ namespace Bio.IO.Gff
                 {
                     if (type == null)
                     {
-                        foreach (var sequence in sequenceList)
+                        foreach (ISequence sequence in sequenceList)
                         {
                             type = GetGenericTypeString(sequence.Alphabet);
 
@@ -616,7 +616,7 @@ namespace Bio.IO.Gff
 
         private void WriteHeaderLine(TextWriter writer, string key, params string[] dataFields)
         {
-            var headerLine = dataFields.Aggregate(HeaderMark + key, (current, field) => current + (" " + field));
+            string headerLine = dataFields.Aggregate(HeaderMark + key, (current, field) => current + (" " + field));
             writer.WriteLine(headerLine);
         }
 
@@ -630,14 +630,14 @@ namespace Bio.IO.Gff
         {
             if (sequence.Metadata.ContainsKey(FeaturesKey))
             {
-                foreach (var feature in
+                foreach (MetadataListItem<List<string>> feature in
                     sequence.Metadata[FeaturesKey] as List<MetadataListItem<List<string>>>)
                 {
                     // only write the line if we have all the mandatory fields
                     if (feature.SubItems.ContainsKey(SourceKey) && feature.SubItems.ContainsKey(StartKey)
                         && feature.SubItems.ContainsKey(EndKey))
                     {
-                        var featureLine = new StringBuilder();
+                        StringBuilder featureLine = new StringBuilder();
                         featureLine.Append(sequence.ID);
                         featureLine.Append("\t");
                         featureLine.Append(GetSubItemString(feature, SourceKey));

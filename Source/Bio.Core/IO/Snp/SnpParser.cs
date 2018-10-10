@@ -98,7 +98,7 @@ namespace Bio.IO.Snp
                 Alphabet = AmbiguousDnaAlphabet.Instance;
             }
 
-            using(var reader = new StreamReader(stream))
+            using(StreamReader reader = new StreamReader(stream))
             {
                 ISnpReader snpReader = new XsvSnpReader(reader, new[] { '\t' }, true, true, 0, 1, 2, 3);
                 snpReader.MoveNext();
@@ -120,7 +120,7 @@ namespace Bio.IO.Snp
                 Alphabet = AmbiguousDnaAlphabet.Instance;
             }
 
-            using (var reader = new StreamReader(stream))
+            using (StreamReader reader = new StreamReader(stream))
             {
                 ISnpReader snpReader = new XsvSnpReader(reader, new[] { '\t' }, true, true, 0, 1, 2, 3);
                 snpReader.MoveNext();
@@ -154,11 +154,11 @@ namespace Bio.IO.Snp
                 };
 
             int sequenceChromosome = snpReader.Current.Chromosome;
-            var sequence = new SparseSequence(Alphabet) { ID = "Chr" + sequenceChromosome };
+            SparseSequence sequence = new SparseSequence(Alphabet) { ID = "Chr" + sequenceChromosome };
 
             do
             {
-                var snp = snpReader.Current;
+                SnpItem snp = snpReader.Current;
                 // increase the size of the sparse sequence
                 if (sequence.Count <= snp.Position)
                     sequence.Count = snp.Position + 1;

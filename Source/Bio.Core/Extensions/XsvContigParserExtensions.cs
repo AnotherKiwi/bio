@@ -27,7 +27,7 @@ namespace Bio.IO.Xsv
                 throw new ArgumentNullException(nameof(filename));
             }
 
-            using (var fs = File.OpenRead(filename))
+            using (FileStream fs = File.OpenRead(filename))
             {
                 return parser.ParseContig(fs);
             }

@@ -29,13 +29,13 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
             if (scaffoldPaths != null && 0 != scaffoldPaths.Count)
             {
                 internalScaffoldPaths = scaffoldPaths.AsParallel().OrderBy(t => t.Count).ToList();
-                var isUpdated = true;
-                var isConsumed = new bool[internalScaffoldPaths.Count];
+                bool isUpdated = true;
+                bool[] isConsumed = new bool[internalScaffoldPaths.Count];
 
                 while (isUpdated)
                 {
                     isUpdated = false;
-                    for (var index = 0; index < internalScaffoldPaths.Count; index++)
+                    for (int index = 0; index < internalScaffoldPaths.Count; index++)
                     {
                         if (null != internalScaffoldPaths[index] &&
                             0 != internalScaffoldPaths[index].Count && !isConsumed[index])
@@ -96,22 +96,22 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
             ScaffoldPath path)
         {
             // Generate Overlap Matrix [Similar To Pairwise Overlap aligner] 
-            var matrix = new bool[scaffoldPath.Count, path.Count];
-            for (var index = 0; index < scaffoldPath.Count; index++)
+            bool[,] matrix = new bool[scaffoldPath.Count, path.Count];
+            for (int index = 0; index < scaffoldPath.Count; index++)
             {
-                for (var index1 = 0; index1 < path.Count; index1++)
+                for (int index1 = 0; index1 < path.Count; index1++)
                 {
                     matrix.SetValue(scaffoldPath[index].Key == path[index1].Key, index, index1);
                 }
             }
 
             // Search in last row for a match.
-            var startPosOfRow = -1;
-            for (var index = scaffoldPath.Count - 1; index >= 0; index--)
+            int startPosOfRow = -1;
+            for (int index = scaffoldPath.Count - 1; index >= 0; index--)
             {
                 if ((bool)matrix.GetValue(index, path.Count - 1))
                 {
-                    var index1 = 1;
+                    int index1 = 1;
                     while (path.Count - 1 - index1 >= 0 && index - index1 >= 0)
                     {
                         if ((bool)matrix.GetValue(index - index1, path.Count - 1 - index1))
@@ -133,12 +133,12 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
             }
 
             // Search in last column for match.
-            var startPosOfCol = -1;
-            for (var index = path.Count - 2; index >= 0; index--)
+            int startPosOfCol = -1;
+            for (int index = path.Count - 2; index >= 0; index--)
             {
                 if ((bool)matrix.GetValue(scaffoldPath.Count - 1, index))
                 {
-                    var index1 = 1;
+                    int index1 = 1;
                     while (scaffoldPath.Count - 1 - index1 > 0 && index - index1 > 0)
                     {
                         if ((bool)matrix.GetValue(scaffoldPath.Count - 1 - index1, index - index1))
@@ -188,14 +188,14 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         {
             if (pos == scaffoldPath.Count - 1)
             {
-                for (var index = pos1 + 1; index < path.Count; index++)
+                for (int index = pos1 + 1; index < path.Count; index++)
                 {
                     scaffoldPath.Add(path[index]);
                 }
             }
             else
             {
-                for (var index = pos + 1; index < scaffoldPath.Count; index++)
+                for (int index = pos + 1; index < scaffoldPath.Count; index++)
                 {
                     path.Add(scaffoldPath[index]);
                 }
@@ -215,8 +215,8 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
             ScaffoldPath scaffoldPath,
             bool[] isConsumed)
         {
-            var isUpdated = false;
-            for (var index = 0; index < internalScaffoldPaths.Count; index++)
+            bool isUpdated = false;
+            for (int index = 0; index < internalScaffoldPaths.Count; index++)
             {
                 if (!isConsumed[index] && scaffoldPath != internalScaffoldPaths[index])
                 {
@@ -246,7 +246,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         private void UpdatePath(bool[] isConsumed)
         {
             IList<ScaffoldPath> scaffoldPaths = new List<ScaffoldPath>();
-            for (var index = 0; index < internalScaffoldPaths.Count; index++)
+            for (int index = 0; index < internalScaffoldPaths.Count; index++)
             {
                 if (!(bool)isConsumed.GetValue(index))
                 {

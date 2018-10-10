@@ -16,7 +16,7 @@ namespace Bio.Tests
         [Test]
         public void TestConstructorWithByteArray()
         {
-            var sequenceData = new byte[6];
+            byte[] sequenceData = new byte[6];
             sequenceData[0] = (byte)'C';
             sequenceData[1] = (byte)'A';
             sequenceData[2] = (byte)'A';
@@ -24,7 +24,7 @@ namespace Bio.Tests
             sequenceData[4] = (byte)'C';
             sequenceData[5] = (byte)'T';
 
-            var qualityScores = new byte[6];
+            byte[] qualityScores = new byte[6];
             qualityScores[0] = 65;
             qualityScores[1] = 65;
             qualityScores[2] = 65;
@@ -32,11 +32,11 @@ namespace Bio.Tests
             qualityScores[4] = 110;
             qualityScores[5] = 125;
 
-            var expectedSequence = "CAAGCT";
-            var qualitativeSequence = new QualitativeSequence(Alphabets.DNA, FastQFormatType.Illumina_v1_3, sequenceData, qualityScores);
+            string expectedSequence = "CAAGCT";
+            QualitativeSequence qualitativeSequence = new QualitativeSequence(Alphabets.DNA, FastQFormatType.Illumina_v1_3, sequenceData, qualityScores);
 
-            var actual = "";
-            foreach (var bt in qualitativeSequence)
+            string actual = "";
+            foreach (byte bt in qualitativeSequence)
             {
                 actual += (char)bt;
             }
@@ -53,8 +53,8 @@ namespace Bio.Tests
             Assert.AreEqual(qualitativeSequence[4], (byte)'C');
             Assert.AreEqual(qualitativeSequence[5], (byte)'T');
 
-            var index = 0;
-            foreach (var qualityScore in qualitativeSequence.GetEncodedQualityScores())
+            int index = 0;
+            foreach (byte qualityScore in qualitativeSequence.GetEncodedQualityScores())
             {
                 Assert.AreEqual(qualityScores[index++], qualityScore);
             }
@@ -66,19 +66,19 @@ namespace Bio.Tests
         [Test]
         public void TestConstructorWithString()
         {
-            var expectedSequence = "CAAGCT";
-            var expectedQualityScore = "AAABBC";
-            var qualityScores = new byte[6];
+            string expectedSequence = "CAAGCT";
+            string expectedQualityScore = "AAABBC";
+            byte[] qualityScores = new byte[6];
             qualityScores[0] = 65;
             qualityScores[1] = 65;
             qualityScores[2] = 65;
             qualityScores[3] = 66;
             qualityScores[4] = 66;
             qualityScores[5] = 67;
-            var qualitativeSequence = new QualitativeSequence(Alphabets.DNA, FastQFormatType.Illumina_v1_3, expectedSequence, expectedQualityScore);
+            QualitativeSequence qualitativeSequence = new QualitativeSequence(Alphabets.DNA, FastQFormatType.Illumina_v1_3, expectedSequence, expectedQualityScore);
 
-            var actual = "";
-            foreach (var bt in qualitativeSequence)
+            string actual = "";
+            foreach (byte bt in qualitativeSequence)
             {
                 actual += (char)bt;
             }
@@ -95,8 +95,8 @@ namespace Bio.Tests
             Assert.AreEqual(qualitativeSequence[4], (byte)'C');
             Assert.AreEqual(qualitativeSequence[5], (byte)'T');
 
-            var index = 0;
-            foreach (var qualityScore in qualitativeSequence.GetEncodedQualityScores())
+            int index = 0;
+            foreach (byte qualityScore in qualitativeSequence.GetEncodedQualityScores())
             {
                 Assert.AreEqual(qualityScores[index++], qualityScore);
             }
@@ -160,7 +160,7 @@ namespace Bio.Tests
         public void TestConvertFromSolexa_Illumina_v1_0ToIllumina_v1_3()
         {
             byte[] illuminaScores;
-            var solexaScores = new byte[2];
+            byte[] solexaScores = new byte[2];
             solexaScores[0] = (byte)60;
             solexaScores[1] = (byte)60;
             illuminaScores = QualitativeSequence.ConvertEncodedQualityScore(FastQFormatType.Solexa_Illumina_v1_0, FastQFormatType.Illumina_v1_3, solexaScores);
@@ -177,7 +177,7 @@ namespace Bio.Tests
         public void TestConvertFromSolexa_Illumina_v1_0ToSanger()
         {
             byte[] sangerScores;
-            var solexaScores = new byte[1];
+            byte[] solexaScores = new byte[1];
             solexaScores[0] = (byte)59;
             sangerScores = QualitativeSequence.ConvertEncodedQualityScore(FastQFormatType.Solexa_Illumina_v1_0, FastQFormatType.Sanger, solexaScores);
             Assert.IsNotNull((object)sangerScores);
@@ -192,7 +192,7 @@ namespace Bio.Tests
         public void TestConvertFromSangerToSolexa_Illumina_v1_0()
         {
             byte[] solexaScores;
-            var sangerScores = new byte[2];
+            byte[] sangerScores = new byte[2];
             sangerScores[0] = (byte)34;
             sangerScores[1] = (byte)34;
             solexaScores = QualitativeSequence.ConvertEncodedQualityScore(FastQFormatType.Sanger, FastQFormatType.Solexa_Illumina_v1_0, sangerScores);
@@ -209,7 +209,7 @@ namespace Bio.Tests
         public void TestConvertFromSangerToIllumina_v1_3()
         {
             byte[] illuminaScores;
-            var sangerScores = new byte[2];
+            byte[] sangerScores = new byte[2];
             sangerScores[0] = (byte)33;
             sangerScores[1] = (byte)33;
             illuminaScores = QualitativeSequence.ConvertEncodedQualityScore(FastQFormatType.Sanger, FastQFormatType.Illumina_v1_3, sangerScores);
@@ -226,7 +226,7 @@ namespace Bio.Tests
         public void TestConvertFromIllumina_v1_3ToSolexa_Illumina_v1_0()
         {
             byte[] solexaScores;
-            var illuminaScores = new byte[2];
+            byte[] illuminaScores = new byte[2];
             illuminaScores[0] = (byte)65;
             illuminaScores[1] = (byte)65;
             solexaScores = QualitativeSequence.ConvertEncodedQualityScore(FastQFormatType.Illumina_v1_3, FastQFormatType.Solexa_Illumina_v1_0, illuminaScores);
@@ -243,7 +243,7 @@ namespace Bio.Tests
         public void TestConvertFromIllumina_v1_3ToSanger()
         {
             byte[] sangerScores;
-            var illuminaScores = new byte[2];
+            byte[] illuminaScores = new byte[2];
             illuminaScores[0] = (byte)64;
             illuminaScores[1] = (byte)64;
             sangerScores = QualitativeSequence.ConvertEncodedQualityScore(FastQFormatType.Illumina_v1_3, FastQFormatType.Sanger, illuminaScores);
@@ -260,53 +260,53 @@ namespace Bio.Tests
         public void TestGetPhredQualityScore()
         {
             // Validate using SangerFormat.
-            var pharedQualityScores = GetPharedQualityScoresForSanger();
-            var encodedSangerQualityScores = GetSangerEncodedQualityScores(pharedQualityScores);
-            var symbols = GetSymbols(encodedSangerQualityScores.Length);
-            var qualSeq = new QualitativeSequence(Alphabets.DNA, FastQFormatType.Sanger, symbols, encodedSangerQualityScores);
+            List<int> pharedQualityScores = GetPharedQualityScoresForSanger();
+            byte[] encodedSangerQualityScores = GetSangerEncodedQualityScores(pharedQualityScores);
+            byte[] symbols = GetSymbols(encodedSangerQualityScores.Length);
+            QualitativeSequence qualSeq = new QualitativeSequence(Alphabets.DNA, FastQFormatType.Sanger, symbols, encodedSangerQualityScores);
 
-            for (var i = 0; i < qualSeq.Count; i++)
+            for (int i = 0; i < qualSeq.Count; i++)
             {
                 Assert.AreEqual(pharedQualityScores[i], qualSeq.GetPhredQualityScore(i));
             }
 
             // Validate using illumina v1.3 .
             pharedQualityScores = GetPharedQualityScoresForIllumina_v1_3();
-            var encodedIllumina_v1_3_QualityScores = GetIllumina_v1_3_EncodedQualityScores(pharedQualityScores);
+            byte[] encodedIllumina_v1_3_QualityScores = GetIllumina_v1_3_EncodedQualityScores(pharedQualityScores);
             symbols = GetSymbols(encodedIllumina_v1_3_QualityScores.Length);
             qualSeq = new QualitativeSequence(Alphabets.DNA, FastQFormatType.Illumina_v1_3, symbols, encodedIllumina_v1_3_QualityScores);
-            for (var i = 0; i < qualSeq.Count; i++)
+            for (int i = 0; i < qualSeq.Count; i++)
             {
                 Assert.AreEqual(pharedQualityScores[i], qualSeq.GetPhredQualityScore(i));
             }
 
             // Validate using illumina v1.5
             pharedQualityScores = GetPharedQualityScoresForIllumina_v1_5();
-            var encodedIllumina_v1_5_QualityScores = GetIllumina_v1_5_EncodedQualityScores(pharedQualityScores);
+            byte[] encodedIllumina_v1_5_QualityScores = GetIllumina_v1_5_EncodedQualityScores(pharedQualityScores);
             symbols = GetSymbols(encodedIllumina_v1_5_QualityScores.Length);
             qualSeq = new QualitativeSequence(Alphabets.DNA, FastQFormatType.Illumina_v1_5, symbols, encodedIllumina_v1_5_QualityScores);
-            for (var i = 0; i < qualSeq.Count; i++)
+            for (int i = 0; i < qualSeq.Count; i++)
             {
                 Assert.AreEqual(pharedQualityScores[i], qualSeq.GetPhredQualityScore(i));
             }
 
             // Validate using illumina v1.8
             pharedQualityScores = GetPharedQualityScoresForIllumina_v1_8();
-            var encodedIllumina_v1_8_QualityScores = GetIllumina_v1_8_EncodedQualityScores(pharedQualityScores);
+            byte[] encodedIllumina_v1_8_QualityScores = GetIllumina_v1_8_EncodedQualityScores(pharedQualityScores);
             symbols = GetSymbols(encodedIllumina_v1_8_QualityScores.Length);
             qualSeq = new QualitativeSequence(Alphabets.DNA, FastQFormatType.Illumina_v1_8, symbols, encodedIllumina_v1_8_QualityScores);
-            for (var i = 0; i < qualSeq.Count; i++)
+            for (int i = 0; i < qualSeq.Count; i++)
             {
                 Assert.AreEqual(pharedQualityScores[i], qualSeq.GetPhredQualityScore(i));
             }
 
 
             // Validate using illumina v1.0 .
-            var solexaQualityScores = GetSolexaQualityScoresForIllumina_v1_0();
-            var encodedIllumina_v1_0_QualityScores = GetIllumina_v1_0_EncodedQualityScores(solexaQualityScores);
+            List<int> solexaQualityScores = GetSolexaQualityScoresForIllumina_v1_0();
+            byte[] encodedIllumina_v1_0_QualityScores = GetIllumina_v1_0_EncodedQualityScores(solexaQualityScores);
             symbols = GetSymbols(encodedIllumina_v1_0_QualityScores.Length);
             qualSeq = new QualitativeSequence(Alphabets.DNA, FastQFormatType.Solexa_Illumina_v1_0, symbols, encodedIllumina_v1_0_QualityScores);
-            for (var i = 0; i < qualSeq.Count; i++)
+            for (int i = 0; i < qualSeq.Count; i++)
             {
                 Assert.AreEqual(solexaQualityScores[i], qualSeq.GetSolexaQualityScore(i));
             }
@@ -315,8 +315,8 @@ namespace Bio.Tests
 
         private static byte[] GetIllumina_v1_8_EncodedQualityScores(List<int> pharedQualityScores)
         {
-            var encodedQualityValues = new byte[pharedQualityScores.Count];
-            for (var i = 0; i < pharedQualityScores.Count; i++)
+            byte[] encodedQualityValues = new byte[pharedQualityScores.Count];
+            for (int i = 0; i < pharedQualityScores.Count; i++)
             {
                 encodedQualityValues[i] = (byte)(pharedQualityScores[i] + 33);
             }
@@ -327,8 +327,8 @@ namespace Bio.Tests
 
         private static byte[] GetIllumina_v1_5_EncodedQualityScores(List<int> pharedQualityScores)
         {
-            var encodedQualityValues = new byte[pharedQualityScores.Count];
-            for (var i = 0; i < pharedQualityScores.Count; i++)
+            byte[] encodedQualityValues = new byte[pharedQualityScores.Count];
+            for (int i = 0; i < pharedQualityScores.Count; i++)
             {
                 encodedQualityValues[i] = (byte)(pharedQualityScores[i] + 64);
             }
@@ -338,8 +338,8 @@ namespace Bio.Tests
 
         private static byte[] GetIllumina_v1_0_EncodedQualityScores(List<int> solexaQualityScores)
         {
-            var encodedQualityValues = new byte[solexaQualityScores.Count];
-            for (var i = 0; i < solexaQualityScores.Count; i++)
+            byte[] encodedQualityValues = new byte[solexaQualityScores.Count];
+            for (int i = 0; i < solexaQualityScores.Count; i++)
             {
                 encodedQualityValues[i] = (byte)(solexaQualityScores[i] + 64);
             }
@@ -349,8 +349,8 @@ namespace Bio.Tests
 
         private static byte[] GetIllumina_v1_3_EncodedQualityScores(List<int> pharedQualityScores)
         {
-            var encodedQualityValues = new byte[pharedQualityScores.Count];
-            for (var i = 0; i < pharedQualityScores.Count; i++)
+            byte[] encodedQualityValues = new byte[pharedQualityScores.Count];
+            for (int i = 0; i < pharedQualityScores.Count; i++)
             {
                 encodedQualityValues[i] = (byte)(pharedQualityScores[i] + 64);
             }
@@ -360,8 +360,8 @@ namespace Bio.Tests
 
         private static byte[] GetSangerEncodedQualityScores(List<int> pharedQualityScores)
         {
-            var encodedQualityValues = new byte[pharedQualityScores.Count];
-            for (var i = 0; i < pharedQualityScores.Count; i++)
+            byte[] encodedQualityValues = new byte[pharedQualityScores.Count];
+            for (int i = 0; i < pharedQualityScores.Count; i++)
             {
                 encodedQualityValues[i] = (byte)(pharedQualityScores[i] + 33);
             }
@@ -402,9 +402,9 @@ namespace Bio.Tests
         /// <returns></returns>
         private static List<int> GetIntegers(int from, int to)
         {
-            var count = to - from + 1;
-            var values = new List<int>(count);
-            for (var i = from; i <= to; i++)
+            int count = to - from + 1;
+            List<int> values = new List<int>(count);
+            for (int i = from; i <= to; i++)
             {
                 values.Add(i);
             }
@@ -419,8 +419,8 @@ namespace Bio.Tests
         /// <returns></returns>
         private static byte[] GetSymbols(int count)
         {
-            var symbols = new byte[count];
-            for (var i = 0; i < count; i++)
+            byte[] symbols = new byte[count];
+            for (int i = 0; i < count; i++)
             {
                 symbols[i] = (byte)'A';
             }

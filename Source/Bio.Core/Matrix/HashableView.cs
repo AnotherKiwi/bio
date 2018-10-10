@@ -145,21 +145,21 @@ namespace Bio.Matrix
 
         private int MatrixHashCode(Matrix<TRowKey, TColKey, TValue> matrix)
         {
-            var hashCode = 99382823 ^ MissingValue.GetHashCode();
+            int hashCode = 99382823 ^ MissingValue.GetHashCode();
 
-            foreach (var rowKey in matrix.RowKeys)
+            foreach (TRowKey rowKey in matrix.RowKeys)
             {
                 hashCode = Helper.WrapAroundLeftShift(hashCode, 1) ^ rowKey.GetHashCode();
             }
-            foreach (var colKey in matrix.ColKeys)
+            foreach (TColKey colKey in matrix.ColKeys)
             {
                 hashCode = Helper.WrapAroundLeftShift(hashCode, 1) ^ colKey.GetHashCode();
             }
-            for (var rowIndex = 0; rowIndex < RowCount; ++rowIndex)
+            for (int rowIndex = 0; rowIndex < RowCount; ++rowIndex)
             {
-                for (var colIndex = 0; colIndex < ColCount; ++colIndex)
+                for (int colIndex = 0; colIndex < ColCount; ++colIndex)
                 {
-                    var value = GetValueOrMissing(rowIndex, colIndex);
+                    TValue value = GetValueOrMissing(rowIndex, colIndex);
                     hashCode = Helper.WrapAroundLeftShift(hashCode, 1) ^ value.GetHashCode();
                 }
             }
@@ -174,7 +174,7 @@ namespace Bio.Matrix
         /// <returns></returns>
         public override bool Equals(object obj)
         {
-            var other = obj as HashableView<TRowKey, TColKey, TValue>;
+            HashableView<TRowKey, TColKey, TValue> other = obj as HashableView<TRowKey, TColKey, TValue>;
             if (other == null)
             {
                 return false;

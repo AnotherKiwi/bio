@@ -98,7 +98,7 @@ namespace Bio.IO.GenBank
                 throw new ArgumentNullException(nameof(data));
             }
 
-            using (var writer = stream.OpenWrite())
+            using (StreamWriter writer = stream.OpenWrite())
             {
                 Format(data, writer);
             }
@@ -125,9 +125,9 @@ namespace Bio.IO.GenBank
                 throw new ArgumentNullException(nameof(sequences));
             }
 
-            using (var writer = stream.OpenWrite())
+            using (StreamWriter writer = stream.OpenWrite())
             {
-                foreach (var sequence in sequences)
+                foreach (ISequence sequence in sequences)
                 {
                     WriteHeaders(sequence, writer);
                     WriteFeatures(sequence, writer);
@@ -154,7 +154,7 @@ namespace Bio.IO.GenBank
         // Write all the header sections that come before the features section.
         private void WriteHeaders(ISequence sequence, TextWriter txtWriter)
         {
-            var metadata = (GenBankMetadata)sequence.Metadata[Helper.GenBankMetadataKey];
+            GenBankMetadata metadata = (GenBankMetadata)sequence.Metadata[Helper.GenBankMetadataKey];
             if (metadata != null)
             {
                 WriteLocus(sequence, txtWriter);
@@ -209,10 +209,10 @@ namespace Bio.IO.GenBank
         private static void WriteLocus(ISequence sequence, TextWriter txtWriter)
         {
             // determine molecule and sequence type
-            var metadata = (GenBankMetadata)sequence.Metadata[Helper.GenBankMetadataKey];
+            GenBankMetadata metadata = (GenBankMetadata)sequence.Metadata[Helper.GenBankMetadataKey];
 
             GenBankLocusInfo locusInfo = null;
-            var molType = sequence.Alphabet.Name;
+            string molType = sequence.Alphabet.Name;
             if (metadata != null)
             {
                 locusInfo = metadata.Locus;
@@ -255,10 +255,10 @@ namespace Bio.IO.GenBank
             }
 
             // retrieve metadata fields
-            var strandType = string.Empty;
-            var strandTopology = string.Empty;
-            var division = string.Empty;
-            var date = DateTime.Now;
+            string strandType = string.Empty;
+            string strandTopology = string.Empty;
+            string division = string.Empty;
+            DateTime date = DateTime.Now;
 
             if (locusInfo != null)
             {
@@ -289,7 +289,7 @@ namespace Bio.IO.GenBank
         {
             if (metadata.Source != null)
             {
-                var commonname = string.Empty;
+                string commonname = string.Empty;
                 if (!string.IsNullOrEmpty(metadata.Source.CommonName))
                 {
                     commonname = metadata.Source.CommonName;
@@ -297,7 +297,7 @@ namespace Bio.IO.GenBank
 
                 WriteHeaderSection("SOURCE", commonname, txtWriter);
 
-                var organism = string.Empty;
+                string organism = string.Empty;
                 if (!commonname.Equals(metadata.Source.Organism.Species))
                 {
                     if (!string.IsNullOrEmpty(metadata.Source.Organism.Genus))
@@ -322,10 +322,10 @@ namespace Bio.IO.GenBank
         {
             if (metadata.References != null)
             {
-                foreach (var reference in metadata.References)
+                foreach (CitationReference reference in metadata.References)
                 {
                     // format the data for the first line
-                    var data = reference.Number.ToString(CultureInfo.InvariantCulture);
+                    string data = reference.Number.ToString(CultureInfo.InvariantCulture);
                     if (!string.IsNullOrEmpty(reference.Location))
                     {
                         data = data.PadRight(3) + "(" + reference.Location + ")";
@@ -346,7 +346,7 @@ namespace Bio.IO.GenBank
         // Writes the comments, which are stored in a list of strings.
         private void WriteComments(GenBankMetadata metadata, TextWriter txtWriter)
         {
-            foreach (var comment in metadata.Comments)
+            foreach (string comment in metadata.Comments)
             {
                 WriteHeaderSection("COMMENT", comment, txtWriter);
             }
@@ -354,28 +354,28 @@ namespace Bio.IO.GenBank
 
         private void WriteFeatures(ISequence sequence, TextWriter txtWriter)
         {
-            var locBuilder = LocationBuilder;
+            ILocationBuilder locBuilder = LocationBuilder;
             if (locBuilder == null)
             {
                 throw new InvalidOperationException(Properties.Resource.NullLocationBuild);
             }
-            var metadata = (GenBankMetadata)sequence.Metadata[Helper.GenBankMetadataKey];
+            GenBankMetadata metadata = (GenBankMetadata)sequence.Metadata[Helper.GenBankMetadataKey];
             if (metadata != null && metadata.Features != null)
             {
                 WriteFeatureSection("FEATURES", "Location/Qualifiers", txtWriter);
 
                 // write the features in the order they were put in the list
-                foreach (var feature in metadata.Features.All)
+                foreach (FeatureItem feature in metadata.Features.All)
                 {
                     WriteFeatureSection(FeatureHeaderIndentString + feature.Key, locBuilder.GetLocationString(feature.Location), txtWriter);
 
                     // The sub-items of a feature are referred to as qualifiers.  These do not have
                     // unique keys, so they are stored as lists in the SubItems dictionary.
-                    foreach (var qualifierList in feature.Qualifiers)
+                    foreach (KeyValuePair<string, List<string>> qualifierList in feature.Qualifiers)
                     {
-                        foreach (var qualifierValue in qualifierList.Value)
+                        foreach (string qualifierValue in qualifierList.Value)
                         {
-                            var data = "/" + qualifierList.Key;
+                            string data = "/" + qualifierList.Key;
 
                             if (qualifierValue != string.Empty)
                             {
@@ -401,7 +401,7 @@ namespace Bio.IO.GenBank
         private void WriteSequence(ISequence sequence, TextWriter txtWriter)
         {
             // "BASE COUNT" is stored as "baseCount", not "base count"
-            var metadata = (GenBankMetadata)sequence.Metadata[Helper.GenBankMetadataKey];
+            GenBankMetadata metadata = (GenBankMetadata)sequence.Metadata[Helper.GenBankMetadataKey];
             if (metadata != null && !string.IsNullOrEmpty(metadata.BaseCount))
             {
                 txtWriter.WriteLine("BASE COUNT  " + metadata.BaseCount);
@@ -434,23 +434,23 @@ namespace Bio.IO.GenBank
         // Output 6 groups of 10 symbols per line.
         private void WriteGenBankSequence(TextWriter writer, ISequence sequence)
         {
-            var done = false;
+            bool done = false;
             long symbolIndex = 0;
             while (!done)
             {
                 // start each line with the symbol number
-                var line = new StringBuilder(string.Format("{0,9}", symbolIndex + 1));
+                StringBuilder line = new StringBuilder(string.Format("{0,9}", symbolIndex + 1));
 
                 // next add 6 groups of 10, with groups separated by spaces
-                for (var chunkIndex = 0; chunkIndex < SeqChunksPerLine && !done; chunkIndex++)
+                for (int chunkIndex = 0; chunkIndex < SeqChunksPerLine && !done; chunkIndex++)
                 {
                     // set done = true if this is the last chunk
                     done = SeqCharsPerChunk >= sequence.Count - symbolIndex;
-                    var chunkSize = done ? sequence.Count - symbolIndex : SeqCharsPerChunk;
+                    long chunkSize = done ? sequence.Count - symbolIndex : SeqCharsPerChunk;
 
                     // append the chunk
                     line.Append(" ");
-                    for (var start = symbolIndex; symbolIndex < start + chunkSize; symbolIndex++)
+                    for (long start = symbolIndex; symbolIndex < start + chunkSize; symbolIndex++)
                     {
                         line.Append((char)sequence[symbolIndex]); 
                     }
@@ -475,14 +475,14 @@ namespace Bio.IO.GenBank
         /// each line to the length of the given indent string.
         private static void WriteGenBankSection(string header, string indentString, string data, TextWriter txtWriter)
         {
-            var maxLineDataLength = MaxLineLength - indentString.Length;
-            var firstLine = true;
+            int maxLineDataLength = MaxLineLength - indentString.Length;
+            bool firstLine = true;
 
             // process the data by chunks using any line breaks it already contains
-            foreach (var dataChunk in data.Split('\r', '\n'))
+            foreach (string dataChunk in data.Split('\r', '\n'))
             {
                 int lineDataLength;
-                for (var lineStart = 0; lineStart < dataChunk.Length; lineStart += lineDataLength)
+                for (int lineStart = 0; lineStart < dataChunk.Length; lineStart += lineDataLength)
                 {
                     // skip spaces at start of this line of data
                     while (dataChunk[lineStart] == ' ')
@@ -514,8 +514,8 @@ namespace Bio.IO.GenBank
                         // use the last space in the first maxLineDataLength characters as the line
                         // break; the startIndex for LastIndexOf actually needs to equal the end of
                         // the substring being examined - not intuitive
-                        var startIndex = lineStart + maxLineDataLength;
-                        var lineBreak = dataChunk.LastIndexOf(' ', startIndex, maxLineDataLength);
+                        int startIndex = lineStart + maxLineDataLength;
+                        int lineBreak = dataChunk.LastIndexOf(' ', startIndex, maxLineDataLength);
 
                         // if we didn't find a space, look for assorted other punctuation
                         if (lineBreak == -1)

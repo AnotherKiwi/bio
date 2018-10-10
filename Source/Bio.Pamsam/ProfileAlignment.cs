@@ -57,7 +57,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="sequences">aligned sequences</param>
         public static IProfileAlignment GenerateProfileAlignment(ICollection<ISequence> sequences)
         {
-            var profileMatrix = Profiles.GenerateProfiles(sequences);
+            IProfiles profileMatrix = Profiles.GenerateProfiles(sequences);
             IProfileAlignment profileAlignment = new ProfileAlignment();
             profileAlignment.NumberOfSequences = sequences.Count;
             profileAlignment.ProfilesMatrix = profileMatrix;
@@ -71,7 +71,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="weights">sequence weights</param>
         public static IProfileAlignment GenerateProfileAlignment(ICollection<ISequence> sequences, float[] weights)
         {
-            var profileMatrix = Profiles.GenerateProfiles(sequences, weights);
+            IProfiles profileMatrix = Profiles.GenerateProfiles(sequences, weights);
             IProfileAlignment profileAlignment = new ProfileAlignment();
             profileAlignment.NumberOfSequences = sequences.Count;
             profileAlignment.ProfilesMatrix = profileMatrix;
@@ -86,7 +86,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         public static IProfileAlignment GenerateProfileAlignment(IProfileAlignment profileAlignmentA, IProfileAlignment profileAlignmentB)
         {
 
-            var profileMatrix = Profiles.GenerateProfiles(
+            IProfiles profileMatrix = Profiles.GenerateProfiles(
                         profileAlignmentA.ProfilesMatrix, profileAlignmentB.ProfilesMatrix,
                         profileAlignmentA.NumberOfSequences, profileAlignmentB.NumberOfSequences);
 
@@ -105,7 +105,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="seq">an input sequence</param>
         public static IProfileAlignment GenerateProfileAlignment(ISequence seq)
         {
-            var profileMatrix = Profiles.GenerateProfiles(seq);
+            IProfiles profileMatrix = Profiles.GenerateProfiles(seq);
             IProfileAlignment profileAlignment = new ProfileAlignment();
             profileAlignment.NumberOfSequences = 1;
             profileAlignment.ProfilesMatrix = profileMatrix;
@@ -121,7 +121,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="weight">sequence weight</param>
         public static IProfileAlignment GenerateProfileAlignment(ISequence seq, float weight)
         {
-            var profileMatrix = Profiles.GenerateProfiles(seq, weight);
+            IProfiles profileMatrix = Profiles.GenerateProfiles(seq, weight);
             IProfileAlignment profileAlignment = new ProfileAlignment();
             profileAlignment.NumberOfSequences = 1;
             profileAlignment.ProfilesMatrix = profileMatrix;
@@ -147,7 +147,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                 int[] bAligned,
                 int gapCode)
         {
-            var profileMatrix = Profiles.GenerateProfiles(
+            IProfiles profileMatrix = Profiles.GenerateProfiles(
                 profileAlignmentA.ProfilesMatrix, profileAlignmentB.ProfilesMatrix, 
                 profileAlignmentA.NumberOfSequences, profileAlignmentB.NumberOfSequences,
                 aAligned, bAligned, gapCode);
@@ -181,7 +181,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                 int gapCode,
                 float[] weights)
         {
-            var profileMatrix = Profiles.GenerateProfiles(
+            IProfiles profileMatrix = Profiles.GenerateProfiles(
                 profileAlignmentA.ProfilesMatrix, profileAlignmentB.ProfilesMatrix,
                 profileAlignmentA.NumberOfSequences, profileAlignmentB.NumberOfSequences,
                 aAligned, bAligned, gapCode, weights);
@@ -212,8 +212,8 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                                         out List<int>[] allIndelPositions)
         {
             allIndelPositions = new List<int>[2];
-            var profileA = Profiles.GenerateProfiles(alignedSequences, sequenceIndicesA, out allIndelPositions[0]);
-            var profileB = Profiles.GenerateProfiles(alignedSequences, sequenceIndicesB, out allIndelPositions[1]);
+            IProfiles profileA = Profiles.GenerateProfiles(alignedSequences, sequenceIndicesA, out allIndelPositions[0]);
+            IProfiles profileB = Profiles.GenerateProfiles(alignedSequences, sequenceIndicesB, out allIndelPositions[1]);
             IProfileAlignment profileAlignmentA = new ProfileAlignment();
             IProfileAlignment profileAlignmentB = new ProfileAlignment();
             profileAlignmentA.ProfilesMatrix = profileA;

@@ -24,10 +24,10 @@ namespace Bio.Tests.IO.SFF
         [Category("Priority0")]
         public void TestSffWhenParsingOneOfMany()
         {
-            var parser = new SFFParser();
+            SFFParser parser = new SFFParser();
             using (parser.Open(filePath))
             {
-                var sequence = parser.Parse().FirstOrDefault();
+                ISequence sequence = parser.Parse().FirstOrDefault();
                 Assert.IsNotNull(sequence);
                 Assert.AreEqual(265, sequence.Count);
             }
@@ -45,15 +45,15 @@ namespace Bio.Tests.IO.SFF
                                             "CAGTCAATGAAGCCCGCAAGGATAGTATAAGGATTAGATACCATGATGGCCATCTTAAATTCCTTCTTCAAGCGATCAAG" +
                                             "GAAGGTGTTAATTTGAAGGGGCTTA";
 
-            var parser = new SFFParser();
+            SFFParser parser = new SFFParser();
             using (parser.Open(filePath))
             {
-                var sequence = parser.Parse().FirstOrDefault();
+                ISequence sequence = parser.Parse().FirstOrDefault();
                 Assert.IsNotNull(sequence);
                 Assert.IsInstanceOf<QualitativeSequence>(sequence);
                 Assert.AreEqual(265, sequence.Count);
 
-                var actualSequence = sequence.ConvertToString();
+                string actualSequence = sequence.ConvertToString();
                 Assert.AreEqual(ExpectedSequence, actualSequence);
                 Assert.AreEqual(sequence.Alphabet, Alphabets.DNA);
                 Assert.AreEqual("E3MFGYR02JWQ7T", sequence.ID);
@@ -67,7 +67,7 @@ namespace Bio.Tests.IO.SFF
         [Category("Priority0")]
         public void TestMultipleSequencesInFile()
         {
-            var expectedData = new[]
+            Tuple<string, int>[] expectedData = new[]
             {
                 Tuple.Create("E3MFGYR02JWQ7T", 265),
                 Tuple.Create("E3MFGYR02JA6IL", 271),
@@ -81,11 +81,11 @@ namespace Bio.Tests.IO.SFF
                 Tuple.Create("E3MFGYR02F7Z7G", 219),
             };
 
-            var parser = new SFFParser();
+            SFFParser parser = new SFFParser();
             using (parser.Open(filePath))
             {
-                var index = 0;
-                foreach (var sequence in parser.Parse())
+                int index = 0;
+                foreach (ISequence sequence in parser.Parse())
                 {
                     Assert.IsTrue(expectedData.Length > index);
                     Assert.AreEqual(expectedData[index].Item1, sequence.ID);

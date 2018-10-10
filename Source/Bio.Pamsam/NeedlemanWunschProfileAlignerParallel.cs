@@ -60,7 +60,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="row">row of cell</param>
         override protected void FillCellSimple(int col, int row)
         {
-            var score = SetCellValuesSimple(col, row);
+            float score = SetCellValuesSimple(col, row);
             // Traceback starts at lower right corner.
             // Save the score from this point.
             if (col == _nCols - 1 && row == _nRows - 1)
@@ -76,7 +76,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         /// <param name="row">row of cell</param>
         override protected void FillCellAffine(int col, int row)
         {
-            var score = SetCellValuesAffine(col, row);
+            float score = SetCellValuesAffine(col, row);
             // Traceback starts at lower right corner.
             // Save the score from this point.
             if (col == _nCols - 1 && row == _nRows - 1)
@@ -93,8 +93,8 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         {
             // Fill the 0 row and 0 column with i*_gapOpenPenalty for NW.
             int col, row;
-            var colLen = _FScore.GetLength(0);
-            var rowLen = _FScore.GetLength(1);
+            int colLen = _FScore.GetLength(0);
+            int rowLen = _FScore.GetLength(1);
             for (col = 0; col < colLen; col++)
             {
                 _FScore[col, 0] = col * _gapOpenPenalty;
@@ -116,8 +116,8 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         {
             // Fill the 0 row and 0 column with 0 for sw
             int col, row;
-            var colLen = _FSource.GetLength(0);
-            var rowLen = _FSource.GetLength(1);
+            int colLen = _FSource.GetLength(0);
+            int rowLen = _FSource.GetLength(1);
 
             // Note that the BC for Ix and Iy are usually set to -infinity or for integers, int.MinValue.
             // This can lead to underflow when filling the first row or col past the boundary, so use int.MinValue/2.
@@ -184,9 +184,9 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
         {
             // For NW, aligned sequence will be at least as long as longest input sequence.
             // May be longer if there are gaps in both aligned sequences.
-            var guessLen = Math.Max(_a.Length, _b.Length);
-            var aAligned = new List<int>(guessLen);
-            var bAligned = new List<int>(guessLen);
+            int guessLen = Math.Max(_a.Length, _b.Length);
+            List<int> aAligned = new List<int>(guessLen);
+            List<int> bAligned = new List<int>(guessLen);
 
             // Start at the bottom left element of F and work backwards until we get to upper left
             int col, row;
@@ -225,7 +225,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             // Prepare solution, copy diagnostic data, turn aligned sequences around, etc
             // Be nice, turn aligned solutions around so that they match the input sequences
             int i, j; // utility indices used to reverse aligned sequences
-            var len = aAligned.Count;
+            int len = aAligned.Count;
             aAlignedOut = new int[len];
             bAlignedOut = new int[len];
             for (i = 0, j = len - 1; i < len; i++, j--)

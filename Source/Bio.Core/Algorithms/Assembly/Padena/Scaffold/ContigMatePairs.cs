@@ -35,7 +35,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
                 throw new ArgumentNullException(nameof(contigs));
             }
 
-            foreach (var contig in contigs)
+            foreach (ISequence contig in contigs)
             {
                 Add(contig, new Dictionary<ISequence, IList<ValidMatePair>>());
             }

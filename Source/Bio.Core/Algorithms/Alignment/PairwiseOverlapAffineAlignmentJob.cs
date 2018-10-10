@@ -38,7 +38,7 @@ namespace Bio.Algorithms.Alignment
             ComputeBlock(
                 (int i, int j, int Iij, int Dij, int Cij) =>
                 {
-                    var weight = Cij;
+                    int weight = Cij;
 
                     if (weight < Dij)
                     {
@@ -60,8 +60,8 @@ namespace Bio.Algorithms.Alignment
                                 optScoreCells.Clear();
                             }
 
-                            var globalRow = Helper.BigMul(blockRow, gridStride) + i;
-                            var globalCol = Helper.BigMul(blockCol, gridStride) + j;
+                            long globalRow = Helper.BigMul(blockRow, gridStride) + i;
+                            long globalCol = Helper.BigMul(blockCol, gridStride) + j;
 
                             optScoreCells.Add(new Tuple<long, long>(globalRow, globalCol));
                         }
@@ -93,8 +93,8 @@ namespace Bio.Algorithms.Alignment
             ComputeBlock(
             (int i, int j, int Iij, int Dij, int Cij) =>
             {
-                var weight = Cij;
-                var direction = SourceDirection.Diagonal;
+                int weight = Cij;
+                sbyte direction = SourceDirection.Diagonal;
 
                 if (weight < Dij)
                 {
@@ -118,8 +118,8 @@ namespace Bio.Algorithms.Alignment
                             optScoreCells.Clear();
                         }
 
-                        var globalRow = Helper.BigMul(blockRow, gridStride) + i;
-                        var globalCol = Helper.BigMul(blockCol, gridStride) + j;
+                        long globalRow = Helper.BigMul(blockRow, gridStride) + i;
+                        long globalCol = Helper.BigMul(blockCol, gridStride) + j;
 
                         optScoreCells.Add(new Tuple<long, long>(globalRow, globalCol));
                     }
@@ -152,8 +152,8 @@ namespace Bio.Algorithms.Alignment
             ComputeBlock(
             (int i, int j, int Iij, int Dij, int Cij) =>
             {
-                var weight = Cij;
-                var direction = SourceDirection.Diagonal;
+                int weight = Cij;
+                sbyte direction = SourceDirection.Diagonal;
 
                 if (weight < Dij)
                 {

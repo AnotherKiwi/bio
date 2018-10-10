@@ -37,7 +37,7 @@ namespace Bio.Tests.Framework
         [Test]
         public void TestCreatingBigArrayWithNonZeroLength()
         {
-            var size = 100;
+            int size = 100;
             BigArray<int> bigArray = null;
             try
             {
@@ -146,7 +146,7 @@ namespace Bio.Tests.Framework
         [Test]
         public void TestIndexOf()
         {
-            var bigArray = new BigArray<int>(10);
+            BigArray<int> bigArray = new BigArray<int>(10);
             bigArray[0] = 1;
             bigArray[1] = 2;
             bigArray[2] = 1;
@@ -171,7 +171,7 @@ namespace Bio.Tests.Framework
         [Test]
         public void TestClear()
         {
-            var bigArray = new BigArray<int>(10);
+            BigArray<int> bigArray = new BigArray<int>(10);
             bigArray[0] = 1;
             bigArray[1] = 2;
             bigArray[2] = 1;
@@ -187,7 +187,7 @@ namespace Bio.Tests.Framework
             bigArray.Clear(3, 1);
             Assert.IsTrue(bigArray.IndexOf(0) == 3);
             bigArray.Clear();
-            for (var i = 0; i < 10; i++)
+            for (int i = 0; i < 10; i++)
             {
                 Assert.IsTrue(bigArray[i] == 0);
             }
@@ -201,7 +201,7 @@ namespace Bio.Tests.Framework
         {
             try
             {
-                var bigArray = new BigArray<int>(5);
+                BigArray<int> bigArray = new BigArray<int>(5);
                 Assert.IsTrue(bigArray.Length == 5);
                 bigArray[0] = 1;
                 bigArray[1] = 2;
@@ -228,7 +228,7 @@ namespace Bio.Tests.Framework
         [Test]
         public void TestCopyTo()
         {
-            var bigArray = new BigArray<int>(10);
+            BigArray<int> bigArray = new BigArray<int>(10);
             bigArray[0] = 1;
             bigArray[1] = 2;
             bigArray[2] = 1;
@@ -240,14 +240,14 @@ namespace Bio.Tests.Framework
             bigArray[8] = 7;
             bigArray[9] = 8;
 
-            var array = new int[10];
+            int[] array = new int[10];
             try
             {
-                var sourceIndex = 0;
-                var destIndex = 0;
-                var count = 10;
+                int sourceIndex = 0;
+                int destIndex = 0;
+                int count = 10;
                 bigArray.CopyTo(sourceIndex, array, count);
-                for (var i = 0; i < count; i++)
+                for (int i = 0; i < count; i++)
                 {
                     if (bigArray[i + sourceIndex] != array[i + destIndex])
                     {
@@ -260,7 +260,7 @@ namespace Bio.Tests.Framework
                 destIndex = 0;
                 count = 5;
                 bigArray.CopyTo(sourceIndex, array, count);
-                for (var i = 0; i < count; i++)
+                for (int i = 0; i < count; i++)
                 {
                     if (bigArray[i + sourceIndex] != array[i + destIndex])
                     {
@@ -273,7 +273,7 @@ namespace Bio.Tests.Framework
                 destIndex = 3;
                 count = 5;
                 bigArray.CopyTo(sourceIndex, array, destIndex, count);
-                for (var i = 0; i < count; i++)
+                for (int i = 0; i < count; i++)
                 {
                     if (bigArray[i + sourceIndex] != array[i + destIndex])
                     {
@@ -293,7 +293,7 @@ namespace Bio.Tests.Framework
         [Test]
         public void TestGetEnumerator()
         {
-            var bigArray = new BigArray<int>(10);
+            BigArray<int> bigArray = new BigArray<int>(10);
             bigArray[0] = 1;
             bigArray[1] = 2;
             bigArray[2] = 1;
@@ -305,8 +305,8 @@ namespace Bio.Tests.Framework
             bigArray[8] = 7;
             bigArray[9] = 8;
 
-            var index = 0;
-            foreach (var val in bigArray)
+            int index = 0;
+            foreach (int val in bigArray)
             {
                 if (bigArray[index++] != val)
                 {

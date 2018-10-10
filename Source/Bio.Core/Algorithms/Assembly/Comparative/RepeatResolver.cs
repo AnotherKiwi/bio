@@ -27,19 +27,19 @@ namespace Bio.Algorithms.Assembly.Comparative
 
             // Process reads and add to result list.
             // Loop till all reads are processed
-            foreach (var curReadDeltas in alignmentBetweenReferenceAndReads.GetDeltaAlignmentsByReads())
+            foreach (List<DeltaAlignment> curReadDeltas in alignmentBetweenReferenceAndReads.GetDeltaAlignmentsByReads())
             {
                 if (curReadDeltas == null)
                     continue;
 
-                var deltasInCurrentRead = curReadDeltas.Count;
+                int deltasInCurrentRead = curReadDeltas.Count;
 
                 // If curReadDeltas has only one delta, then there are no repeats so add it to result
                 // Or if any delta is a partial alignment, dont try to resolve, add all deltas to result
                 if (deltasInCurrentRead == 1 || curReadDeltas.Any(a => a.SecondSequenceEnd != a.QuerySequence.Count - 1))
                 {
                     //result.AddRange(curReadDeltas);
-                    foreach (var delta in curReadDeltas)
+                    foreach (DeltaAlignment delta in curReadDeltas)
                     {
                         yield return delta;
                     }
@@ -51,19 +51,19 @@ namespace Bio.Algorithms.Assembly.Comparative
                 else
                 {
                     // Resolve repeats
-                    var sequenceId = curReadDeltas[0].QuerySequence.ID;
+                    string sequenceId = curReadDeltas[0].QuerySequence.ID;
                     string originalSequenceId;
                     bool forwardRead;
                     string pairedReadType;
                     string libraryName;
 
-                    var pairedRead =Helper.ValidatePairedSequenceId(sequenceId, out originalSequenceId, out forwardRead,out pairedReadType, out libraryName);
+                    bool pairedRead =Helper.ValidatePairedSequenceId(sequenceId, out originalSequenceId, out forwardRead,out pairedReadType, out libraryName);
 
                     // If read is not having proper ID, ignore the read
                     if (!pairedRead)
                     {
                         //result.AddRange(curReadDeltas);
-                        foreach (var delta in curReadDeltas)
+                        foreach (DeltaAlignment delta in curReadDeltas)
                         {
                             yield return delta;
                         } 
@@ -71,16 +71,16 @@ namespace Bio.Algorithms.Assembly.Comparative
                         continue;
                     }
 
-                    var pairedReadId = Helper.GetPairedReadId(originalSequenceId, Helper.GetMatePairedReadType(pairedReadType), libraryName);
+                    string pairedReadId = Helper.GetPairedReadId(originalSequenceId, Helper.GetMatePairedReadType(pairedReadType), libraryName);
 
                     // Find mate pair
-                    var mateDeltas = alignmentBetweenReferenceAndReads.GetDeltaAlignmentFor(pairedReadId);
+                    List<DeltaAlignment> mateDeltas = alignmentBetweenReferenceAndReads.GetDeltaAlignmentFor(pairedReadId);
 
                     // If mate pair not found, ignore current read
                     if (mateDeltas.Count == 0)
                     {
                         //result.AddRange(curReadDeltas);
-                        foreach (var delta in curReadDeltas)
+                        foreach (DeltaAlignment delta in curReadDeltas)
                         {
                             yield return delta;
                         }
@@ -88,11 +88,11 @@ namespace Bio.Algorithms.Assembly.Comparative
                     }
 
                     // Resolve using distance method
-                    var resolvedDeltas = ResolveRepeatUsingMatePair(curReadDeltas, mateDeltas, libraryName);
+                    List<DeltaAlignment> resolvedDeltas = ResolveRepeatUsingMatePair(curReadDeltas, mateDeltas, libraryName);
                     if (resolvedDeltas != null)
                     {
                         //result.AddRange(resolvedDeltas);
-                        foreach (var delta in resolvedDeltas)
+                        foreach (DeltaAlignment delta in resolvedDeltas)
                         {
                             yield return delta;
                         }
@@ -117,23 +117,23 @@ namespace Bio.Algorithms.Assembly.Comparative
             }
 
             // Get clone library information
-            var libraryInfo = CloneLibrary.Instance.GetLibraryInformation(libraryName);
-            var mean = libraryInfo.MeanLengthOfInsert;
-            var stdDeviation = libraryInfo.StandardDeviationOfInsert;
+            CloneLibraryInformation libraryInfo = CloneLibrary.Instance.GetLibraryInformation(libraryName);
+            float mean = libraryInfo.MeanLengthOfInsert;
+            float stdDeviation = libraryInfo.StandardDeviationOfInsert;
 
             // Find delta with a matching distance.
-            for(var indexFR =0;indexFR<curReadDeltas.Count; indexFR++)
+            for(int indexFR =0;indexFR<curReadDeltas.Count; indexFR++)
             {
-                var pair1 = curReadDeltas[indexFR];
-                for (var indexRR =0;indexRR<mateDeltas.Count;indexRR++)
+                DeltaAlignment pair1 = curReadDeltas[indexFR];
+                for (int indexRR =0;indexRR<mateDeltas.Count;indexRR++)
                 {
-                    var pair2 = mateDeltas[indexRR];
-                    var distance = Math.Abs(pair1.FirstSequenceStart - pair2.FirstSequenceEnd);
+                    DeltaAlignment pair2 = mateDeltas[indexRR];
+                    long distance = Math.Abs(pair1.FirstSequenceStart - pair2.FirstSequenceEnd);
 
                     // Find delta with matching distance.
                     if (distance - mean <= stdDeviation)
                     {
-                        var resolvedDeltas = new List<DeltaAlignment>(2) { pair1, pair2 };
+                        List<DeltaAlignment> resolvedDeltas = new List<DeltaAlignment>(2) { pair1, pair2 };
 
                         return resolvedDeltas;
                     }

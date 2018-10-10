@@ -82,7 +82,7 @@ namespace Bio.Algorithms.Assembly.Padena
             DeBruijnGraph.ValidateGraph(deBruijnGraph);
             graph = deBruijnGraph;
 
-            var redundantPaths = new List<DeBruijnPathList>();
+            List<DeBruijnPathList> redundantPaths = new List<DeBruijnPathList>();
             Parallel.ForEach(
                 deBruijnGraph.GetNodes(),
                 node =>
@@ -125,7 +125,7 @@ namespace Bio.Algorithms.Assembly.Padena
             graph = deBruijnGraph;
 
             // Neighbors of all nodes have to be updated.
-            var deleteNodes = new HashSet<DeBruijnNode>(
+            HashSet<DeBruijnNode> deleteNodes = new HashSet<DeBruijnNode>(
                 nodesList.Paths.AsParallel().SelectMany(nl => nl.PathNodes));
 
             // Update extensions for deletion
@@ -135,7 +135,7 @@ namespace Bio.Algorithms.Assembly.Padena
                 deleteNodes,
                 node =>
                 {
-                    foreach (var extension in node.GetExtensionNodes())
+                    foreach (DeBruijnNode extension in node.GetExtensionNodes())
                     {
                         // If the neighbor is also to be deleted, there is no use of updation in that case
                         if (!deleteNodes.Contains(extension))
@@ -171,14 +171,14 @@ namespace Bio.Algorithms.Assembly.Padena
         private static DeBruijnPathList ExtractBestPath(DeBruijnPathList divergingPaths)
         {
             // Find "best" path. Except for best path, return rest for removal 
-            var bestPathIndex = GetBestPath(divergingPaths);
+            int bestPathIndex = GetBestPath(divergingPaths);
 
-            var bestPath = divergingPaths.Paths[bestPathIndex];
+            DeBruijnPath bestPath = divergingPaths.Paths[bestPathIndex];
             divergingPaths.Paths.RemoveAt(bestPathIndex);
 
             // There can be overlap between redundant paths.
             // Remove path nodes that occur in best path
-            foreach (var path in divergingPaths.Paths)
+            foreach (DeBruijnPath path in divergingPaths.Paths)
             {
                 path.RemoveAll(n => bestPath.PathNodes.Contains(n));
             }
@@ -197,10 +197,10 @@ namespace Bio.Algorithms.Assembly.Padena
         {
             // We find the index of the 'best' path.
             long max = -1;
-            var maxIndex = -1;
+            int maxIndex = -1;
 
             // Path that has the maximum sum of 'count' of belonging k-mers is the winner
-            for (var i = 0; i < divergingPaths.Paths.Count; i++)
+            for (int i = 0; i < divergingPaths.Paths.Count; i++)
             {
                 long sum = divergingPaths.Paths[i].PathNodes.Sum(n => n.KmerCount);
                 if (sum > max)
@@ -249,13 +249,13 @@ namespace Bio.Algorithms.Assembly.Padena
         {
             // Divide the list into two groups. One with paths that do not 
             // have duplicates, and one with paths that do not have duplicate
-            var uniqueAndDuplicatedPaths =
+            List<IGrouping<bool, DeBruijnPathList>> uniqueAndDuplicatedPaths =
             redundantPathClusters.AsParallel().GroupBy(pc1 =>
                 redundantPathClusters.Any(pc2 =>
                     GetStartNode(pc1) == GetEndNode(pc2) && GetEndNode(pc1) == GetStartNode(pc2))).ToList();
 
-            var uniquePaths = new List<DeBruijnPathList>();
-            foreach (var group in uniqueAndDuplicatedPaths)
+            List<DeBruijnPathList> uniquePaths = new List<DeBruijnPathList>();
+            foreach (IGrouping<bool, DeBruijnPathList> group in uniqueAndDuplicatedPaths)
             {
                 if (!group.Key)
                 {
@@ -296,10 +296,10 @@ namespace Bio.Algorithms.Assembly.Padena
             bool isForwardExtension,
             List<DeBruijnPathList> redundantPaths)
         {
-            var divergingPaths = new List<PathWithOrientation>(
+            List<PathWithOrientation> divergingPaths = new List<PathWithOrientation>(
                 divergingNodes.Select(n =>
                     new PathWithOrientation(startNode, n.Key, n.Value)));
-            var divergingPathLengh = 2;
+            int divergingPathLengh = 2;
 
             // Extend paths till length threshold is exceeded.
             // In case paths coverge within threshold, we break out of while.
@@ -316,14 +316,14 @@ namespace Bio.Algorithms.Assembly.Padena
 
                 // Extend each path in cluster. While performing path extension 
                 // also keep track of whether they have converged
-                var hasConverged = true;
-                foreach (var path in divergingPaths)
+                bool hasConverged = true;
+                foreach (PathWithOrientation path in divergingPaths)
                 {
-                    var endNode = path.Nodes.Last();
-                    var extensions
+                    DeBruijnNode endNode = path.Nodes.Last();
+                    Dictionary<DeBruijnNode, bool> extensions
                         = (isForwardExtension ^ path.IsSameOrientation) ? endNode.GetLeftExtensionNodesWithOrientation() : endNode.GetRightExtensionNodesWithOrientation();
 
-                    var nextNode = extensions.First();
+                    KeyValuePair<DeBruijnNode, bool> nextNode = extensions.First();
                     if (path.Nodes.Contains(nextNode.Key))
                     {
                         // Loop in path

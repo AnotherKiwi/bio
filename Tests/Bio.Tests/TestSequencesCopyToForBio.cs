@@ -18,14 +18,14 @@ namespace Bio.Tests
         [Test]
         public void TestSequenceCopyTo()
         {
-            var seq = new Sequence(Alphabets.DNA, "ATCG");
-            var array = new byte[2];
+            Sequence seq = new Sequence(Alphabets.DNA, "ATCG");
+            byte[] array = new byte[2];
             seq.CopyTo(array, 1, 2);
-            var expectedValue = "TC";
-            var b = new StringBuilder();
+            string expectedValue = "TC";
+            StringBuilder b = new StringBuilder();
             b.Append((char)array[0]);
             b.Append((char)array[1]);
-            var actualValue = b.ToString();
+            string actualValue = b.ToString();
             Assert.AreEqual(expectedValue, actualValue);
         }
 
@@ -36,14 +36,14 @@ namespace Bio.Tests
         public void TestDeriveSequenceCopyTo()
         {
             ISequence seq = new Sequence(Alphabets.DNA, "ATCG");
-            var derSeq = new DerivedSequence(seq, false, true);
-            var array = new byte[2];
+            DerivedSequence derSeq = new DerivedSequence(seq, false, true);
+            byte[] array = new byte[2];
             derSeq.CopyTo(array, 1, 2);
-            var expectedValue = "AG";
-            var b = new StringBuilder();
+            string expectedValue = "AG";
+            StringBuilder b = new StringBuilder();
             b.Append((char)array[0]);
             b.Append((char)array[1]);
-            var actualValue = b.ToString();
+            string actualValue = b.ToString();
             Assert.AreEqual(expectedValue, actualValue);
         }
 
@@ -54,14 +54,14 @@ namespace Bio.Tests
         public void TestSparseSequenceCopyTo()
         {
             IEnumerable<byte> seqItems = new List<Byte>() { 65, 65, 67, 67 };
-            var sparseSeq = new SparseSequence(Alphabets.DNA, 0, seqItems);
-            var array = new byte[2];
+            SparseSequence sparseSeq = new SparseSequence(Alphabets.DNA, 0, seqItems);
+            byte[] array = new byte[2];
             sparseSeq.CopyTo(array, 1, 2);
-            var expectedValue = "AC";
-            var b = new StringBuilder();
+            string expectedValue = "AC";
+            StringBuilder b = new StringBuilder();
             b.Append((char)array[0]);
             b.Append((char)array[1]);
-            var actualValue = b.ToString();
+            string actualValue = b.ToString();
             Assert.AreEqual(expectedValue, actualValue);
         }
 
@@ -73,8 +73,8 @@ namespace Bio.Tests
         {
             ISequence seq = new Sequence(Alphabets.DNA, "ATCG");
             ISequence newSeq = new Sequence(seq);
-            var expectedSequence = "ATCG";
-            var actualSequence = new string(newSeq.Select(x => (char)x).ToArray());
+            string expectedSequence = "ATCG";
+            string actualSequence = new string(newSeq.Select(x => (char)x).ToArray());
             Assert.AreEqual(expectedSequence, actualSequence);
         }
 
@@ -85,13 +85,13 @@ namespace Bio.Tests
         public void TestSparseSequenceConstructorWithSequenceArgument()
         {
             IEnumerable<byte> seqItems = new List<Byte>() { 65, 65, 67, 67 };
-            var sparseSeq = new SparseSequence(Alphabets.DNA, 0, seqItems);
-            var seq = sparseSeq.GetSubSequence(0, sparseSeq.Count);
-            var newSparseSequence = new SparseSequence(seq);
-            var newSeq = newSparseSequence.GetSubSequence(0, newSparseSequence.Count);
+            SparseSequence sparseSeq = new SparseSequence(Alphabets.DNA, 0, seqItems);
+            ISequence seq = sparseSeq.GetSubSequence(0, sparseSeq.Count);
+            SparseSequence newSparseSequence = new SparseSequence(seq);
+            ISequence newSeq = newSparseSequence.GetSubSequence(0, newSparseSequence.Count);
 
-            var expectedValue = "AACC";
-            var actualValue = new string(newSeq.Select(x => (char)x).ToArray());
+            string expectedValue = "AACC";
+            string actualValue = new string(newSeq.Select(x => (char)x).ToArray());
             Assert.AreEqual(expectedValue, actualValue);
         }
     }

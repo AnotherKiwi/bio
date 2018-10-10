@@ -17,10 +17,10 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
     {
         private static List<short> GetTestData(int count)
         {
-            var data = new List<short>();
-            var rand = new Random();
+            List<short> data = new List<short>();
+            Random rand = new Random();
 
-            for (var i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
                 data.Add((short)rand.Next(1, 1000));
             }
@@ -31,7 +31,7 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
         private static void AssertAreEqual(IList<short> expected, IList<short> actual)
         {
             Assert.AreEqual(expected.Count, actual.Count);
-            for (var i = 0; i < expected.Count; i++)
+            for (int i = 0; i < expected.Count; i++)
             {
                 Assert.AreEqual(expected[i], actual[i]);
             }
@@ -48,14 +48,14 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
             const int dataCount = 40;
 
             // 10 points
-            var confidence = new short[] {22, 31, 50, 1, 61, 22, 10, 19, 23, 10};
-            var peakLocations = new short[] {2, 5, 9, 12, 15, 22, 26, 32, 35, 38};
-            var aData = GetTestData(dataCount).ToArray();
-            var cData = GetTestData(dataCount).ToArray();
-            var tData = GetTestData(dataCount).ToArray();
-            var gData = GetTestData(dataCount).ToArray();
+            short[] confidence = new short[] {22, 31, 50, 1, 61, 22, 10, 19, 23, 10};
+            short[] peakLocations = new short[] {2, 5, 9, 12, 15, 22, 26, 32, 35, 38};
+            short[] aData = GetTestData(dataCount).ToArray();
+            short[] cData = GetTestData(dataCount).ToArray();
+            short[] tData = GetTestData(dataCount).ToArray();
+            short[] gData = GetTestData(dataCount).ToArray();
 
-            var data = new Ab1Metadata {ConfidenceData = confidence.ToArray(), PeakLocations = peakLocations.ToArray()};
+            Ab1Metadata data = new Ab1Metadata {ConfidenceData = confidence.ToArray(), PeakLocations = peakLocations.ToArray()};
             data.SetColorData(Alphabets.DNA.A, new Ab1ColorData(peakLocations, aData));
             data.SetColorData(Alphabets.DNA.T, new Ab1ColorData(peakLocations, tData));
             data.SetColorData(Alphabets.DNA.C, new Ab1ColorData(peakLocations, cData));
@@ -66,7 +66,7 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
 
             data.Trim(segmentStartIndex, segmentLength);
 
-            var newPeakLocations = new List<short> {1, 4, 11, 15, 21};
+            List<short> newPeakLocations = new List<short> {1, 4, 11, 15, 21};
             Assert.AreEqual(segmentLength, data.ConfidenceData.Length);
             Assert.AreEqual(segmentLength, data.PeakLocations.Length);
 
@@ -77,8 +77,8 @@ namespace Bio.Tests.Framework.IO.AppliedBiosystems
                 .ToList().ForEach(colorData =>
                                       {
                                           Assert.AreEqual(segmentLength, colorData.DataByResidue.Count);
-                                          var offset = 0;
-                                          for (var i = 0; i < colorData.DataByResidue.Count; i++)
+                                          int offset = 0;
+                                          for (int i = 0; i < colorData.DataByResidue.Count; i++)
                                           {
                                               Assert.AreEqual(newPeakLocations[i],
                                                               colorData.DataByResidue[i].PeakIndex + offset);

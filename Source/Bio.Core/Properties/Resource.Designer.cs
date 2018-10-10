@@ -396,15 +396,6 @@ namespace Bio.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BasicProtein.
-        /// </summary>
-        internal static string BasicProteinAlphabetName {
-            get {
-                return ResourceManager.GetString("BasicProteinAlphabetName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Batch count must be greater than zero..
         /// </summary>
         internal static string BatchCountCondition {
@@ -2861,6 +2852,15 @@ namespace Bio.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Offset cannot be a negative value.
+        /// </summary>
+        internal static string OffsetCannotBeNegative {
+            get {
+                return ResourceManager.GetString("OffsetCannotBeNegative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Offset cannot be greater than the sequence count..
         /// </summary>
         internal static string OffsetInvalid {
@@ -3275,6 +3275,15 @@ namespace Bio.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PEAKS Peptide.
+        /// </summary>
+        internal static string PeaksPeptideAlphabetName {
+            get {
+                return ResourceManager.GetString("PeaksPeptideAlphabetName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .phy,.ph.
         /// </summary>
         internal static string PHYLIP_FILEEXTENSION {
@@ -3334,6 +3343,24 @@ namespace Bio.Properties {
         internal static string ProteinAlphabetName {
             get {
                 return ResourceManager.GetString("ProteinAlphabetName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Peptide.
+        /// </summary>
+        internal static string ProteinFragmentAlphabetName {
+            get {
+                return ResourceManager.GetString("ProteinFragmentAlphabetName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ProteinScape Peptide.
+        /// </summary>
+        internal static string ProteinScapePeptideAlphabetName {
+            get {
+                return ResourceManager.GetString("ProteinScapePeptideAlphabetName", resourceCulture);
             }
         }
         
@@ -3747,6 +3774,15 @@ namespace Bio.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sequence length is less than the minimum 3 symbols required for a Protein Fragment.
+        /// </summary>
+        internal static string SequenceLengthLessThanMinimum {
+            get {
+                return ResourceManager.GetString("SequenceLengthLessThanMinimum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sequence length does not match..
         /// </summary>
         internal static string SequenceLengthMismatch {
@@ -4059,6 +4095,15 @@ namespace Bio.Properties {
         internal static string StartDataCannotBeNull {
             get {
                 return ResourceManager.GetString("StartDataCannotBeNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to StrictProtein.
+        /// </summary>
+        internal static string StrictProteinAlphabetName {
+            get {
+                return ResourceManager.GetString("StrictProteinAlphabetName", resourceCulture);
             }
         }
         

@@ -17,6 +17,7 @@
     <PackageTags>bioinformatics biology FASTA FASTQ GenBank nucleotides genomics .NETInte</PackageTags>
     <PackageReleaseNotes>First .NET Standard release.</PackageReleaseNotes>
     <Product>.NET Bio</Product>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

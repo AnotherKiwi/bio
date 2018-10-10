@@ -206,10 +206,6 @@ file specification, and converts the data to in-memory SequenceAlignmentMap obje
   <data name="BAM_UnableToReadCompressedBlock" xml:space="preserve">
     <value>Unable to read compressed block</value>
   </data>
-  <data name="BasicProteinAlphabetName" xml:space="preserve">
-    <value>BasicProtein</value>
-    <comment>Added by Stephen Haines</comment>
-  </data>
   <data name="BedDesc" xml:space="preserve">
     <value>Chromosome sequence ranges format.</value>
   </data>
@@ -918,6 +914,10 @@ provided. There is also a default encoding for each alphabet that may be encount
   <data name="Parser_NoTextErrorMessage" xml:space="preserve">
     <value>No text to parse.</value>
   </data>
+  <data name="PeaksPeptideAlphabetName" xml:space="preserve">
+    <value>PEAKS Peptide</value>
+    <comment>Added by Stephen Haines</comment>
+  </data>
   <data name="PHYLIPPARSER_DESCRIPTION" xml:space="preserve">
     <value>A PhylipParser reads from a source of text that is formatted according to the Phylip flat file specification, and converts the data to in-memory ISequenceAlignment objects.</value>
   </data>
@@ -938,6 +938,10 @@ provided. There is also a default encoding for each alphabet that may be encount
   </data>
   <data name="ProteinAlphabetName" xml:space="preserve">
     <value>Protein</value>
+  </data>
+  <data name="ProteinScapePeptideAlphabetName" xml:space="preserve">
+    <value>ProteinScape Peptide</value>
+    <comment>Added by Stephen Haines</comment>
   </data>
   <data name="QueryListCannotBeNull" xml:space="preserve">
     <value>Query sequence list cannot be null</value>
@@ -1108,6 +1112,10 @@ file specification, and converts the data to in-memory SequenceAlignmentMap obje
   </data>
   <data name="StartDataCannotBeNull" xml:space="preserve">
     <value>StartData can not be null or empty.</value>
+  </data>
+  <data name="StrictProteinAlphabetName" xml:space="preserve">
+    <value>StrictProtein</value>
+    <comment>Added by Stephen Haines</comment>
   </data>
   <data name="SymbolCountZero" xml:space="preserve">
     <value>Zero nucleotides in input.</value>
@@ -1577,5 +1585,17 @@ provided. There is also a default encoding for each alphabet that may be encount
   <data name="UnsupportedAlphabetType" xml:space="preserve">
     <value>An alphabet that is not a supported type (DNA, RNA or protein) encountered </value>
     <comment>An alphabet in the addins folder is not marked as one of the supported types</comment>
+  </data>
+  <data name="ProteinFragmentAlphabetName" xml:space="preserve">
+    <value>Peptide</value>
+    <comment>Added by Stephen Haines</comment>
+  </data>
+  <data name="SequenceLengthLessThanMinimum" xml:space="preserve">
+    <value>Sequence length is less than the minimum 3 symbols required for a Protein Fragment</value>
+    <comment>Added by Stephen Haines</comment>
+  </data>
+  <data name="OffsetCannotBeNegative" xml:space="preserve">
+    <value>Offset cannot be a negative value</value>
+    <comment>Added by Stephen Haines</comment>
   </data>
 </root>

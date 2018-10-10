@@ -105,7 +105,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                 
                 // Construct _indexToCluster
                 _indexToCluster = new int[distanceMatrix.Dimension];
-                for (var i = 0; i < distanceMatrix.Dimension; ++i)
+                for (int i = 0; i < distanceMatrix.Dimension; ++i)
                 {
                     _indexToCluster[i] = i;
                 }

@@ -129,7 +129,7 @@ namespace Bio.Matrix
             {
                 return result;
             }
-            var firstline = FileUtils.ReadLine(filename);
+            string firstline = FileUtils.ReadLine(filename);
             throw new ArgumentException(string.Format("Unable to find suitable Matrix Parser for file \"{0}\" with header \"{1}\"\nErrors:\n{2}",
                 filename,
                 firstline.Length > 25 ? firstline.Substring(0, 25) + "..." : firstline,
@@ -147,13 +147,13 @@ namespace Bio.Matrix
         public bool TryParse(string filename, TValue missingValue, ParallelOptions parallelOptions, out Matrix<TRowKey, TColKey, TValue> result)
         {
             result = null;
-            var origErrorWriter = Console.Error;
-            var mfErrorWriter = new MFErrorWriter();
+            TextWriter origErrorWriter = Console.Error;
+            MFErrorWriter mfErrorWriter = new MFErrorWriter();
             Console.SetError(mfErrorWriter);
 
             if (_registeredParsers.Count == 0 && _builtInParsers.Count == 0) Console.Error.WriteLine("No matching parsers found");
 
-            foreach (var ParseFunc in _registeredParsers)
+            foreach (TryParseMatrixDelegate<TRowKey, TColKey, TValue> ParseFunc in _registeredParsers)
             {
                 mfErrorWriter.SetLabel(ParseFunc.Method.DeclaringType + "." + ParseFunc.Method.Name);
                 if (ParseFunc(filename, missingValue, parallelOptions, out result))
@@ -163,15 +163,15 @@ namespace Bio.Matrix
                     return true;
                 }
             }
-            var methodParams4 = new object[] { filename, missingValue, parallelOptions, result };
-            var methodParams3 = new object[] { filename, missingValue, result };
-            foreach (var ParseFuncMemberInfo in _builtInParsers)
+            object[] methodParams4 = new object[] { filename, missingValue, parallelOptions, result };
+            object[] methodParams3 = new object[] { filename, missingValue, result };
+            foreach (MethodInfo ParseFuncMemberInfo in _builtInParsers)
             {
                 mfErrorWriter.SetLabel(ParseFuncMemberInfo.DeclaringType.Name + "." + ParseFuncMemberInfo.Name);
-                var argCount = ParseFuncMemberInfo.GetParameters().Length;
+                int argCount = ParseFuncMemberInfo.GetParameters().Length;
                 Helper.CheckCondition(argCount == 3 || argCount == 4, () => string.Format(CultureInfo.InvariantCulture, Properties.Resource.ExpectedArgCountOfThreeOrFour));
-                var methodParams = (3 == argCount) ? methodParams3 : methodParams4;
-                var success = (bool)ParseFuncMemberInfo.Invoke(null, methodParams);
+                object[] methodParams = (3 == argCount) ? methodParams3 : methodParams4;
+                bool success = (bool)ParseFuncMemberInfo.Invoke(null, methodParams);
                 if (success)
                 {
                     result = (Matrix<TRowKey, TColKey, TValue>)methodParams[argCount - 1];//!!!const
@@ -187,21 +187,21 @@ namespace Bio.Matrix
 
         private List<MethodInfo> KnownMatrixParsers()
         {
-            var readers = new List<MethodInfo>();
+            List<MethodInfo> readers = new List<MethodInfo>();
 
-            var argTypesPO = new Type[] { typeof(string), typeof(TValue), typeof(ParallelOptions), typeof(Matrix<TRowKey, TColKey, TValue>).MakeByRefType() };
-            var argTypesST = new Type[] { typeof(string), typeof(TValue), typeof(Matrix<TRowKey, TColKey, TValue>).MakeByRefType() };
-            var genericTypes3 = new Type[] { typeof(TRowKey), typeof(TColKey), typeof(TValue) };
-            var genericTypes1 = new Type[] { typeof(TValue) };
+            Type[] argTypesPO = new Type[] { typeof(string), typeof(TValue), typeof(ParallelOptions), typeof(Matrix<TRowKey, TColKey, TValue>).MakeByRefType() };
+            Type[] argTypesST = new Type[] { typeof(string), typeof(TValue), typeof(Matrix<TRowKey, TColKey, TValue>).MakeByRefType() };
+            Type[] genericTypes3 = new Type[] { typeof(TRowKey), typeof(TColKey), typeof(TValue) };
+            Type[] genericTypes1 = new Type[] { typeof(TValue) };
 
-            foreach (var classAndFunction in _defaultParserNames)
+            foreach (Tuple<string, string> classAndFunction in _defaultParserNames)
             {
                 Type classType;
                 if (TryGetType(classAndFunction.Item1, out classType))
                 {
 
-                    var matrixParserPO = classType.GetMethod(classAndFunction.Item2, argTypesPO);
-                    var matrixParserST = classType.GetMethod(classAndFunction.Item2, argTypesST);
+                    MethodInfo matrixParserPO = classType.GetMethod(classAndFunction.Item2, argTypesPO);
+                    MethodInfo matrixParserST = classType.GetMethod(classAndFunction.Item2, argTypesST);
 
                     //Give priority to the parallel parser
                     if (matrixParserPO != null)
@@ -214,11 +214,11 @@ namespace Bio.Matrix
                     }
                     else
                     {
-                        foreach (var potentialParser in classType.GetMethods(BindingFlags.Static | BindingFlags.Public))
+                        foreach (MethodInfo potentialParser in classType.GetMethods(BindingFlags.Static | BindingFlags.Public))
                         {
                             if (potentialParser.Name.Equals(classAndFunction.Item2, StringComparison.CurrentCultureIgnoreCase) && potentialParser.IsGenericMethodDefinition)
                             {
-                                var typeParams = potentialParser.GetGenericArguments();
+                                Type[] typeParams = potentialParser.GetGenericArguments();
                                 MethodInfo genericMethod = null;
                                 if (typeParams.Length == 3 && typeParams[0].GetGenericParameterConstraints().Length == 0)
                                 {
@@ -233,11 +233,11 @@ namespace Bio.Matrix
                                     continue;
                                 }
 
-                                var paramInfo = genericMethod.GetParameters();
+                                ParameterInfo[] paramInfo = genericMethod.GetParameters();
                                 if (paramInfo.Length == argTypesPO.Length)
                                 {
-                                    var parametersMatch = true;
-                                    foreach (var pi in paramInfo)
+                                    bool parametersMatch = true;
+                                    foreach (ParameterInfo pi in paramInfo)
                                     {
                                         parametersMatch &= pi.ParameterType.Equals(argTypesPO[pi.Position]);
                                     }
@@ -247,8 +247,8 @@ namespace Bio.Matrix
                                 //!!!code is very like that above
                                 else if (paramInfo.Length == argTypesST.Length)
                                 {
-                                    var parametersMatch = true;
-                                    foreach (var pi in paramInfo)
+                                    bool parametersMatch = true;
+                                    foreach (ParameterInfo pi in paramInfo)
                                     {
                                         parametersMatch &= pi.ParameterType.Equals(argTypesST[pi.Position]);
                                     }
@@ -266,10 +266,10 @@ namespace Bio.Matrix
 
         private bool TryGetType(string typeName, out Type returnType)
         {
-            var genericsTypeName = typeName + "`3";  // The generic versions will have 3 type parameters, so the type names will all end with `3
+            string genericsTypeName = typeName + "`3";  // The generic versions will have 3 type parameters, so the type names will all end with `3
 
 #if !SILVERLIGHT
-            foreach (var assembly in AllReferencedAssemblies)
+            foreach (Assembly assembly in AllReferencedAssemblies)
             {
                 returnType = assembly.GetType(typeName, false, true);
                 if (returnType != null)
@@ -278,7 +278,7 @@ namespace Bio.Matrix
                 returnType = assembly.GetType(genericsTypeName, false, true);
                 if (returnType != null)
                 {
-                    var typeParams = returnType.GetGenericArguments();
+                    Type[] typeParams = returnType.GetGenericArguments();
                     if (typeParams.Length == 3 && typeParams[0].GetGenericParameterConstraints().Length == 0)
                     {
                         returnType = returnType.MakeGenericType(new Type[] { typeof(TRowKey), typeof(TColKey), typeof(TValue) });
@@ -295,12 +295,12 @@ namespace Bio.Matrix
 #if !SILVERLIGHT
         private static IEnumerable<string> EnumerateAllUserAssemblyCodeBases()
         {
-            var entryAssembly = FileUtils.GetEntryOrCallingAssembly();
+            Assembly entryAssembly = FileUtils.GetEntryOrCallingAssembly();
             yield return entryAssembly.GetName(false).Name;
 
-            var exePath = Path.GetDirectoryName(entryAssembly.Location);
+            string exePath = Path.GetDirectoryName(entryAssembly.Location);
             Assembly assembly;
-            foreach (var dllName in Directory.GetFiles(exePath, "*.dll"))
+            foreach (string dllName in Directory.GetFiles(exePath, "*.dll"))
             {
                 assembly = null;
                 try
@@ -315,7 +315,7 @@ namespace Bio.Matrix
                     yield return assembly.GetName(false).Name;
                 }
             }
-            foreach (var dllName in Directory.GetFiles(exePath, "*.exe"))
+            foreach (string dllName in Directory.GetFiles(exePath, "*.exe"))
             {
                 assembly = null;
                 try
@@ -335,7 +335,7 @@ namespace Bio.Matrix
             if (userAssemblies.Contains(assembly.GetName(false).Name))
                 yield return assembly;
 
-            foreach (var assemblyName in assembly.GetReferencedAssemblies())
+            foreach (AssemblyName assemblyName in assembly.GetReferencedAssemblies())
             {
                 if (userAssemblies.Contains(assemblyName.Name))
                 {
@@ -347,7 +347,7 @@ namespace Bio.Matrix
                     catch { }
                     if (referencedAssembly != null)
                     {
-                        foreach (var refAssem in EnumerateAssemblyAndAllReferencedUserAssemblies(referencedAssembly, userAssemblies))
+                        foreach (Assembly refAssem in EnumerateAssemblyAndAllReferencedUserAssemblies(referencedAssembly, userAssemblies))
                             yield return refAssem;
                     }
                     //Assembly referencedAssembly = Assembly.Load(assemblyName);
@@ -370,14 +370,14 @@ namespace Bio.Matrix
 
         private static IEnumerable<Type> EnumerateMatrixTypes()
         {
-            var mType = typeof(Matrix<TRowKey, TColKey, TValue>);
-            var assembly = Assembly.GetAssembly(mType);
-            foreach (var rawType in assembly.GetTypes())
+            Type mType = typeof(Matrix<TRowKey, TColKey, TValue>);
+            Assembly assembly = Assembly.GetAssembly(mType);
+            foreach (Type rawType in assembly.GetTypes())
             {
-                var emittedType = rawType;
+                Type emittedType = rawType;
                 if (rawType.IsGenericTypeDefinition)
                 {
-                    var typeParams = rawType.GetGenericArguments();
+                    Type[] typeParams = rawType.GetGenericArguments();
                     if (typeParams.Length == 3 && typeParams[0].GetGenericParameterConstraints().Length == 0)
                     {
                         emittedType = rawType.MakeGenericType(new Type[] { typeof(TRowKey), typeof(TColKey), typeof(TValue) });

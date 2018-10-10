@@ -93,7 +93,7 @@ namespace Bio.Util
         /// <param name="value">Value to sort.</param>
         public void Add(long id, long value)
         {
-            var node = new Node();
+            Node node = new Node();
             node.ID = id;
             node.Value = value;
             Add(node);
@@ -105,10 +105,10 @@ namespace Bio.Util
         /// <returns>IEnumerable of ids.</returns>
         public IEnumerable<long> GetSortedIds()
         {
-            var holder = Root;
+            Holder holder = Root;
             while (holder != null)
             {
-                var node = holder.ValueNode;
+                Node node = holder.ValueNode;
                 while (node != null)
                 {
                     yield return node.ID;
@@ -125,10 +125,10 @@ namespace Bio.Util
         /// <returns>IEnumerable of id and value pair.</returns>
         public IEnumerable<Node> GetSortedNodes()
         {
-            var holder = Root;
+            Holder holder = Root;
             while (holder != null)
             {
-                var node = holder.ValueNode;
+                Node node = holder.ValueNode;
                 while (node != null)
                 {
                     yield return node;
@@ -150,7 +150,7 @@ namespace Bio.Util
                 throw new ArgumentNullException(nameof(node));
             }
 
-            var holder = GetHolderFor(node.Value);
+            Holder holder = GetHolderFor(node.Value);
 
             // add the node to the holder.
             if (holder.ValueNode == null)
@@ -159,7 +159,7 @@ namespace Bio.Util
             }
             else
             {
-                var previousNode = holder.ValueNode;
+                Node previousNode = holder.ValueNode;
                 while (previousNode.Next != null)
                 {
                     previousNode = previousNode.Next;
@@ -188,13 +188,13 @@ namespace Bio.Util
                 capacity = HoldersCapacityIncrementsBy;
             }
 
-            var index = holderCapacity - 1;
-            var holder = endHolder;
-            var remainder = (int)(index % HooksIntervals);
+            long index = holderCapacity - 1;
+            Holder holder = endHolder;
+            int remainder = (int)(index % HooksIntervals);
             while (index < capacity - 1)
             {
-                var loopCount = HooksIntervals - remainder;
-                for (var i = 0; i < loopCount && index < capacity - 1; i++)
+                int loopCount = HooksIntervals - remainder;
+                for (int i = 0; i < loopCount && index < capacity - 1; i++)
                 {
                     holder.Right = new Holder();
                     holder = holder.Right;
@@ -218,13 +218,13 @@ namespace Bio.Util
         /// <param name="value">Value for which holder is required.</param>
         private Holder GetHolderFor(long value)
         {
-            var holder = Root;
+            Holder holder = Root;
             long index = 0;
 
             // node.value is start from zero thus capacity should be value + 1
             if (holderCapacity < value + 1)
             {
-                var nextValue = HoldersCapacityIncrementsBy + holderCapacity;
+                long nextValue = HoldersCapacityIncrementsBy + holderCapacity;
                 if (nextValue < value + 1)
                 {
                     nextValue = value + 1;
@@ -236,7 +236,7 @@ namespace Bio.Util
 
             if (value > HooksIntervals)
             {
-                var hooksindex = (int)(value / HooksIntervals);
+                int hooksindex = (int)(value / HooksIntervals);
                 index = hooksindex * HooksIntervals;
 
                 // index start from zero.

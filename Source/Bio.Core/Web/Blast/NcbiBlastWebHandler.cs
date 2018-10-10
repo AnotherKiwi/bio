@@ -62,15 +62,15 @@ namespace Bio.Web.Blast
 
             Log("Posting request to {0}", EndPoint);
 
-            var content = BuildRequest(bp);
+            HttpContent content = BuildRequest(bp);
             Log(await content.ReadAsStringAsync());
 
-            var client = new HttpClient();
-            var result = await client.PostAsync(EndPoint, content, token);
+            HttpClient client = new HttpClient();
+            HttpResponseMessage result = await client.PostAsync(EndPoint, content, token);
             result.EnsureSuccessStatusCode();
 
             Log("Reading initial response - looking for Request Id.");
-            var response = await result.Content.ReadAsStringAsync();
+            string response = await result.Content.ReadAsStringAsync();
             if (string.IsNullOrWhiteSpace(response))
             {
                 Log("Failed to find Request Id in: {0}", response);
@@ -78,20 +78,20 @@ namespace Bio.Web.Blast
             }
 
             // Get the request ID and Estimated time to completion
-            var ridExpr = new Regex(@"QBlastInfoBegin\s+RID = (\w+)\s+RTOE = (\w+)");
-            var matches = ridExpr.Matches(response);
+            Regex ridExpr = new Regex(@"QBlastInfoBegin\s+RID = (\w+)\s+RTOE = (\w+)");
+            MatchCollection matches = ridExpr.Matches(response);
             if (matches.Count != 1
                 || matches[0].Groups.Count != 3)
                 throw new HttpRequestException("Unrecognized format returned, no Request Id located.");
 
-            var match = matches[0];
-            var rid = match.Groups[1].Value;
-            var ttl = match.Groups[2].Value;
+            Match match = matches[0];
+            string rid = match.Groups[1].Value;
+            string ttl = match.Groups[2].Value;
 
             Log("RequestId: {0}, Estimated Time to Completion: {1} secs.", rid, ttl);
 
             // Calculate our max time.
-            var timeoutValue = DateTime.Now.AddSeconds(TimeoutInSeconds);
+            DateTime timeoutValue = DateTime.Now.AddSeconds(TimeoutInSeconds);
 
             // Get the time to completion - we'll wait that long before
             // starting our polling.
@@ -103,7 +103,7 @@ namespace Bio.Web.Blast
                 await Task.Delay(seconds * 1000, token);
             }
 
-            var statusExpr = new Regex(@"QBlastInfoBegin\s+Status=(\w+)");
+            Regex statusExpr = new Regex(@"QBlastInfoBegin\s+Status=(\w+)");
 
             // Begin our polling operation; this isn't the most efficient, but NCBI doesn't
             // provide any other mechanism.
@@ -112,16 +112,16 @@ namespace Bio.Web.Blast
                 Log("Checking on request {0}", rid);
                 response = await client.GetStringAsync(
                     string.Format("{0}?CMD=Get&FORMAT_OBJECT=SearchInfo&RID={1}", EndPoint, rid));
-                var statusMatch = statusExpr.Matches(response);
+                MatchCollection statusMatch = statusExpr.Matches(response);
                 if (statusMatch.Count == 1) {
-                    var state = statusMatch[0].Groups[1].Value;
+                    string state = statusMatch[0].Groups[1].Value;
                     Log("Processing response: {0}", response);
                     if (state == "FAILED")
                         throw new Exception("Search " + rid + " failed; please report to blast-help@ncbi.nlm.nih.gov.");
                     if (state == "UNKNOWN")
                         throw new OperationCanceledException("Search " + rid + " expired.");
                     if (state == "READY") {
-                        var hasHitsExpr = new Regex(@"QBlastInfoBegin\s+ThereAreHits=yes");
+                        Regex hasHitsExpr = new Regex(@"QBlastInfoBegin\s+ThereAreHits=yes");
                         if (!hasHitsExpr.IsMatch(response)) 
                         {
                             return null; // no hits
@@ -170,15 +170,15 @@ namespace Bio.Web.Blast
             // Check that all sequences are same alphabet
             if (blastParams.Sequences.Count > 1)
             {
-                var primary = blastParams.Sequences[0];
-                for (var i = 1; i < blastParams.Sequences.Count; i++)
+                ISequence primary = blastParams.Sequences[0];
+                for (int i = 1; i < blastParams.Sequences.Count; i++)
                 {
                     if (!Alphabets.CheckIsFromSameBase(primary.Alphabet, blastParams.Sequences[i].Alphabet))
                         throw new ArgumentException("Sequences must all share the same base alphabet.");
                 }
             }
 
-            var data = new List<KeyValuePair<string, string>> { CreateKVP("CMD", "Put") };
+            List<KeyValuePair<string, string>> data = new List<KeyValuePair<string, string>> { CreateKVP("CMD", "Put") };
             if (blastParams.Program == BlastProgram.Megablast)
             {
                 data.Add(CreateKVP("PROGRAM", BlastProgram.Blastn));
@@ -191,8 +191,8 @@ namespace Bio.Web.Blast
             data.AddRange(blastParams.ExtraParameters);
 
             // Add the sequences.
-            var sb = new StringBuilder();
-            foreach (var seq in blastParams.Sequences)
+            StringBuilder sb = new StringBuilder();
+            foreach (ISequence seq in blastParams.Sequences)
                 sb.Append(seq.ConvertToString());
 
             data.Add(CreateKVP("QUERY", sb.ToString()));
@@ -218,7 +218,7 @@ namespace Bio.Web.Blast
         /// <param name="args"></param>
         private void Log(string format, params object[] args)
         {
-            var logOutput = LogOutput;
+            Action<string> logOutput = LogOutput;
             if (logOutput != null)
             {
                 logOutput(string.Format(format, args));

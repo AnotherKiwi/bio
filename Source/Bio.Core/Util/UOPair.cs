@@ -91,7 +91,7 @@ namespace Bio.Util
                 return false;
             }
 
-            var other = (UOPair<T>)obj;
+            UOPair<T> other = (UOPair<T>)obj;
             return First.Equals(other.First) && Second.Equals(other.Second);
         }
 
@@ -179,14 +179,14 @@ namespace Bio.Util
             }
 
             //If our hash codes are different, sort on it
-            var hashCodeComp = GetHashCode().CompareTo(other.GetHashCode());
+            int hashCodeComp = GetHashCode().CompareTo(other.GetHashCode());
             if (0 != hashCodeComp)
             {
                 return hashCodeComp;
             }
 
 
-            var compFirst = ((IComparable)First).CompareTo((IComparable)other.First);
+            int compFirst = ((IComparable)First).CompareTo((IComparable)other.First);
             if (compFirst != 0)
             {
                 return compFirst;

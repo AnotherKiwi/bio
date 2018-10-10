@@ -7,11 +7,11 @@ using System.Linq;
 
 namespace Bio
 {
-    /// <inheritdoc />
-    /// <seealso cref="T:Bio.IBasicProteinAlphabet" />,
-    /// <seealso cref="T:Bio.IAlphabet" />
+    /// <inheritdoc cref="IStrictProteinAlphabet" />
+    /// <seealso cref="IStrictProteinAlphabet" />,
+    /// <seealso cref="IAlphabet" />
 
-    public class BasicProteinAlphabet : IBasicProteinAlphabet
+    public class StrictProteinAlphabet : IStrictProteinAlphabet, IAminoAcidAlphabet
     {
         #region Private members
 
@@ -37,6 +37,11 @@ namespace Bio
         private readonly List<byte> aminoAcids = new List<byte>();
 
         /// <summary>
+        ///     Holds the unambiguous amino acids present in this alphabet.
+        /// </summary>
+        private readonly HashSet<byte> unambiguousAminoAcids = new HashSet<byte>();
+
+        /// <summary>
         ///     Amino acids map. <br/>
         ///     Maps A to A and a to A etc. so that the internal dictionary key will contain unique values. <br/>
         ///     This is used in the IsValidSymbol method to address Scenarios like a == A, M == m etc.
@@ -57,27 +62,28 @@ namespace Bio
         #endregion Private members
 
         /// <summary>
-        ///     Instance of the BasicProteinAlphabet class.
+        ///     Instance of the StrictProteinAlphabet class.
         /// </summary>
-        public static readonly BasicProteinAlphabet Instance;
+        public static readonly StrictProteinAlphabet Instance;
 
         /// <summary>
-        ///     Set up the static BasicProteinAlphabet instance.
+        ///     Set up the static StrictProteinAlphabet instance.
         /// </summary>
-        static BasicProteinAlphabet()
+        static StrictProteinAlphabet()
         {
-            Instance = new BasicProteinAlphabet();
+            Instance = new StrictProteinAlphabet();
         }
 
         /// <summary>
-        ///     Initializes a new instance of the BasicProteinAlphabet class.
+        ///     Initializes a new instance of the StrictProteinAlphabet class.
         /// </summary>
-        protected BasicProteinAlphabet()
+        protected StrictProteinAlphabet()
         {
-            Name = BasicProteinAlphabetName;
+            Name = StrictProteinAlphabetName;
             HasGaps = false;
             HasAmbiguity = false;
             HasTerminations = false;
+            IsCaseSensitive = true;
             IsComplementSupported = false;
 
             A = (byte)'A';
@@ -103,74 +109,86 @@ namespace Bio
             W = (byte)'W';
             Y = (byte)'Y';
 
-            AddAminoAcid(A, "Ala", "Alanine", (byte)'a');
-            AddAminoAcid(C, "Cys", "Cysteine", (byte)'c');
-            AddAminoAcid(D, "Asp", "Aspartic Acid", (byte)'d');
-            AddAminoAcid(E, "Glu", "Glutamic Acid", (byte)'e');
-            AddAminoAcid(F, "Phe", "Phenylalanine", (byte)'f');
-            AddAminoAcid(G, "Gly", "Glycine", (byte)'g');
-            AddAminoAcid(H, "His", "Histidine", (byte)'h');
-            AddAminoAcid(I, "Ile", "Isoleucine", (byte)'i');
-            AddAminoAcid(K, "Lys", "Lysine", (byte)'k');
-            AddAminoAcid(L, "Leu", "Leucine", (byte)'l');
-            AddAminoAcid(M, "Met", "Methionine", (byte)'m');
-            AddAminoAcid(N, "Asn", "Asparagine", (byte)'n');
-            AddAminoAcid(O, "Pyl", "Pyrrolysine", (byte)'o');
-            AddAminoAcid(P, "Pro", "Proline", (byte)'p');
-            AddAminoAcid(Q, "Gln", "Glutamine", (byte)'q');
-            AddAminoAcid(R, "Arg", "Arginine", (byte)'r');
-            AddAminoAcid(S, "Ser", "Serine", (byte)'s');
-            AddAminoAcid(T, "Thr", "Threoine", (byte)'t');
-            AddAminoAcid(U, "Sec", "Selenocysteine", (byte)'u');
-            AddAminoAcid(V, "Val", "Valine", (byte)'v');
-            AddAminoAcid(W, "Trp", "Tryptophan", (byte)'w');
-            AddAminoAcid(Y, "Tyr", "Tyrosine", (byte)'y');
+            AddAminoAcids();
         }
 
-        /// <inheritdoc />
+        private void AddAminoAcids()
+        {
+            // Add just the upper case symbols for the amino acids.
+            AddAminoAcid(A, "Ala", "Alanine", true);
+            AddAminoAcid(C, "Cys", "Cysteine", true);
+            AddAminoAcid(D, "Asp", "Aspartic Acid", true);
+            AddAminoAcid(E, "Glu", "Glutamic Acid", true);
+            AddAminoAcid(F, "Phe", "Phenylalanine", true);
+            AddAminoAcid(G, "Gly", "Glycine", true);
+            AddAminoAcid(H, "His", "Histidine", true);
+            AddAminoAcid(I, "Ile", "Isoleucine", true);
+            AddAminoAcid(K, "Lys", "Lysine", true);
+            AddAminoAcid(L, "Leu", "Leucine", true);
+            AddAminoAcid(M, "Met", "Methionine", true);
+            AddAminoAcid(N, "Asn", "Asparagine", true);
+            AddAminoAcid(O, "Pyl", "Pyrrolysine", true);
+            AddAminoAcid(P, "Pro", "Proline", true);
+            AddAminoAcid(Q, "Gln", "Glutamine", true);
+            AddAminoAcid(R, "Arg", "Arginine", true);
+            AddAminoAcid(S, "Ser", "Serine", true);
+            AddAminoAcid(T, "Thr", "Threonine", true);
+            AddAminoAcid(U, "Sec", "Selenocysteine", true);
+            AddAminoAcid(V, "Val", "Valine", true);
+            AddAminoAcid(W, "Trp", "Tryptophan", true);
+            AddAminoAcid(Y, "Tyr", "Tyrosine", true);
+        }
+
+        /// <inheritdoc cref="IAminoAcidAlphabet" />
         public byte A { get; }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAminoAcidAlphabet" />
         public byte C { get; }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAminoAcidAlphabet" />
         public int Count => aminoAcids.Count;
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAminoAcidAlphabet" />
         public byte D { get; }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAminoAcidAlphabet" />
         public byte E { get; }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAminoAcidAlphabet" />
         public byte F { get; }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAminoAcidAlphabet" />
         public byte G { get; }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAminoAcidAlphabet" />
         public byte H { get; }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAlphabet.HasAmbiguity" />
         /// <remarks>
         ///     This alphabet does NOT have ambiguity symbols.
         /// </remarks>
         public bool HasAmbiguity { get; protected set; }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAlphabet.HasGaps" />
         /// <remarks>
         ///     This alphabet does NOT have gap symbols.
         /// </remarks>
         public bool HasGaps { get; protected set; }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAlphabet.HasTerminations" />
         /// <remarks>
         ///     This alphabet does NOT have termination symbols.
         /// </remarks>
         public bool HasTerminations { get; protected set; }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAminoAcidAlphabet" />
         public byte I { get; }
+
+        /// <inheritdoc />
+        /// <remarks>
+        ///     This alphabet IS case sensitive.
+        /// </remarks>
+        public bool IsCaseSensitive { get; protected set; }
 
         /// <inheritdoc />
         /// <remarks>
@@ -196,66 +214,67 @@ namespace Bio
         /// </remarks>
         public bool IsRna => false;
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAminoAcidAlphabet" />
         public byte K { get; }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAminoAcidAlphabet" />
         public byte L { get; }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAminoAcidAlphabet" />
         public byte M { get; }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAminoAcidAlphabet" />
         public byte N { get; }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAlphabet.Name" />
         /// <remarks>
-        ///     This is always 'BasicProtein'.
+        ///     This is always 'StrictProtein'.
         /// </remarks>
         public string Name { get; protected set; }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAminoAcidAlphabet" />
         public byte O { get; }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAminoAcidAlphabet" />
         public byte P { get; }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAminoAcidAlphabet" />
         public byte Q { get; }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAminoAcidAlphabet" />
         public byte R { get; }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAminoAcidAlphabet" />
         public byte S { get; }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAminoAcidAlphabet" />
         public byte T { get; }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAminoAcidAlphabet" />
         public byte U { get; }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAminoAcidAlphabet" />
         public byte V { get; }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAminoAcidAlphabet" />
         public byte W { get; }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAminoAcidAlphabet" />
         public byte Y { get; }
 
-        /// <inheritdoc />
-       public byte this[int index] => aminoAcids[index];
+        /// <inheritdoc cref="IAlphabet.this" />
+        public byte this[int index] => aminoAcids[index];
 
         /// <summary>
-        /// Adds a Amino acid to the existing amino acids.
+        ///     Adds a Amino acid to the existing amino acids.
         /// </summary>
         /// <param name="aminoAcidValue">Amino acid to be added.</param>
         /// <param name="threeLetterAbbreviation">Three letter abbreviation for the symbol.</param>
         /// <param name="friendlyName">User friendly name of the symbol.</param>
-        /// <param name="otherPossibleValues">Maps capitals and small Letters.</param>
+        /// <param name="isUnambiguousAminoAcid">If set to <c>true</c>, the symbol is an unambiguous amino acid.</param>
+        /// <param name="otherPossibleValues">Maps capitals and lower case letters.</param>
         protected void AddAminoAcid(byte aminoAcidValue, string threeLetterAbbreviation,
-            string friendlyName, params byte[] otherPossibleValues)
+            string friendlyName, bool isUnambiguousAminoAcid, params byte[] otherPossibleValues)
         {
             // Verify whether the aminoAcidValue or other possible values already exist or not.
             if (aminoAcidValueMap.ContainsKey(aminoAcidValue) ||
@@ -263,13 +282,14 @@ namespace Bio
             {
                 throw new ArgumentException(SymbolExistsInAlphabet, nameof(aminoAcidValue));
             }
+
             if (string.IsNullOrEmpty(friendlyName))
             {
                 throw new ArgumentNullException(nameof(friendlyName));
             }
 
             aminoAcidValueMap.Add(aminoAcidValue, aminoAcidValue);
-            foreach (var value in otherPossibleValues)
+            foreach (byte value in otherPossibleValues)
             {
                 aminoAcidValueMap.Add(value, aminoAcidValue);
             }
@@ -278,9 +298,31 @@ namespace Bio
             abbreviationMap1to3.Add(aminoAcidValue, threeLetterAbbreviation);
             abbreviationMap3to1.Add(threeLetterAbbreviation, aminoAcidValue);
             friendlyNameMap.Add(aminoAcidValue, friendlyName);
+            if (isUnambiguousAminoAcid)
+            {
+                unambiguousAminoAcids.Add(aminoAcidValue);
+            }
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// 	Resets the lists that hold amino acid symbols.
+        /// </summary>
+        /// <remarks>
+        ///     Needed to enable the ProteinAlphabet constructor to redefine the amino
+        ///     acids, and thus keep all the symbols in the lists in their original order
+        ///     (e.g. 'AaCcDd...WwYy-*' for aminoAcids). 
+        /// </remarks>
+        protected void ResetAminoAcids()
+        {
+            aminoAcids.Clear();
+            aminoAcidValueMap.Clear();
+            abbreviationMap1to3.Clear();
+            abbreviationMap3to1.Clear();
+            friendlyNameMap.Clear();
+            unambiguousAminoAcids.Clear();
+        }
+
+        /// <inheritdoc cref="IAlphabet.CheckIsAmbiguous" />
         /// <remarks>
         ///     This is always <c>false</c>, since this alphabet has no ambiguous symbols.
         /// </remarks>
@@ -290,6 +332,12 @@ namespace Bio
         }
 
         /// <inheritdoc />
+        public bool CheckIsUnambiguousAminoAcid(byte symbol)
+        {
+            return unambiguousAminoAcids.Contains(symbol);
+        }
+
+        /// <inheritdoc cref="IAlphabet.CheckIsGap" />
         /// <remarks>
         ///     This is always <c>false</c>, since this alphabet has no gap symbols.
         /// </remarks>
@@ -298,12 +346,12 @@ namespace Bio
             return false;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAlphabet.CompareSymbols" />
         public virtual bool CompareSymbols(byte x, byte y)
         {
-            if (aminoAcidValueMap.TryGetValue(x, out var aminoAcidA))
+            if (aminoAcidValueMap.TryGetValue(x, out byte aminoAcidA))
             {
-                if (aminoAcidValueMap.TryGetValue(y, out var aminoAcidB))
+                if (aminoAcidValueMap.TryGetValue(y, out byte aminoAcidB))
                 {
                     if (ambiguousSymbolToBasicSymbolsMap.ContainsKey(aminoAcidA) ||
                         ambiguousSymbolToBasicSymbolsMap.ContainsKey(aminoAcidB))
@@ -324,7 +372,7 @@ namespace Bio
             }
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAlphabet.GetAmbiguousSymbols" />
         /// <remarks>
         ///     This alphabet does NOT support ambiguity, so a
         ///     <see cref="NotSupportedException"/> is thrown.
@@ -336,7 +384,7 @@ namespace Bio
                 : throw new NotSupportedException();
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAlphabet.GetConsensusSymbol" />
         /// <remarks>
         ///     Consensus symbols are not supported by unambiguous protein alphabets, so a
         ///     <see cref="NotSupportedException"/> is thrown.
@@ -355,10 +403,10 @@ namespace Bio
             return aminoAcids.GetEnumerator();
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAlphabet.GetFriendlyName" />
         public string GetFriendlyName(byte item)
         {
-            friendlyNameMap.TryGetValue(aminoAcidValueMap[item], out var fName);
+            friendlyNameMap.TryGetValue(aminoAcidValueMap[item], out string fName);
             return fName;
         }
 
@@ -370,7 +418,7 @@ namespace Bio
                 throw new ArgumentNullException(nameof(sequence));
             }
 
-            var invalidSymbols = new SortedSet<byte>();
+            SortedSet<byte> invalidSymbols = new SortedSet<byte>();
             for (long i = 0; i < sequence.Count; i++)
             {
                 if (!aminoAcidValueMap.ContainsKey(sequence[i]))
@@ -385,16 +433,16 @@ namespace Bio
         /// <inheritdoc />
         public byte GetSymbolFromThreeLetterAbbrev(string item)
         {
-            abbreviationMap3to1.TryGetValue(item, out var symbol);
+            abbreviationMap3to1.TryGetValue(item, out byte symbol);
             return symbol;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAlphabet.GetSymbolValueMap" />
         public byte[] GetSymbolValueMap()
         {
-            var symbolMap = new byte[256];
+            byte[] symbolMap = new byte[256];
 
-            foreach (var mapping in aminoAcidValueMap)
+            foreach (KeyValuePair<byte, byte> mapping in aminoAcidValueMap)
             {
                 symbolMap[mapping.Key] = mapping.Value;
             }
@@ -405,11 +453,22 @@ namespace Bio
         /// <inheritdoc />
         public string GetThreeLetterAbbreviation(byte item)
         {
-            abbreviationMap1to3.TryGetValue(aminoAcidValueMap[item], out var threeLetterAbbreviation);
+            abbreviationMap1to3.TryGetValue(aminoAcidValueMap[item], out string threeLetterAbbreviation);
             return threeLetterAbbreviation;
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// 	Gets a copy of the set of unambiguous amino acids.
+        /// </summary>
+        /// <returns>
+        ///  	<see cref="HashSet{T}"/>: the set of unambiguous amino acids.
+        /// </returns>
+        public HashSet<byte> GetUnambiguousAminoAcids()
+        {
+            return new HashSet<byte>(unambiguousAminoAcids);
+        }
+
+        /// <inheritdoc cref="IAlphabet.GetValidSymbols" />
         public HashSet<byte> GetValidSymbols()
         {
             return new HashSet<byte>(aminoAcidValueMap.Keys);
@@ -433,21 +492,21 @@ namespace Bio
         protected void MapAmbiguousAminoAcid(byte ambiguousAminoAcid, params byte[] aminoAcidsToMap)
         {
             // Verify whether the amino acids to map are valid amino acids.
-            if (!aminoAcidValueMap.TryGetValue(ambiguousAminoAcid, out var ambiguousSymbol) ||
+            if (!aminoAcidValueMap.TryGetValue(ambiguousAminoAcid, out byte ambiguousSymbol) ||
                 !aminoAcidsToMap.All(x => aminoAcidValueMap.Keys.Contains(x)))
             {
                 throw new ArgumentException(CouldNotRecognizeSymbol, nameof(ambiguousAminoAcid));
             }
 
-            var mappingValues = new byte[aminoAcidsToMap.Length];
-            var i = 0;
-            foreach (var valueToMap in aminoAcidsToMap)
+            byte[] mappingValues = new byte[aminoAcidsToMap.Length];
+            int i = 0;
+            foreach (byte valueToMap in aminoAcidsToMap)
             {
                 mappingValues[i++] = aminoAcidValueMap[valueToMap];
             }
 
             // ReSharper disable once LocalVariableHidesMember
-            var basicSymbols = new HashSet<byte>(mappingValues);
+            HashSet<byte> basicSymbols = new HashSet<byte>(mappingValues);
             ambiguousSymbolToBasicSymbolsMap.Add(ambiguousSymbol, basicSymbols);
             basicSymbolsToAmbiguousSymbolMap.Add(basicSymbols, ambiguousSymbol);
         }
@@ -461,7 +520,7 @@ namespace Bio
             return new string(aminoAcids.Select(x => (char)x).ToArray());
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAlphabet.TryGetAmbiguousSymbol" />
         /// <remarks>
         ///     This alphabet does NOT support ambiguity, so the method always returns <c>false</c>.
         /// </remarks>
@@ -472,7 +531,7 @@ namespace Bio
                    basicSymbolsToAmbiguousSymbolMap.TryGetValue(symbols, out ambiguousSymbol);
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAlphabet.TryGetBasicSymbols" />
         /// <remarks>
         ///     This alphabet does NOT support ambiguity, so the method always returns <c>false</c>.
         /// </remarks>
@@ -504,7 +563,7 @@ namespace Bio
             return false;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAlphabet.TryGetDefaultGapSymbol" />
         /// <remarks>
         ///     This alphabet does NOT include gap symbols, so the method always returns <c>false</c>.
         /// </remarks>
@@ -514,7 +573,7 @@ namespace Bio
             return false;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAlphabet.TryGetDefaultTerminationSymbol" />
         /// <remarks>
         ///     This alphabet does NOT include termination symbols, so the method always returns <c>false</c>.
         /// </remarks>
@@ -524,7 +583,7 @@ namespace Bio
             return false;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAlphabet.TryGetGapSymbols" />
         /// <remarks>
         ///     This alphabet does NOT include gap symbols, so the method always returns <c>false</c>.
         /// </remarks>
@@ -534,7 +593,7 @@ namespace Bio
             return false;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IAlphabet.TryGetTerminationSymbols" />
         /// <remarks>
         ///     This alphabet does NOT include termination symbols, so the method always returns <c>false</c>.
         /// </remarks>
@@ -544,10 +603,14 @@ namespace Bio
             return false;
         }
 
-        // offset and length arguments made optional by Stephen Haines.
-        // TODO: Write a test.
         /// <inheritdoc />
-        public bool ValidateSequence(byte[] symbols, long offset = 0, long length = -1)
+        public virtual bool ValidateSequence(byte[] symbols)
+        {
+            return ValidateSequence(symbols, 0, symbols.LongLength);
+        }
+
+        /// <inheritdoc cref="IAlphabet.ValidateSequence" />
+        public virtual bool ValidateSequence(byte[] symbols, long offset, long length)
         {
             if (symbols == null)
             {
@@ -556,25 +619,15 @@ namespace Bio
 
             if (offset < 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(offset), @"> 0");
+                throw new ArgumentOutOfRangeException(OffsetCannotBeNegative);
             }
 
-            if (length == -1)
+            if (offset + length > symbols.LongLength)
             {
-                length = symbols.Length;
+                throw new ArgumentOutOfRangeException(LengthPlusOffsetCannotExceedSeqLength);
             }
 
-            if (length < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(length), @"> 0");
-            }
-
-            if (offset + length > symbols.Length)
-            {
-                throw new ArgumentOutOfRangeException(nameof(length), LengthPlusOffsetCannotExceedSeqLength);
-            }
-
-            for (var i = offset; i < length; i++)
+            for (long i = offset; i < length; i++)
             {
                 if (!aminoAcidValueMap.ContainsKey(symbols[i]))
                 {

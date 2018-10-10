@@ -127,7 +127,7 @@ namespace Bio.IO.SAM
                 throw new ArgumentNullException(nameof(stream));
             }
 
-            using (var reader = stream.OpenRead())
+            using (StreamReader reader = stream.OpenRead())
             {
                 return ParseSAMHeader(reader);
             }
@@ -144,9 +144,9 @@ namespace Bio.IO.SAM
                 throw new ArgumentNullException(nameof(reader));
             }
 
-            var headerStrings = new List<string>();
+            List<string> headerStrings = new List<string>();
             SAMAlignmentHeader samHeader = null;
-            var line = ReadNextLine(reader);
+            string line = ReadNextLine(reader);
             if (line != null && line.StartsWith(@"@", StringComparison.OrdinalIgnoreCase))
             {
                 while (line != null && line.StartsWith(@"@", StringComparison.OrdinalIgnoreCase))
@@ -194,10 +194,10 @@ namespace Bio.IO.SAM
                 throw new ArgumentNullException(nameof(qualitydata));
             }
 
-            var isQualitativeSequence = true;
-            var message = string.Empty;
+            bool isQualitativeSequence = true;
+            string message = string.Empty;
             byte[] qualScores = null;
-            var fastQType = QualityFormatType;
+            FastQFormatType fastQType = QualityFormatType;
 
             if (sequencedata.Equals("*"))
             {
@@ -217,7 +217,7 @@ namespace Bio.IO.SAM
                 // Check for sequence length and quality score length.
                 if (sequencedata.Length != qualitydata.Length)
                 {
-                    var message1 = string.Format(CultureInfo.CurrentCulture, Properties.Resource.FastQ_InvalidQualityScoresLength, alignedSeq.QName);
+                    string message1 = string.Format(CultureInfo.CurrentCulture, Properties.Resource.FastQ_InvalidQualityScoresLength, alignedSeq.QName);
                     message = string.Format(CultureInfo.CurrentCulture, Properties.Resource.IOFormatErrorMessage, Properties.Resource.SAM_NAME, message1);
                     throw new Exception(message);
                 }
@@ -254,9 +254,9 @@ namespace Bio.IO.SAM
                 throw new ArgumentNullException(nameof(qualitydata));
             }
 
-            var isQualitativeSequence = true;
-            var message = string.Empty;
-            var fastQType = QualityFormatType;
+            bool isQualitativeSequence = true;
+            string message = string.Empty;
+            FastQFormatType fastQType = QualityFormatType;
             if(sequencedata.Length==1 && sequencedata[0]==AsteriskAsByte)
             {
                 return;
@@ -273,7 +273,7 @@ namespace Bio.IO.SAM
                 // Check for sequence length and quality score length.
                 if (sequencedata.Length != qualitydata.Length)
                 {
-                    var message1 = string.Format(CultureInfo.CurrentCulture, Properties.Resource.FastQ_InvalidQualityScoresLength, alignedSeq.QName);
+                    string message1 = string.Format(CultureInfo.CurrentCulture, Properties.Resource.FastQ_InvalidQualityScoresLength, alignedSeq.QName);
                     message = string.Format(CultureInfo.CurrentCulture, Properties.Resource.IOFormatErrorMessage, Properties.Resource.SAM_NAME, message1);
                     Trace.Report(message);
                     throw new Exception(message);
@@ -302,24 +302,24 @@ namespace Bio.IO.SAM
 
         private static SAMAlignmentHeader ParseSamHeader(List<string> headerStrings)
         {
-            var samHeader = new SAMAlignmentHeader();
+            SAMAlignmentHeader samHeader = new SAMAlignmentHeader();
 
-            foreach (var headerString in headerStrings)
+            foreach (string headerString in headerStrings)
             {
-                var tokens = headerString.Split(TabDelim, StringSplitOptions.RemoveEmptyEntries);
-                var recordTypecode = tokens[0].Substring(1);
+                string[] tokens = headerString.Split(TabDelim, StringSplitOptions.RemoveEmptyEntries);
+                string recordTypecode = tokens[0].Substring(1);
                 // Validate the header format.
                 ValidateHeaderLineFormat(headerString);
 
                 SAMRecordField headerLine = null;
                 if (string.Compare(recordTypecode, "CO", StringComparison.OrdinalIgnoreCase) != 0)
                 {
-                    var tags = new List<string>();
+                    List<string> tags = new List<string>();
                     headerLine = new SAMRecordField(recordTypecode);
-                    for (var i = 1; i < tokens.Length; i++)
+                    for (int i = 1; i < tokens.Length; i++)
                     {
-                        var tagToken = tokens[i];
-                        var tagName = tagToken.Substring(0, 2);
+                        string tagToken = tokens[i];
+                        string tagName = tagToken.Substring(0, 2);
                         tags.Add(tagName);
                         headerLine.Tags.Add(new SAMRecordFieldTag(tagName, tagToken.Substring(3)));
                     }
@@ -332,13 +332,13 @@ namespace Bio.IO.SAM
                 }
             }
 
-            var referenceSeqsInfo = samHeader.GetReferenceSequencesInfoFromSQHeader();
-            foreach (var item in referenceSeqsInfo)
+            IList<ReferenceSequenceInfo> referenceSeqsInfo = samHeader.GetReferenceSequencesInfoFromSQHeader();
+            foreach (ReferenceSequenceInfo item in referenceSeqsInfo)
             {
                 samHeader.ReferenceSequences.Add(item);
             }
 
-            var message = samHeader.IsValid();
+            string message = samHeader.IsValid();
             if (!string.IsNullOrEmpty(message))
             {
                 throw new FormatException(message);
@@ -384,7 +384,7 @@ namespace Bio.IO.SAM
                 throw new ArgumentNullException(nameof(stream));
             }
 
-            using (var reader = stream.OpenRead())
+            using (StreamReader reader = stream.OpenRead())
             {
                 return ParseOneWithSpecificFormat(reader);
             }
@@ -404,8 +404,8 @@ namespace Bio.IO.SAM
 
             // Parse the header lines and store them in a string. 
             // This is being done as parsing the header using the textreader is parsing an extra line.
-            var headerStrings = new List<string>();
-            var line = ReadNextLine(reader);
+            List<string> headerStrings = new List<string>();
+            string line = ReadNextLine(reader);
             while (line != null && line.StartsWith(@"@", StringComparison.OrdinalIgnoreCase))
             {
                 headerStrings.Add(line);
@@ -413,11 +413,11 @@ namespace Bio.IO.SAM
             }
 
             // Parse the alignment header strings.
-            var header = ParseSamHeader(headerStrings);
-            var sequenceAlignmentMap = new SequenceAlignmentMap(header);
+            SAMAlignmentHeader header = ParseSamHeader(headerStrings);
+            SequenceAlignmentMap sequenceAlignmentMap = new SequenceAlignmentMap(header);
 
             List<string> refSeqNames = null;
-            var hasSQHeader = header.ReferenceSequences.Count > 0;
+            bool hasSQHeader = header.ReferenceSequences.Count > 0;
             if (!hasSQHeader)
             {
                 refSeqNames = new List<string>();
@@ -427,7 +427,7 @@ namespace Bio.IO.SAM
             // If the SQ header is not present in header then get the reference sequences information from reads.
             while (line != null && !line.StartsWith(@"@", StringComparison.OrdinalIgnoreCase))
             {
-                var alignedSeq = ParseSequence(line, Alphabet);
+                SAMAlignedSequence alignedSeq = ParseSequence(line, Alphabet);
                 if (!hasSQHeader)
                 {
                     if (!alignedSeq.RName.Equals("*", StringComparison.OrdinalIgnoreCase)
@@ -443,7 +443,7 @@ namespace Bio.IO.SAM
 
             if (!hasSQHeader)
             {
-                foreach (var refname in refSeqNames)
+                foreach (string refname in refSeqNames)
                 {
                     header.ReferenceSequences.Add(new ReferenceSequenceInfo(refname, 0));
                 }
@@ -460,9 +460,9 @@ namespace Bio.IO.SAM
         private static SAMAlignedSequence ParseSequence(string bioText, IAlphabet alphabet)
         {
             const int optionalTokenStartingIndex = 11;
-            var tokens = bioText.Split(TabDelim, StringSplitOptions.RemoveEmptyEntries);
+            string[] tokens = bioText.Split(TabDelim, StringSplitOptions.RemoveEmptyEntries);
 
-            var alignedSeq = new SAMAlignedSequence
+            SAMAlignedSequence alignedSeq = new SAMAlignedSequence
             {
                 QName = tokens[0],
                 Flag = SAMAlignedSequenceHeader.GetFlag(tokens[1]),
@@ -478,15 +478,15 @@ namespace Bio.IO.SAM
 
             ParseQualityNSequence(alignedSeq, alphabet, tokens[9], tokens[10]);
 
-            for (var i = optionalTokenStartingIndex; i < tokens.Length; i++)
+            for (int i = optionalTokenStartingIndex; i < tokens.Length; i++)
             {
-                var optField = new SAMOptionalField();
+                SAMOptionalField optField = new SAMOptionalField();
                 if (!Helper.IsValidRegexValue(OptionalFieldRegex, tokens[i]))
                 {
                     throw new FormatException(string.Format(Properties.Resource.InvalidOptionalField, tokens[i]));
                 }
 
-                var opttokens = tokens[i].Split(ColonDelim, StringSplitOptions.RemoveEmptyEntries);
+                string[] opttokens = tokens[i].Split(ColonDelim, StringSplitOptions.RemoveEmptyEntries);
                 optField.Tag = opttokens[0];
                 optField.VType = opttokens[1];
                 optField.Value = opttokens[2];
@@ -508,7 +508,7 @@ namespace Bio.IO.SAM
                 return null;
             }
 
-            var line = reader.ReadLine();
+            string line = reader.ReadLine();
             while (string.IsNullOrWhiteSpace(line) && reader.Peek() != -1)
             {
                 line = reader.ReadLine();

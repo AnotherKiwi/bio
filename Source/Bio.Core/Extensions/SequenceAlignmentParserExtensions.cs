@@ -31,7 +31,7 @@ namespace Bio
         /// <returns>Set of parsed sequences.</returns>
         public static IEnumerable<ISequenceAlignment> Parse(this ISequenceAlignmentParser parser)
         {
-            var fs = ParserFormatterExtensions<ISequenceAlignmentParser>.GetOpenStream(parser, false);
+            Stream fs = ParserFormatterExtensions<ISequenceAlignmentParser>.GetOpenStream(parser, false);
             if (fs == null)
                 throw new Exception("You must open a parser before calling Parse.");
 
@@ -45,7 +45,7 @@ namespace Bio
         /// <returns>Set of parsed sequences.</returns>
         public static ISequenceAlignment ParseOne(this ISequenceAlignmentParser parser)
         {
-            var fs = ParserFormatterExtensions<ISequenceAlignmentParser>.GetOpenStream(parser, false);
+            Stream fs = ParserFormatterExtensions<ISequenceAlignmentParser>.GetOpenStream(parser, false);
             return parser.ParseOne(fs);
         }
 
@@ -57,7 +57,7 @@ namespace Bio
         /// <returns>Set of parsed sequences.</returns>
         public static ISequenceAlignment ParseOne(this ISequenceAlignmentParser parser, string filename)
         {
-            using (var fs = File.OpenRead(filename))
+            using (FileStream fs = File.OpenRead(filename))
                 return parser.ParseOne(fs);
         }
 
@@ -70,7 +70,7 @@ namespace Bio
         public static T ParseOne<T>(this ISequenceAlignmentParser parser, string filename)
             where T : ISequenceAlignment
         {
-            using (var fs = File.OpenRead(filename))
+            using (FileStream fs = File.OpenRead(filename))
                 return (T) parser.ParseOne(fs);
         }
 
@@ -82,9 +82,9 @@ namespace Bio
         /// <returns>Set of parsed sequences.</returns>
         public static IEnumerable<ISequenceAlignment> Parse(this ISequenceAlignmentParser parser, string fileName)
         {
-            using (var fs = File.OpenRead(fileName))
+            using (FileStream fs = File.OpenRead(fileName))
             {
-                foreach (var item in parser.Parse(fs))
+                foreach (ISequenceAlignment item in parser.Parse(fs))
                     yield return item;
             }
         }

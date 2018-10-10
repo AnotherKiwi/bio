@@ -83,15 +83,15 @@ namespace Bio.IO.SAM
                 throw new ArgumentNullException(nameof(stream));
             }
 
-            using (var writer = stream.OpenWrite())
+            using (StreamWriter writer = stream.OpenWrite())
             {
-                var header = sequenceAlignment.Metadata[Helper.SAMAlignmentHeaderKey] as SAMAlignmentHeader;
+                SAMAlignmentHeader header = sequenceAlignment.Metadata[Helper.SAMAlignmentHeaderKey] as SAMAlignmentHeader;
                 if (header != null)
                 {
                     WriteHeader(writer, header);
                 }
 
-                foreach (var alignedSequence in sequenceAlignment.AlignedSequences)
+                foreach (IAlignedSequence alignedSequence in sequenceAlignment.AlignedSequences)
                 {
                     WriteSAMAlignedSequence(writer, alignedSequence);
                 }
@@ -126,19 +126,19 @@ namespace Bio.IO.SAM
                 throw new ArgumentNullException(nameof(writer));
             }
 
-            var message = header.IsValid();
+            string message = header.IsValid();
             if (!string.IsNullOrEmpty(message))
             {
                 throw new ArgumentException(message);
             }
 
             StringBuilder headerLine = null;
-            foreach (var record in header.RecordFields)
+            foreach (SAMRecordField record in header.RecordFields)
             {
                 headerLine = new StringBuilder();
                 headerLine.Append("@");
                 headerLine.Append(record.Typecode);
-                foreach (var tag in record.Tags)
+                foreach (SAMRecordFieldTag tag in record.Tags)
                 {
                     headerLine.Append("\t");
                     headerLine.Append(tag.Tag);
@@ -149,7 +149,7 @@ namespace Bio.IO.SAM
                 writer.WriteLine(headerLine.ToString());
             }
 
-            foreach (var comment in header.Comments)
+            foreach (string comment in header.Comments)
             {
                 headerLine = new StringBuilder();
                 headerLine.Append("@CO");
@@ -178,23 +178,23 @@ namespace Bio.IO.SAM
                 throw new ArgumentNullException(nameof(alignedSequence));
             }
 
-            var alignedHeader = alignedSequence.Metadata[Helper.SAMAlignedSequenceHeaderKey] as SAMAlignedSequenceHeader;
+            SAMAlignedSequenceHeader alignedHeader = alignedSequence.Metadata[Helper.SAMAlignedSequenceHeaderKey] as SAMAlignedSequenceHeader;
             if (alignedHeader == null)
             {
                 throw new ArgumentException(Properties.Resource.SAM_AlignedSequenceHeaderMissing);
             }
 
-            var sequence = alignedSequence.Sequences[0];
+            ISequence sequence = alignedSequence.Sequences[0];
             if (!(sequence.Alphabet is DnaAlphabet))
             {
                 throw new ArgumentException(Properties.Resource.SAMFormatterSupportsDNAOnly);
             }
 
-            var seq = "*";
+            string seq = "*";
             if (sequence.Count > 0)
             {
-                var symbols = new char[sequence.Count];
-                for (var i = 0; i < sequence.Count; i++)
+                char[] symbols = new char[sequence.Count];
+                for (int i = 0; i < sequence.Count; i++)
                 {
                    symbols[i]  = (char)sequence[i];
                 }
@@ -202,12 +202,12 @@ namespace Bio.IO.SAM
                 seq = new string(symbols);
             }
          
-            var qualValues = "*";
+            string qualValues = "*";
 
-            var qualSeq = sequence as QualitativeSequence;
+            QualitativeSequence qualSeq = sequence as QualitativeSequence;
             if (qualSeq != null)
             {
-                var bytes = qualSeq.GetEncodedQualityScores();
+                byte[] bytes = qualSeq.GetEncodedQualityScores();
 
                 // if FormatType is not sanger then convert the quality scores to sanger.
                 if (qualSeq.FormatType != FastQFormatType.Sanger)
@@ -224,7 +224,7 @@ namespace Bio.IO.SAM
                 alignedHeader.MRNM.Equals(alignedHeader.RName) ? "=" : alignedHeader.MRNM,
                 alignedHeader.MPos, alignedHeader.ISize, seq, qualValues);
 
-            foreach (var t in alignedHeader.OptionalFields)
+            foreach (SAMOptionalField t in alignedHeader.OptionalFields)
             {
                 writer.Write(OptionalFieldFormat, t.Tag,
                     t.VType, t.Value);

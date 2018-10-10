@@ -82,7 +82,7 @@ namespace Bio.Web.Selectome
         /// <returns></returns>
         public List<T> GetFeatureFromLeaves<T>(Func<SelectomeTreeNode, T> function)
         {
-            var result = new List<T>();
+            List<T> result = new List<T>();
             AddFeaturesFromChildLeaves(function, Root, result);
             return result;
         }
@@ -98,7 +98,7 @@ namespace Bio.Web.Selectome
             }
             else
             {
-                foreach (var child in node.Children)
+                foreach (KeyValuePair<SelectomeTreeNode, Edge> child in node.Children)
                 {
                     AddFeaturesFromChildLeaves(function, child.Key, accumulator);
                 }
@@ -131,7 +131,7 @@ namespace Bio.Web.Selectome
         /// <returns></returns>
         public List<T> GetFeatureFromNodes<T>(Func<SelectomeTreeNode, T> function)
         {
-            var result = new List<T>();
+            List<T> result = new List<T>();
             AddFeaturesFromChildren(function, Root, result);
             return result;
         }
@@ -142,7 +142,7 @@ namespace Bio.Web.Selectome
             List<T> accumulator)
         {
             accumulator.Add(function(node));
-            foreach (var child in node.Children)
+            foreach (KeyValuePair<SelectomeTreeNode, Edge> child in node.Children)
             {
                 AddFeaturesFromChildren(function, child.Key, accumulator);
             }

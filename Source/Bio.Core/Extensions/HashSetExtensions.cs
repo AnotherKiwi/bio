@@ -29,7 +29,7 @@ namespace Bio.Util
                 throw new ArgumentNullException(nameof(sequence));
             }
 
-            foreach (var t in sequence)
+            foreach (T t in sequence)
             {
                 hashSet.Add(t);
             }

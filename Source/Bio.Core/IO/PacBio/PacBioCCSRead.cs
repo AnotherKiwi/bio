@@ -161,9 +161,9 @@ namespace Bio.IO.PacBio
             /* TODO: Converting from binary to string and back is beyond silly...
              * no performance hit worth worrying about at present, but in the future it might be worth
              * going directly from binary to the type rather than through string intermediates */
-            foreach (var v in s.OptionalFields) {
+            foreach (SAMOptionalField v in s.OptionalFields) {
                 if (v.Tag == "sn") {
-                    var snrs = v.Value.Split (',').Skip (1).Select (x => Convert.ToSingle (x)).ToArray ();
+                    float[] snrs = v.Value.Split (',').Skip (1).Select (x => Convert.ToSingle (x)).ToArray ();
                     SnrA = snrs [0];
                     SnrC = snrs [1];
                     SnrG = snrs [2];
@@ -192,7 +192,7 @@ namespace Bio.IO.PacBio
                 } else if (v.Tag == "ma") {
                     MutationsApplied = Convert.ToInt32 (v.Value);
                 } else if (v.Tag == "bc") {
-                    var bcs = v.Value.Split (',').Skip (1).Select (x => Convert.ToUInt16(x)).ToArray ();
+                    ushort[] bcs = v.Value.Split (',').Skip (1).Select (x => Convert.ToUInt16(x)).ToArray ();
                     Barcode1 = bcs [0];
                     Barcode2 = bcs [1];
                 }

@@ -28,7 +28,7 @@ namespace Bio.IO.Wiggle
         /// <param name="annotations">Wiggle annotations to write.</param>
         public static void Format(this WiggleFormatter formatter, IEnumerable<WiggleAnnotation> annotations)
         {
-            var fs = ParserFormatterExtensions<WiggleFormatter>.GetOpenStream(formatter, true);
+            Stream fs = ParserFormatterExtensions<WiggleFormatter>.GetOpenStream(formatter, true);
             if (fs != null)
                 formatter.Format(fs, annotations);
             else
@@ -42,7 +42,7 @@ namespace Bio.IO.Wiggle
         /// <param name="annotation">Wiggle Annotation</param>
         public static void Format(this WiggleFormatter formatter, WiggleAnnotation annotation)
         {
-            var fs = ParserFormatterExtensions<WiggleFormatter>.GetOpenStream(formatter, true);
+            Stream fs = ParserFormatterExtensions<WiggleFormatter>.GetOpenStream(formatter, true);
             if (fs != null)
                 formatter.Format(fs, annotation);
             else
@@ -57,7 +57,7 @@ namespace Bio.IO.Wiggle
         /// <param name="filename">Filename to write to</param>
         public static void Format(this WiggleFormatter formatter, IEnumerable<WiggleAnnotation> annotations, string filename)
         {
-            using (var fs = File.Create(filename))
+            using (FileStream fs = File.Create(filename))
                 formatter.Format(fs, annotations);
         }
 
@@ -69,7 +69,7 @@ namespace Bio.IO.Wiggle
         /// <param name="filename">Filename</param>
         public static void Format(this WiggleFormatter formatter, WiggleAnnotation annotation, string filename)
         {
-            using (var fs = File.Create(filename))
+            using (FileStream fs = File.Create(filename))
                 formatter.Format(fs,annotation);
         }
 

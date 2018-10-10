@@ -1360,20 +1360,20 @@ namespace Bio.Tests.Algorithms.Alignment
             Sequence aInput = null;
             Sequence bInput = null;
 
-            var alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName,
+            IAlphabet alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                      Constants.AlphabetNameNode));
 
             if (isTextFile)
             {
                 // Read the xml file for getting both the files for aligning.
-                var filePath1 = utilityObj.xmlUtil.GetTextValue(nodeName,
+                string filePath1 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                    Constants.FilePathNode1).TestDir();
-                var filePath2 = utilityObj.xmlUtil.GetTextValue(nodeName,
+                string filePath2 = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                    Constants.FilePathNode2).TestDir();
 
-                var parser1 = new FastAParser();
-                var originalSequence1 = parser1.Parse(filePath1).ElementAt(0);
-                var originalSequence2 = parser1.Parse(filePath2).ElementAt(0);
+                FastAParser parser1 = new FastAParser();
+                ISequence originalSequence1 = parser1.Parse(filePath1).ElementAt(0);
+                ISequence originalSequence2 = parser1.Parse(filePath2).ElementAt(0);
 
                 // Create input sequence for sequence string in different cases.
                 GetSequenceWithCaseType(new string(originalSequence1.Select(a => (char) a).ToArray()),
@@ -1382,8 +1382,8 @@ namespace Bio.Tests.Algorithms.Alignment
             }
             else
             {
-                var originalSequence1 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode1);
-                var originalSequence2 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode2);
+                string originalSequence1 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode1);
+                string originalSequence2 = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode2);
 
                 // Create input sequence for sequence string in different cases.
                 GetSequenceWithCaseType(
@@ -1395,8 +1395,8 @@ namespace Bio.Tests.Algorithms.Alignment
                     out bInput);
             }
 
-            var aInputString = new string(aInput.Select(a => (char) a).ToArray());
-            var bInputString = new string(bInput.Select(a => (char) a).ToArray());
+            string aInputString = new string(aInput.Select(a => (char) a).ToArray());
+            string bInputString = new string(bInput.Select(a => (char) a).ToArray());
 
             ApplicationLog.WriteLine(string.Format(null,
                                                    "PairwiseOverlapAligner P2 : First sequence used is '{0}'.",
@@ -1406,7 +1406,7 @@ namespace Bio.Tests.Algorithms.Alignment
                                                    bInputString));
 
             // Create similarity matrix object for a given file.
-            var blosumFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.BlosumFilePathNode).TestDir();
+            string blosumFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.BlosumFilePathNode).TestDir();
 
             SimilarityMatrix sm = null;
 
@@ -1417,9 +1417,9 @@ namespace Bio.Tests.Algorithms.Alignment
                         sm = new SimilarityMatrix(reader);
                     break;
                 case SimilarityMatrixParameters.DiagonalMatrix:
-                    var matchValue = utilityObj.xmlUtil.GetTextValue(nodeName,
+                    string matchValue = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                         Constants.MatchScoreNode);
-                    var misMatchValue = utilityObj.xmlUtil.GetTextValue(nodeName,
+                    string misMatchValue = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                            Constants.MisMatchScoreNode);
                     sm = new DiagonalSimilarityMatrix(int.Parse(matchValue, null),
                                                       int.Parse(misMatchValue, null));
@@ -1429,14 +1429,14 @@ namespace Bio.Tests.Algorithms.Alignment
                     break;
             }
 
-            var gapOpenCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
+            int gapOpenCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                         Constants.GapOpenCostNode), null);
 
-            var gapExtensionCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
+            int gapExtensionCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                              Constants.GapExtensionCostNode), null);
 
             // Create PairwiseOverlapAligner instance and set its values.
-            var pairwiseOverlapObj = new PairwiseOverlapAligner();
+            PairwiseOverlapAligner pairwiseOverlapObj = new PairwiseOverlapAligner();
             if (additionalParameter != AlignParameters.AllParam)
             {
                 pairwiseOverlapObj.SimilarityMatrix = sm;
@@ -1449,7 +1449,7 @@ namespace Bio.Tests.Algorithms.Alignment
             switch (additionalParameter)
             {
                 case AlignParameters.AlignList:
-                    var sequences = new List<ISequence>
+                    List<ISequence> sequences = new List<ISequence>
                     {
                         aInput,
                         bInput
@@ -1496,9 +1496,9 @@ namespace Bio.Tests.Algorithms.Alignment
             sm = null;
 
             // Get the expected sequence and scorde from xml config.
-            var expectedSequence1 = string.Empty;
-            var expectedSequence2 = string.Empty;
-            var expectedScore = string.Empty;
+            string expectedSequence1 = string.Empty;
+            string expectedSequence2 = string.Empty;
+            string expectedScore = string.Empty;
 
             switch (alignType)
             {
@@ -1522,13 +1522,13 @@ namespace Bio.Tests.Algorithms.Alignment
 
             IList<IPairwiseSequenceAlignment> expectedOutput = new List<IPairwiseSequenceAlignment>();
             string[] expectedSequences1, expectedSequences2;
-            var seperators = new char[1] {';'};
+            char[] seperators = new char[1] {';'};
             expectedSequences1 = expectedSequence1.Split(seperators);
             expectedSequences2 = expectedSequence2.Split(seperators);
 
             IPairwiseSequenceAlignment align = new PairwiseSequenceAlignment();
             PairwiseAlignedSequence alignedSeq;
-            for (var i = 0; i < expectedSequences1.Length; i++)
+            for (int i = 0; i < expectedSequences1.Length; i++)
             {
                 alignedSeq = new PairwiseAlignedSequence
                 {
@@ -1565,7 +1565,7 @@ namespace Bio.Tests.Algorithms.Alignment
                                                                            AlignmentType alignType,
                                                                            InvalidSequenceType sequenceType)
         {
-            var alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName,
+            IAlphabet alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                      Constants.AlphabetNameNode));
             Exception actualException = null;
             Sequence aInput = null;
@@ -1573,13 +1573,13 @@ namespace Bio.Tests.Algorithms.Alignment
             if (isTextFile)
             {
                 // Read the xml file for getting both the files for aligning.
-                var filepath = GetInputFileNameWithInvalidType(nodeName, invalidSequenceType);
+                string filepath = GetInputFileNameWithInvalidType(nodeName, invalidSequenceType);
 
                 // Create input sequence for sequence string in different cases.
                 try
                 {
                     // Parse the files and get the sequence.                    
-                    var parser = new FastAParser();
+                    FastAParser parser = new FastAParser();
                     aInput = new Sequence(alphabet, new string(parser.Parse(filepath).ElementAt(0).
                                                                           Select(a => (char) a).ToArray()));
                 }
@@ -1590,7 +1590,7 @@ namespace Bio.Tests.Algorithms.Alignment
             }
             else
             {
-                var originalSequence = utilityObj.xmlUtil.GetTextValue(nodeName,
+                string originalSequence = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                           Constants.InvalidSequence1);
 
                 // Create input sequence for sequence string in different cases.
@@ -1606,22 +1606,22 @@ namespace Bio.Tests.Algorithms.Alignment
 
             if (null == actualException)
             {
-                var bInput = aInput;
+                Sequence bInput = aInput;
 
                 // Create similarity matrix object for a given file.
-                var blosumFilePath = utilityObj.xmlUtil.GetTextValue(nodeName,
+                string blosumFilePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                         Constants.BlosumFilePathNode).TestDir();
 
-                var sm = new SimilarityMatrix(new StreamReader(blosumFilePath));
+                SimilarityMatrix sm = new SimilarityMatrix(new StreamReader(blosumFilePath));
 
-                var gapOpenCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
+                int gapOpenCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                             Constants.GapOpenCostNode), null);
 
-                var gapExtensionCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
+                int gapExtensionCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                  Constants.GapExtensionCostNode), null);
 
                 // Create PairwiseOverlapAligner instance and set its values.
-                var pairwiseOverlapObj = new PairwiseOverlapAligner();
+                PairwiseOverlapAligner pairwiseOverlapObj = new PairwiseOverlapAligner();
                 if (additionalParameter != AlignParameters.AllParam)
                 {
                     pairwiseOverlapObj.SimilarityMatrix = sm;
@@ -1633,7 +1633,7 @@ namespace Bio.Tests.Algorithms.Alignment
                 switch (additionalParameter)
                 {
                     case AlignParameters.AlignList:
-                        var sequences = new List<ISequence> {aInput, bInput};
+                        List<ISequence> sequences = new List<ISequence> {aInput, bInput};
                         switch (alignType)
                         {
                             case AlignmentType.Align:
@@ -1716,7 +1716,7 @@ namespace Bio.Tests.Algorithms.Alignment
             }
 
             // Validate Error messages for Invalid Sequence types.
-            var expectedErrorMessage = GetExpectedErrorMeesageWithInvalidSequenceType(nodeName,
+            string expectedErrorMessage = GetExpectedErrorMeesageWithInvalidSequenceType(nodeName,
                                                                                          sequenceType);
 
             Assert.AreEqual(expectedErrorMessage.Replace("\\r", "").Replace("\\n", "").Replace("\t", ""),
@@ -1743,21 +1743,21 @@ namespace Bio.Tests.Algorithms.Alignment
             Sequence aInput = null;
             Sequence bInput = null;
 
-            var alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName,
+            IAlphabet alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                      Constants.AlphabetNameNode));
 
             if (isTextFile)
             {
                 // Read the xml file for getting both the files for aligning.
-                var firstInputFilepath = utilityObj.xmlUtil.GetTextValue(nodeName,
+                string firstInputFilepath = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                             Constants.FilePathNode1).TestDir();
-                var secondInputFilepath = utilityObj.xmlUtil.GetTextValue(nodeName,
+                string secondInputFilepath = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                              Constants.FilePathNode2).TestDir();
 
                 // Parse the files and get the sequence.              
-                var parser1 = new FastAParser();
-                var inputSequence1 = parser1.Parse(firstInputFilepath).ElementAt(0);
-                var inputSequence2 = parser1.Parse(secondInputFilepath).ElementAt(0);
+                FastAParser parser1 = new FastAParser();
+                ISequence inputSequence1 = parser1.Parse(firstInputFilepath).ElementAt(0);
+                ISequence inputSequence2 = parser1.Parse(secondInputFilepath).ElementAt(0);
 
                 // Create input sequence for sequence string in different cases.
                 GetSequenceWithCaseType(new string(inputSequence1.Select(a => (char) a).ToArray()),
@@ -1766,22 +1766,22 @@ namespace Bio.Tests.Algorithms.Alignment
             }
             else
             {
-                var firstInputSequence = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode1);
-                var secondInputSequence = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode2);
+                string firstInputSequence = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode1);
+                string secondInputSequence = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode2);
 
                 // Create input sequence for sequence string in different cases.
                 GetSequenceWithCaseType(firstInputSequence, secondInputSequence,
                                         alphabet, SequenceCaseType.LowerCase, out aInput, out bInput);
             }
 
-            var aInputString = new string(aInput.Select(a => (char) a).ToArray());
-            var bInputString = new string(bInput.Select(a => (char) a).ToArray());
+            string aInputString = new string(aInput.Select(a => (char) a).ToArray());
+            string bInputString = new string(bInput.Select(a => (char) a).ToArray());
 
             ApplicationLog.WriteLine(string.Format(null, "PairwiseOverlapAligner P2 : First sequence used is '{0}'.", aInputString));
             ApplicationLog.WriteLine(string.Format(null, "PairwiseOverlapAligner P2 : Second sequence used is '{0}'.", bInputString));
 
             // Create similarity matrix object for a invalid file.
-            var blosumFilePath = GetSimilarityMatrixFileWithInvalidType(nodeName, invalidType);
+            string blosumFilePath = GetSimilarityMatrixFileWithInvalidType(nodeName, invalidType);
             Exception actualExpection = null;
 
             // For invalid similarity matrix data format; exception will be thrown while instantiating
@@ -1801,14 +1801,14 @@ namespace Bio.Tests.Algorithms.Alignment
             // For non matching similarity matrix exception will be thrown while alignment
             if (actualExpection == null)
             {
-                var gapOpenCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
+                int gapOpenCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                             Constants.GapOpenCostNode), null);
 
-                var gapExtensionCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
+                int gapExtensionCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                  Constants.GapExtensionCostNode), null);
 
                 // Create PairwiseOverlapAligner instance and set its values.
-                var pairwiseOverlapObj = new PairwiseOverlapAligner();
+                PairwiseOverlapAligner pairwiseOverlapObj = new PairwiseOverlapAligner();
                 if (additionalParameter != AlignParameters.AllParam)
                 {
                     pairwiseOverlapObj.SimilarityMatrix = sm;
@@ -1820,7 +1820,7 @@ namespace Bio.Tests.Algorithms.Alignment
                 switch (additionalParameter)
                 {
                     case AlignParameters.AlignList:
-                        var sequences = new List<ISequence>
+                        List<ISequence> sequences = new List<ISequence>
                         {
                             aInput,
                             bInput
@@ -1906,7 +1906,7 @@ namespace Bio.Tests.Algorithms.Alignment
             }
 
             // Validate that expected exception is thrown using error message.
-            var expectedErrorMessage = GetExpectedErrorMeesageWithInvalidSimilarityMatrixType(nodeName, invalidType);
+            string expectedErrorMessage = GetExpectedErrorMeesageWithInvalidSimilarityMatrixType(nodeName, invalidType);
             Assert.AreEqual(expectedErrorMessage, actualExpection.Message);
             ApplicationLog.WriteLine("PairwiseOverlapAligner P2 : Expected Error message is thrown ", expectedErrorMessage);
         }
@@ -1920,7 +1920,7 @@ namespace Bio.Tests.Algorithms.Alignment
         private string GetExpectedErrorMeesageWithInvalidSimilarityMatrixType(string nodeName,
                                                                               SimilarityMatrixInvalidTypes invalidType)
         {
-            var expectedErrorMessage = string.Empty;
+            string expectedErrorMessage = string.Empty;
             switch (invalidType)
             {
                 case SimilarityMatrixInvalidTypes.FewAlphabetsSimilarityMatrix:
@@ -1968,7 +1968,7 @@ namespace Bio.Tests.Algorithms.Alignment
         private string GetExpectedErrorMeesageWithInvalidSequenceType(string nodeName,
                                                                       InvalidSequenceType sequenceType)
         {
-            var expectedErrorMessage = string.Empty;
+            string expectedErrorMessage = string.Empty;
             switch (sequenceType)
             {
                 case InvalidSequenceType.SequenceWithInvalidChars:
@@ -2009,8 +2009,8 @@ namespace Bio.Tests.Algorithms.Alignment
         private string GetSimilarityMatrixFileWithInvalidType(string nodeName,
                                                               SimilarityMatrixInvalidTypes invalidType)
         {
-            var invalidFileNode = string.Empty;
-            var invalidFilePath = string.Empty;
+            string invalidFileNode = string.Empty;
+            string invalidFilePath = string.Empty;
             switch (invalidType)
             {
                 case SimilarityMatrixInvalidTypes.NonMatchingSimilarityMatrix:
@@ -2048,7 +2048,7 @@ namespace Bio.Tests.Algorithms.Alignment
         private string GetInputFileNameWithInvalidType(string nodeName,
                                                        InvalidSequenceType invalidSequenceType)
         {
-            var invalidFilePath = string.Empty;
+            string invalidFilePath = string.Empty;
             switch (invalidSequenceType)
             {
                 case InvalidSequenceType.SequenceWithSpecialChars:

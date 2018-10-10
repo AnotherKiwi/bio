@@ -133,7 +133,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             {
                 throw new ArgumentException("Empty set of sequences");
             }
-            var alphabet = sequences[0].Alphabet;
+            IAlphabet alphabet = sequences[0].Alphabet;
 
             Parallel.For(1, sequences.Count, PAMSAMMultipleSequenceAligner.ParallelOption, i =>
             {
@@ -163,7 +163,7 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
             
             // Iterate internal nodes; 
             // as defined in the tree, the last node is the root
-            for (var i = sequences.Count; i < tree.Nodes.Count; ++i)
+            for (int i = sequences.Count; i < tree.Nodes.Count; ++i)
             {
                 if (tree.Nodes[i].NeedReAlignment)
                 {
@@ -222,14 +222,14 @@ namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
                 throw new Exception("Out of memory", ex.InnerException);
             }
 
-            for (var i=0; i<sequences.Count;++i)
+            for (int i=0; i<sequences.Count;++i)
             {
                 _alignedSequences.Add(null);
             }
 
             Parallel.For(0, sequences.Count, PAMSAMMultipleSequenceAligner.ParallelOption, i =>
             {
-                var seq = sequences[i];
+                ISequence seq = sequences[i];
                 BinaryGuideTreeNode node;
                 node = tree.Nodes[i];
                 while (!node.IsRoot)

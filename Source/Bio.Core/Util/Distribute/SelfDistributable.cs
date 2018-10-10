@@ -61,7 +61,7 @@ namespace Bio.Util.Distribute
         /// </summary>
         public void Run()
         {
-            var distributeNow = Distribute;
+            IDistribute distributeNow = Distribute;
             Distribute = null;
             distributeNow.Distribute(this);
                 // clear distribute in case we're submitting to cluster. That's a lot of command line junk to send to the cluster for no reason!

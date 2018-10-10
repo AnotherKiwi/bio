@@ -30,7 +30,7 @@ namespace Bio
         /// <param name="data">Data to write.</param>
         public static void Format<T>(this IFormatter<T> formatter, IEnumerable<T> data) where T : class
         {
-            var fs = ParserFormatterExtensions<IFormatter<T>>.GetOpenStream(formatter, true);
+            Stream fs = ParserFormatterExtensions<IFormatter<T>>.GetOpenStream(formatter, true);
             if (fs != null)
                 formatter.Format(fs, data);
             else
@@ -44,7 +44,7 @@ namespace Bio
         /// <param name="data">Data</param>
         public static void Format<T>(this IFormatter<T> formatter, T data) where T : class
         {
-            var fs = ParserFormatterExtensions<IFormatter<T>>.GetOpenStream(formatter, true);
+            Stream fs = ParserFormatterExtensions<IFormatter<T>>.GetOpenStream(formatter, true);
             if (fs != null)
                 formatter.Format(fs, data);
             else
@@ -72,7 +72,7 @@ namespace Bio
                 throw new ArgumentNullException(nameof(filename));
             }
 
-            using (var fs = File.Create(filename))
+            using (FileStream fs = File.Create(filename))
                 formatter.Format(fs, data);
         }
 
@@ -97,7 +97,7 @@ namespace Bio
                 throw new ArgumentNullException(nameof(filename));
             }
 
-            using (var fs = File.Create(filename))
+            using (FileStream fs = File.Create(filename))
                 formatter.Format(fs, data);
         }
 
@@ -140,10 +140,10 @@ namespace Bio
         /// <returns></returns>
         static string DoFormat<T>(Action<Stream,T> formatter, T data)
         {
-            var str = new MemoryStream(1024);
+            MemoryStream str = new MemoryStream(1024);
             formatter(str, data);
             str.Position = 0;
-            using (var sr = new StreamReader(str))
+            using (StreamReader sr = new StreamReader(str))
                 return sr.ReadToEnd();
         }
     }

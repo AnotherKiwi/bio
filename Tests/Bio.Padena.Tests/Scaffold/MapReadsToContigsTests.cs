@@ -26,18 +26,18 @@ namespace Bio.Padena.Tests.Scaffold
         {
             IList<ISequence> contigs = new List<ISequence>();
             IList<ISequence> reads = new List<ISequence>();
-            var seq = new Sequence(Alphabets.DNA, "TCTGATAAGG".Select(a => (byte)a).ToArray());
+            Sequence seq = new Sequence(Alphabets.DNA, "TCTGATAAGG".Select(a => (byte)a).ToArray());
             seq.ID = "1";
             contigs.Add(seq);
-            var read = new Sequence(Alphabets.DNA, "CTGATAAGG".Select(a => (byte)a).ToArray());
+            Sequence read = new Sequence(Alphabets.DNA, "CTGATAAGG".Select(a => (byte)a).ToArray());
             read.ID = "2";
             reads.Add(read);
             const int kmerLength = 6;
-            var mapper = new ReadContigMapper();
-            var map = mapper.Map(contigs, reads, kmerLength);
+            ReadContigMapper mapper = new ReadContigMapper();
+            ReadContigMap map = mapper.Map(contigs, reads, kmerLength);
             Assert.AreEqual(map.Count, reads.Count);
-            var alignment = map[reads[0].ID];
-            var readMap = alignment[contigs[0]];
+            Dictionary<ISequence, IList<ReadMap>> alignment = map[reads[0].ID];
+            IList<ReadMap> readMap = alignment[contigs[0]];
             Assert.AreEqual(readMap[0].Length, 9);
             Assert.AreEqual(readMap[0].StartPositionOfContig, 1);
             Assert.AreEqual(readMap[0].StartPositionOfRead, 0);
@@ -52,18 +52,18 @@ namespace Bio.Padena.Tests.Scaffold
         {
             IList<ISequence> contigs = new List<ISequence>();
             IList<ISequence> reads = new List<ISequence>();
-            var seq = new Sequence(Alphabets.DNA, "TCTGATAAGG".Select(a => (byte)a).ToArray());
+            Sequence seq = new Sequence(Alphabets.DNA, "TCTGATAAGG".Select(a => (byte)a).ToArray());
             seq.ID = "1";
             contigs.Add(seq);
-            var read = new Sequence(Alphabets.DNA, "CCTTATCAG".Select(a => (byte)a).ToArray());
+            Sequence read = new Sequence(Alphabets.DNA, "CCTTATCAG".Select(a => (byte)a).ToArray());
             read.ID = "2";
             reads.Add(read);
             const int kmerLength = 6;
-            var mapper = new ReadContigMapper();
-            var map = mapper.Map(contigs, reads, kmerLength);
+            ReadContigMapper mapper = new ReadContigMapper();
+            ReadContigMap map = mapper.Map(contigs, reads, kmerLength);
             Assert.AreEqual(map.Count, reads.Count);
-            var alignment = map[reads[0].ID];
-            var readMap = alignment[contigs[0]];
+            Dictionary<ISequence, IList<ReadMap>> alignment = map[reads[0].ID];
+            IList<ReadMap> readMap = alignment[contigs[0]];
             Assert.AreEqual(readMap[0].Length, 9);
             Assert.AreEqual(readMap[0].StartPositionOfContig, 1);
             Assert.AreEqual(readMap[0].StartPositionOfRead, 0);
@@ -79,7 +79,7 @@ namespace Bio.Padena.Tests.Scaffold
             const int kmerLength = 6;
 
             IList<ISequence> readSeqs = new List<ISequence>();
-            var read = new Sequence(Alphabets.DNA, "GATGCCTC".Select(a => (byte)a).ToArray());
+            Sequence read = new Sequence(Alphabets.DNA, "GATGCCTC".Select(a => (byte)a).ToArray());
             read.ID = "0";
             readSeqs.Add(read);
             read = new Sequence(Alphabets.DNA, "CCTCCTAT".Select(a => (byte)a).ToArray());
@@ -97,13 +97,13 @@ namespace Bio.Padena.Tests.Scaffold
 
             IList<ISequence> contigs = new List<ISequence> { new Sequence(Alphabets.DNA, "GATGCCTCCTATC".Select(a => (byte)a).ToArray()) };
 
-            var mapper = new ReadContigMapper();
-            var maps = mapper.Map(contigs, readSeqs, kmerLength);
+            ReadContigMapper mapper = new ReadContigMapper();
+            ReadContigMap maps = mapper.Map(contigs, readSeqs, kmerLength);
 
             Assert.AreEqual(maps.Count, readSeqs.Count);
-            var map = maps[readSeqs[0].ID];
+            Dictionary<ISequence, IList<ReadMap>> map = maps[readSeqs[0].ID];
 
-            var readMap = map[contigs[0]];
+            IList<ReadMap> readMap = map[contigs[0]];
             Assert.AreEqual(readMap[0].Length, 8);
             Assert.AreEqual(readMap[0].StartPositionOfContig, 0);
             Assert.AreEqual(readMap[0].StartPositionOfRead, 0);
@@ -147,7 +147,7 @@ namespace Bio.Padena.Tests.Scaffold
         {
             const int kmerLength = 6;
             IList<ISequence> readSeqs = new List<ISequence>();
-            var read = new Sequence(Alphabets.DNA, "ATGCCTC".Select(a => (byte)a).ToArray());
+            Sequence read = new Sequence(Alphabets.DNA, "ATGCCTC".Select(a => (byte)a).ToArray());
             read.ID = "0";
             readSeqs.Add(read);
             read = new Sequence(Alphabets.DNA, "CCTCCTAT".Select(a => (byte)a).ToArray());
@@ -174,13 +174,13 @@ namespace Bio.Padena.Tests.Scaffold
 
             IList<ISequence> contigs = new List<ISequence> { 
                 new Sequence(Alphabets.DNA, "ATGCCTCCTATCTTAGCG".Select(a => (byte)a).ToArray()) };
-            var mapper = new ReadContigMapper();
-            var maps = mapper.Map(contigs, readSeqs, kmerLength);
+            ReadContigMapper mapper = new ReadContigMapper();
+            ReadContigMap maps = mapper.Map(contigs, readSeqs, kmerLength);
             Assert.AreEqual(maps.Count, readSeqs.Count);
 
-            var map = maps[readSeqs[0].ID];
+            Dictionary<ISequence, IList<ReadMap>> map = maps[readSeqs[0].ID];
 
-            var readMap = map[contigs[0]];
+            IList<ReadMap> readMap = map[contigs[0]];
             Assert.AreEqual(readMap[0].Length, 7);
             Assert.AreEqual(readMap[0].StartPositionOfContig, 0);
             Assert.AreEqual(readMap[0].StartPositionOfRead, 0);
@@ -244,7 +244,7 @@ namespace Bio.Padena.Tests.Scaffold
         {
             const int kmerLength = 6;
             IList<ISequence> readSeqs = new List<ISequence>();
-            var read = new Sequence(Alphabets.DNA, "GATCTGATAA".Select(a => (byte)a).ToArray());
+            Sequence read = new Sequence(Alphabets.DNA, "GATCTGATAA".Select(a => (byte)a).ToArray());
             read.ID = "0";
             readSeqs.Add(read);
             read = new Sequence(Alphabets.DNA, "ATCTGATAAG".Select(a => (byte)a).ToArray());
@@ -267,13 +267,13 @@ namespace Bio.Padena.Tests.Scaffold
                 new Sequence(Alphabets.DNA, "GATCTGATAAGG".Select(a => (byte)a).ToArray()), 
                 new Sequence(Alphabets.DNA, "TTTTTGATGGCA".Select(a => (byte)a).ToArray()) };
 
-            var mapper = new ReadContigMapper();
-            var maps = mapper.Map(contigs, readSeqs, kmerLength);
+            ReadContigMapper mapper = new ReadContigMapper();
+            ReadContigMap maps = mapper.Map(contigs, readSeqs, kmerLength);
             Assert.AreEqual(maps.Count, readSeqs.Count);
 
-            var map = maps[readSeqs[0].ID];
+            Dictionary<ISequence, IList<ReadMap>> map = maps[readSeqs[0].ID];
 
-            var readMap = map[contigs[0]];
+            IList<ReadMap> readMap = map[contigs[0]];
             Assert.AreEqual(readMap[0].Length, 10);
             Assert.AreEqual(readMap[0].StartPositionOfContig, 0);
             Assert.AreEqual(readMap[0].StartPositionOfRead, 0);

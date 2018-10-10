@@ -158,7 +158,7 @@ namespace Bio.Silverlight.TestAutomation.IO.FastQ
         [Category("Priority2")]
         public void InvalidateFastQParseNoFileName()
         {
-            var fqParserObj = new FastQParser();
+            FastQParser fqParserObj = new FastQParser();
             Assert.Throws<ArgumentNullException>( () => fqParserObj.Parse(null).ToList());
         }
 
@@ -173,10 +173,10 @@ namespace Bio.Silverlight.TestAutomation.IO.FastQ
         private void InValidateFastQParser(string nodeName)
         {
             // Gets the expected sequence from the Xml
-            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
 
             // Create a FastQ Parser object.
-            var fastQParserObj = new FastQParser();
+            FastQParser fastQParserObj = new FastQParser();
             {
                 fastQParserObj.Parse(filePath).ToList();
             }
@@ -190,11 +190,11 @@ namespace Bio.Silverlight.TestAutomation.IO.FastQ
         private void InValidateFastQFormatter(FastQFormatParameters param)
         {
             // Gets the expected sequence from the Xml
-            var filepath = utilityObj.xmlUtil.GetTextValue(
+            string filepath = utilityObj.xmlUtil.GetTextValue(
                 Constants.MultiSeqSangerRnaProNode, Constants.FilePathNode).TestDir();
 
             // Parse a FastQ file.
-            var fastQParser = new FastQParser();
+            FastQParser fastQParser = new FastQParser();
             using (fastQParser.Open(filepath))
             {
                 FastQFormatter fastQFormatter = null;
@@ -218,7 +218,7 @@ namespace Bio.Silverlight.TestAutomation.IO.FastQ
                     default:
                         try
                         {
-                            var sequence = fastQParser.Parse();
+                            IEnumerable<IQualitativeSequence> sequence = fastQParser.Parse();
                             fastQFormatter = new FastQFormatter();
                             fastQFormatter.Format(sequence, null);
                             Assert.Fail();

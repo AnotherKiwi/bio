@@ -176,7 +176,7 @@ namespace Bio.Util
                 i => (double)i,
                 d =>
                 {
-                    var i = (int)d;
+                    int i = (int)d;
                     if (i != d)
                     {
                         throw new ArgumentOutOfRangeException(string.Format(CultureInfo.InvariantCulture, "Cannot convert {0} into an integer", d));
@@ -337,14 +337,14 @@ namespace Bio.Util
         }
         private double InternalConvertForward(char c)
         {
-            var r = double.Parse(c.ToString());
+            double r = double.Parse(c.ToString());
             Helper.CheckCondition(r <= MaxValue, "Value {0} should be <= {1}", c, MaxValue);
             return r;
         }
         private char InternalConvertBackward(double r)
         {
             Helper.CheckCondition(r <= MaxValue, "Value {0} should be <= {1}", r, MaxValue);
-            var c = r.ToString().Cast<char>().Single();
+            char c = r.ToString().Cast<char>().Single();
             return c;
         }
     }
@@ -359,7 +359,7 @@ namespace Bio.Util
         public CharToGenericConverter()
             : base(c => Parser.Parse<T>(c.ToString()), val =>
             {
-                var valAsString = val.ToString();
+                string valAsString = val.ToString();
                 Helper.CheckCondition(1 == valAsString.Length, "Cannot convert value ({0}) to a character because it is not one character long", valAsString);
                 return valAsString[0];
             })

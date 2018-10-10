@@ -88,7 +88,7 @@ namespace Bio.IO
             {
                 name = text;
             }
-            var byteBuffer = System.Text.Encoding.UTF8.GetBytes(text);
+            byte[] byteBuffer = System.Text.Encoding.UTF8.GetBytes(text);
             return new NamedStreamCreator(name, () => new MemoryStream(byteBuffer));
         }
 
@@ -153,7 +153,7 @@ namespace Bio.IO
             if (namedStreamCreator == null)
                 throw new ArgumentNullException(nameof(namedStreamCreator));
 
-            var stream = namedStreamCreator.Creator();
+            Stream stream = namedStreamCreator.Creator();
             return new StreamReader(stream);
         }
 
@@ -167,7 +167,7 @@ namespace Bio.IO
             if (namedStreamCreator == null)
                 throw new ArgumentNullException(nameof(namedStreamCreator));
 
-            var stream = namedStreamCreator.Creator();
+            Stream stream = namedStreamCreator.Creator();
             return new CommentedStreamReader(stream);
         }
 

@@ -66,17 +66,17 @@ namespace Bio.Algorithms.Translation
                 throw new InvalidOperationException(Properties.Resource.InvalidAlphabetType);
             }
 
-            var transcribedResult = new byte[dnaSource.Count];
+            byte[] transcribedResult = new byte[dnaSource.Count];
             long counter = 0;
 
-            foreach (var n in dnaSource)
+            foreach (byte n in dnaSource)
             {
                 transcribedResult[counter] = GetRnaComplement(n);
                 counter++;
             }
 
-            var alphabet = dnaSource.Alphabet == Alphabets.DNA ? Alphabets.RNA : Alphabets.AmbiguousRNA;
-            var result = new Sequence(alphabet, transcribedResult);
+            RnaAlphabet alphabet = dnaSource.Alphabet == Alphabets.DNA ? Alphabets.RNA : Alphabets.AmbiguousRNA;
+            Sequence result = new Sequence(alphabet, transcribedResult);
             result.ID = "Complement: " + dnaSource.ID;
 
             return result;
@@ -105,17 +105,17 @@ namespace Bio.Algorithms.Translation
                 throw new InvalidOperationException(Properties.Resource.InvalidAlphabetType);
             }
 
-            var transcribedResult = new byte[rnaSource.Count];
+            byte[] transcribedResult = new byte[rnaSource.Count];
             long counter = 0;
 
-            foreach (var n in rnaSource)
+            foreach (byte n in rnaSource)
             {
                 transcribedResult[counter] = GetDnaComplement(n);
                 counter++;
             }
 
-            var alphabet = rnaSource.Alphabet == Alphabets.RNA ? Alphabets.DNA : Alphabets.AmbiguousDNA;
-            var result = new Sequence(alphabet, transcribedResult);
+            DnaAlphabet alphabet = rnaSource.Alphabet == Alphabets.RNA ? Alphabets.DNA : Alphabets.AmbiguousDNA;
+            Sequence result = new Sequence(alphabet, transcribedResult);
             result.ID = "Complement: " + rnaSource.ID;
             return result;
         }

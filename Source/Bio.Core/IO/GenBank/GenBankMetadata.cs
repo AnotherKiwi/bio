@@ -67,7 +67,7 @@ namespace Bio.IO.GenBank
             }
 
             References = new List<CitationReference>();
-            foreach (var reference in other.References)
+            foreach (CitationReference reference in other.References)
             {
                 References.Add(reference.Clone());
             }
@@ -260,8 +260,8 @@ namespace Bio.IO.GenBank
                 throw new ArgumentException(Properties.Resource.InvalidStartNEndPositions);
             }
 
-            var features = new List<FeatureItem>();
-            foreach (var feature in Features.All)
+            List<FeatureItem> features = new List<FeatureItem>();
+            foreach (FeatureItem feature in Features.All)
             {
                 if (startPosition <= feature.Location.LocationEnd && feature.Location.LocationStart <= endPosition)
                 {
@@ -288,21 +288,21 @@ namespace Bio.IO.GenBank
         /// <param name="item">Feature Item.</param>
         public List<CitationReference> GetCitationsReferredInFeature(FeatureItem item)
         {
-            var list = new List<CitationReference>();
+            List<CitationReference> list = new List<CitationReference>();
             if (item == null || !item.Qualifiers.ContainsKey(StandardQualifierNames.Citation))
             {
                 return list;
             }
 
-            foreach (var str in item.Qualifiers[StandardQualifierNames.Citation])
+            foreach (string str in item.Qualifiers[StandardQualifierNames.Citation])
             {
                 if (!string.IsNullOrEmpty(str))
                 {
-                    var strCitationNumber = str.Replace("[", string.Empty).Replace("]", string.Empty);
-                    var citationNumber = -1;
+                    string strCitationNumber = str.Replace("[", string.Empty).Replace("]", string.Empty);
+                    int citationNumber = -1;
                     if (int.TryParse(strCitationNumber, out citationNumber))
                     {
-                        var citation = References.FirstOrDefault(F => F.Number == citationNumber);
+                        CitationReference citation = References.FirstOrDefault(F => F.Number == citationNumber);
                         if (citation != null && !list.Contains(citation))
                         {
                             list.Add(citation);
@@ -319,10 +319,10 @@ namespace Bio.IO.GenBank
         /// </summary>
         public List<CitationReference> GetCitationsReferredInFeatures()
         {
-            var list = new List<CitationReference>();
+            List<CitationReference> list = new List<CitationReference>();
             if (Features != null)
             {
-                foreach (var item in Features.All)
+                foreach (FeatureItem item in Features.All)
                 {
                     list.InsertRange(list.Count, GetCitationsReferredInFeature(item));
                 }

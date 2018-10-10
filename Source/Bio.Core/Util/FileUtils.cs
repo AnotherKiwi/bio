@@ -28,7 +28,7 @@ namespace Bio.Util
         /// <returns>a StreamReader with uncompressed, uncommented text.</returns>
         public static StreamReader OpenTextStripComments(string filename)
         {
-            var file = new FileInfo(filename);
+            FileInfo file = new FileInfo(filename);
             return OpenTextStripComments(file);
         }
 
@@ -51,8 +51,8 @@ namespace Bio.Util
                 fileInfo.Extension.Equals(".gz", StringComparison.CurrentCultureIgnoreCase) ||
                 fileInfo.Extension.Equals(".gzip", StringComparison.CurrentCultureIgnoreCase)))
             {
-                var infile = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
-                var zipStream = new GZipStream(infile, CompressionMode.Decompress);
+                FileStream infile = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
+                GZipStream zipStream = new GZipStream(infile, CompressionMode.Decompress);
                 StreamReader reader = zipStream.StripComments();
 
                 return reader;
@@ -94,7 +94,7 @@ namespace Bio.Util
         /// <returns>The first line of a file after skipping any comments.</returns>
         public static string ReadLine(INamedStreamCreator namedStreamCreator)
         {
-            using (var streamReader = namedStreamCreator.OpenUncommentedText())
+            using (CommentedStreamReader streamReader = namedStreamCreator.OpenUncommentedText())
             {
                 return streamReader.ReadLine();
             }
@@ -108,7 +108,7 @@ namespace Bio.Util
         /// <returns>The first line of a file after skipping any comments.</returns>
         public static string ReadLine(string filename)
         {
-            var file = new FileInfo(filename);
+            FileInfo file = new FileInfo(filename);
             if (!file.Exists)
                 throw new FileNotFoundException(filename + " does not exist.");
             return ReadLine(file);
@@ -124,7 +124,7 @@ namespace Bio.Util
         /// <returns>a sequence of lines from a file</returns>
         public static IEnumerable<string> ReadEachLine(string fileName)
         {
-            var file = new FileInfo(fileName);
+            FileInfo file = new FileInfo(fileName);
             return file.ReadEachLine();
         }
 
@@ -167,7 +167,7 @@ namespace Bio.Util
         /// <returns>A sequence of KeyValuePair's. The key is the line and the value is the index number.</returns>
         public static IEnumerable<KeyValuePair<string, int>> ReadEachIndexedLine(string fileName)
         {
-            var file = new FileInfo(fileName);
+            FileInfo file = new FileInfo(fileName);
             return file.ReadEachIndexedLine();
         }
 
@@ -179,7 +179,7 @@ namespace Bio.Util
         public static IEnumerable<KeyValuePair<string, int>> ReadEachIndexedLine(TextReader textReader)
         {
             string line;
-            var i = 0;
+            int i = 0;
             while (null != (line = textReader.ReadLine()))
             {
                 yield return new KeyValuePair<string, int>(line, i);
@@ -197,7 +197,7 @@ namespace Bio.Util
             using (TextReader textReader = file.OpenTextStripComments())
             {
                 string line;
-                var i = 0;
+                int i = 0;
                 while (null != (line = textReader.ReadLine()))
                 {
                     yield return new KeyValuePair<string, int>(line, i);
@@ -228,10 +228,10 @@ namespace Bio.Util
         /// <returns>The names of actual files that match the pattern.</returns>
         public static IEnumerable<string> GetFiles(string inputPattern, bool zeroIsOK)
         {
-            foreach (var inputSubPattern in inputPattern.Split('+'))
+            foreach (string inputSubPattern in inputPattern.Split('+'))
             {
-                var isZero = true;
-                var directoryName = Path.GetDirectoryName(inputSubPattern);
+                bool isZero = true;
+                string directoryName = Path.GetDirectoryName(inputSubPattern);
                 if (directoryName == "")
                 {
                     directoryName = ".";
@@ -239,7 +239,7 @@ namespace Bio.Util
 
                 if (Directory.Exists(directoryName))
                 {
-                    foreach (var fileName in Directory.EnumerateFiles(directoryName, Path.GetFileName(inputSubPattern)))
+                    foreach (string fileName in Directory.EnumerateFiles(directoryName, Path.GetFileName(inputSubPattern)))
                     {
                         yield return fileName;
                         isZero = false;
@@ -255,7 +255,7 @@ namespace Bio.Util
         /// <param name="fileName">The file to create a directory for.</param>
         public static void CreateDirectoryForFileIfNeeded(string fileName)
         {
-            var outputDirectoryName = Path.GetDirectoryName(fileName);
+            string outputDirectoryName = Path.GetDirectoryName(fileName);
             if (!string.IsNullOrEmpty( outputDirectoryName))
             {
                 Directory.CreateDirectory(outputDirectoryName);
@@ -278,7 +278,7 @@ namespace Bio.Util
         /// <returns></returns>
         public static Assembly GetEntryOrCallingAssembly()
         {
-            var entryAssembly = Assembly.GetEntryAssembly();
+            Assembly entryAssembly = Assembly.GetEntryAssembly();
             if (null != entryAssembly)
             {
                 return entryAssembly;
@@ -304,8 +304,8 @@ namespace Bio.Util
         /// <returns> string holding the normalized path</returns>
         public static string GetDirectoryName(string exampleFileToCopy, string workingDirectory)
         {
-            var fullPathToExample = Path.Combine(workingDirectory, exampleFileToCopy);
-            var illegalCharactersInPath = Path.GetInvalidPathChars().Any(c => exampleFileToCopy.Contains(c));
+            string fullPathToExample = Path.Combine(workingDirectory, exampleFileToCopy);
+            bool illegalCharactersInPath = Path.GetInvalidPathChars().Any(c => exampleFileToCopy.Contains(c));
             if (!illegalCharactersInPath && Directory.Exists(fullPathToExample))
                 return exampleFileToCopy;
             return Path.GetDirectoryName(exampleFileToCopy);
@@ -325,9 +325,9 @@ namespace Bio.Util
         {
             filestream = null;
             //int i = 0;
-            var start = DateTime.Now.Ticks;
-            var timeoutTicks = timeout.Ticks;
-            var breakTime = 50;
+            long start = DateTime.Now.Ticks;
+            long timeoutTicks = timeout.Ticks;
+            int breakTime = 50;
             while (true)
             {
                 try

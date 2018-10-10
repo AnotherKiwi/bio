@@ -147,7 +147,7 @@ namespace Bio.TestAutomation.IO.Bed
         [Category("Priority0")]
         public void BedParserValidateAllProperties()
         {
-            var parserObj = new BedParser();
+            BedParser parserObj = new BedParser();
             Assert.AreEqual(Constants.BedDescription, parserObj.Description);
             Assert.AreEqual(Constants.BedFileTypes, parserObj.SupportedFileTypes);
             Assert.AreEqual(Constants.BedName, parserObj.Name);
@@ -293,7 +293,7 @@ namespace Bio.TestAutomation.IO.Bed
         [Category("Priority0")]
         public void BedFormatterValidateAllProperties()
         {
-            var formatterObj = new BedFormatter();
+            BedFormatter formatterObj = new BedFormatter();
             Assert.AreEqual(Constants.BedDescription, formatterObj.Description);
             Assert.AreEqual(Constants.BedFileTypes, formatterObj.SupportedFileTypes);
             Assert.AreEqual(Constants.BedName, formatterObj.Name);
@@ -345,13 +345,13 @@ namespace Bio.TestAutomation.IO.Bed
                                             AdditionalParameters addParam)
         {
             // Gets the Filename
-            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
 
             Assert.IsFalse(string.IsNullOrEmpty(filePath));
             ApplicationLog.WriteLine($"Bed Parser BVT: Reading the File from location '{filePath}'");
 
             // Get the rangelist after parsing.
-            var parserObj = new BedParser();
+            BedParser parserObj = new BedParser();
 
             IList<ISequenceRange> rangeList = null;
             SequenceRangeGrouping rangeGroup = null;
@@ -363,7 +363,7 @@ namespace Bio.TestAutomation.IO.Bed
                     rangeList = parserObj.ParseRange(filePath);
                     break;
                 case AdditionalParameters.RangeTextReader:
-                    using (var strObj = File.OpenRead(filePath))
+                    using (FileStream strObj = File.OpenRead(filePath))
                     {
                         rangeList = parserObj.ParseRange(strObj);
                     }
@@ -372,7 +372,7 @@ namespace Bio.TestAutomation.IO.Bed
                     rangeGroup = parserObj.ParseRangeGrouping(filePath);
                     break;
                 case AdditionalParameters.RangeGroupTextReader:
-                    using (var strObj = File.OpenRead(filePath))
+                    using (FileStream strObj = File.OpenRead(filePath))
                     {
                         rangeGroup = parserObj.ParseRangeGrouping(strObj);
                     }
@@ -386,10 +386,10 @@ namespace Bio.TestAutomation.IO.Bed
             {
                 case AdditionalParameters.RangeGroupTextReader:
                 case AdditionalParameters.RangeGroupFileName:
-                    var grpIDsObj = rangeGroup.GroupIDs;
-                    var rangeID = string.Empty;
+                    IEnumerable<string> grpIDsObj = rangeGroup.GroupIDs;
+                    string rangeID = string.Empty;
 
-                    foreach (var grpID in grpIDsObj)
+                    foreach (string grpID in grpIDsObj)
                     {
                         rangeID = grpID;
                     }
@@ -401,16 +401,16 @@ namespace Bio.TestAutomation.IO.Bed
             }
 
             // Gets all the expected values from xml.
-            var expectedIDs = utilityObj.xmlUtil.GetTextValue(
+            string[] expectedIDs = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.IDNode).Split(',');
-            var expectedStarts = utilityObj.xmlUtil.GetTextValue(
+            string[] expectedStarts = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.StartNode).Split(',');
-            var expectedEnds = utilityObj.xmlUtil.GetTextValue(
+            string[] expectedEnds = utilityObj.xmlUtil.GetTextValue(
                 nodeName, Constants.EndNode).Split(',');
 
-            var i = 0;
+            int i = 0;
             // Reads all the ranges with comma seperated for validation
-            foreach (var range in rangeList)
+            foreach (ISequenceRange range in rangeList)
             {
                 Assert.AreEqual(expectedStarts[i], range.Start.ToString((IFormatProvider) null));
                 Assert.AreEqual(expectedEnds[i], range.End.ToString((IFormatProvider) null));
@@ -432,53 +432,53 @@ namespace Bio.TestAutomation.IO.Bed
                                                AdditionalParameters addParam)
         {
             IList<ISequenceRange> rangeList = new List<ISequenceRange>();
-            var rangeGroup = new SequenceRangeGrouping();
+            SequenceRangeGrouping rangeGroup = new SequenceRangeGrouping();
 
             // Gets the file name.
-            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
 
             // Condition to check if Parse() happens before Format()
             switch (addParam)
             {
                 case AdditionalParameters.ParseRangeGroup:
-                    var initialParserGroupObj = new BedParser();
+                    BedParser initialParserGroupObj = new BedParser();
                     rangeGroup =
                         initialParserGroupObj.ParseRangeGrouping(filePath);
                     break;
                 case AdditionalParameters.ParseRange:
-                    var initialParserObj = new BedParser();
+                    BedParser initialParserObj = new BedParser();
                     rangeList = initialParserObj.ParseRange(filePath);
                     break;
                 default:
                     // Gets all the expected values from xml.
-                    var expectedID = utilityObj.xmlUtil.GetTextValue(
+                    string expectedID = utilityObj.xmlUtil.GetTextValue(
                         nodeName, Constants.IDNode);
-                    var expectedStart = utilityObj.xmlUtil.GetTextValue(
+                    string expectedStart = utilityObj.xmlUtil.GetTextValue(
                         nodeName, Constants.StartNode);
-                    var expectedEnd = utilityObj.xmlUtil.GetTextValue(
+                    string expectedEnd = utilityObj.xmlUtil.GetTextValue(
                         nodeName, Constants.EndNode);
 
-                    var expectedIDs = expectedID.Split(',');
-                    var expectedStarts = expectedStart.Split(',');
-                    var expectedEnds = expectedEnd.Split(',');
+                    string[] expectedIDs = expectedID.Split(',');
+                    string[] expectedStarts = expectedStart.Split(',');
+                    string[] expectedEnds = expectedEnd.Split(',');
 
                     // Gets the Range Group or Range based on the additional parameter
                     switch (addParam)
                     {
                         case AdditionalParameters.RangeGroupTextWriter:
                         case AdditionalParameters.RangeGroupFileName:
-                            for (var i = 0; i < expectedIDs.Length; i++)
+                            for (int i = 0; i < expectedIDs.Length; i++)
                             {
-                                var rangeObj1 = new SequenceRange(expectedIDs[i],
+                                SequenceRange rangeObj1 = new SequenceRange(expectedIDs[i],
                                                                   long.Parse(expectedStarts[i], null),
                                                                   long.Parse(expectedEnds[i], null));
                                 rangeGroup.Add(rangeObj1);
                             }
                             break;
                         default:
-                            for (var i = 0; i < expectedIDs.Length; i++)
+                            for (int i = 0; i < expectedIDs.Length; i++)
                             {
-                                var rangeObj2 = new SequenceRange(expectedIDs[i],
+                                SequenceRange rangeObj2 = new SequenceRange(expectedIDs[i],
                                                                   long.Parse(expectedStarts[i], null),
                                                                   long.Parse(expectedEnds[i], null));
                                 rangeList.Add(rangeObj2);
@@ -488,7 +488,7 @@ namespace Bio.TestAutomation.IO.Bed
                     break;
             }
 
-            var formatterObj = new BedFormatter();
+            BedFormatter formatterObj = new BedFormatter();
 
             // Gets the Range list/Range Group based on the parameters.
             switch (addParam)
@@ -498,7 +498,7 @@ namespace Bio.TestAutomation.IO.Bed
                     formatterObj.Format(rangeList, Constants.BedTempFileName);
                     break;
                 case AdditionalParameters.RangeTextWriter:
-                    using (var txtWriter =
+                    using (FileStream txtWriter =
                         File.Create(Constants.BedTempFileName))
                     {
                         formatterObj.Format(txtWriter, rangeList);
@@ -509,7 +509,7 @@ namespace Bio.TestAutomation.IO.Bed
                     formatterObj.Format(rangeGroup, Constants.BedTempFileName);
                     break;
                 case AdditionalParameters.RangeGroupTextWriter:
-                    using (var txtWriter =
+                    using (FileStream txtWriter =
                         File.Create(Constants.BedTempFileName))
                     {
                         formatterObj.Format(txtWriter, rangeGroup);
@@ -520,12 +520,12 @@ namespace Bio.TestAutomation.IO.Bed
             }
 
             // Reparse to validate the results
-            var parserObj = new BedParser();
-            var newRangeList =
+            BedParser parserObj = new BedParser();
+            IList<ISequenceRange> newRangeList =
                 parserObj.ParseRange(Constants.BedTempFileName);
 
             // Validation of all the properties.
-            for (var i = 0; i < rangeList.Count; i++)
+            for (int i = 0; i < rangeList.Count; i++)
             {
                 Assert.AreEqual(rangeList[i].ID, newRangeList[i].ID);
                 Assert.AreEqual(rangeList[i].Start, newRangeList[i].Start);

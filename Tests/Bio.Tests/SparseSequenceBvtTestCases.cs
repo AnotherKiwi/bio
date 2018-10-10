@@ -25,7 +25,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateDnaSparseSequenceConstAlp()
         {
-            var sparseSeq = new SparseSequence(Alphabets.DNA);
+            SparseSequence sparseSeq = new SparseSequence(Alphabets.DNA);
             Assert.IsNotNull(sparseSeq);
             Assert.AreEqual(0, sparseSeq.Count);
             Assert.IsNotNull(sparseSeq.Statistics);
@@ -40,7 +40,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateDnaSparseSequenceConstAlpIndex()
         {
-            var sparseSeq = new SparseSequence(Alphabets.DNA, 0);
+            SparseSequence sparseSeq = new SparseSequence(Alphabets.DNA, 0);
             Assert.IsNotNull(sparseSeq);
             Assert.AreEqual(0, sparseSeq.Count);
             Assert.IsNotNull(sparseSeq.Statistics);
@@ -55,11 +55,11 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateDnaSparseSequenceConstAlpIndexByte()
         {
-            var byteArrayObj = Encoding.ASCII.GetBytes("AGCT");
-            var sparseSeq = new SparseSequence(Alphabets.DNA, 1, byteArrayObj[0]);
+            byte[] byteArrayObj = Encoding.ASCII.GetBytes("AGCT");
+            SparseSequence sparseSeq = new SparseSequence(Alphabets.DNA, 1, byteArrayObj[0]);
             Assert.IsNotNull(sparseSeq);
             Assert.IsNotNull(sparseSeq.Statistics);
-            var seqStatObj = sparseSeq.Statistics;
+            SequenceStatistics seqStatObj = sparseSeq.Statistics;
             Assert.AreEqual(1, seqStatObj.GetCount('A'));
             ApplicationLog.WriteLine("SparseSequence BVT: Validation of SparseSequence(alp, index, byte) constructor is completed");
         }
@@ -72,16 +72,16 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateDnaSparseSequenceConstAlpIndexByteList()
         {
-            var byteArrayObj = Encoding.ASCII.GetBytes("AGCT");
+            byte[] byteArrayObj = Encoding.ASCII.GetBytes("AGCT");
 
             IEnumerable<byte> seqItems =
                 new List<Byte> {byteArrayObj[0], byteArrayObj[1], byteArrayObj[2], byteArrayObj[3]};
 
-            var sparseSeq = new SparseSequence(Alphabets.DNA, 4, seqItems);
+            SparseSequence sparseSeq = new SparseSequence(Alphabets.DNA, 4, seqItems);
             Assert.IsNotNull(sparseSeq);
             Assert.IsNotNull(sparseSeq.Statistics);
             Assert.AreEqual(8, sparseSeq.Count);
-            var seqStatObj = sparseSeq.Statistics;
+            SequenceStatistics seqStatObj = sparseSeq.Statistics;
             Assert.AreEqual(1, seqStatObj.GetCount('A'));
             Assert.AreEqual(1, seqStatObj.GetCount('G'));
             Assert.AreEqual(1, seqStatObj.GetCount('C'));
@@ -106,7 +106,7 @@ namespace Bio.Tests
             IList<byte> sequenceList = alphabet.ToList();
 
             // Store sequence item in sparse sequence object using list of sequence items
-            var sparseSequence = new SparseSequence(alphabet, insertPosition, sequenceList);
+            SparseSequence sparseSequence = new SparseSequence(alphabet, insertPosition, sequenceList);
 
             //Validate all properties
             Assert.AreEqual(alphabet.Count + insertPosition, sparseSequence.Count);
@@ -126,7 +126,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateSparseSequenceIndexOfNonGap()
         {
-            var sparseSeqObj = new SparseSequence(Alphabets.DNA, 10);
+            SparseSequence sparseSeqObj = new SparseSequence(Alphabets.DNA, 10);
             sparseSeqObj[8] = Alphabets.DNA.Gap;
             sparseSeqObj[9] = Alphabets.DNA.A;
 
@@ -143,7 +143,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateSparseSequenceLastIndexOfNonGap()
         {
-            var sparseSeqObj = new SparseSequence(Alphabets.DNA, 10);
+            SparseSequence sparseSeqObj = new SparseSequence(Alphabets.DNA, 10);
             sparseSeqObj[2] = Alphabets.DNA.Gap;
             sparseSeqObj[1] = Alphabets.DNA.A;
 
@@ -160,7 +160,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateSparseSequenceIndexOfNonGapNull()
         {
-            var sparseSeqObj = new SparseSequence(Alphabets.DNA, 2);
+            SparseSequence sparseSeqObj = new SparseSequence(Alphabets.DNA, 2);
             sparseSeqObj[0] = Alphabets.DNA.Gap;
             sparseSeqObj[1] = Alphabets.DNA.A;
 
@@ -176,7 +176,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateSparseSequenceLastIndexOfNonGapNull()
         {
-            var sparseSeqObj = new SparseSequence(Alphabets.DNA, 2);
+            SparseSequence sparseSeqObj = new SparseSequence(Alphabets.DNA, 2);
             sparseSeqObj[1] = Alphabets.DNA.Gap;
             sparseSeqObj[0] = Alphabets.DNA.A;
 
@@ -191,17 +191,17 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateSparseSequenceGetReversedSequence()
         {
-            var byteArrayObj = Encoding.ASCII.GetBytes("ACGT");
+            byte[] byteArrayObj = Encoding.ASCII.GetBytes("ACGT");
 
             IEnumerable<byte> seqItems =
                 new List<Byte> {byteArrayObj[0], byteArrayObj[1], byteArrayObj[2], byteArrayObj[3]};
 
-            var sparseSeqObj = new SparseSequence(Alphabets.DNA, 0, seqItems);
-            var revSeqObj = sparseSeqObj.GetReversedSequence();
+            SparseSequence sparseSeqObj = new SparseSequence(Alphabets.DNA, 0, seqItems);
+            ISequence revSeqObj = sparseSeqObj.GetReversedSequence();
 
             byteArrayObj = Encoding.ASCII.GetBytes("TGCA");
 
-            for (var i = 0; i < byteArrayObj.Length; i++)
+            for (int i = 0; i < byteArrayObj.Length; i++)
             {
                 Assert.AreEqual(byteArrayObj[i], revSeqObj[i]);
             }
@@ -216,15 +216,15 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateSparseSequenceGetReversedComplementedSequence()
         {
-            var byteArrayObj = Encoding.ASCII.GetBytes("ACGT");
+            byte[] byteArrayObj = Encoding.ASCII.GetBytes("ACGT");
 
             IEnumerable<byte> seqItems =
                 new List<Byte> {byteArrayObj[0], byteArrayObj[1], byteArrayObj[2], byteArrayObj[3]};
 
-            var sparseSeqObj = new SparseSequence(Alphabets.DNA, 0, seqItems);
-            var revSeqObj = sparseSeqObj.GetReverseComplementedSequence();
+            SparseSequence sparseSeqObj = new SparseSequence(Alphabets.DNA, 0, seqItems);
+            ISequence revSeqObj = sparseSeqObj.GetReverseComplementedSequence();
 
-            for (var i = 0; i < byteArrayObj.Length; i++)
+            for (int i = 0; i < byteArrayObj.Length; i++)
             {
                 Assert.AreEqual(byteArrayObj[i], revSeqObj[i]);
             }
@@ -239,15 +239,15 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateSparseSequenceGetKnownSequenceItems()
         {
-            var byteArrayObj = Encoding.ASCII.GetBytes("ACGT");
+            byte[] byteArrayObj = Encoding.ASCII.GetBytes("ACGT");
 
             IEnumerable<byte> seqItems =
                 new List<Byte> {byteArrayObj[0], byteArrayObj[1], byteArrayObj[2], byteArrayObj[3]};
 
-            var sparseSeqObj = new SparseSequence(Alphabets.DNA, 0, seqItems);
-            var revSeqObj = sparseSeqObj.GetKnownSequenceItems();
+            SparseSequence sparseSeqObj = new SparseSequence(Alphabets.DNA, 0, seqItems);
+            IReadOnlyList<IndexedItem<byte>> revSeqObj = sparseSeqObj.GetKnownSequenceItems();
             long i = 0;
-            foreach (var by in revSeqObj)
+            foreach (IndexedItem<byte> by in revSeqObj)
             {
                 Assert.AreEqual(i, by.Index);
                 Assert.AreEqual(byteArrayObj[i], by.Item);
@@ -264,17 +264,17 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateSparseSequenceGetComplementedSequence()
         {
-            var byteArrayObj = Encoding.ASCII.GetBytes("ACGT");
+            byte[] byteArrayObj = Encoding.ASCII.GetBytes("ACGT");
 
             IEnumerable<byte> seqItems =
                 new List<Byte> {byteArrayObj[0], byteArrayObj[1], byteArrayObj[2], byteArrayObj[3]};
 
-            var sparseSeqObj = new SparseSequence(Alphabets.DNA, 0, seqItems);
-            var revSeqObj = sparseSeqObj.GetComplementedSequence();
+            SparseSequence sparseSeqObj = new SparseSequence(Alphabets.DNA, 0, seqItems);
+            ISequence revSeqObj = sparseSeqObj.GetComplementedSequence();
 
             byteArrayObj = Encoding.ASCII.GetBytes("TGCA");
 
-            for (var i = 0; i < byteArrayObj.Length; i++)
+            for (int i = 0; i < byteArrayObj.Length; i++)
             {
                 Assert.AreEqual(byteArrayObj[i], revSeqObj[i]);
             }
@@ -289,7 +289,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateSparseSequenceGetSubSequence()
         {
-            var byteList = new List<byte>
+            List<byte> byteList = new List<byte>
             {
                 Alphabets.DNA.Gap,
                 Alphabets.DNA.G,
@@ -301,9 +301,9 @@ namespace Bio.Tests
                 Alphabets.DNA.Gap
             };
 
-            var sparseSeq = new SparseSequence(Alphabets.DNA, 0, byteList);
+            SparseSequence sparseSeq = new SparseSequence(Alphabets.DNA, 0, byteList);
 
-            var result = sparseSeq.GetSubSequence(0, 3);
+            ISequence result = sparseSeq.GetSubSequence(0, 3);
             Assert.AreEqual(3, result.Count);
             Assert.AreEqual(Alphabets.DNA.Gap, result[0]);
             Assert.AreEqual(Alphabets.DNA.G, result[1]);
@@ -327,21 +327,21 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateSparseSequenceGetEnumerator()
         {
-            var byteArrayObj = Encoding.ASCII.GetBytes("ACGT");
+            byte[] byteArrayObj = Encoding.ASCII.GetBytes("ACGT");
 
             IEnumerable<byte> seqItems =
                 new List<Byte> {byteArrayObj[0], byteArrayObj[1], byteArrayObj[2], byteArrayObj[3]};
 
-            var sparseSeqObj = new SparseSequence(Alphabets.DNA, 0, seqItems);
-            var seqObj = sparseSeqObj.GetEnumerator();
-            var i = 0;
+            SparseSequence sparseSeqObj = new SparseSequence(Alphabets.DNA, 0, seqItems);
+            IEnumerator<byte> seqObj = sparseSeqObj.GetEnumerator();
+            int i = 0;
             while (seqObj.MoveNext())
             {
                 Assert.AreEqual(byteArrayObj[i], seqObj.Current);
                 i++;
             }
             i = 0;
-            foreach (var alp in sparseSeqObj)
+            foreach (byte alp in sparseSeqObj)
             {
                 Assert.AreEqual(byteArrayObj[i], alp);
                 i++;
@@ -362,15 +362,15 @@ namespace Bio.Tests
             IAlphabet alphabet = Alphabets.DNA;
 
             // Create sequence item list
-            var sequenceList = new List<byte>();
-            foreach (var item in alphabet)
+            List<byte> sequenceList = new List<byte>();
+            foreach (byte item in alphabet)
             {
                 sequenceList.Add(item);
             }
 
             // Store sequence item in sparse sequence object using list of sequence items
-            var sparseSeq = new SparseSequence(alphabet, 0, sequenceList);
-            var seqItem = new Sequence(Alphabets.DNA, "AGCT")[0];
+            SparseSequence sparseSeq = new SparseSequence(alphabet, 0, sequenceList);
+            byte seqItem = new Sequence(Alphabets.DNA, "AGCT")[0];
 
             sparseSeq[0] = seqItem;
             Assert.AreEqual(65, sparseSeq[0]);
@@ -385,7 +385,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateCopyTo()
         {
-            var byteList = new List<byte>
+            List<byte> byteList = new List<byte>
             {
                 Alphabets.DNA.Gap,
                 Alphabets.DNA.G,
@@ -398,11 +398,11 @@ namespace Bio.Tests
             };
 
             ISequence iSeq = new SparseSequence(Alphabets.DNA, 0, byteList);
-            var sparseSeq = new SparseSequence(iSeq);
+            SparseSequence sparseSeq = new SparseSequence(iSeq);
 
-            var array = new byte[byteList.Count];
+            byte[] array = new byte[byteList.Count];
             sparseSeq.CopyTo(array, 0, byteList.Count);
-            for (var i = 0; i < byteList.Count; i++)
+            for (int i = 0; i < byteList.Count; i++)
             {
                 Assert.AreEqual(byteList.ElementAt(i), array[i]);
             }
@@ -410,7 +410,7 @@ namespace Bio.Tests
             //check for a part of the sequence
             array = new byte[5];
             sparseSeq.CopyTo(array, 0, 5);
-            for (var i = 0; i < 5; i++)
+            for (int i = 0; i < 5; i++)
             {
                 Assert.AreEqual(byteList.ElementAt(i), array[i]);
             }

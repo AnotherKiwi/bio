@@ -176,7 +176,7 @@ namespace Bio.Distributions
         /// <returns>True if both the objects are equal.</returns>
         public override bool Equals(object obj)
         {
-            var stats = obj as SufficientStatistics;
+            SufficientStatistics stats = obj as SufficientStatistics;
             if (stats != null)
             {
                 return Equals(stats);
@@ -267,7 +267,7 @@ namespace Bio.Distributions
         /// <returns>Boolean Statistics.</returns>
         public override BooleanStatistics AsBooleanStatistics()
         {
-            var valAsInt = (int)Value;
+            int valAsInt = (int)Value;
             if (!IsMissing() && !(valAsInt < -1 || valAsInt > 1))
             {
                 throw new InvalidCastException(string.Format(CultureInfo.InvariantCulture,"Cannot convert {0} to Boolean.", Value));

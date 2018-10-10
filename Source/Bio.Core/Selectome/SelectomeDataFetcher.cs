@@ -36,7 +36,7 @@ namespace Bio.Web.Selectome
                 throw new ArgumentException("Cannot query with " + ensemblID + " because the name does not start with " + EnsemblPrefix, nameof(ensemblID));
             }
 
-           var response = await new HttpClient().GetStringAsync(SegmentRequestUrl + string.Format("?{0}={1}", SegmentQueryKey, ensemblID));
+           string response = await new HttpClient().GetStringAsync(SegmentRequestUrl + string.Format("?{0}={1}", SegmentQueryKey, ensemblID));
            return ParseXML(response);
         }
 
@@ -67,15 +67,15 @@ namespace Bio.Web.Selectome
             //</DASGFF>
 
             //Because the selection results and links appear on different lines, going to merge them with dictionary, grr...
-            var results = new Dictionary<SelectomeTaxaGroup,SelectomeQuerySubResult>();
-            var geneName = String.Empty;
-            var settings = new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore };
-            using (var sr = new StringReader(webResponse))
+            Dictionary<SelectomeTaxaGroup, SelectomeQuerySubResult> results = new Dictionary<SelectomeTaxaGroup,SelectomeQuerySubResult>();
+            string geneName = String.Empty;
+            XmlReaderSettings settings = new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore };
+            using (StringReader sr = new StringReader(webResponse))
             {
-                using (var r = XmlReader.Create(sr, settings))
+                using (XmlReader r = XmlReader.Create(sr, settings))
                 {
-                    var curElement = string.Empty;
-                    var alreadyAdvanced = false;
+                    string curElement = string.Empty;
+                    bool alreadyAdvanced = false;
                     while (alreadyAdvanced || r.Read())
                     {
                         alreadyAdvanced = false;
@@ -90,11 +90,11 @@ namespace Bio.Web.Selectome
                                 else if (curElement == "NOTE")
                                 {
                                     //Construct the data from the note
-                                    var innerText = r.ReadInnerXml();
+                                    string innerText = r.ReadInnerXml();
                                     alreadyAdvanced = true;
-                                    var groups = innerText.Split(NoteDivider, StringSplitOptions.RemoveEmptyEntries);
-                                    var tempResults = groups.Where(x => x.Contains("selection")).Select(ProcessSelectomeData).ToArray();
-                                    foreach (var selectionRes in tempResults)
+                                    string[] groups = innerText.Split(NoteDivider, StringSplitOptions.RemoveEmptyEntries);
+                                    SelectomeQuerySubResult[] tempResults = groups.Where(x => x.Contains("selection")).Select(ProcessSelectomeData).ToArray();
+                                    foreach (SelectomeQuerySubResult selectionRes in tempResults)
                                     {
                                         results[selectionRes.Group] = selectionRes;
                                     }
@@ -102,18 +102,18 @@ namespace Bio.Web.Selectome
                                 else if (curElement == "LINK")
                                 {
                                     //example a la =<LINK href="http://selectome.unil.ch/cgi-bin/subfamily.cgi?ac=ENSGT00390000009030&#x26;sub=1&#x26;tax=Euteleostomi" />
-                                    var linkText = r.GetAttribute("href");
-                                    var sp1 = linkText.Split('=');
-                                    var treename = sp1[1].Split('&')[0];//ENSGT0039000000009446
-                                    var subTreeName = sp1[2].Split('&')[0]; //1
-                                    var curGroup = (from kv in SelectomeConstantsAndEnums.GroupToNameList where sp1[3].Contains(kv.Value) select kv.Key).FirstOrDefault();
+                                    string linkText = r.GetAttribute("href");
+                                    string[] sp1 = linkText.Split('=');
+                                    string treename = sp1[1].Split('&')[0];//ENSGT0039000000009446
+                                    string subTreeName = sp1[2].Split('&')[0]; //1
+                                    SelectomeTaxaGroup curGroup = (from kv in SelectomeConstantsAndEnums.GroupToNameList where sp1[3].Contains(kv.Value) select kv.Key).FirstOrDefault();
                                     if (curGroup != SelectomeTaxaGroup.NotSet)
                                     {
                                         //Verify it isn't over-writing another gene
-                                        var sql = new SelectomeQueryLink(curGroup, treename, subTreeName);
+                                        SelectomeQueryLink sql = new SelectomeQueryLink(curGroup, treename, subTreeName);
                                         if (results.ContainsKey(curGroup) && results[curGroup].RelatedLink!=null)
                                         {
-                                            var old = results[curGroup];
+                                            SelectomeQuerySubResult old = results[curGroup];
                                             if ((old.RelatedLink.Group != sql.Group || old.RelatedLink.SubTree != sql.SubTree || old.RelatedLink.Tree != sql.Tree))
                                                 throw new ArgumentException("Over-writing past tree group, investigate this gene.\r\n" + webResponse);
                                         }
@@ -144,7 +144,7 @@ namespace Bio.Web.Selectome
                     return new SelectomeQueryResult(QueryResult.NoVeterbrateTreeDataFound);
                     //throw new Exception("Could not parse the vertebrate group data from the XML received from selectome.  XML is:\n" + webResponse);
                 }
-                var result = new SelectomeGene(results,geneName);
+                SelectomeGene result = new SelectomeGene(results,geneName);
                 return new SelectomeQueryResult(QueryResult.Success, result);
             }
             return new SelectomeQueryResult(QueryResult.NoResultsFound);
@@ -168,8 +168,8 @@ namespace Bio.Web.Selectome
        private static SelectomeQuerySubResult ProcessSelectomeData(string data)
        {
            //First assign taxa to a group
-           var group=SelectomeTaxaGroup.NotSet;
-           foreach(var kv in SelectomeConstantsAndEnums.GroupToNameList)
+           SelectomeTaxaGroup group=SelectomeTaxaGroup.NotSet;
+           foreach(KeyValuePair<SelectomeTaxaGroup, string> kv in SelectomeConstantsAndEnums.GroupToNameList)
            {
                if(data.Contains(kv.Value))
                {
@@ -179,7 +179,7 @@ namespace Bio.Web.Selectome
            }
 
            //Now determine if positive seleciton has occurred.           
-           var positiveSelectionSignature = false;
+           bool positiveSelectionSignature = false;
            if (data.Contains("Positive selection found"))
            {
                positiveSelectionSignature = true;
@@ -196,7 +196,7 @@ namespace Bio.Web.Selectome
            {
                throw new FormatException("Could not determine whether gene was under positive selection.\n XML was:" + data);
            }
-           var result = new SelectomeQuerySubResult(group,positiveSelectionSignature);
+           SelectomeQuerySubResult result = new SelectomeQuerySubResult(group,positiveSelectionSignature);
            return result;
 
        }

@@ -5,8 +5,12 @@ Documentation improved/corrected
 - references to nucleotides/RNA/DNA removed from protein alphabets.
 - <inheritdoc/> tag added in places.
 
-New base class (BasicProteinAlphabet) added for the Protein alpabet
+New base class (StrictProteinAlphabet) added for the Protein alpabet
 - this excludes Gap and Termination symbols.
+- methods moved to this from ProteinAlphabet.
+
+New base class (ProteinFragment) for peptides identified by MS (i.e. from known proteins)
+- added virtual ValidateSequence() method that chaecks location of peptide-specific symbols.
 
 Interfaces for alphabets added
 - ultimately these all inherit from IAlphabet.
@@ -14,13 +18,27 @@ Interfaces for alphabets added
 IsDna, IsProtein and IsRna properties added to alphabets
 - to facilitate testing the type of molecule the alphabet represents.
 
+GetInvalidSymbols(ISequence sequence) method added to protein alphabets.
+
 basicSymbols set removed from ProteinAlphabet
 - replaced by ambiguousSymbols set in AmbiguousProteinAlphabet.
 
 Names of Asp and Glu changed from 'Aspartic' to 'Aspartic Acid', and 'Glutamic' to 'Glutamic Acid'. 
 
+Spelling of Threonine corrected from 'Threoine'
+
 Some refactoring performed using ReSharper
 - redundant qualifiers removed.
-- var used instead of explicit type declarations.
 - collection initialisers used instead of Add method.
 - nameof() used instead of literal strings.
+
+NotSupportedException() thrown by GetAmbiguousSymbols() in protein alphabets 
+
+Added AutoDetectProteinAlphabet() method to Alphabets class.
+
+ValidateSequence() made virtual in Strict
+
+Test data changed to allow for new alphabets
+- invalid sequence data on 2nd line of FastQFileWithInvalidAlphabet.fastq changed from '123' to '$%^'.
+
+Added ValidateSequence(byte[] symbols) overload to protein alphabets.

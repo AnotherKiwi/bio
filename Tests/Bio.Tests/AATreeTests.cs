@@ -18,10 +18,10 @@ namespace Bio.Tests.Framework
         [Test]
         public void TestByAddingValuesSortedByAscOrder()
         {
-            var aatree = new AATree<int>();
-            var size = 100;
-            var list = new List<int>(size);
-            for (var i = 0; i < size; i++)
+            AATree<int> aatree = new AATree<int>();
+            int size = 100;
+            List<int> list = new List<int>(size);
+            for (int i = 0; i < size; i++)
             {
                 aatree.Add(i);
                 list.Add(i);
@@ -40,10 +40,10 @@ namespace Bio.Tests.Framework
         [Test]
         public void TestByAddingValuesSortedByDescOrder()
         {
-            var aatree = new AATree<int>();
-            var size = 100;
-            var list = new List<int>(size);
-            for (var i = size - 1; i >= 0; i--)
+            AATree<int> aatree = new AATree<int>();
+            int size = 100;
+            List<int> list = new List<int>(size);
+            for (int i = size - 1; i >= 0; i--)
             {
                 aatree.Add(i);
                 list.Add(i);
@@ -64,14 +64,14 @@ namespace Bio.Tests.Framework
         [Test]
         public void TestByAddingRandomValues()
         {
-            var rnd = new Random();
+            Random rnd = new Random();
 
-            var aatree = new AATree<int>();
-            var size = 100;
-            var list = new List<int>(size);
+            AATree<int> aatree = new AATree<int>();
+            int size = 100;
+            List<int> list = new List<int>(size);
             while (list.Count < size)
             {
-                var val = rnd.Next();
+                int val = rnd.Next();
                 if (aatree.Add(val))
                 {
                     list.Add(val);
@@ -96,12 +96,12 @@ namespace Bio.Tests.Framework
         public void TestRemoveMethodWithValuesSortByAscOrder()
         {
             IComparer<int> comparer = Comparer<int>.Default;
-            var aatree = new AATree<int>();
-            var size = 10000;
-            var list = new List<int>(size);
-            for (var i = 0; i < size; i++)
+            AATree<int> aatree = new AATree<int>();
+            int size = 10000;
+            List<int> list = new List<int>(size);
+            for (int i = 0; i < size; i++)
             {
-                var val = i;
+                int val = i;
                 if (aatree.Add(val))
                 {
                     list.Add(val);
@@ -115,7 +115,7 @@ namespace Bio.Tests.Framework
 
 
 
-            var index = 10;
+            int index = 10;
             Assert.IsTrue(aatree.Remove(list[index]));
             list.RemoveAt(index);
             Assert.IsTrue(ValidateInOrder(aatree, list, comparer));
@@ -159,12 +159,12 @@ namespace Bio.Tests.Framework
         public void TestRemoveMethodWithValuesSortByDescOrder()
         {
             IComparer<int> comparer = Comparer<int>.Default;
-            var aatree = new AATree<int>();
-            var size = 10000;
-            var list = new List<int>(size);
-            for (var i = size - 1; i >= 0; i--)
+            AATree<int> aatree = new AATree<int>();
+            int size = 10000;
+            List<int> list = new List<int>(size);
+            for (int i = size - 1; i >= 0; i--)
             {
-                var val = i;
+                int val = i;
                 if (aatree.Add(val))
                 {
                     list.Add(val);
@@ -176,7 +176,7 @@ namespace Bio.Tests.Framework
             Assert.AreEqual(size, aatree.Count);
             Assert.IsTrue(ValidateInOrder(aatree, list, comparer));
 
-            var index = 10;
+            int index = 10;
             Assert.IsTrue(aatree.Remove(list[index]));
             list.RemoveAt(index);
             Assert.IsTrue(ValidateInOrder(aatree, list, comparer));
@@ -219,14 +219,14 @@ namespace Bio.Tests.Framework
         [Test]
         public void TestRemoveMethodWithRandomValues()
         {
-            var rnd = new Random();
+            Random rnd = new Random();
             IComparer<int> comparer = Comparer<int>.Default;
-            var aatree = new AATree<int>();
-            var size = 1000;
-            var list = new List<int>(size);
+            AATree<int> aatree = new AATree<int>();
+            int size = 1000;
+            List<int> list = new List<int>(size);
             while (list.Count < size)
             {
-                var val = rnd.Next();
+                int val = rnd.Next();
                 if (aatree.Add(val))
                 {
                     list.Add(val);
@@ -238,7 +238,7 @@ namespace Bio.Tests.Framework
             Assert.AreEqual(size, aatree.Count);
             Assert.IsTrue(ValidateInOrder(aatree, list, comparer));
 
-            var index = 10;
+            int index = 10;
             Assert.IsTrue(aatree.Remove(list[index]));
             list.RemoveAt(index);
             Assert.IsTrue(ValidateInOrder(aatree, list, comparer));
@@ -278,9 +278,9 @@ namespace Bio.Tests.Framework
 
         private static bool ValidateInOrder<T>(AATree<T> aaTree, List<T> sortedList, IComparer<T> comparer)
         {
-            var result = true;
-            var index = 0;
-            foreach (var val in aaTree.InOrderTraversal())
+            bool result = true;
+            int index = 0;
+            foreach (T val in aaTree.InOrderTraversal())
             {
                 if (comparer.Compare(val, sortedList[index++]) != 0)
                 {

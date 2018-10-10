@@ -30,7 +30,7 @@ namespace Bio
         /// <returns>Set of parsed data elements.</returns>
         public static IEnumerable<T> Parse<T>(this IParser<T> parser)
         {
-            var fs = ParserFormatterExtensions<IParser<T>>.GetOpenStream(parser, false);
+            Stream fs = ParserFormatterExtensions<IParser<T>>.GetOpenStream(parser, false);
             if (fs == null)
                 throw new Exception("You must open a parser before calling Parse.");
 
@@ -45,7 +45,7 @@ namespace Bio
         /// <returns>Set of parsed data elements.</returns>
         public static T ParseOne<T>(this IParser<T> parser)
         {
-            var fs = ParserFormatterExtensions<IParser<T>>.GetOpenStream(parser, false);
+            Stream fs = ParserFormatterExtensions<IParser<T>>.GetOpenStream(parser, false);
             if (fs == null)
                 throw new Exception("You must open a parser before calling ParseOne.");
 
@@ -61,9 +61,9 @@ namespace Bio
         /// <returns>Set of parsed data elements.</returns>
         public static IEnumerable<T> Parse<T>(this IParser<T> parser, string fileName)
         {
-            using (var fs = File.OpenRead(fileName))
+            using (FileStream fs = File.OpenRead(fileName))
             {
-                foreach (var item in parser.Parse(fs))
+                foreach (T item in parser.Parse(fs))
                     yield return item;
             }
         }
@@ -77,7 +77,7 @@ namespace Bio
         /// <returns>Set of parsed data elements.</returns>
         public static T ParseOne<T>(this IParser<T> parser, string fileName)
         {
-            using (var fs = File.OpenRead(fileName))
+            using (FileStream fs = File.OpenRead(fileName))
             {
                 return parser.ParseOne(fs);
             }

@@ -28,11 +28,11 @@ namespace Bio.Algorithms.MUMmer.LIS
                 return null;
             }
 
-            var matches = ConvertToMUMExtension(sortedMums);
+            MatchExtension[] matches = ConvertToMUMExtension(sortedMums);
 
-            for (var counteri = 0; counteri < matches.Length; counteri++)
+            for (int counteri = 0; counteri < matches.Length; counteri++)
             {
-                var matches_i = matches[counteri];
+                MatchExtension matches_i = matches[counteri];
 
                 // Initialize the MUM Extension
                 matches_i.Score = matches[counteri].Length;
@@ -40,18 +40,18 @@ namespace Bio.Algorithms.MUMmer.LIS
                 matches_i.Adjacent = 0;
                 matches_i.From = -1;
 
-                for (var counterj = 0; counterj < counteri; counterj++)
+                for (int counterj = 0; counterj < counteri; counterj++)
                 {
-                    var matches_j = matches[counterj];
+                    MatchExtension matches_j = matches[counterj];
 
                     // Find the overlap in query sequence of MUM
-                    var overlap2 = matches_j.QuerySequenceOffset + matches_j.Length;
+                    long overlap2 = matches_j.QuerySequenceOffset + matches_j.Length;
 
                     overlap2 -= matches_i.QuerySequenceOffset;
-                    var overlap = overlap2 > 0 ? overlap2 : 0;
+                    long overlap = overlap2 > 0 ? overlap2 : 0;
 
                     // Calculate the score for query sequence of MUM
-                    var score = matches_j.Score
+                    long score = matches_j.Score
                                 + matches_i.Length
                                 - overlap;
                     if (score > matches_i.WrapScore)
@@ -60,7 +60,7 @@ namespace Bio.Algorithms.MUMmer.LIS
                     }
 
                     // Find the overlap in reference sequence of MUM
-                    var overlap1 = matches_j.ReferenceSequenceOffset
+                    long overlap1 = matches_j.ReferenceSequenceOffset
                                     + matches_j.Length
                                     - matches_i.ReferenceSequenceOffset;
 
@@ -94,7 +94,7 @@ namespace Bio.Algorithms.MUMmer.LIS
             // Find the best longest increasing subsequence
             // Sequence with highest score is the longest increasing subsequence
             long best = 0;
-            var bestScore = matches[best].Score;
+            long bestScore = matches[best].Score;
             for (long counteri = 1; counteri < matches.Length; counteri++)
             {
                 if (matches[counteri].Score > bestScore)
@@ -105,17 +105,17 @@ namespace Bio.Algorithms.MUMmer.LIS
             }
 
             // Mark the MUMs in longest increasing subsequence as "Good"
-            for (var counteri = best; counteri >= 0; counteri = matches[counteri].From)
+            for (long counteri = best; counteri >= 0; counteri = matches[counteri].From)
             {
                 matches[counteri].IsGood = true;
             }
 
             IList<Match> outputMums = new List<Match>();
-            foreach (var t in matches)
+            foreach (MatchExtension t in matches)
             {
                 if (t.IsGood)
                 {
-                    var adjacent = t.Adjacent;
+                    long adjacent = t.Adjacent;
                     if (0 != adjacent)
                     {
                         t.ReferenceSequenceOffset += adjacent;
@@ -125,7 +125,7 @@ namespace Bio.Algorithms.MUMmer.LIS
 
                     if (0 < t.Length)
                     {
-                        var match = new Match();
+                        Match match = new Match();
                         match.Length = t.Length;
                         match.QuerySequenceOffset = t.QuerySequenceOffset;
                         match.ReferenceSequenceOffset = t.ReferenceSequenceOffset;

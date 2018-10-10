@@ -86,7 +86,7 @@ namespace Bio.Util
         /// <returns>the next line</returns>
         protected string ReadCommentOrNonCommentLine(bool returnComment)
         {
-            var line = base.ReadLine();
+            string line = base.ReadLine();
 
             if (line == null)
             {
@@ -186,7 +186,7 @@ namespace Bio.Util
         /// <exception cref="T:System.OutOfMemoryException">There is insufficient memory to allocate a buffer for the returned string. </exception><exception cref="T:System.IO.IOException">An I/O error occurs. </exception><filterpriority>1</filterpriority>
         public override string ReadToEnd()
         {
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             string line;
             while (null != (line = ReadLine()))
             {

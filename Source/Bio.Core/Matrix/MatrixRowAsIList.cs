@@ -72,7 +72,7 @@ namespace Bio.Matrix
                 throw new ArgumentNullException(nameof(array));
             }
 
-            for (var colIndex = 0; colIndex < Matrix.ColCount; ++colIndex)
+            for (int colIndex = 0; colIndex < Matrix.ColCount; ++colIndex)
             {
                 array[arrayIndex + colIndex] = Matrix.GetValueOrMissing(RowIndex, colIndex);
             }
@@ -102,7 +102,7 @@ namespace Bio.Matrix
 
         IEnumerator<TValue> IEnumerable<TValue>.GetEnumerator()
         {
-            for (var colIndex = 0; colIndex < Matrix.ColCount; ++colIndex)
+            for (int colIndex = 0; colIndex < Matrix.ColCount; ++colIndex)
             {
                 yield return Matrix.GetValueOrMissing(RowIndex, colIndex);
             }

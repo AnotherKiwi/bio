@@ -38,9 +38,9 @@ namespace Bio.Variant
             if (aln.PairwiseAlignedSequences == null || aln.PairwiseAlignedSequences.Count != 1) {
                 throw new ArgumentException ("The pairwise aligned sequence should only have one alignment");
             }
-            var frstAln = aln.PairwiseAlignedSequences.First ();
-            var seq1 = frstAln.FirstSequence;
-            var seq2 = frstAln.SecondSequence;
+            PairwiseAlignedSequence frstAln = aln.PairwiseAlignedSequences.First ();
+            ISequence seq1 = frstAln.FirstSequence;
+            ISequence seq2 = frstAln.SecondSequence;
             if (seq1 == null) {
                 throw new NullReferenceException ("seq1");
             } else if (seq2 == null) {
@@ -55,19 +55,19 @@ namespace Bio.Variant
             #endif
 
             // Note we have to copy unless we can guarantee the array will not be mutated.
-            var refseq = seq1.ToArray ();
+            byte[] refseq = seq1.ToArray ();
             ISequence newQuery;
             List<Variant> variants = null;
             // Call variants for a qualitative sequence
             if (seq2 is QualitativeSequence) {
-                var qs = seq2 as QualitativeSequence;
-                var query = Enumerable.Zip (qs, qs.GetQualityScores (), (bp, qv) => new BPandQV (bp, (byte)qv, false)).ToArray ();
+                QualitativeSequence qs = seq2 as QualitativeSequence;
+                BPandQV[] query = Enumerable.Zip (qs, qs.GetQualityScores (), (bp, qv) => new BPandQV (bp, (byte)qv, false)).ToArray ();
                 AlignmentUtils.LeftAlignIndels (refseq, query);
                 AlignmentUtils.VerifyNoGapsOnEnds (refseq, query);
                 if (callVariants) {
                     variants = CallVariants (refseq, query, seq2.IsMarkedAsReverseComplement());
                 }
-                var newQueryQS = new QualitativeSequence (qs.Alphabet, 
+                QualitativeSequence newQueryQS = new QualitativeSequence (qs.Alphabet, 
                     qs.FormatType,
                     query.Select (z => z.BP).ToArray (),
                     query.Select (p => p.QV).ToArray (),
@@ -76,12 +76,12 @@ namespace Bio.Variant
                 newQuery = newQueryQS;
                 
             } else if (seq2 is Sequence) {  // For a sequence with no QV values.
-                var qs = seq2 as Sequence;
-                var query = qs.Select (v => new BPandQV (v, 0, false)).ToArray();
+                Sequence qs = seq2 as Sequence;
+                BPandQV[] query = qs.Select (v => new BPandQV (v, 0, false)).ToArray();
                 AlignmentUtils.LeftAlignIndels (refseq, query);
                 AlignmentUtils.VerifyNoGapsOnEnds (refseq, query);
                 // ISequence does not have a setable metadata
-                var newQueryS = new Sequence(qs.Alphabet, query.Select(z=>z.BP).ToArray(), false);
+                Sequence newQueryS = new Sequence(qs.Alphabet, query.Select(z=>z.BP).ToArray(), false);
                 newQueryS.Metadata = seq2.Metadata;
                 if (callVariants) {
                     variants = CallVariants (refseq, query, seq2.IsMarkedAsReverseComplement());
@@ -92,19 +92,19 @@ namespace Bio.Variant
             }
 
             if (aln.FirstSequence != null && aln.FirstSequence.ID != null) {
-                foreach (var v in variants) {
+                foreach (Variant v in variants) {
                     v.RefName = aln.FirstSequence.ID;
                 }
             }
 
-            var newRef = new Sequence (seq1.Alphabet, refseq, false);
+            Sequence newRef = new Sequence (seq1.Alphabet, refseq, false);
             newRef.ID = seq1.ID;
             newRef.Metadata = seq1.Metadata;
 
             newQuery.ID = seq2.ID;
 
-            var newaln = new PairwiseSequenceAlignment (aln.FirstSequence, aln.SecondSequence);
-            var pas = new PairwiseAlignedSequence ();
+            PairwiseSequenceAlignment newaln = new PairwiseSequenceAlignment (aln.FirstSequence, aln.SecondSequence);
+            PairwiseAlignedSequence pas = new PairwiseAlignedSequence ();
             pas.FirstSequence = newRef;
             pas.SecondSequence = newQuery;
             newaln.Add (pas);
@@ -140,23 +140,23 @@ namespace Bio.Variant
             if (originallyReverseComplemented) {
                 AlignmentUtils.ReverseQVValuesForHomopolymers (querySeq);
             }
-            var variants = new List<Variant>();
+            List<Variant> variants = new List<Variant>();
 
             // Now call variants.
-            var gap = DnaAlphabet.Instance.Gap;
-            var i = 0;
-            var refPos = 0;
+            byte gap = DnaAlphabet.Instance.Gap;
+            int i = 0;
+            int refPos = 0;
             while( i < refSeq.Length)
             {
                 if (refSeq[i] == gap)
                 {
-                    var len = AlignmentUtils.GetGapLength(i, refSeq);
-                    var nextBasePos = (i + len);
+                    int len = AlignmentUtils.GetGapLength(i, refSeq);
+                    int nextBasePos = (i + len);
                     // Should alway be true as we don't end in gaps
                     Debug.Assert (nextBasePos < refSeq.Length);
-                    var hplenAndChar = determineHomoPolymerLength (nextBasePos, refSeq);
-                    var bases = getBases(querySeq, i, len);
-                    var newVariant = new IndelVariant(refPos - 1, len, bases, IndelType.Insertion,  
+                    Tuple<int, char> hplenAndChar = determineHomoPolymerLength (nextBasePos, refSeq);
+                    string bases = getBases(querySeq, i, len);
+                    IndelVariant newVariant = new IndelVariant(refPos - 1, len, bases, IndelType.Insertion,  
                                                       hplenAndChar.Item2, hplenAndChar.Item1, 
                                                       (i == 0 || (i + len + hplenAndChar.Item1) >= refSeq.Length));                   
                     newVariant.QV = querySeq[i].QV;
@@ -165,10 +165,10 @@ namespace Bio.Variant
                 }
                 else if (querySeq[i].BP == gap)
                 {
-                    var len = AlignmentUtils.GetGapLength(i, querySeq);
-                    var bases = getBases(refSeq, i, len);
-                    var hplenAndChar = determineHomoPolymerLength (i, refSeq);
-                    var newVariant = new IndelVariant(refPos - 1, len, bases, 
+                    int len = AlignmentUtils.GetGapLength(i, querySeq);
+                    string bases = getBases(refSeq, i, len);
+                    Tuple<int, char> hplenAndChar = determineHomoPolymerLength (i, refSeq);
+                    IndelVariant newVariant = new IndelVariant(refPos - 1, len, bases, 
                                                       IndelType.Deletion, hplenAndChar.Item2, 
                                                       hplenAndChar.Item1, (i == 0 || (i + len + hplenAndChar.Item1) >= refSeq.Length));
                     /* An insertion mutation occurs BEFORE pos, so normally we get the next base
@@ -189,7 +189,7 @@ namespace Bio.Variant
                      */
                     if ((i + len ) < querySeq.Length) {
                         
-                        var qc_pos = originallyReverseComplemented ? i - 1 : i + len;
+                        int qc_pos = originallyReverseComplemented ? i - 1 : i + len;
                         if (newVariant.InHomopolymer) {
                             qc_pos = i + len;
                         }
@@ -203,7 +203,7 @@ namespace Bio.Variant
                 {
                     if (querySeq[i].BP != refSeq[i])
                     {
-                        var newVariant = new SNPVariant(refPos, (char) querySeq[i].BP, (char)refSeq[i], (i ==0 || i == (refSeq.Length -1)));
+                        SNPVariant newVariant = new SNPVariant(refPos, (char) querySeq[i].BP, (char)refSeq[i], (i ==0 || i == (refSeq.Length -1)));
                         newVariant.QV = querySeq [i].QV;
                         variants.Add(newVariant);
                     }
@@ -222,8 +222,8 @@ namespace Bio.Variant
         /// <returns></returns>
         private static string getBases(byte[] array, int position, int length)
         {
-            var chars = new char[length];
-            for(var i=0; i<length; i++)
+            char[] chars = new char[length];
+            for(int i=0; i<length; i++)
             {
                 chars[i] = (char)array[i+position];
             }
@@ -239,8 +239,8 @@ namespace Bio.Variant
         /// <param name="length">Length.</param>
         private static string getBases(BPandQV[] array, int position, int length)
         {
-            var chars = new char[length];
-            for(var i=0; i<length; i++)
+            char[] chars = new char[length];
+            for(int i=0; i<length; i++)
             {
                 chars[i] = (char)array[i+position].BP;
             }
@@ -255,13 +255,13 @@ namespace Bio.Variant
         private static Tuple<int, char> determineHomoPolymerLength(int pos, byte[] refSeq)
         {
 
-            var start_bp = refSeq[pos];
-            var length = 1;
+            byte start_bp = refSeq[pos];
+            int length = 1;
             while ( ++pos < refSeq.Length &&
                 refSeq [pos] == start_bp) {
                 length++;
             }
-            var homopolymerBase = (char)start_bp;
+            char homopolymerBase = (char)start_bp;
             return new Tuple<int,char> (length, homopolymerBase);
         }
     }

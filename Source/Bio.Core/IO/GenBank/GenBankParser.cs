@@ -105,21 +105,21 @@ namespace Bio.IO.GenBank
                 throw new ArgumentNullException(nameof(stream));
             }
 
-            using (var reader = stream.OpenRead())
+            using (StreamReader reader = stream.OpenRead())
             {
                 string line = null;
-                var noOfSequence = 0;
+                int noOfSequence = 0;
                 do
                 {
-                    var alphabet = Alphabet ?? Alphabets.DNA;
-                    var sequence = new Sequence(alphabet, string.Empty);
+                    IAlphabet alphabet = Alphabet ?? Alphabets.DNA;
+                    Sequence sequence = new Sequence(alphabet, string.Empty);
                     sequence.Metadata[Helper.GenBankMetadataKey] = new GenBankMetadata();
 
                     // parse the file
                     line = ParseHeaders(ref sequence, noOfSequence, line, reader);
                     line = ParseFeatures(line, ref sequence, reader);
                     ParseSequence(ref line, ref sequence, reader);
-                    var finalSequence = CopyMetadata(sequence);
+                    ISequence finalSequence = CopyMetadata(sequence);
                     noOfSequence++;
 
                     yield return finalSequence;
@@ -232,12 +232,12 @@ namespace Bio.IO.GenBank
         /// <returns>The parsed line.</returns>
         private string ParseHeaders(ref Sequence sequence, int noOfSequence, string line, StreamReader stream)
         {
-            var metadata = (GenBankMetadata)sequence.Metadata[Helper.GenBankMetadataKey];
+            GenBankMetadata metadata = (GenBankMetadata)sequence.Metadata[Helper.GenBankMetadataKey];
             string data;
             string[] tokens;
 
             // only allow one locus line
-            var haveParsedLocus = false;
+            bool haveParsedLocus = false;
             string lineData;
             if (noOfSequence == 0)
             {
@@ -246,7 +246,7 @@ namespace Bio.IO.GenBank
             }
 
             // parse until we hit the features or sequence section
-            var haveFinishedHeaders = false;
+            bool haveFinishedHeaders = false;
 
             while ((line != null) && !haveFinishedHeaders)
             {
@@ -255,7 +255,7 @@ namespace Bio.IO.GenBank
                     case "LOCUS":
                         if (haveParsedLocus)
                         {
-                            var message = String.Format(CultureInfo.CurrentCulture, Properties.Resource.ParserSecondLocus);
+                            string message = String.Format(CultureInfo.CurrentCulture, Properties.Resource.ParserSecondLocus);
                             Trace.Report(message);
                             throw new InvalidDataException(message);
                         }
@@ -272,7 +272,7 @@ namespace Bio.IO.GenBank
                         tokens = lineData.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
                         // first token contains accession and version
-                        var m = Regex.Match(tokens[0], @"^(?<accession>\w+)\.(?<version>\d+)$");
+                        Match m = Regex.Match(tokens[0], @"^(?<accession>\w+)\.(?<version>\d+)$");
                         metadata.Version = new GenBankVersion();
 
                         if (m.Success)
@@ -281,7 +281,7 @@ namespace Bio.IO.GenBank
                             // The first token in the data from the accession line is referred to as
                             // the primary accession number, and should be the one used here in the
                             // version line.
-                            var versionLineAccession = m.Groups["accession"].Value;
+                            string versionLineAccession = m.Groups["accession"].Value;
                             if (metadata.Accession == null)
                             {
                                 ApplicationLog.WriteLine("WARN: VERSION processed before ACCESSION");
@@ -320,7 +320,7 @@ namespace Bio.IO.GenBank
                         {
                             metadata.Project = new ProjectIdentifier { Name = tokens[0] };
                             tokens = tokens[1].Split(',');
-                            for (var i = 0; i < tokens.Length; i++)
+                            for (int i = 0; i < tokens.Length; i++)
                             {
                                 metadata.Project.Numbers.Add(tokens[i]);
                             }
@@ -362,7 +362,7 @@ namespace Bio.IO.GenBank
                         // Validating for minimum two headers.
                         if (tokens.Length != 4)
                         {
-                            var message = String.Format(
+                            string message = String.Format(
                                     CultureInfo.CurrentCulture,
                                     Properties.Resource.ParserPrimaryLineError,
                                     line);
@@ -370,7 +370,7 @@ namespace Bio.IO.GenBank
                             throw new InvalidDataException(message);
                         }
 
-                        var primaryData = ParseMultiLineData(ref line, Environment.NewLine, DataIndent, stream);
+                        string primaryData = ParseMultiLineData(ref line, Environment.NewLine, DataIndent, stream);
                         metadata.Primary = primaryData;
 
                         // don't go to next line; current line still needs to be processed
@@ -383,10 +383,10 @@ namespace Bio.IO.GenBank
                     case "ACCESSION":
                         data = ParseMultiLineData(ref line, " ", DataIndent, stream);
                         metadata.Accession = new GenBankAccession();
-                        var accessions = data.Split(' ');
+                        string[] accessions = data.Split(' ');
                         metadata.Accession.Primary = accessions[0];
 
-                        for (var i = 1; i < accessions.Length; i++)
+                        for (int i = 1; i < accessions.Length; i++)
                         {
                             metadata.Accession.Secondary.Add(accessions[i]);
                         }
@@ -396,13 +396,13 @@ namespace Bio.IO.GenBank
                     case "DBLINK":
                         data = ParseMultiLineData(ref line, "\n", DataIndent, stream);
                         metadata.DbLinks = new List<CrossReferenceLink>();
-                        foreach (var link in data.Split('\n'))
+                        foreach (string link in data.Split('\n'))
                         {
                             tokens = link.Split(':');
 
                             if (tokens.Length == 2)
                             {
-                                var newLink = new CrossReferenceLink();
+                                CrossReferenceLink newLink = new CrossReferenceLink();
                                 if (string.Compare(tokens[0], CrossReferenceType.Project.ToString(), StringComparison.OrdinalIgnoreCase) == 0)
                                 {
                                     newLink.Type = CrossReferenceType.Project;
@@ -420,7 +420,7 @@ namespace Bio.IO.GenBank
                                     }
                                 }
                                 tokens = tokens[1].Split(',');
-                                for (var i = 0; i < tokens.Length; i++)
+                                for (int i = 0; i < tokens.Length; i++)
                                 {
                                     newLink.Numbers.Add(tokens[i]);
                                 }
@@ -483,10 +483,10 @@ namespace Bio.IO.GenBank
                         break;
 
                     default:
-                        var lineHeader = GetLineHeader(line, DataIndent);
+                        string lineHeader = GetLineHeader(line, DataIndent);
                         lineData = GetLineData(line, DataIndent);
                         ApplicationLog.WriteLine(ToString() + "WARN: unknown {0} -> {1}", lineHeader, lineData);
-                        var errMessage = String.Format(
+                        string errMessage = String.Format(
                                     CultureInfo.CurrentCulture,
                                     Properties.Resource.ParseHeaderError,
                                     lineHeader);
@@ -498,7 +498,7 @@ namespace Bio.IO.GenBank
             // check for required features
             if (!haveParsedLocus)
             {
-                var message = string.Format(CultureInfo.CurrentCulture, Properties.Resource.INVALID_INPUT_FILE, Name);
+                string message = string.Format(CultureInfo.CurrentCulture, Properties.Resource.INVALID_INPUT_FILE, Name);
                 Trace.Report(message);
                 throw new InvalidDataException(message);
             }
@@ -516,9 +516,9 @@ namespace Bio.IO.GenBank
         /// <returns>The parsed line.</returns>
         private string ParseLocusByTokens(string line, ref Sequence sequence, StreamReader stream)
         {
-            var lineData = GetLineData(line, DataIndent);
-            var locusInfo = new GenBankLocusTokenParser().Parse(lineData);
-            var alphabet = GetAlphabet(locusInfo.MoleculeType);
+            string lineData = GetLineData(line, DataIndent);
+            GenBankLocusInfo locusInfo = new GenBankLocusTokenParser().Parse(lineData);
+            IAlphabet alphabet = GetAlphabet(locusInfo.MoleculeType);
 
             if (Alphabet != null && Alphabet != alphabet)
             {
@@ -527,7 +527,7 @@ namespace Bio.IO.GenBank
             }
 
             sequence.ID = locusInfo.Name;
-            var metadata = (GenBankMetadata)sequence.Metadata[Helper.GenBankMetadataKey];
+            GenBankMetadata metadata = (GenBankMetadata)sequence.Metadata[Helper.GenBankMetadataKey];
             metadata.Locus = locusInfo;
             line = GoToNextLine(line, stream);
             return line;
@@ -542,13 +542,13 @@ namespace Bio.IO.GenBank
         /// <returns>The parsed line.</returns>
         private string ParseReferences(string line, ref Sequence sequence, StreamReader stream)
         {
-            var metadata = (GenBankMetadata)sequence.Metadata[Helper.GenBankMetadataKey];
-            var referenceList = metadata.References;
+            GenBankMetadata metadata = (GenBankMetadata)sequence.Metadata[Helper.GenBankMetadataKey];
+            IList<CitationReference> referenceList = metadata.References;
             CitationReference reference = null;
 
             while (line != null)
             {
-                var lineHeader = GetLineHeader(line, DataIndent);
+                string lineHeader = GetLineHeader(line, DataIndent);
                 if (lineHeader == "REFERENCE")
                 {
                     // add previous reference
@@ -558,12 +558,12 @@ namespace Bio.IO.GenBank
                     }
 
                     // check for start/end e.g. (bases 1 to 118), or prose notes
-                    var lineData = GetLineData(line, DataIndent);
+                    string lineData = GetLineData(line, DataIndent);
 
-                    var m = Regex.Match(lineData, @"^(?<number>\d+)(\s+\((?<location>.*)\))?");
+                    Match m = Regex.Match(lineData, @"^(?<number>\d+)(\s+\((?<location>.*)\))?");
                     if (!m.Success)
                     {
-                        var message = String.Format(
+                        string message = String.Format(
                                 CultureInfo.CurrentCulture,
                                 Properties.Resource.ParserReferenceError,
                                 lineData);
@@ -572,8 +572,8 @@ namespace Bio.IO.GenBank
                     }
 
                     // create new reference
-                    var number = m.Groups["number"].Value;
-                    var location = m.Groups["location"].Value;
+                    string number = m.Groups["number"].Value;
+                    string location = m.Groups["location"].Value;
                     reference = new CitationReference();
                     int outValue;
                     if (!int.TryParse(number, out outValue))
@@ -610,7 +610,7 @@ namespace Bio.IO.GenBank
                             break;
 
                         default:
-                            var message = String.Format(
+                            string message = String.Format(
                                     CultureInfo.CurrentCulture,
                                     Properties.Resource.ParserInvalidReferenceField,
                                     lineHeader);
@@ -643,12 +643,12 @@ namespace Bio.IO.GenBank
         /// <returns>The parsed line.</returns>
         private string ParseComments(string line, ref Sequence sequence, StreamReader stream)
         {
-            var commentList = ((GenBankMetadata)sequence.Metadata[Helper.GenBankMetadataKey]).Comments;
+            IList<string> commentList = ((GenBankMetadata)sequence.Metadata[Helper.GenBankMetadataKey]).Comments;
 
-            var lineHeader = GetLineHeader(line, DataIndent);
+            string lineHeader = GetLineHeader(line, DataIndent);
             while ((line != null) && lineHeader == "COMMENT")
             {
-                var data = ParseMultiLineData(ref line, Environment.NewLine, DataIndent, stream);
+                string data = ParseMultiLineData(ref line, Environment.NewLine, DataIndent, stream);
                 commentList.Add(data);
                 lineHeader = GetLineHeader(line, DataIndent);
 
@@ -667,19 +667,19 @@ namespace Bio.IO.GenBank
         /// <returns>The parsed line.</returns>
         private string ParseSource(string line, ref Sequence sequence, StreamReader stream)
         {
-            var source = string.Empty;
-            var organism = string.Empty;
-            var classLevels = string.Empty;
+            string source = string.Empty;
+            string organism = string.Empty;
+            string classLevels = string.Empty;
 
             while (line != null)
             {
-                var lineHeader = GetLineHeader(line, DataIndent);
+                string lineHeader = GetLineHeader(line, DataIndent);
                 string lineData;
                 if (lineHeader == "SOURCE")
                 {
                     // data can be multiline. spec says last line must end with period
                     // (note: this doesn't apply unless multiline)
-                    var lastDotted = true;
+                    bool lastDotted = true;
                     lineData = GetLineData(line, DataIndent);
                     source = lineData;
 
@@ -704,7 +704,7 @@ namespace Bio.IO.GenBank
                 {
                     if (lineHeader != "ORGANISM")
                     {
-                        var message = String.Format(
+                        string message = String.Format(
                                 CultureInfo.CurrentCulture,
                                 Properties.Resource.ParserInvalidSourceField,
                                 lineHeader);
@@ -749,11 +749,11 @@ namespace Bio.IO.GenBank
                 }
             }
 
-            var metadata = (GenBankMetadata)sequence.Metadata[Helper.GenBankMetadataKey];
+            GenBankMetadata metadata = (GenBankMetadata)sequence.Metadata[Helper.GenBankMetadataKey];
             metadata.Source = new SequenceSource { CommonName = source };
             if (!string.IsNullOrEmpty(organism))
             {
-                var index = organism.IndexOf(" ", StringComparison.Ordinal);
+                int index = organism.IndexOf(" ", StringComparison.Ordinal);
                 if (index > 0)
                 {
                     metadata.Source.Organism.Genus = organism.Substring(0, index);
@@ -772,7 +772,7 @@ namespace Bio.IO.GenBank
             metadata.Source.Organism.ClassLevels = classLevels;
             if (classLevels.TrimEnd('.').Length > 0)
             {
-                var genus = classLevels.TrimEnd('.').Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Last().Trim();
+                string genus = classLevels.TrimEnd('.').Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Last().Trim();
                 if (!genus.Equals(metadata.Source.Organism.Genus.Trim()))
                 {
                     metadata.Source.Organism.Species = organism;
@@ -792,7 +792,7 @@ namespace Bio.IO.GenBank
         /// <returns>The parsed line.</returns>
         private string ParseFeatures(string line, ref Sequence sequence, StreamReader stream)
         {
-            var locBuilder = LocationBuilder;
+            ILocationBuilder locBuilder = LocationBuilder;
             if (locBuilder == null)
             {
                 throw new InvalidOperationException(Properties.Resource.NullLocationBuild);
@@ -803,12 +803,12 @@ namespace Bio.IO.GenBank
 
             // The sub-items of a feature are referred to as qualifiers.  These do not have unique
             // keys, so they are stored as lists in the SubItems dictionary.
-            var features = new SequenceFeatures();
+            SequenceFeatures features = new SequenceFeatures();
             IList<FeatureItem> featureList = features.All;
 
             while (line != null)
             {
-                var lineHeader = GetLineHeader(line, FeatureDataIndent);
+                string lineHeader = GetLineHeader(line, FeatureDataIndent);
                 if (String.IsNullOrEmpty(line) || lineHeader == "FEATURES")
                 {
                     line = GoToNextLine(line, stream);
@@ -823,15 +823,15 @@ namespace Bio.IO.GenBank
 
                 if (lineHeader == null)
                 {
-                    var message = Properties.Resource.GenbankEmptyFeature;
+                    string message = Properties.Resource.GenbankEmptyFeature;
                     Trace.Report(message);
                     throw new InvalidDataException(message);
                 }
 
                 // check for multi-line location string
                 lineData = GetLineData(line, FeatureDataIndent);
-                var featureKey = lineHeader;
-                var location = lineData;
+                string featureKey = lineHeader;
+                string location = lineData;
                 line = GoToNextLine(line, stream);
                 lineData = GetLineData(line, FeatureDataIndent);
                 lineHeader = GetLineHeader(line, FeatureDataIndent);
@@ -846,13 +846,13 @@ namespace Bio.IO.GenBank
                 }
 
                 // create features as MetadataListItems
-                var feature = new FeatureItem(featureKey, locBuilder.GetLocation(location));
+                FeatureItem feature = new FeatureItem(featureKey, locBuilder.GetLocation(location));
 
                 // process the list of qualifiers, which are each in the form of
                 // /key="value"
-                var qualifierKey = string.Empty;
-                var qualifierValue = string.Empty;
-                var quotationMarkStarted = false;
+                string qualifierKey = string.Empty;
+                string qualifierValue = string.Empty;
+                bool quotationMarkStarted = false;
 
                 while (line != null)
                 {
@@ -874,7 +874,7 @@ namespace Bio.IO.GenBank
                             }
 
                             // set the key and value of this qualifier
-                            var equalsIndex = lineData.IndexOf('=');
+                            int equalsIndex = lineData.IndexOf('=');
                             if (equalsIndex < 0)
                             {
                                 // no value, just key (this is allowed, see NC_005213.gbk)
@@ -893,7 +893,7 @@ namespace Bio.IO.GenBank
                             }
                             else
                             {
-                                var message = String.Format(
+                                string message = String.Format(
                                         CultureInfo.CurrentCulture,
                                         Properties.Resource.GenbankInvalidFeature,
                                         line);
@@ -971,7 +971,7 @@ namespace Bio.IO.GenBank
         /// <param name="stream">The stream reader.</param>
         private void ParseSequence(ref string line, ref Sequence sequence, StreamReader stream)
         {
-            var metadata = (GenBankMetadata)sequence.Metadata[Helper.GenBankMetadataKey];
+            GenBankMetadata metadata = (GenBankMetadata)sequence.Metadata[Helper.GenBankMetadataKey];
 
             while (line != null)
             {
@@ -983,7 +983,7 @@ namespace Bio.IO.GenBank
                 }
 
                 // set data indent for sequence headers
-                var lineHeader = GetLineHeader(line, DataIndent);
+                string lineHeader = GetLineHeader(line, DataIndent);
                 switch (lineHeader)
                 {
                     case "BASE COUNT":
@@ -1008,7 +1008,7 @@ namespace Bio.IO.GenBank
                         break;
 
                     default:
-                        var message = String.Format(
+                        string message = String.Format(
                             CultureInfo.CurrentCulture,
                             Properties.Resource.ParserUnexpectedLineInSequence,
                             line);
@@ -1028,7 +1028,7 @@ namespace Bio.IO.GenBank
         {
             // The origin line can contain optional data; don't put empty string into
             // metadata.
-            var lineData = GetLineData(line, DataIndent);
+            string lineData = GetLineData(line, DataIndent);
             if (!String.IsNullOrEmpty(lineData))
             {
                 metadata.Origin = lineData;
@@ -1037,19 +1037,19 @@ namespace Bio.IO.GenBank
             line = GoToNextLine(line, stream);
             IAlphabet alphabet = null;
 
-            var sequenceBuilder = new StringBuilder();
+            StringBuilder sequenceBuilder = new StringBuilder();
             while ((line != null) && line[0] == ' ')
             {
                 // Using a regex is too slow.
-                var len = line.Length;
+                int len = line.Length;
 
-                var k = 0;
+                int k = 0;
                 while (k < len && (line[k] == ' ' || Char.IsNumber(line[k])))
                     k++;
 
                 while (k < len)
                 {
-                    var seqData = line.Substring(k, Math.Min(10, len - k));
+                    string seqData = line.Substring(k, Math.Min(10, len - k));
 
                     sequenceBuilder.Append(seqData);
                     k += 11;
@@ -1058,17 +1058,17 @@ namespace Bio.IO.GenBank
                 line = GoToNextLine(line, stream);
             }
 
-            var sequenceString = sequenceBuilder.ToString().Trim();
+            string sequenceString = sequenceBuilder.ToString().Trim();
             if (!string.IsNullOrEmpty(sequenceString))
             {
                 if (Alphabet == null)
                 {
-                    var tempData = Encoding.UTF8.GetBytes(sequenceString.ToUpperInvariant());
+                    byte[] tempData = Encoding.UTF8.GetBytes(sequenceString.ToUpperInvariant());
                     alphabet = Alphabets.AutoDetectAlphabet(tempData, 0, tempData.Length, alphabet);
 
                     if (alphabet == null)
                     {
-                        var message = String.Format(CultureInfo.InvariantCulture, Properties.Resource.InvalidSymbolInString, line);
+                        string message = String.Format(CultureInfo.InvariantCulture, Properties.Resource.InvalidSymbolInString, line);
                         Trace.Report(message);
                         throw new InvalidDataException(message);
                     }
@@ -1093,10 +1093,10 @@ namespace Bio.IO.GenBank
         /// <returns>The parsed line.</returns>
         private string ParseMultiLineData(ref string line, string lineBreakSubstitution, int dataIndent, StreamReader stream)
         {
-            var lineData = GetLineData(line, dataIndent);
-            var data = lineData;
+            string lineData = GetLineData(line, dataIndent);
+            string data = lineData;
             line = GoToNextLine(line, stream);
-            var lineHeader = GetLineHeader(line, dataIndent);
+            string lineHeader = GetLineHeader(line, dataIndent);
 
             // while succeeding lines start with no header, add to data
             while ((line != null) && (lineHeader == string.Empty))
@@ -1122,7 +1122,7 @@ namespace Bio.IO.GenBank
         {
             sequenceWithData.Metadata[Helper.GenBankMetadataKey] = new GenBankMetadata();
             sequenceWithData.ID = sequences.ID;
-            foreach (var pair in sequences.Metadata)
+            foreach (KeyValuePair<string, object> pair in sequences.Metadata)
             {
                 sequenceWithData.Metadata[pair.Key] = pair.Value;
             }

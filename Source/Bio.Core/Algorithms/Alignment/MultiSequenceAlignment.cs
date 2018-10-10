@@ -54,7 +54,7 @@ namespace Bio.Algorithms.Alignment
             if (sequences == null || sequences.Count == 0)
                 throw new ArgumentException("Empty input sequences");
 
-            var numberOfColumns = (int) sequences[0].Count;
+            int numberOfColumns = (int) sequences[0].Count;
             if (sequences.Any(t => t.Count != numberOfColumns))
             {
                 throw new ArgumentException("Unaligned sequences");
@@ -91,10 +91,10 @@ namespace Bio.Algorithms.Alignment
             }
             float result = 0;
 
-            var isGapA = false;
-            var isGapB = false;
+            bool isGapA = false;
+            bool isGapB = false;
 
-            for (var i = 0; i < sequenceA.Count; ++i)
+            for (int i = 0; i < sequenceA.Count; ++i)
             {
                 if (sequenceA.Alphabet.CheckIsGap(sequenceA[i]) && sequenceB.Alphabet.CheckIsGap(sequenceB[i]))
                 {
@@ -154,9 +154,9 @@ namespace Bio.Algorithms.Alignment
         {
             float result = 0;
 
-            for (var i = 0; i < sequences.Count - 1; ++i)
+            for (int i = 0; i < sequences.Count - 1; ++i)
             {
-                for (var j = i + 1; j < sequences.Count; ++j)
+                for (int j = i + 1; j < sequences.Count; ++j)
                 {
                     result += PairWiseScoreFunction(sequences[i], sequences[j], similarityMatrix, gapOpenPenalty, gapExtensionPenalty);
                 }

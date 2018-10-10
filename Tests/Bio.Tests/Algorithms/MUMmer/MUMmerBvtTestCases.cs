@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 
 using Bio.Algorithms.Alignment;
+using Bio.Algorithms.MUMmer;
 using Bio.Algorithms.MUMmer.LIS;
 using Bio.Algorithms.SuffixTree;
 using Bio.Extensions;
@@ -81,17 +82,17 @@ namespace Bio.Tests.Algorithms.MUMmer
         [Category("Priority0")]
         public void ValidateEdgeCount()
         {
-            var dnaSequence = "ATGCA";
-            var sequence = new Sequence(Alphabets.DNA, dnaSequence);
-            var dnaSuffixTree = new MultiWaySuffixTree(sequence);
+            string dnaSequence = "ATGCA";
+            Sequence sequence = new Sequence(Alphabets.DNA, dnaSequence);
+            MultiWaySuffixTree dnaSuffixTree = new MultiWaySuffixTree(sequence);
             Assert.AreEqual(8, dnaSuffixTree.EdgesCount);
             ApplicationLog.WriteLine(@"MUMmer BVT : Validation of edge
                         count for a Dna sequence completed successfully");
 
-            var ambiguousDnasequence = "RSVTW";
+            string ambiguousDnasequence = "RSVTW";
 
             sequence = new Sequence(AmbiguousDnaAlphabet.Instance, ambiguousDnasequence);
-            var ambiguousDnaSuffixTree = new MultiWaySuffixTree(sequence);
+            MultiWaySuffixTree ambiguousDnaSuffixTree = new MultiWaySuffixTree(sequence);
             Assert.AreEqual(7, ambiguousDnaSuffixTree.EdgesCount);
             ApplicationLog.WriteLine(@"MUMmer BVT : Validation of edge
                         count for a Ambiguous Dna sequence completed successfully");
@@ -108,7 +109,7 @@ namespace Bio.Tests.Algorithms.MUMmer
         [Category("Priority0")]
         public void ValidateEdgesForALeaf()
         {
-            var rootEdge = new MultiWaySuffixEdge();
+            MultiWaySuffixEdge rootEdge = new MultiWaySuffixEdge();
             Assert.AreEqual(rootEdge.IsLeaf, true);
             ApplicationLog.WriteLine("MUMmer BVT : Successfully Validated Is leaf property.");
             Assert.AreEqual(rootEdge.Children, null);
@@ -222,16 +223,16 @@ namespace Bio.Tests.Algorithms.MUMmer
         public void ValidateGetMumsWithMaxMatchWithOneLineSequence()
         {
             // Gets the reference sequence from the configurtion file
-            var referenceSequence = utilityObj.xmlUtil.GetTextValue(Constants.OneLineSequenceNodeName,
+            string referenceSequence = utilityObj.xmlUtil.GetTextValue(Constants.OneLineSequenceNodeName,
                     Constants.SequenceNode);
 
-            var referenceSeqAlphabet = utilityObj.xmlUtil.GetTextValue(Constants.OneLineSequenceNodeName,
+            string referenceSeqAlphabet = utilityObj.xmlUtil.GetTextValue(Constants.OneLineSequenceNodeName,
                 Constants.AlphabetNameNode);
 
             ISequence referenceSeq = new Sequence(Utility.GetAlphabet(referenceSeqAlphabet),
                 encodingObj.GetBytes(referenceSequence));
 
-            var querySequence = utilityObj.xmlUtil.GetTextValue(Constants.OneLineSequenceNodeName,
+            string querySequence = utilityObj.xmlUtil.GetTextValue(Constants.OneLineSequenceNodeName,
                 Constants.SearchSequenceNode);
 
             referenceSeqAlphabet = utilityObj.xmlUtil.GetTextValue(Constants.OneLineSequenceNodeName,
@@ -240,9 +241,9 @@ namespace Bio.Tests.Algorithms.MUMmer
             ISequence querySeq = new Sequence(Utility.GetAlphabet(referenceSeqAlphabet),
                  encodingObj.GetBytes(querySequence));
 
-            var mumLength = utilityObj.xmlUtil.GetTextValue(Constants.OneLineSequenceNodeName, Constants.MUMLengthNode);
+            string mumLength = utilityObj.xmlUtil.GetTextValue(Constants.OneLineSequenceNodeName, Constants.MUMLengthNode);
 
-            var mum = new Bio.Algorithms.MUMmer.MUMmer(referenceSeq as Sequence);
+            Bio.Algorithms.MUMmer.MUMmer mum = new Bio.Algorithms.MUMmer.MUMmer(referenceSeq as Sequence);
             mum.LengthOfMUM = long.Parse(mumLength, null);
             IEnumerable<Match> actualResult = null;
             actualResult = mum.GetMatches(querySeq);
@@ -321,27 +322,27 @@ namespace Bio.Tests.Algorithms.MUMmer
         {
             ISequence referenceSeq = null;
             ISequence querySeq = null;
-            var referenceSequence = string.Empty;
-            var querySequence = string.Empty;
+            string referenceSequence = string.Empty;
+            string querySequence = string.Empty;
             IEnumerable<ISequence> referenceSeqs = null;
 
             if (isFilePath)
             {
                 // Gets the reference sequence from the configuration file
-                var filePath = utilityObj.xmlUtil.GetTextValue(nodeName,
+                string filePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                     Constants.FilePathNode).TestDir();
 
                 Assert.IsNotNull(filePath);
                 ApplicationLog.WriteLine(string.Format((IFormatProvider)null,
                     "MUMmer BVT : Successfully validated the File Path '{0}'.", filePath));
 
-                var parser = new FastAParser();
+                FastAParser parser = new FastAParser();
                 referenceSeqs = parser.Parse(filePath);
                 referenceSeq = referenceSeqs.ElementAt(0);
                 referenceSequence = new string(referenceSeq.Select(a => (char)a).ToArray());
 
                 // Gets the reference sequence from the configuration file
-                var queryFilePath = utilityObj.xmlUtil.GetTextValue(nodeName,
+                string queryFilePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                     Constants.SearchSequenceFilePathNode).TestDir();
 
                 Assert.IsNotNull(queryFilePath);
@@ -349,7 +350,7 @@ namespace Bio.Tests.Algorithms.MUMmer
                     "MUMmer BVT : Successfully validated the Search File Path '{0}'.", queryFilePath));
 
                 IEnumerable<ISequence> querySeqs = null;
-                var queryParser = new FastAParser();
+                FastAParser queryParser = new FastAParser();
                 querySeqs = queryParser.Parse(queryFilePath);
                 querySeq = querySeqs.ElementAt(0);
                 querySequence = new string(querySeq.Select(a => (char)a).ToArray());
@@ -360,7 +361,7 @@ namespace Bio.Tests.Algorithms.MUMmer
                 referenceSequence = utilityObj.xmlUtil.GetTextValue(nodeName,
                     Constants.SequenceNode);
 
-                var seqAlp = utilityObj.xmlUtil.GetTextValue(nodeName,
+                string seqAlp = utilityObj.xmlUtil.GetTextValue(nodeName,
                     Constants.AlphabetNameNode);
 
                 referenceSeq = new Sequence(Utility.GetAlphabet(seqAlp),
@@ -376,10 +377,10 @@ namespace Bio.Tests.Algorithms.MUMmer
                     encodingObj.GetBytes(querySequence));
             }
 
-            var mumLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMLengthNode);
+            string mumLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMLengthNode);
 
             // Builds the suffix for the reference sequence passed.           
-            var suffixTreeBuilder = new MultiWaySuffixTree(referenceSeq as Sequence);
+            MultiWaySuffixTree suffixTreeBuilder = new MultiWaySuffixTree(referenceSeq as Sequence);
             suffixTreeBuilder.MinLengthOfMatch = long.Parse(mumLength, null);
             IEnumerable<Match> matches = null;
             matches = suffixTreeBuilder.SearchMatchesUniqueInReference(querySeq);
@@ -411,25 +412,25 @@ namespace Bio.Tests.Algorithms.MUMmer
             if (isFilePath)
             {
                 // Gets the reference sequence from the configuration file
-                var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+                string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
 
                 Assert.IsNotNull(filePath);
                 ApplicationLog.WriteLine(string.Format(null, "MUMmer BVT : Successfully validated the File Path '{0}'.", filePath));
 
-                var parser = new FastAParser();
-                var referenceSeqs = parser.Parse(filePath);
+                FastAParser parser = new FastAParser();
+                IEnumerable<ISequence> referenceSeqs = parser.Parse(filePath);
                 referenceSeq = referenceSeqs.FirstOrDefault();
                 Assert.IsNotNull(referenceSeq);
                 referenceSequence = referenceSeq.ConvertToString();
                 parser.Close();
 
                 // Gets the reference sequence from the configuration file
-                var queryFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SearchSequenceFilePathNode).TestDir();
+                string queryFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SearchSequenceFilePathNode).TestDir();
 
                 Assert.IsNotNull(queryFilePath);
                 ApplicationLog.WriteLine(string.Format(null, "MUMmer BVT : Successfully validated the Search File Path '{0}'.", queryFilePath));
 
-                var queryParserObj = new FastAParser();
+                FastAParser queryParserObj = new FastAParser();
                 querySeqs = queryParserObj.Parse(queryFilePath).ToList();
                 querySeq = querySeqs.FirstOrDefault();
                 Assert.IsNotNull(querySeq);
@@ -440,7 +441,7 @@ namespace Bio.Tests.Algorithms.MUMmer
             {
                 // Gets the reference sequence from the configuration file
                 referenceSequence = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode);
-                var referenceSeqAlphabet = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.AlphabetNameNode);
+                string referenceSeqAlphabet = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.AlphabetNameNode);
                 referenceSeq = new Sequence(Utility.GetAlphabet(referenceSeqAlphabet), referenceSequence);
                 
                 querySequence = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SearchSequenceNode);
@@ -449,9 +450,9 @@ namespace Bio.Tests.Algorithms.MUMmer
                 querySeqs = new List<ISequence> {querySeq};
             }
 
-            var mumLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMAlignLengthNode);
+            string mumLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMAlignLengthNode);
 
-            var mumAlignObj = new Bio.Algorithms.MUMmer.MUMmerAligner
+            MUMmerAligner mumAlignObj = new Bio.Algorithms.MUMmer.MUMmerAligner
             {
                 LengthOfMUM = long.Parse(mumLength, null),
                 GapOpenCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.GapOpenCostNode), null)
@@ -467,15 +468,15 @@ namespace Bio.Tests.Algorithms.MUMmer
                 align = mumAlignObj.AlignSimple(referenceSeq, querySeqs);
             }
 
-            var expectedScore = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ScoreNodeName);
+            string expectedScore = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ScoreNodeName);
             Assert.AreEqual(expectedScore, align[0].PairwiseAlignedSequences[0].Score.ToString((IFormatProvider)null));
             ApplicationLog.WriteLine(string.Format(null, "MUMmer BVT : Successfully validated the score for the sequence '{0}' and '{1}'.", referenceSequence, querySequence));
 
-            var expectedSequences = utilityObj.xmlUtil.GetTextValues(nodeName, Constants.ExpectedSequencesNode);
+            string[] expectedSequences = utilityObj.xmlUtil.GetTextValues(nodeName, Constants.ExpectedSequencesNode);
             IList<IPairwiseSequenceAlignment> expectedOutput = new List<IPairwiseSequenceAlignment>();
 
             IPairwiseSequenceAlignment seqAlign = new PairwiseSequenceAlignment();
-            var alignedSeq = new PairwiseAlignedSequence
+            PairwiseAlignedSequence alignedSeq = new PairwiseAlignedSequence
             {
                 FirstSequence = new Sequence(referenceSeq.Alphabet, expectedSequences[0]),
                 SecondSequence = new Sequence(referenceSeq.Alphabet, expectedSequences[1]),
@@ -523,9 +524,9 @@ namespace Bio.Tests.Algorithms.MUMmer
                     break;
             }
 
-            var i = 0;
+            int i = 0;
             // Loops through all the matches and validates the same.            
-            foreach (var match in matches)
+            foreach (Match match in matches)
             {
                 if ((0 != string.Compare(firstSeqStart[i],
                     match.ReferenceSequenceOffset.ToString((IFormatProvider)null), true, CultureInfo.CurrentCulture))
@@ -554,28 +555,28 @@ namespace Bio.Tests.Algorithms.MUMmer
             ISequence referenceSeq = null;
             ISequence querySeq = null;
             IEnumerable<ISequence> querySeqs = null;
-            var referenceSequence = string.Empty;
-            var querySequence = string.Empty;
+            string referenceSequence = string.Empty;
+            string querySequence = string.Empty;
             IEnumerable<ISequence> referenceSeqs = null;
 
             if (isFilePath)
             {
                 // Gets the reference sequence from the configurtion file
-                var filePath = utilityObj.xmlUtil.GetTextValue(nodeName,
+                string filePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                     Constants.FilePathNode);
 
                 Assert.IsNotNull(filePath);
                 ApplicationLog.WriteLine(string.Format((IFormatProvider)null,
                     "MUMmer BVT : Successfully validated the File Path '{0}'.", filePath));
 
-                var parser = new FastAParser();
+                FastAParser parser = new FastAParser();
                 parser.Alphabet = Alphabets.DNA;
                 referenceSeqs = parser.Parse(filePath);
                 referenceSeq = referenceSeqs.ElementAt(0);
                 referenceSequence = new string(referenceSeq.Select(a => (char)a).ToArray());
 
                 // Gets the reference sequence from the configuration file
-                var queryFilePath = utilityObj.xmlUtil.GetTextValue(nodeName,
+                string queryFilePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                     Constants.SearchSequenceFilePathNode);
 
                 Assert.IsNotNull(queryFilePath);
@@ -592,7 +593,7 @@ namespace Bio.Tests.Algorithms.MUMmer
                 referenceSequence = utilityObj.xmlUtil.GetTextValue(nodeName,
                     Constants.SequenceNode);
 
-                var referenceSeqAlphabet = utilityObj.xmlUtil.GetTextValue(nodeName,
+                string referenceSeqAlphabet = utilityObj.xmlUtil.GetTextValue(nodeName,
                     Constants.AlphabetNameNode);
 
                 referenceSeq = new Sequence(Utility.GetAlphabet(referenceSeqAlphabet),
@@ -610,9 +611,9 @@ namespace Bio.Tests.Algorithms.MUMmer
                 querySeqs = new List<ISequence>() { querySeq };
             }
 
-            var mumLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMLengthNode);
+            string mumLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMLengthNode);
 
-            var mum = new Bio.Algorithms.MUMmer.MUMmer(referenceSeq as Sequence);
+            Bio.Algorithms.MUMmer.MUMmer mum = new Bio.Algorithms.MUMmer.MUMmer(referenceSeq as Sequence);
             mum.LengthOfMUM = long.Parse(mumLength, null);
             IEnumerable<Match> actualResult = null;
             actualResult = mum.GetMatchesUniqueInReference(querySeqs.ElementAt(0));
@@ -630,12 +631,12 @@ namespace Bio.Tests.Algorithms.MUMmer
         /// <param name="nodeName">Node name to be read from xml</param>       
         bool ValidateMums(string nodeName, IEnumerable<Match> result)
         {
-            var firstSeqStart = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.LisFirstSequenceStartNode).Split(',');
-            var length = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.LisLengthNode).Split(',');
-            var secondSeqStart = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.LisSecondSequenceStartNode).Split(',');
+            string[] firstSeqStart = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.LisFirstSequenceStartNode).Split(',');
+            string[] length = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.LisLengthNode).Split(',');
+            string[] secondSeqStart = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.LisSecondSequenceStartNode).Split(',');
 
-            var mums = result;
-            for (var i = 0; i < mums.Count(); i++)
+            IEnumerable<Match> mums = result;
+            for (int i = 0; i < mums.Count(); i++)
             {
                 if ((0 != string.Compare(firstSeqStart[i], mums.ElementAt(i).ReferenceSequenceOffset.ToString((IFormatProvider)null), StringComparison.CurrentCulture))
                    || (0 != string.Compare(length[i], mums.ElementAt(i).Length.ToString((IFormatProvider)null), StringComparison.CurrentCulture))
@@ -661,27 +662,27 @@ namespace Bio.Tests.Algorithms.MUMmer
         {
             ISequence referenceSeq = null;
             ISequence querySeq = null;
-            var referenceSequence = string.Empty;
-            var querySequence = string.Empty;
+            string referenceSequence = string.Empty;
+            string querySequence = string.Empty;
             IEnumerable<ISequence> referenceSeqs = null;
 
             if (isFilePath)
             {
                 // Gets the reference sequence from the configurtion file
-                var filePath = utilityObj.xmlUtil.GetTextValue(nodeName,
+                string filePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                     Constants.FilePathNode).TestDir();
 
                 Assert.IsNotNull(filePath);
                 ApplicationLog.WriteLine(string.Format((IFormatProvider)null,
                     "MUMmer BVT : Successfully validated the File Path '{0}'.", filePath));
 
-                var parser = new FastAParser();
+                FastAParser parser = new FastAParser();
                 referenceSeqs = parser.Parse(filePath);
                 referenceSeq = referenceSeqs.ElementAt(0);
                 referenceSequence = new string(referenceSeq.Select(a => (char)a).ToArray());
 
                 // Gets the reference sequence from the configurtion file
-                var queryFilePath = utilityObj.xmlUtil.GetTextValue(nodeName,
+                string queryFilePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                     Constants.SearchSequenceFilePathNode).TestDir();
 
                 Assert.IsNotNull(queryFilePath);
@@ -699,7 +700,7 @@ namespace Bio.Tests.Algorithms.MUMmer
                 referenceSequence = utilityObj.xmlUtil.GetTextValue(nodeName,
                     Constants.SequenceNode);
 
-                var seqAlp = utilityObj.xmlUtil.GetTextValue(nodeName,
+                string seqAlp = utilityObj.xmlUtil.GetTextValue(nodeName,
                     Constants.AlphabetNameNode);
 
                 referenceSeq = new Sequence(Utility.GetAlphabet(seqAlp),
@@ -715,11 +716,11 @@ namespace Bio.Tests.Algorithms.MUMmer
                     encodingObj.GetBytes(querySequence));
             }
 
-            var mumLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMLengthNode);
+            string mumLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMLengthNode);
 
             // Builds the suffix for the reference sequence passed.
 
-            var suffixTreeBuilder = new MultiWaySuffixTree(referenceSeq as Sequence);
+            MultiWaySuffixTree suffixTreeBuilder = new MultiWaySuffixTree(referenceSeq as Sequence);
             suffixTreeBuilder.MinLengthOfMatch = long.Parse(mumLength, null);
             IEnumerable<Match> matches = null;
             matches = suffixTreeBuilder.SearchMatchesUniqueInReference(querySeq);
@@ -739,9 +740,9 @@ namespace Bio.Tests.Algorithms.MUMmer
         /// <param name="nodeName">Parent Node from Xml.</param>
         void ValidateSearchMatch(string nodeName)
         {
-            var referenceSequence = string.Empty;
-            var querySequence = string.Empty;
-            var seqAlp = utilityObj.xmlUtil.GetTextValue(nodeName,
+            string referenceSequence = string.Empty;
+            string querySequence = string.Empty;
+            string seqAlp = utilityObj.xmlUtil.GetTextValue(nodeName,
                     Constants.AlphabetNameNode);
 
             // Gets the reference sequence from the configurtion file
@@ -755,11 +756,11 @@ namespace Bio.Tests.Algorithms.MUMmer
                 Constants.SearchSequenceAlphabetNode);
 
             IEnumerable<Match> matches = null;
-            var mumLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMLengthNode);
-            var referenceSequenceForMatches = new Sequence(Utility.GetAlphabet(seqAlp), referenceSequence);
-            var suffixTree = new MultiWaySuffixTree(referenceSequenceForMatches);
+            string mumLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMLengthNode);
+            Sequence referenceSequenceForMatches = new Sequence(Utility.GetAlphabet(seqAlp), referenceSequence);
+            MultiWaySuffixTree suffixTree = new MultiWaySuffixTree(referenceSequenceForMatches);
             suffixTree.MinLengthOfMatch = long.Parse(mumLength, null);
-            var querySequenceForMatches = new Sequence(Utility.GetAlphabet(seqAlp), querySequence);
+            Sequence querySequenceForMatches = new Sequence(Utility.GetAlphabet(seqAlp), querySequence);
             matches = suffixTree.SearchMatches(querySequenceForMatches);
             // Validates the Unique Matches.
             ApplicationLog.WriteLine("MUMmer BVT : Validating the Unique Matches");
@@ -779,27 +780,27 @@ namespace Bio.Tests.Algorithms.MUMmer
         {
             ISequence referenceSeq = null;
             ISequence querySeq = null;
-            var referenceSequence = string.Empty;
-            var querySequence = string.Empty;
+            string referenceSequence = string.Empty;
+            string querySequence = string.Empty;
             IEnumerable<ISequence> referenceSeqs = null;
 
             if (isFilePath)
             {
                 // Gets the reference sequence from the configurtion file
-                var filePath = utilityObj.xmlUtil.GetTextValue(nodeName,
+                string filePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                     Constants.FilePathNode);
 
                 Assert.IsNotNull(filePath);
                 ApplicationLog.WriteLine(string.Format((IFormatProvider)null,
                     "MUMmer BVT : Successfully validated the File Path '{0}'.", filePath));
 
-                var parser = new FastAParser();
+                FastAParser parser = new FastAParser();
                 referenceSeqs = parser.Parse(filePath);
                 referenceSeq = referenceSeqs.ElementAt(0);
                 referenceSequence = new string(referenceSeq.Select(a => (char)a).ToArray());
 
                 // Gets the reference sequence from the configuration file
-                var queryFilePath = utilityObj.xmlUtil.GetTextValue(nodeName,
+                string queryFilePath = utilityObj.xmlUtil.GetTextValue(nodeName,
                     Constants.SearchSequenceFilePathNode);
 
                 Assert.IsNotNull(queryFilePath);
@@ -817,7 +818,7 @@ namespace Bio.Tests.Algorithms.MUMmer
                 referenceSequence = utilityObj.xmlUtil.GetTextValue(nodeName,
                     Constants.SequenceNode);
 
-                var seqAlp = utilityObj.xmlUtil.GetTextValue(nodeName,
+                string seqAlp = utilityObj.xmlUtil.GetTextValue(nodeName,
                     Constants.AlphabetNameNode);
 
                 referenceSeq = new Sequence(Utility.GetAlphabet(seqAlp),
@@ -833,20 +834,20 @@ namespace Bio.Tests.Algorithms.MUMmer
                     querySequence);
             }
 
-            var mumLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMLengthNode);
+            string mumLength = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.MUMLengthNode);
 
             IEnumerable<Match> matches;
-            var mum = new Bio.Algorithms.MUMmer.MUMmer(referenceSeq as Sequence);
+            Bio.Algorithms.MUMmer.MUMmer mum = new Bio.Algorithms.MUMmer.MUMmer(referenceSeq as Sequence);
             mum.LengthOfMUM = long.Parse(mumLength);
             matches = mum.GetMatchesUniqueInReference(querySeq);
 
             // Validates the Unique Matches.
             ApplicationLog.WriteLine("MUMmer BVT : Validating the Unique Matches using LIS");
-            var lisObj = new LongestIncreasingSubsequence();
+            LongestIncreasingSubsequence lisObj = new LongestIncreasingSubsequence();
 
-            var listMatch = new List<Match>();
+            List<Match> listMatch = new List<Match>();
 
-            foreach (var mtch in matches)
+            foreach (Match mtch in matches)
             {
                 listMatch.Add(mtch);
             }

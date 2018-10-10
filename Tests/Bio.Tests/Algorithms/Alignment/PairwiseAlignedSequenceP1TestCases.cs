@@ -24,21 +24,21 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void ValidatePairwiseAlignedSequenceCustomBreakLength()
         {
-            var referenceSeqs = new List<ISequence>()
+            List<ISequence> referenceSeqs = new List<ISequence>()
             {
                 new Sequence(Alphabets.DNA, "CAAAAGGGATTGCAAATGTTGGAGTGAATGCCATTACCTACCGGCTAGGAGGAGT") {ID = "R1"},
                 new Sequence(Alphabets.DNA, "CCCCCCCCC") {ID = "R2"},
                 new Sequence(Alphabets.DNA, "TTTTT") {ID = "R3"}
             };
 
-            var searchSeqs = new List<ISequence>()
+            List<ISequence> searchSeqs = new List<ISequence>()
             {
                 new Sequence(Alphabets.DNA, "CATTAATGATAAAGGGAAAGAAGTCCTCGTGCTATGGGGCATTCACCATCCATCTACTAGTGCTGACCAA") { ID = "Q1" },
                 new Sequence(Alphabets.DNA, "CAAAGTCTCTATCAGAATGCAGATGCAGATGTTTTTGTGGGGTCATCAAGATATAGCAAGAAGTTCAAGC") { ID = "Q2" },
                 new Sequence(Alphabets.DNA, "AAGCAAAATTAAACAGAGAAGAAATAGATGGGGTAAAGCTGGAATCAACAAGGATTTACCAGATTTTGGC") { ID = "Q3" },
             };
 
-            var nucmer = new NucmerPairwiseAligner
+            NucmerPairwiseAligner nucmer = new NucmerPairwiseAligner
             {
                 MaximumSeparation = 0,
                 MinimumScore = 2,
@@ -48,12 +48,12 @@ namespace Bio.Tests.Algorithms.Alignment
                 ForwardOnly = true,
             };
 
-            var result = nucmer.Align(referenceSeqs, searchSeqs).Select(a => a as IPairwiseSequenceAlignment).ToList();
+            List<IPairwiseSequenceAlignment> result = nucmer.Align(referenceSeqs, searchSeqs).Select(a => a as IPairwiseSequenceAlignment).ToList();
 
             // Check if output is not null
             Assert.AreNotEqual(null, result);
 
-            var expectedOutput = new List<IPairwiseSequenceAlignment>();
+            List<IPairwiseSequenceAlignment> expectedOutput = new List<IPairwiseSequenceAlignment>();
 
             IPairwiseSequenceAlignment align = new PairwiseSequenceAlignment();
             align.PairwiseAlignedSequences.Add(new PairwiseAlignedSequence
@@ -157,18 +157,18 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void ValidatePairwiseAlignedSequenceMultipleRef()
         {
-            var referenceSeqs = new List<ISequence>()
+            List<ISequence> referenceSeqs = new List<ISequence>()
             {
                 new Sequence(Alphabets.DNA, "ATGCGCATCCCC") {ID = "R1"},
                 new Sequence(Alphabets.DNA, "TAGCT") {ID = "R11"},
             };
 
-            var searchSeqs = new List<ISequence>()
+            List<ISequence> searchSeqs = new List<ISequence>()
             {
                 new Sequence(Alphabets.DNA, "CCGCGCCCCCTCAGCT") {ID = "Q1"}
             };
 
-            var nucmer = new NucmerPairwiseAligner
+            NucmerPairwiseAligner nucmer = new NucmerPairwiseAligner
             {
                 FixedSeparation = 0,
                 MinimumScore = 2,
@@ -185,7 +185,7 @@ namespace Bio.Tests.Algorithms.Alignment
             IList<IPairwiseSequenceAlignment> expectedOutput = new List<IPairwiseSequenceAlignment>();
             
             IPairwiseSequenceAlignment align = new PairwiseSequenceAlignment();
-            var alignedSeq = new PairwiseAlignedSequence
+            PairwiseAlignedSequence alignedSeq = new PairwiseAlignedSequence
             {
                 FirstSequence = new Sequence(Alphabets.DNA, "GCGCATCCCC"),
                 SecondSequence = new Sequence(Alphabets.DNA, "GCGC--CCCC"),
@@ -218,19 +218,19 @@ namespace Bio.Tests.Algorithms.Alignment
         [Category("Priority1")]
         public void ValidatePairwiseAlignedSequenceMultipleRefQuery()
         {
-            var referenceSeqs = new List<ISequence>()
+            List<ISequence> referenceSeqs = new List<ISequence>()
             {
                 new Sequence(Alphabets.DNA, "ATGCGCATCCCC") {ID = "R1"},
                 new Sequence(Alphabets.DNA, "TAGCT") {ID = "R2"}
             };
 
-            var searchSeqs = new List<ISequence>()
+            List<ISequence> searchSeqs = new List<ISequence>()
             {
                 new Sequence(Alphabets.DNA, "CCGCGCCCCCTC") {ID = "Q1"},
                 new Sequence(Alphabets.DNA, "AGCT") {ID = "Q2"}
             };
 
-            var nucmer = new NucmerPairwiseAligner
+            NucmerPairwiseAligner nucmer = new NucmerPairwiseAligner
             {
                 FixedSeparation = 0,
                 MinimumScore = 2,
@@ -246,7 +246,7 @@ namespace Bio.Tests.Algorithms.Alignment
 
             IList<IPairwiseSequenceAlignment> expectedOutput = new List<IPairwiseSequenceAlignment>();
             IPairwiseSequenceAlignment align = new PairwiseSequenceAlignment();
-            var alignedSeq = new PairwiseAlignedSequence
+            PairwiseAlignedSequence alignedSeq = new PairwiseAlignedSequence
             {
                 FirstSequence = new Sequence(Alphabets.DNA, "GCGCATCCCC"),
                 SecondSequence = new Sequence(Alphabets.DNA, "GCGC--CCCC"),

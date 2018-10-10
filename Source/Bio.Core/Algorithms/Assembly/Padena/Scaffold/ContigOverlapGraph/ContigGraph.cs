@@ -63,7 +63,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold.ContigOverlapGraph
             }
 
             // Get sequence index and validate.
-            var sequenceIndex = node.SequenceIndex;
+            int sequenceIndex = node.SequenceIndex;
             if (sequenceIndex < 0 || sequenceIndex >= baseSequences.Count)
             {
                 throw new ArgumentOutOfRangeException(nameof(node), Properties.Resource.KmerIndexOutOfRange);
@@ -94,7 +94,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold.ContigOverlapGraph
             }
 
             // Create contig nodes
-            var contigNodes = new Node[contigs.Count()];
+            Node[] contigNodes = new Node[contigs.Count()];
             Parallel.For(0, contigs.Count, (int ndx) => contigNodes[ndx] = new Node(contigs[ndx].Count, ndx));
 
             GenerateContigAdjacency(contigs, kmerLength, contigNodes);
@@ -147,14 +147,14 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold.ContigOverlapGraph
         private static void GenerateContigAdjacency(IList<ISequence> contigs, long kmerLength, Node[] contigNodes)
         {
             // Create dictionaries that map (k-1) left and right substrings of contigs to contig indexes.
-            var leftKmerMap = new Dictionary<ISequence, List<int>>(new SequenceEqualityComparer());
-            var rightKmerMap = new Dictionary<ISequence, List<int>>(new SequenceEqualityComparer());
+            Dictionary<ISequence, List<int>> leftKmerMap = new Dictionary<ISequence, List<int>>(new SequenceEqualityComparer());
+            Dictionary<ISequence, List<int>> rightKmerMap = new Dictionary<ISequence, List<int>>(new SequenceEqualityComparer());
             Parallel.For( 
                 0, 
                 contigs.Count, 
                 ndx =>
             {
-                var contig = contigs[ndx];
+                ISequence contig = contigs[ndx];
                 List<int> contigIndexes;
                 ISequence kmer;
 
@@ -219,9 +219,9 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold.ContigOverlapGraph
                 List<int> positions;
                 if (rightKmerMap.TryGetValue(leftKmer.Key, out positions))
                 {
-                    foreach (var leftNodeIndex in leftKmer.Value)
+                    foreach (int leftNodeIndex in leftKmer.Value)
                     {
-                        foreach (var rightNodeIndex in positions)
+                        foreach (int rightNodeIndex in positions)
                         {
                             contigNodes[leftNodeIndex].AddLeftEndExtension(contigNodes[rightNodeIndex], true);
                         }
@@ -230,9 +230,9 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold.ContigOverlapGraph
 
                 if (leftKmerMap.TryGetValue(leftKmer.Key.GetReverseComplementedSequence(), out positions))
                 {
-                    foreach (var leftNodeIndex in leftKmer.Value)
+                    foreach (int leftNodeIndex in leftKmer.Value)
                     {
-                        foreach (var rightNodeIndex in positions)
+                        foreach (int rightNodeIndex in positions)
                         {
                             contigNodes[leftNodeIndex].AddLeftEndExtension(contigNodes[rightNodeIndex], false);
                         }
@@ -248,9 +248,9 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold.ContigOverlapGraph
                 List<int> positions;
                 if (leftKmerMap.TryGetValue(rightKmer.Key, out positions))
                 {
-                    foreach (var rightNodeIndex in rightKmer.Value)
+                    foreach (int rightNodeIndex in rightKmer.Value)
                     {
-                        foreach (var leftNodeIndex in positions)
+                        foreach (int leftNodeIndex in positions)
                         {
                             contigNodes[rightNodeIndex].AddRightEndExtension(contigNodes[leftNodeIndex], true);
                         }
@@ -259,9 +259,9 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold.ContigOverlapGraph
 
                 if (rightKmerMap.TryGetValue(rightKmer.Key.GetReverseComplementedSequence(), out positions))
                 {
-                    foreach (var rightNodeIndex in rightKmer.Value)
+                    foreach (int rightNodeIndex in rightKmer.Value)
                     {
-                        foreach (var leftNodeIndex in positions)
+                        foreach (int leftNodeIndex in positions)
                         {
                             contigNodes[rightNodeIndex].AddRightEndExtension(contigNodes[leftNodeIndex], false);
                         }

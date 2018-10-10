@@ -68,13 +68,13 @@ namespace Bio
                 throw new ArgumentNullException(nameof(collection));
             }
 
-            var collectionObj = collection as ICollection<T>;
+            ICollection<T> collectionObj = collection as ICollection<T>;
             if (collectionObj != null)
             {
-                var count = collectionObj.Count;
+                int count = collectionObj.Count;
                 _items = new BigArray<T>(count);
-                var index = 0;
-                foreach (var item in collectionObj)
+                int index = 0;
+                foreach (T item in collectionObj)
                 {
                     _items[index++] = item;
                 }
@@ -84,7 +84,7 @@ namespace Bio
             {
                 _size = 0;
                 _items = new BigArray<T>(DefaultCapacity);
-                using (var enumerator = collection.GetEnumerator())
+                using (IEnumerator<T> enumerator = collection.GetEnumerator())
                 {
                     while (enumerator.MoveNext())
                     {
@@ -109,8 +109,8 @@ namespace Bio
                 throw new ArgumentException("Cannot make new big list with < 0 items",nameof(collectionCount));
             }
                 _items = new BigArray<T>(collectionCount);
-                var index = 0;
-                foreach (var item in collection)
+                int index = 0;
+                foreach (T item in collection)
                 {
                     _items[index++] = item;
                 }
@@ -241,7 +241,7 @@ namespace Bio
 
             if (index < _size)
             {
-                for (var i = _size; i > index; i--)
+                for (long i = _size; i > index; i--)
                 {
                     _items[i] = _items[i - 1];
                 }
@@ -264,7 +264,7 @@ namespace Bio
             _size--;
             if (index < _size)
             {
-                for (var i = index; i < _size; i++)
+                for (long i = index; i < _size; i++)
                 {
                     _items[i] = _items[i + 1];
                 }
@@ -375,7 +375,7 @@ namespace Bio
         ///     returns false if item was not found in the BigList.</returns>
         public bool Remove(T item)
         {
-            var index = IndexOf(item);
+            long index = IndexOf(item);
             if (index != -1)
             {
                 RemoveAt(index);
@@ -390,7 +390,7 @@ namespace Bio
         /// </summary>
         public void TrimExcess()
         {
-            var num = (long)(_items.Length * 0.9);
+            long num = (long)(_items.Length * 0.9);
             if (_size < num)
             {
                 Capacity = _size;
@@ -421,7 +421,7 @@ namespace Bio
                 throw new ArgumentNullException(nameof(action));
             }
 
-            for (var i = 0; i < _size; i++)
+            for (int i = 0; i < _size; i++)
             {
                 action(_items[i]);
             }
@@ -462,7 +462,7 @@ namespace Bio
                 }
                 else
                 {
-                    var rem = _items.Length % _items.BlockSize;
+                    long rem = _items.Length % _items.BlockSize;
                     if (rem > 0)
                     {
                         newCapacity = _items.Length + rem;

@@ -81,8 +81,8 @@ namespace Bio.Algorithms.Assembly
         /// <returns>contigs data</returns>
         public override string ToString()
         {
-            var builder = new StringBuilder();
-            foreach (var contig in Contigs)
+            StringBuilder builder = new StringBuilder();
+            foreach (Contig contig in Contigs)
             {
                 builder.AppendLine(contig.ToString());
             }

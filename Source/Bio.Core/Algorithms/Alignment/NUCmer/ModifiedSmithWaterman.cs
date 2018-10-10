@@ -186,16 +186,16 @@ namespace Bio.Algorithms.Alignment
                 previousPreviousDiagonalSize, previousDiagonalSize, diagonalSize,
                 insertScore, deleteScore, matchScore, insertValue, deleteValue, matchValue,
                 conceptualDiagonal;
-            var minimumScore = -1 * Int32.MaxValue;
-            var score = minimumScore;
-            var nonOptimalScore = minimumScore;
-            var maximumDifference = ValidScore * BreakLength;
-            var diagonalLength = 2;
-            var left = 0;
-            var right = 0;
+            int minimumScore = -1 * Int32.MaxValue;
+            int score = minimumScore;
+            int nonOptimalScore = minimumScore;
+            int maximumDifference = ValidScore * BreakLength;
+            int diagonalLength = 2;
+            int left = 0;
+            int right = 0;
             long targetHighScoreDiagonal = 0;
             long targetHighScoreDiagonalIndex = 0;
-            var targetDiagonal = 0;
+            int targetDiagonal = 0;
             long targetDiagonalIndex = 0;
             long row, column, lowerIndex;
 
@@ -297,7 +297,7 @@ namespace Bio.Algorithms.Alignment
                     if (diagonalIndex >= diagonals[currentDiagonal].Nodes.Count
                         || previousDiagonalIndex >= diagonals[currentDiagonal].Nodes.Count)
                     {
-                        for (var counter = diagonals[currentDiagonal].Nodes.Count;
+                        for (int counter = diagonals[currentDiagonal].Nodes.Count;
                                 counter <= diagonalIndex || counter <= previousDiagonalIndex;
                                 counter++)
                         {
@@ -308,7 +308,7 @@ namespace Bio.Algorithms.Alignment
                     if (diagonalIndex >= diagonals[previousDiagonal].Nodes.Count
                         || previousDiagonalIndex >= diagonals[previousDiagonal].Nodes.Count)
                     {
-                        for (var counter = diagonals[previousDiagonal].Nodes.Count;
+                        for (int counter = diagonals[previousDiagonal].Nodes.Count;
                                 counter <= diagonalIndex || counter <= previousDiagonalIndex;
                                 counter++)
                         {
@@ -522,8 +522,8 @@ namespace Bio.Algorithms.Alignment
             }
 
             // Final index
-            var referenceAdjustment = targetHighScoreDiagonal <= row ? targetHighScoreDiagonal - targetHighScoreDiagonalIndex - 1 : row - targetHighScoreDiagonalIndex - 1;
-            var queryAdjustment = targetHighScoreDiagonal <= row ? targetHighScoreDiagonalIndex - 1 : targetHighScoreDiagonal - row + targetHighScoreDiagonalIndex - 1;
+            long referenceAdjustment = targetHighScoreDiagonal <= row ? targetHighScoreDiagonal - targetHighScoreDiagonalIndex - 1 : row - targetHighScoreDiagonalIndex - 1;
+            long queryAdjustment = targetHighScoreDiagonal <= row ? targetHighScoreDiagonalIndex - 1 : targetHighScoreDiagonal - row + targetHighScoreDiagonalIndex - 1;
             if (0 < (~methodName & DirectionFlag))
             {
                 referenceAdjustment *= -1;
@@ -589,7 +589,7 @@ namespace Bio.Algorithms.Alignment
         /// <returns>Maximum score</returns>
         private static Score GetMaximumScore(Score[] scores)
         {
-            var maxScore = scores[DeleteState].Value > scores[InsertState].Value ? scores[DeleteState] : scores[InsertState];
+            Score maxScore = scores[DeleteState].Value > scores[InsertState].Value ? scores[DeleteState] : scores[InsertState];
             return maxScore.Value > scores[MatchState].Value ? maxScore : scores[MatchState];
         }
 
@@ -609,12 +609,12 @@ namespace Bio.Algorithms.Alignment
                 IList<long> deltas)
         {
             int deltaCounter;
-            var diagonalIndex = (int)counter;
-            var conceptualDiagonal = (int)currentDiagonal;
-            var nodeIndex = 0;
-            var pathIndex = 0;
+            int diagonalIndex = (int)counter;
+            int conceptualDiagonal = (int)currentDiagonal;
+            int nodeIndex = 0;
+            int pathIndex = 0;
             int edit;
-            var path = new List<int>();
+            List<int> path = new List<int>();
             Score currentScore;
 
             // Find the index with maximum match Score
@@ -624,8 +624,8 @@ namespace Bio.Algorithms.Alignment
                 nodeIndex = 0;
             }
 
-            var maxScore = diagonals[diagonalIndex].Nodes[nodeIndex].MaximumScore;
-            var scoresToSearch = diagonals[diagonalIndex].Nodes[nodeIndex].Scores;
+            Score maxScore = diagonals[diagonalIndex].Nodes[nodeIndex].MaximumScore;
+            Score[] scoresToSearch = diagonals[diagonalIndex].Nodes[nodeIndex].Scores;
             edit = -1;
             if (scoresToSearch[DeleteState] == maxScore)
             {
@@ -659,7 +659,7 @@ namespace Bio.Algorithms.Alignment
 
                 if (pathIndex >= path.Count)
                 {
-                    for (var tempIndex = path.Count; tempIndex <= pathIndex; tempIndex++)
+                    for (int tempIndex = path.Count; tempIndex <= pathIndex; tempIndex++)
                     {
                         path.Add(0);
                     }

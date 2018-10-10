@@ -133,7 +133,7 @@ namespace Bio.TestAutomation.IO.Phylip
         [Category("Priority0")]
         public void ValidatePhylipParserProperties()
         {
-            var parser = new PhylipParser();
+            PhylipParser parser = new PhylipParser();
             Assert.AreEqual(
                 utilityObj.xmlUtil.GetTextValue(Constants.PhylipPropertyNode,
                 Constants.PhylipDescriptionNode),
@@ -158,13 +158,13 @@ namespace Bio.TestAutomation.IO.Phylip
         void ParserGeneralTestCases(string nodeName, ParserTestAttributes addParam)
         {
             // Gets the Filename
-            var filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
+            string filePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.FilePathNode).TestDir();
 
             Assert.IsFalse(string.IsNullOrEmpty(filePath));
             ApplicationLog.WriteLine($"Phylip Parser BVT: Reading the File from location '{filePath}'");
 
             // Get the range list after parsing.
-            var parserObj = new PhylipParser();
+            PhylipParser parserObj = new PhylipParser();
 
             IEnumerable<ISequenceAlignment> sequenceAlignmentList = null;
             ISequenceAlignment sequenceAlignment = null;
@@ -179,13 +179,13 @@ namespace Bio.TestAutomation.IO.Phylip
                     sequenceAlignment = parserObj.ParseOne(filePath);
                     break;
                 case ParserTestAttributes.ParseTextReader:
-                    using (var rdrObj = File.OpenRead(filePath))
+                    using (FileStream rdrObj = File.OpenRead(filePath))
                     {
                         sequenceAlignmentList = parserObj.Parse(rdrObj).ToList();
                     }
                     break;
                 case ParserTestAttributes.ParseOneTextReader:
-                    using (var rdrObj = File.OpenRead(filePath))
+                    using (FileStream rdrObj = File.OpenRead(filePath))
                     {
                         sequenceAlignment = parserObj.ParseOne(rdrObj);
                     }
@@ -195,10 +195,10 @@ namespace Bio.TestAutomation.IO.Phylip
             }
 
             // Gets all the expected values from xml.
-            var expectedAlignmentList = new List<Dictionary<string, string>>();
-            var expectedAlignmentObj = new Dictionary<string, string>();
+            List<Dictionary<string, string>> expectedAlignmentList = new List<Dictionary<string, string>>();
+            Dictionary<string, string> expectedAlignmentObj = new Dictionary<string, string>();
 
-            var expectedAlignmentNodes = utilityObj.xmlUtil.GetNode(nodeName, Constants.ExpectedAlignmentNode);
+            XElement expectedAlignmentNodes = utilityObj.xmlUtil.GetNode(nodeName, Constants.ExpectedAlignmentNode);
             IList<XNode> nodes = expectedAlignmentNodes.Nodes().ToList();
 
             //Get all the values from the elements in the node.
@@ -237,12 +237,12 @@ namespace Bio.TestAutomation.IO.Phylip
                 return false;
             }
 
-            var alignmentIndex = 0;
+            int alignmentIndex = 0;
 
             // Validate each output alignment
-            foreach (var alignment in actualOutput)
+            foreach (ISequenceAlignment alignment in actualOutput)
             {
-                var expectedAlignment =
+                Dictionary<string, string> expectedAlignment =
                     expectedOutput[alignmentIndex];
 
                 foreach (Sequence actualSequence in alignment.AlignedSequences[0].Sequences)

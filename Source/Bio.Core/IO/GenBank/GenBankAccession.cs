@@ -56,7 +56,7 @@ namespace Bio.IO.GenBank
                 return true;
             }
 
-            foreach (var str in Secondary)
+            foreach (string str in Secondary)
             {
                 if (string.Compare(str, accession, StringComparison.OrdinalIgnoreCase) == 0)
                 {

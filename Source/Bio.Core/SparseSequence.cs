@@ -187,7 +187,7 @@ namespace Bio
                 throw new ArgumentNullException(ParameterNameSequenceItems);
             }
 
-            var sequenceArray = sequenceItems.ToArray();
+            byte[] sequenceArray = sequenceItems.ToArray();
             if (!alphabet.ValidateSequence(sequenceArray, 0, sequenceArray.GetLongLength()))
             {
                 throw new ArgumentOutOfRangeException(nameof(sequenceItems));
@@ -195,8 +195,8 @@ namespace Bio
 
             Statistics = new SequenceStatistics(alphabet);
 
-            var position = index;
-            foreach (var sequenceItem in sequenceArray)
+            int position = index;
+            foreach (byte sequenceItem in sequenceArray)
             {
                 sparseSeqItems.Add(position, sequenceItem);
                 Statistics.Add((char)sequenceItem);
@@ -312,7 +312,7 @@ namespace Bio
                          ParameterNameIndex,
                          ParameterMustLessThanCount);
 
-                var item = byte.MinValue;
+                byte item = byte.MinValue;
                 if (sparseSeqItems.ContainsKey(index))
                 {
                     item = sparseSeqItems[index];
@@ -380,7 +380,7 @@ namespace Bio
                 throw new ArgumentOutOfRangeException(nameof(length));
             }
 
-            var subSequence = new byte[length];
+            byte[] subSequence = new byte[length];
             for (long index = 0; index < length; index++)
             {
                 subSequence[index] = this[start + index];
@@ -407,7 +407,7 @@ namespace Bio
                 throw new ArgumentException(DestArrayNotLargeEnough);
             }
 
-            var seq = (Sequence)GetSubSequence(0, sparseSeqItems.Count);
+            Sequence seq = (Sequence)GetSubSequence(0, sparseSeqItems.Count);
             seq.CopyTo(byteArray, start, count);
         }
 
@@ -415,7 +415,7 @@ namespace Bio
         /// <inheritdoc />
         public byte[] GetData(long startIndex = 0, long length = -1)
         {
-            var seq = (Sequence)GetSubSequence(0, sparseSeqItems.Count);
+            Sequence seq = (Sequence)GetSubSequence(0, sparseSeqItems.Count);
             return seq.GetData(startIndex, length);
         }
 
@@ -457,11 +457,11 @@ namespace Bio
                     return startPos;
                 }
 
-                var aliasSymbolsMap = Alphabet.GetSymbolValueMap();
+                byte[] aliasSymbolsMap = Alphabet.GetSymbolValueMap();
 
-                for (var index = startPos; index < Count; index++)
+                for (long index = startPos; index < Count; index++)
                 {
-                    var symbol = aliasSymbolsMap[sparseSeqItems[index]];
+                    byte symbol = aliasSymbolsMap[sparseSeqItems[index]];
                     if (!gapSymbols.Contains(symbol))
                     {
                         return index;
@@ -513,11 +513,11 @@ namespace Bio
                     return endPos;
                 }
 
-                var aliasSymbolsMap = Alphabet.GetSymbolValueMap();
+                byte[] aliasSymbolsMap = Alphabet.GetSymbolValueMap();
 
-                for (var index = endPos; index >= 0; index--)
+                for (long index = endPos; index >= 0; index--)
                 {
-                    var symbol = aliasSymbolsMap[sparseSeqItems[index]];
+                    byte symbol = aliasSymbolsMap[sparseSeqItems[index]];
                     if (!gapSymbols.Contains(symbol))
                     {
                         return index;
@@ -538,7 +538,7 @@ namespace Bio
         /// <returns>Sequence items with their position as ReadOnlyCollection of IndexedSequenceItem.</returns>
         public IReadOnlyList<IndexedItem<byte>> GetKnownSequenceItems()
         {
-            var indexedSeqItems = sparseSeqItems.Keys.Select(key => new IndexedItem<byte>(key, sparseSeqItems[key])).ToList();
+            List<IndexedItem<byte>> indexedSeqItems = sparseSeqItems.Keys.Select(key => new IndexedItem<byte>(key, sparseSeqItems[key])).ToList();
             return indexedSeqItems;
         }
 

@@ -50,7 +50,7 @@ namespace Bio.Algorithms.Translation
         /// <returns>True/False if the value exists</returns>
         public static bool TryLookup(byte n1, byte n2, byte n3, out byte aminoAcid)
         {
-            var codon = new char[3];
+            char[] codon = new char[3];
             codon[0] = char.ToUpperInvariant((char)n1);
             codon[1] = char.ToUpperInvariant((char)n2);
             codon[2] = char.ToUpperInvariant((char)n3);

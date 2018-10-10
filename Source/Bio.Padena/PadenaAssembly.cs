@@ -112,8 +112,8 @@ namespace Bio.Algorithms.Assembly.Padena
         /// <returns>All Contig sequences Data.</returns>
         public override string ToString()
         {
-            var builder = new StringBuilder();
-            foreach (var contigSequence in ContigSequences)
+            StringBuilder builder = new StringBuilder();
+            foreach (ISequence contigSequence in ContigSequences)
             {
                 builder.AppendLine(contigSequence.ToString());
             }

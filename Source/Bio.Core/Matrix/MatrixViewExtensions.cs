@@ -36,7 +36,7 @@ namespace Bio.Matrix
 
             //!!!Could check of this is a SelectRowsAndColsView of a SelectRowsAndColsView and simplify (see TransposeView for an example)
 
-            var matrixView = new SelectRowsAndColsView<TRowKey, TColKey, TValue>();
+            SelectRowsAndColsView<TRowKey, TColKey, TValue> matrixView = new SelectRowsAndColsView<TRowKey, TColKey, TValue>();
             matrixView.SetUp(parentMatrix, rowKeySequence, colKeySequence);
             return matrixView;
         }
@@ -221,7 +221,7 @@ namespace Bio.Matrix
             this Matrix<TRowKey, TColKey, TValueParent> parentMatrix, ValueConverter<TValueParent, TValueView> converter, TValueView missingValue)
         {
             // catch the case where we are converting back to the original matrix
-            var asConvertValueView = parentMatrix as ConvertValueView<TRowKey, TColKey, TValueParent, TValueView>;
+            ConvertValueView<TRowKey, TColKey, TValueParent, TValueView> asConvertValueView = parentMatrix as ConvertValueView<TRowKey, TColKey, TValueParent, TValueView>;
             if (asConvertValueView != null &&
                 asConvertValueView.ViewValueToParentValue.Equals(converter.ConvertForward) &&
                 asConvertValueView.ParentValueToViewValue.Equals(converter.ConvertBackward))
@@ -229,7 +229,7 @@ namespace Bio.Matrix
                 return asConvertValueView.ParentMatrix;
             }
 
-            var matrixView = new ConvertValueView<TRowKey, TColKey, TValueView, TValueParent>();
+            ConvertValueView<TRowKey, TColKey, TValueView, TValueParent> matrixView = new ConvertValueView<TRowKey, TColKey, TValueView, TValueParent>();
             matrixView.SetUp(parentMatrix, converter, missingValue);
             return matrixView;
         }
@@ -248,13 +248,13 @@ namespace Bio.Matrix
             this Matrix<TRowKey, TColKey, TValue> parentMatrix)
         {
             //If this is a transpose of a transpose, simplify
-            var parentTransposeViewOrNull = parentMatrix as TransposeView<TRowKey, TColKey, TValue>;
+            TransposeView<TRowKey, TColKey, TValue> parentTransposeViewOrNull = parentMatrix as TransposeView<TRowKey, TColKey, TValue>;
             if (null != parentTransposeViewOrNull)
             {
                 return parentTransposeViewOrNull.ParentMatrix;
             }
 
-            var transposeView = new TransposeView<TColKey, TRowKey, TValue>();
+            TransposeView<TColKey, TRowKey, TValue> transposeView = new TransposeView<TColKey, TRowKey, TValue>();
             transposeView.ParentMatrix = parentMatrix;
             return transposeView;
         }
@@ -391,17 +391,17 @@ namespace Bio.Matrix
             }
 
             //If this is a permutation of a permutation, simplify
-            var parentPermuteValuesViewOrNull = parentMatrix as PermuteValuesView<TRowKey, TColKey, TValue>;
+            PermuteValuesView<TRowKey, TColKey, TValue> parentPermuteValuesViewOrNull = parentMatrix as PermuteValuesView<TRowKey, TColKey, TValue>;
             if (null != parentPermuteValuesViewOrNull)
             {
-                var colIndexSequenceTwo = colIndexSequence.Select(i => parentPermuteValuesViewOrNull.IndexOfParentCol[i]);
-                var matrixView = new PermuteValuesView<TRowKey, TColKey, TValue>();
+                IEnumerable<int> colIndexSequenceTwo = colIndexSequence.Select(i => parentPermuteValuesViewOrNull.IndexOfParentCol[i]);
+                PermuteValuesView<TRowKey, TColKey, TValue> matrixView = new PermuteValuesView<TRowKey, TColKey, TValue>();
                 matrixView.SetUp(parentPermuteValuesViewOrNull.ParentMatrix, colIndexSequenceTwo);
                 return matrixView;
             }
             else
             {
-                var matrixView = new PermuteValuesView<TRowKey, TColKey, TValue>();
+                PermuteValuesView<TRowKey, TColKey, TValue> matrixView = new PermuteValuesView<TRowKey, TColKey, TValue>();
                 matrixView.SetUp(parentMatrix, colIndexSequence);
                 return matrixView;
             }
@@ -482,13 +482,13 @@ namespace Bio.Matrix
             this Matrix<TRowKey, TColKey, TValue> parentMatrix)
         {
             //If this is a HashableView of a HashableView, simplify
-            var parentHashableViewOrNull = parentMatrix as HashableView<TRowKey, TColKey, TValue>;
+            HashableView<TRowKey, TColKey, TValue> parentHashableViewOrNull = parentMatrix as HashableView<TRowKey, TColKey, TValue>;
             if (null != parentHashableViewOrNull)
             {
                 return parentHashableViewOrNull.ParentMatrix;
             }
 
-            var hashableView = new HashableView<TRowKey, TColKey, TValue>();
+            HashableView<TRowKey, TColKey, TValue> hashableView = new HashableView<TRowKey, TColKey, TValue>();
             hashableView.ParentMatrix = parentMatrix;
             return hashableView;
         }

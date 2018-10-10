@@ -59,7 +59,7 @@ namespace Bio
         /// <param name="values"></param>
         public void AddValidValues(params string[] values)
         {
-            foreach (var value in values)
+            foreach (string value in values)
             {
                 if (!validValues.Contains(value))
                 {
@@ -75,7 +75,7 @@ namespace Bio
         /// <returns>True if the value is valid.</returns>
         public bool IsValid(object parameterValue)
         {
-            var s = parameterValue as string;
+            string s = parameterValue as string;
             return s != null && IsValid(s);
         }
 

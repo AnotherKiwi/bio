@@ -91,14 +91,14 @@ namespace Bio.Algorithms.Assembly.Padena
             danglingLinkLengths = new SortedSet<int>();
             danglingLinkExtensionTasks = new List<Task<int>>();
 
-            var graphNodes = graph.GetNodes();
+            IEnumerable<DeBruijnNode> graphNodes = graph.GetNodes();
 
-            var linkLengths = new BlockingCollection<int>();
+            BlockingCollection<int> linkLengths = new BlockingCollection<int>();
             
             // Start consumer task
             // TODO: This length list should contain elements from ~1-19, decide if 
             // having a separate thread keep those numbers sorted is worthwhile
-            var collectionTask = Task.Run(() =>
+            Task collectionTask = Task.Run(() =>
             {
                 while (!linkLengths.IsCompleted)
                 {
@@ -111,12 +111,12 @@ namespace Bio.Algorithms.Assembly.Padena
             });
            
             //and now the producer
-            var continueSearching = true;
+            bool continueSearching = true;
             while (continueSearching)
             {
                 continueSearching = false;
 
-                var threshold = erosionThreshold;
+                int threshold = erosionThreshold;
                 Parallel.ForEach(graphNodes, node =>
                     {
                         continueSearching = true;
@@ -137,7 +137,7 @@ namespace Bio.Algorithms.Assembly.Padena
                         {
                             // End of possible dangling link
                             // Trace back to see if it is part of a dangling link.
-                            var link = TraceDanglingExtensionLink(false, new DeBruijnPath(), node, true);
+                            DeBruijnPath link = TraceDanglingExtensionLink(false, new DeBruijnPath(), node, true);
                             if (link != null && link.PathNodes.Count > 0)
                             {
                                 linkLengths.Add(link.PathNodes.Count);
@@ -147,7 +147,7 @@ namespace Bio.Algorithms.Assembly.Padena
                         {
                             // End of possible dangling link
                             // Trace back to see if it is part of a dangling link.
-                            var link = TraceDanglingExtensionLink(true, new DeBruijnPath(), node, true);
+                            DeBruijnPath link = TraceDanglingExtensionLink(true, new DeBruijnPath(), node, true);
                             if (link != null && link.PathNodes.Count > 0)
                             {
                                 linkLengths.Add(link.PathNodes.Count);
@@ -157,7 +157,7 @@ namespace Bio.Algorithms.Assembly.Padena
 
                 // Remove eroded nodes. In the out parameter, get the list of new 
                 // end-points that was created by removing eroded nodes.
-                var nodes = RemoveErodedNodes(graph);
+                IList<DeBruijnNode> nodes = RemoveErodedNodes(graph);
                 if (nodes.Count == 0)
                 {
                     break;
@@ -185,7 +185,7 @@ namespace Bio.Algorithms.Assembly.Padena
             if (deBruijnGraph == null)
                 throw new ArgumentNullException(nameof(deBruijnGraph));
 
-            var debruijnPaths = new ConcurrentBag<DeBruijnPath>();
+            ConcurrentBag<DeBruijnPath> debruijnPaths = new ConcurrentBag<DeBruijnPath>();
 
             Parallel.ForEach(deBruijnGraph.GetNodes(), node =>
             {
@@ -198,7 +198,7 @@ namespace Bio.Algorithms.Assembly.Padena
                     {
                         // End of possible dangling link
                         // Trace back to see if it is part of a dangling link
-                        var link = TraceDanglingExtensionLink(false, new DeBruijnPath(), node, true);
+                        DeBruijnPath link = TraceDanglingExtensionLink(false, new DeBruijnPath(), node, true);
                         if (link != null  && link.PathNodes.Count>0)
                         {
                             debruijnPaths.Add(link);
@@ -208,7 +208,7 @@ namespace Bio.Algorithms.Assembly.Padena
                     {
                         // End of possible dangling link
                         // Trace back to see if it is part of a dangling link
-                        var link = TraceDanglingExtensionLink(true, new DeBruijnPath(), node, true);
+                        DeBruijnPath link = TraceDanglingExtensionLink(true, new DeBruijnPath(), node, true);
                         if (link != null && link.PathNodes.Count>0)//if the first node is below the threshold, it is not added, leaving a link with no nodes, so check is needed
                         {
                             debruijnPaths.Add(link);
@@ -234,7 +234,7 @@ namespace Bio.Algorithms.Assembly.Padena
             if (nodesList == null)
                 throw new ArgumentNullException(nameof(nodesList));
             
-            var lastNodes = new HashSet<DeBruijnNode>(nodesList.Paths.Select(nl => nl.PathNodes.Last()));
+            HashSet<DeBruijnNode> lastNodes = new HashSet<DeBruijnNode>(nodesList.Paths.Select(nl => nl.PathNodes.Last()));
 
             // Update extensions and Delete nodes from graph.
             deBruijnGraph.RemoveNodes(
@@ -256,14 +256,14 @@ namespace Bio.Algorithms.Assembly.Padena
         /// <param name="graph">De Bruijn Graph.</param>
         private static IList<DeBruijnNode> RemoveErodedNodes(DeBruijnGraph graph)
         {
-            var eroded = graph.RemoveMarkedNodes()>0;
+            bool eroded = graph.RemoveMarkedNodes()>0;
 
             IList<DeBruijnNode> graphNodes;
             if (eroded)
             {
                 graphNodes = graph.GetNodes().AsParallel().Where(n =>
                 {
-                    var wasEndPoint = (n.LeftExtensionNodesCount == 0 || n.RightExtensionNodesCount == 0);
+                    bool wasEndPoint = (n.LeftExtensionNodesCount == 0 || n.RightExtensionNodesCount == 0);
                     n.RemoveMarkedExtensions();
                     // Check if this is a new end point.
                     return (wasEndPoint || (n.LeftExtensionNodesCount == 0 || n.RightExtensionNodesCount == 0));
@@ -287,12 +287,12 @@ namespace Bio.Algorithms.Assembly.Padena
         {
             // Nodes in the list are part of a single dangling link.
             // Only the last element of link can have left or right extensions that are valid parts of graph.
-            var linkStartNode = nodes.PathNodes.Last();
+            DeBruijnNode linkStartNode = nodes.PathNodes.Last();
 
             // Update adjacency of nodes connected to the last node. 
             // Read lock not required as linkStartNode's dictionary will not get updated
             // Locks used during removal of extensions.
-            foreach (var graphNode in linkStartNode.GetExtensionNodes())
+            foreach (DeBruijnNode graphNode in linkStartNode.GetExtensionNodes())
             {
                 // Condition to avoid updating other linkStartNode's dictionary. Reduces conflicts.
                 if (!lastNodes.Contains(graphNode))
@@ -383,7 +383,7 @@ namespace Bio.Algorithms.Assembly.Padena
                 }
 
                 // Still in loop, so just add the extension and keeps going
-                var item = sameDirectionExtensions.First();
+                KeyValuePair<DeBruijnNode, bool> item = sameDirectionExtensions.First();
                 node = item.Key;
                 sameOrientation = !(sameOrientation ^ item.Value);
             }
@@ -445,11 +445,11 @@ namespace Bio.Algorithms.Assembly.Padena
         {
             if (danglingLinkExtensionTasks != null && danglingLinkExtensionTasks.Count > 0)
             {
-                var tasks = danglingLinkExtensionTasks.ToArray();
+                Task<int>[] tasks = danglingLinkExtensionTasks.ToArray();
                 tasks.ForEach(t => t.Start());
                 Task.WaitAll(tasks);
 
-                var t2 = tasks.AsParallel().Select(t => t.Result).ToList();
+                List<int> t2 = tasks.AsParallel().Select(t => t.Result).ToList();
                 danglingLinkLengths.Union(t2.Where(l => l > 0));
 
                 // variable may be referenced later so should not be set to null

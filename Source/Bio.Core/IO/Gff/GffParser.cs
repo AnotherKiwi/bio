@@ -117,13 +117,13 @@ namespace Bio.IO.Gff
             sequences = new List<Tuple<ISequence, List<byte>>>();
             sequencesInHeader = new List<Tuple<ISequence, List<byte>>>();
 
-            var alphabet = Alphabet ?? Alphabets.DNA;
+            IAlphabet alphabet = Alphabet ?? Alphabets.DNA;
             commonSeq = new Sequence(alphabet, String.Empty);
 
-            using (var reader = stream.OpenRead())
+            using (StreamReader reader = stream.OpenRead())
             {
                 // The GFF spec says that all headers need to be at the top of the file.
-                var line = ParseHeaders(reader);
+                string line = ParseHeaders(reader);
 
                 // A feature file with no features? May it never be.
                 if (reader.EndOfStream)
@@ -154,9 +154,9 @@ namespace Bio.IO.Gff
         /// <returns></returns>
         private string ParseHeaders(TextReader reader)
         {
-            var comments = string.Empty;
-            var commentsCount = 1;
-            var line = reader.ReadLine();
+            string comments = string.Empty;
+            int commentsCount = 1;
+            string line = reader.ReadLine();
             while (line == "")
             {
                 line = reader.ReadLine();
@@ -167,7 +167,7 @@ namespace Bio.IO.Gff
                 // process headers, but ignore other comments
                 if (line.StartsWith(HeaderMark, StringComparison.Ordinal))
                 {
-                    var fields = line.Substring(3 - 1).Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] fields = line.Substring(3 - 1).Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
                     // Add if any comments.
                     if (!string.IsNullOrEmpty(comments))
@@ -184,7 +184,7 @@ namespace Bio.IO.Gff
                         case GffVersionKey:
                             if (fields.Length > 1 && fields[1] != "2")
                             {
-                                var message = String.Format(
+                                string message = String.Format(
                                     CultureInfo.CurrentCulture,
                                     Resource.GffUnsupportedVersion);
                                 Trace.Report(message);
@@ -198,7 +198,7 @@ namespace Bio.IO.Gff
 
                         case SourceVersionKey:
 
-                            var sourceVersion = new MetadataListItem<string>(SourceVersionKey, string.Empty);
+                            MetadataListItem<string> sourceVersion = new MetadataListItem<string>(SourceVersionKey, string.Empty);
                             sourceVersion.SubItems.Add(SourceKey, fields[1]);
                             sourceVersion.SubItems.Add(VersionKey, fields[2]);
                             commonSeq.Metadata[SourceVersionKey] = sourceVersion;
@@ -208,7 +208,7 @@ namespace Bio.IO.Gff
                             DateTime date;
                             if (!DateTime.TryParse(fields[1], out date))
                             {
-                                var message = String.Format(CultureInfo.CurrentCulture, Resource.ParserInvalidDate);
+                                string message = String.Format(CultureInfo.CurrentCulture, Resource.ParserInvalidDate);
                                 Trace.Report(message);
                                 throw new FormatException(message);
                             }
@@ -221,7 +221,7 @@ namespace Bio.IO.Gff
                                 commonSeq.Alphabet = GetAlphabetType(fields[1]);
                                 if (commonSeq.Alphabet == null)
                                 {
-                                    var message = String.Format(CultureInfo.CurrentCulture, Resource.InvalidType);
+                                    string message = String.Format(CultureInfo.CurrentCulture, Resource.InvalidType);
                                     Trace.Report(message);
                                     throw new FormatException(message);
                                 }
@@ -235,7 +235,7 @@ namespace Bio.IO.Gff
 
                                 if (specificSeq.Item1.Alphabet == null)
                                 {
-                                    var message = String.Format(CultureInfo.CurrentCulture, Resource.InvalidType);
+                                    string message = String.Format(CultureInfo.CurrentCulture, Resource.InvalidType);
                                     Trace.Report(message);
                                     throw new FormatException(message);
                                 }
@@ -259,13 +259,13 @@ namespace Bio.IO.Gff
                             {
                                 if (!line.StartsWith(HeaderMark, StringComparison.Ordinal))
                                 {
-                                    var message = String.Format(
+                                    string message = String.Format(
                                         CultureInfo.CurrentCulture,
                                         Resource.GffInvalidSequence);
                                     Trace.Report(message);
                                     throw new FormatException(message);
                                 }
-                                var tempSeqData = Encoding.UTF8.GetBytes(line.Substring(3 - 1).ToCharArray());
+                                byte[] tempSeqData = Encoding.UTF8.GetBytes(line.Substring(3 - 1).ToCharArray());
                                 sequenceDataLength += tempSeqData.Length;
 
                                 specificSeq.Item2.AddRange(tempSeqData);
@@ -331,11 +331,11 @@ namespace Bio.IO.Gff
                 }
                 else
                 {
-                    var featureFields = line.Split(new[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] featureFields = line.Split(new[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
 
                     if (featureFields.Length < MinFieldsPerFeature || featureFields.Length > MaxFieldsPerFeature)
                     {
-                        var message = string.Format(
+                        string message = string.Format(
                             CultureInfo.CurrentCulture,
                             Resource.INVALID_INPUT_FILE,
                             Name);
@@ -378,8 +378,8 @@ namespace Bio.IO.Gff
                     }
 
                     // use feature name as key; attributes field is stored as free text
-                    var attributes = (featureFields.Length == 9 ? featureFields[8] : string.Empty);
-                    var feature = new MetadataListItem<List<string>>(featureFields[2], attributes);
+                    string attributes = (featureFields.Length == 9 ? featureFields[8] : string.Empty);
+                    MetadataListItem<List<string>> feature = new MetadataListItem<List<string>>(featureFields[2], attributes);
 
                     // source
                     feature.SubItems.Add(SourceKey, new List<string> { featureFields[1] });
@@ -388,7 +388,7 @@ namespace Bio.IO.Gff
                     int ignoreMe;
                     if (!int.TryParse(featureFields[3], out ignoreMe))
                     {
-                        var message = String.Format(
+                        string message = String.Format(
                             CultureInfo.CurrentCulture,
                             Resource.GffInvalidField,
                             "start",
@@ -401,7 +401,7 @@ namespace Bio.IO.Gff
                     // end is an int
                     if (!int.TryParse(featureFields[4], out ignoreMe))
                     {
-                        var message = String.Format(
+                        string message = String.Format(
                             CultureInfo.CurrentCulture,
                             Resource.GffInvalidField,
                             "end",
@@ -418,7 +418,7 @@ namespace Bio.IO.Gff
                         double ignoreMeToo;
                         if (!double.TryParse(featureFields[5], out ignoreMeToo))
                         {
-                            var message = String.Format(
+                            string message = String.Format(
                                 CultureInfo.CurrentCulture,
                                 Resource.GffInvalidField,
                                 "score",
@@ -434,7 +434,7 @@ namespace Bio.IO.Gff
                     {
                         if (featureFields[6] != "+" && featureFields[6] != "-")
                         {
-                            var message = String.Format(
+                            string message = String.Format(
                                 CultureInfo.CurrentCulture,
                                 Resource.GffInvalidField,
                                 "strand",
@@ -450,7 +450,7 @@ namespace Bio.IO.Gff
                     {
                         if (!int.TryParse(featureFields[7], out ignoreMe))
                         {
-                            var message = String.Format(
+                            string message = String.Format(
                                 CultureInfo.CurrentCulture,
                                 Resource.GffInvalidField,
                                 "frame",
@@ -554,9 +554,9 @@ namespace Bio.IO.Gff
         /// will be set to true, otherwise it will be set to false.
         private void CopyMetadata()
         {
-            foreach (var seq in sequences)
+            foreach (Tuple<ISequence, List<byte>> seq in sequences)
             {
-                foreach (var pair in commonSeq.Metadata)
+                foreach (KeyValuePair<string, object> pair in commonSeq.Metadata)
                 {
                     seq.Item1.Metadata[pair.Key] = pair.Value;
                 }

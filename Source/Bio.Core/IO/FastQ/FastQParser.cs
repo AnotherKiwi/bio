@@ -87,13 +87,13 @@ namespace Bio.IO.FastQ
                 throw new ArgumentNullException(nameof(stream));
             }
 
-            var formatType = FormatType;
+            FastQFormatType formatType = FormatType;
 
-            using (var reader = stream.OpenRead())
+            using (StreamReader reader = stream.OpenRead())
             {
                 while (reader.Peek() != -1)
                 {
-                    var seq = ParseOne(reader, formatType);
+                    IQualitativeSequence seq = ParseOne(reader, formatType);
                     if (seq != null)
                     {
                         yield return seq;
@@ -125,7 +125,7 @@ namespace Bio.IO.FastQ
                 throw new ArgumentNullException(nameof(stream));
             }
 
-            using (var reader = stream.OpenRead())
+            using (StreamReader reader = stream.OpenRead())
             {
                 return ParseOne(reader, formatType);
             }
@@ -144,21 +144,21 @@ namespace Bio.IO.FastQ
                 return null;
             }
 
-            var line = ReadNextLine(reader, true);
+            string line = ReadNextLine(reader, true);
             if (line == null || !line.StartsWith("@", StringComparison.Ordinal))
             {
-                var message = string.Format(CultureInfo.CurrentCulture, Resource.INVALID_INPUT_FILE, Name);
+                string message = string.Format(CultureInfo.CurrentCulture, Resource.INVALID_INPUT_FILE, Name);
                 throw new Exception(message);
             }
 
             // Process header line.
-            var id = line.Substring(1).Trim();
+            string id = line.Substring(1).Trim();
 
             line = ReadNextLine(reader, true);
             if (string.IsNullOrEmpty(line))
             {
-                var details = string.Format(CultureInfo.CurrentCulture, Resource.FastQ_InvalidSequenceLine, id);
-                var message = string.Format(
+                string details = string.Format(CultureInfo.CurrentCulture, Resource.FastQ_InvalidSequenceLine, id);
+                string message = string.Format(
                     CultureInfo.CurrentCulture,
                     Resource.IOFormatErrorMessage,
                     Name,
@@ -167,7 +167,7 @@ namespace Bio.IO.FastQ
             }
 
             // Get sequence from second line.
-            var sequenceData = Encoding.ASCII.GetBytes(line);
+            byte[] sequenceData = Encoding.ASCII.GetBytes(line);
 
             // Goto third line.
             line = ReadNextLine(reader, true);
@@ -175,11 +175,11 @@ namespace Bio.IO.FastQ
             // Check for '+' symbol in the third line.
             if (line == null || !line.StartsWith("+", StringComparison.Ordinal))
             {
-                var details = string.Format(
+                string details = string.Format(
                     CultureInfo.CurrentCulture,
                     Resource.FastQ_InvalidQualityScoreHeaderLine,
                     id);
-                var message = string.Format(
+                string message = string.Format(
                     CultureInfo.CurrentCulture,
                     Resource.IOFormatErrorMessage,
                     Name,
@@ -187,15 +187,15 @@ namespace Bio.IO.FastQ
                 throw new Exception(message);
             }
 
-            var qualScoreId = line.Substring(1).Trim();
+            string qualScoreId = line.Substring(1).Trim();
 
             if (!string.IsNullOrEmpty(qualScoreId) && !id.Equals(qualScoreId))
             {
-                var details = string.Format(
+                string details = string.Format(
                     CultureInfo.CurrentCulture,
                     Resource.FastQ_InvalidQualityScoreHeaderData,
                     id);
-                var message = string.Format(
+                string message = string.Format(
                     CultureInfo.CurrentCulture,
                     Resource.IOFormatErrorMessage,
                     Name,
@@ -208,8 +208,8 @@ namespace Bio.IO.FastQ
 
             if (string.IsNullOrEmpty(line))
             {
-                var details = string.Format(CultureInfo.CurrentCulture, Resource.FastQ_EmptyQualityScoreLine, id);
-                var message = string.Format(
+                string details = string.Format(CultureInfo.CurrentCulture, Resource.FastQ_EmptyQualityScoreLine, id);
+                string message = string.Format(
                     CultureInfo.CurrentCulture,
                     Resource.IOFormatErrorMessage,
                     Name,
@@ -218,16 +218,16 @@ namespace Bio.IO.FastQ
             }
 
             // Get the quality scores from the fourth line.
-            var qualScores = Encoding.ASCII.GetBytes(line);
+            byte[] qualScores = Encoding.ASCII.GetBytes(line);
 
             // Check for sequence length and quality score length.
             if (sequenceData.GetLongLength() != qualScores.GetLongLength())
             {
-                var details = string.Format(
+                string details = string.Format(
                     CultureInfo.CurrentCulture,
                     Resource.FastQ_InvalidQualityScoresLength,
                     id);
-                var message = string.Format(
+                string message = string.Format(
                     CultureInfo.CurrentCulture,
                     Resource.IOFormatErrorMessage,
                     Name,
@@ -236,7 +236,7 @@ namespace Bio.IO.FastQ
             }
 
             // Auto detect alphabet if alphabet is set to null, else validate with already set alphabet
-            var alphabet = Alphabet;
+            IAlphabet alphabet = Alphabet;
             if (alphabet == null)
             {
                 alphabet = Alphabets.AutoDetectAlphabet(sequenceData, 0, sequenceData.GetLongLength(), alphabet);
@@ -268,7 +268,7 @@ namespace Bio.IO.FastQ
         private static string ReadNextLine(TextReader reader, bool skipBlankLine)
         {
             // Continue reading if blank line found.
-            var line = reader.ReadLine();
+            string line = reader.ReadLine();
             while (skipBlankLine && line != null && string.IsNullOrEmpty(line))
             {
                 line = reader.ReadLine();

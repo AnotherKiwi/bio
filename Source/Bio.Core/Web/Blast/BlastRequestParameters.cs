@@ -61,7 +61,7 @@ namespace Bio.Web.Blast
             ExtraParameters = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             Program = BlastProgram.Blastn;
             if (extraParameters != null) {
-                foreach (var item in extraParameters)
+                foreach (KeyValuePair<string, string> item in extraParameters)
                     ExtraParameters.Add(item);
             }
         }

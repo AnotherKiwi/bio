@@ -127,14 +127,14 @@ namespace Bio
             // Sort match list according to start indices
             matchList.Sort(CompareDifferenceNode);
 
-            var diffList = new List<DifferenceNode>();
+            List<DifferenceNode> diffList = new List<DifferenceNode>();
 
             int mismatchStart1, mismatchStart2, mismatchEnd1, mismatchEnd2;
             mismatchStart1 = 0;
             mismatchStart2 = 0;
 
             // There might be some mutation at starting
-            var first = matchList[0];
+            WordMatch first = matchList[0];
             if (first.Sequence1Start > 0 || first.Sequence2Start > 0)
             {
                 diffList.Add(new DifferenceNode(0, 0, first.Sequence1Start - 1, first.Sequence2Start - 1));
@@ -145,7 +145,7 @@ namespace Bio
             mismatchStart1 = first.Sequence1Start + first.Length;
             mismatchStart2 = first.Sequence2Start + first.Length;
 
-            foreach (var n in matchList)
+            foreach (WordMatch n in matchList)
             {
                 mismatchEnd1 = n.Sequence1Start - 1;
                 mismatchEnd2 = n.Sequence2Start - 1;
@@ -179,8 +179,8 @@ namespace Bio
                 throw new ArgumentNullException(nameof(diffList));
             }
 
-            var features = new List<CompareFeature>();
-            foreach (var diff in diffList)
+            List<CompareFeature> features = new List<CompareFeature>();
+            foreach (DifferenceNode diff in diffList)
             {
                 features.AddRange(
                     ComputeFeatures(
@@ -229,11 +229,11 @@ namespace Bio
             int sequence1Index,
             int sequence2Index)
         {
-            var features = new List<CompareFeature>();
+            List<CompareFeature> features = new List<CompareFeature>();
             string noteStr, replaceStr, conflictStr, sourceStr;
 
-            var sequence1Length = sequence1End - sequence1Start + 1;
-            var sequence2Length = sequence2End - sequence2Start + 1;
+            int sequence1Length = sequence1End - sequence1Start + 1;
+            int sequence2Length = sequence2End - sequence2Start + 1;
 
             if (sequence1Length != 0)
             {
@@ -279,7 +279,7 @@ namespace Bio
                 {                    
                     if (replaceStr.Length > 0)
                     {
-                        var seqstring = new string(sequence1.Select(a => (char)a).ToArray());
+                        string seqstring = new string(sequence1.Select(a => (char)a).ToArray());
                         sourceStr = seqstring .Substring(sequence1Start, sequence1Length);
                         conflictStr = string.Format(CultureInfo.CurrentCulture, "{0} -> {1}", sourceStr, replaceStr);
                     }

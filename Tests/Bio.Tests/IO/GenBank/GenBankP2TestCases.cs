@@ -364,7 +364,7 @@ using NUnit.Framework;
 
             try
             {
-                var parserObj = new GenBankParser();
+                GenBankParser parserObj = new GenBankParser();
                 if (string.Equals(Constants.SimpleGenBankNodeName, node))
                 {
                     parserObj.LocationBuilder = null;

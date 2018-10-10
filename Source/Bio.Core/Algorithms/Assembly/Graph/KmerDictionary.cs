@@ -33,7 +33,7 @@ namespace Bio.Algorithms.Assembly.Graph
         /// </summary>
         public KmerDictionary()
         {
-            var maxSize = (ulong) Math.Pow(2, HashLength);
+            ulong maxSize = (ulong) Math.Pow(2, HashLength);
             
             // Create a list of buckets up to that size
             _buckets = new BinaryTreeOfDebrujinNodes[maxSize];
@@ -61,8 +61,8 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <returns>The node representing this value</returns>
         public DeBruijnNode SetNewOrGetOld(KmerData32 value)
         {
-            var bucket = AssignBucket(value);
-            var curBucket = _buckets[bucket];
+            int bucket = AssignBucket(value);
+            BinaryTreeOfDebrujinNodes curBucket = _buckets[bucket];
 
             //keep it thread safe for additions
             DeBruijnNode toReturn;
@@ -90,8 +90,8 @@ namespace Bio.Algorithms.Assembly.Graph
         /// <returns>true if the item has previously been assigned a serial number; otherwise, false.</returns>
         public DeBruijnNode TryGetOld(KmerData32 kmer)
         {
-            var bucketIndex = AssignBucket(kmer);
-            var tree = _buckets[bucketIndex];
+            int bucketIndex = AssignBucket(kmer);
+            BinaryTreeOfDebrujinNodes tree = _buckets[bucketIndex];
             return tree.SearchTree(kmer);
         }
 
@@ -120,7 +120,7 @@ namespace Bio.Algorithms.Assembly.Graph
             }
             else
             {
-                var tnodes = new List<DeBruijnNode>((int) NodeCount);
+                List<DeBruijnNode> tnodes = new List<DeBruijnNode>((int) NodeCount);
                 tnodes.AddRange(GetNodes());
                 nodes = tnodes;
             }

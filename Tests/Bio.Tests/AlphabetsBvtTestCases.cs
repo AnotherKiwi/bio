@@ -36,18 +36,22 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateAll()
         {
-            var refAlphabets = new List<IAlphabet>
+            List<IAlphabet> refAlphabets = new List<IAlphabet>
                 {
                     DnaAlphabet.Instance,
                     AmbiguousDnaAlphabet.Instance,
                     RnaAlphabet.Instance,
                     AmbiguousRnaAlphabet.Instance,
+                    StrictProteinAlphabet.Instance,
                     ProteinAlphabet.Instance,
-                    AmbiguousProteinAlphabet.Instance
+                    AmbiguousProteinAlphabet.Instance,
+                    ProteinFragmentAlphabet.Instance,
+                    PeaksPeptideAlphabet.Instance,
+                    ProteinScapePeptideAlphabet.Instance
                 };
-            var allAphabets = Alphabets.All;
+            IReadOnlyList<IAlphabet> allAphabets = Alphabets.All;
 
-            for (var i = 0; i < refAlphabets.Count; i++)
+            for (int i = 0; i < refAlphabets.Count; i++)
             {
                 Assert.AreEqual(refAlphabets[i].Name, allAphabets[i].Name);
             }
@@ -65,14 +69,14 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateAutoDetectAlphabet()
         {
-            var alphabetName = utilityObj.xmlUtil.GetTextValue(
+            string alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.DnaDerivedSequenceNode, Constants.AlphabetNameNode);
-            var dnaSequence = utilityObj.xmlUtil.GetTextValue(
+            string dnaSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.DnaDerivedSequenceNode, Constants.ExpectedDerivedSequence);
-            var dnaArray = Encoding.UTF8.GetBytes(dnaSequence);
+            byte[] dnaArray = Encoding.UTF8.GetBytes(dnaSequence);
 
             //Validating for Dna.
-            var dnaAplhabet = Alphabets.AutoDetectAlphabet(dnaArray, 0, 4, null);
+            IAlphabet dnaAplhabet = Alphabets.AutoDetectAlphabet(dnaArray, 0, 4, null);
             Assert.AreEqual(dnaAplhabet.Name, alphabetName);
             ApplicationLog.WriteLine("Alphabets BVT: Validation of Auto Detect method for Dna completed successfully.");
 
@@ -80,11 +84,11 @@ namespace Bio.Tests
             alphabetName = "";
             alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.RnaDerivedSequenceNode, Constants.AlphabetNameNode);
-            var rnaSequence = utilityObj.xmlUtil.GetTextValue(
+            string rnaSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.RnaDerivedSequenceNode, Constants.ExpectedDerivedSequence);
-            var rnaArray = Encoding.UTF8.GetBytes(rnaSequence);
+            byte[] rnaArray = Encoding.UTF8.GetBytes(rnaSequence);
 
-            var rnaAplhabet = Alphabets.AutoDetectAlphabet(rnaArray, 0, 4, null);
+            IAlphabet rnaAplhabet = Alphabets.AutoDetectAlphabet(rnaArray, 0, 4, null);
             Assert.AreEqual(rnaAplhabet.Name, alphabetName);
             ApplicationLog.WriteLine("Alphabets BVT: Validation of Auto Detect method for Rna completed successfully.");
 
@@ -92,10 +96,10 @@ namespace Bio.Tests
             alphabetName = "";
             alphabetName = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinDerivedSequenceNode, Constants.AlphabetNameNode);
-            var proteinSequence = utilityObj.xmlUtil.GetTextValue(
+            string proteinSequence = utilityObj.xmlUtil.GetTextValue(
                 Constants.ProteinDerivedSequenceNode, Constants.ExpectedDerivedSequence);
-            var proteinArray = Encoding.UTF8.GetBytes(proteinSequence);
-            var proteinAplhabet = Alphabets.AutoDetectAlphabet(proteinArray, 0, 4, null);
+            byte[] proteinArray = Encoding.UTF8.GetBytes(proteinSequence);
+            IAlphabet proteinAplhabet = Alphabets.AutoDetectAlphabet(proteinArray, 0, 4, null);
             Assert.AreEqual(proteinAplhabet.Name, alphabetName);
             ApplicationLog.WriteLine("Alphabets BVT: Validation of Auto Detect method for Protein completed successfully.");
 
@@ -114,7 +118,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void AlphabetStaticCtorValidatePhaseOne()
         {
-            var seq =
+            Sequence seq =
                  new Sequence(Alphabets.DNA, "ATAGC");
                 Assert.AreEqual(seq.Count, 5);
                 Assert.AreEqual(new string(seq.Select(a => (char)a).ToArray()), "ATAGC");
@@ -129,7 +133,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateDnaAlphabetCompareSymbols()
         {
-            var alp = DnaAlphabet.Instance;
+            DnaAlphabet alp = DnaAlphabet.Instance;
             Assert.IsTrue(alp.CompareSymbols(65, 65));
 
             ApplicationLog.WriteLine(
@@ -273,9 +277,9 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateFriendlyNameForDna()
         {
-            var friendlyName = utilityObj.xmlUtil.GetTextValue(Constants.FriendlyNameNode,
+            string friendlyName = utilityObj.xmlUtil.GetTextValue(Constants.FriendlyNameNode,
                                     Constants.ExpectedFriendlyNamesDnaNode);
-            var friendlyNames = friendlyName.Split(',');
+            string[] friendlyNames = friendlyName.Split(',');
 
             Assert.AreEqual(DnaAlphabet.Instance.GetFriendlyName(DnaAlphabet.Instance.A), friendlyNames[0]);
             Assert.AreEqual(DnaAlphabet.Instance.GetFriendlyName(DnaAlphabet.Instance.C), friendlyNames[1]);
@@ -293,8 +297,8 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateAmbiguousDnaAplhabet()
         {
-            var ambiguousCharacters = new char[16] { 'A', 'M', 'R', 'S', 'W', 'Y', 'K', 'V', 'H', 'D', 'B', 'N', 'C', 'G', '-', 'T' };
-            var dnaAlphabetInstance = AmbiguousDnaAlphabet.Instance;
+            char[] ambiguousCharacters = new char[16] { 'A', 'M', 'R', 'S', 'W', 'Y', 'K', 'V', 'H', 'D', 'B', 'N', 'C', 'G', '-', 'T' };
+            AmbiguousDnaAlphabet dnaAlphabetInstance = AmbiguousDnaAlphabet.Instance;
 
             Assert.AreEqual((char)dnaAlphabetInstance.A, ambiguousCharacters[0]);
             Assert.AreEqual((char)dnaAlphabetInstance.AC, ambiguousCharacters[1]);
@@ -325,9 +329,9 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateFriendlyNameForAmbiguousDna()
         {
-            var friendlyName = utilityObj.xmlUtil.GetTextValue(Constants.FriendlyNameNode,
+            string friendlyName = utilityObj.xmlUtil.GetTextValue(Constants.FriendlyNameNode,
                                       Constants.ExpectedFriendlyNamesAmbiguousDnaNode);
-            var friendlyNames = friendlyName.Split(',');
+            string[] friendlyNames = friendlyName.Split(',');
 
             Assert.AreEqual(AmbiguousDnaAlphabet.Instance.GetFriendlyName(AmbiguousDnaAlphabet.Instance.AC), friendlyNames[0]);
             Assert.AreEqual(AmbiguousDnaAlphabet.Instance.GetFriendlyName(AmbiguousDnaAlphabet.Instance.GA), friendlyNames[1]);
@@ -365,7 +369,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateRnaAlphabetCompareSymbols()
         {
-            var alp = RnaAlphabet.Instance;
+            RnaAlphabet alp = RnaAlphabet.Instance;
             Assert.IsTrue(alp.CompareSymbols(65, 65));
 
             ApplicationLog.WriteLine(
@@ -498,9 +502,9 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateFriendlyNameForRna()
         {
-            var friendlyName = utilityObj.xmlUtil.GetTextValue(Constants.FriendlyNameNode,
+            string friendlyName = utilityObj.xmlUtil.GetTextValue(Constants.FriendlyNameNode,
                                     Constants.ExpectedFriendlyNamesRnaNode);
-            var friendlyNames = friendlyName.Split(',');
+            string[] friendlyNames = friendlyName.Split(',');
 
             Assert.AreEqual(RnaAlphabet.Instance.GetFriendlyName(RnaAlphabet.Instance.A), friendlyNames[0]);
             Assert.AreEqual(RnaAlphabet.Instance.GetFriendlyName(RnaAlphabet.Instance.C), friendlyNames[1]);
@@ -518,8 +522,8 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateAmbiguousRnaAplhabet()
         {
-            var ambiguousCharacters = new char[10] { 'M', 'H', 'W', 'R', 'D', 'S', 'V', 'K', 'B', 'Y' };
-            var rnaAlphabetInstance = AmbiguousRnaAlphabet.Instance;
+            char[] ambiguousCharacters = new char[10] { 'M', 'H', 'W', 'R', 'D', 'S', 'V', 'K', 'B', 'Y' };
+            AmbiguousRnaAlphabet rnaAlphabetInstance = AmbiguousRnaAlphabet.Instance;
 
             Assert.AreEqual((char)rnaAlphabetInstance.AC, ambiguousCharacters[0]);
             Assert.AreEqual((char)rnaAlphabetInstance.ACU, ambiguousCharacters[1]);
@@ -544,9 +548,9 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateFriendlyNameForAmbiguousRna()
         {
-            var friendlyName = utilityObj.xmlUtil.GetTextValue(Constants.FriendlyNameNode,
+            string friendlyName = utilityObj.xmlUtil.GetTextValue(Constants.FriendlyNameNode,
                                     Constants.ExpectedFriendlyNamesAmbiguousRnaNode);
-            var friendlyNames = friendlyName.Split(',');
+            string[] friendlyNames = friendlyName.Split(',');
 
             Assert.AreEqual(AmbiguousRnaAlphabet.Instance.GetFriendlyName(AmbiguousRnaAlphabet.Instance.Any), friendlyNames[0]);
             Assert.AreEqual(AmbiguousRnaAlphabet.Instance.GetFriendlyName(AmbiguousRnaAlphabet.Instance.AC), friendlyNames[1]);
@@ -584,7 +588,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateProAlphabetCompareSymbols()
         {
-            var alp = ProteinAlphabet.Instance;
+            ProteinAlphabet alp = ProteinAlphabet.Instance;
             Assert.IsTrue(alp.CompareSymbols(65, 65));
 
             ApplicationLog.WriteLine(
@@ -717,9 +721,9 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateFriendlyNameForProtein()
         {
-            var friendlyName = utilityObj.xmlUtil.GetTextValue(Constants.FriendlyNameNode,
+            string friendlyName = utilityObj.xmlUtil.GetTextValue(Constants.FriendlyNameNode,
                                     Constants.ExpectedFriendlyNamesProteinNode);
-            var friendlyNames = friendlyName.Split(',');
+            string[] friendlyNames = friendlyName.Split(',');
 
             Assert.AreEqual(ProteinAlphabet.Instance.GetFriendlyName(ProteinAlphabet.Instance.A), friendlyNames[0]);
             Assert.AreEqual(ProteinAlphabet.Instance.GetFriendlyName(ProteinAlphabet.Instance.C), friendlyNames[1]);
@@ -756,7 +760,7 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateAmbiguousProteinAplhabet()
         {
-            var proteinAlphabetInstance = AmbiguousProteinAlphabet.Instance;
+            AmbiguousProteinAlphabet proteinAlphabetInstance = AmbiguousProteinAlphabet.Instance;
             Assert.AreEqual(proteinAlphabetInstance.X, (byte)'X');
             Assert.AreEqual(proteinAlphabetInstance.Z, (byte)'Z');
             Assert.AreEqual(proteinAlphabetInstance.B, (byte)'B');
@@ -775,9 +779,9 @@ namespace Bio.Tests
         [Category("Priority0")]
         public void ValidateFriendlyNameForAmbiguousProtein()
         {
-            var friendlyName = utilityObj.xmlUtil.GetTextValue(Constants.FriendlyNameNode,
+            string friendlyName = utilityObj.xmlUtil.GetTextValue(Constants.FriendlyNameNode,
                                     Constants.ExpectedFriendlyNamesAmbiguousProteinNode);
-            var friendlyNames = friendlyName.Split(',');
+            string[] friendlyNames = friendlyName.Split(',');
 
             Assert.AreEqual(AmbiguousProteinAlphabet.Instance.GetFriendlyName(AmbiguousProteinAlphabet.Instance.X), friendlyNames[0]);
             Assert.AreEqual(AmbiguousProteinAlphabet.Instance.GetFriendlyName(AmbiguousProteinAlphabet.Instance.Z), friendlyNames[1]);
@@ -798,7 +802,7 @@ namespace Bio.Tests
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
         void ValidateGetAmbiguousCharacters(AlphabetsTypes option)
         {
-            var referenceCharacters = "";
+            string referenceCharacters = "";
             IAlphabet alphabetInstance = null;
 
             switch (option)
@@ -817,13 +821,13 @@ namespace Bio.Tests
                     break;
             }
 
-            var ambiguousCharacters = new HashSet<byte>();
+            HashSet<byte> ambiguousCharacters = new HashSet<byte>();
             ambiguousCharacters = alphabetInstance.GetAmbiguousSymbols();
-            var ambiguosCharacters = new string(ambiguousCharacters.Select(a => (char)a).ToArray());
+            string ambiguosCharacters = new string(ambiguousCharacters.Select(a => (char)a).ToArray());
 
-            var refCharacters = referenceCharacters.ToCharArray();
+            char[] refCharacters = referenceCharacters.ToCharArray();
 
-            for (var i = 0; i < ambiguosCharacters.Length; i++)
+            for (int i = 0; i < ambiguosCharacters.Length; i++)
             {
                 Assert.IsTrue(ambiguosCharacters.Contains(refCharacters[i]));
             }
@@ -838,7 +842,7 @@ namespace Bio.Tests
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
         void ValidateGetValidSymbols(AlphabetsTypes option)
         {
-            var referenceCharacters = "";
+            string referenceCharacters = "";
             IAlphabet alphabetInstance = null;
 
             switch (option)
@@ -857,9 +861,9 @@ namespace Bio.Tests
                     break;
             }
 
-            var validSymbolsByte = new HashSet<byte>();
+            HashSet<byte> validSymbolsByte = new HashSet<byte>();
             validSymbolsByte = alphabetInstance.GetValidSymbols();
-            var validSymbols = new string(validSymbolsByte.Select(a => (char)a).ToArray());
+            string validSymbols = new string(validSymbolsByte.Select(a => (char)a).ToArray());
             Assert.AreEqual(referenceCharacters, validSymbols);
             ApplicationLog.WriteLine(string.Concat(
                    "Alphabets BVT: Validation of Alphabets operation ", option, " completed successfully."));
@@ -959,8 +963,8 @@ namespace Bio.Tests
         {
             IAlphabet alphabetInstance = null;
             byte outputDefaultTerminationSymbol = 0;
-            var outputTerminationSymbol = new HashSet<byte>();
-            var outputTerminationString = "";
+            HashSet<byte> outputTerminationSymbol = new HashSet<byte>();
+            string outputTerminationString = "";
 
             switch (option)
             {
@@ -1021,8 +1025,8 @@ namespace Bio.Tests
             Assert.AreEqual('-', (char)outputByte);
             ApplicationLog.WriteLine(string.Concat(@"Alphabets BVT: Validation of 
                                 Try Default gap symbol for ", option, " completed successfully."));
-            var outputGapSymbol = new HashSet<byte>();
-            var outputGapString = "";
+            HashSet<byte> outputGapSymbol = new HashSet<byte>();
+            string outputGapString = "";
             alphabetInstance.TryGetGapSymbols(out outputGapSymbol);
             outputGapString = new string(outputGapSymbol.Select(a => (char)a).ToArray());
             Assert.AreEqual("-", outputGapString);
@@ -1079,7 +1083,7 @@ namespace Bio.Tests
         void ValidateTryGetAmbiguousSymbol(AlphabetsTypes option)
         {
             IAlphabet alphabetInstance = null;
-            var basicSymbols = new HashSet<byte>();
+            HashSet<byte> basicSymbols = new HashSet<byte>();
             byte ambiguousSymbol = 0, expectedAmbiguousSymbol = 0;
 
             switch (option)
@@ -1118,7 +1122,7 @@ namespace Bio.Tests
         void ValidateSequenceTypes(AlphabetsTypes option)
         {
             IAlphabet alphabetInstance = null;
-            var sequence = "";
+            string sequence = "";
 
             switch (option)
             {
@@ -1154,9 +1158,9 @@ namespace Bio.Tests
         void ValidatePublicProperties(AlphabetsTypes option)
         {
             IAlphabet alphabetInstance = null;
-            var count = 0;
+            int count = 0;
             bool hasGaps = true, hasAmbiguity = true, hasTermination = true, isComplementSupported = true;
-            var name = "";
+            string name = "";
 
             switch (option)
             {

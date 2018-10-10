@@ -79,18 +79,18 @@ namespace Bio.Algorithms.Alignment
             if (usingAffineGapModel)
                 return CreateAffineTracebackTable();
 
-            var scoreLastRow = new int[Cols];
-            var scoreRow = new int[Cols];
-            var matrix = SimilarityMatrix.Matrix;
+            int[] scoreLastRow = new int[Cols];
+            int[] scoreRow = new int[Cols];
+            int[][] matrix = SimilarityMatrix.Matrix;
 
             // Initialize the first row of the TB table
-            for (var index = 1; index < Cols; index++)
+            for (int index = 1; index < Cols; index++)
                 Traceback[0][index] = SourceDirection.Left;
 
-            for (var i = 1; i < Rows; i++)
+            for (int i = 1; i < Rows; i++)
             {
                 // Create the next TB row
-                var traceback = new sbyte[Cols];
+                sbyte[] traceback = new sbyte[Cols];
                 traceback[0] = SourceDirection.Up;
 
                 if (i > 1)
@@ -100,7 +100,7 @@ namespace Bio.Algorithms.Alignment
 
                     // Initialize the next scoring row
                     scoreRow[0] = GapOpenCost*i;
-                    for (var index = 1; index < Cols; index++)
+                    for (int index = 1; index < Cols; index++)
                         scoreRow[index] = GapOpenCost*index;
                 }
                 else // first iteration
@@ -108,26 +108,26 @@ namespace Bio.Algorithms.Alignment
                     scoreRow[0] = GapOpenCost;
 
                     // Initialize the first row
-                    for (var index = 0; index < Cols; index++)
+                    for (int index = 0; index < Cols; index++)
                     {
-                        var initialScore = GapOpenCost * index;
+                        int initialScore = GapOpenCost * index;
                         scoreLastRow[index] = initialScore;
                         if (IncludeScoreTable)
                             ScoreTable[index] = initialScore;
                     }
                 }
 
-                for (var j = 1; j < Cols; j++)
+                for (int j = 1; j < Cols; j++)
                 {
                     // Gap in reference sequence
-                    var scoreAbove = scoreLastRow[j] + GapOpenCost;
+                    int scoreAbove = scoreLastRow[j] + GapOpenCost;
 
                     // Gap in query sequence
-                    var scoreLeft = scoreRow[j - 1] + GapOpenCost;
+                    int scoreLeft = scoreRow[j - 1] + GapOpenCost;
 
                     // Match/mismatch score
-                    var mScore = (matrix != null) ? matrix[QuerySequence[i - 1]][ReferenceSequence[j - 1]] : SimilarityMatrix[QuerySequence[i - 1], ReferenceSequence[j - 1]];
-                    var scoreDiag = scoreLastRow[j - 1] + mScore;
+                    int mScore = (matrix != null) ? matrix[QuerySequence[i - 1]][ReferenceSequence[j - 1]] : SimilarityMatrix[QuerySequence[i - 1], ReferenceSequence[j - 1]];
+                    int scoreDiag = scoreLastRow[j - 1] + mScore;
 
                     // Get the max S = MAX(diag,above,left) and assign the traceback
                     if ((scoreDiag > scoreAbove) && (scoreDiag > scoreLeft))
@@ -180,11 +180,11 @@ namespace Bio.Algorithms.Alignment
              * over flow when added to the move score to a very high value and become the max
              * rather than the min).
              */
-            var EDGE_MIN_VALUE = Int32.MinValue + Math.Max(Rows, Cols) * Math.Abs (GapOpenCost);
+            int EDGE_MIN_VALUE = Int32.MinValue + Math.Max(Rows, Cols) * Math.Abs (GapOpenCost);
 
 
             // Horizontal and vertical gap counts.
-            var gapStride = Cols + 1;
+            int gapStride = Cols + 1;
 
             /* These are equivalent to traceback matrices for the 
              * horizontal and vertical "gap" matrices.  However, rather than store
@@ -192,7 +192,7 @@ namespace Bio.Algorithms.Alignment
              * which allows us to transition into and out of the gap matrices in one
              * step, rather than following paths through them.
              */
-            var matrixSize = checked((Rows + 1) * gapStride);
+            int matrixSize = checked((Rows + 1) * gapStride);
             try {
                 h_Gap_Length = new int[matrixSize];
                 v_Gap_Length = new int[matrixSize];
@@ -205,9 +205,9 @@ namespace Bio.Algorithms.Alignment
              * the current row and the previous row for the recursions,
              * so we only use these two, rather than a full matrix.
              */
-            var previousScoreRow = new ScoreElement[Cols];
-            var currentScoreRow = new ScoreElement[Cols];
-            var matrix = SimilarityMatrix.Matrix;
+            ScoreElement[] previousScoreRow = new ScoreElement[Cols];
+            ScoreElement[] currentScoreRow = new ScoreElement[Cols];
+            int[][] matrix = SimilarityMatrix.Matrix;
 
             // Upper left element is initalized to 0
             currentScoreRow [0] = new ScoreElement () {
@@ -220,13 +220,13 @@ namespace Bio.Algorithms.Alignment
 
             }
             // Initialize first row
-            var traceback = Traceback [0];
-            for (var j = 1; j < traceback.Length; j++)
+            sbyte[] traceback = Traceback [0];
+            for (int j = 1; j < traceback.Length; j++)
             {
                 // always have to go left from top
                 traceback[j] = SourceDirection.Left;
                 h_Gap_Length[j] = j;
-                var initialScore = (j - 1) * GapExtensionCost + GapOpenCost;
+                int initialScore = (j - 1) * GapExtensionCost + GapOpenCost;
                 currentScoreRow [j] = new ScoreElement () {
                     HorizontalGapScore = initialScore,
                     VerticalGapScore = EDGE_MIN_VALUE,
@@ -236,7 +236,7 @@ namespace Bio.Algorithms.Alignment
                    ScoreTable[j] = initialScore;
             }
 
-            for (var i = 1; i < Rows; i++)
+            for (int i = 1; i < Rows; i++)
             {
                 // Create the next TB row
                 traceback = new sbyte[Cols];
@@ -258,17 +258,17 @@ namespace Bio.Algorithms.Alignment
                 traceback[0] = SourceDirection.Up;
                 v_Gap_Length[i * gapStride] = i;
 
-                for (var j = 1; j < Cols; j++)
+                for (int j = 1; j < Cols; j++)
                 {
                     // Get the three important values
-                    var cellAbove = previousScoreRow[j];
-                    var cellDiagAbove = previousScoreRow [j - 1];
-                    var cellLeft = currentScoreRow [j - 1];
+                    ScoreElement cellAbove = previousScoreRow[j];
+                    ScoreElement cellDiagAbove = previousScoreRow [j - 1];
+                    ScoreElement cellLeft = currentScoreRow [j - 1];
 
                     // Gap in reference sequence
                     int scoreAbove;
-                    var scoreAboveOpen = Math.Max(cellAbove.HorizontalGapScore, cellAbove.MatchScore) + GapOpenCost;
-                    var scoreAboveExtend = cellAbove.VerticalGapScore + GapExtensionCost;
+                    int scoreAboveOpen = Math.Max(cellAbove.HorizontalGapScore, cellAbove.MatchScore) + GapOpenCost;
+                    int scoreAboveExtend = cellAbove.VerticalGapScore + GapExtensionCost;
                     if (scoreAboveOpen > scoreAboveExtend)
                     {
                         scoreAbove = scoreAboveOpen;
@@ -282,8 +282,8 @@ namespace Bio.Algorithms.Alignment
 
                     // Gap in query sequence
                     int scoreLeft;
-                    var scoreLeftOpen = Math.Max(cellLeft.MatchScore, cellLeft.VerticalGapScore) + GapOpenCost;
-                    var scoreLeftExtend = cellLeft.HorizontalGapScore + GapExtensionCost;
+                    int scoreLeftOpen = Math.Max(cellLeft.MatchScore, cellLeft.VerticalGapScore) + GapOpenCost;
+                    int scoreLeftExtend = cellLeft.HorizontalGapScore + GapExtensionCost;
                     if (scoreLeftOpen > scoreLeftExtend)
                     {
                         scoreLeft = scoreLeftOpen;
@@ -296,10 +296,10 @@ namespace Bio.Algorithms.Alignment
                     }
 
                     // Get the exact match/mismatch score
-                    var mScore = (matrix != null) ? matrix[QuerySequence[i - 1]][ReferenceSequence[j - 1]] : SimilarityMatrix[QuerySequence[i - 1], ReferenceSequence[j - 1]];
+                    int mScore = (matrix != null) ? matrix[QuerySequence[i - 1]][ReferenceSequence[j - 1]] : SimilarityMatrix[QuerySequence[i - 1], ReferenceSequence[j - 1]];
                     /* Since all possible previous states have the same match score applied, 
                      * we can just add to the previous max */
-                    var scoreDiag = cellDiagAbove.BestScore + mScore;
+                    int scoreDiag = cellDiagAbove.BestScore + mScore;
 
                     // Store the scores for this cell
                     currentScoreRow[j] = new ScoreElement() { HorizontalGapScore = scoreLeft,
@@ -340,7 +340,7 @@ namespace Bio.Algorithms.Alignment
         }
        
         private void SwapArrays(ref ScoreElement[] previousRow, ref ScoreElement[] currentRow) {
-            var tmp = previousRow;
+            ScoreElement[] tmp = previousRow;
             previousRow = currentRow;
             currentRow = tmp;
         }

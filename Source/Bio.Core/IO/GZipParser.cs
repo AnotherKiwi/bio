@@ -89,12 +89,12 @@ namespace Bio.IO
 
             filename = filename.Substring(0, filename.Length - Util.Helper.ZippedFileExtension.Length);
 
-	        var extensionDelimiter = filename.LastIndexOf('.');
+	        int extensionDelimiter = filename.LastIndexOf('.');
             if (-1 < extensionDelimiter)
             {
-                var fileExtension = filename.Substring(extensionDelimiter);
-                var validExtensions = Parser.SupportedFileTypes;
-                var extensions = validExtensions.Split(',');
+                string fileExtension = filename.Substring(extensionDelimiter);
+                string validExtensions = Parser.SupportedFileTypes;
+                string[] extensions = validExtensions.Split(',');
                 return extensions.Any(extension => fileExtension.Equals(extension, StringComparison.CurrentCultureIgnoreCase));
             }
 
@@ -107,9 +107,9 @@ namespace Bio.IO
 	    /// <returns>The collection of parsed ISequence objects.</returns>
 	    public IEnumerable<T> Parse(Stream stream)
 	    {
-            using (var gz = new GZipStream(stream, CompressionMode.Decompress))
+            using (GZipStream gz = new GZipStream(stream, CompressionMode.Decompress))
             {
-                foreach (var seq in Parser.Parse(gz))
+                foreach (T seq in Parser.Parse(gz))
                 {
                     yield return seq;
                 }

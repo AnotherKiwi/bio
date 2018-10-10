@@ -23,10 +23,10 @@ namespace Bio.Algorithms.Alignment
             NeedlemanWunsch = new NeedlemanWunschAligner();
             SmithWaterman = new SmithWatermanAligner();
 
-            var knownAligners = new List<ISequenceAligner> { SmithWaterman, NeedlemanWunsch, MUMmer, NUCmer };
+            List<ISequenceAligner> knownAligners = new List<ISequenceAligner> { SmithWaterman, NeedlemanWunsch, MUMmer, NUCmer };
 
             // Get the registered aligners
-            var registeredAligners = GetAligners();
+            IEnumerable<ISequenceAligner> registeredAligners = GetAligners();
             if (null != registeredAligners)
             {
                 knownAligners.AddRange(registeredAligners
@@ -72,14 +72,14 @@ namespace Bio.Algorithms.Alignment
         /// <returns>List of registered aligners</returns>
         private static IEnumerable<ISequenceAligner> GetAligners()
         {
-            var implementations = BioRegistrationService.LocateRegisteredParts<ISequenceAligner>();
-            var registeredAligners = new List<ISequenceAligner>();
+            IEnumerable<Type> implementations = BioRegistrationService.LocateRegisteredParts<ISequenceAligner>();
+            List<ISequenceAligner> registeredAligners = new List<ISequenceAligner>();
 
-            foreach (var impl in implementations)
+            foreach (Type impl in implementations)
             {
                 try
                 {
-                    var aligner = Activator.CreateInstance(impl) as ISequenceAligner;
+                    ISequenceAligner aligner = Activator.CreateInstance(impl) as ISequenceAligner;
                     if (aligner != null)
                         registeredAligners.Add(aligner);
                 }

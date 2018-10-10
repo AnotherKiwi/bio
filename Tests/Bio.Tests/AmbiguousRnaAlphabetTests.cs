@@ -19,7 +19,7 @@ namespace Bio.Tests
         [Test]
         public void TestAmbiguousRnaAlphabetCompareSymbols()
         {
-            var ambiguousRnaAlphabet = AmbiguousRnaAlphabet.Instance;
+            AmbiguousRnaAlphabet ambiguousRnaAlphabet = AmbiguousRnaAlphabet.Instance;
             Assert.AreEqual(false, ambiguousRnaAlphabet.CompareSymbols((byte)'A', (byte)'M'));
             Assert.AreEqual(true, ambiguousRnaAlphabet.CompareSymbols((byte)'A', (byte)'A'));
         }

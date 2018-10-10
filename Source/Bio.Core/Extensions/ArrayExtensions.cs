@@ -65,8 +65,8 @@ namespace Bio.Core.Extensions
             if (converter == null)
                 throw new ArgumentNullException("converter cannot be null.");
 
-            var output = new TOutput[input.Length];
-            for (var i = 0; i < input.Length; i++)
+            TOutput[] output = new TOutput[input.Length];
+            for (int i = 0; i < input.Length; i++)
             {
                 output[i] = converter(input[i]);
             }
@@ -81,7 +81,7 @@ namespace Bio.Core.Extensions
         {
             if (!initialized)
             {
-                var t = typeof(Array);
+                Type t = typeof(Array);
                 longLengthProperty = t.GetRuntimeProperties().FirstOrDefault(pi => pi.Name == "LongLength");
                 longCopyMethod =
                     t.GetRuntimeMethods().FirstOrDefault(mi =>
@@ -103,10 +103,10 @@ namespace Bio.Core.Extensions
         public static T[] GetRange<T>(this T[] data, int startIndex, int length)
         {
             if (data == null) throw new ArgumentNullException(nameof(data));
-            var result = new T[length];
+            T[] result = new T[length];
 
-            var index = 0;
-            for (var i = startIndex; i < startIndex + length; i++)
+            int index = 0;
+            for (int i = startIndex; i < startIndex + length; i++)
             {
                 result[index++] = data[i];
             }

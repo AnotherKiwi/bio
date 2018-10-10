@@ -138,9 +138,9 @@ namespace Bio.IO.AppliedBiosystems.Model
         private static byte[] ToByteArray(short[] data)
         {
             if (data == null) throw new ArgumentNullException(nameof(data));
-            var values = new byte[data.Length * 2];
-            var index = 0;
-            for (var i = 0; i < data.Length; i++)
+            byte[] values = new byte[data.Length * 2];
+            int index = 0;
+            for (int i = 0; i < data.Length; i++)
             {
                 values[index++] = (byte)data[i];
                 values[index++] = (byte)(data[i] >> 8);
@@ -206,12 +206,12 @@ namespace Bio.IO.AppliedBiosystems.Model
             ConfidenceData = ConfidenceData.ToList().GetRange(startIndex, length).ToArray();
 
             PeakLocations = new short[length];
-            var absolutePeakIndex = 0;
-            var residues = AdenineColorData.DataByResidue;
+            int absolutePeakIndex = 0;
+            List<Ab1ResidueColorData> residues = AdenineColorData.DataByResidue;
 
-            for (var i = 0; i < residues.Count; i++)
+            for (int i = 0; i < residues.Count; i++)
             {
-                var residuePeakIndex = residues[i].PeakIndex;
+                int residuePeakIndex = residues[i].PeakIndex;
 
                 //
                 // Adjust the absolute peak index basd on the residue peak index.

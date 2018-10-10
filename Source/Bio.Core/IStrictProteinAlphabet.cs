@@ -1,19 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Bio
 {
     /// <summary>
-    /// An alphabet that extends <see cref="IAlphabet"/> by adding symbols for unambiguous amino acids.
+    ///     A case sensitive alphabet that is the base alphabet for all Protein and Peptide alphabets.
+    ///     It extends <see cref="IAlphabet"/> by adding symbols for unambiguous amino acids. 
     /// </summary>
     /// <remarks>
-    /// Specifically, adds A, C, D, E, F, G, H, I, K, L, M, N, O, P, Q, R, S, T, U, V, W, and Y
-    /// (where O is pyrrolysine and U is selenocysteine).<br/>
-    /// Symbols for ambiguous amino acids, terminations or gaps are not included in this alphabet.
+    ///     Specifically, it adds: A, C, D, E, F, G, H, I, K, L, M, N, O, P, Q, R, S, T, U, V, W, and Y
+    ///     (where O is pyrrolysine and U is selenocysteine).<br/>
+    ///     Symbols for ambiguous amino acids, terminations or gaps are not included in this alphabet.
     /// </remarks>
 
-    public interface IBasicProteinAlphabet : IAlphabet
+    public interface IStrictProteinAlphabet : IAlphabet
     {
-
         /// <summary>
         /// Gets the symbol for the amino acid Alanine. 
         /// </summary>
@@ -125,6 +126,16 @@ namespace Bio
         byte Y { get; }
 
         /// <summary>
+        /// 	Checks if the given symbol is an unambiguous amino acid.
+        /// </summary>
+        /// <param name="symbol">The symbol to check.</param>
+        /// <returns>
+        ///  	<see cref="bool"/>: <c>true</c> if the given symbol is an unambiguous amino acid,
+        ///     <c>false</c> otherwise.
+        /// </returns>
+        bool CheckIsUnambiguousAminoAcid(byte symbol);
+
+        /// <summary>
         /// 	Gets the invalid symbols in the specified sequence, in ascending order.
         /// </summary>
         /// <param name="sequence">The sequence to check for invalid symbols.</param>
@@ -147,5 +158,13 @@ namespace Bio
         /// <param name="item">Symbol to find three-letter abbreviation.</param>
         /// <returns>Three-letter abbreviation of the given symbol.</returns>
         string GetThreeLetterAbbreviation(byte item);
+
+        /// <summary>
+        /// 	Gets the set of unambiguous amino acids.
+        /// </summary>
+        /// <returns>
+        ///  	<see cref="HashSet{T}"/>: the set of unambiguous amino acids.
+        /// </returns>
+        HashSet<byte> GetUnambiguousAminoAcids();
     }
 }

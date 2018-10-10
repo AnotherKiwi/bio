@@ -231,7 +231,7 @@ namespace Bio.IO.Xsv
         public virtual bool SkipToChromosome (int chromosomeNumber)
         {
             // NOTE: same code as BufferedSnpReader.SkipToChromosome
-            var hasMoveNext = true;
+            bool hasMoveNext = true;
 
             if (Current == null)
             {
@@ -340,7 +340,7 @@ namespace Bio.IO.Xsv
         /// <returns>Returns the field value as a string for the given field enum.</returns>
         protected virtual string GetFieldValue (FieldNames column)
         {
-            var col = GetColumnNumber(column);
+            int col = GetColumnNumber(column);
             if (col < 0)
                 return null;
             return col >= Fields.Length ? null : Fields[col];
@@ -376,8 +376,8 @@ namespace Bio.IO.Xsv
         /// <returns>Creates a SnpItem for the current line in the XsvReader</returns>
         private SnpItem MakeSnpForCurrentLine ()
         {
-            var allele1 = GetFieldValue(FieldNames.AlleleOne);
-            var allele2 = GetFieldValue(FieldNames.AlleleTwo);
+            string allele1 = GetFieldValue(FieldNames.AlleleOne);
+            string allele2 = GetFieldValue(FieldNames.AlleleTwo);
 
             return new SnpItem
             {

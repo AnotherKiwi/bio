@@ -45,16 +45,16 @@ namespace Bio.IO.AppliedBiosystems.Model
         public static byte[] ToByteArray(Ab1ColorData data)
         {
             if (data == null) throw new ArgumentNullException(nameof(data));
-            var dataPointCount = data.DataByResidue.Sum(residue => residue.Data.Length);
+            int dataPointCount = data.DataByResidue.Sum(residue => residue.Data.Length);
 
-            var values = new byte[dataPointCount * 2];
-            var index = 0;
-            foreach (var residue in data.DataByResidue)
+            byte[] values = new byte[dataPointCount * 2];
+            int index = 0;
+            foreach (Ab1ResidueColorData residue in data.DataByResidue)
             {
-                var residueData = residue.Data;
-                for (var i = 0; i < residueData.Length; i++)
+                short[] residueData = residue.Data;
+                for (int i = 0; i < residueData.Length; i++)
                 {
-                    var value = residueData[i];
+                    short value = residueData[i];
                     values[index++] = (byte)value;
                     values[index++] = (byte)(value >> 8);
                 }
@@ -74,9 +74,9 @@ namespace Bio.IO.AppliedBiosystems.Model
             if (value.Length % 2 != 0)
                 throw new ArgumentException(Resource.Ab1ColorDataFromByteArrayEvenNumberRequired, nameof(value));
 
-            var data = new short[value.Length / 2];
+            short[] data = new short[value.Length / 2];
 
-            for (var i = 0; i < value.Length; i += 2)
+            for (int i = 0; i < value.Length; i += 2)
                 data[i / 2] = (short)((value[i + 1] << 8) | value[i]);
 
             return data;
@@ -91,7 +91,7 @@ namespace Bio.IO.AppliedBiosystems.Model
         public static string ToString(List<short> data)
         {
             if (data == null) throw new ArgumentNullException(nameof(data));
-            var builder = new StringBuilder();
+            StringBuilder builder = new StringBuilder();
             data.ForEach(value => builder.AppendFormat(builder.Length == 0 ? "{0}" : " {0}", value));
 
             return builder.ToString();
@@ -123,13 +123,13 @@ namespace Bio.IO.AppliedBiosystems.Model
         {
             DataByResidue = new List<Ab1ResidueColorData>();
 
-            var residueDataIndex = 0;
+            int residueDataIndex = 0;
 
-            for (var i = 0; i < peakLocations.Length - 1; i++)
+            for (int i = 0; i < peakLocations.Length - 1; i++)
             {
                 int peakIndex = peakLocations[i];
                 int nextPeakIndex = peakLocations[i + 1];
-                var residueEndIndex = (peakIndex + (nextPeakIndex - peakIndex) / 2);
+                int residueEndIndex = (peakIndex + (nextPeakIndex - peakIndex) / 2);
 
                 AddResidueColorData(peakIndex, residueDataIndex, residueEndIndex, data);
 
@@ -152,7 +152,7 @@ namespace Bio.IO.AppliedBiosystems.Model
         /// <param name="data"></param>
         private void AddResidueColorData(int peakIndex, int residueDataIndex, int residueEndIndex, short[] data)
         {
-            var residueColorData =
+            Ab1ResidueColorData residueColorData =
                 new Ab1ResidueColorData
                     {
                         //

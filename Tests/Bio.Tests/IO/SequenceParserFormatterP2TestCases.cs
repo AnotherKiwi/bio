@@ -19,7 +19,7 @@ namespace Bio.Tests.IO
         [Category("Priority2")]
         public void ValidateFindFormatterByFileName()
         {
-            var formatter=SequenceFormatters.FindFormatterByFileName(Constants.InvalidFileName);
+            ISequenceFormatter formatter=SequenceFormatters.FindFormatterByFileName(Constants.InvalidFileName);
             ValidateFormatterExceptions(formatter);
         }
 
@@ -27,7 +27,7 @@ namespace Bio.Tests.IO
         [Category("Priority2")]
         public void ValidateFindFormatterByName()
         {
-            var formatter = SequenceFormatters.FindFormatterByName(Constants.FastaTempFileName, Constants.InvalidFileName);
+            ISequenceFormatter formatter = SequenceFormatters.FindFormatterByName(Constants.FastaTempFileName, Constants.InvalidFileName);
             ValidateFormatterExceptions(formatter);            
         }
 
@@ -35,7 +35,7 @@ namespace Bio.Tests.IO
         [Category("Priority2")]
         public void ValidateFindParserByFileName()
         {
-            var parser = SequenceParsers.FindParserByFileName(Constants.InvalidFileName);
+            ISequenceParser parser = SequenceParsers.FindParserByFileName(Constants.InvalidFileName);
             ValidateParserExceptions(parser);           
         }
 
@@ -43,7 +43,7 @@ namespace Bio.Tests.IO
         [Category("Priority2")]
         public void ValidateFindParserByName()
         {
-            var parser = SequenceParsers.FindParserByName(Constants.FastaTempFileName, Constants.InvalidFileName);
+            ISequenceParser parser = SequenceParsers.FindParserByName(Constants.FastaTempFileName, Constants.InvalidFileName);
             ValidateParserExceptions(parser);
         }
 
@@ -53,7 +53,7 @@ namespace Bio.Tests.IO
         {
             try
             {
-                var parserTypes = parser.GetType();
+                Type parserTypes = parser.GetType();
                 Assert.IsNotNull(parserTypes);
             }
             catch (NullReferenceException exception)
@@ -69,7 +69,7 @@ namespace Bio.Tests.IO
         {
             try
             {
-                var formatterTypes = formatter.GetType();
+                Type formatterTypes = formatter.GetType();
                 Assert.IsNotNull(formatterTypes);
             }
             catch (NullReferenceException exception)

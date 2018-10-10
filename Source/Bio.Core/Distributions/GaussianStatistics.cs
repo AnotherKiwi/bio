@@ -89,16 +89,16 @@ namespace Bio.Distributions
                 throw new ArgumentNullException(nameof(observations));
             }
 
-            var n = 0;
+            int n = 0;
             double sum = 0;
-            foreach (var d in observations)
+            foreach (double d in observations)
             {
                 sum += d;
                 n++;
             }
-            var mean = sum / n;
+            double mean = sum / n;
             double variance = 0;
-            foreach (var d in observations)
+            foreach (double d in observations)
             {
                 variance += (d - mean) * (d - mean);
             }
@@ -170,7 +170,7 @@ namespace Bio.Distributions
             }
             else
             {
-                var fields = val.Split(',');
+                string[] fields = val.Split(',');
                 if (!(fields.Length == 3))
                 {
                     return false;
@@ -215,7 +215,7 @@ namespace Bio.Distributions
         /// <returns>Returns true if fount equals.</returns>
         public override bool Equals(object obj)
         {
-            var stats = obj as SufficientStatistics;
+            SufficientStatistics stats = obj as SufficientStatistics;
 
             if (stats != null)
             {
@@ -244,7 +244,7 @@ namespace Bio.Distributions
                 return true;
             }
 
-            var gaussStats = stats.AsGaussianStatistics();
+            GaussianStatistics gaussStats = stats.AsGaussianStatistics();
 
             return _mean == gaussStats._mean && _variance == gaussStats._variance && _sampleSize == gaussStats._sampleSize;
         }
@@ -315,7 +315,7 @@ namespace Bio.Distributions
         /// <returns>Boolean Statistics.</returns>
         public override BooleanStatistics AsBooleanStatistics()
         {
-            var meanAsInt = (int)Mean;
+            int meanAsInt = (int)Mean;
             if (!IsMissing() && (meanAsInt < -1 || meanAsInt > 1))
                 throw new InvalidCastException(string.Format(CultureInfo.InvariantCulture, "Cannot cast {0} to Boolean.", Mean));
 
@@ -340,16 +340,16 @@ namespace Bio.Distributions
                 throw new ArgumentNullException(nameof(y));
             }
 
-            var rN = x.SampleSize + y.SampleSize;
-            var rMean = (x.SampleSize * x.Mean + y.SampleSize * y.Mean) / rN;
-            var rVar = (x.SumOfSquares + y.SumOfSquares) / rN - rMean * rMean;
+            int rN = x.SampleSize + y.SampleSize;
+            double rMean = (x.SampleSize * x.Mean + y.SampleSize * y.Mean) / rN;
+            double rVar = (x.SumOfSquares + y.SumOfSquares) / rN - rMean * rMean;
             if (rVar < 0)
             {
                 Helper.CheckCondition(rVar > -1e-10, "Computed negative variance! " + rVar);
                 rVar = 0;
             }
 
-            var result = GetInstance(rMean, rVar, rN);
+            GaussianStatistics result = GetInstance(rMean, rVar, rN);
             return result;
         }
 

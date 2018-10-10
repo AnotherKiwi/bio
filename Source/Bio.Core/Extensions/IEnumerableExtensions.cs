@@ -30,7 +30,7 @@ namespace Bio.Util
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
 
-            var enumerator = collection.GetEnumerator();
+            IEnumerator<TSource> enumerator = collection.GetEnumerator();
             for (long i = 0; i <= index; i++)
             {
                 enumerator.MoveNext();
@@ -48,11 +48,11 @@ namespace Bio.Util
         /// <returns>a list of shuffled items</returns>
         public static List<T> Shuffle<T>(this IEnumerable<T> sequence, Random random)
         {
-            var list = new List<T>();
-            foreach (var t in sequence)
+            List<T> list = new List<T>();
+            foreach (T t in sequence)
             {
                 list.Add(t); //We put the value here to get the new space allocated
-                var oldIndex = random.Next(list.Count);
+                int oldIndex = random.Next(list.Count);
                 list[list.Count - 1] = list[oldIndex];
                 list[oldIndex] = t;
             }
@@ -66,8 +66,8 @@ namespace Bio.Util
         /// <returns>a string</returns>
         public static string StringJoin(this System.Collections.IEnumerable sequence)
         {
-            var sb = new StringBuilder();
-            foreach (var obj in sequence)
+            StringBuilder sb = new StringBuilder();
+            foreach (object obj in sequence)
             {
                 if (obj == null)
                 {
@@ -89,9 +89,9 @@ namespace Bio.Util
         /// <returns>a string</returns>
         public static string StringJoin(this System.Collections.IEnumerable sequence, string separator)
         {
-            var aStringBuilder = new StringBuilder();
-            var isFirst = true;
-            foreach (var obj in sequence)
+            StringBuilder aStringBuilder = new StringBuilder();
+            bool isFirst = true;
+            foreach (object obj in sequence)
             {
                 if (!isFirst)
                 {
@@ -125,9 +125,9 @@ namespace Bio.Util
         public static string StringJoin(this System.Collections.IEnumerable sequence, string separator, int maxLength, string etcString)
         {
             Helper.CheckCondition(maxLength > 1, () => Properties.Resource.ExpectedMaxLengthToGreaterThanOne);
-            var aStringBuilder = new StringBuilder();
-            var i = -1;
-            foreach (var obj in sequence)
+            StringBuilder aStringBuilder = new StringBuilder();
+            int i = -1;
+            foreach (object obj in sequence)
             {
                 ++i;
                 if (i > 0)
@@ -208,7 +208,7 @@ namespace Bio.Util
         /// <param name="action">An Action, that is, a delegate that takes one input and has no output.</param>
         public static void ForEach<T>(this IEnumerable<T> sequence, Action<T> action)
         {
-            foreach (var t in sequence)
+            foreach (T t in sequence)
             {
                 action(t);
             }
@@ -223,8 +223,8 @@ namespace Bio.Util
         /// <param name="action">An action that takes an element and an index and returns nothing.</param>
         public static void ForEach<T>(this IEnumerable<T> sequence, Action<T, int> action)
         {
-            var idx = 0;
-            foreach (var t in sequence)
+            int idx = 0;
+            foreach (T t in sequence)
             {
                 action(t, idx++);
             }
@@ -290,7 +290,7 @@ namespace Bio.Util
         /// <returns></returns>
         public static IEnumerable<T> Append<T>(this IEnumerable<T> enumerable, T item)
         {
-            foreach (var e in enumerable)
+            foreach (T e in enumerable)
             {
                 yield return e;
             }
@@ -306,14 +306,14 @@ namespace Bio.Util
         /// <returns></returns>
         public static IEnumerable<T> Append<T>(this IEnumerable<T> enumerable, params IEnumerable<T>[] enumerables)
         {
-            foreach (var item in enumerable)
+            foreach (T item in enumerable)
             {
                 yield return item;
             }
 
-            foreach (var e in enumerables)
+            foreach (IEnumerable<T> e in enumerables)
             {
-                foreach (var item in e)
+                foreach (T item in e)
                 {
                     yield return item;
                 }

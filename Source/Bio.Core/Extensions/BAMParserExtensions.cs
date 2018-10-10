@@ -28,9 +28,9 @@ namespace Bio.IO.BAM
                 throw new ArgumentNullException(nameof(filename));
             }
 
-            using (var fs = File.OpenRead(filename))
+            using (FileStream fs = File.OpenRead(filename))
             {
-                foreach (var item in parser.Parse(fs))
+                foreach (SAMAlignedSequence item in parser.Parse(fs))
                     yield return item;
             }
         }
@@ -62,11 +62,11 @@ namespace Bio.IO.BAM
                 throw new ArgumentNullException(nameof(refSeqName));
             }
 
-            using (var bamStream = File.OpenRead(fileName))
+            using (FileStream bamStream = File.OpenRead(fileName))
             {
-                var bamIndexFileName = GetBAMIndexFileName(fileName);
-                using (var bamIndexFile = File.OpenRead(bamIndexFileName))
-                using (var bamIndexStorage = new BAMIndexStorage(bamIndexFile))
+                string bamIndexFileName = GetBAMIndexFileName(fileName);
+                using (FileStream bamIndexFile = File.OpenRead(bamIndexFileName))
+                using (BAMIndexStorage bamIndexStorage = new BAMIndexStorage(bamIndexFile))
                 {
                     return parser.GetAlignment(bamStream, bamIndexStorage, refSeqName);
                 }
@@ -87,7 +87,7 @@ namespace Bio.IO.BAM
             }
 
             //Try Name+".bai"
-            var possibleName = fileName + ".bai";
+            string possibleName = fileName + ".bai";
             if (File.Exists(possibleName))
             {
                 return possibleName;
@@ -132,11 +132,11 @@ namespace Bio.IO.BAM
                 throw new ArgumentNullException(nameof(refSeqName));
             }
 
-            using (var bamStream = File.OpenRead(fileName))
+            using (FileStream bamStream = File.OpenRead(fileName))
             {
-                var bamIndexFileName = GetBAMIndexFileName(fileName);
-                using (var bamIndexFile = File.OpenRead(bamIndexFileName))
-                using (var bamIndexStorage = new BAMIndexStorage(bamIndexFile))
+                string bamIndexFileName = GetBAMIndexFileName(fileName);
+                using (FileStream bamIndexFile = File.OpenRead(bamIndexFileName))
+                using (BAMIndexStorage bamIndexStorage = new BAMIndexStorage(bamIndexFile))
                 {
                     return parser.GetAlignment(bamStream, bamIndexStorage, refSeqName, start, end);
                 }
@@ -165,11 +165,11 @@ namespace Bio.IO.BAM
                 throw new ArgumentNullException(nameof(fileName));
             }
 
-            using (var bamStream = File.OpenRead(fileName))
+            using (FileStream bamStream = File.OpenRead(fileName))
             {
-                var bamIndexFileName = GetBAMIndexFileName(fileName);
-                using (var bamIndexFile = File.OpenRead(bamIndexFileName))
-                using (var bamIndexStorage = new BAMIndexStorage(bamIndexFile))
+                string bamIndexFileName = GetBAMIndexFileName(fileName);
+                using (FileStream bamIndexFile = File.OpenRead(bamIndexFileName))
+                using (BAMIndexStorage bamIndexStorage = new BAMIndexStorage(bamIndexFile))
                 {
                     return parser.GetAlignment(bamStream, bamIndexStorage, refSeqIndex);
                 }
@@ -201,11 +201,11 @@ namespace Bio.IO.BAM
                 throw new ArgumentNullException(nameof(fileName));
             }
 
-            using (var bamStream = File.OpenRead(fileName))
+            using (FileStream bamStream = File.OpenRead(fileName))
             {
-                var bamIndexFileName = GetBAMIndexFileName(fileName);
-                using (var bamIndexFile = File.OpenRead(bamIndexFileName))
-                using (var bamIndexStorage = new BAMIndexStorage(bamIndexFile))
+                string bamIndexFileName = GetBAMIndexFileName(fileName);
+                using (FileStream bamIndexFile = File.OpenRead(bamIndexFileName))
+                using (BAMIndexStorage bamIndexStorage = new BAMIndexStorage(bamIndexFile))
                 {
                     return parser.GetAlignment(bamStream, bamIndexStorage, refSeqIndex, start, end);
                 }
@@ -241,14 +241,14 @@ namespace Bio.IO.BAM
                 throw new ArgumentException("Reference sequence name (range.ID) can't empty or null.");
             }
 
-            var start = range.Start >= int.MaxValue ? int.MaxValue : (int)range.Start;
-            var end = range.End >= int.MaxValue ? int.MaxValue : (int)range.End;
+            int start = range.Start >= int.MaxValue ? int.MaxValue : (int)range.Start;
+            int end = range.End >= int.MaxValue ? int.MaxValue : (int)range.End;
 
-            using (var bamStream = File.OpenRead(fileName))
+            using (FileStream bamStream = File.OpenRead(fileName))
             {
-                var bamIndexFileName = GetBAMIndexFileName(fileName);
-                using (var bamIndexFile = File.OpenRead(bamIndexFileName))
-                using (var bamIndexStorage = new BAMIndexStorage(bamIndexFile))
+                string bamIndexFileName = GetBAMIndexFileName(fileName);
+                using (FileStream bamIndexFile = File.OpenRead(bamIndexFileName))
+                using (BAMIndexStorage bamIndexStorage = new BAMIndexStorage(bamIndexFile))
                 {
                     if (start == 0 && end == int.MaxValue)
                         return parser.GetAlignment(bamStream, bamIndexStorage, range.ID);

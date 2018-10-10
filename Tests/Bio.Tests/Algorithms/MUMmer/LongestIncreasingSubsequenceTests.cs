@@ -20,7 +20,7 @@ namespace Bio.Tests.MUMmer.LIS
         public void TestLISWithoutCrossAndOverlap()
         {
             // Create a list of Mum classes.
-            var MUM = new List<Match>();
+            List<Match> MUM = new List<Match>();
             Match mum;
 
             mum = new Match();
@@ -36,11 +36,11 @@ namespace Bio.Tests.MUMmer.LIS
             MUM.Add(mum);
 
            // ILongestIncreasingSubsequence lis = new LongestIncreasingSubsequence();
-            var lis = new LongestIncreasingSubsequence();
-            var lisList = lis.SortMum(MUM);
-            var lisList1 = lis.GetLongestSequence(lisList);
+            LongestIncreasingSubsequence lis = new LongestIncreasingSubsequence();
+            IList<Match> lisList = lis.SortMum(MUM);
+            IList<Match> lisList1 = lis.GetLongestSequence(lisList);
 
-            var expectedOutput = new List<Match>();
+            List<Match> expectedOutput = new List<Match>();
             mum = new Match();
             mum.ReferenceSequenceOffset = 0;
             mum.Length = 3;
@@ -65,7 +65,7 @@ namespace Bio.Tests.MUMmer.LIS
         public void TestLISWithCross1()
         {
             // Create a list of Mum classes.
-            var MUM = new List<Match>();
+            List<Match> MUM = new List<Match>();
             Match mum;
 
             mum = new Match();
@@ -87,11 +87,11 @@ namespace Bio.Tests.MUMmer.LIS
             MUM.Add(mum);
 
             //ILongestIncreasingSubsequence lis = new LongestIncreasingSubsequence();
-            var lis = new LongestIncreasingSubsequence();
-            var lisList = lis.SortMum(MUM);
-            var lisList1 = lis.GetLongestSequence(lisList);
+            LongestIncreasingSubsequence lis = new LongestIncreasingSubsequence();
+            IList<Match> lisList = lis.SortMum(MUM);
+            IList<Match> lisList1 = lis.GetLongestSequence(lisList);
 
-            var expectedOutput = new List<Match>();
+            List<Match> expectedOutput = new List<Match>();
             mum = new Match();
             mum.ReferenceSequenceOffset = 0;
             mum.Length = 4;
@@ -116,7 +116,7 @@ namespace Bio.Tests.MUMmer.LIS
         public void TestLISWithCross2()
         {
             // Create a list of Mum classes.
-            var MUM = new List<Match>();
+            List<Match> MUM = new List<Match>();
             Match mum;
 
             mum = new Match();
@@ -132,11 +132,11 @@ namespace Bio.Tests.MUMmer.LIS
             MUM.Add(mum);
 
             //ILongestIncreasingSubsequence lis = new LongestIncreasingSubsequence();
-            var lis = new LongestIncreasingSubsequence();
-            var lisList = lis.SortMum(MUM);
-            var lisList1 = lis.GetLongestSequence(lisList);
+            LongestIncreasingSubsequence lis = new LongestIncreasingSubsequence();
+            IList<Match> lisList = lis.SortMum(MUM);
+            IList<Match> lisList1 = lis.GetLongestSequence(lisList);
 
-            var expectedOutput = new List<Match>();
+            List<Match> expectedOutput = new List<Match>();
             mum = new Match();
             mum.ReferenceSequenceOffset = 4;
             mum.Length = 4;
@@ -154,7 +154,7 @@ namespace Bio.Tests.MUMmer.LIS
         public void TestLISWithCrossAndOverlap()
         {
             // Create a list of Mum classes.
-            var MUM = new List<Match>();
+            List<Match> MUM = new List<Match>();
             Match mum;
 
             mum = new Match();
@@ -170,11 +170,11 @@ namespace Bio.Tests.MUMmer.LIS
             MUM.Add(mum);
 
            // ILongestIncreasingSubsequence lis = new LongestIncreasingSubsequence();
-            var lis = new LongestIncreasingSubsequence();
-            var lisList = lis.SortMum(MUM);
-            var lisList1 = lis.GetLongestSequence(lisList);
+            LongestIncreasingSubsequence lis = new LongestIncreasingSubsequence();
+            IList<Match> lisList = lis.SortMum(MUM);
+            IList<Match> lisList1 = lis.GetLongestSequence(lisList);
 
-            var expectedOutput = new List<Match>();
+            List<Match> expectedOutput = new List<Match>();
             mum = new Match();
             mum.ReferenceSequenceOffset = 0;
             mum.Length = 5;
@@ -192,7 +192,7 @@ namespace Bio.Tests.MUMmer.LIS
         public void TestLISWithOverlap()
         {
             // Create a list of Mum classes.
-            var MUM = new List<Match>();
+            List<Match> MUM = new List<Match>();
             Match mum;
 
             mum = new Match();
@@ -208,11 +208,11 @@ namespace Bio.Tests.MUMmer.LIS
             MUM.Add(mum);
 
             //ILongestIncreasingSubsequence lis = new LongestIncreasingSubsequence();
-            var lis = new LongestIncreasingSubsequence();
-            var lisList = lis.SortMum(MUM);
-            var lisList1 = lis.GetLongestSequence(lisList);
+            LongestIncreasingSubsequence lis = new LongestIncreasingSubsequence();
+            IList<Match> lisList = lis.SortMum(MUM);
+            IList<Match> lisList1 = lis.GetLongestSequence(lisList);
 
-            var expectedOutput = new List<Match>();
+            List<Match> expectedOutput = new List<Match>();
             mum = new Match();
             mum.ReferenceSequenceOffset = 0;
             mum.Length = 4;
@@ -236,7 +236,7 @@ namespace Bio.Tests.MUMmer.LIS
         public void TestSortMum()
         {
             // Create a list of Mum classes.
-            var MUM = new List<Match>();
+            List<Match> MUM = new List<Match>();
             Match mum;
 
             mum = new Match();
@@ -251,10 +251,10 @@ namespace Bio.Tests.MUMmer.LIS
             mum.QuerySequenceOffset = 3;
             MUM.Add(mum);
 
-            var lis = new LongestIncreasingSubsequence();
-            var lisList = lis.SortMum(MUM);
+            LongestIncreasingSubsequence lis = new LongestIncreasingSubsequence();
+            IList<Match> lisList = lis.SortMum(MUM);
 
-            var expectedOutput = new List<Match>();
+            List<Match> expectedOutput = new List<Match>();
             mum = new Match();
             mum.ReferenceSequenceOffset = 0;
             mum.Length = 3;
@@ -282,8 +282,8 @@ namespace Bio.Tests.MUMmer.LIS
         {
             if (lisList.Count == expectedOutput.Count)
             {
-                var correctOutput = true;
-                for (var index = 0; index < expectedOutput.Count; index++)
+                bool correctOutput = true;
+                for (int index = 0; index < expectedOutput.Count; index++)
                 {
                     if (lisList[index].ReferenceSequenceOffset != expectedOutput[index].ReferenceSequenceOffset)
                     {

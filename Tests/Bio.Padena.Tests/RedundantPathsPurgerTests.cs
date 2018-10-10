@@ -23,7 +23,7 @@ namespace Bio.Padena.Tests
             const int KmerLength = 5;
             const int RedundantThreshold = 10;
 
-            var readSeqs = TestInputs.GetRedundantPathReads();
+            List<ISequence> readSeqs = TestInputs.GetRedundantPathReads();
             SequenceReads.Clear();
             SetSequenceReads(readSeqs);
             this.KmerLength = KmerLength;
@@ -31,11 +31,11 @@ namespace Bio.Padena.Tests
             RedundantPathsPurger = new RedundantPathsPurger(RedundantThreshold);
 
             CreateGraph();
-            var graphCount = Graph.NodeCount;
+            long graphCount = Graph.NodeCount;
             long graphEdges = Graph.GetNodes().Select(n => n.ExtensionsCount).Sum();
 
             RemoveRedundancy();
-            var redundancyRemovedGraphCount = Graph.NodeCount;
+            long redundancyRemovedGraphCount = Graph.NodeCount;
             long redundancyRemovedGraphEdge = Graph.GetNodes().Select(n => n.ExtensionsCount).Sum();
 
             // Compare the two graphs

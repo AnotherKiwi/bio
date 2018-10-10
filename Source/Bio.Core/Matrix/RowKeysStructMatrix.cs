@@ -38,7 +38,7 @@ namespace Bio.Matrix
                 {
                     Stream stream = File.Open(DenseStructFileName, FileMode.Open, FileAccess, FileShare);
                     TextReader textReader = new StreamReader(stream);
-                    var tuple = new Tuple<Stream, TextReader>(stream, textReader);
+                    Tuple<Stream, TextReader> tuple = new Tuple<Stream, TextReader>(stream, textReader);
                     _threadLocalStreamAndTextReader.Value = tuple;
                     ThreadLocalStreamAndTextReaderBag.Add(tuple);
                 }
@@ -102,13 +102,13 @@ namespace Bio.Matrix
         public void WriteRowKeys(string simpleFileName)
         {
             Helper.CheckCondition(String.IsNullOrEmpty(Path.GetDirectoryName(simpleFileName)), () => Properties.Resource.FileNameMustNotContainPathInformation);
-            var fileName = Path.Combine(Path.GetDirectoryName(DenseStructFileName), simpleFileName);
+            string fileName = Path.Combine(Path.GetDirectoryName(DenseStructFileName), simpleFileName);
             FileUtils.CreateDirectoryForFileIfNeeded(fileName);
             using (TextWriter textWriter = File.CreateText(fileName))
             {
                 textWriter.WriteLine("rowKey\t{0}", ColKeys.StringJoin("\t")); //!!!const
                 textWriter.WriteLine(Path.GetFileName(DenseStructFileName));
-                foreach (var rowKey in RowKeys)
+                foreach (string rowKey in RowKeys)
                 {
                     textWriter.WriteLine("{0}\t{1}", rowKey, RowKeyToFilePosition[rowKey]);
                 }
@@ -132,7 +132,7 @@ namespace Bio.Matrix
             // parallelOptions is not currently used, but it is need so that this method will have the same signature as other, similar methods.
             lock (this)
             {
-                var firstLineOrNull = FileUtils.ReadLine(rowKeysStructFileName);
+                string firstLineOrNull = FileUtils.ReadLine(rowKeysStructFileName);
                 Helper.CheckCondition(null != firstLineOrNull, () => string.Format(CultureInfo.InvariantCulture, Properties.Resource.ExpectedFileToHaveData, rowKeysStructFileName));
                 Helper.CheckCondition(!firstLineOrNull.StartsWith(FileUtils.CommentHeader, StringComparison.Ordinal), Properties.Resource.ExpectedNoCommentsInRowKeysAnsiFiles, rowKeysStructFileName);
 
@@ -146,11 +146,11 @@ namespace Bio.Matrix
                 using (TextReader textReader = FileUtils.OpenTextStripComments(rowKeysStructFileName))
                 {
 
-                    var colKeysLineOrNull = textReader.ReadLine();
+                    string colKeysLineOrNull = textReader.ReadLine();
                     if (null == colKeysLineOrNull) 
                         throw new MatrixFormatException("Surprised by empty file. " + rowKeysStructFileName);
 
-                    var varAndColKeys = colKeysLineOrNull.Split('\t');
+                    string[] varAndColKeys = colKeysLineOrNull.Split('\t');
                     if (!varAndColKeys[0].Equals("rowKey"))
                     {
                         throw new MatrixFormatException("Expect first row's first value to be 'rowKey'"); //!!!rowKey
@@ -161,19 +161,19 @@ namespace Bio.Matrix
 
 
                     //!!!not really thread-safe
-                    var denseStructFileNameInFile = textReader.ReadLine();
+                    string denseStructFileNameInFile = textReader.ReadLine();
                     DenseStructFileName = Path.Combine(Path.GetDirectoryName(rowKeysStructFileName), denseStructFileNameInFile);
 
-                    var counterWithMessages = verbose ? new CounterWithMessages("Reading rowKey file to find location of rows, #{0}", 10000, null) : null;
+                    CounterWithMessages counterWithMessages = verbose ? new CounterWithMessages("Reading rowKey file to find location of rows, #{0}", 10000, null) : null;
 
                     string line = null;
                     while (null != (line = textReader.ReadLine()))
                     {
                         if (verbose) counterWithMessages.Increment();
-                        var rowKeyAndPosition = line.Split('\t');
+                        string[] rowKeyAndPosition = line.Split('\t');
                         if (rowKeyAndPosition.Length != 2) throw new MatrixFormatException("Expect rows to have two columns");
-                        var rowKey = rowKeyAndPosition[0];
-                        var position = long.Parse(rowKeyAndPosition[1], CultureInfo.CurrentCulture);
+                        string rowKey = rowKeyAndPosition[0];
+                        long position = long.Parse(rowKeyAndPosition[1], CultureInfo.CurrentCulture);
                         _rowKeys.Add(rowKey);
                         RowKeyToFilePosition.Add(rowKey, position);
                     }
@@ -196,25 +196,25 @@ namespace Bio.Matrix
             {
                 try
                 {
-                    var rowKey = RowKeys[RowCount - 1];
+                    string rowKey = RowKeys[RowCount - 1];
 
                     //Check the width of the data
                     if (RowCount > 1)
                     {
-                        var rowLength = RowKeyToFilePosition[rowKey] - RowKeyToFilePosition[RowKeys[RowCount - 2]] - rowKey.Length - 1 /*tab*/ - 2 /*newline*/;
+                        long rowLength = RowKeyToFilePosition[rowKey] - RowKeyToFilePosition[RowKeys[RowCount - 2]] - rowKey.Length - 1 /*tab*/ - 2 /*newline*/;
                         Helper.CheckCondition<MatrixFormatException>(rowLength == BytesPerValue * ColCount, ()=> string.Format(CultureInfo.InvariantCulture, Properties.Resource.ExpectEachDataRowToHaveNCharacters, BytesPerValue * ColCount));
                     }
 
                     //Check the length of the file
-                    var lastPosition = RowKeyToFilePosition[rowKey] + ColCount * BytesPerValue + 2 /*newline*/;
+                    long lastPosition = RowKeyToFilePosition[rowKey] + ColCount * BytesPerValue + 2 /*newline*/;
                     Helper.CheckCondition<MatrixFormatException>(ThreadLocalStream.Length == lastPosition, Properties.Resource.ExpectFileToEndAfterLastValue);
 
                     //Check that the last rowKey is where it is expected
                     ThreadLocalStream.Position = RowKeyToFilePosition[rowKey] - rowKey.Length - 1;
-                    var byteArray = new byte[rowKey.Length];
-                    var bytesRead = ThreadLocalStream.Read(byteArray, 0, rowKey.Length);
+                    byte[] byteArray = new byte[rowKey.Length];
+                    int bytesRead = ThreadLocalStream.Read(byteArray, 0, rowKey.Length);
                     Helper.CheckCondition<MatrixFormatException>(bytesRead == rowKey.Length,  Properties.Resource.ExpectToReadRowKey);
-                    var asString = Encoding.UTF8.GetString(byteArray, 0, byteArray.Length);
+                    string asString = Encoding.UTF8.GetString(byteArray, 0, byteArray.Length);
                     Helper.CheckCondition<MatrixFormatException>(asString == rowKey, Properties.Resource.ExpectRowKeyFileAndMainFileToAgreeOnTheRowkeys);
 
                     //Read some values
@@ -284,10 +284,10 @@ namespace Bio.Matrix
         override public bool TryGetValue(string rowKey, string colKey, out TValue value)
 #pragma warning restore 1591
         {
-            var colIndex = ColSerialNumbers.GetOld(colKey);
+            int colIndex = ColSerialNumbers.GetOld(colKey);
             ThreadLocalStream.Position = RowKeyToFilePosition[rowKey] + colIndex * BytesPerValue;
-            var byteArray = new byte[BytesPerValue];
-            var bytesRead = ThreadLocalStream.Read(byteArray, 0, BytesPerValue);
+            byte[] byteArray = new byte[BytesPerValue];
+            int bytesRead = ThreadLocalStream.Read(byteArray, 0, BytesPerValue);
             Helper.CheckCondition(bytesRead == BytesPerValue, () => Properties.Resource.ExpectedToReadAllBytesOfValue);
             value = ByteArrayToValueOrMissing(byteArray);
             return !IsMissing(value);
@@ -312,9 +312,9 @@ namespace Bio.Matrix
         public override void SetValueOrMissing(string rowKey, string colKey, TValue value)
 #pragma warning restore 1591
         {
-            var colIndex = ColSerialNumbers.GetOld(colKey);
+            int colIndex = ColSerialNumbers.GetOld(colKey);
             ThreadLocalStream.Position = RowKeyToFilePosition[rowKey] + colIndex * BytesPerValue;
-            var byteArray = ValueOrMissingToByteArray(value);
+            byte[] byteArray = ValueOrMissingToByteArray(value);
             Helper.CheckCondition(byteArray.Length == BytesPerValue, () => string.Format(CultureInfo.InvariantCulture, Properties.Resource.ExpectedByteArrayLengthAndBytesPerValueToBeEqual, byteArray.Length, BytesPerValue));
             ThreadLocalStream.Write(byteArray, 0, BytesPerValue);
         }
@@ -334,11 +334,11 @@ namespace Bio.Matrix
             // parallelOptions is not currently used, but it is need so that this method will have the same signature as other, similar methods.
             lock (this)
             {
-                using (var fileStream = File.Open(denseStructFileName, FileMode.Open, fileAccess, fileShare))
+                using (FileStream fileStream = File.Open(denseStructFileName, FileMode.Open, fileAccess, fileShare))
                 {
                     using (TextReader textReader = new StreamReader(fileStream))
                     {
-                        var firstLineOrNull = textReader.ReadLine();
+                        string firstLineOrNull = textReader.ReadLine();
                         Helper.CheckCondition(null != firstLineOrNull, () => string.Format(CultureInfo.InvariantCulture, Properties.Resource.ExpectedFileToHaveData, denseStructFileName));
                         Helper.CheckCondition(!firstLineOrNull.StartsWith(FileUtils.CommentHeader, StringComparison.Ordinal), () => string.Format(CultureInfo.InvariantCulture, Properties.Resource.ExpectedNoCommentsInRowKeysAnsiFiles, denseStructFileName));
                     }
@@ -352,24 +352,24 @@ namespace Bio.Matrix
                 long position = 0;
 
 
-                var colKeysLineOrNull = ThreadLocalTextReader.ReadLine();
-                var newLineLength = Environment.NewLine.Length;
+                string colKeysLineOrNull = ThreadLocalTextReader.ReadLine();
+                int newLineLength = Environment.NewLine.Length;
                 position += colKeysLineOrNull.Length + newLineLength;
-                var varAndColKeys = colKeysLineOrNull.Split('\t');
+                string[] varAndColKeys = colKeysLineOrNull.Split('\t');
                 if (!varAndColKeys[0].Equals("var")) throw new MatrixFormatException("Expect first row's first value to be 'var'");
                 ColSerialNumbers = new SerialNumbers<string>(varAndColKeys.Skip(1));
                 _rowKeys = new List<string>();
                 if (null == colKeysLineOrNull) throw new MatrixFormatException("Surprised by empty file. " + denseStructFileName);
-                var counterWithMessages = new CounterWithMessages("Reading data file to find location of rows, #{0}", 10000, null);
+                CounterWithMessages counterWithMessages = new CounterWithMessages("Reading data file to find location of rows, #{0}", 10000, null);
 
                 while (true)
                 {
                     counterWithMessages.Increment();
                     ThreadLocalStream.Position = position;
-                    var sb = new StringBuilder();
+                    StringBuilder sb = new StringBuilder();
                     while (true)
                     {
-                        var i = ThreadLocalStream.ReadByte();
+                        int i = ThreadLocalStream.ReadByte();
                         if (-1 == i)
                         {
                             goto END;
@@ -381,7 +381,7 @@ namespace Bio.Matrix
                         sb.Append((char)i);
                     }
 
-                    var rowKey = sb.ToString();
+                    string rowKey = sb.ToString();
                     if (RowKeyToFilePosition.ContainsKey(rowKey))
                     {
                         throw new MatrixFormatException(string.Format(CultureInfo.InvariantCulture, "The rowkey {0} appears more than once", rowKey));
@@ -425,7 +425,7 @@ namespace Bio.Matrix
                 {
                     if (disposing)
                     {
-                        foreach (var streamAndTextReader in ThreadLocalStreamAndTextReaderBag)
+                        foreach (Tuple<Stream, TextReader> streamAndTextReader in ThreadLocalStreamAndTextReaderBag)
                         {
                             streamAndTextReader.Item1.Dispose();
                             streamAndTextReader.Item2.Dispose();

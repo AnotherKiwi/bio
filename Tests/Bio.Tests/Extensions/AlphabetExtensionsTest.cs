@@ -57,7 +57,7 @@ namespace Bio.Tests.Extensions
         public void CheckIsAmbiguousTrueTest()
         {
             IAlphabet alphabet = Alphabets.AmbiguousDNA;
-            var actual = alphabet.CheckIsAmbiguous('M');
+            bool actual = alphabet.CheckIsAmbiguous('M');
             Assert.AreEqual(true, actual);
         }
 
@@ -68,7 +68,7 @@ namespace Bio.Tests.Extensions
         public void CheckIsAmbiguousLowercaseTrueTest()
         {
             IAlphabet alphabet = Alphabets.AmbiguousDNA;
-            var actual = alphabet.CheckIsAmbiguous('m');
+            bool actual = alphabet.CheckIsAmbiguous('m');
             Assert.AreEqual(true, actual);
         }
 
@@ -79,7 +79,7 @@ namespace Bio.Tests.Extensions
         public void CheckIsAmbiguousFalseTest()
         {
             IAlphabet alphabet = Alphabets.AmbiguousDNA;
-            var actual = alphabet.CheckIsAmbiguous('A');
+            bool actual = alphabet.CheckIsAmbiguous('A');
             Assert.AreEqual(false, actual);
         }
 
@@ -90,7 +90,7 @@ namespace Bio.Tests.Extensions
         public void CheckIsAmbiguousUnsupportedTest()
         {
             IAlphabet alphabet = Alphabets.DNA;
-            var actual = alphabet.CheckIsAmbiguous('A');
+            bool actual = alphabet.CheckIsAmbiguous('A');
             Assert.AreEqual(false, actual);
         }
 
@@ -111,7 +111,7 @@ namespace Bio.Tests.Extensions
         public void CheckIsGapTrueTest()
         {
             IAlphabet alphabet = Alphabets.DNA;
-            var actual = alphabet.CheckIsGap('-');
+            bool actual = alphabet.CheckIsGap('-');
             Assert.AreEqual(true, actual);
         }
 
@@ -122,7 +122,7 @@ namespace Bio.Tests.Extensions
         public void CheckIsGapFalseTest()
         {
             IAlphabet alphabet = Alphabets.DNA;
-            var actual = alphabet.CheckIsGap('A');
+            bool actual = alphabet.CheckIsGap('A');
             Assert.AreEqual(false, actual);
         }
 
@@ -143,7 +143,7 @@ namespace Bio.Tests.Extensions
         public void CheckIsTerminationTrueTest()
         {
             IAlphabet alphabet = Alphabets.Protein;
-            var actual = alphabet.CheckIsTermination('*');
+            bool actual = alphabet.CheckIsTermination('*');
             Assert.AreEqual(true, actual);
         }
 
@@ -154,7 +154,7 @@ namespace Bio.Tests.Extensions
         public void CheckIsTerminationFalseTest()
         {
             IAlphabet alphabet = Alphabets.Protein;
-            var actual = alphabet.CheckIsTermination('A');
+            bool actual = alphabet.CheckIsTermination('A');
             Assert.AreEqual(false, actual);
         }
 
@@ -165,7 +165,7 @@ namespace Bio.Tests.Extensions
         public void CheckIsTerminationUnsupportedTest()
         {
             IAlphabet alphabet = Alphabets.DNA;
-            var actual = alphabet.CheckIsTermination('A');
+            bool actual = alphabet.CheckIsTermination('A');
             Assert.AreEqual(false, actual);
         }
 
@@ -186,7 +186,7 @@ namespace Bio.Tests.Extensions
         public void GetFriendlyNameTest()
         {
             IAlphabet alphabet = Alphabets.DNA;
-            var actual = alphabet.GetFriendlyName('A');
+            string actual = alphabet.GetFriendlyName('A');
             Assert.AreEqual("Adenine", actual);
         }
 
@@ -197,7 +197,7 @@ namespace Bio.Tests.Extensions
         public void GetFriendlyNameLowecaseTest()
         {
             IAlphabet alphabet = Alphabets.DNA;
-            var actual = alphabet.GetFriendlyName('a');
+            string actual = alphabet.GetFriendlyName('a');
             Assert.AreEqual("Adenine", actual);
         }
 

@@ -131,7 +131,7 @@ namespace Bio.Algorithms.Alignment
         {
             if (inputSequences.Count() != 2)
             {
-                var message = String.Format(
+                string message = String.Format(
                         CultureInfo.CurrentCulture,
                         Properties.Resource.PairwiseAlignerWrongArgumentCount,
                         inputSequences.Count());
@@ -183,7 +183,7 @@ namespace Bio.Algorithms.Alignment
         {
             if (inputSequences.Count() != 2)
             {
-                var message = String.Format(
+                string message = String.Format(
                         CultureInfo.CurrentCulture,
                         Properties.Resource.PairwiseAlignerWrongArgumentCount,
                         inputSequences.Count());
@@ -226,10 +226,10 @@ namespace Bio.Algorithms.Alignment
              // Initialize and perform validations for simple alignment
             SimpleAlignPrimer(localSimilarityMatrix, gapPenalty, inputA, inputB);
 
-            var alignerJob = CreateSimpleAlignmentJob(inputA, inputB);
+            DynamicProgrammingPairwiseAlignerJob alignerJob = CreateSimpleAlignmentJob(inputA, inputB);
             IList<IPairwiseSequenceAlignment> result = alignerJob.Align();
 
-            foreach (var alignment in result)
+            foreach (IPairwiseSequenceAlignment alignment in result)
             {
                 foreach (PairwiseAlignedSequence sequence in alignment.AlignedSequences)
                 {
@@ -262,10 +262,10 @@ namespace Bio.Algorithms.Alignment
             SimpleAlignPrimer(localSimilarityMatrix, gapOpenPenalty, inputA, inputB);
             GapExtensionCost = gapExtensionPenalty;
 
-            var alignerJob = CreateAffineAlignmentJob(inputA, inputB);
+            DynamicProgrammingPairwiseAlignerJob alignerJob = CreateAffineAlignmentJob(inputA, inputB);
             IList<IPairwiseSequenceAlignment> result = alignerJob.Align();
 
-            foreach (var alignment in result)
+            foreach (IPairwiseSequenceAlignment alignment in result)
             {
                 foreach (PairwiseAlignedSequence sequence in alignment.AlignedSequences)
                 {
@@ -381,17 +381,17 @@ namespace Bio.Algorithms.Alignment
         /// </param>
         private void AddSimpleConsensusToResult(PairwiseAlignedSequence alignment)
         {
-            var seq0 = alignment.FirstSequence;
-            var seq1 = alignment.SecondSequence;
+            ISequence seq0 = alignment.FirstSequence;
+            ISequence seq1 = alignment.SecondSequence;
 
-            var consensus = new byte[seq0.Count];
-            for (var i = 0; i < seq0.Count; i++)
+            byte[] consensus = new byte[seq0.Count];
+            for (int i = 0; i < seq0.Count; i++)
             {
                 consensus[i] = ConsensusResolver.GetConsensus(
                         new byte[] { seq0[i], seq1[i] });
             }
 
-            var consensusAlphabet = Alphabets.AutoDetectAlphabet(consensus, 0, consensus.GetLongLength(), seq0.Alphabet);
+            IAlphabet consensusAlphabet = Alphabets.AutoDetectAlphabet(consensus, 0, consensus.GetLongLength(), seq0.Alphabet);
             alignment.Consensus = new Sequence(consensusAlphabet, consensus, false);
         }
 
@@ -479,7 +479,7 @@ namespace Bio.Algorithms.Alignment
                     return false;
                 }
 
-                var other = (OptScoreCell)obj;
+                OptScoreCell other = (OptScoreCell)obj;
                 return this == other;
             }
 

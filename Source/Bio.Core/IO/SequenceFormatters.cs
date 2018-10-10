@@ -58,10 +58,10 @@ namespace Bio.IO
         static SequenceFormatters()
 		{
             // get the registered formatter
-            var registeredFormatters = GetSequenceFormatters();
+            IEnumerable<ISequenceFormatter> registeredFormatters = GetSequenceFormatters();
             if (null != registeredFormatters)
             {
-                foreach (var formatter in registeredFormatters.Where(
+                foreach (ISequenceFormatter formatter in registeredFormatters.Where(
                     formatter => formatter != null && 
                         allFormatters.All(rfm => string.Compare(rfm.Name, formatter.Name, StringComparison.OrdinalIgnoreCase) != 0)))
                 {
@@ -159,7 +159,7 @@ namespace Bio.IO
                 else
                 {
                     // Do a search through the known formatters to pick up custom formatters added through add-in.
-                    var fileExtension = Path.GetExtension(fileName);
+                    string fileExtension = Path.GetExtension(fileName);
                     if (!string.IsNullOrEmpty(fileExtension))
                     {
                         formatter = All.FirstOrDefault(p => p.SupportedFileTypes.Contains(fileExtension));
@@ -253,14 +253,14 @@ namespace Bio.IO
         /// <returns>List of registered formatters.</returns>
         private static IEnumerable<ISequenceFormatter> GetSequenceFormatters()
         {
-            var registeredFormatters = new List<ISequenceFormatter>();
-            var implementations = BioRegistrationService.LocateRegisteredParts<ISequenceFormatter>();
+            List<ISequenceFormatter> registeredFormatters = new List<ISequenceFormatter>();
+            IEnumerable<Type> implementations = BioRegistrationService.LocateRegisteredParts<ISequenceFormatter>();
 
-            foreach (var impl in implementations)
+            foreach (Type impl in implementations)
             {
                 try
                 {
-                    var formatter = Activator.CreateInstance(impl) as ISequenceFormatter;
+                    ISequenceFormatter formatter = Activator.CreateInstance(impl) as ISequenceFormatter;
                     if (formatter != null)
                         registeredFormatters.Add(formatter);
                 }

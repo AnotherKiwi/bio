@@ -120,7 +120,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         /// <param name="contigPairedRead">List of Valid Paired Reads.</param>
         private static void EdgeBundling(IList<ValidMatePair> contigPairedRead)
         {
-            var index = 0;
+            int index = 0;
             List<ValidMatePair> estimatedDistances;
             while (index < contigPairedRead.Count())
             {
@@ -133,10 +133,10 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
                     contigPairedRead[index].StandardDeviation.First()))).ToList();
                 if (estimatedDistances.Count > 1)
                 {
-                    var p = (float)estimatedDistances.Sum(dist => dist.DistanceBetweenContigs[0]
+                    float p = (float)estimatedDistances.Sum(dist => dist.DistanceBetweenContigs[0]
                         / Math.Pow(dist.StandardDeviation[0], 2));
-                    var q = (float)estimatedDistances.Sum(sd => 1 / Math.Pow(sd.StandardDeviation[0], 2));
-                    var distance = new ValidMatePair();
+                    float q = (float)estimatedDistances.Sum(sd => 1 / Math.Pow(sd.StandardDeviation[0], 2));
+                    ValidMatePair distance = new ValidMatePair();
                     distance.DistanceBetweenContigs.Add(p / q);
                     distance.StandardDeviation.Add((float)(1 / Math.Sqrt(q)));
 
@@ -146,7 +146,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
 
                     distance.DistanceBetweenContigs.Add(p / q);
                     distance.StandardDeviation.Add((float)(1 / Math.Sqrt(q)));
-                    foreach (var est in estimatedDistances)
+                    foreach (ValidMatePair est in estimatedDistances)
                     {
                         contigPairedRead.Remove(est);
                     }
@@ -169,7 +169,7 @@ namespace Bio.Algorithms.Assembly.Padena.Scaffold
         /// <param name="distances">List of valid mate pairs.</param>
         private static void CalculateWeigthedEdge(IList<ValidMatePair> distances)
         {
-            var finalDistance = new ValidMatePair();
+            ValidMatePair finalDistance = new ValidMatePair();
             finalDistance.DistanceBetweenContigs.Add(
                 distances.Sum(distance => distance.DistanceBetweenContigs[0] * distance.Weight));
             finalDistance.StandardDeviation.Add(

@@ -47,15 +47,15 @@ namespace Bio.Algorithms.Translation
             if (nucleotideOffset > source.Count || nucleotideOffset < 0)
                 throw new ArgumentOutOfRangeException(Properties.Resource.OffsetInvalid, "nucleotideOffset");
 
-            var sourceAlphabet = source.Alphabet;
+            IAlphabet sourceAlphabet = source.Alphabet;
             if (sourceAlphabet != Alphabets.RNA && sourceAlphabet != Alphabets.AmbiguousRNA)
                 throw new InvalidOperationException(Properties.Resource.InvalidRNASequenceInput);
 
-            var size = (source.Count - nucleotideOffset)/3;
-            var translatedResult = new byte[size];
+            long size = (source.Count - nucleotideOffset)/3;
+            byte[] translatedResult = new byte[size];
             long counter = 0;
 
-            for (var i = nucleotideOffset; i < source.Count - 2; i += 3)
+            for (int i = nucleotideOffset; i < source.Count - 2; i += 3)
             {
                 byte aminoAcid;
                 if (!Codons.TryLookup(source, i, out aminoAcid))
@@ -75,7 +75,7 @@ namespace Bio.Algorithms.Translation
                 ++counter;
             }
 
-            var alphabet = sourceAlphabet == Alphabets.RNA ? Alphabets.Protein : Alphabets.AmbiguousProtein;
+            ProteinAlphabet alphabet = sourceAlphabet == Alphabets.RNA ? Alphabets.Protein : Alphabets.AmbiguousProtein;
             return new Sequence(alphabet, translatedResult) {ID = "AA: " + source.ID};
         }
     }

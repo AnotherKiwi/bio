@@ -24,7 +24,7 @@ namespace Bio
                 throw new ArgumentNullException(nameof(filename));
             }
 
-            using (var fs = File.Create(filename))
+            using (FileStream fs = File.Create(filename))
             {
                 formatter.Format(fs, ranges);
             }
@@ -41,7 +41,7 @@ namespace Bio
                 throw new ArgumentNullException(nameof(filename));    
             }
 
-            using (var fs = File.Create(filename))
+            using (FileStream fs = File.Create(filename))
             {
                 formatter.Format(fs, rangeGroup);
             }

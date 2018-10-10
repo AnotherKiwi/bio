@@ -23,7 +23,7 @@ namespace Bio.Util
         {
             result = new List<T>();
 
-            foreach (var s in stringSequence)
+            foreach (string s in stringSequence)
             {
                 T value;
                 if (TryParse(s, out value))
@@ -59,8 +59,8 @@ namespace Bio.Util
         /// <returns>The parsed value</returns>
         public static object Parse(string field, Type type)
         {
-            var potentialMethods = typeof(Parser).GetRuntimeMethods().Where(m => m.Name == "Parse" && m.IsGenericMethod);
-            var parseInfo = potentialMethods.First().MakeGenericMethod(type);
+            IEnumerable<MethodInfo> potentialMethods = typeof(Parser).GetRuntimeMethods().Where(m => m.Name == "Parse" && m.IsGenericMethod);
+            MethodInfo parseInfo = potentialMethods.First().MakeGenericMethod(type);
             return parseInfo.Invoke(null, new object[] { field });
         }
 
@@ -97,8 +97,8 @@ namespace Bio.Util
                 return StringTryParse(s, out t);
             }
 
-            var type = typeof(T);
-            var typeInfo = typeof(T).GetTypeInfo();
+            Type type = typeof(T);
+            TypeInfo typeInfo = typeof(T).GetTypeInfo();
 
             if (typeInfo.IsEnum)
             {
@@ -129,15 +129,15 @@ namespace Bio.Util
                 return true;
             }
 
-            var type = typeof(T);
-            var underlyingType = type.GetTypeInfo().GenericTypeArguments[0];
+            Type type = typeof(T);
+            Type underlyingType = type.GetTypeInfo().GenericTypeArguments[0];
 
-            var tryParse = typeof(Parser).GetRuntimeMethods().First(mi => mi.Name == "TryParse" && mi.IsStatic && mi.IsPublic);
-            var genericTryParse = tryParse.MakeGenericMethod(underlyingType);
+            MethodInfo tryParse = typeof(Parser).GetRuntimeMethods().First(mi => mi.Name == "TryParse" && mi.IsStatic && mi.IsPublic);
+            MethodInfo genericTryParse = tryParse.MakeGenericMethod(underlyingType);
 
             object[] args = { s, Activator.CreateInstance(underlyingType) };
 
-            var success = (bool)genericTryParse.Invoke(null, args);
+            bool success = (bool)genericTryParse.Invoke(null, args);
             if (success)
             {
                 t = (T)args[1];
@@ -153,16 +153,16 @@ namespace Bio.Util
 
         private static bool CollectionsTryParse<T>(string s, out T t)
         {
-            var type = typeof(T);
-            var genericType = type.GetTypeInfo().GenericTypeArguments[0];
+            Type type = typeof(T);
+            Type genericType = type.GetTypeInfo().GenericTypeArguments[0];
 
-            var collectionTryParse = typeof(Parser).GetRuntimeMethods().First(mi => mi.Name == "GenericCollectionsTryParse" && mi.IsStatic && mi.IsPublic);
-            var genericCollectionTryParse = collectionTryParse.MakeGenericMethod(type, genericType);
+            MethodInfo collectionTryParse = typeof(Parser).GetRuntimeMethods().First(mi => mi.Name == "GenericCollectionsTryParse" && mi.IsStatic && mi.IsPublic);
+            MethodInfo genericCollectionTryParse = collectionTryParse.MakeGenericMethod(type, genericType);
             
             t = default(T);
             object[] args = { s, t };
 
-            var success = (bool)genericCollectionTryParse.Invoke(null, args);
+            bool success = (bool)genericCollectionTryParse.Invoke(null, args);
             if (success)
             {
                 t = (T)args[1];
@@ -174,7 +174,7 @@ namespace Bio.Util
         {
             t = new T();
 
-            foreach (var itemAsString in s.Split(','))
+            foreach (string itemAsString in s.Split(','))
             {
                 S item;
                 if (TryParse<S>(itemAsString, out item))
@@ -214,11 +214,11 @@ namespace Bio.Util
         private static bool GenericTryParse<T>(string s, out T t)
         {
             // now the general one.
-            var success = false;
+            bool success = false;
             t = default(T);
-            var type = typeof(T);
+            Type type = typeof(T);
 
-            var tryParse = type.GetRuntimeMethod("TryParse", new[] { typeof(string), type.MakeByRefType() });
+            MethodInfo tryParse = type.GetRuntimeMethod("TryParse", new[] { typeof(string), type.MakeByRefType() });
 
             if (tryParse != null)
             {
@@ -233,7 +233,7 @@ namespace Bio.Util
             }
             else
             {
-                var parse = type.GetRuntimeMethod("Parse", new[] { typeof(string) });
+                MethodInfo parse = type.GetRuntimeMethod("Parse", new[] { typeof(string) });
                 Helper.CheckCondition(parse != null, "Cannot parse type {0}. It does not have a TryParse or Parse method defined", typeof(T));
 
                 try

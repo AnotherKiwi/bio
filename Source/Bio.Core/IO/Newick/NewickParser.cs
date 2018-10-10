@@ -101,7 +101,7 @@ namespace Bio.IO.Newick
                 throw new ArgumentNullException(nameof(stream));
             }
 
-            using (var reader = stream.OpenRead())
+            using (StreamReader reader = stream.OpenRead())
             {
                 return InternalParse(reader);
             }
@@ -114,12 +114,12 @@ namespace Bio.IO.Newick
         /// <returns>Parsed Tree</returns>
         protected Tree InternalParse(TextReader reader)
         {
-            var treeName = TreeName;
+            string treeName = TreeName;
             if (string.IsNullOrWhiteSpace(treeName))
                 treeName = DefaultTreeName;
 
-            var tree = new Tree { Name = treeName };
-            var rootNode = GetNode(reader, true).Key;
+            Tree tree = new Tree { Name = treeName };
+            Node rootNode = GetNode(reader, true).Key;
 
             if (Peek(reader) != ';')
             {
@@ -130,7 +130,7 @@ namespace Bio.IO.Newick
             }
 
             // move to next char after ";"
-            var semicolon = ReadChar(reader);
+            char semicolon = ReadChar(reader);
             if (semicolon != ';')
             {
                 throw new FormatException(string.Format
@@ -150,14 +150,14 @@ namespace Bio.IO.Newick
         /// <returns>PhylogeneticNode object</returns>
         private KeyValuePair<Node, Edge> GetNode(TextReader reader, bool isRoot)
         {
-            var firstPeek = Peek(reader);
-            var node = firstPeek == '(' ? GetBranch(reader, isRoot) : GetLeaf(reader);
-            var edge = new Edge();
+            char firstPeek = Peek(reader);
+            Node node = firstPeek == '(' ? GetBranch(reader, isRoot) : GetLeaf(reader);
+            Edge edge = new Edge();
 
             if (isRoot)
             {
                 edge.Distance = double.NaN;
-                var secondPeek = Peek(reader);
+                char secondPeek = Peek(reader);
                 if (!NewickSpecialCharacters.Contains(secondPeek))
                 {
                     node.Name = GetName(reader);
@@ -176,7 +176,7 @@ namespace Bio.IO.Newick
             }
             else
             {
-                var thirdPeek = Peek(reader);
+                char thirdPeek = Peek(reader);
                 if (!NewickSpecialCharacters.Contains(thirdPeek))
                 {
                     node.Name = GetName(reader);
@@ -186,7 +186,7 @@ namespace Bio.IO.Newick
                 if (thirdPeek == ':')
                 {
                     //move to next char after ":"
-                    var colon = ReadChar(reader);
+                    char colon = ReadChar(reader);
                     if (colon != ':')
                     {
                         throw new FormatException(string.Format
@@ -213,29 +213,29 @@ namespace Bio.IO.Newick
         /// <returns></returns>
         private Dictionary<string, string> GetExtendedMetaData(TextReader reader)
         {
-            var builder=new StringBuilder();
+            StringBuilder builder=new StringBuilder();
             while(true)
             {
-                var peek = Peek(reader);
+                char peek = Peek(reader);
                 builder.Append(ReadChar(reader));
                 if(peek==']')
                 {                    
                     break;
                 }
             }
-            var str=builder.ToString();
+            string str=builder.ToString();
             //verify extended format and run with it.
             if (!str.StartsWith("[&&NHX:") || !str.EndsWith("]"))
             {
                 throw new FormatException("Was expecting a New Hampshire extended field collection, but found parser error.  Bad string is: " + str); 
             }
-            var start="[&&NHX:".Length;
+            int start="[&&NHX:".Length;
             str = str.Substring(start, (str.Length - 1 - start));
-            var groups = str.Split(':');
-            var result = new Dictionary<string, string>();
-            foreach (var g in groups)
+            string[] groups = str.Split(':');
+            Dictionary<string, string> result = new Dictionary<string, string>();
+            foreach (string g in groups)
             {
-                var sub=g.Split('=');
+                string[] sub=g.Split('=');
                 if(sub.Length!=2)
                 {
                     throw new FormatException("Could not split NHX metadata key/value pair: "+g);
@@ -251,10 +251,10 @@ namespace Bio.IO.Newick
         /// <returns></returns>
         private string GetName(TextReader reader)
         {
-            var stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder();
             while (true)
             {
-                var peek = Peek(reader);
+                char peek = Peek(reader);
                 if (NewickSpecialCharacters.Contains(peek))
                 {
                     break;
@@ -272,18 +272,18 @@ namespace Bio.IO.Newick
         /// <returns>Branch object</returns>
         private Node GetBranch(TextReader reader, bool isRoot)
         {
-            var branch = new Node { IsRoot = isRoot };
+            Node branch = new Node { IsRoot = isRoot };
 
-            var firstBranch = true;
+            bool firstBranch = true;
             while (true)
             {
-                var peek = Peek(reader);
+                char peek = Peek(reader);
                 if (!firstBranch && peek == ')')
                 {
                     break;
                 }
 
-                var c = ReadChar(reader);
+                char c = ReadChar(reader);
                 if (firstBranch)
                 {
                     if (c != '(')
@@ -304,12 +304,12 @@ namespace Bio.IO.Newick
                     }
                 }
 
-                var tmp = GetNode(reader, false);
+                KeyValuePair<Node, Edge> tmp = GetNode(reader, false);
                 branch.Children.Add(tmp.Key, tmp.Value);
             }
 
             //move to next char of ")"
-            var nextCloseChar = ReadChar(reader);
+            char nextCloseChar = ReadChar(reader);
             if (nextCloseChar != ')')
             {
                 throw new FormatException(string.Format
@@ -326,11 +326,11 @@ namespace Bio.IO.Newick
         /// <returns>Leaf object</returns>
         private Node GetLeaf(TextReader reader)
         {
-            var stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder();
 
             while (true)
             {
-                var peek = Peek(reader);
+                char peek = Peek(reader);
                 if (peek == ':')
                 {
                     break;
@@ -356,7 +356,7 @@ namespace Bio.IO.Newick
         {
             while (true)
             {
-                var peek = reader.Peek();
+                int peek = reader.Peek();
                 if (peek == -1)
                 {
                     throw new FormatException(string.Format
@@ -364,7 +364,7 @@ namespace Bio.IO.Newick
                         "Missing format, Unable to read further "));
                 }
 
-                var c = (char)peek;
+                char c = (char)peek;
                 if (c != '\r' && c != '\n')
                 {
                     return c;
@@ -379,10 +379,10 @@ namespace Bio.IO.Newick
         /// <returns>length</returns>
         private double ReadLength(TextReader reader)
         {
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             while (true)
             {
-                var peek = Peek(reader);
+                char peek = Peek(reader);
                 if (!"-0123456789.E ".Contains(peek.ToString()))
                 {
                     break;
@@ -409,7 +409,7 @@ namespace Bio.IO.Newick
         {
             while (true)
             {
-                var c = (char) reader.Read();
+                char c = (char) reader.Read();
                 if (c != '\r' && c != '\n')
                 {
                     return c;

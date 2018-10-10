@@ -52,10 +52,10 @@ namespace Bio.IO
         static SequenceParsers()
 		{
             // get the registered parsers
-            var registeredParsers = GetSequenceParsers();
+            IEnumerable<ISequenceParser> registeredParsers = GetSequenceParsers();
             if (null != registeredParsers)
             {
-                foreach (var parser in registeredParsers.Where(
+                foreach (ISequenceParser parser in registeredParsers.Where(
                     parser => parser != null && All.All(sp => string.Compare(sp.Name, parser.Name, StringComparison.OrdinalIgnoreCase) != 0)))
                 {
                     allParsers.Add(parser);
@@ -122,7 +122,7 @@ namespace Bio.IO
                 else
                 {
                     // Do a search through the known parsers to pick up custom parsers added through add-in.
-                    var fileExtension = Path.GetExtension(fileName);
+                    string fileExtension = Path.GetExtension(fileName);
                     if (!string.IsNullOrEmpty(fileExtension))
                     {
                         parser = All.FirstOrDefault(p => p.SupportedFileTypes.Contains(fileExtension));
@@ -216,14 +216,14 @@ namespace Bio.IO
         /// <returns>List of registered parsers.</returns>
         private static IEnumerable<ISequenceParser> GetSequenceParsers()
         {
-            var registeredParsers = new List<ISequenceParser>();
-            var implementations = BioRegistrationService.LocateRegisteredParts<ISequenceParser>();
+            List<ISequenceParser> registeredParsers = new List<ISequenceParser>();
+            IEnumerable<Type> implementations = BioRegistrationService.LocateRegisteredParts<ISequenceParser>();
 
-            foreach (var impl in implementations)
+            foreach (Type impl in implementations)
             {
                 try
                 {
-                    var parser = Activator.CreateInstance(impl) as ISequenceParser;
+                    ISequenceParser parser = Activator.CreateInstance(impl) as ISequenceParser;
                     if (parser != null)
                         registeredParsers.Add(parser);
                 }

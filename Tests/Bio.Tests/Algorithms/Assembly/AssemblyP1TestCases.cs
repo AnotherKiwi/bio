@@ -327,7 +327,7 @@ namespace Bio.Tests.Algorithms.Assembly
         [Category("Priority1")]
         public void ValidateDifferenceNodeProperty()
         {
-            var diffObj = new DifferenceNode(1, 1, 4, 4);
+            DifferenceNode diffObj = new DifferenceNode(1, 1, 4, 4);
 
             Assert.AreEqual(1, diffObj.Sequence1Start);
             Assert.AreEqual(1, diffObj.Sequence2Start);
@@ -343,20 +343,20 @@ namespace Bio.Tests.Algorithms.Assembly
         [Category("Priority1")]
         public void ValidateSequenceCompare()
         {
-            var firstSequence = utilityObj.xmlUtil.GetTextValue(Constants.SequenceCompareNode,
+            string firstSequence = utilityObj.xmlUtil.GetTextValue(Constants.SequenceCompareNode,
                                                                    Constants.SequenceNode1);
-            var secondSequence = utilityObj.xmlUtil.GetTextValue(Constants.SequenceCompareNode,
+            string secondSequence = utilityObj.xmlUtil.GetTextValue(Constants.SequenceCompareNode,
                                                                     Constants.SequenceNode2);
-            var replace = utilityObj.xmlUtil.GetTextValue(Constants.SequenceCompareNode,
+            string replace = utilityObj.xmlUtil.GetTextValue(Constants.SequenceCompareNode,
                                                              Constants.ReplaceNode);
             ISequence seq1 = new Sequence(Alphabets.DNA, firstSequence);
             ISequence seq2 = new Sequence(Alphabets.DNA, secondSequence);
-            var kmerBuilder = new SequenceToKmerBuilder();
-            var kmers = kmerBuilder.Build(seq1, 2);
-            var nodes = WordMatch.BuildMatchTable(kmers, seq2, 2);
-            var matchList = WordMatch.GetMinimalList(nodes, 2);
-            var diffNode = DifferenceNode.BuildDiffList(matchList, seq1, seq2);
-            var features = DifferenceNode.OutputDiffList(diffNode, seq1, seq2);
+            SequenceToKmerBuilder kmerBuilder = new SequenceToKmerBuilder();
+            KmersOfSequence kmers = kmerBuilder.Build(seq1, 2);
+            List<WordMatch> nodes = WordMatch.BuildMatchTable(kmers, seq2, 2);
+            List<WordMatch> matchList = WordMatch.GetMinimalList(nodes, 2);
+            List<DifferenceNode> diffNode = DifferenceNode.BuildDiffList(matchList, seq1, seq2);
+            List<DifferenceNode.CompareFeature> features = DifferenceNode.OutputDiffList(diffNode, seq1, seq2);
 
             //Validating the behavior. 
             Assert.AreEqual(features.Count, 4);
@@ -383,47 +383,47 @@ namespace Bio.Tests.Algorithms.Assembly
                                                       AssemblyParameters additionalParameter, bool isSeqAssemblyctr)
         {
             // Get the parameters from Xml
-            var matchScore = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
+            int matchScore = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                        Constants.MatchScoreNode), null);
-            var mismatchScore = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
+            int mismatchScore = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                           Constants.MisMatchScoreNode), null);
-            var gapCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
+            int gapCost = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                     Constants.GapCostNode), null);
-            var mergeThreshold = double.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
+            double mergeThreshold = double.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                  Constants.MergeThresholdNode), null);
-            var consensusThreshold = double.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
+            double consensusThreshold = double.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                      Constants.ConsensusThresholdNode),
                                                      null);
-            var sequences = utilityObj.xmlUtil.GetTextValues(nodeName,
+            string[] sequences = utilityObj.xmlUtil.GetTextValues(nodeName,
                                                                   Constants.SequencesNode);
-            var alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName,
+            IAlphabet alphabet = Utility.GetAlphabet(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                      Constants.AlphabetNameNode));
-            var documentation = utilityObj.xmlUtil.GetTextValue(nodeName,
+            string documentation = utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                    Constants.DocumentaionNode);
-            var info = new SerializationInfo(typeof (OverlapDeNovoAssembly),
+            SerializationInfo info = new SerializationInfo(typeof (OverlapDeNovoAssembly),
                                              new FormatterConverter());
-            var context = new StreamingContext(StreamingContextStates.All);
+            StreamingContext context = new StreamingContext(StreamingContextStates.All);
 
-            var inputs = new List<ISequence>();
+            List<ISequence> inputs = new List<ISequence>();
 
             switch (additionalParameter)
             {
                 case AssemblyParameters.Consensus:
-                    for (var i = 0; i < sequences.Length; i++)
+                    for (int i = 0; i < sequences.Length; i++)
                     {
                         // Logs the sequences
                         ApplicationLog.WriteLine(string.Format(null, "SimpleConsensusMethod P1 : Sequence '{0}' used is '{1}'.", i, sequences[i]));
 
-                        var seq = new Sequence(alphabet, sequences[i]);
+                        Sequence seq = new Sequence(alphabet, sequences[i]);
                         inputs.Add(seq);
                     }
                     break;
                 default:
-                    for (var i = 0; i < sequences.Length; i++)
+                    for (int i = 0; i < sequences.Length; i++)
                     {
                         // Logs the sequences
                         ApplicationLog.WriteLine(string.Format(null, "SequenceAssembly P1 : Sequence '{0}' used is '{1}'.", i, sequences[i]));
-                        var seq = new Sequence(alphabet, sequences[i]);
+                        Sequence seq = new Sequence(alphabet, sequences[i]);
                         inputs.Add(seq);
                     }
                     break;
@@ -436,7 +436,7 @@ namespace Bio.Tests.Algorithms.Assembly
             // 
             // TATAAAGCGCCAAAATTTAGGCACCCGCGGTATT
 
-            var assembler = new OverlapDeNovoAssembler
+            OverlapDeNovoAssembler assembler = new OverlapDeNovoAssembler
             {
                 MergeThreshold = mergeThreshold,
                 OverlapAlgorithm = new PairwiseOverlapAligner()
@@ -449,7 +449,7 @@ namespace Bio.Tests.Algorithms.Assembly
                         new DiagonalSimilarityMatrix(matchScore, mismatchScore);
                     break;
                 case AssemblyParameters.SimilarityMatrix:
-                    var blosumFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.BlosumFilePathNode).TestDir();
+                    string blosumFilePath = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.BlosumFilePathNode).TestDir();
                     (assembler.OverlapAlgorithm).SimilarityMatrix = new SimilarityMatrix(new StreamReader(blosumFilePath));
                     break;
                 default:
@@ -462,22 +462,22 @@ namespace Bio.Tests.Algorithms.Assembly
             assembler.AssumeStandardOrientation = false;
 
             // Assembles all the sequences.
-            var assembly = (IOverlapDeNovoAssembly) assembler.Assemble(inputs);
+            IOverlapDeNovoAssembly assembly = (IOverlapDeNovoAssembly) assembler.Assemble(inputs);
 
             // Set Documentation property.
             assembly.Documentation = documentation;
 
             // Get the parameters from Xml in general
-            var contigSequencesCount = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ContigSequencesCountNode), null);
-            var contigConsensus = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ContigConsensusNode);
+            int contigSequencesCount = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ContigSequencesCountNode), null);
+            string contigConsensus = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.ContigConsensusNode);
 
             switch (additionalParameter)
             {
                 case AssemblyParameters.Consensus:
                     // Read the contig from Contig method.
-                    var contigReadForConsensus = assembly.Contigs[0];
+                    Contig contigReadForConsensus = assembly.Contigs[0];
                     contigReadForConsensus.Consensus = null;
-                    var simpleSeqAssembler = new OverlapDeNovoAssembler
+                    OverlapDeNovoAssembler simpleSeqAssembler = new OverlapDeNovoAssembler
                     {
                         ConsensusResolver = new SimpleConsensusResolver(consensusThreshold)
                     };
@@ -489,16 +489,16 @@ namespace Bio.Tests.Algorithms.Assembly
                     break;
                 default:
                     // Get the parameters from Xml for Assemble() method test cases.
-                    var unMergedCount = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
+                    int unMergedCount = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                   Constants.UnMergedSequencesCountNode),
                                                   null);
-                    var contigsCount = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
+                    int contigsCount = int.Parse(utilityObj.xmlUtil.GetTextValue(nodeName,
                                                                                  Constants.ContigsCountNode), null);
 
                     Assert.AreEqual(unMergedCount, assembly.UnmergedSequences.Count);
                     Assert.AreEqual(contigsCount, assembly.Contigs.Count);
                     Assert.AreEqual(documentation, assembly.Documentation);
-                    var contigRead = assembly.Contigs[0];
+                    Contig contigRead = assembly.Contigs[0];
 
                     // Logs the consensus
                     ApplicationLog.WriteLine(string.Format(null, "SequenceAssembly BVT : Un Merged Sequences Count is '{0}'.", assembly.UnmergedSequences.Count));
@@ -520,10 +520,10 @@ namespace Bio.Tests.Algorithms.Assembly
         private void ValidateKmer(string nodeName, bool IsKmerBuilder)
         {
             // Get the parameters from Xml
-            var Sequence = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode1);
-            var expectedKmerCount = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmrSeqCountNode);
-            var expectedKmerSeq = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerSequenceNode);
-            var expectedKmerPos = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.PositionsNode);
+            string Sequence = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.SequenceNode1);
+            string expectedKmerCount = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmrSeqCountNode);
+            string expectedKmerSeq = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.KmerSequenceNode);
+            string expectedKmerPos = utilityObj.xmlUtil.GetTextValue(nodeName, Constants.PositionsNode);
 
             // Create a Kmer Sequence.
             ISequence seq = new Sequence(Alphabets.DNA, Sequence);
@@ -532,8 +532,8 @@ namespace Bio.Tests.Algorithms.Assembly
             if (IsKmerBuilder)
             {
                 // Build Kmer.
-                var kmerBuilder = new SequenceToKmerBuilder();
-                var kmerList = kmerBuilder.Build(seq, 2);
+                SequenceToKmerBuilder kmerBuilder = new SequenceToKmerBuilder();
+                KmersOfSequence kmerList = kmerBuilder.Build(seq, 2);
 
                 // Validate builder kmer.
                 Assert.AreEqual(expectedKmerCount, kmerList.Kmers.Count.ToString((IFormatProvider) null));
@@ -561,14 +561,14 @@ namespace Bio.Tests.Algorithms.Assembly
         private void ValidateComputeFeature(string node, AssemblyParameters additionalParameter)
         {
             // Get the parameters from Xml
-            var firstSequence = utilityObj.xmlUtil.GetTextValue(node, Constants.SequenceNode1);
-            var secondSequence = utilityObj.xmlUtil.GetTextValue(node, Constants.SequenceNode2);
-            var kmerLength = utilityObj.xmlUtil.GetTextValue(node, Constants.KmerLengthNode);
-            var expectedFeatureCount = utilityObj.xmlUtil.GetTextValue(node, Constants.FeatureCount);
-            var expectedFeature = utilityObj.xmlUtil.GetTextValue(node, Constants.FeatureName);
-            var expectedFeatureType = utilityObj.xmlUtil.GetTextValue(node, Constants.FeatureType);
-            var expectedStartIndex = utilityObj.xmlUtil.GetTextValue(node, Constants.StartIndexNode);
-            var expectedEndIndex = utilityObj.xmlUtil.GetTextValue(node, Constants.EndIndexNode);
+            string firstSequence = utilityObj.xmlUtil.GetTextValue(node, Constants.SequenceNode1);
+            string secondSequence = utilityObj.xmlUtil.GetTextValue(node, Constants.SequenceNode2);
+            string kmerLength = utilityObj.xmlUtil.GetTextValue(node, Constants.KmerLengthNode);
+            string expectedFeatureCount = utilityObj.xmlUtil.GetTextValue(node, Constants.FeatureCount);
+            string expectedFeature = utilityObj.xmlUtil.GetTextValue(node, Constants.FeatureName);
+            string expectedFeatureType = utilityObj.xmlUtil.GetTextValue(node, Constants.FeatureType);
+            string expectedStartIndex = utilityObj.xmlUtil.GetTextValue(node, Constants.StartIndexNode);
+            string expectedEndIndex = utilityObj.xmlUtil.GetTextValue(node, Constants.EndIndexNode);
 
             ISequence seq1 = null;
             ISequence seq2 = null;
@@ -577,9 +577,9 @@ namespace Bio.Tests.Algorithms.Assembly
             switch (additionalParameter)
             {
                 case AssemblyParameters.Assemble:
-                    var seqObj1 =
+                    Sequence seqObj1 =
                         new Sequence(Alphabets.Protein, firstSequence);
-                    var seqObj2 =
+                    Sequence seqObj2 =
                         new Sequence(Alphabets.Protein, secondSequence);
                     seq1 = seqObj1;
                     seq2 = seqObj2;
@@ -590,19 +590,19 @@ namespace Bio.Tests.Algorithms.Assembly
                     break;
             }
 
-            var kmerBuilder = new SequenceToKmerBuilder();
-            var kmerList =
+            SequenceToKmerBuilder kmerBuilder = new SequenceToKmerBuilder();
+            KmersOfSequence kmerList =
                 kmerBuilder.Build(seq1, int.Parse(kmerLength, null));
-            var nodes =
+            List<WordMatch> nodes =
                 WordMatch.BuildMatchTable(
                     kmerList,
                     seq2,
                     int.Parse(kmerLength, null));
-            var matchList =
+            List<WordMatch> matchList =
                 WordMatch.GetMinimalList(nodes, int.Parse(kmerLength, null));
-            var diffNode =
+            List<DifferenceNode> diffNode =
                 DifferenceNode.BuildDiffList(matchList, seq1, seq2);
-            var features =
+            List<DifferenceNode.CompareFeature> features =
                 DifferenceNode.OutputDiffList(diffNode, seq1, seq2);
 
             // Validate difference.

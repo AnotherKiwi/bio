@@ -29,7 +29,7 @@ namespace Bio
         /// <param name="data">Tree Data</param>
         public static void Format(this IPhylogeneticTreeFormatter formatter, Tree data) 
         {
-            var fs = ParserFormatterExtensions<IPhylogeneticTreeFormatter>.GetOpenStream(formatter, true);
+            Stream fs = ParserFormatterExtensions<IPhylogeneticTreeFormatter>.GetOpenStream(formatter, true);
             if (fs != null)
                 formatter.Format(fs, data);
             else
@@ -57,7 +57,7 @@ namespace Bio
                 throw new ArgumentNullException(nameof(filename));
             }
 
-            using (var fs = File.Create(filename))
+            using (FileStream fs = File.Create(filename))
                 formatter.Format(fs, data);
         }
 
