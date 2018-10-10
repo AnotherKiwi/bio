@@ -2085,6 +2085,15 @@ namespace Bio.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Validation of symbols in a Peptide must be performed on the whole sequence.
+        /// </summary>
+        internal static string InvalidOffsetOrLengthForPeptideValidation {
+            get {
+                return ResourceManager.GetString("InvalidOffsetOrLengthForPeptideValidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid optional field [{0}].
         /// </summary>
         internal static string InvalidOptionalField {
@@ -2405,6 +2414,15 @@ namespace Bio.Properties {
         internal static string LENGTH_OF_MUM_NAME {
             get {
                 return ResourceManager.GetString("LENGTH_OF_MUM_NAME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The number of symbols cannot be negative.
+        /// </summary>
+        internal static string LengthMustBePositive {
+            get {
+                return ResourceManager.GetString("LengthMustBePositive", resourceCulture);
             }
         }
         
@@ -2866,6 +2884,15 @@ namespace Bio.Properties {
         internal static string OffsetInvalid {
             get {
                 return ResourceManager.GetString("OffsetInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offset must be zero when validating peptide sequences.
+        /// </summary>
+        internal static string OffsetMustBeZero {
+            get {
+                return ResourceManager.GetString("OffsetMustBeZero", resourceCulture);
             }
         }
         
@@ -4108,7 +4135,7 @@ namespace Bio.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Zero nucleotides in input..
+        ///   Looks up a localized string similar to Zero symbols in input..
         /// </summary>
         internal static string SymbolCountZero {
             get {

@@ -117,15 +117,18 @@ namespace Bio
         /// <summary>
         ///     List of all supported alphabets.
         /// </summary>
+        /// <remarks>
+        ///     Contains four protein alphabets added to the six alphabets in version 3.0.0-alpha.
+        /// </remarks>
         private static readonly List<IAlphabet> KnownAlphabets = new List<IAlphabet> 
         {
             DNA,
             AmbiguousDNA,
             RNA,
             AmbiguousRNA,
-            StrictProtein,
             Protein,
             AmbiguousProtein,
+            StrictProtein,
             ProteinFragment,
             PeaksPeptide,
             ProteinScapePeptide
@@ -282,9 +285,12 @@ namespace Bio
                 // Increment priority index and validate boundary condition
                 if (++currentPriorityIndex == AlphabetPriorityList.Count)
                 {
-                    // Last ditch effort - look at all registered alphabets and see if any contain all the located symbols.
-                    foreach (IAlphabet alphabet in All)
+                    // Last ditch effort - look at any other registered alphabets and see if
+                    // any contain all the located symbols.
+                    for (int i = currentPriorityIndex; i < All.Count; i++)
                     {
+                        IAlphabet alphabet = All[i];
+
                         // Make sure alphabet supports validation -- if not, ignore it.
                         try
                         {

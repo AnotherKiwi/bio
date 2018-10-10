@@ -1,7 +1,6 @@
 ﻿using static Bio.Properties.Resource;
 using System.Collections.Generic;
 using System.Linq;
-using Bio.Core.Extensions;
 
 namespace Bio
 {
@@ -11,6 +10,11 @@ namespace Bio
 
     public class PeaksPeptideAlphabet : ProteinFragmentAlphabet, IPeaksPeptideAlphabet
     {
+        #region Private members
+
+        /// <summary>
+        /// 	Set of symbols of unambiguous amino acids.
+        /// </summary>
         private readonly HashSet<byte> _aminoAcids;
 
         /// <summary>
@@ -32,6 +36,8 @@ namespace Bio
         /// 	Set of numeric signs ('+' and '-') and the period ('.').
         /// </summary>
         private readonly byte[] _signsAndPeriod;
+
+        #endregion Private members
 
         /// <summary>
         ///     Instance of the PeaksPeptideAlphabet class.
@@ -90,31 +96,6 @@ namespace Bio
             AddAminoAcids();
         }
 
-        private void AddAminoAcids()
-        {
-            AddAminoAcid(ModificationBeginDelimiter, "(((", "Modification Start Delimiter", false);
-            AddAminoAcid(ModificationEndDelimiter, ", false), false), false)", "Modification End Delimiter", false);
-            AddAminoAcid(Digit0, "000", "Modification Digit '0'", false);
-            AddAminoAcid(Digit1, "111", "Modification Digit '1'", false);
-            AddAminoAcid(Digit2, "222", "Modification Digit '2'", false);
-            AddAminoAcid(Digit3, "333", "Modification Digit '3'", false);
-            AddAminoAcid(Digit4, "444", "Modification Digit '4'", false);
-            AddAminoAcid(Digit5, "555", "Modification Digit '5'", false);
-            AddAminoAcid(Digit6, "666", "Modification Digit '6'", false);
-            AddAminoAcid(Digit7, "777", "Modification Digit '7'", false);
-            AddAminoAcid(Digit8, "888", "Modification Digit '8'", false);
-            AddAminoAcid(Digit9, "999", "Modification Digit '9'", false);
-            AddAminoAcid(SmallS, "sss", "Modification Sub Char 's'", false);
-            AddAminoAcid(SmallU, "uuu", "Modification Sub Char 's'", false);
-            AddAminoAcid(SmallB, "bbb", "Modification Sub Char 's'", false);
-            AddAminoAcid(Plus, "+++", "Modification Char '+'", false);
-            AddAminoAcid(Minus, "---", "Modification Char '-'", false);
-            AddAminoAcid(Space, "   ", "Modification Char ' '", false);
-        }
-
-        /// <inheritdoc />
-        public byte SmallB { get; }
-
         /// <inheritdoc />
         public byte Digit0 { get; }
 
@@ -161,7 +142,13 @@ namespace Bio
         public byte Plus { get; }
 
         /// <inheritdoc />
+        public byte SmallB { get; }
+
+        /// <inheritdoc />
         public byte SmallS { get; }
+
+        /// <inheritdoc />
+        public byte SmallU { get; }
 
         /// <inheritdoc />
         public byte Space { get; }
@@ -169,8 +156,130 @@ namespace Bio
         /// <inheritdoc />
         public byte[] Sub { get; }
 
-        /// <inheritdoc />
-        public byte SmallU { get; }
+        /// <summary>
+        /// 	Adds the amino acids to the alphabet.
+        /// </summary>
+        private void AddAminoAcids()
+        {
+            AddAminoAcid(ModificationBeginDelimiter, "(((", "Modification Start Delimiter", false);
+            AddAminoAcid(ModificationEndDelimiter, ", false), false), false)", "Modification End Delimiter", false);
+            AddAminoAcid(Digit0, "000", "Modification Digit '0'", false);
+            AddAminoAcid(Digit1, "111", "Modification Digit '1'", false);
+            AddAminoAcid(Digit2, "222", "Modification Digit '2'", false);
+            AddAminoAcid(Digit3, "333", "Modification Digit '3'", false);
+            AddAminoAcid(Digit4, "444", "Modification Digit '4'", false);
+            AddAminoAcid(Digit5, "555", "Modification Digit '5'", false);
+            AddAminoAcid(Digit6, "666", "Modification Digit '6'", false);
+            AddAminoAcid(Digit7, "777", "Modification Digit '7'", false);
+            AddAminoAcid(Digit8, "888", "Modification Digit '8'", false);
+            AddAminoAcid(Digit9, "999", "Modification Digit '9'", false);
+            AddAminoAcid(SmallS, "sss", "Modification Sub Char 's'", false);
+            AddAminoAcid(SmallU, "uuu", "Modification Sub Char 's'", false);
+            AddAminoAcid(SmallB, "bbb", "Modification Sub Char 's'", false);
+            AddAminoAcid(Plus, "+++", "Modification Char '+'", false);
+            AddAminoAcid(Minus, "---", "Modification Char '-'", false);
+            AddAminoAcid(Space, "   ", "Modification Char ' '", false);
+        }
+
+        /// <summary>
+        /// 	Checks digits. Returns <c>true</c> if the current symbol is part of a
+        ///     valid numeric pattern in a modification.
+        /// </summary>
+        /// <param name="symbols">The symbols to check.</param>
+        /// <param name="index">The current index.</param>
+        /// <param name="sequenceLength">Length of the sequence.</param>
+        /// <returns>
+        ///  	<see cref="bool"/>: 
+        ///  	<c>true</c> if the current symbol is part of a valid substitution pattern, <c>false</c> otherwise.
+        /// </returns>
+        /// <remarks>
+        ///     Digits occur in patterns like 'C(+31.99)' and 'N(+.98)', so there must be room for 1 more symbol
+        ///     in the sequence, the preceding symbol must be a sign or a period, and the following symbol must
+        ///     be another digit, a '.' or a ")".
+        /// </remarks>
+        private bool CheckDigitIsValid(byte[] symbols, long index, long sequenceLength)
+        {
+            return (index < sequenceLength - 1) &&
+                   _signs.Contains(symbols[index - 1]) &&
+                   _signsAndPeriod.Contains(symbols[index - 1]) &&
+                   (_digits.Contains(symbols[index + 1]) || 
+                    (symbols[index + 1] == Period) ||
+                    (symbols[index + 1] == ModificationEndDelimiter));
+        }
+
+        /// <summary>
+        /// 	Checks the period symbol. Returns <c>true</c> if it is part of a
+        ///     valid numeric pattern in a modification.
+        /// </summary>
+        /// <param name="symbols">The symbols to check.</param>
+        /// <param name="index">The current index.</param>
+        /// <param name="sequenceLength">Length of the sequence.</param>
+        /// <returns>
+        ///  	<see cref="bool"/>: 
+        ///  	<c>true</c> if the current symbol is part of a valid numeric pattern, <c>false</c> otherwise.
+        /// </returns>
+        /// <remarks>
+        ///     Periods occur in patterns like 'C(+31.99)' and 'N(+.98)', so there must be room for more symbols
+        ///     in the sequence, the preceding symbol must be a digit or a sign, and the following symbol must
+        ///     be a digit.
+        /// </remarks>
+        private bool CheckPeriodIsValid(byte[] symbols, long index, long sequenceLength)
+        {
+            return (_digits.Contains(symbols[index - 1]) || _signsAndPeriod.Contains(symbols[index + 1])) &&
+                   (index < sequenceLength - 1) &&
+                   _digits.Contains(symbols[index + 1]);
+        }
+
+        /// <summary>
+        /// 	Checks the sign symbols. Returns <c>true</c> if the current symbol is part of a
+        ///     valid numeric pattern.
+        /// </summary>
+        /// <param name="symbols">The symbols to check.</param>
+        /// <param name="index">The current index.</param>
+        /// <param name="sequenceLength">Length of the sequence.</param>
+        /// <returns>
+        ///  	<see cref="bool"/>: 
+        ///  	<c>true</c> if the current symbol is part of a valid numeric pattern, <c>false</c> otherwise.
+        /// </returns>
+        /// <remarks>
+        ///     Signs occur in patterns like 'C(+31.99)' and 'N(+.98)', so there must be room for 4 more symbols
+        ///     in the sequence and the following symbol must be a digit or '.".
+        /// </remarks>
+        private bool CheckSignIsValid(in byte[] symbols, long index, long sequenceLength)
+        {
+            return (symbols[index - 1] == ModificationBeginDelimiter) && 
+                   (index < sequenceLength - 4) &&                       
+                   _numerics.Contains(symbols[index + 1]);            
+        }
+
+        /// <summary>
+        /// 	Returns <c>true</c> if the current symbol is the beginning of a valid substitution modification.
+        /// </summary>
+        /// <param name="symbols">The symbols.</param>
+        /// <param name="index">Index of the current.</param>
+        /// <param name="sequenceLength">Length of the sequence.</param>
+        /// <param name="aminoAcids">Set of valid amino acid symbols.</param>
+        /// <returns>
+        ///     <see cref="bool" />: 
+        ///     <c>true</c> if the current symbol begins a valid substitution, <c>false</c> otherwise.
+        /// </returns>
+        /// <remarks>
+        ///  	A valid substitution is like '(sub V)', so there must be room for 5 more symbols, the
+        ///     5th char after 's' must be ')', 's' must be followed by 'ub ' and a valid amino acid symbol.
+        /// </remarks>
+        private bool  CheckSubstitutionIsValid(in byte[] symbols, long index, long sequenceLength, 
+            in HashSet<byte> aminoAcids)
+        {
+            return (symbols[index - 1] == ModificationBeginDelimiter) && 
+                   (index < sequenceLength - 5) &&                       
+                   (symbols[index + 5] == ModificationEndDelimiter) &&   
+                   ((symbols[index] == SmallS) &&
+                    (symbols[index + 1] == SmallU) &&
+                    (symbols[index + 2] == SmallB) &&
+                    (symbols[index + 3] == Space)) &&
+                   (aminoAcids.Contains(symbols[index + 4]));
+
+        }
 
         /// <inheritdoc />
         public override bool ValidateSequence(byte[] symbols)
@@ -183,23 +292,24 @@ namespace Bio
         {
             // Make sure the sequence doesn't contain any invalid symbols, and
             // that it starts with an amino acid symbol.
-            if (!(base.ValidateSequence(symbols, offset, length) && _aminoAcids.Contains(symbols[0])))
+            if (!base.ValidateSequence(symbols, offset, length) || !_aminoAcids.Contains(symbols[0]))
             {
                 return false;
             }
 
-            int sequenceLength = symbols.Length;
             var isModification = false;
             var preceedingWasAA = true;
             byte[] ubSpace = {SmallU, SmallB, Space};
 
-            int i = 1;
-            while (i < sequenceLength)
+            long i = 1;
+            while (i < length)
             {
                 byte symbol = symbols[i];
 
                 if (symbol == ModificationBeginDelimiter)
                 {
+                    // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+                    // ReSharper disable once HeuristicUnreachableCode
                     // '(' must follow an amino acid symbol.
                     if (!preceedingWasAA)
                     {
@@ -223,7 +333,7 @@ namespace Bio
                 else if (symbol == SmallS)
                 {
                     // Starting a 'sub' modification, which must obey the pattern '(sub A)'.
-                    if (!CheckSubstitutionIsValid(symbols, i, sequenceLength, _aminoAcids))
+                    if (!CheckSubstitutionIsValid(symbols, i, length, _aminoAcids))
                     {
                         return false;
                     }
@@ -238,17 +348,17 @@ namespace Bio
                     return false;
                 }
 
-                else if (_signs.Contains(symbol) && !CheckSignIsValid(symbols, i, sequenceLength))
+                else if (_signs.Contains(symbol) && !CheckSignIsValid(symbols, i, length))
                 {
                     return false;
                 }
 
-                else if (_digits.Contains(symbol) && !CheckDigitIsValid(symbols, i, sequenceLength))
+                else if (_digits.Contains(symbol) && !CheckDigitIsValid(symbols, i, length))
                 {
                     return false;
                 }
 
-                else if (symbol == Period && !CheckPeriodIsValid(symbols, i, sequenceLength))
+                else if (symbol == Period && !CheckPeriodIsValid(symbols, i, length))
                 {
                     return false;
                 }
@@ -256,6 +366,8 @@ namespace Bio
                 else
                 {
                     preceedingWasAA = _aminoAcids.Contains(symbol);
+
+                    // If got here, the only valid symbol the current symbol can be is an amino acid.
                     if (!preceedingWasAA)
                     {
                         return false;
@@ -266,103 +378,6 @@ namespace Bio
             }
 
             return true;
-        }
-
-        /// <summary>
-        /// 	Checks the period symbol. Returns <c>true</c> if it is part of a
-        ///     valid numeric pattern in a modification.
-        /// </summary>
-        /// <param name="symbols">The symbols to check.</param>
-        /// <param name="index">The current index.</param>
-        /// <param name="sequenceLength">Length of the sequence.</param>
-        /// <returns>
-        ///  	<see cref="bool"/>: 
-        ///  	<c>true</c> if the current symbol is part of a valid numeric pattern, <c>false</c> otherwise.
-        /// </returns>
-        /// <remarks>
-        ///     Periods occur in patterns like 'C(+31.99)' and 'N(+.98)', so there must be room for more symbols
-        ///     in the sequence, the preceding symbol must be a digit or a sign, and the following symbol must
-        ///     be a digit.
-        /// </remarks>
-        private bool CheckPeriodIsValid(byte[] symbols, int index, int sequenceLength)
-        {
-            return (_digits.Contains(symbols[index - 1]) || _signsAndPeriod.Contains(symbols[index + 1])) &&
-                   (index < sequenceLength - 1) &&
-                   _digits.Contains(symbols[index + 1]);
-        }
-
-        /// <summary>
-        /// 	Checks the sign symbols. Returns <c>true</c> if the current symbol is part of a
-        ///     valid numeric pattern.
-        /// </summary>
-        /// <param name="symbols">The symbols to check.</param>
-        /// <param name="index">The current index.</param>
-        /// <param name="sequenceLength">Length of the sequence.</param>
-        /// <returns>
-        ///  	<see cref="bool"/>: 
-        ///  	<c>true</c> if the current symbol is part of a valid numeric pattern, <c>false</c> otherwise.
-        /// </returns>
-        /// <remarks>
-        ///     Signs occur in patterns like 'C(+31.99)' and 'N(+.98)', so there must be room for 4 more symbols
-        ///     in the sequence and the following symbol must be a digit or '.".
-        /// </remarks>
-        private bool CheckSignIsValid(in byte[] symbols, int index, int sequenceLength)
-        {
-            return (symbols[index - 1] == ModificationBeginDelimiter) && 
-                   (index < sequenceLength - 4) &&                       
-                   _numerics.Contains(symbols[index + 1]);            
-        }
-
-        /// <summary>
-        /// 	Checks digits. Returns <c>true</c> if the current symbol is part of a
-        ///     valid numeric pattern in a modification.
-        /// </summary>
-        /// <param name="symbols">The symbols to check.</param>
-        /// <param name="index">The current index.</param>
-        /// <param name="sequenceLength">Length of the sequence.</param>
-        /// <returns>
-        ///  	<see cref="bool"/>: 
-        ///  	<c>true</c> if the current symbol is part of a valid substitution pattern, <c>false</c> otherwise.
-        /// </returns>
-        /// <remarks>
-        ///     Digits occur in patterns like 'C(+31.99)' and 'N(+.98)', so there must be room for 1 more symbol
-        ///     in the sequence, the preceding symbol must be a sign or a period, and the following symbol must
-        ///     be another digit, a '.' or a ")".
-        /// </remarks>
-        private bool CheckDigitIsValid(byte[] symbols, int index, int sequenceLength)
-        {
-            return (index < sequenceLength - 1) &&
-                   _signs.Contains(symbols[index - 1]) &&
-                   _signsAndPeriod.Contains(symbols[index - 1]) &&
-                   (_digits.Contains(symbols[index + 1]) || 
-                    (symbols[index + 1] == Period) ||
-                    (symbols[index + 1] == ModificationEndDelimiter));
-        }
-
-        /// <summary>
-        /// 	Returns <c>true</c> if the current symbol is the beginning of a valid substitution modification.
-        /// </summary>
-        /// <param name="symbols">The symbols.</param>
-        /// <param name="index">Index of the current.</param>
-        /// <param name="sequenceLength">Length of the sequence.</param>
-        /// <param name="aminoAcids">Set of valid amino acid symbols.</param>
-        /// <returns>
-        ///     <see cref="bool" />: 
-        ///     <c>true</c> if the current symbol begins a valid substitution, <c>false</c> otherwise.
-        /// </returns>
-        /// <remarks>
-        ///  	A valid substitution is like '(sub V)', so there must be room for 5 more symbols, the
-        ///     5th char after 's' must be ')', 's' must be followed by 'ub ' and a valid amino acid symbol.
-        /// </remarks>
-        private bool  CheckSubstitutionIsValid(in byte[] symbols, int index, int sequenceLength, 
-            in HashSet<byte> aminoAcids)
-        {
-            return (symbols[index - 1] == ModificationBeginDelimiter) && 
-                   (index < sequenceLength - 5) &&                       
-                   (symbols[index + 5] == ModificationEndDelimiter) &&   
-                   (symbols.GetRange(index, 4) == Sub) &&
-                   (aminoAcids.Contains(symbols[index + 4]));
-
         }
     }
 }

@@ -42,3 +42,9 @@ Test data changed to allow for new alphabets
 - invalid sequence data on 2nd line of FastQFileWithInvalidAlphabet.fastq changed from '123' to '$%^'.
 
 Added ValidateSequence(byte[] symbols) overload to protein alphabets.
+
+Modified Alphabets.AutoDetectAlphabet()
+- inner loop changed that the six original built-in alphabets are not tested when trying to
+  validate the members of the All collection.
+
+Language for Bio.Core changed to C# 7.3

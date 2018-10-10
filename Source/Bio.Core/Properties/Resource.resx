@@ -1118,7 +1118,8 @@ file specification, and converts the data to in-memory SequenceAlignmentMap obje
     <comment>Added by Stephen Haines</comment>
   </data>
   <data name="SymbolCountZero" xml:space="preserve">
-    <value>Zero nucleotides in input.</value>
+    <value>Zero symbols in input.</value>
+    <comment>Modified by Stephen Haines</comment>
   </data>
   <data name="SymbolExistsInAlphabet" xml:space="preserve">
     <value>Symbol already exists in alphabet.</value>
@@ -1596,6 +1597,18 @@ provided. There is also a default encoding for each alphabet that may be encount
   </data>
   <data name="OffsetCannotBeNegative" xml:space="preserve">
     <value>Offset cannot be a negative value</value>
+    <comment>Added by Stephen Haines</comment>
+  </data>
+  <data name="InvalidOffsetOrLengthForPeptideValidation" xml:space="preserve">
+    <value>Validation of symbols in a Peptide must be performed on the whole sequence</value>
+    <comment>Added by Stephen Haines</comment>
+  </data>
+  <data name="LengthMustBePositive" xml:space="preserve">
+    <value>The number of symbols cannot be negative</value>
+    <comment>Added by Stephen Haines</comment>
+  </data>
+  <data name="OffsetMustBeZero" xml:space="preserve">
+    <value>Offset must be zero when validating peptide sequences</value>
     <comment>Added by Stephen Haines</comment>
   </data>
 </root>

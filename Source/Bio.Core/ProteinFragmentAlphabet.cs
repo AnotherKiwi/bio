@@ -1,6 +1,6 @@
-﻿using System;
+﻿using static Bio.Properties.Resource;
+using System;
 using System.Linq;
-using static Bio.Properties.Resource;
 
 namespace Bio
 {
@@ -36,7 +36,6 @@ namespace Bio
             AddAminoAcid(SequenceDelimiter, "...", "Sequence Delimiter", false);
         }
 
-
         /// <inheritdoc />
         public byte SequenceDelimiter { get; }
 
@@ -51,34 +50,49 @@ namespace Bio
             return ValidateSequence(symbols, 0, symbols.LongLength);
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// 	Validates the sequence.
+        /// </summary>
+        /// <param name="symbols">The symbols to be validated.</param>
+        /// <param name="offset">The offset at which to start validation. This MUST be 0.</param>
+        /// <param name="length">The number of symbols to validate. This MUST be the TOTAL NUMBER
+        /// of symbols in the sequence.</param>
         /// <remarks>
-        ///     Also checks that the sequence contains  no more than two
-        ///     <see cref="SequenceDelimiter"/> symbols, and that they occur
+        ///  	Also checks that the sequence contains no more than two
+        ///     <see cref="SequenceDelimiter" /> symbols, and that they occur
         ///     in appropriate positions.
+        ///     <para>
+        ///         The whole Protein Fragment must be validated, so an exception is thrown
+        ///         if <paramref name="offset"/> is not zero or <paramref name="length"/>
+        ///         does not equal the number of symbols in the sequence.
+        ///     </para>
         /// </remarks>
         public override bool ValidateSequence(byte[] symbols, long offset, long length)
         {
+            if (offset != 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(offset), offset, OffsetMustBeZero);
+            }
+
             if (!base.ValidateSequence(symbols, offset, length))
             {
                 return false;
             }
 
-            int sequenceLength = symbols.Length;
-            if (sequenceLength < 3)
+            if (length < 3)
             {
-                throw new ArgumentOutOfRangeException(nameof(sequenceLength), SequenceLengthLessThanMinimum);
+                throw new ArgumentOutOfRangeException(nameof(length), SequenceLengthLessThanMinimum);
             }
 
             // Check that the peptide has no more than two SequenceDelimiter symbols, and that they
             // appear in allowed places (in second and/or second to last position in sequence).
-            int symbolCount = symbols.Count(s => s == SequenceDelimiter);
+            long symbolCount = symbols.Count(s => s == SequenceDelimiter);
             switch (symbolCount)
             {
                 case 2:
-                    return symbols[1] == SequenceDelimiter && symbols[sequenceLength - 2] == SequenceDelimiter;
+                    return (symbols[1] == SequenceDelimiter) && (symbols[length - 2] == SequenceDelimiter);
                 case 1:
-                    return symbols[1] == SequenceDelimiter || symbols[sequenceLength - 2] == SequenceDelimiter;
+                    return (symbols[1] == SequenceDelimiter) || (symbols[length - 2] == SequenceDelimiter);
                 default:
                     return false;
             }

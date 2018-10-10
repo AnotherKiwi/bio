@@ -101,7 +101,7 @@ namespace Bio
 
             // Validate that all are valid protein symbols
             HashSet<byte> validValues = GetValidSymbols();
-            HashSet<byte> symbolsInUpperCase = new HashSet<byte>();
+            var symbolsInUpperCase = new HashSet<byte>();
 
             foreach (byte symbol in symbols)
             {
@@ -141,7 +141,7 @@ namespace Bio
                     return symbols.First();
                 default:
                 {
-                    HashSet<byte> baseSet = new HashSet<byte>();
+                    var baseSet = new HashSet<byte>();
 
                     foreach (byte n in symbolsInUpperCase)
                     {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Bio
+﻿namespace Bio
 {
     /// <summary>
     ///     An alphabet that extends <see cref="IStrictProteinAlphabet"/> by adding termination
@@ -10,7 +6,7 @@ namespace Bio
     /// </summary>
     /// <remarks>
     /// Specifically, adds Gap (i.e. '-'), and Ter (i.e. '*', for terminations).<br/>
-    /// Symbols for ambiguous amino acids are not included in this alphabet.
+    /// Symbols for ambiguous amino acids are NOT included in this alphabet.
     /// </remarks>
     /// <seealso cref="IStrictProteinAlphabet" />,
     /// <seealso cref="IAlphabet"/>
@@ -19,12 +15,12 @@ namespace Bio
     {
 
         /// <summary>
-        /// Gets the Gap character.
+        ///     Gets the Gap character.
         /// </summary>
         byte Gap { get; }
 
         /// <summary>
-        /// Gets the Termination character.
+        ///     Gets the Termination character.
         /// </summary>
         byte Ter { get; }
     }
