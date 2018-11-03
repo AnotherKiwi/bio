@@ -1,9 +1,6 @@
 ﻿namespace Bio.Util.ArgumentParser
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
     /// <summary>
     /// Base class for Command line Argument Exceptions.

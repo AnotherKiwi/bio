@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using Bio.Algorithms.Assembly.Padena.Scaffold.ContigOverlapGraph;
 using Bio.Algorithms.Assembly;
 using Bio.Algorithms.Assembly.Graph;

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Bio.TestUtils.SimulatorUtility;
 
 namespace Bio.TestUtils.SimulatorUtility
 {

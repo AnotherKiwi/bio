@@ -15,7 +15,6 @@ using Bio.TestAutomation.Util;
 using Bio.Util.Logging;
 using System.Linq;
 using NUnit.Framework;
-using Bio;
 using Bio.Tests;
 
 #if (SILVERLIGHT == false)

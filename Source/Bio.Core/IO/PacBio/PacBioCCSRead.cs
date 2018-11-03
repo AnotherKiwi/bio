@@ -1,6 +1,4 @@
 ﻿using System;
-using Bio;
-using Bio.IO.BAM;
 using Bio.IO.SAM;
 using System.Collections.Generic;
 using System.Linq;

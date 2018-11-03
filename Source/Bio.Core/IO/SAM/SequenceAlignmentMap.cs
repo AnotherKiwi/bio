@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using Bio.Algorithms.Alignment;
-using Bio.Extensions;
 using Bio.Util;
 
 namespace Bio.IO.SAM

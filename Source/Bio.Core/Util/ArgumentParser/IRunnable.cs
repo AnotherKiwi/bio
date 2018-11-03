@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using System.Runtime.Serialization;
-#if !SILVERLIGHT
-using System.Runtime.Serialization.Formatters.Binary;
+﻿#if !SILVERLIGHT
 #endif
-using System.Collections;
 
 namespace Bio.Util.ArgumentParser
 {

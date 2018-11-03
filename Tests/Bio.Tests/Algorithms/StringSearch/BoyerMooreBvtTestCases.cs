@@ -3,8 +3,6 @@ using System.Collections.Generic;
 
 using Bio.Algorithms.StringSearch;
 using Bio.TestAutomation.Util;
-using Bio.Util.Logging;
-
 using NUnit.Framework;
 
 namespace Bio.Tests.Algorithms.StringSearch

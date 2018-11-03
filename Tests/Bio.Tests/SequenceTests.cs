@@ -1,5 +1,4 @@
-﻿using Bio;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace Bio.Tests
 {

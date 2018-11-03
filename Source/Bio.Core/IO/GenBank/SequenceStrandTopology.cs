@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Bio.IO.GenBank
+﻿namespace Bio.IO.GenBank
 {
     /// <summary>
     /// A StrandTopology specifies whether the strand is linear or circular.

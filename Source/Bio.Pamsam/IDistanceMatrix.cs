@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
+﻿namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
 {
     /// <summary>
     /// Implementation of Distance matrix Interface.

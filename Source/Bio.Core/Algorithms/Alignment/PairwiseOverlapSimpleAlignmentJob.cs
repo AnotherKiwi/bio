@@ -1,13 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Bio.SimilarityMatrices;
-
-using System.Threading;
-using System.Threading.Tasks;
-
 using Bio.Util;
 
 namespace Bio.Algorithms.Alignment

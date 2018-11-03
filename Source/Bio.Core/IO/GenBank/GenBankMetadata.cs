@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Bio.Util.Logging;
-using System.ComponentModel;
 
 namespace Bio.IO.GenBank
 {

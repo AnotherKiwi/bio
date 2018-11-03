@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
-using Bio.Util;
-
 namespace Bio.IO.AppliedBiosystems.Model
 {
     /// <summary>

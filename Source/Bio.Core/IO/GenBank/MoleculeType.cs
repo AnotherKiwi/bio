@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Bio.IO.GenBank
+﻿namespace Bio.IO.GenBank
 {
     /// <summary>
     /// A MoleculeType specifies which type of biological sequence is stored in an ISequence.

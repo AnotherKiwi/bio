@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Bio.IO.GenBank
+﻿namespace Bio.IO.GenBank
 {
     /// <summary>
     /// A compound identifier consisting of the primary accession number and 

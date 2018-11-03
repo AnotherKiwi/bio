@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Bio.IO.GenBank
+﻿namespace Bio.IO.GenBank
 {
     /// <summary>
     ///  Citations for all articles containing data reported in this sequence.

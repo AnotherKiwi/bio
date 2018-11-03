@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Bio.Algorithms.StringSearch;
 using NUnit.Framework;
-using Bio;
 
 namespace Bio.Tests.Algorithms.StringSearch
 {

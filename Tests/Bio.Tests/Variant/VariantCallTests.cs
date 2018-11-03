@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Bio;
 using Bio.Variant;
 using Bio.Algorithms.Alignment;
 using Bio.Extensions;

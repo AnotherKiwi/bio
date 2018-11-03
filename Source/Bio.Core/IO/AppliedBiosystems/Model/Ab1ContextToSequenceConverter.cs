@@ -2,7 +2,6 @@
 using System.Linq;
 using Bio.IO.AppliedBiosystems.DataParsers;
 using Bio.IO.AppliedBiosystems.DataTypes;
-using Bio.Util;
 
 namespace Bio.IO.AppliedBiosystems.Model
 {

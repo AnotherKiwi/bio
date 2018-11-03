@@ -1,8 +1,5 @@
 ﻿using System;
-using Bio.Algorithms.Alignment;
-using System.Collections.Generic;
 using System.Linq;
-using Bio.Extensions;
 using System.Diagnostics;
 
 namespace Bio.Variant

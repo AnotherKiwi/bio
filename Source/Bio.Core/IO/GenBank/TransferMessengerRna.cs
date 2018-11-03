@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Bio.IO.GenBank
+﻿namespace Bio.IO.GenBank
 {
     /// <summary>
     /// Transfer messenger RNA; tmRNA acts as a tRNA first, and then as an mRNA that encodes a peptide tag; 

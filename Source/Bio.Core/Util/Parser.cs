@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using Bio.Extensions;
-
 namespace Bio.Util
 {
     /// <summary>

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Bio;
 using Bio.Algorithms.Alignment.MultipleSequenceAlignment;
 using NUnit.Framework;
 

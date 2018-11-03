@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 
 using Bio.Algorithms.Alignment;
 using Bio.IO;
 using Bio.IO.SAM;
-using Bio.Util.ArgumentParser;
-
 using NUnit.Framework;
 
 namespace Bio.Tests.IO.SAM

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-
-namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
+﻿namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
 {
     /// <summary>
     /// IProfileAlignment is an extension of ISequenceAlignment

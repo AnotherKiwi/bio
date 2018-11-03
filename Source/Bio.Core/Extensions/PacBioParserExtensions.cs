@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Bio.IO.BAM;
-using Bio.IO.SAM;
 
 namespace Bio.IO.PacBio
 {

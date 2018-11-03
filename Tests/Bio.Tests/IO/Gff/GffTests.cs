@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Bio;
 using Bio.IO;
 using Bio.IO.Gff;
 using Bio.Util.Logging;

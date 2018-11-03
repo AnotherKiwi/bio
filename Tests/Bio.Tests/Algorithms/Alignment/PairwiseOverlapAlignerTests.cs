@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Bio;
 using Bio.Algorithms.Alignment;
 using Bio.SimilarityMatrices;
 using Bio.Util.Logging;

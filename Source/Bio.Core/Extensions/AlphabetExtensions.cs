@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Bio.Util.ArgumentParser;
 using static Bio.Alphabets;
 
 namespace Bio.Extensions

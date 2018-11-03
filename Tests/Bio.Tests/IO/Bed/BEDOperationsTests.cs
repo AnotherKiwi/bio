@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using Bio;
 using Bio.IO.Bed;
 using NUnit.Framework;
 

@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using Bio;
 using Bio.Algorithms.Alignment;
 using Bio.IO;
 using Bio.IO.Nexus;

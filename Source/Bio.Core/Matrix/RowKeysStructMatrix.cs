@@ -10,7 +10,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Bio.Util;
-using Bio.Util.Logging;
 
 
 //!!!would be nice to have a TryGetInstance(filename) that didn't throw MatrixFormatException or any other exception

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Bio.Algorithms.Assembly.Graph;
+﻿using Bio.Algorithms.Assembly.Graph;
 
 namespace Bio.Algorithms.Assembly.Padena
 {

@@ -2,8 +2,6 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
-
-using Bio;
 using Bio.Extensions;
 using Bio.Algorithms.Alignment;
 

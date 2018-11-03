@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Bio;
 using Bio.Algorithms.Alignment.MultipleSequenceAlignment;
 using Bio.IO.FastA;
 using Bio.SimilarityMatrices;

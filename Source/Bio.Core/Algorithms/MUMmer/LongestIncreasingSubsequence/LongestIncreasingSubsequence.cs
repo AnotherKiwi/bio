@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Bio.Algorithms.MUMmer;
 using Bio.Algorithms.SuffixTree;
 
 namespace Bio.Algorithms.MUMmer.LIS

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Bio;
 using Bio.Algorithms.Alignment.MultipleSequenceAlignment;
 using Bio.SimilarityMatrices;
 using NUnit.Framework;

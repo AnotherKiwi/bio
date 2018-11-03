@@ -7,7 +7,6 @@ using Bio.Core.Extensions;
 using Bio.Properties;
 using Bio.Util;
 using static Bio.Alphabets;
-using static Bio.Properties.Resource;
 
 namespace Bio
 {

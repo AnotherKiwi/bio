@@ -4,7 +4,6 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Bio.Util;
-using Bio.Util.Logging;
 using System.Globalization;
 
 //!!!would be nice to have a TryGetInstance(filename) that didn't throw MatrixFormatException or any other exception

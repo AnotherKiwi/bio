@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using NUnit.Framework;
 using static Bio.Alphabets;
 using static Bio.Core.Extensions.ArrayExtensions;

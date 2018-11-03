@@ -1,7 +1,6 @@
 ﻿using System;
 using Bio.Algorithms.Translation;
 using NUnit.Framework;
-using Bio;
 
 namespace Bio.Tests.Algorithms.Translation
 {

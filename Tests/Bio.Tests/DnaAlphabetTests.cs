@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Bio;
 using NUnit.Framework;
 
 namespace Bio.Tests

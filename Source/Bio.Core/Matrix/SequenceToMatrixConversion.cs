@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,7 +8,6 @@ using Bio.Algorithms.Alignment;
 using Bio.Algorithms.Translation;
 using Bio.Distributions;
 using Bio.Distributions.Converters;
-using Bio.IO;
 using Bio.IO.FastA;
 using Bio.IO.Phylip;
 using Bio.Properties;

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System;
-using Bio;
+﻿using System;
 
 namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
 {

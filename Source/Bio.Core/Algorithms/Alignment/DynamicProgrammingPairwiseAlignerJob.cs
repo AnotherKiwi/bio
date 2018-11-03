@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Bio.Core.Extensions;
 using Bio.SimilarityMatrices;
 using Bio.Util;

@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Bio;
 using Bio.IO.Newick;
 using Bio.Phylogenetics;
 using Bio.TestAutomation.Util;

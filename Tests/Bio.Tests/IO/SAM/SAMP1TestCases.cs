@@ -8,18 +8,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
-using Bio.Algorithms.Alignment;
 using Bio.IO.FastA;
 using Bio.IO.SAM;
 using Bio.TestAutomation.Util;
-using Bio.Util.Logging;
-
 using NUnit.Framework;
-using Bio.IO;
-using System;
-using System.Runtime.Serialization;
-using Bio;
 using Bio.Tests;
 
 namespace Bio.TestAutomation.IO.SAM

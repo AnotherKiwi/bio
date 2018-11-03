@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using Bio.SimilarityMatrices;
 using Bio.Util.Logging;
-using System.Linq;
 
 namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
 {

@@ -1,7 +1,4 @@
 ﻿using System.IO;
-using System.Linq;
-
-using Bio;
 using Bio.IO.BAM;
 using Bio.IO.SAM;
 using NUnit.Framework;

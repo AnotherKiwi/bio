@@ -7,7 +7,6 @@ using Bio.Algorithms.MUMmer;
 using Bio.SimilarityMatrices;
 using Bio.Util.Logging;
 using NUnit.Framework;
-using Bio.Tests.MUMmer;
 using Bio.Extensions;
 
 namespace Bio.Tests.Assembly

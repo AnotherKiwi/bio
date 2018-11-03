@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Bio.Algorithms.Alignment;
+﻿using Bio.Algorithms.Alignment;
 
 namespace Bio.IO
 {

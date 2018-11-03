@@ -8,10 +8,7 @@
 using System.Xml;
 using System.Xml.Linq;
 using System.Linq;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using NUnit.Framework;
 using Bio.Tests;
 
 namespace Bio.TestAutomation.Util

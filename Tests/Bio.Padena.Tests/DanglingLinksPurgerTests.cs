@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Bio.Algorithms.Assembly.Padena;
-using Bio.Extensions;
 using Bio.Tests.Framework;
 using NUnit.Framework;
 

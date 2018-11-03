@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Bio.SimilarityMatrices;
 using System;
-using Bio.Util.Logging;
 using Trace = Bio.Util.Logging.Trace;
 
 namespace Bio.Algorithms.Alignment

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Bio
+﻿namespace Bio
 {
     /// <summary>
     ///     An alphabet that extends <see cref="IProteinAlphabet"/> by adding symbols for ambiguous amino acids.

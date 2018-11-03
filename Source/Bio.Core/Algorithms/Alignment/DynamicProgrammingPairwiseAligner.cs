@@ -5,7 +5,6 @@ using System.Globalization;
 using System.Linq;
 
 using Bio.Core.Extensions;
-using Bio.Extensions;
 using Bio.SimilarityMatrices;
 
 namespace Bio.Algorithms.Alignment

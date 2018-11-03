@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Bio.IO.GenBank
+﻿namespace Bio.IO.GenBank
 {
     /// <summary>
     /// A non-protein-coding gene (ncRNA), other than ribosomal RNA and transfer RNA, the functional 

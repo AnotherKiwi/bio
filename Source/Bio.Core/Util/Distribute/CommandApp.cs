@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Bio.Util;
-using System.IO;
 using Bio.Util.ArgumentParser;
 using System.Diagnostics;
 

@@ -6,14 +6,8 @@
 ***************************************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Xml;
-
-using Bio.Algorithms.Alignment;
-using Bio.IO;
 using Bio.IO.Phylip;
 using Bio.TestAutomation.Util;
 using Bio.Util.Logging;

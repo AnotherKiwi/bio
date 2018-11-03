@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using Bio.Util;
 using System.Collections.Generic;
 
 namespace Bio.Matrix

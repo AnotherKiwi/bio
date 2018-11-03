@@ -1,11 +1,8 @@
-﻿using System.IO;
-using Bio.IO;
+﻿using Bio.IO;
 using Bio.IO.FastA;
-using Bio.IO.FastQ;
 using Bio.IO.GenBank;
 using Bio.IO.Gff;
 using Bio.IO.SFF;
-using Bio.IO.Text;
 using NUnit.Framework;
 
 namespace Bio.Tests.IO

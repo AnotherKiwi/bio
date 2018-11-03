@@ -7,16 +7,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using Bio.IO;
 using Bio.IO.GenBank;
 using Bio.TestAutomation.Util;
 using Bio.Util.Logging;
-using System.Linq;
 using NUnit.Framework;
-using System.Runtime.Serialization;
-using Bio;
 
 #if (SILVERLIGHT == false)
     namespace Bio.TestAutomation.IO.GenBank

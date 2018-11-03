@@ -2,8 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Text;
-using Bio;
-using Bio.IO;
 using Bio.IO.FastQ;
 using NUnit.Framework;
 using Bio.Properties;

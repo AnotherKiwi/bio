@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Bio
+﻿namespace Bio
 {
     /// <summary>
     /// A FastQFormatType specifies the format of quality scores.

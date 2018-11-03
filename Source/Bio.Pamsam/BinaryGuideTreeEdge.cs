@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
+﻿namespace Bio.Algorithms.Alignment.MultipleSequenceAlignment
 {
     /// <summary>
     /// Implementation of Edge class in Binary Guide Tree.

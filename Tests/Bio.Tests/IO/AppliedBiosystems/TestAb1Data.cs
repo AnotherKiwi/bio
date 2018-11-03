@@ -4,7 +4,6 @@ using System.Linq;
 
 using Bio.Core.Extensions;
 using Bio.IO.AppliedBiosystems.Model;
-using Bio.Util;
 using NUnit.Framework;
 
 namespace Bio.Tests.Framework.IO.AppliedBiosystems

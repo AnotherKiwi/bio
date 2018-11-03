@@ -1,8 +1,6 @@
 ﻿using Bio.Extensions;
 using NUnit.Framework;
 using System;
-using Bio;
-
 
 
 namespace Bio.Tests.Extensions

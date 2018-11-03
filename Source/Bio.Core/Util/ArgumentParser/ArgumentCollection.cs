@@ -10,7 +10,6 @@ using System.Text.RegularExpressions;
 using System.Xml.Linq;
 #endif
 using System.Collections.Concurrent;
-using Bio.Util;
 using System.Globalization;
 
 namespace Bio.Util.ArgumentParser

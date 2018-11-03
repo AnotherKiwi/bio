@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Bio;
 using Bio.Algorithms.Alignment.MultipleSequenceAlignment;
 using NUnit.Framework;
 
