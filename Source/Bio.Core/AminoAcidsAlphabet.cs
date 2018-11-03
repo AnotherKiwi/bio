@@ -1,17 +1,20 @@
-﻿using Bio.Util;
-using static Bio.Properties.Resource;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using static System.Array;
+
+using Bio.Util;
+using static Bio.Alphabets;
+using static Bio.Properties.Resource;
 
 namespace Bio
 {
-    /// <inheritdoc cref="IStrictProteinAlphabet" />
-    /// <seealso cref="IStrictProteinAlphabet" />,
+    /// <inheritdoc cref="IAminoAcidsAlphabet" />
+    /// <seealso cref="IAminoAcidsAlphabet" />,
     /// <seealso cref="IAlphabet" />
 
-    public class StrictProteinAlphabet : IStrictProteinAlphabet, IAminoAcidAlphabet
+    public class AminoAcidsAlphabet : IAminoAcidsAlphabet, IStandardAminoAcidsAlphabet
     {
         #region Private members
 
@@ -64,22 +67,23 @@ namespace Bio
         /// <summary>
         ///     Instance of the StrictProteinAlphabet class.
         /// </summary>
-        public static readonly StrictProteinAlphabet Instance;
+        public static readonly AminoAcidsAlphabet Instance;
 
         /// <summary>
         ///     Set up the static StrictProteinAlphabet instance.
         /// </summary>
-        static StrictProteinAlphabet()
+        static AminoAcidsAlphabet()
         {
-            Instance = new StrictProteinAlphabet();
+            Instance = new AminoAcidsAlphabet();
         }
 
         /// <summary>
         ///     Initializes a new instance of the StrictProteinAlphabet class.
         /// </summary>
-        protected StrictProteinAlphabet()
+        protected AminoAcidsAlphabet()
         {
-            Name = StrictProteinAlphabetName;
+            Name = AminoAcidsAlphabetName;
+            AlphabetType = AlphabetTypes.AminoAcids;
             HasGaps = false;
             HasAmbiguity = false;
             HasTerminations = false;
@@ -112,28 +116,31 @@ namespace Bio
             AddAminoAcids();
         }
 
-        /// <inheritdoc cref="IAminoAcidAlphabet" />
+        /// <inheritdoc cref="IStandardAminoAcidsAlphabet" />
         public byte A { get; }
 
-        /// <inheritdoc cref="IAminoAcidAlphabet" />
+        /// <inheritdoc />
+        public AlphabetTypes AlphabetType { get; protected set; }
+
+        /// <inheritdoc cref="IStandardAminoAcidsAlphabet" />
         public byte C { get; }
 
-        /// <inheritdoc cref="IAminoAcidAlphabet" />
+        /// <inheritdoc cref="IStandardAminoAcidsAlphabet" />
         public int Count => _aminoAcids.Count;
 
-        /// <inheritdoc cref="IAminoAcidAlphabet" />
+        /// <inheritdoc cref="IStandardAminoAcidsAlphabet" />
         public byte D { get; }
 
-        /// <inheritdoc cref="IAminoAcidAlphabet" />
+        /// <inheritdoc cref="IStandardAminoAcidsAlphabet" />
         public byte E { get; }
 
-        /// <inheritdoc cref="IAminoAcidAlphabet" />
+        /// <inheritdoc cref="IStandardAminoAcidsAlphabet" />
         public byte F { get; }
 
-        /// <inheritdoc cref="IAminoAcidAlphabet" />
+        /// <inheritdoc cref="IStandardAminoAcidsAlphabet" />
         public byte G { get; }
 
-        /// <inheritdoc cref="IAminoAcidAlphabet" />
+        /// <inheritdoc cref="IStandardAminoAcidsAlphabet" />
         public byte H { get; }
 
         /// <inheritdoc cref="IAlphabet.HasAmbiguity" />
@@ -154,7 +161,7 @@ namespace Bio
         /// </remarks>
         public bool HasTerminations { get; protected set; }
 
-        /// <inheritdoc cref="IAminoAcidAlphabet" />
+        /// <inheritdoc cref="IStandardAminoAcidsAlphabet" />
         public byte I { get; }
 
         /// <inheritdoc />
@@ -169,34 +176,16 @@ namespace Bio
         /// </remarks>
         public bool IsComplementSupported { get; protected set; }
 
-        /// <inheritdoc />
-        /// <remarks>
-        ///     This is NOT a DNA alphabet.
-        /// </remarks>
-        public bool IsDna => false;
-
-        /// <inheritdoc />
-        /// <remarks>
-        /// This IS a protein alphabet.
-        /// </remarks>
-        public bool IsProtein => true;
-
-        /// <inheritdoc />
-        /// <remarks>
-        ///     This is NOT a RNA alphabet.
-        /// </remarks>
-        public bool IsRna => false;
-
-        /// <inheritdoc cref="IAminoAcidAlphabet" />
+        /// <inheritdoc cref="IStandardAminoAcidsAlphabet" />
         public byte K { get; }
 
-        /// <inheritdoc cref="IAminoAcidAlphabet" />
+        /// <inheritdoc cref="IStandardAminoAcidsAlphabet" />
         public byte L { get; }
 
-        /// <inheritdoc cref="IAminoAcidAlphabet" />
+        /// <inheritdoc cref="IStandardAminoAcidsAlphabet" />
         public byte M { get; }
 
-        /// <inheritdoc cref="IAminoAcidAlphabet" />
+        /// <inheritdoc cref="IStandardAminoAcidsAlphabet" />
         public byte N { get; }
 
         /// <inheritdoc cref="IAlphabet.Name" />
@@ -205,34 +194,34 @@ namespace Bio
         /// </remarks>
         public string Name { get; protected set; }
 
-        /// <inheritdoc cref="IAminoAcidAlphabet" />
+        /// <inheritdoc cref="IStandardAminoAcidsAlphabet" />
         public byte O { get; }
 
-        /// <inheritdoc cref="IAminoAcidAlphabet" />
+        /// <inheritdoc cref="IStandardAminoAcidsAlphabet" />
         public byte P { get; }
 
-        /// <inheritdoc cref="IAminoAcidAlphabet" />
+        /// <inheritdoc cref="IStandardAminoAcidsAlphabet" />
         public byte Q { get; }
 
-        /// <inheritdoc cref="IAminoAcidAlphabet" />
+        /// <inheritdoc cref="IStandardAminoAcidsAlphabet" />
         public byte R { get; }
 
-        /// <inheritdoc cref="IAminoAcidAlphabet" />
+        /// <inheritdoc cref="IStandardAminoAcidsAlphabet" />
         public byte S { get; }
 
-        /// <inheritdoc cref="IAminoAcidAlphabet" />
+        /// <inheritdoc cref="IStandardAminoAcidsAlphabet" />
         public byte T { get; }
 
-        /// <inheritdoc cref="IAminoAcidAlphabet" />
+        /// <inheritdoc cref="IStandardAminoAcidsAlphabet" />
         public byte U { get; }
 
-        /// <inheritdoc cref="IAminoAcidAlphabet" />
+        /// <inheritdoc cref="IStandardAminoAcidsAlphabet" />
         public byte V { get; }
 
-        /// <inheritdoc cref="IAminoAcidAlphabet" />
+        /// <inheritdoc cref="IStandardAminoAcidsAlphabet" />
         public byte W { get; }
 
-        /// <inheritdoc cref="IAminoAcidAlphabet" />
+        /// <inheritdoc cref="IStandardAminoAcidsAlphabet" />
         public byte Y { get; }
 
         /// <inheritdoc cref="IAlphabet.this" />
@@ -412,6 +401,27 @@ namespace Bio
             return invalidSymbols.ToArray();
         }
 
+        /// <summary>
+        /// 	Gets the number of symbols in the byte array.
+        /// </summary>
+        /// <param name="symbols">The byte array of symbols.</param>
+        /// <returns>
+        ///  	<see cref="long"/>: the number of symbols in the byte array.
+        /// </returns>
+        /// <remarks>
+        ///     Ignores any zero bytes that occur after the symbols.
+        /// </remarks>
+        protected long GetSymbolCount(byte[] symbols)
+        {
+            long symbolCount = FindIndex(symbols, s => s == 0);
+            if (symbolCount < 0)
+            {
+                symbolCount = symbols.LongLength;
+            }
+
+            return symbolCount;
+        }
+
         /// <inheritdoc />
         public byte GetSymbolFromThreeLetterAbbrev(string item)
         {
@@ -437,7 +447,7 @@ namespace Bio
         public string GetThreeLetterAbbreviation(byte item)
         {
             _abbreviationMap1To3.TryGetValue(_aminoAcidValueMap[item], out string threeLetterAbbreviation);
-            return threeLetterAbbreviation;
+            return threeLetterAbbreviation ?? string.Empty;
         }
 
         /// <summary>
@@ -606,7 +616,7 @@ namespace Bio
         /// <inheritdoc />
         public virtual bool ValidateSequence(byte[] symbols)
         {
-            return ValidateSequence(symbols, 0, symbols.LongLength);
+            return ValidateSequence(symbols, 0, GetSymbolCount(symbols));
         }
 
         /// <inheritdoc cref="IAlphabet.ValidateSequence" />
@@ -617,14 +627,20 @@ namespace Bio
                 throw new ArgumentNullException(nameof(symbols));
             }
 
-            if (offset < 0)
+            // An empty array of symbols is OK, as long as offset and length are both 0.
+            if ((symbols.LongLength == 0) && (offset == 0) && (length == 0))
             {
-                throw new ArgumentOutOfRangeException(OffsetCannotBeNegative);
+                return true;
             }
 
-            if (length < 0)
+            if ((offset < 0) || (offset >= symbols.LongLength))
             {
-                throw new ArgumentOutOfRangeException(nameof(length), LengthMustBePositive);
+                throw new ArgumentOutOfRangeException(nameof(offset));
+            }
+
+            if ((length < 0) || (symbols.LongLength < offset + length))
+            {
+                throw new ArgumentOutOfRangeException(nameof(length));
             }
 
             for (long i = offset; i < length; i++)

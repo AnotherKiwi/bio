@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using static Bio.Alphabets;
 
 namespace Bio
 {
@@ -30,6 +31,8 @@ namespace Bio
         protected AmbiguousDnaAlphabet()
         {
             Name = Resource.AmbiguousDnaAlphabetName;
+            AlphabetType = AlphabetTypes.AmbiguousDNA;
+            
             HasAmbiguity = true;
 
             AC = (byte)'M';

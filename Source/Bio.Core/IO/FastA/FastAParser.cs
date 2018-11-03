@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 
 using Bio.Extensions;
+using static Bio.Properties.Resource;
 
 namespace Bio.IO.FastA
 {
@@ -276,7 +277,10 @@ namespace Bio.IO.FastA
             }
 
             // In memory sequence
-            return new Sequence(alphabet, tmpBuffer, false) {ID = name};
+            ISequence sequence = new Sequence(alphabet, tmpBuffer, false) {ID = name};
+            sequence.Metadata.Add(FastAMetadata, new FastaAMetadata(name));
+
+            return sequence;
         }
     }
 }

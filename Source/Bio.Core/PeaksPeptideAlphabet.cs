@@ -1,11 +1,13 @@
 ﻿using static Bio.Properties.Resource;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using static Bio.Alphabets;
 
 namespace Bio
 {
     /// <inheritdoc cref="IPeaksPeptideAlphabet" />
-    /// <seealso cref="StrictProteinAlphabet"/>
+    /// <seealso cref="AminoAcidsAlphabet"/>
     /// <seealso cref="IPeaksPeptideAlphabet"/>
 
     public class PeaksPeptideAlphabet : ProteinFragmentAlphabet, IPeaksPeptideAlphabet
@@ -25,6 +27,11 @@ namespace Bio
         /// <summary>
         /// 	Set of numeric symbols (digits and '.').
         /// </summary>
+        private readonly byte[] _digitsAndDecimalPoint;
+
+        /// <summary>
+        /// 	Set of numeric symbols (digits and '.').
+        /// </summary>
         private readonly byte[] _numerics;
 
         /// <summary>
@@ -35,7 +42,7 @@ namespace Bio
         /// <summary>
         /// 	Set of numeric signs ('+' and '-') and the period ('.').
         /// </summary>
-        private readonly byte[] _signsAndPeriod;
+        private readonly byte[] _signsAndDecimalPoint;
 
         #endregion Private members
 
@@ -58,6 +65,7 @@ namespace Bio
         protected PeaksPeptideAlphabet()
         {
             Name = PeaksPeptideAlphabetName;
+            AlphabetType = AlphabetTypes.PeaksPeptide;
             IsCaseSensitive = true;
 
             _aminoAcids = GetUnambiguousAminoAcids();
@@ -85,12 +93,15 @@ namespace Bio
             Space = (byte) ' ';
             Sub = new[] {SmallS, SmallU, SmallB, Space};
 
+            // Populate sets.
             _digits = new []
                 {Digit0, Digit1, Digit2, Digit3, Digit4, Digit5, Digit6, Digit7, Digit8, Digit9};
-            _numerics = new []
+            _digitsAndDecimalPoint = new []
                 {Digit0, Digit1, Digit2, Digit3, Digit4, Digit5, Digit6, Digit7, Digit8, Digit9, Period};
+            _numerics = new []
+                {Digit0, Digit1, Digit2, Digit3, Digit4, Digit5, Digit6, Digit7, Digit8, Digit9, Plus, Minus, Period};
             _signs = new[] {Plus, Minus};
-            _signsAndPeriod = new[] {Plus, Minus, Period};
+            _signsAndDecimalPoint = new[] {Plus, Minus, Period};
 
             // Add the modification specification symbols to the alphabet.
             AddAminoAcids();
@@ -159,6 +170,10 @@ namespace Bio
         /// <summary>
         /// 	Adds the amino acids to the alphabet.
         /// </summary>
+        /// <remarks>
+        ///     Can't add a Period ('.') amino acid, since that would conflict with the
+        ///     SequenceDelimiter symbol.
+        /// </remarks>
         private void AddAminoAcids()
         {
             AddAminoAcid(ModificationBeginDelimiter, "(((", "Modification Start Delimiter", false);
@@ -174,8 +189,8 @@ namespace Bio
             AddAminoAcid(Digit8, "888", "Modification Digit '8'", false);
             AddAminoAcid(Digit9, "999", "Modification Digit '9'", false);
             AddAminoAcid(SmallS, "sss", "Modification Sub Char 's'", false);
-            AddAminoAcid(SmallU, "uuu", "Modification Sub Char 's'", false);
-            AddAminoAcid(SmallB, "bbb", "Modification Sub Char 's'", false);
+            AddAminoAcid(SmallU, "uuu", "Modification Sub Char 'u'", false);
+            AddAminoAcid(SmallB, "bbb", "Modification Sub Char 'b'", false);
             AddAminoAcid(Plus, "+++", "Modification Char '+'", false);
             AddAminoAcid(Minus, "---", "Modification Char '-'", false);
             AddAminoAcid(Space, "   ", "Modification Char ' '", false);
@@ -199,17 +214,22 @@ namespace Bio
         /// </remarks>
         private bool CheckDigitIsValid(byte[] symbols, long index, long sequenceLength)
         {
-            return (index < sequenceLength - 1) &&
-                   _signs.Contains(symbols[index - 1]) &&
-                   _signsAndPeriod.Contains(symbols[index - 1]) &&
-                   (_digits.Contains(symbols[index + 1]) || 
+            // Check that:
+            // 1. the digit has at least 4 symbols before it.
+            // 2. the digit is not at the end of the sequence.
+            // 3. the preceding symbols is another digit, a sign or a period.
+            // 4. the following symbol is one of a digit, a period or a modification end delimiter.
+            return (index > 3) &&
+                   (index < sequenceLength - 1) &&
+                   _numerics.Contains(symbols[index - 1]) &&
+                   (_digits.Contains(symbols[index + 1]) ||
                     (symbols[index + 1] == Period) ||
                     (symbols[index + 1] == ModificationEndDelimiter));
         }
 
         /// <summary>
-        /// 	Checks the period symbol. Returns <c>true</c> if it is part of a
-        ///     valid numeric pattern in a modification.
+        /// 	Checks the period symbol. Returns <c>true</c> if it is a valid sequence delimiter
+        ///     or else part of a valid numeric pattern in a modification.
         /// </summary>
         /// <param name="symbols">The symbols to check.</param>
         /// <param name="index">The current index.</param>
@@ -219,15 +239,32 @@ namespace Bio
         ///  	<c>true</c> if the current symbol is part of a valid numeric pattern, <c>false</c> otherwise.
         /// </returns>
         /// <remarks>
-        ///     Periods occur in patterns like 'C(+31.99)' and 'N(+.98)', so there must be room for more symbols
-        ///     in the sequence, the preceding symbol must be a digit or a sign, and the following symbol must
+        ///     Periods occur in patterns like 'A.RFP.T', 'A.RFP', 'RFP.T', 'C(+31.99)' or 'N(+.98)',
+        ///     so there must be room for more symbols in the sequence, the preceding symbol must
+        ///     be an amino acid or a digit or a sign, and the following symbol must an amino acid
         ///     be a digit.
         /// </remarks>
         private bool CheckPeriodIsValid(byte[] symbols, long index, long sequenceLength)
         {
-            return (_digits.Contains(symbols[index - 1]) || _signsAndPeriod.Contains(symbols[index + 1])) &&
+            // Check that:
+            // 1. the period is not at the start of the sequence.
+            // 2. the period is not at the end of the sequence.
+            // 3. the preceding symbols is one of:
+            //    a. an amino acid, but only if the period is the 2nd or 2nd to last symbol.
+            //    b. a digit.
+            //    c. a sign.
+            // 4. the following symbol is one of:
+            //    a. an amino acid, but only if the period is the 2nd or 2nd to last symbol.
+            //    b. a digit.
+            return (index > 0) &&
                    (index < sequenceLength - 1) &&
-                   _digits.Contains(symbols[index + 1]);
+                   ((_aminoAcids.Contains(symbols[index - 1]) &&
+                     ((index == 1) || (index == sequenceLength - 2))) ||
+                    _digits.Contains(symbols[index - 1]) ||
+                    _signs.Contains(symbols[index - 1])) &&
+                   ((_aminoAcids.Contains(symbols[index + 1]) &&
+                     ((index == 1) || (index == sequenceLength - 2))) ||
+                    _digits.Contains(symbols[index + 1]));
         }
 
         /// <summary>
@@ -247,9 +284,15 @@ namespace Bio
         /// </remarks>
         private bool CheckSignIsValid(in byte[] symbols, long index, long sequenceLength)
         {
-            return (symbols[index - 1] == ModificationBeginDelimiter) && 
+            // Check that:
+            // 1. the sign has at least 2 symbols preceding it.
+            // 2. the symbol preceding it is the modification begin delimiter.
+            // 3. the sign has at least 4 symbols following it.
+            // 4. the following symbol is a digit or a period.
+            return (index > 1) &&
+                   (symbols[index - 1] == ModificationBeginDelimiter) && 
                    (index < sequenceLength - 4) &&                       
-                   _numerics.Contains(symbols[index + 1]);            
+                   _digitsAndDecimalPoint.Contains(symbols[index + 1]);            
         }
 
         /// <summary>
@@ -264,13 +307,21 @@ namespace Bio
         ///     <c>true</c> if the current symbol begins a valid substitution, <c>false</c> otherwise.
         /// </returns>
         /// <remarks>
-        ///  	A valid substitution is like '(sub V)', so there must be room for 5 more symbols, the
+        ///  	A valid substitution is like 'N(sub V)', so there must be room for 5 more symbols, the
         ///     5th char after 's' must be ')', 's' must be followed by 'ub ' and a valid amino acid symbol.
         /// </remarks>
         private bool  CheckSubstitutionIsValid(in byte[] symbols, long index, long sequenceLength, 
             in HashSet<byte> aminoAcids)
         {
-            return (symbols[index - 1] == ModificationBeginDelimiter) && 
+            // Check that:
+            // 1. the sign has at least 2 symbols preceding it.
+            // 2. the symbol preceding it is the modification begin delimiter.
+            // 3. the sign has at least 5 symbols following it.
+            // 4. the 5th symbol following the 's' must be the modification end delimiter.
+            // 5. the symbols immediately following the 's' must be 'ub '.
+            // 6. the 4th symbol following the 's' must be an amino acid symbol.
+            return (index > 1) &&
+                   (symbols[index - 1] == ModificationBeginDelimiter) && 
                    (index < sequenceLength - 5) &&                       
                    (symbols[index + 5] == ModificationEndDelimiter) &&   
                    ((symbols[index] == SmallS) &&
@@ -284,7 +335,7 @@ namespace Bio
         /// <inheritdoc />
         public override bool ValidateSequence(byte[] symbols)
         {
-            return ValidateSequence(symbols, 0, symbols.LongLength);
+            return ValidateSequence(symbols, 0, GetSymbolCount(symbols));
         }
 
         /// <inheritdoc />
@@ -292,83 +343,112 @@ namespace Bio
         {
             // Make sure the sequence doesn't contain any invalid symbols, and
             // that it starts with an amino acid symbol.
-            if (!base.ValidateSequence(symbols, offset, length) || !_aminoAcids.Contains(symbols[0]))
+            if (!ValidateSequence(symbols, offset, length, checkSequenceDelimiters: false) || 
+                !_aminoAcids.Contains(symbols[0]))
             {
                 return false;
             }
 
             var isModification = false;
-            var preceedingWasAA = true;
             byte[] ubSpace = {SmallU, SmallB, Space};
+            int digitCount = 0;
+            int periodCount = 0;
+            int decimalPointCount = 0;
 
             long i = 1;
             while (i < length)
             {
                 byte symbol = symbols[i];
 
-                if (symbol == ModificationBeginDelimiter)
+                if (!_aminoAcids.Contains(symbol))
                 {
-                    // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-                    // ReSharper disable once HeuristicUnreachableCode
-                    // '(' must follow an amino acid symbol.
-                    if (!preceedingWasAA)
+                    // Check any symbol that is not an amino acid.
+
+                    if (symbol == ModificationBeginDelimiter)
                     {
+                        // '(' must follow an amino acid symbol.
+                        if (!_aminoAcids.Contains(symbols[i - 1]))
+                        {
+                            return false;
+                        }
+
+                        isModification = true;
+
+                    }
+
+                    else if (symbol == ModificationEndDelimiter)
+                    {
+                        // A preceding '(' must have occurred.
+                        if (!isModification)
+                        {
+                            return false;
+                        }
+
+                        // Make sure that numbers in modifications include a decimal point.
+                        if ((digitCount > 0) && (decimalPointCount == 0))
+                        {
+                            return false;
+                        }
+
+                        isModification = false;
+                        digitCount = 0;
+                        decimalPointCount = 0;
+                    }
+
+                    else if (symbol == SmallS)
+                    {
+                        // Starting a 'sub' modification, which must obey the pattern '(sub A)'.
+                        if (!isModification || !CheckSubstitutionIsValid(symbols, i, length, _aminoAcids))
+                        {
+                            return false;
+                        }
+
+                        // Skip to the symbol before the ')' symbol.
+                        i += 4;
+                    }
+
+                    else if (ubSpace.Contains(symbol))
+                    {
+                        // symbol should never be able to be 'u', 'b' or ' '. 
                         return false;
                     }
 
-                    isModification = true;
-                }
-
-                else if (symbol == ModificationEndDelimiter)
-                {
-                    // A preceding '(' must have occurred.
-                    if (!isModification)
+                    else if (_signs.Contains(symbol))
                     {
-                        return false;
+                        if (!isModification || !CheckSignIsValid(symbols, i, length))
+                        {
+                            return false;
+                        }
                     }
 
-                    isModification = false;
-                }
-
-                else if (symbol == SmallS)
-                {
-                    // Starting a 'sub' modification, which must obey the pattern '(sub A)'.
-                    if (!CheckSubstitutionIsValid(symbols, i, length, _aminoAcids))
+                    else if (_digits.Contains(symbol))
                     {
-                        return false;
+                        if (!isModification || !CheckDigitIsValid(symbols, i, length))
+                        {
+                            return false;
+                        }
+
+                        digitCount++;
                     }
 
-                    // Skip to the symbol before the ')' symbol.
-                    i += 4;
-                }
+                    else if (symbol == Period)
+                    {
+                        if (!CheckPeriodIsValid(symbols, i, length))
+                        {
+                            return false;
+                        }
 
-                else if (ubSpace.Contains(symbol))
-                {
-                    // symbol should never be able to be 'u', 'b' or ' '. 
-                    return false;
-                }
+                        if (isModification)
+                        {
+                            decimalPointCount++;
+                        }
+                        else
+                        {
+                            periodCount++;
+                        }
+                    }
 
-                else if (_signs.Contains(symbol) && !CheckSignIsValid(symbols, i, length))
-                {
-                    return false;
-                }
-
-                else if (_digits.Contains(symbol) && !CheckDigitIsValid(symbols, i, length))
-                {
-                    return false;
-                }
-
-                else if (symbol == Period && !CheckPeriodIsValid(symbols, i, length))
-                {
-                    return false;
-                }
-
-                else
-                {
-                    preceedingWasAA = _aminoAcids.Contains(symbol);
-
-                    // If got here, the only valid symbol the current symbol can be is an amino acid.
-                    if (!preceedingWasAA)
+                    else
                     {
                         return false;
                     }
@@ -377,7 +457,7 @@ namespace Bio
                 i++;
             }
 
-            return true;
+            return (periodCount > 0);
         }
     }
 }

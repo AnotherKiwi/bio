@@ -3,15 +3,15 @@
 namespace Bio
 {
     /// <summary>
-    ///     An alphabet that exposes symbols for all the unambiguous amino acids, plus members
+    ///     An alphabet that exposes symbols for all the standard (unambiguous) amino acids, plus members
     ///     of <see cref="IAlphabet"/> that are relevant to amino acid sequences. <br/>
     ///     Specifically, contains A, C, D, E, F, G, H, I, K, L, M, N, O, P, Q, R, S, T, U, V,
     ///     W, and Y (where O is pyrrolysine and U is selenocysteine).
     /// </summary>
     /// <remarks>
-    ///     Symbols for ambiguous amino acids, terminations or gaps are not included in this alphabet.
+    ///     Symbols for ambiguous amino acids, terminations or gaps are NOT included in this alphabet.
     /// </remarks>
-    public interface IAminoAcidAlphabet : IEnumerable<byte>
+    public interface IStandardAminoAcidsAlphabet : IEnumerable<byte>
     {
         /// <summary>
         /// Gets the symbol for the amino acid Alanine. 
@@ -188,7 +188,12 @@ namespace Bio
         ///     Returns <c>true</c> if all symbols are contained in the alphabet.
         /// </summary>
         /// <param name="symbols">The symbols to be validated.</param>
-        /// <returns>Returns <c>true</c> if the validation succeeds, else <c>false</c>.</returns>
+        /// <returns>
+        ///     Returns <c>true</c> if the validation succeeds, else <c>false</c>.
+        /// </returns>
+        /// <remarks>
+        ///     Also returns <c>true</c> if the array of symbols is empty.
+        /// </remarks>
         bool ValidateSequence(byte[] symbols);
 
         /// <summary>
@@ -201,6 +206,9 @@ namespace Bio
         ///  	<see cref="bool"/>: 
         ///  	<c>true</c> if all symbols are contained in the alphabet, <c>false</c> otherwise.
         /// </returns>
+        /// <remarks>
+        ///     Also returns <c>true</c> if the array of symbols is empty.
+        /// </remarks>
         bool ValidateSequence(byte[] symbols, long offset, long length);
     }
 }

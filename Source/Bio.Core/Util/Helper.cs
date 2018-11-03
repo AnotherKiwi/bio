@@ -1537,7 +1537,7 @@ namespace Bio.Util
 		///  Copies source array to destination array.
 		/// </summary>
 		/// <param name="sourceArray">Source array</param>
-		/// <param name="sourceIndex">Source stating index.</param>
+		/// <param name="sourceIndex">Source starting index.</param>
 		/// <param name="destinationArray">Destination array</param>
 		/// <param name="destinationIndex">Destination stating index.</param>
 		/// <param name="length">No of elements to copy</param>

@@ -191,8 +191,8 @@ namespace Bio.Algorithms.StringSearch
         /// <param name="sequence">Input sequence.</param>
         /// <param name="searchPattern">String to be searched.</param>
         /// <param name="foundAt">current Found at index.</param>
-        /// <param name="patternIndex">current positon in Input sequence.</param>
-        /// <param name="patternfoundAt">Current posistion in string to be searched.</param>
+        /// <param name="patternIndex">current position in Input sequence.</param>
+        /// <param name="patternfoundAt">Current position in string to be searched.</param>
         private static void FindMismatchIndex(ISequence sequence,
                 string searchPattern,
                 int foundAt,

@@ -18,6 +18,7 @@
     <RepositoryType>Github</RepositoryType>
     <PackageReleaseNotes>First release for .NET Standard 2.0</PackageReleaseNotes>
     <Copyright></Copyright>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

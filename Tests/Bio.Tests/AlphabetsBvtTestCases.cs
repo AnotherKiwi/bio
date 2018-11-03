@@ -44,7 +44,7 @@ namespace Bio.Tests
                     AmbiguousRnaAlphabet.Instance,
                     ProteinAlphabet.Instance,
                     AmbiguousProteinAlphabet.Instance,
-                    StrictProteinAlphabet.Instance,
+                    AminoAcidsAlphabet.Instance,
                     ProteinFragmentAlphabet.Instance,
                     PeaksPeptideAlphabet.Instance,
                     ProteinScapePeptideAlphabet.Instance

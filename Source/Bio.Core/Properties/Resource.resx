@@ -915,7 +915,7 @@ provided. There is also a default encoding for each alphabet that may be encount
     <value>No text to parse.</value>
   </data>
   <data name="PeaksPeptideAlphabetName" xml:space="preserve">
-    <value>PEAKS Peptide</value>
+    <value>PeaksPeptide</value>
     <comment>Added by Stephen Haines</comment>
   </data>
   <data name="PHYLIPPARSER_DESCRIPTION" xml:space="preserve">
@@ -940,7 +940,7 @@ provided. There is also a default encoding for each alphabet that may be encount
     <value>Protein</value>
   </data>
   <data name="ProteinScapePeptideAlphabetName" xml:space="preserve">
-    <value>ProteinScape Peptide</value>
+    <value>ProteinScapePeptide</value>
     <comment>Added by Stephen Haines</comment>
   </data>
   <data name="QueryListCannotBeNull" xml:space="preserve">
@@ -1113,8 +1113,8 @@ file specification, and converts the data to in-memory SequenceAlignmentMap obje
   <data name="StartDataCannotBeNull" xml:space="preserve">
     <value>StartData can not be null or empty.</value>
   </data>
-  <data name="StrictProteinAlphabetName" xml:space="preserve">
-    <value>StrictProtein</value>
+  <data name="AminoAcidsAlphabetName" xml:space="preserve">
+    <value>AminoAcids</value>
     <comment>Added by Stephen Haines</comment>
   </data>
   <data name="SymbolCountZero" xml:space="preserve">
@@ -1584,11 +1584,11 @@ provided. There is also a default encoding for each alphabet that may be encount
     <value>BLAST XML Parser</value>
   </data>
   <data name="UnsupportedAlphabetType" xml:space="preserve">
-    <value>An alphabet that is not a supported type (DNA, RNA or protein) encountered </value>
+    <value>An alphabet that is not a supported type (DNA, RNA or amino acid sequence) encountered </value>
     <comment>An alphabet in the addins folder is not marked as one of the supported types</comment>
   </data>
   <data name="ProteinFragmentAlphabetName" xml:space="preserve">
-    <value>Peptide</value>
+    <value>ProteinFragment</value>
     <comment>Added by Stephen Haines</comment>
   </data>
   <data name="SequenceLengthLessThanMinimum" xml:space="preserve">
@@ -1610,5 +1610,13 @@ provided. There is also a default encoding for each alphabet that may be encount
   <data name="OffsetMustBeZero" xml:space="preserve">
     <value>Offset must be zero when validating peptide sequences</value>
     <comment>Added by Stephen Haines</comment>
+  </data>
+  <data name="SequencesCannotBeNullOrEmpty" xml:space="preserve">
+    <value>A collection of sequences is required.</value>
+    <comment>Added by Stephen Haines</comment>
+  </data>
+  <data name="FastAMetadata" xml:space="preserve">
+    <value>FastA</value>
+    <comment>Key for FastA metadata. Added by Stephen Haines</comment>
   </data>
 </root>

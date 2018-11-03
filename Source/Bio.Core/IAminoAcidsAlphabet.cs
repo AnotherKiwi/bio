@@ -5,7 +5,7 @@ namespace Bio
 {
     /// <summary>
     ///     A case sensitive alphabet that is the base alphabet for all Protein and Peptide alphabets.
-    ///     It extends <see cref="IAlphabet"/> by adding symbols for unambiguous amino acids. 
+    ///     It extends <see cref="IAlphabet"/> by adding symbols for standard (unambiguous) amino acids. 
     /// </summary>
     /// <remarks>
     ///     Specifically, it adds: A, C, D, E, F, G, H, I, K, L, M, N, O, P, Q, R, S, T, U, V, W, and Y
@@ -13,7 +13,7 @@ namespace Bio
     ///     Symbols for ambiguous amino acids, terminations or gaps are not included in this alphabet.
     /// </remarks>
 
-    public interface IStrictProteinAlphabet : IAlphabet
+    public interface IAminoAcidsAlphabet : IAlphabet
     {
         /// <summary>
         /// Gets the symbol for the amino acid Alanine. 
@@ -146,17 +146,30 @@ namespace Bio
         byte[] GetInvalidSymbols(ISequence sequence);
 
         /// <summary>
-        /// Gets the symbol from a three-letter abbreviation.
+        ///     Gets the amino acid's symbol from its three-letter abbreviation.
         /// </summary>
-        /// <param name="item">Three-letter abbreviation to find symbol.</param>
-        /// <returns>Symbol corresponding to three-letter abbreviation.</returns>
+        /// <param name="item">Three-letter abbreviation of the amino acid.</param>
+        /// <returns>
+        ///     Amino acid symbol corresponding to its three-letter abbreviation.
+        /// </returns>
+        /// <remarks>
+        ///     Returns 0 if the supplied string is not a recognised three-letter
+        ///     abbreviation for an amino acid.
+        /// </remarks>
         byte GetSymbolFromThreeLetterAbbrev(string item);
 
         /// <summary>
-        ///     Gets the three-letter abbreviation of a given symbol.
+        ///     Gets the three-letter abbreviation of the amino acid represented
+        ///     by the given symbol.
         /// </summary>
-        /// <param name="item">Symbol to find three-letter abbreviation.</param>
-        /// <returns>Three-letter abbreviation of the given symbol.</returns>
+        /// <param name="item">Symbol of the amino acid.</param>
+        /// <returns>
+        ///     Amino acid three-letter abbreviation corresponding to the given symbol.
+        /// </returns>
+        /// <remarks>
+        ///     Returns an empty string if the supplied symbol is not a recognised
+        ///     amino acid symbol.
+        /// </remarks>
         string GetThreeLetterAbbreviation(byte item);
 
         /// <summary>

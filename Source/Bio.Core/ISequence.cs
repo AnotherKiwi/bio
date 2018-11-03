@@ -22,6 +22,32 @@ namespace Bio
         /// </summary>
         IAlphabet Alphabet { get; }
 
+        ///// <summary>
+        ///// 	Determines whether the current sequence contains the specified sub-sequence.
+        ///// </summary>
+        ///// <param name="subSequence">The sub-sequence to find.</param>
+        ///// <param name="startIndex">The index at which to start the search.</param>
+        ///// <returns>
+        /////  	<see cref="bool"/>:
+        /////  	<c>true</c> if the current sequence contains the specified sub-sequence; otherwise, <c>false</c>.
+        ///// </returns>
+        //bool Contains(ISequence subSequence, long startIndex = 0);
+
+        //IReadOnlyList<ISequence> FindMatches(IEnumerable<ISequence> sequences);
+        //IReadOnlyList<ISequence> FindMatches2(IEnumerable<ISequence> sequences);
+
+        ///// <summary>
+        ///// 	Returns the zero-based index of the sub-sequence in the current sequence, if found. If not, -1 is returned.
+        ///// </summary>
+        ///// <param name="subSequence">The sub-sequence to find in the current sequence.</param>
+        ///// <param name="startIndex">The index at which to start the search.</param>
+        ///// <returns>
+        /////  	<see cref="System.Int64"/>: 
+        /////  	<see cref="long" />: the zero-based index of the sub-sequence in the current sequence, if found; -1 otherwise.
+        ///// </returns>
+        //long IndexOf(ISequence subSequence, long startIndex = 0);
+        //long IndexOf2(ISequence subSequence, long startIndex = 0);
+
         /// <summary>
         /// Gets the number of sequence items contained in the Sequence.
         /// </summary>
@@ -49,7 +75,7 @@ namespace Bio
         ///  	<see cref="T:byte[]"/>: the specified items from the raw sequence data.
         /// </returns>
         /// 
-        byte[] GetData(long startIndex = 0, long length = -1);
+        byte[] GetSymbols(long startIndex = 0, long length = -1);
 
         /// <summary>
         /// Many sequence representations when saved to file also contain

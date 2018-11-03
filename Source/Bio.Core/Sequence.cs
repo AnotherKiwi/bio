@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using static System.String;
 
 using Bio.Core.Extensions;
-using Bio.Extensions;
 using Bio.Util;
 using static Bio.Properties.Resource;
 
@@ -34,6 +34,8 @@ namespace Bio
         /// Holds the sequence data.
         /// </summary>
         private byte[] _sequenceData;
+
+        private HashSet<byte> _sequenceHashSet;
 
         /// <summary>
         /// Metadata is features or references or related things of a sequence.
@@ -83,7 +85,7 @@ namespace Bio
             }
 
             Alphabet = alphabet;
-            ID = string.Empty;
+            ID = Empty;
             byte[] values = Encoding.UTF8.GetBytes(sequence);
 
             if (validate)
@@ -132,7 +134,7 @@ namespace Bio
 
             if (validate)
             {
-                // Validate sequence data
+                // Validate sequence data, as long as there is data to validate.
                 if (!alphabet.ValidateSequence(values, 0, values.GetLongLength()))
                 {
                     throw Helper.GenerateAlphabetCheckFailureException(alphabet, values);
@@ -140,7 +142,7 @@ namespace Bio
             }
 
             _sequenceData = new byte[values.GetLongLength()];
-            ID = string.Empty;
+            ID = Empty;
 
             Helper.Copy(values, _sequenceData, values.GetLongLength());
 
@@ -243,6 +245,24 @@ namespace Bio
             {
                 return _sequenceData[index];
             }
+        }
+
+        /// <inheritdoc />
+        public bool Contains(ISequence subSequence)
+        {
+            if (subSequence == null)
+                throw new ArgumentNullException(nameof(subSequence));
+
+            return (_sequenceData.FindIndexOf(subSequence.GetSymbols()) >= 0);
+        }
+
+        /// <inheritdoc />
+        public long IndexOf(ISequence subSequence)
+        {
+            if (!(subSequence is Sequence subSeq))
+                throw new ArgumentException($"{nameof(subSequence)} must be a type derived from {nameof(Sequence)}");
+
+            return _sequenceData.FindIndexOf(subSeq.GetInternalArray());
         }
 
         /// <summary>
@@ -433,7 +453,7 @@ namespace Bio
         {
             if (Count > Helper.AlphabetsToShowInToString)
             {
-                return string.Format(CultureInfo.CurrentCulture, ToStringFormat,
+                return Format(CultureInfo.CurrentCulture, ToStringFormat,
                                      new string(_sequenceData.Take(Helper.AlphabetsToShowInToString).Select((a => (char)a)).ToArray()),
                                      (Count - Helper.AlphabetsToShowInToString));
             }
@@ -487,7 +507,7 @@ namespace Bio
         /// <summary>
         /// This is used by some of the built-in algorithms which access the data in a read-only fashion
         /// to quickly grab a sequence of data without copying it.  It cannot be used outside Bio.dll
-        /// For outside users, use the CopyTo method.
+        /// For outside users, use the CopyTo or GetSymbols methods.
         /// </summary>
         /// <returns></returns>
         internal byte[] GetInternalArray()
@@ -495,10 +515,9 @@ namespace Bio
             return _sequenceData;
         }
 
-        // GetData() method added by Stephen Haines.
-        // TODO: write test.
+        // TODO: Write test.
         /// <inheritdoc />
-        public byte[] GetData(long startIndex = 0, long length = -1)
+        public byte[] GetSymbols(long startIndex = 0, long length = -1)
         {
             // Perform same checks as in existing ConvertToString() method
             if (startIndex < 0)
@@ -522,7 +541,8 @@ namespace Bio
             }
 
             byte[] rawData = new byte[length - startIndex];
-            CopyTo(rawData, startIndex, length);
+            ArrayExtensions.LongCopy(_sequenceData, startIndex, rawData, 0, length);
+
             return rawData;
         }
 

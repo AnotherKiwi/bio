@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using static Bio.Alphabets;
 
 namespace Bio
 {
@@ -31,6 +32,7 @@ namespace Bio
         protected AmbiguousRnaAlphabet()
         {
             Name = Resource.AmbiguousRnaAlphabetName;
+            AlphabetType = AlphabetTypes.AmbiguousRNA;
             HasAmbiguity = true;
 
             AC = (byte)'M';

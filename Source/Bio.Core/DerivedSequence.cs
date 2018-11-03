@@ -138,12 +138,12 @@ namespace Bio
 
         #region Methods
 
-        // GetData() method added by Stephen Haines
+        // TODO: Write test.
         /// <inheritdoc />
-        public byte[] GetData(long startIndex = 0, long length = -1)
+        public byte[] GetSymbols(long startIndex = 0, long length = -1)
         {
             Sequence seq = (Sequence)baseSequence;
-            return seq.GetData(startIndex, length);
+            return seq.GetSymbols(startIndex, length);
         }
 
         /// <summary>

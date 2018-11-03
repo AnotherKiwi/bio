@@ -272,11 +272,11 @@ namespace Bio.IO.PacBio
             }
         }
 
-        // GetData() method added by Stephen Haines
+        // TODO: Write test.
         /// <inheritdoc />
-        public byte[] GetData(long startIndex = 0, long length = -1)
+        public byte[] GetSymbols(long startIndex = 0, long length = -1)
         {
-            return null;
+            return Sequence.GetSymbols(startIndex, length); 
         }
 
 

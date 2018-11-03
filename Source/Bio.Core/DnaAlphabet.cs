@@ -6,6 +6,8 @@ using System.Linq;
 using Bio.Core.Extensions;
 using Bio.Properties;
 using Bio.Util;
+using static Bio.Alphabets;
+using static Bio.Properties.Resource;
 
 namespace Bio
 {
@@ -69,6 +71,7 @@ namespace Bio
         protected DnaAlphabet()
         {
             Name = Resource.DnaAlphabetName;
+            AlphabetType = AlphabetTypes.DNA;
             HasGaps = true;
             HasAmbiguity = false;
             HasTerminations = false;
@@ -126,6 +129,9 @@ namespace Bio
         public string Name { get; protected set; }
 
         /// <inheritdoc />
+        public AlphabetTypes AlphabetType { get; protected set; }
+
+        /// <inheritdoc />
         public bool HasGaps { get; protected set; }
 
         /// <inheritdoc />
@@ -151,24 +157,6 @@ namespace Bio
         ///     This alphabet HAS support for complement.
         /// </remarks>
         public bool IsComplementSupported { get; protected set; }
-
-        /// <inheritdoc />
-        /// <remarks>
-        ///     This IS a DNA alphabet.
-        /// </remarks>
-        public bool IsDna => true;
-
-        /// <inheritdoc />
-        /// <remarks>
-        ///     This is NOT a protein alphabet.
-        /// </remarks>
-        public bool IsProtein => false;
-
-        /// <inheritdoc />
-        /// <remarks>
-        ///     This is NOT a RNA alphabet.
-        /// </remarks>
-        public bool IsRna => false;
 
         /// <summary>
         ///     Static instance of this class.
@@ -324,10 +312,10 @@ namespace Bio
             throw new NotSupportedException();
         }
 
-        /// <inheritdoc />
         /// <summary>
         ///     Validates if all symbols provided are DNA symbols or not.
         /// </summary>
+        /// <inheritdoc />
         public bool ValidateSequence(byte[] symbols, long offset, long length)
         {
             if (symbols == null)
@@ -335,7 +323,19 @@ namespace Bio
                 throw new ArgumentNullException(nameof(symbols));
             }
 
-            if (symbols.Length < offset + length) {
+            // An empty array of symbols is OK, as long as offset and length are both 0.
+            if ((symbols.LongLength == 0) && (offset == 0) && (length == 0))
+            {
+                return true;
+            }
+
+            if ((offset < 0) || (offset >= symbols.LongLength))
+            {
+                throw new ArgumentOutOfRangeException(nameof(offset));
+            }
+
+            if ((length < 0) || (symbols.LongLength < offset + length))
+            {
                 throw new ArgumentOutOfRangeException(nameof(length));
             }
 

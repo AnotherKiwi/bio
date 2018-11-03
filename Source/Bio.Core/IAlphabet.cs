@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using static Bio.Alphabets;
 
 namespace Bio
 {
@@ -16,6 +17,14 @@ namespace Bio
 
     public interface IAlphabet : IEnumerable<byte>
     {
+        /// <summary>
+        /// 	Gets the type of the alphabet.
+        /// </summary>
+        /// <value>
+        ///  	<see cref="AlphabetTypes"/>: The type of the alphabet.
+        /// </value>
+        AlphabetTypes AlphabetType { get; }
+
         /// <summary>
         ///     Gets the count of symbols present in this alphabet.
         /// </summary>
@@ -53,21 +62,6 @@ namespace Bio
         ///     Gets a value indicating whether the alphabet supports complement or not.
         /// </summary>
         bool IsComplementSupported { get; }
-
-        /// <summary>
-        ///     Gets a value indicating whether this is a DNA alphabet.
-        /// </summary>
-        bool IsDna { get; }
-
-        /// <summary>
-        ///     Gets a value indicating whether this is a protein alphabet.
-        /// </summary>
-        bool IsProtein { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this is a RNA alphabet.
-        /// </summary>
-        bool IsRna { get; }
 
         /// <summary>
         ///     Gets a human readable name for the alphabet. 
@@ -246,6 +240,9 @@ namespace Bio
         ///  	<see cref="bool"/>: 
         ///  	Returns <c>true</c> if the validation succeeds, else <c>false</c>.
         /// </returns>
+        /// <remarks>
+        /// 	Also returns <c>true</c> if the array of symbols is empty.
+        /// </remarks>
         bool ValidateSequence(byte[] symbols, long offset, long length);
     }
 }

@@ -151,6 +151,15 @@ namespace Bio.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AminoAcids.
+        /// </summary>
+        internal static string AminoAcidsAlphabetName {
+            get {
+                return ResourceManager.GetString("AminoAcidsAlphabetName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Parse applied biosystems binary format as defined in http://www6.appliedbiosystems.com/support/software_community/ABIF_File_Format.pdf..
         /// </summary>
         internal static string APPLIEDBIOSYSTEMS_DESCRIPTION {
@@ -1564,6 +1573,15 @@ namespace Bio.Properties {
         internal static string FASTAFORMATTER_DESCRIPTION {
             get {
                 return ResourceManager.GetString("FASTAFORMATTER_DESCRIPTION", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FastA.
+        /// </summary>
+        internal static string FastAMetadata {
+            get {
+                return ResourceManager.GetString("FastAMetadata", resourceCulture);
             }
         }
         
@@ -3302,7 +3320,7 @@ namespace Bio.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PEAKS Peptide.
+        ///   Looks up a localized string similar to PeaksPeptide.
         /// </summary>
         internal static string PeaksPeptideAlphabetName {
             get {
@@ -3374,7 +3392,7 @@ namespace Bio.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Peptide.
+        ///   Looks up a localized string similar to ProteinFragment.
         /// </summary>
         internal static string ProteinFragmentAlphabetName {
             get {
@@ -3383,7 +3401,7 @@ namespace Bio.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ProteinScape Peptide.
+        ///   Looks up a localized string similar to ProteinScapePeptide.
         /// </summary>
         internal static string ProteinScapePeptideAlphabetName {
             get {
@@ -3864,6 +3882,15 @@ namespace Bio.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A collection of sequences is required..
+        /// </summary>
+        internal static string SequencesCannotBeNullOrEmpty {
+            get {
+                return ResourceManager.GetString("SequencesCannotBeNullOrEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} - {1}.
         /// </summary>
         internal static string SequenceStatisticsToStringFormat {
@@ -4126,15 +4153,6 @@ namespace Bio.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to StrictProtein.
-        /// </summary>
-        internal static string StrictProteinAlphabetName {
-            get {
-                return ResourceManager.GetString("StrictProteinAlphabetName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Zero symbols in input..
         /// </summary>
         internal static string SymbolCountZero {
@@ -4216,7 +4234,7 @@ namespace Bio.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An alphabet that is not a supported type (DNA, RNA or protein) encountered .
+        ///   Looks up a localized string similar to An alphabet that is not a supported type (DNA, RNA or amino acid sequence) encountered .
         /// </summary>
         internal static string UnsupportedAlphabetType {
             get {

@@ -5,6 +5,8 @@ using System.Linq;
 
 using Bio.Core.Extensions;
 using Bio.Util;
+using static Bio.Alphabets;
+using static Bio.Properties.Resource;
 
 namespace Bio
 {
@@ -80,6 +82,7 @@ namespace Bio
         protected RnaAlphabet()
         {
             Name = Properties.Resource.RnaAlphabetName;
+            AlphabetType = AlphabetTypes.RNA;
             HasGaps = true;
             HasAmbiguity = false;
             HasTerminations = false;
@@ -144,6 +147,9 @@ namespace Bio
         /// </summary>
         public string Name { get; protected set; }
 
+        /// <inheritdoc />
+        public AlphabetTypes AlphabetType { get; protected set; }
+
         /// <summary>
         /// Gets or sets a value indicating whether this alphabet has a gap symbol.
         /// This alphabet does have a gap symbol.
@@ -174,25 +180,13 @@ namespace Bio
         /// </summary>
         public bool IsComplementSupported { get; protected set; }
 
-        /// <inheritdoc />
-        /// <remarks>This is not a DNA alphabet.</remarks>
-        public bool IsDna => false;
-
-        /// <inheritdoc />
-        /// <remarks>This is not a protein alphabet.</remarks>
-        public bool IsProtein => false;
-
-        /// <inheritdoc />
-        /// <remarks>This is a RNA alphabet.</remarks>
-        public bool IsRna => true;
-
         /// <summary>
         /// Static instance of this class.
         /// </summary>
         public static readonly RnaAlphabet Instance;
 
         /// <summary>
-        /// Gets count of nucleotides.
+        /// Gets count of symbols in the alphabet.
         /// </summary>
         public int Count
         {
@@ -424,20 +418,28 @@ namespace Bio
         }
 
         /// <summary>
-        /// Validates if all symbols provided are RNA symbols or not.
+        ///     Validates if all symbols provided are RNA symbols or not.
         /// </summary>
-        /// <param name="symbols">Symbols to be validated.</param>
-        /// <param name="offset">Offset from where validation should start.</param>
-        /// <param name="length">Number of symbols to validate from the specified offset.</param>
-        /// <returns>True if the validation succeeds, else false.</returns>
-        public bool ValidateSequence(byte[] symbols, long offset, long length)
+        /// <inheritdoc />
+        bool IAlphabet.ValidateSequence(byte[] symbols, long offset, long length)
         {
             if (symbols == null)
             {
                 throw new ArgumentNullException(nameof(symbols));
             }
 
-            if (symbols.Length < offset + length)
+            // An empty array of symbols is OK.
+            if (symbols.LongLength == 0)
+            {
+                return true;
+            }
+
+            if ((offset < 0) || (offset >= symbols.LongLength))
+            {
+                throw new ArgumentOutOfRangeException(nameof(offset));
+            }
+
+            if ((length < 0) || (symbols.LongLength < offset + length))
             {
                 throw new ArgumentOutOfRangeException(nameof(length));
             }

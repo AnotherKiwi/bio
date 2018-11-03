@@ -1,11 +1,12 @@
-﻿using static Bio.Properties.Resource;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+
+using static Bio.Properties.Resource;
 
 namespace Bio
 {
     /// <inheritdoc cref="IProteinAlphabet"/>
 
-    public class ProteinAlphabet : StrictProteinAlphabet, IProteinAlphabet
+    public class ProteinAlphabet : AminoAcidsAlphabet, IProteinAlphabet
     {
         /// <summary>
         ///     Instance of the ProteinAlphabet class.
@@ -26,6 +27,7 @@ namespace Bio
         protected ProteinAlphabet()
         {
             Name = ProteinAlphabetName;
+            AlphabetType = Alphabets.AlphabetTypes.Protein;
             HasGaps = true;
             HasAmbiguity = false;
             HasTerminations = true;

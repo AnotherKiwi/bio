@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Bio.Algorithms.ByteArraySearch;
 
 namespace Bio.Core.Extensions
 {
@@ -114,5 +116,80 @@ namespace Bio.Core.Extensions
             return result;
         }
 
+        /// <summary>
+        ///     Returns the index of the search pattern in the sequence, if found. Otherwise returns -1.
+        /// </summary>
+        /// <param name="sequence">The byte array of symbols to search for the sub-sequence.</param>
+        /// <param name="pattern">The pattern to find.</param>
+        /// <param name="offset">The start index for the search.</param>
+        /// <param name="length">
+        ///     The maximum number of bytes of the sequence to be searched. If set to -1, the
+        ///     whole of the byte array is searched.
+        /// </param>
+        /// <returns>
+        ///  	<see cref="long" />:
+        ///     the zero-based index of the sub-sequence in the searched sequence, if found; -1 otherwise.
+        /// </returns>
+        /// <remarks>
+        /// 	Uses the Boyer-Moore search algorithm. If searching for the same pattern in 
+        ///     multiple sequences, the <c>Search</c> method of the <see cref="BoyerMoore"/>
+        ///     class will give better performance.
+        /// </remarks>
+        public static long FindIndexOf(this byte[] sequence, byte[] pattern, long offset = 0, long length = -1)
+        {
+            return new BoyerMoore(pattern).Search(sequence, offset, length);
+        }
+
+        /// <summary>
+        /// 	Searches for all matches of the current pattern in the sequence.
+        /// </summary>
+        /// <param name="sequence">The byte array to search for the pattern.</param>
+        /// <param name="pattern">The pattern to find.</param>
+        /// <param name="offset">The offset at which to start the search.</param>
+        /// <param name="length">
+        ///     The maximum number of bytes of the sequence to be searched. If set to -1, the
+        ///     whole of the byte array is searched.
+        /// </param>
+        /// <returns>
+        ///  	<see cref="IEnumerable{T}"/>: enumerable collection of the indexes at which the
+        ///     search pattern was found, or -1 if no match was found.
+        /// </returns>
+        /// <remarks>
+        ///     Returns {-1} if the search pattern was not found. <br/>
+        /// 	Uses the Boyer-Moore search algorithm. If searching for the same pattern in 
+        ///     multiple sequences, the <c>Search</c> method of the <see cref="BoyerMoore"/>
+        ///     class will give better performance.
+        /// </remarks>
+        public static IReadOnlyList<long> FindAll(this byte[] sequence, byte[] pattern, long offset = 0, long length = -1)
+        {
+            return new BoyerMoore(pattern).SearchForAll(sequence, offset, length);
+        }
+
+        /// <summary>
+        /// 	Determines if the search pattern is matched in the sequence.
+        /// </summary>
+        /// <param name="sequence">The byte array to search for the pattern.</param>
+        /// <param name="pattern">The pattern to find.</param>
+        /// <param name="offset">The offset at which to start the search.</param>
+        /// <param name="length">
+        ///     The maximum number of bytes of the sequence to be searched. If set to -1, the
+        ///     whole of the byte array is searched.
+        /// </param>
+        /// <returns>
+        ///  	<see cref="bool"/>: <c>true</c> if the current search pattern was matched in the input
+        ///     byte array; <c>false</c> otherwise.
+        /// </returns>
+        /// <remarks>
+        ///     If the input byte array has multiple padding 0 values, the search may be limited
+        ///     to the portion of the array containing data by setting the <paramref name="length"/>
+        ///     to the appropriate value. <br/>
+        /// 	Uses the Boyer-Moore search algorithm. If searching for the same pattern in 
+        ///     multiple sequences, the <c>Search</c> method of the <see cref="BoyerMoore"/>
+        ///     class will give better performance.
+        /// </remarks>
+        public static bool Contains(this byte[] sequence, byte[] pattern, long offset = 0, long length = -1)
+        {
+            return (new BoyerMoore(pattern).Search(sequence, offset, length) >= 0);
+        }
     }
 }

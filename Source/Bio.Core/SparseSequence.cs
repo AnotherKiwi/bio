@@ -411,12 +411,12 @@ namespace Bio
             seq.CopyTo(byteArray, start, count);
         }
 
-        // GetData() method added by Stephen Haines
+        // TODO: Write test.
         /// <inheritdoc />
-        public byte[] GetData(long startIndex = 0, long length = -1)
+        public byte[] GetSymbols(long startIndex = 0, long length = -1)
         {
             Sequence seq = (Sequence)GetSubSequence(0, sparseSeqItems.Count);
-            return seq.GetData(startIndex, length);
+            return seq.GetSymbols(startIndex, length);
         }
 
         /// <summary>

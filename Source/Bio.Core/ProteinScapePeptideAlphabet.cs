@@ -5,7 +5,7 @@ using static Bio.Properties.Resource;
 namespace Bio
 {
     /// <inheritdoc cref="IProteinScapePeptideAlphabet" />
-    /// <seealso cref="StrictProteinAlphabet"/>
+    /// <seealso cref="AminoAcidsAlphabet"/>
     /// <seealso cref="IProteinScapePeptideAlphabet"/>
 
     public class ProteinScapePeptideAlphabet : ProteinFragmentAlphabet, IProteinScapePeptideAlphabet
@@ -29,6 +29,7 @@ namespace Bio
         protected ProteinScapePeptideAlphabet()
         {
             Name = ProteinScapePeptideAlphabetName;
+            AlphabetType = Alphabets.AlphabetTypes.ProteinScapePeptide;
             IsCaseSensitive = true;
 
             CTerminus = (byte)'-';
@@ -52,7 +53,7 @@ namespace Bio
         /// </remarks>
         public override bool ValidateSequence(byte[] symbols)
         {
-            return ValidateSequence(symbols, 0, symbols.LongLength);
+            return ValidateSequence(symbols, 0, GetSymbolCount(symbols));
         }
 
         /// <inheritdoc />
@@ -63,17 +64,19 @@ namespace Bio
         /// </remarks>
         public override bool ValidateSequence(byte[] symbols, long offset, long length)
         {
-            // Make sure the sequence doesn't contain any invalid symbols.
-            if (!base.ValidateSequence(symbols, offset, length))
+            // Make sure the sequence isn't null and doesn't contain any invalid symbols.
+            if (!ValidateSequence(symbols, offset, length, checkSequenceDelimiters: false))
             {
                 return false;
             }
 
-            int sequenceLength = symbols.Length;
-            if (sequenceLength < 3)
+            // An empty array of symbols is OK, as long as offset and length both 0.
+            if ((symbols.LongLength == 0) && (offset == 0) && (length == 0))
             {
-                throw new ArgumentOutOfRangeException(nameof(sequenceLength), SequenceLengthLessThanMinimum);
+                return true;
             }
+
+            int sequenceLength = symbols.Length;
 
             // Check that the peptide has exactly two SequenceDelimiter symbols, and that
             // N- and C-terminus symbols (if present) are in appropriate positions.

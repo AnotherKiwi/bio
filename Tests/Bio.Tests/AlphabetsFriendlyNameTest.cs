@@ -7,13 +7,13 @@ using NUnit.Framework;
 namespace Bio.Tests.Framework
 {
     /// <summary>
-    /// Tests the AmbiguousRnaAlphabet class.
+    /// Tests the FriendlyName properties of the six original alphabets.
     /// </summary>
     [TestFixture]
     public class AlphabetsFriendlyNameTest
     {
         /// <summary>
-        /// Tests the AmbiguousRNAAlphabet class.
+        /// Tests the FriendlyName properties of the six original alphabets.
         /// </summary>
         [Test]
         public void TestFriendlyNames()

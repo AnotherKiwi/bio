@@ -535,13 +535,14 @@ namespace Bio
         #endregion
 
         #region Methods
-        // GetData() method added by Stephen Haines.
-        // Can probably be made more efficient.
+
+        // TODO: Write test.
         /// <inheritdoc />
-        public byte[] GetData(long startIndex = 0, long length = -1)
+        public byte[] GetSymbols(long startIndex = 0, long length = -1)
         {
+            // This can probably be made more efficient.
             Sequence seq = new Sequence(Alphabet, sequenceData);
-            return seq.GetData(startIndex, length);
+            return seq.GetSymbols(startIndex, length);
         }
 
 
